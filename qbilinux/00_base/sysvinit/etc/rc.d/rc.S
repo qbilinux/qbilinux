@@ -39,14 +39,14 @@ ln -sf /proc/self/fd/1 /dev/stdout
 ln -sf /proc/self/fd/2 /dev/stderr
 
 # Start udev.
-echo "Starting udev..."
+#echo "Starting udev..."
 
-/sbin/udevd --daemon
-/sbin/udevadm monitor --environment > /dev/.udev.log 2>&1 &
-/sbin/udevadm trigger --action=add --type=subsystems
-/sbin/udevadm trigger --action=add --type=devices
-/sbin/udevadm settle
-/bin/killall udevadm
+#/sbin/udevd --daemon
+#/sbin/udevadm monitor --environment > /dev/.udev.log 2>&1 &
+#/sbin/udevadm trigger --action=add --type=subsystems
+#/sbin/udevadm trigger --action=add --type=devices
+#/sbin/udevadm settle
+#/bin/killall udevadm
 
 if [ -x /sbin/hwclock ]; then
     # Setup timezone for now.
@@ -146,7 +146,7 @@ EOF
 fi
 
 # move udev log
-/bin/mv -f /dev/.udev.log /var/log/udev.log
+#/bin/mv -f /dev/.udev.log /var/log/udev.log
 
 # Clean /etc/mtab* and create new one with a root entry.
 /bin/rm -f /etc/mtab*
@@ -154,6 +154,17 @@ fi
 /sbin/mount -f -v /proc
 /sbin/mount -f -v /sys
 /sbin/mount -f -v /dev
+
+# Start udev.
+echo "Starting udev..."
+
+/sbin/udevd --daemon
+/sbin/udevadm monitor --environment > /var/log/udev.log 2>&1 &
+/sbin/udevadm trigger --action=add --type=subsystems
+/sbin/udevadm trigger --action=add --type=devices
+/sbin/udevadm trigger --action=change --type=devices
+/sbin/udevadm settle
+#/bin/killall udevadm
 
 # copy the rules generated before / was mounted read-write
 for file in /dev/.udev/tmp-rules--*; do
