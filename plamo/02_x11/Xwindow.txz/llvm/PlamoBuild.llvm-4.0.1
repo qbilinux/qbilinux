@@ -101,11 +101,9 @@ myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
 
 if [ "$arch" = "x86_64" ]; then
-    target="-m64"
     libdir="lib64"
     suffix="64"
 else
-    target="-m32"
     libdir="lib"
     suffix=""
 fi
@@ -139,20 +137,24 @@ if [ $opt_config -eq 1 ] ; then
     if [ ! -f $B/LLVMBuild.txt ]; then
 	if [ -d $B ]; then rm -rf $B ; fi
 	mkdir -p $B
-	cp -av llvm-${vers}.src/* $B
+	cp -a llvm-${vers}.src/* $B
 	cd $B
 
 	tar xf $W/cfe-${vers}.src.tar.xz -C tools
 	mv tools/cfe-${vers}.src tools/clang
 
-	tar xf $W/compiler-rt-${vers}.src.tar.xz -C projects
-	mv projects/compiler-rt-${vers}.src projects/compiler-rt
+	if [ "$arch" != "armv7l" ]; then
+	    tar xf $W/compiler-rt-${vers}.src.tar.xz -C projects
+	    mv projects/compiler-rt-${vers}.src projects/compiler-rt
+	fi
 
 	for patch in $patchfiles ; do
 	    patch -p1 < $W/$patch
 	done
 
-	sed -r "/ifeq.*CompilerTargetArch/s#i386#i686#g" -i projects/compiler-rt/make/platform/clang_linux.mk
+	if [ "$arch" != "armv7l" ]; then
+	    sed -r "/ifeq.*CompilerTargetArch/s#i386#i686#g" -i projects/compiler-rt/make/platform/clang_linux.mk
+	fi
     fi
 
 ######################################################################
@@ -175,28 +177,22 @@ if [ $opt_config -eq 1 ] ; then
     fi
 
     export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
-    if [ "$arch" = "x86_64" ]; then
-          HOST_TRIPLE='x86_64-pc-linux-gnu'
+    if [ "$arch" = "x86_64" -o "$arch" = "x86" ]; then
+          HOST_TRIPLE="${arch}-pc-linux-gnu"
+          TARGET_BUILD=all
+	  CMAKE_FLAGS="-DLLVM_ENABLE_CXX1Y=ON -DLLVM_ENABLE_LIBCXX=ON -DCLANG_RESOURCE_DIR=../${libdir}/clang/${vers} -DBUILD_SHARED_LIBS=ON -DLLVM_LIBDIR_SUFFIX=${suffix} -DLLVM_REQUIRES_RTTI=ON -DLLVM_ENABLE_TIMESTAMPS=OFF -DLLVM_ENABLE_ASSERTIONS=OFF -DLLVM_ENABLE_PIC=ON -DLLVM_BINUTILS_INCDIR=/usr/include"
     else
-          HOST_TRIPLE='i686-pc-linux-gnu'
+          HOST_TRIPLE='armv7l-pc-linux-gnueabi'
+          TARGET_BUILD="ARM;AArch64"
+	  CMAKE_FLAGS='-DLLVM_BUILD_LLVM_DYLIB=ON -Wno-dev'
     fi 
 
-
     cmake -G "Unix Makefiles" \
-	-DBUILD_SHARED_LIBS=ON \
 	-DCMAKE_BUILD_TYPE=Release \
 	-DCMAKE_INSTALL_PREFIX=/usr \
-	-DLLVM_LIBDIR_SUFFIX=${suffix} \
-	-DCLANG_RESOURCE_DIR=../${libdir}/clang/${vers} \
-	-DLLVM_REQUIRES_RTTI=ON \
-	-DLLVM_ENABLE_TIMESTAMPS=OFF \
-	-DLLVM_ENABLE_ASSERTIONS=OFF \
-	-DLLVM_ENABLE_PIC=ON \
-	-DLLVM_BINUTILS_INCDIR=/usr/include \
-	-DLLVM_TARGETS_TO_BUILD=all \
-	-DLLVM_ENABLE_CXX1Y=ON \
-	-DLLVM_ENABLE_LIBCXX=ON \
+	-DLLVM_TARGETS_TO_BUILD=$TARGET_BUILD \
 	-DLLVM_HOST_TRIPLE=$HOST_TRIPLE \
+	${CMAKE_FLAGS} \
 	..
 
     if [ $? != 0 ]; then
@@ -209,8 +205,12 @@ if [ $opt_build -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}/build_stage
     if [ -f Makefile ] ; then
-      # export LDFLAGS='-Wl,--as-needed'
-      make -j10 REQUIRES_RTTI=1 VERBOSE=1
+	if [ "$arch" = "x86_64" -o "$arch" = "x86" ]; then
+	    # export LDFLAGS='-Wl,--as-needed'
+	    make REQUIRES_RTTI=1 VERBOSE=1
+	else
+	    make VERBOSE=1
+	fi
     fi
     if [ -x /usr/bin/sphinx-build ]; then
 	cd ..
@@ -232,7 +232,7 @@ if [ $opt_package -eq 1 ] ; then
     cd ${B[$i]}/build_stage
     if [ -f Makefile ] ; then
       # export LDFLAGS='-Wl,--as-needed'
-      make -j1 install DESTDIR=$P
+      make install DESTDIR=$P
     fi
     #rm $P/usr/${libdir}/LLVMHello*
     #rm $P/usr/${libdir}/BugpointPasses.*
