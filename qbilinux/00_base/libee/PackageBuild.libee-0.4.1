@@ -91,13 +91,7 @@ docdir=$P/usr/share/doc
 myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
 
-if [ $arch = "x86_64" ]; then
-  libdir="lib64"
-  suffix="64"
-else
-  libdir="lib"
-  suffix=""
-fi
+case $arch in x86_64 | aarch64) libdir=lib64 ;; *) libdir=lib ;; esac
 
 if [ $# -eq 0 ] ; then
   opt_download=0 ; opt_patch=1 ; opt_config=1 ; opt_build=1 ; opt_package=1
@@ -178,6 +172,8 @@ fi
 if [ $opt_config -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
+    cp $W/config.guess .
+    cp $W/config.sub .
 
     # if [ -f autogen.sh ] ; then
     #   sh ./autogen.sh
