@@ -143,7 +143,7 @@ mandir=$P/usr/share/man
 docdir=$P/usr/share/doc
 myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
-case $arch in x86_64) libdir=lib64 ;; *) libdir=lib ;; esac
+case $arch in x86_64 | aarch64) libdir=lib64 ;; *) libdir=lib ;; esac
 if [ $# -eq 0 ] ; then
   opt_download=1 ; opt_config=1 ; opt_build=1 ; opt_package=1
 else
@@ -178,6 +178,8 @@ if [ $opt_config -eq 1 ] ; then
   done
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
+    cp $W/config.guess .
+    cp $W/config.sub .
     if [ -f Makefile ] ; then
       make clean
     fi
