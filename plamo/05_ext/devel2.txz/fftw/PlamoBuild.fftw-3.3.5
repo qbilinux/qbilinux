@@ -154,11 +154,9 @@ myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
 
 if [ $arch = "x86_64" ]; then
-    target="-m64"
     libdir="lib64"
     suffix="64"
 else
-    target="-m32"
     libdir="lib"
     suffix=""
 fi
@@ -201,25 +199,23 @@ if [ -d ${P} ] ; then rm -rf ${P} ; fi ; mkdir -p ${P}
 export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
 export CFLAGS=" -O3 -fomit-frame-pointer -malign-double -fstrict-aliasing -ffast-math"
 export LDFLAGS='-Wl,--as-needed' 
-export CC="gcc -I /usr/include $target" 
-export CXX="g++ -I /usr/include $target"
 
 cd ${B}
 # build & install double precision
 $CONFIGURE --enable-sse2
-make -j4
+make
 make DESTDIR=${P} install
 make clean 
 
 # build & install long double precission
 $CONFIGURE --enable-long-double
-make -j4
+make
 make DESTDIR=${P} install
 make clean
 
 # build & install single precision
 $CONFIGURE --enable-float --enable-sse
-make -j4
+make
 make DESTDIR=${P} install
 
 ##### packageing
