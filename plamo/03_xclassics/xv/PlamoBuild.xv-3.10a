@@ -155,10 +155,8 @@ docdir=$P/usr/share/doc
 myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
 if [ $arch = "x86_64" ]; then
-    target="-m64"
     libdir="lib64"
 else
-    target="-m32"
     libdir="lib"
 fi
 if [ $# -eq 0 ] ; then
@@ -184,9 +182,9 @@ if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
     case ${i##*/} in
     xv-3.10a.tar.gz)
-      tar xvpzf ${i##*/} ;;
+      tar xpzf ${i##*/} ;;
     xv-3.10a-30.patches.tar.gz)
-      tar xvpzf ${i##*/} ;;
+      tar xpzf ${i##*/} ;;
     esac
   done
 fi
@@ -195,10 +193,10 @@ if [ $opt_config -eq 1 ] ; then
     if [ -d ${B[$i]} ] ; then rm -rf ${B[$i]} ; fi ; cp -a ${S[$i]} ${B[$i]}
   done
   cd $B
-  tar xvpzf $W/xv-3.10a-png-1.2d.tar.gz
-  tar xvpzf $W/xv310a-jp-extension-rev5.3.3.tar.gz
-  tar xvpzf $W/xv-3.10a-towns-tiff-patch.tar.gz
-  tar xvpzf $W/XV+FLmask.v2.1.tar.gz
+  tar xpzf $W/xv-3.10a-png-1.2d.tar.gz
+  tar xpzf $W/xv310a-jp-extension-rev5.3.3.tar.gz
+  tar xpzf $W/xv-3.10a-towns-tiff-patch.tar.gz
+  tar xpzf $W/XV+FLmask.v2.1.tar.gz
   patch -Np0 -i $W/xv-3.10a-30.patches/grabpatch
   patch -Np2 -i $W/xv-3.10a-30.patches/mp-tiff-patch
   patch -Np1 -i $W/xv-3.10a-30.patches/longname.patch

@@ -148,10 +148,8 @@ docdir=$P/usr/share/doc
 myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
 if [ $arch = "x86_64" ]; then
-    target="-m64"
     libdir="lib64"
 else
-    target="-m32"
     libdir="lib"
 fi
 if [ $# -eq 0 ] ; then
@@ -176,9 +174,9 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
     esac
   done
 fi
@@ -200,7 +198,6 @@ if [ $opt_config -eq 1 ] ; then
   gunzip -c $W/kterm-6.2.0-malloc.patch.gz | patch -Np0 -i -
   cp -p kterm.h kterm.h.orig
   chmod u+w kterm.h
-  sed '/KTERM_XAW3D/s@#undef @#define@g' kterm.h.orig > kterm.h
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
@@ -217,8 +214,7 @@ if [ $opt_config -eq 1 ] ; then
   done
   xmkmf -a
   cp -p Makefile Makefile.orig
-  sed 's@-lXaw@-lXaw3d@g' Makefile.orig \
-      | sed '/MANPATH =/s@man$@share/man@g' \
+  sed '/MANPATH =/s@man$@share/man@g' Makefile.orig \
       | sed '/CONFDIR =/s@ETCX11@LIB@g' \
       | sed '/$(INSTALL).*kterm$/s@UID@BIN@g' > Makefile
 fi
