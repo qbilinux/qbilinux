@@ -9,7 +9,7 @@ arch=`uname -m`
 build=P1m1
 src=$pkgbase-$vers
 OPT_CONFIG=""
-DOCS="README LICENSE"
+DOCS="README.txt LICENSE.txt PKG-INFO"
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -143,7 +143,11 @@ mandir=$P/usr/share/man
 docdir=$P/usr/share/doc
 myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
-case $arch in i686) libdir=lib ;; x86_64) libdir=lib64 ;; esac
+case $arch in
+    i686)   libdir=lib ;;
+    x86_64) libdir=lib64 ;;
+    armv7l) libdir=lib ;;
+esac
 if [ $# -eq 0 ] ; then
   opt_download=1 ; opt_config=1 ; opt_build=1 ; opt_package=1
 else

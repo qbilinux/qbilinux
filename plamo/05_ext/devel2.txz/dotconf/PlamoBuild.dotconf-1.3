@@ -9,6 +9,7 @@ build=P1m1
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="COPYING AUTHORS README INSTALL"
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -142,7 +143,11 @@ mandir=$P/usr/share/man
 docdir=$P/usr/share/doc
 myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
-case $arch in i686) libdir=lib ;; x86_64) libdir=lib64 ;; esac
+case $arch in
+    i686)   libdir=lib ;;
+    x86_64) libdir=lib64 ;;
+    armv7l) libdir=lib ;;
+esac
 if [ $# -eq 0 ] ; then
   opt_download=1 ; opt_config=1 ; opt_build=1 ; opt_package=1
 else
@@ -241,10 +246,10 @@ if [ $opt_package -eq 1 ] ; then
   mv $C/{dotconf-{features,api}.txt,examples,$myname.gz} $docdir/$src
   touch -r $S $docdir/$src
   convert
-  tar cvpf $pkg.tar -C $P `cd $P ; find usr/$libdir ! -name pkgconfig | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/include | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  tar rvpf $pkg.tar -C $P install/doinst.sh
-  touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi

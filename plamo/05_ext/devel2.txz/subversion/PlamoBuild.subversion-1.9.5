@@ -7,7 +7,7 @@ verify=""
 arch=`uname -m`
 build=P0m1
 src=${pkgbase}-${vers}
-OPT_CONFIG='--disable-static'
+OPT_CONFIG='--disable-static --enable-bdb6'
 DOCS='INSTALL LICENSE README'
 patchfiles=''
 compress=txz
@@ -106,11 +106,9 @@ myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
 
 if [ $arch = "x86_64" ]; then
-    target="-m64"
     libdir="lib64"
     suffix="64"
 else
-    target="-m32"
     libdir="lib"
     suffix=""
 fi
@@ -183,8 +181,6 @@ if [ $opt_config -eq 1 ] ; then
       if [ -x configure ] ; then
          export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
          export LDFLAGS='-Wl,--as-needed' 
-         export CC="gcc -isystem /usr/include $target" 
-         export CXX="g++ -isystem /usr/include $target "
          ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
      fi
       if [ $? != 0 ]; then
@@ -198,7 +194,7 @@ if [ $opt_build -eq 1 ] ; then
     cd ${B[$i]}
     if [ -f Makefile ] ; then
       export LDFLAGS='-Wl,--as-needed'
-      make -j3
+      make
     fi
   done
 fi

@@ -3,15 +3,13 @@
 pkgbase=pidgin
 vers=2.10.11
 url="http://sourceforge.net/projects/pidgin/files/Pidgin/${vers}/pidgin-${vers}.tar.bz2"
-verify=$url.asc
+verify=
 arch=`uname -m`
 build=P1m1
 src=${pkgbase}-${vers}
 if [ $arch = "x86_64" ]; then
-    target="-m64"
     libdir="lib64"
 else
-    target="-m32"
     libdir="lib"
 fi
 OPT_CONFIG="--disable-nm --disable-vv --disable-farsight --enable-cyrus-sasl --disable-tk --disable-gnutls --enable-nss --with-nss-includes=/usr/include/nss --with-nspr-includes=/usr/include/nspr --with-nss-libs=/usr/${libdir} --with-nspr-libs=/usr/${libdir} --with-system-ssl-certs=/etc/ssl/certs"
@@ -177,10 +175,8 @@ myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
 
 if [ $arch = "x86_64" ]; then
-    target="-m64"
     libdir="lib64"
 else
-    target="-m32"
     libdir="lib"
 fi
 
@@ -268,7 +264,7 @@ if [ $opt_build -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
-      make -j3
+      make
     fi
   done
 fi

@@ -91,11 +91,9 @@ myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
 
 if [ $arch = "x86_64" ]; then
-    target="-m64"
     libdir="lib64"
     suffix="64"
 else
-    target="-m32"
     libdir="lib"
     suffix=""
 fi
@@ -122,9 +120,9 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
     esac
   done
 fi
@@ -150,8 +148,6 @@ if [ $opt_config -eq 1 ] ; then
       if [ -f $S/CMakeLists.txt ]; then
           export PKG_CONFIG_PATH=/opt/kde/${libdir}/pkgconfig:/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
           export LDFLAGS='-Wl,--as-needed' 
-          # export CC="gcc -isystem /usr/include $target" 
-          # export CXX="g++ -isystem /usr/include $target"
           cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/mariadb -DINSTALL_LIBDIR:STRING=${libdir} -DINSTALL_PLUGINDIR:STRING=${libdir}/plugin -DINSTALL_MANDIR:STRING=/usr/share/man ${OPT_CONFIG} $S
       fi
       if [ $? != 0 ]; then
@@ -165,7 +161,7 @@ if [ $opt_build -eq 1 ] ; then
     cd ${B[$i]}
     if [ -f Makefile ] ; then
       export LDFLAGS='-Wl,--as-needed'
-      make -j6
+      make
     fi
 
     # mkdir -p libmysqld/work
@@ -195,7 +191,7 @@ if [ $opt_package -eq 1 ] ; then
     done
     if [ -f Makefile ] ; then
       export LDFLAGS='-Wl,--as-needed'
-      make -j6 install DESTDIR=$P
+      make install DESTDIR=$P
     fi
     for archive in $P/opt/mariadb/${libdir}/*.a ; do
 	echo "strip $archive with -g "

@@ -156,10 +156,8 @@ pkg=$pkgbase-$vers-$arch-$build
 export PYTHON="python3"
 
 if [ $arch = "x86_64" ]; then
-    target="-m64"
     libdir="lib64"
 else
-    target="-m32"
     libdir="lib"
 fi
 

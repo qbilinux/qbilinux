@@ -97,11 +97,9 @@ myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
 
 if [ $arch = "x86_64" ]; then
-    target="-m64"
     libdir="lib64"
     suffix="64"
 else
-    target="-m32"
     libdir="lib"
     suffix=""
 fi
@@ -163,8 +161,6 @@ if [ $opt_config -eq 1 ] ; then
 	 #    export CC="clang"
 	 #    export CXX="clang++"
 	 #else
-             export CC="gcc -I /usr/include $target"
-             export CXX="g++ -I /usr/include $target"
 	 #fi
          ./configure $OPT_CONFIG
      fi
@@ -181,7 +177,7 @@ if [ $opt_build -eq 1 ] ; then
       export LDFLAGS='-Wl,--as-needed'
       export CFLAGS='-Os'
       export CXXLAGS='-Os'
-      make -j8
+      make
     fi
   done
 fi
