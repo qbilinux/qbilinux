@@ -1,0 +1,10 @@
+eudev & y & y & y & y
+&
+デバイスファイル動的作成ツール
+&
+eudev は /sysfs 経由でカーネルが認識しているデバイスに対応したデバイス
+ファイルを作成します
+&
+eudev
+&
+eudev dynamically make device files which acknoledged by kernel through /sysfs.
