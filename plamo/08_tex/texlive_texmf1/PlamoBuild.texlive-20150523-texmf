@@ -166,10 +166,8 @@ archive=${url##*/}
 extdir=${archive%%.*}
 
 if [ $arch = "x86_64" ]; then
-    target="-m64"
     libdir="lib64"
 else
-    target="-m32"
     libdir="lib"
 fi
 
@@ -192,7 +190,7 @@ if [ $opt_download -eq 1 ] ; then
   if [ ! -f ${archive} ] ; then wget $url ; fi
   if [ ! -f ${SRC_DIR}/${archive} ] ; then cp -p ${archive} ${SRC_DIR} ; fi
   if [ ! -d $extdir ]; then
-      tar xvpf ${archive}
+      tar xpf ${archive}
   fi
 fi
 if [ $opt_config -eq 1 ] ; then
