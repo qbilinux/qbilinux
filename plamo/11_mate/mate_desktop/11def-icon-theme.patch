@@ -1,0 +1,11 @@
+--- build32/schemas/org.mate.interface.gschema.xml.in.orig	2015-10-17 13:08:04.000000000 +0900
++++ build32/schemas/org.mate.interface.gschema.xml.in	2015-10-17 13:09:03.000000000 +0900
+@@ -61,7 +61,7 @@
+       <description>Length of the cursor blink cycle, in milliseconds.</description>
+     </key>
+     <key name="icon-theme" type="s">
+-      <default>'menta'</default>
++      <default>'matefaenza'</default>
+       <summary>Icon Theme</summary>
+       <description>Icon theme to use for the panel, caja etc.</description>
+     </key>
