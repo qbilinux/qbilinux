@@ -1,11 +1,11 @@
 #!/bin/sh
 
 ######################################################################
-url="http://repository.timesys.com/buildsources/a/at/at-3.1.13/at-3.1.13.tar.gz"
 pkgbase=at
 vers=3.1.13
+url="http://repository.timesys.com/buildsources/a/at/at-${vers}/at-${vers}.tar.gz"
 arch=`uname -m`
-build=P2
+build=P2m1
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="COPYING ChangeLog Copyright Problems README timespec"
@@ -158,7 +158,7 @@ convert() {
   for i in `seq 9` n ; do prune_symlink $mandir/man$i ; done
 }
 
-fscheck
+#fscheck
 W=`pwd`
 for i in `seq 0 $((${#src[@]} - 1))` ; do
   S[$i]=$W/${src[$i]} ; B[$i]=$W/build`test ${#src[@]} -eq 1 || echo $i`
@@ -281,6 +281,4 @@ if [ $opt_package -eq 1 ] ; then
   tar rvpf $pkg.tar -C $P install/doinst.sh
   touch -t `date '+%m%d0900'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
   mv $pkg.tar.xz $pkg.txz
-  read -p "Do you want to keep work files? [y/N] " ans
-  if [ "x$ans" != "xY" -a "x$ans" != "xy" ] ; then rm -rf $P $C i.[se]t ; fi
 fi
