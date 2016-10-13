@@ -2,11 +2,11 @@
 ##############################################################
 pkgbase=gptfdisk
 vers=1.0.0
-url='http://sourceforge.net/projects/gptfdisk/files/gptfdisk/1.0.0/gptfdisk-1.0.0.tar.gz'
+url="http://sourceforge.net/projects/gptfdisk/files/gptfdisk/${vers}/gptfdisk-${vers}.tar.gz"
 verify=
 commitid=
 arch=`uname -m`
-build=P1
+build=P1m1
 src=gptfdisk-${vers}
 OPT_CONFIG=''
 DOCS='COPYING NEWS README'

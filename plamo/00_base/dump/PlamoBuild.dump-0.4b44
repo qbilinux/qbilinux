@@ -1,13 +1,13 @@
 #!/bin/sh
 
 ######################################################################
+pkgbase=dump
+vers=0.4b44
 url="http://jaist.dl.sourceforge.net/sourceforge/dump/dump-0.4b44.tar.gz
     ftp://plamo.linet.gr.jp/pub/Plamo-src.new/plamo/00_base/dump/dump-0.4b41-destdir.patch.gz
     ftp://plamo.linet.gr.jp/pub/Plamo-src.new/plamo/00_base/dump/dump-0.4b44-com_err.patch.gz"
-pkgbase=dump
-vers=0.4b44
 arch=`uname -m`
-build=P3
+build=P3m1
 src=$pkgbase-$vers
 OPT_CONFIG="--disable-transselinux"
 DOCS="COPYRIGHT TODO KNOWNBUGS REPORTING-BUGS README THANKS CHANGES
@@ -161,7 +161,7 @@ convert() {
   for i in `seq 9` n ; do prune_symlink $mandir/man$i ; done
 }
 
-fscheck
+#fscheck
 W=`pwd`
 for i in `seq 0 $((${#src[@]} - 1))` ; do
   S[$i]=$W/${src[$i]} ; B[$i]=$W/build`test ${#src[@]} -eq 1 || echo $i`
@@ -281,6 +281,4 @@ if [ $opt_package -eq 1 ] ; then
   tar rvpf $pkg.tar -C $P install/doinst.sh
   touch -t `date '+%m%d0900'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
   mv $pkg.tar.xz $pkg.txz
-  read -p "Do you want to keep work files? [y/N] " ans
-  if [ "x$ans" != "xY" -a "x$ans" != "xy" ] ; then rm -rf $P $C i.[se]t ; fi
 fi

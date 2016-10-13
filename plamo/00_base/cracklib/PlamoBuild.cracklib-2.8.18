@@ -1,13 +1,13 @@
 #!/bin/sh
 
 ######################################################################
+pkgbase=cracklib
+vers=2.8.18
 url="http://downloads.sourceforge.net/cracklib/cracklib-2.8.18.tar.gz
     http://downloads.sourceforge.net/cracklib/cracklib-words-20080507.gz
     ftp://plamo.linet.gr.jp/pub/Plamo-src.new/plamo/00_base/cracklib/cracklib-2.8.15-heimdal-1.patch"
-pkgbase=cracklib
-vers=2.8.18
 arch=`uname -m`
-build=P4
+build=P4m1
 src=$pkgbase-$vers
 OPT_CONFIG="--with-default-dict=/lib/cracklib/pw_dict"
 DOCS="README-WORDS README-DAWG NEWS AUTHORS INSTALL ABOUT-NLS
@@ -161,7 +161,7 @@ convert() {
   for i in `seq 9` n ; do prune_symlink $mandir/man$i ; done
 }
 
-fscheck
+#fscheck
 W=`pwd`
 for i in `seq 0 $((${#src[@]} - 1))` ; do
   S[$i]=$W/${src[$i]} ; B[$i]=$W/build`test ${#src[@]} -eq 1 || echo $i`
@@ -298,6 +298,4 @@ if [ $opt_package -eq 1 ] ; then
   tar rvpf $pkg.tar -C $P install/doinst.sh
   touch -t `date '+%m%d0900'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
   mv $pkg.tar.xz $pkg.txz
-  read -p "Do you want to keep work files? [y/N] " ans
-  if [ "x$ans" != "xY" -a "x$ans" != "xy" ] ; then rm -rf $P $C i.[se]t ; fi
 fi
