@@ -2,16 +2,18 @@
 ##############################################################
 pkgbase=texinfo
 vers=6.1
-url='http://ftp.gnu.org/gnu/texinfo/texinfo-6.1.tar.xz'
-verify='http://ftp.gnu.org/gnu/texinfo/texinfo-6.1.tar.xz.sig'
+url="http://ftp.gnu.org/gnu/texinfo/texinfo-${vers}.tar.xz"
+verify="http://ftp.gnu.org/gnu/texinfo/texinfo-${vers}.tar.xz.sig"
 commitid=
 arch=`uname -m`
-build=P1
+build=P1m1
 src=texinfo-${vers}
 OPT_CONFIG=''
 DOCS='ABOUT-NLS AUTHORS COPYING ChangeLog ChangeLog.46 INSTALL INSTALL.generic NEWS README README-hacking TODO install-info'
 patchfiles=
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -113,7 +115,7 @@ else
 fi
 
 if [ $# -eq 0 ] ; then
-  opt_download=0 ; opt_config=1 ; opt_build=1 ; opt_package=1
+  opt_download=1 ; opt_config=1 ; opt_build=1 ; opt_package=1
 else
   opt_download=0 ; opt_config=0 ; opt_build=0 ; opt_package=0
   for i in $@ ; do
@@ -136,9 +138,10 @@ if [ $opt_download -eq 1 ] ; then
       fi
       ;;
     *)
-      if [ ! -f ${i##*/} ] ; then
-        wget $i
-      fi
+      if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+      if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
+      if [ ! -f ${i##*/} ] ; then wget $i ; fi
+      if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
       ;;
     esac
   done

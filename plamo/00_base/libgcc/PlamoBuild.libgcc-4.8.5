@@ -15,6 +15,8 @@ OPT_CONFIG="--disable-werror --disable-multilib --enable-install-libiberty
     --with-linker-hash-style=gnu --enable-clocale=gnu --disable-libstdcxx-pch"
 DOCS="COPYING ChangeLog ABOUT-NLS NEWS COPYING3.LIB ChangeLog.tree-ssa
     COPYING3 COPYING.RUNTIME README COPYING.LIB MAINTAINERS"
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ######################################################################
 
 fscheck() {
@@ -197,6 +199,7 @@ if [ $opt_download -eq 1 ] ; then
     elif [ ! -f ${i##*/} ] ; then
       wget $i
     fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $url ; do
     case ${i##*.} in

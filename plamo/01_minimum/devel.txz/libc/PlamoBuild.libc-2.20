@@ -1,7 +1,9 @@
 #!/bin/sh
 
 ######################################################################
-url="http://ftp.gnu.org/gnu/glibc/glibc-2.20.tar.xz
+pkgbase=libc
+vers=2.20
+url="http://ftp.gnu.org/gnu/glibc/glibc-${vers}.tar.xz
     http://www.linuxfromscratch.org/patches/downloads/glibc/glibc-2.19-fhs-1.patch
     http://ftp.su.se/pub/mirrors/lunar-linux.org/lunar/patches/glibc-2.20-do_ftell_wide-memleak.patch
     http://ftp.su.se/pub/mirrors/lunar-linux.org/lunar/patches/glibc-2.20-getifaddrs_internal-segfault.patch
@@ -11,14 +13,14 @@ url="http://ftp.gnu.org/gnu/glibc/glibc-2.20.tar.xz
     ftp://plamo.linet.gr.jp/pub/Plamo-src.new/plamo/00_base/glibc/CVE-2015-8776.patch
     ftp://plamo.linet.gr.jp/pub/Plamo-src.new/plamo/00_base/glibc/CVE-2015-8778.patch
     ftp://plamo.linet.gr.jp/pub/Plamo-src.new/plamo/00_base/glibc/CVE-2015-8779.patch"
-pkgbase=libc
-vers=2.20
 arch=`uname -m`
-build=P4
+build=P4m1
 src=glibc-$vers
 OPT_CONFIG="--enable-kernel=2.6.32 --enable-obsolete-rpc"
 DOCS="BUGS CONFORMANCE COPYING* ChangeLog* INSTALL LICENSES NEWS
     PROJECTS README"
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ######################################################################
 
 fscheck() {
@@ -168,7 +170,7 @@ convert() {
   for i in `seq 9` n ; do prune_symlink $mandir/man$i ; done
 }
 
-fscheck
+#fscheck
 W=`pwd`
 for i in `seq 0 $((${#src[@]} - 1))` ; do
   S[$i]=$W/${src[$i]} ; B[$i]=$W/build`test ${#src[@]} -eq 1 || echo $i`
@@ -196,6 +198,8 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then
       wget $i ; j=${i%.*}
       for sig in asc sig{,n} {sha{256,1},md5}{,sum} ; do
@@ -218,6 +222,7 @@ if [ $opt_download -eq 1 ] ; then
         if [ $? -ne 0 ] ; then echo "archive verify failed" ; exit ; fi
       fi
     fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $url ; do
     case ${i##*.} in
@@ -335,6 +340,4 @@ if [ $opt_package -eq 1 ] ; then
   tar rvpf $pkg.tar -C $P install/doinst.sh
   touch -t `date '+%m%d0900'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
   mv $pkg.tar.xz $pkg.txz
-  read -p "Do you want to keep work files? [y/N] " ans
-  if [ "x$ans" != "xY" -a "x$ans" != "xy" ] ; then rm -rf $P $C i.[se]t ; fi
 fi

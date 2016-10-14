@@ -1,16 +1,18 @@
 #!/bin/sh
 
 ######################################################################
-url="https://github.com/plamolinux/get_pkginfo.git
-    ftp://plamo.linet.gr.jp/pub/Plamo-src.new/plamo/01_minimum/get_pkginfo/gitlog2changelog.py"
 pkgbase=get_pkginfo
 vers=git_20160222
+url="https://github.com/plamolinux/get_pkginfo.git
+    ftp://plamo.linet.gr.jp/pub/Plamo-src.new/plamo/01_minimum/get_pkginfo/gitlog2changelog.py"
 arch=noarch
-build=P1
+build=P1m1
 src=$pkgbase
 patchfiles=""
 OPT_CONFIG=""
 DOCS="ChangeLog"
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ######################################################################
 
 fscheck() {
@@ -160,7 +162,7 @@ convert() {
   for i in `seq 9` n ; do prune_symlink $mandir/man$i ; done
 }
 
-fscheck
+#fscheck
 W=`pwd`
 for i in `seq 0 $((${#src[@]} - 1))` ; do
   S[$i]=$W/${src[$i]} ; B[$i]=$W/build`test ${#src[@]} -eq 1 || echo $i`
@@ -215,6 +217,7 @@ if [ $opt_download -eq 1 ] ; then
       fi
       ;;
     esac
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   if [ ! -x gitlog2changelog.py ] ; then
     chmod 755 gitlog2changelog.py
@@ -324,6 +327,4 @@ if [ $opt_package -eq 1 ] ; then
   tar rvpf $pkg.tar -C $P usr/share/doc/$src
   touch -t `date '+%m%d0900'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
   mv $pkg.tar.xz $pkg.txz
-  read -p "Do you want to keep work files? [y/N] " ans
-  if [ "x$ans" != "xY" -a "x$ans" != "xy" ] ; then rm -rf $P $C i.[se]t ; fi
 fi

@@ -12,6 +12,8 @@ src=$pkgbase-$vers
 patchfiles=""
 OPT_CONFIG=""
 DOCS="VERSION TODO THANKS README NEWS INSTALL ChangeLog COPYING AUTHORS"
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ######################################################################
 
 fscheck() {
@@ -213,6 +215,7 @@ if [ $opt_download -eq 1 ] ; then
         if [ $? -ne 0 ] ; then echo "archive verify failed" ; exit ; fi
       fi
     fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $url ; do
     case ${i##*.} in
