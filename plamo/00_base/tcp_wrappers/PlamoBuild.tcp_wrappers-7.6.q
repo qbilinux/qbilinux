@@ -10,6 +10,8 @@ build=P5m1
 src=tcp_wrappers_7.6
 OPT_CONFIG=""
 DOCS="README BLURB DISCLAIMER CHANGES README.IRIX README.NIS"
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ######################################################################
 
 fscheck() {
@@ -186,6 +188,8 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then
       wget $i ; j=${i%.*}
       for sig in asc sig{,n} {sha{256,1},md5}{,sum} ; do
@@ -208,6 +212,7 @@ if [ $opt_download -eq 1 ] ; then
         if [ $? -ne 0 ] ; then echo "archive verify failed" ; exit ; fi
       fi
     fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $url ; do
     case ${i##*.} in

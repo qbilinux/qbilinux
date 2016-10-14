@@ -11,6 +11,8 @@ src=$pkgbase-$vers
 OPT_CONFIG="--disable-perl-regexp"
 DOCS="INSTALL NEWS README AUTHORS ABOUT-NLS COPYING THANKS TODO
     ChangeLog-2009 README-alpha README-release ChangeLog"
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ######################################################################
 
 fscheck() {
@@ -187,7 +189,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $url ; do
     case ${i##*.} in

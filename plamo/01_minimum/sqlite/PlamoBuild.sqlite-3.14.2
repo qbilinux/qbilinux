@@ -4,7 +4,7 @@ pkgbase=sqlite
 vers=3.14.2
 url="http://sqlite.org/2016/sqlite-autoconf-3140200.tar.gz"
 arch=`uname -m`
-build=P1
+build=P1m1
 src=sqlite-autoconf-3140200
 # SQLITE_SECURE_DELETE を定義する必要あり (firefox/thunderbird)．
 # --enable-threadsafe で有効になるのかな?
@@ -12,6 +12,8 @@ OPT_CONFIG='--disable-static --enable-threadsafe --enable-readline --enable-dyna
 DOCS='INSTALL README'
 patchfiles=''
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -163,7 +165,7 @@ else
 fi
 
 if [ $# -eq 0 ] ; then
-  opt_download=0 ; opt_config=1 ; opt_build=1 ; opt_package=1
+  opt_download=1 ; opt_config=1 ; opt_build=1 ; opt_package=1
 else
   opt_download=0 ; opt_config=0 ; opt_build=0 ; opt_package=0
   for i in $@ ; do
@@ -177,7 +179,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $url ; do
     case ${i##*.} in

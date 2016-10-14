@@ -5,12 +5,14 @@ vers=4.3.1
 url="http://ftp.jaist.ac.jp/pub/GNU/screen/screen-${vers}.tar.gz"
 verify=$url.sig
 arch=`uname -m`
-build=P2
+build=P2m1
 src=${pkgbase}-${vers}
 OPT_CONFIG=''
 DOCS='COPYING ChangeLog INSTALL NEWS NEWS.3.5 NEWS.3.6 NEWS.3.7 NEWS.3.9 README TODO'
 patchfiles='CVE-2015-6806.patch'
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -174,7 +176,7 @@ else
 fi
 
 if [ $# -eq 0 ] ; then
-  opt_download=0 ; opt_config=1 ; opt_build=1 ; opt_package=1
+  opt_download=1 ; opt_config=1 ; opt_build=1 ; opt_package=1
 else
   opt_download=0 ; opt_config=0 ; opt_build=0 ; opt_package=0
   for i in $@ ; do
@@ -188,7 +190,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $verify ; do
     if [ ! -f ${i##*/} ] ; then

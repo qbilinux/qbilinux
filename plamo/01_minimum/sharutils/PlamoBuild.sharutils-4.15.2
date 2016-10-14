@@ -2,16 +2,18 @@
 ##############################################################
 pkgbase=sharutils
 vers=4.15.2
-url='ftp://ftp.gnu.org/gnu/sharutils/sharutils-4.15.2.tar.gz'
+url="ftp://ftp.gnu.org/gnu/sharutils/sharutils-${vers}.tar.gz"
 verify=
 commitid=
 arch=`uname -m`
-build=P1
+build=P1m1
 src=sharutils-${vers}
 OPT_CONFIG=''
 DOCS='ABOUT-NLS AUTHORS COPYING ChangeLog INSTALL NEWS README THANKS TODO'
 patchfiles=''
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -113,7 +115,7 @@ else
 fi
 
 if [ $# -eq 0 ] ; then
-  opt_download=0 ; opt_config=1 ; opt_build=1 ; opt_package=1
+  opt_download=1 ; opt_config=1 ; opt_build=1 ; opt_package=1
 else
   opt_download=0 ; opt_config=0 ; opt_build=0 ; opt_package=0
   for i in $@ ; do
@@ -136,9 +138,10 @@ if [ $opt_download -eq 1 ] ; then
       fi
       ;;
     *)
-      if [ ! -f ${i##*/} ] ; then
-        wget $i
-      fi
+      if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+      if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
+      if [ ! -f ${i##*/} ] ; then wget $i ; fi
+      if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
       ;;
     esac
   done

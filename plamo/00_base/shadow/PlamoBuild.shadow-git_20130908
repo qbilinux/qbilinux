@@ -11,6 +11,8 @@ src=$pkgbase
 OPT_CONFIG="--sysconfdir=/etc --enable-man --without-selinux
     --with-libcrack"
 DOCS="COPYING ChangeLog NEWS README TODO"
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ######################################################################
 
 fscheck() {
@@ -190,7 +192,12 @@ if [ $opt_download -eq 1 ] ; then
     case ${i##*.} in
     git) if [ ! -d `basename ${i##*/} .git` ] ; then git clone $i ; else
         ( cd `basename ${i##*/} .git` ; git pull origin master ) ; fi ;;
-    *) if [ ! -f ${i##*/} ] ; then wget $i ; fi ;;
+    *)
+	if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+	if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
+	if [ ! -f ${i##*/} ] ; then wget $i ; fi
+	if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
+	;;
     esac
   done
   for i in $url ; do

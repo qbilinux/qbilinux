@@ -1,16 +1,18 @@
 #!/bin/sh
 
 ######################################################################
-url="https://www.stunnel.org/downloads/stunnel-5.36.tar.gz"
 pkgbase=stunnel
 vers=5.36
+url="https://www.stunnel.org/downloads/stunnel-${vers}.tar.gz"
 arch=`uname -m`
-build=P1
+build=P1m1
 src=$pkgbase-$vers
 patchfiles=""
 OPT_CONFIG=""
 DOCS="README ChangeLog COPYING CREDITS INSTALL.FIPS COPYRIGHT.GPL
     AUTHORS TODO INSTALL.WCE NEWS INSTALL.W32 INSTALL BUGS PORTS"
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ######################################################################
 
 fscheck() {
@@ -160,7 +162,7 @@ convert() {
   for i in `seq 9` n ; do prune_symlink $mandir/man$i ; done
 }
 
-fscheck
+#fscheck
 W=`pwd`
 for i in `seq 0 $((${#src[@]} - 1))` ; do
   S[$i]=$W/${src[$i]} ; B[$i]=$W/build`test ${#src[@]} -eq 1 || echo $i`
@@ -187,6 +189,8 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then
       wget $i ; j=${i%.*}
       for sig in asc sig{,n} {sha{256,1},md5}{,sum} ; do
@@ -209,6 +213,7 @@ if [ $opt_download -eq 1 ] ; then
         if [ $? -ne 0 ] ; then echo "archive verify failed" ; exit ; fi
       fi
     fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $url ; do
     case ${i##*.} in
@@ -315,6 +320,4 @@ if [ $opt_package -eq 1 ] ; then
   tar rvpf $pkg.tar -C $P usr/share/doc/$src
   touch -t `date '+%m%d0900'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
   mv $pkg.tar.xz $pkg.txz
-  read -p "Do you want to keep work files? [y/N] " ans
-  if [ "x$ans" != "xY" -a "x$ans" != "xy" ] ; then rm -rf $P $C i.[se]t ; fi
 fi
