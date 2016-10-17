@@ -205,6 +205,9 @@ if [ $opt_download -eq 1 ] ; then
   done
 fi
 if [ $opt_config -eq 1 ] ; then
+  if [ `id -u` -eq 0 ] ; then
+    export FORCE_UNSAFE_CONFIGURE=1
+  fi
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     if [ -d ${B[$i]} ] ; then rm -rf ${B[$i]} ; fi ; cp -a ${S[$i]} ${B[$i]}
   done
