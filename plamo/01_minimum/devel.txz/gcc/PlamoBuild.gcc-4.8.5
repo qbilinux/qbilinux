@@ -197,7 +197,9 @@ if [ $opt_download -eq 1 ] ; then
     if [ ${i##*/} == mbox ] ; then
       [ ! -f $alt ] && wget $i -O $alt
     elif [ ! -f ${i##*/} ] ; then
-      wget $i
+      if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+      if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
+      if [ ! -f ${i##*/} ] ; then wget $i ; fi
     fi
     if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
