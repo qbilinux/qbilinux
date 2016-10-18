@@ -9,8 +9,8 @@ url="http://jaist.dl.sourceforge.jp/canna/9565/Canna37p3.tar.bz2
     http://cannadic.oucrc.org/cannadic-0.95c.tar.gz"
 pkgbase=Canna
 vers=37p3
-arch=x86_64
-build=P1
+arch=`uname -m`
+build=P1m1
 src[0]=Canna37p3
 src[1]=libspt-1.1
 src[2]=cannadic-0.95c
@@ -22,6 +22,8 @@ DOCS[0]="`echo canuum/{COPYRIGHT,README.{copyright,jp}}`
     README README.jp RKCCONF.jp WHATIS WHATIS.jp"
 DOCS[1]="CHANGES COPYRIGHT INSTALL"
 DOCS[2]="README.ja COPYING"
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ######################################################################
 
 fscheck() {
@@ -171,7 +173,7 @@ convert() {
   for i in `seq 9` n ; do prune_symlink $mandir/man$i ; done
 }
 
-fscheck
+#fscheck
 W=`pwd`
 for i in `seq 0 $((${#src[@]} - 1))` ; do
   S[$i]=$W/${src[$i]} ; B[$i]=$W/build`test ${#src[@]} -eq 1 || echo $i`
@@ -197,7 +199,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $url ; do
     case ${i##*.} in
@@ -409,6 +414,4 @@ if [ $opt_package -eq 1 ] ; then
   tar rvpf $pkg.tar -C $P install/doinst.sh
   touch -t `date '+%m%d0900'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
   mv $pkg.tar.xz $pkg.txz
-  read -p "Do you want to keep work files? [y/N] " ans
-  if [ "x$ans" != "xY" -a "x$ans" != "xy" ] ; then rm -rf $P $C i.[se]t ; fi
 fi
