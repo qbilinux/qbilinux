@@ -3,14 +3,15 @@
 url='https://alioth.debian.org/frs/download.php/file/3958/sane-backends-1.0.24.tar.gz'
 pkgbase=sane_backends
 vers=1.0.24
-arch=x86_64
-# arch=i686
-build=P1
+arch=`uname -m`
+build=P1m1
 src=sane-backends-1.0.24
 OPT_CONFIG='--disable-static --enable-avahi'
 DOCS='AUTHORS COPYING ChangeLog* INSTALL LICENSE NEWS PROBLEMS PROJECTS README* sane-backends.lsm'
 patchfiles=''
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -114,7 +115,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
-    if [ ! -f ${i##*/} ] ; then wget --no-check-certificate $i ; fi
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
+    if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $url ; do
     case ${i##*.} in

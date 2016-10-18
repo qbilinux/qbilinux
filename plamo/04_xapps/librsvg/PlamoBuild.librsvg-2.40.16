@@ -6,12 +6,14 @@ url="http://ftp.gnome.org/pub/GNOME/sources/librsvg/${vers:0:4}/librsvg-${vers}.
 verify="http://ftp.gnome.org/pub/GNOME/sources/librsvg/${vers:0:4}/librsvg-${vers}.sha256sum"
 commitid=
 arch=`uname -m`
-build=P1
+build=P1m1
 src=librsvg-${vers}
 OPT_CONFIG='--disable-static --disable-vala'
 DOCS='AUTHORS COPYING COPYING.LIB ChangeLog INSTALL NEWS README TODO'
 patchfiles=''
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -138,9 +140,10 @@ if [ $opt_download -eq 1 ] ; then
       fi
       ;;
     *)
-      if [ ! -f ${i##*/} ] ; then
-        wget $i
-      fi
+      if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+      if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
+      if [ ! -f ${i##*/} ] ; then wget $i ; fi
+      if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
       ;;
     esac
   done

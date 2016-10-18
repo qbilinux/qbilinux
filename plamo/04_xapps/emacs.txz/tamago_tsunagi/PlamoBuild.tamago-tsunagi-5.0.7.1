@@ -4,13 +4,14 @@ url='http://iij.dl.sourceforge.jp/tamago-tsunagi/62701/tamago-tsunagi-5.0.7.1.ta
 pkgbase=tamago_tsunagi
 vers=5.0.7.1
 arch=`uname -a`
-# arch=i586
-build=P1
+build=P1m1
 src=tamago-tsunagi-5.0.7.1
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog ChangeLog.1997-1998 ChangeLog.2000-2001 ChangeLog.2002-2004 INSTALL NEWS PROBLEMS README.ja.UTF-8.txt TODO'
 patchfiles=''
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -114,7 +115,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $url ; do
     case ${i##*.} in

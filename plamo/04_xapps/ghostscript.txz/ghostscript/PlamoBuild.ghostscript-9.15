@@ -3,14 +3,15 @@
 url="http://ghostscript.com/releases/ghostscript-9.15.tar.bz2"
 pkgbase=ghostscript
 vers=9.15
-arch=x86_64
-#arch=i686
-build=P2
+arch=`uname -m`
+build=P2m1
 src=ghostscript-9.15
 OPT_CONFIG="--x-includes=/usr/include/X11 --x-libraries=/usr/lib64 --disable-compile-inits --with-system-libtiff --with-ijs --with-jbig2dec --with-jasper --with-x --with-drivers=ALL --enable-contrib"
 DOCS='LICENSE'
 # patchfiles='ghostscript-Fontmap.local.patch ghostscript-multilib.patch ghostscript-noopt.patch ghostscript-pksmraw.patch ghostscript-runlibfileifexists.patch ghostscript-scripts.patch'
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -177,7 +178,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $url ; do
     case ${i##*.} in

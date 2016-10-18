@@ -4,12 +4,14 @@ url='http://download.gimp.org/pub/gimp/v2.8/gimp-2.8.14.tar.bz2'
 pkgbase=gimp
 vers=2.8.14
 arch=`uname -m`
-build=P2
+build=P2m1
 src=gimp-2.8.14
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog ChangeLog.pre-1-0 ChangeLog.pre-1-2 ChangeLog.pre-2-0 ChangeLog.pre-2-2 ChangeLog.pre-2-4 ChangeLog.pre-2-6 HACKING INSTALL LICENSE NEWS NEWS.pre-2-0 NEWS.pre-2-2 NEWS.pre-2-4 NEWS.pre-2-6 README README.i18n authors.dtd authors.xml authors.xsl'
 patchfiles=''
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -114,7 +116,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $url ; do
     case ${i##*.} in

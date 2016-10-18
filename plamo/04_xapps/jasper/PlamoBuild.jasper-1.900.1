@@ -4,13 +4,15 @@ url='http://www.ece.uvic.ca/~mdadams/jasper/software/jasper-1.900.1.zip'
 pkgbase=jasper
 vers=1.900.1
 arch=`uname -m`
-build=P4
+build=P4m1
 src=jasper-1.900.1
 OPT_CONFIG='--enable-shared --disable-static'
 DOCS='ChangeLog INSTALL LICENSE NEWS README'
 # http://www.linuxfromscratch.org/patches/blfs/svn/jasper-1.900.1-security_fixes-1.patch
 patchfiles='01-misc-fixes.patch 02-fix-filename-buffer-overflow.patch 03-CVE-2011-4516-and-CVE-2011-4517.patch 04-CVE-2014-9029.patch 05-CVE-2014-8137.patch 06-CVE-2014-8138.patch 07-CVE-2014-8157.patch 08-CVE-2014-8158.patch'
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -178,7 +180,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $url ; do
     case ${i##*.} in

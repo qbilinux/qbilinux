@@ -3,13 +3,14 @@
 url='http://www.ir.isas.jaxa.jp/~cyamauch/eggx_procall/eggx-0.93r4.tar.gz'
 pkgbase=eggx
 vers=0.93r4
-arch=x86_64
-# arch=i586
-build=P1
+arch=`uname -m`
+build=P1m1
 src=eggx-0.93r4
 OPT_CONFIG=''
 DOCS='00README.1st 00README.1st.ja.EUC ChangeLog.ja INSTALL INSTALL.ja LICENSE README README.ja TECHNICAL.ja TODO.ja eggx_procall.ja.pdf eggx_procall.pdf examples.euc/*  examples_academic/* examples_academic/simulations-20110310/* examples_game/* examples_tutorial/*'
 patchfiles='Makefile-plamo.patch'
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -170,7 +171,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $url ; do
     case ${i##*.} in
