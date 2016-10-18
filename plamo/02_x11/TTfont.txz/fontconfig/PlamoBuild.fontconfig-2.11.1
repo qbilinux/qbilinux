@@ -1,6 +1,6 @@
 #!/bin/sh
 ##############################################################
-url='http://www.freedesktop.org/software/fontconfig/release/fontconfig-2.11.1.tar.bz2'
+url='https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.11.1.tar.bz2'
 pkgbase=fontconfig
 vers=2.11.1
 arch=`uname -m`
@@ -74,13 +74,12 @@ compress_all() {
 }  
 
 W=`pwd`
-WD=/home/kojima/Build
 for i in `seq 0 $((${#src[@]} - 1))` ; do
   S[$i]=$W/${src[$i]} 
   if [ $arch = "x86_64" ]; then
-      B[$i]=$WD/build`test ${#src[@]} -eq 1 || echo $i`
+      B[$i]=$W/build`test ${#src[@]} -eq 1 || echo $i`
   else
-      B[$i]=$WD/build32`test ${#src[@]} -eq 1 || echo $i`
+      B[$i]=$W/build32`test ${#src[@]} -eq 1 || echo $i`
   fi      
 done
 P=$W/work ; C=$W/pivot
