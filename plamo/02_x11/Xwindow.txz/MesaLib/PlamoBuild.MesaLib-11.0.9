@@ -4,7 +4,7 @@ url='ftp://ftp.freedesktop.org/pub/mesa/11.0.9/mesa-11.0.9.tar.xz'
 pkgbase=MesaLib
 vers=11.0.9
 arch=`uname -m`
-build=P1
+build=P1m1
 src=mesa-11.0.9
 OPT_CONFIG='--enable-texture-float 
          --enable-llvm-shared-libs
@@ -20,6 +20,8 @@ DOCS='docs/*'
 patchfiles='MesaLib-10.1.0-svga_texture-1.patch MesaLib-9.1.6-add_xdemos-1.patch Mesa-11.0.5-x86_tls_entry.patch Mesa-11.0.5-nouveau_unorderd.patch'
 
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -124,7 +126,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $url ; do
     case ${i##*.} in

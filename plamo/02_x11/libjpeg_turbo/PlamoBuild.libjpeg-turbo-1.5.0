@@ -4,12 +4,14 @@ pkgbase=libjpeg_turbo
 vers=1.5.0
 url="http://downloads.sourceforge.net/libjpeg-turbo/libjpeg-turbo-${vers}.tar.gz"
 arch=`uname -m`
-build=P1
+build=P1m1
 src=libjpeg-turbo-${vers}
 OPT_CONFIG='--disable-static --with-jpeg8'
 DOCS='BUILDING.txt ChangeLog.txt README README-turbo.txt coderules.txt jconfig.txt libjpeg.txt release structure.txt usage.txt wizard.txt'
 patchfiles=
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -113,6 +115,8 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then
       wget $i
         for sig in asc sig{,n} {md5,sha{1,256}}{,sum} ; do
@@ -127,6 +131,7 @@ if [ $opt_download -eq 1 ] ; then
           if [ $? -ne 0 ] ; then echo "archive verify failed" ; exit ; fi
         fi
     fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $url ; do
     case ${i##*.} in
