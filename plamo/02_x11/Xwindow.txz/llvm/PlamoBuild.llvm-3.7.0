@@ -6,7 +6,7 @@ url='http://llvm.org/releases/3.7.0/llvm-3.7.0.src.tar.xz
 pkgbase=llvm
 vers=3.7.0
 arch=`uname -m`
-build=P2
+build=P2m1
 src=llvm-3.7.0
 # these configs translated into cmake style
 # OPT_CONFIG='--enable-libffi  
@@ -20,6 +20,8 @@ src=llvm-3.7.0
 DOCS='CODE_OWNERS.TXT CREDITS.TXT LICENSE.TXT LLVMBuild.txt README.txt'
 patchfiles=''
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -124,7 +126,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   tar xvf llvm-${vers}.src.tar.xz
 fi

@@ -4,12 +4,14 @@ pkgbase=expat
 vers=2.1.1
 url="http://downloads.sourceforge.net/project/expat/expat/${vers}/expat-${vers}.tar.bz2"
 arch=`uname -m`
-build=P2
+build=P2m1
 src=expat-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='COPYING README'
 patchfiles='CVE-2015-1283-refix.patch CVE-2016-0718-v2-2-1.patch cve-2012-6702-plus-cve-2016-5300-v1.patch'
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -175,7 +177,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $url ; do
     case ${i##*.} in

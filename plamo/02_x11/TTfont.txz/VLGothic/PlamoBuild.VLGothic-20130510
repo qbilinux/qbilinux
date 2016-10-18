@@ -4,14 +4,14 @@ url='http://jaist.dl.sourceforge.jp/vlgothic/58671/VLGothic-20130510.tar.xz'
 pkgbase=VLGothic
 vers=20130510
 arch=noarch
-# arch=x86_64
-# arch=i586
-build=P1
+build=P1m1
 src=VLGothic
 OPT_CONFIG=''
 DOCS='Changelog LICENSE LICENSE.en LICENSE_E.mplus LICENSE_J.mplus README README.sazanami README_E.mplus README_J.mplus  LICENSE_E.mplus  README.sazanami'
 patchfiles=''
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -115,7 +115,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   if [ -d $src ]; then rm -rf $src ; fi
   mkdir -p $src

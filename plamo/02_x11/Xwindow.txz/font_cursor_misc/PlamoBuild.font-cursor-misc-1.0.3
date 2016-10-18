@@ -4,13 +4,14 @@ url='ftp://ftp.iij.ad.jp/pub/X11/x.org/pub/X11R7.6/src/font/font-cursor-misc-1.0
 pkgbase=font_cursor_misc
 vers=1.0.3
 arch=noarch
-# arch=i586
-build=P1
+build=P1m1
 src=font-cursor-misc-1.0.3
 OPT_CONFIG='--disable-static'
 DOCS='COPYING ChangeLog INSTALL README'
 patchfiles=''
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -176,7 +177,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $url ; do
     case ${i##*.} in

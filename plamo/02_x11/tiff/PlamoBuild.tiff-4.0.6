@@ -4,7 +4,7 @@ pkgbase=tiff
 vers=4.0.6
 url="ftp://ftp.remotesensing.org/pub/libtiff/tiff-${vers}.tar.gz"
 arch=`uname -m`
-build=P2
+build=P2m1
 src=tiff-${vers}
 OPT_CONFIG='--disable-static --with-x  --enable-cxx'
 DOCS='ChangeLog HOWTO-RELEASE README README.vms RELEASE-DATE TODO'
@@ -13,6 +13,8 @@ patchfiles=" \
 02-fix_potential_out-of-bound_writes_in_decode_functions.patch \
 03-fix_potential_out-of-bound_write_in_NeXTDecode.patch"
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -116,7 +118,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $url ; do
     case ${i##*.} in

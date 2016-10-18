@@ -4,14 +4,14 @@ url='http://jaist.dl.sourceforge.jp/mix-mplus-ipa/57240/migu-1p-20121030.zip htt
 pkgbase=fonts_migu
 vers=20121030
 arch=noarch
-# arch=x86_64
-# arch=i586
-build=P1
+build=P1m1
 src=fonts_migu
 OPT_CONFIG=''
 DOCS='migu-README.txt ipag00303/*'
 patchfiles=''
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -115,7 +115,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   if [ -d $src ]; then rm -rf $src ; fi
   mkdir -p $src
