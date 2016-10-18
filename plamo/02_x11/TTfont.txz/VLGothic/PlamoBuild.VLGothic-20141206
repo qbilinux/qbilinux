@@ -1,10 +1,10 @@
 #!/bin/sh
 ##############################################################
-url='http://jaist.dl.sourceforge.jp/vlgothic/58671/VLGothic-20130510.tar.xz'
+url='https://sourceforge.jp/projects/vlgothic/downloads/62375/VLGothic-20141206.tar.xz'
 pkgbase=VLGothic
-vers=20130510
+vers=20141206
 arch=noarch
-build=P1m1
+build=P0m1
 src=VLGothic
 OPT_CONFIG=''
 DOCS='Changelog LICENSE LICENSE.en LICENSE_E.mplus LICENSE_J.mplus README README.sazanami README_E.mplus README_J.mplus  LICENSE_E.mplus  README.sazanami'
@@ -123,7 +123,7 @@ if [ $opt_download -eq 1 ] ; then
   if [ -d $src ]; then rm -rf $src ; fi
   mkdir -p $src
   for i in $url ; do
-    unzip ${i##*/} -d $src
+    tar xvf ${i##*/}
   done
 fi
 
