@@ -3,14 +3,15 @@
 url='http://www.riverbankcomputing.co.uk/static/Downloads/QScintilla2/QScintilla-gpl-2.5.1.tar.gz'
 pkgbase=QScintilla_gpl
 vers=2.5.1
-arch=x86_64
-# arch=i586
-build=P1
+arch=`uname -m`
+build=P1m1
 src=QScintilla-gpl-2.5.1
 OPT_CONFIG=''
 DOCS='GPL_EXCEPTION.TXT GPL_EXCEPTION_ADDENDUM.TXT LICENSE.GPL2 LICENSE.GPL3 NEWS OPENSOURCE-NOTICE.TXT README'
 patchfiles=''
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -177,7 +178,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $url ; do
     case ${i##*.} in

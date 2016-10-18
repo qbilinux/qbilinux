@@ -4,14 +4,15 @@ url='http://jaist.dl.sourceforge.net/project/docbook2x/docbook2x/0.8.8/docbook2X
 verify=
 pkgbase=docbook2X
 vers=0.8.8
-arch=x86_64
-# arch=i586
-build=P1
+arch=`uname -m`
+build=P1m1
 src=docbook2X-0.8.8
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README THANKS TODO'
 patchfiles='datadir.patch'
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -129,9 +130,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
-    if [ ! -f ${i##*/} ] ; then
-      wget $i
-    fi
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
+    if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $verify ; do
     if [ ! -f ${i##*/} ] ; then

@@ -4,11 +4,13 @@
 url="http://files.luaforge.net/releases/alt-getopt/alt-getopt/alt-getopt-0.7.0/lua-alt-getopt-0.7.0.tar.gz"
 pkgbase=lua_alt_getopt
 vers=0.7.0
-arch=`uname -m | sed 's/i.86/i586/'`
-build=P1
+arch=`uname -m`
+build=P1m1
 src=lua-alt-getopt-$vers
 OPT_CONFIG=""
 DOCS="NEWS README ChangeLog"
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ######################################################################
 
 fscheck() {
@@ -158,7 +160,7 @@ convert() {
   for i in `seq 9` n ; do prune_symlink $mandir/man$i ; done
 }
 
-fscheck
+#fscheck
 W=`pwd`
 for i in `seq 0 $((${#src[@]} - 1))` ; do
   S[$i]=$W/${src[$i]} ; B[$i]=$W/build`test ${#src[@]} -eq 1 || echo $i`
@@ -185,7 +187,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $url ; do
     case ${i##*.} in
@@ -270,6 +275,4 @@ if [ $opt_package -eq 1 ] ; then
   tar rvpf $pkg.tar -C $P usr/share/doc/$src
   touch -t `date '+%m%d0900'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
   mv $pkg.tar.xz $pkg.txz
-  read -p "Do you want to keep work files? [y/N] " ans
-  if [ "x$ans" != "xY" -a "x$ans" != "xy" ] ; then rm -rf $P $C i.[se]t ; fi
 fi

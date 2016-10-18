@@ -4,12 +4,14 @@ pkgbase=libxslt
 vers=1.1.29
 url="ftp://xmlsoft.org/XSLT/libxslt-${vers}.tar.gz"
 arch=`uname -m`
-build=P1
+build=P1m1
 src=libxslt-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README TODO'
 patchfiles=''
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -175,6 +177,8 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then
       wget $i
       for sig in asc sig{,n} {md5,sha{1,256}}{,sum} ; do
@@ -189,6 +193,7 @@ if [ $opt_download -eq 1 ] ; then
         if [ $? -ne 0 ] ; then echo "archive verify failed" ; exit ; fi
       fi
     fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $url ; do
     case ${i##*.} in

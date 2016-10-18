@@ -4,12 +4,14 @@ url='http://www.docbook.org/xml/4.1.2/docbkx412.zip'
 pkgbase=docbook_xml_4.1.2
 vers=4.1.2
 arch=noarch
-build=P4
+build=P4m1
 src=docbook-xml-4.1.2
 OPT_CONFIG=''
 DOCS=''
 patchfiles=''
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 # % mkdir docbook-xml-4.1.2
@@ -180,7 +182,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   mkdir $src
   unzip ${i##*/} -d $src

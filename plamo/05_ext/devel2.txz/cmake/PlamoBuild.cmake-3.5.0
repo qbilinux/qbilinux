@@ -4,12 +4,14 @@ pkgbase=cmake
 vers=3.5.0
 url="http://www.cmake.org/files/v${vers%.*}/cmake-${vers}.tar.gz"
 arch=`uname -m`
-build=P1
+build=P1m1
 src=cmake-${vers}
 OPT_CONFIG=''
 DOCS='CONTRIBUTING.rst Copyright.txt Licenses/LGPLv2.1.txt Licenses/README.rst README.rst'
 patchfiles=''
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -114,7 +116,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $url ; do
     case ${i##*.} in

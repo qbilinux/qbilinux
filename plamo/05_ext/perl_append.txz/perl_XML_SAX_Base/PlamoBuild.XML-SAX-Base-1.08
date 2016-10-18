@@ -4,15 +4,15 @@ url='http://search.cpan.org/CPAN/authors/id/G/GR/GRANTM/XML-SAX-Base-1.08.tar.gz
 verify=
 pkgbase=perl_XML_SAX_Base
 vers=1.08
-arch=x86_64
-# arch=i586
-# arch=noarch
-build=P1
+arch=`uname -m`
+build=P1m1
 src=XML-SAX-Base-1.08
 OPT_CONFIG=''
 DOCS='README'
 patchfiles=''
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -130,9 +130,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
-    if [ ! -f ${i##*/} ] ; then
-      wget $i
-    fi
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
+    if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $verify ; do
     if [ ! -f ${i##*/} ] ; then

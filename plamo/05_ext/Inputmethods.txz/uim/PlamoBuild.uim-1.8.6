@@ -3,9 +3,8 @@
 url='http://uim.googlecode.com/files/uim-1.8.6.tar.bz2'
 pkgbase=uim
 vers=1.8.6
-arch=x86_64
-# arch=i686
-build=P2
+arch=`uname -m`
+build=P2m1
 src=uim-1.8.6
 OPT_CONFIG='--disable-static --enable-kde4-applet --with-canna --with-wnn  --with-wnn-includes=/usr/include/wnn --with-sj3 --with-sqlite3 --with-x --with-expat=/usr --with-qt4 --with-qt4-immodule'
 if [ "$arch" = "x86_64" ]; then
@@ -16,6 +15,8 @@ fi
 DOCS='AUTHORS COPYING ChangeLog ChangeLog.old INSTALL NEWS README'
 patchfiles=''
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -119,7 +120,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $url ; do
     case ${i##*.} in

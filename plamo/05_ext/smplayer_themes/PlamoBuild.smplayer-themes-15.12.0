@@ -4,12 +4,14 @@ url='http://sourceforge.net/projects/smplayer/files/SMPlayer-themes/15.12.0/smpl
 pkgbase=smplayer_themes
 vers=15.12.0
 arch=noarch
-build=P1
+build=P1m1
 src=smplayer-themes-15.12.0
 OPT_CONFIG=''
 DOCS='COPYING_CC-BY-2.5.txt COPYING_CC-BY-SA-2.5.txt COPYING_CC-BY-SA-3.0.txt COPYING_GPL.txt COPYING_LGPL.txt Changelog README.txt'
 patchfiles=''
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -114,7 +116,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $url ; do
     case ${i##*.} in

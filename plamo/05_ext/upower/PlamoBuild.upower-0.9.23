@@ -4,12 +4,14 @@ url='http://upower.freedesktop.org/releases/upower-0.9.23.tar.xz'
 pkgbase=upower
 vers=0.9.23
 arch=`uname -m | sed -e 's/i.86/i586/'`
-build=P2
+build=P2m1
 src=${pkgbase}-${vers}
 OPT_CONFIG='--disable-static --enable-deprecated'
 DOCS='ABOUT-NLS AUTHORS COPYING ChangeLog HACKING INSTALL NEWS README'
 patchfiles=''
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -179,7 +181,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $url ; do
     case ${i##*.} in

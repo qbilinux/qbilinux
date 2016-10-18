@@ -1,9 +1,12 @@
 #!/bin/sh
 
 java_vers=1.8.0_73
-build=P1
+build=P1m1
 arch=`uname -m`
 fallbackfont="/usr/share/fonts/TrueType/VL-PGothic-Regular.ttf"
+
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 
 if [ "$arch" = "x86_64" ]; then
     jarch="amd64"

@@ -3,14 +3,15 @@
 url='http://downloads.sourceforge.net/inkscape/inkscape-0.48.5.tar.bz2'
 pkgbase=inkscape
 vers=0.48.5
-arch=x86_64
-# arch=i686
-build=P1
+arch=`uname -m`
+build=P1m1
 src=inkscape-0.48.5
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING COPYING.LIB ChangeLog INSTALL NEWS README README.ca.txt README.de.txt README.es.txt README.fr.txt README.it.txt README.osx.txt README.pt_BR.txt README.sk.txt README.sr.txt'
 patchfiles=''
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -115,7 +116,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $url ; do
     case ${i##*.} in

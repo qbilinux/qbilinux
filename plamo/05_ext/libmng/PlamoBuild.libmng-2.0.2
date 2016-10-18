@@ -3,14 +3,15 @@
 url='http://downloads.sourceforge.net/project/libmng/libmng-devel/2.0.2/libmng-2.0.2.tar.gz'
 pkgbase=libmng
 vers=2.0.2
-arch=x86_64
-# arch=i586
-build=P2
+arch=`uname -m`
+build=P2m1
 src=libmng-2.0.2
 OPT_CONFIG='--disable-static'
 DOCS='LICENSE README README.autoconf README.config README.contrib README.dll README.examples README.footprint README.packaging'
 patchfiles=''
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -114,7 +115,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $url ; do
     case ${i##*.} in
