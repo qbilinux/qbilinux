@@ -1,6 +1,6 @@
 #!/bin/sh
 ##############################################################
-url='ftp://ftp.ring.gr.jp/pub/X/opengroup/individual/lib/libXaw-1.0.13.tar.bz2'
+url='https://www.x.org/releases/individual/lib/libXaw-1.0.13.tar.bz2'
 pkgbase=libXaw
 vers=1.0.13
 arch=`uname -m`
