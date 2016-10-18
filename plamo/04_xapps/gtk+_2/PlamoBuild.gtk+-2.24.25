@@ -4,12 +4,14 @@ url='http://ftp.gnome.org/pub/gnome/sources/gtk+/2.24/gtk+-2.24.25.tar.xz'
 pkgbase=gtk+_2
 vers=2.24.25
 arch=`uname -m`
-build=P2
+build=P2m1
 src=gtk+-2.24.25
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog ChangeLog.gtk-async-file-chooser ChangeLog.gtk-printing ChangeLog.pre-1-0 ChangeLog.pre-1-2 ChangeLog.pre-2-0 ChangeLog.pre-2-10 ChangeLog.pre-2-12 ChangeLog.pre-2-14 ChangeLog.pre-2-16 ChangeLog.pre-2-2 ChangeLog.pre-2-4 ChangeLog.pre-2-6 ChangeLog.pre-2-8 HACKING INSTALL NEWS NEWS.pre-1-0 README README.commits README.win32'
 patchfiles=''
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -114,7 +116,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $url ; do
     case ${i##*.} in
