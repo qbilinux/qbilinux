@@ -3,14 +3,15 @@
 url='http://jaist.dl.sourceforge.net/project/gtkpod/libgpod/libgpod-0.8/libgpod-0.8.2.tar.bz2'
 pkgbase=libgpod
 vers=0.8.2
-arch=x86_64
-# arch=i586
-build=P3
+arch=`uname -m`
+build=P3m1
 src=libgpod-0.8.2
 OPT_CONFIG='--disable-static --enable-shared --enable-udev  --without-hal --with-python'
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README README.SysInfo README.overview README.sqlite'
 patchfiles=''
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -178,7 +179,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $url ; do
     case ${i##*.} in

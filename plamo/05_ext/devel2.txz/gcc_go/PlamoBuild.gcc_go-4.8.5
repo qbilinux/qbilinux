@@ -6,7 +6,7 @@ url="http://ftp.gnu.org/gnu/gcc/gcc-4.8.5/gcc-4.8.5.tar.bz2
 pkgbase=gcc_go
 vers=4.8.5
 arch=`uname -m`
-build=P2
+build=P2m1
 src=gcc-$vers
 OPT_CONFIG="--disable-werror --disable-multilib --enable-install-libiberty
     --enable-__cxa_atexit --enable-threads=posix --enable-shared
@@ -15,6 +15,8 @@ OPT_CONFIG="--disable-werror --disable-multilib --enable-install-libiberty
     --with-linker-hash-style=gnu --enable-clocale=gnu --disable-libstdcxx-pch"
 DOCS="COPYING ChangeLog ABOUT-NLS NEWS COPYING3.LIB ChangeLog.tree-ssa
     COPYING3 COPYING.RUNTIME README COPYING.LIB MAINTAINERS"
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ######################################################################
 
 fscheck() {
@@ -195,7 +197,10 @@ if [ $opt_download -eq 1 ] ; then
     if [ ${i##*/} == mbox ] ; then
       [ ! -f $alt ] && wget $i -O $alt
     elif [ ! -f ${i##*/} ] ; then
-      wget $i
+      if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+      if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
+      if [ ! -f ${i##*/} ] ; then wget $i ; fi
+      if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
     fi
   done
   for i in $url ; do

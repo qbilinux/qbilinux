@@ -5,13 +5,14 @@ url='http://downloads.sourceforge.net/docbook/docbook-xsl-1.76.1.tar.bz2
 pkgbase=docbook_xsl
 vers=1.76.1
 arch=noarch
-# arch=i586
-build=P3
+build=P3m1
 src=docbook-xsl-1.76.1
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING INSTALL NEWS NEWS.html NEWS.xml README RELEASE-NOTES.html RELEASE-NOTES.pdf RELEASE-NOTES.txt RELEASE-NOTES.xml TODO'
 patchfiles=''
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -177,7 +178,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $url ; do
     case ${i##*.} in

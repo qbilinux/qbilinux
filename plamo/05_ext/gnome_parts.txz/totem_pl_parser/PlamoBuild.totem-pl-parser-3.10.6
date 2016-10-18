@@ -6,12 +6,14 @@ url="http://ftp.gnome.org/pub/gnome/sources/totem-pl-parser/${vers%.*}/totem-pl-
 verify="http://ftp.gnome.org/pub/gnome/sources/totem-pl-parser/${vers%.*}/totem-pl-parser-${vers}.sha256sum"
 commitid=
 arch=`uname -m`
-build=P1
+build=P1m1
 src=totem-pl-parser-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING.LIB ChangeLog INSTALL MAINTAINERS NEWS README'
 patchfiles='totem-disc_h.patch'
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -138,9 +140,10 @@ if [ $opt_download -eq 1 ] ; then
       fi
       ;;
     *)
-      if [ ! -f ${i##*/} ] ; then
-        wget $i
-      fi
+      if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+      if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
+      if [ ! -f ${i##*/} ] ; then wget $i ; fi
+      if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
       ;;
     esac
   done

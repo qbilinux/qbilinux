@@ -4,13 +4,15 @@ pkgbase=apr_util
 vers=1.5.4
 url="http://archive.apache.org/dist/apr/apr-util-${vers}.tar.bz2"
 verify=$url.asc
-arch=`uname -m | sed -e 's/i.86/i586/'`
-build=P1
+arch=`uname -m`
+build=P1m1
 src=apr-util-${vers}
 OPT_CONFIG='--with-apr=/usr/bin/apr-1-config --with-berkeley-db'
 DOCS='LICENSE README'
 patchfiles=''
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -190,7 +192,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $verify ; do
     if [ ! -f ${i##*/} ] ; then

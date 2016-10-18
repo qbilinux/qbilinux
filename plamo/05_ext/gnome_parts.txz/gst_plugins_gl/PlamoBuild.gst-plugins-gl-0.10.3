@@ -3,14 +3,15 @@
 url='http://gstreamer.freedesktop.org/src/gst-plugins-gl/gst-plugins-gl-0.10.3.tar.gz'
 pkgbase=gst_plugins_gl
 vers=0.10.3
-arch=x86_64
-# arch=i586
-build=P1
+arch=`uname -m`
+build=P1m1
 src=gst-plugins-gl-0.10.3
 OPT_CONFIG='--disable-static'
 DOCS='ABOUT-NLS AUTHORS COPYING ChangeLog INSTALL NEWS README RELEASE TODO'
 patchfiles=''
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -114,7 +115,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $url ; do
     case ${i##*.} in

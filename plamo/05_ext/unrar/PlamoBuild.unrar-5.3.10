@@ -6,12 +6,14 @@ url='http://www.rarlab.com/rar/unrarsrc-5.3.10.tar.gz'
 verify=
 commitid=
 arch=`uname -m`
-build=P1
+build=P1m1
 src=unrar
 OPT_CONFIG=''
 DOCS='acknow.txt license.txt readme.txt'
 patchfiles='makefile.patch'
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -138,9 +140,10 @@ if [ $opt_download -eq 1 ] ; then
       fi
       ;;
     *)
-      if [ ! -f ${i##*/} ] ; then
-        wget $i
-      fi
+      if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+      if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
+      if [ ! -f ${i##*/} ] ; then wget $i ; fi
+      if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
       ;;
     esac
   done

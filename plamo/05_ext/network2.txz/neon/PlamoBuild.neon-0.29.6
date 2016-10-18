@@ -3,14 +3,15 @@
 url='http://www.webdav.org/neon/neon-0.29.6.tar.gz'
 pkgbase=neon
 vers=0.29.6
-arch=x86_64
-# arch=i586
-build=P2
+arch=`uname -m`
+build=P2m1
 src=neon-0.29.6
 OPT_CONFIG='--enable-shared --disable-static --with-ssl'
 DOCS='.release.sh AUTHORS ChangeLog ChangeLog.CVS INSTALL.win32 NEWS README THANKS TODO'
 patchfiles=''
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -114,7 +115,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $url ; do
     case ${i##*.} in

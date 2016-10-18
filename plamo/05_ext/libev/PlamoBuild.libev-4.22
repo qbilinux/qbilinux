@@ -5,12 +5,14 @@ vers=4.22
 url="http://dist.schmorp.de/libev/libev-${vers}.tar.gz"
 commitid=
 arch=`uname -m`
-build=P1
+build=P1m1
 src=libev-${vers}
 OPT_CONFIG=''
 DOCS='LICENSE README'
 patchfiles=''
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {

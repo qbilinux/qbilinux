@@ -5,7 +5,7 @@ vers=4.4.2
 url="http://www.samba.org/samba/ftp/stable/samba-${vers}.tar.gz"
 verify=${url/gz/asc}
 arch=`uname -m`
-build=P2
+build=P2m1
 src=${pkgbase}-${vers}
 if [ $arch = "x86_64" ]; then
     target="-m64"
@@ -20,6 +20,8 @@ OPT_CONFIG="--with-logfilebase=/var/log/samba --enable-fhs --without-ad-dc --wit
 DOCS='BUILD_SYSTEMS.txt COPYING PFIF.txt README README.Coding README.cifs-utils README.contributing Roadmap WHATSNEW.txt merged-branches.txt release-scripts'
 patchfiles=''
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -128,10 +130,11 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
-    if [ ! -f ${i##*/} ] ; then
-      wget $i
-      gunzip -c ${i##*/} > `basename ${i##*/} .gz`
-    fi
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
+    if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
+    gunzip -c ${i##*/} > `basename ${i##*/} .gz`
   done
   for i in $verify ; do
     if [ ! -f ${i##*/} ] ; then
