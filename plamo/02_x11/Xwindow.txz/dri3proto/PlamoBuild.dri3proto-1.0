@@ -1,6 +1,6 @@
 #!/bin/sh
 ##############################################################
-url='ftp://ftp.ring.gr.jp/pub/X/opengroup/individual/proto/dri3proto-1.0.tar.bz2'
+url='https://xorg.freedesktop.org/releases/individual/proto/dri3proto-1.0.tar.bz2'
 pkgbase=dri3proto
 vers=1.0
 arch=`uname -m`
