@@ -4,12 +4,14 @@ pkgbase=xfce4_settings
 vers=4.12.0
 url="http://archive.xfce.org/xfce/${vers:0:4}/src/xfce4-settings-${vers}.tar.bz2"
 arch=`uname -m`
-build=P2
+build=P2m1
 src=xfce4-settings-${vers}
 OPT_CONFIG='--disable-static --enable-xrandr --enable-xcursor --enable-libnotify --enable-libxklavier --enable-pluggable-dialogs --enable-sound-settings --disable-debug'
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README TODO'
 patchfiles='xfce4-settings-xml-4.12.0.patch'
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -114,7 +116,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $url ; do
     case ${i##*.} in

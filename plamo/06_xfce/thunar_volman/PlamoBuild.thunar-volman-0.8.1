@@ -4,12 +4,14 @@ url='http://archive.xfce.org/xfce/4.12.src/thunar-volman-0.8.1.tar.bz2'
 pkgbase=thunar_volman
 vers=0.8.1
 arch=`uname -m`
-build=P1
+build=P1m1
 src=thunar-volman-0.8.1
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README THANKS TODO'
 patchfiles=''
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -114,7 +116,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $url ; do
     case ${i##*.} in

@@ -4,12 +4,14 @@ pkgbase=xfce4_terminal
 vers=0.6.3
 url="http://archive.xfce.org/src/apps/xfce4-terminal/${vers:0:3}/xfce4-terminal-${vers}.tar.bz2"
 arch=`uname -m`
-build=P2
+build=P2m1
 src=xfce4-terminal-${vers}
 OPT_CONFIG="--disable-static --disable-debug"
 DOCS='AUTHORS COPYING ChangeLog HACKING INSTALL NEWS README THANKS TODO'
 patchfiles=''
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -179,7 +181,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $url ; do
     case ${i##*.} in
