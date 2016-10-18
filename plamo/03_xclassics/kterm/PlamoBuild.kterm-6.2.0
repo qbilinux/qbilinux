@@ -7,10 +7,12 @@ url="http://ftp.x.org/contrib/applications/kterm-6.2.0.tar.gz
 pkgbase=kterm
 vers=6.2.0
 arch=`uname -m`
-build=P8
+build=P8m1
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="DEMO.kt.uu DEMO.xbm README.kt"
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ######################################################################
 
 fscheck() {
@@ -186,7 +188,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $url ; do
     case ${i##*.} in
@@ -299,6 +304,4 @@ if [ $opt_package -eq 1 ] ; then
   tar rvpf $pkg.tar -C $P usr/share/doc/$src
   touch -t `date '+%m%d0900'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
   mv $pkg.tar.xz $pkg.txz
-  read -p "Do you want to keep work files? [y/N] " ans
-  if [ "x$ans" != "xY" -a "x$ans" != "xy" ] ; then rm -rf $P $C i.[se]t ; fi
 fi

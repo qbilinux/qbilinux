@@ -16,7 +16,7 @@ url="ftp://ftp.afterstep.org/archives/Classic/AfterStepClassic-1.1beta2.tar.gz
 pkgbase=AfterStepClassic
 vers=1.1beta2
 arch=`uname -m`
-build=P8
+build=P8m1
 src[0]=$pkgbase-$vers
 src[1]=ascpu-1.11
 src[2]=asmem-1.12
@@ -29,6 +29,8 @@ DOCS[0]="CREDITS ChangeLog INSTALL FAQ README README.8bit module-interface.txt"
 DOCS[1]="TODO LICENSE README INSTALL CHANGES"
 DOCS[2]="LICENSE README INSTALL CHANGES"
 DOCS[3]="README LICENSE INSTALL CHANGES"
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ######################################################################
 
 fscheck() {
@@ -178,7 +180,7 @@ convert() {
   for i in `seq 9` n ; do prune_symlink $mandir/man$i ; done
 }
 
-fscheck
+#fscheck
 W=`pwd`
 for i in `seq 0 $((${#src[@]} - 1))` ; do
   S[$i]=$W/${src[$i]} ; B[$i]=$W/build`test ${#src[@]} -eq 1 || echo $i`
@@ -205,7 +207,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $url ; do
     case ${i##*.} in
@@ -359,6 +364,4 @@ if [ $opt_package -eq 1 ] ; then
   fi
   touch -t `date '+%m%d0900'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
   mv $pkg.tar.xz $pkg.txz
-  read -p "Do you want to keep work files? [y/N] " ans
-  if [ "x$ans" != "xY" -a "x$ans" != "xy" ] ; then rm -rf $P $C i.[se]t ; fi
 fi
