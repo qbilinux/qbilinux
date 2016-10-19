@@ -4,13 +4,15 @@ url='http://ftp.de.debian.org/debian/pool/main/libg/libgksu/libgksu_2.0.13~pre1.
 pkgbase=libgksu
 vers=2.0.13_pre1
 arch=`uname -m`
-build=P5
+build=P5m1
 src=libgksu-2.0.12
 OPT_CONFIG='--disable-schemas-install --disable-static --disable-nls'
 DOCS='ABOUT-NLS AUTHORS COPYING ChangeLog INSTALL'
 patchfiles='02_format-security.patch 28_ld_no_as_needed.patch'
 # http://ftp.de.debian.org/debian/pool/main/libg/libgksu/libgksu_2.0.13~pre1-6.debian.tar.gz
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -114,7 +116,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $url ; do
     case ${i##*.} in

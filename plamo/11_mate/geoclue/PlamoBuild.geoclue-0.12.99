@@ -7,14 +7,15 @@ pkgbase=geoclue
 vers=0.12.99
 commitid=
 # arch=x86_64
-# arch=i586
 arch=`uname -m | sed -e 's/i.86/i586/'`
-build=P1
+build=P1m1
 src=geoclue-0.12.99
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog NEWS README'
 patchfiles=''
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -141,9 +142,10 @@ else
 fi
 ;;
 *)
-if [ ! -f ${i##*/} ] ; then
-wget $i
-fi
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
+    if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
 ;;
 esac
 done
