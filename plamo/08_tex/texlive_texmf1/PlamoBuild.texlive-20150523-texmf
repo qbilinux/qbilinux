@@ -4,7 +4,7 @@ pkgbase=texlive_texmf
 vers=20150523
 url="ftp://tug.org/historic/systems/texlive/${vers:0:4}/texlive-${vers}-texmf.tar.xz"
 arch=noarch
-build=P2
+build=P2m1
 src=texlive-${vers}-texmf
 prefix=/opt/texlive/2015
 OPT_CONFIG=''
@@ -21,6 +21,8 @@ doc/pmxchords doc/ptex doc/sjisconv doc/support doc/tetex doc/texdoc doc/texlive
 doc/texworks doc/tpic2pdftex doc/ttf2pk doc/uptex doc/vlna doc/web2c doc/xetex
 doc/xindy'
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -185,7 +187,10 @@ else
   done
 fi
 if [ $opt_download -eq 1 ] ; then
-  if [ ! -f $archive ] ; then wget $url ; fi
+  if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+  if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
+  if [ ! -f ${i##*/} ] ; then wget $i ; fi
+  if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   if [ ! -d $extdir ]; then
       tar xvpf ${archive}
   fi
