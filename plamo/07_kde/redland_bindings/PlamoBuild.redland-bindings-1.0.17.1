@@ -4,12 +4,14 @@ pkgbase=redland_bindings
 vers=1.0.17.1
 url="http://download.librdf.org/source/redland-bindings-${vers}.tar.gz"
 arch=`uname -m`
-build=P1
+build=P1m1
 src=redland-bindings-${vers}
 OPT_CONFIG='--enable-release --with-perl --with-python --with-php --with-lua --with-ruby'
 DOCS='AUTHORS COPYING COPYING.LIB ChangeLog ChangeLog.1 ChangeLog.2 ChangeLog.3 ChangeLog.4 ChangeLog.5 ChangeLog.6 ChangeLog.7 ChangeLog.8 ChangeLog.9 INSTALL INSTALL.html LICENSE-2.0.txt LICENSE.html LICENSE.txt NEWS NEWS.html README README.html RELEASE.html TODO TODO.html'
 patchfiles=''
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -113,7 +115,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $url ; do
     case ${i##*.} in
