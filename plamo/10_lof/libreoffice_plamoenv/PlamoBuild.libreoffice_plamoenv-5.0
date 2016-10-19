@@ -4,12 +4,14 @@ url=''
 pkgbase=libreoffice_plamoenv
 vers=5.0
 arch=noarch
-build=P1
+build=P1m1
 src='libreoffice_plamoenv'
 OPT_CONFIG=''
 DOCS=''
 patchfiles=''
 compress='txz'
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 W=`pwd`
