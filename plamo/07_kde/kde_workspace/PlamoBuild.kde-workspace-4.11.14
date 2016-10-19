@@ -4,13 +4,15 @@ url='ftp://ftp.ne.jp/X/kde/stable/4.14.3/src/kde-workspace-4.11.14.tar.xz'
 pkgbase=kde_workspace
 vers=4.11.14
 arch=`uname -m`
-build=P3
+build=P3m1
 src=kde-workspace-4.11.14
 
 OPT_CONFIG='-DFREETYPE_INCLUDE_DIR_freetype2:PATH=/usr/include/freetype2/'
 DOCS='COPYING COPYING.DOC COPYING.LIB README README.pam'
 patchfiles='kde-workspace-4.11.14-notifications-locale.patch'
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -115,7 +117,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $url ; do
     case ${i##*.} in
