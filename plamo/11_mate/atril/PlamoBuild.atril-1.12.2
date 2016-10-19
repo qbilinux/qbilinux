@@ -4,7 +4,7 @@ url='http://pub.mate-desktop.org/releases/1.12/atril-1.12.2.tar.xz'
 pkgbase=atril
 vers=1.12.2
 arch=`uname -m`
-build=P1
+build=P1m1
 src=atril-1.12.2
 OPT_CONFIG='--enable-pixbuf --enable-comics --enable-epub --enable-xps'
 #OPT_CONFIG='--enable-gtk-doc-html=no --enable-djvu=no --disable-epub'
@@ -12,6 +12,8 @@ DOCS='AUTHORS COPYING ChangeLog NEWS README TODO'
 patchfiles=''
 #patchfiles='gsetting.patch'
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -181,7 +183,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $url ; do
     case ${i##*.} in

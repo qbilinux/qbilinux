@@ -6,12 +6,14 @@ pkgbase=yelp
 vers=3.16.1
 commitid=
 arch=`uname -m`
-build=P1
+build=P1m1
 src=yelp-3.16.1
 OPT_CONFIG='--enable-gtk-doc --enable-gtk-doc-html'
 DOCS='AUTHORS COPYING ChangeLog INSTALL MAINTAINERS NEWS README TODO'
 patchfiles=''
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -138,9 +140,10 @@ else
 fi
 ;;
 *)
-if [ ! -f ${i##*/} ] ; then
-wget $i
-fi
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
+    if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
 ;;
 esac
 done
