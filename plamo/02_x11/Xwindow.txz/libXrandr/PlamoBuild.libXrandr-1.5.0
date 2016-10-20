@@ -1,6 +1,6 @@
 #!/bin/sh
 ##############################################################
-url='ftp://ftp.ring.gr.jp/pub/X/opengroup/individual/lib/libXrandr-1.5.0.tar.bz2'
+url='https://www.x.org/releases/individual/lib/libXrandr-1.5.0.tar.bz2'
 pkgbase=libXrandr
 vers=1.5.0
 arch=`uname -m`

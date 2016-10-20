@@ -1,6 +1,6 @@
 #!/bin/sh
 ##############################################################
-url='ftp://ftp.u-aizu.ac.jp/pub/x11/x.org/pub/individual/proto/xextproto-7.3.0.tar.bz2'
+url='https://xorg.freedesktop.org/releases/individual/proto/xextproto-7.3.0.tar.bz2'
 pkgbase=xextproto
 vers=7.3.0
 arch=`uname -m`

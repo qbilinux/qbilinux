@@ -1,6 +1,6 @@
 #!/bin/sh
 ##############################################################
-url='ftp://ftp.ring.gr.jp/pub/X/opengroup/individual/proto/xproto-7.0.28.tar.bz2'
+url='https://xorg.freedesktop.org/releases/individual/proto/xproto-7.0.28.tar.bz2'
 pkgbase=xproto
 vers=7.0.28
 arch=`uname -m`

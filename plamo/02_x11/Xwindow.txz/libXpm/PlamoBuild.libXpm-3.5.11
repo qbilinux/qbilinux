@@ -1,6 +1,6 @@
 #!/bin/sh
 ##############################################################
-url='ftp://ftp.ring.gr.jp/pub/X/opengroup/individual/lib/libXpm-3.5.11.tar.bz2'
+url='https://www.x.org/releases/individual/lib/libXpm-3.5.11.tar.bz2'
 pkgbase=libXpm
 vers=3.5.11
 arch=`uname -m`
