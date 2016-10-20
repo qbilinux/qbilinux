@@ -4,7 +4,7 @@
 url="http://jaist.dl.sourceforge.jp/canna/9565/Canna37p3.tar.bz2
     http://plamo.linet.gr.jp/~tamuki/src/Canna37p3-keybind.patch.gz
     http://www.nslabs.jp/archives/nicolatter-1.7.9.tar.gz
-    http://www.j10n.org/libspt/libspt-1.1.tar.bz2
+    http://ftp.st.ryukoku.ac.jp/pub/japanese-im/libspt/libspt-1.1.tar.bz2
     http://plamo.linet.gr.jp/~tamuki/src/libspt-1.1-set_timefield.patch.gz
     http://cannadic.oucrc.org/cannadic-0.95c.tar.gz"
 pkgbase=Canna
