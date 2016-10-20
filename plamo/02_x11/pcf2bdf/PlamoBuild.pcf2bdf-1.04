@@ -1,6 +1,6 @@
 #!/bin/sh
 ##############################################################
-url='http://www.tsg.ne.jp/GANA/S/pcf2bdf/pcf2bdf-1.04.tgz'
+url='ftp://ftp.mirrorservice.org/sites/ftp.netbsd.org/pub/pkgsrc/distfiles/pcf2bdf-1.04.tgz'
 pkgbase=pcf2bdf
 vers=1.04
 arch=`uname -m`
@@ -184,11 +184,13 @@ if [ $opt_download -eq 1 ] ; then
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
     if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
+  mkdir -p $src
   for i in $url ; do
     case ${i##*.} in
     tar) tar xvpf ${i##*/} ;;
     gz) tar xvpzf ${i##*/} ;;
     bz2) tar xvpjf ${i##*/} ;;
+    tgz) tar xvf ${i##*/}  -C $src ;;
     esac
   done
 fi
