@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://www.openprinting.org/download/foomatic/foomatic-db-4.0-20121109.tar.gz'
+url='http://www.openprinting.org/download/foomatic/foomatic-db-4.0-20161019.tar.gz'
 pkgbase=foomatic_db
-vers=4.0_20121109
+vers=4.0_20161019
 arch=noarch
-build=P1m1
-src=foomatic-db-20121109
+build=P0m1
+src=foomatic-db-20161019
 OPT_CONFIG=''
 DOCS='COPYING ChangeLog README USAGE'
 patchfiles=''
