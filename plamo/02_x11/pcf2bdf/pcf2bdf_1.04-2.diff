@@ -1,0 +1,533 @@
+--- pcf2bdf-1.04.orig/debian/changelog
++++ pcf2bdf-1.04/debian/changelog
+@@ -0,0 +1,22 @@
++pcf2bdf (1.04-2) unstable; urgency=low
++
++  * Update local cdbs snippets:
++    + Replace auto-update.mk with (overload of) buildcore.mk.
++    + Add upstream-tarball.mk adding get-orig-source rule and more.
++    + Update buildinfo.mk: Fix touchfile to run only once.
++    + Look also for "(c)" in copyright-check.mk, and avoid non-printable
++      characters.
++    + Check copyrights in prebuild (in clean it may choke on not yet
++      cleaned stuff), and make sure it runs only once.
++    + List non-binary files affected if discovering new copyrights.
++    + Add README.cdbs-tweaks documenting the added tweaks.
++    + Advertise README.cdbs-tweaks in debian/rules.
++  * Fix watch file to use suffix tgz (not tar.gz).
++
++ -- Jonas Smedegaard <dr@jones.dk>  Sun, 22 Apr 2007 20:26:02 +0200
++
++pcf2bdf (1.04-1) unstable; urgency=low
++
++  * Initial release. Closes: bug#368309.
++
++ -- Jonas Smedegaard <dr@jones.dk>  Sun, 16 Jul 2006 20:01:26 +0200
+--- pcf2bdf-1.04.orig/debian/rules
++++ pcf2bdf-1.04/debian/rules
+@@ -0,0 +1,19 @@
++#!/usr/bin/make -f
++# -*- mode: makefile; coding: utf-8 -*-
++# Copyright © 2006-2007 Jonas Smedegaard <dr@jones.dk>
++
++# See debian/README.cdbs-tweaks for info on local overrides
++include debian/cdbs/1/rules/buildcore.mk
++include debian/cdbs/1/rules/upstream-tarball.mk
++include debian/cdbs/1/rules/copyright-check.mk
++include /usr/share/cdbs/1/rules/patchsys-quilt.mk
++include /usr/share/cdbs/1/class/makefile.mk
++include debian/cdbs/1/rules/buildinfo.mk
++include /usr/share/cdbs/1/rules/debhelper.mk
++
++DEB_UPSTREAM_URL = http://www.tsg.ne.jp/GANA/S/pcf2bdf
++DEB_UPSTREAM_TARBALL_EXTENSION = tgz
++DEB_UPSTREAM_TARBALL_MD5 = 8ce3b6a57491c67ef0cbf2f5413451f3
++
++DEB_MAKE_MAKEFILE = Makefile.gcc
++DEB_MAKE_INSTALL_TARGET = install DESTDIR="$(DEB_DESTDIR)" PREFIX=/usr BINPATH="$(DEB_DESTDIR)/usr/bin" MANPATH="$(DEB_DESTDIR)/usr/share/man/man1"
+--- pcf2bdf-1.04.orig/debian/copyright_hints
++++ pcf2bdf-1.04/debian/copyright_hints
+@@ -0,0 +1 @@
++Copyright (c) 2002, TAGA Nayuta <nayuta@ganaware.jp>
+--- pcf2bdf-1.04.orig/debian/cdbs/1/rules/buildinfo.mk
++++ pcf2bdf-1.04/debian/cdbs/1/rules/buildinfo.mk
+@@ -0,0 +1,40 @@
++# -*- mode: makefile; coding: utf-8 -*-
++# Copyright © 2004-2006 Jonas Smedegaard <dr@jones.dk>
++# Description: Generate and include build information
++#
++# This program is free software; you can redistribute it and/or
++# modify it under the terms of the GNU General Public License as
++# published by the Free Software Foundation; either version 2, or (at
++# your option) any later version.
++#
++# This program is distributed in the hope that it will be useful, but
++# WITHOUT ANY WARRANTY; without even the implied warranty of
++# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++# General Public License for more details.
++#
++# You should have received a copy of the GNU General Public License
++# along with this program; if not, write to the Free Software
++# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
++# 02111-1307 USA.
++
++_cdbs_scripts_path ?= /usr/lib/cdbs
++_cdbs_rules_path ?= /usr/share/cdbs/1/rules
++_cdbs_class_path ?= /usr/share/cdbs/1/class
++
++ifndef _cdbs_rules_buildinfo
++_cdbs_rules_buildinfo = 1
++
++include $(_cdbs_rules_path)/buildcore.mk$(_cdbs_makefile_suffix)
++
++CDBS_BUILD_DEPENDS := $(CDBS_BUILD_DEPENDS), dh-buildinfo
++
++common-install-arch common-install-indep:: debian/stamp-buildinfo
++
++debian/stamp-buildinfo:
++	dh_buildinfo
++	touch debian/stamp-buildinfo
++
++clean::
++	rm -f debian/stamp-buildinfo
++
++endif
+--- pcf2bdf-1.04.orig/debian/cdbs/1/rules/upstream-tarball.mk
++++ pcf2bdf-1.04/debian/cdbs/1/rules/upstream-tarball.mk
+@@ -0,0 +1,107 @@
++# -*- mode: makefile; coding: utf-8 -*-
++# Copyright © 2007 Jonas Smedegaard <dr@jones.dk>
++# Description: Convenience rules for dealing with upstream tarballs
++#
++# This program is free software; you can redistribute it and/or
++# modify it under the terms of the GNU General Public License as
++# published by the Free Software Foundation; either version 2, or (at
++# your option) any later version.
++#
++# This program is distributed in the hope that it will be useful, but
++# WITHOUT ANY WARRANTY; without even the implied warranty of
++# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++# General Public License for more details.
++#
++# You should have received a copy of the GNU General Public License
++# along with this program; if not, write to the Free Software
++# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
++# 02111-1307 USA.
++
++_cdbs_scripts_path ?= /usr/lib/cdbs
++_cdbs_rules_path ?= /usr/share/cdbs/1/rules
++_cdbs_class_path ?= /usr/share/cdbs/1/class
++
++ifndef _cdbs_rules_upstream_tarball
++_cdbs_rules_upstream_tarball := 1
++
++# Prefix for upstream location of all upstream tarballs (mandatory!)
++#DEB_UPSTREAM_URL = 
++DEB_UPSTREAM_PACKAGE = $(DEB_SOURCE_PACKAGE)
++DEB_UPSTREAM_TARBALL_VERSION = $(if $(strip $(DEB_UPSTREAM_REPACKAGE_EXCLUDE)),$(shell basename '$(DEB_UPSTREAM_VERSION)' '.$(DEB_UPSTREAM_REPACKAGE_TAG)'),$(DEB_UPSTREAM_VERSION))
++DEB_UPSTREAM_TARBALL_EXTENSION = tar.gz
++# Checksum to ensure integrity of downloadeds using get-orig-source (optional)
++#DEB_UPSTREAM_TARBALL_MD5 = 
++
++DEB_UPSTREAM_WORKDIR = ../tarballs
++
++# Base directory within tarball
++DEB_UPSTREAM_TARBALL_SRCDIR = $(DEB_UPSTREAM_PACKAGE)-$(DEB_UPSTREAM_TARBALL_VERSION)
++
++# Space-delimited list of directories and files to strip (optional)
++#DEB_UPSTREAM_REPACKAGE_EXCLUDE = CVS .cvsignore doc/rfc*.txt doc/draft*.txt
++DEB_UPSTREAM_REPACKAGE_TAG = dfsg
++
++cdbs_upstream_tarball = $(DEB_UPSTREAM_PACKAGE)-$(DEB_UPSTREAM_TARBALL_VERSION).$(DEB_UPSTREAM_TARBALL_EXTENSION)
++cdbs_upstream_local_tarball = $(DEB_SOURCE_PACKAGE)_$(DEB_UPSTREAM_VERSION).orig.$(if $(findstring $(DEB_UPSTREAM_TARBALL_EXTENSION),tgz),tar.gz,$(DEB_UPSTREAM_TARBALL_EXTENSION))
++cdbs_upstream_repackaged_tarball = $(DEB_SOURCE_PACKAGE)_$(DEB_UPSTREAM_VERSION).$(DEB_UPSTREAM_REPACKAGE_TAG).orig.tar.gz
++cdbs_upstream_uncompressed_tarball = $(DEB_SOURCE_PACKAGE)_$(DEB_UPSTREAM_VERSION).orig.tar
++
++# # These variables are deprecated
++_cdbs_deprecated_vars += DEB_UPSTREAM_TARBALL DEB_UPSTREAM_LOCAL_TARBALL DEB_UPSTREAM_REPACKAGE_TARBALL
++_cdbs_deprecated_vars += DEB_UPSTREAM_REPACKAGE_EXCLUDES
++DEB_UPSTREAM_REPACKAGE_EXCLUDE += $(DEB_UPSTREAM_REPACKAGE_EXCLUDES)
++
++print-version:
++	@@echo "Debian version:          $(DEB_VERSION)"
++	@@echo "Upstream version:        $(DEB_UPSTREAM_TARBALL_VERSION)"
++
++get-orig-source:
++	@@dh_testdir
++	@@mkdir -p "$(DEB_UPSTREAM_WORKDIR)"
++
++	@if [ ! -f "$(DEB_UPSTREAM_WORKDIR)/$(cdbs_upstream_local_tarball)" ] ; then \
++		echo "Downloading $(cdbs_upstream_local_tarball) from $(DEB_UPSTREAM_URL)/$(cdbs_upstream_tarball) ..." ; \
++		wget -N -nv -T10 -t3 -O "$(DEB_UPSTREAM_WORKDIR)/$(cdbs_upstream_local_tarball)" "$(DEB_UPSTREAM_URL)/$(cdbs_upstream_tarball)" ; \
++	else \
++		echo "Upstream source tarball have been already downloaded: $(DEB_UPSTREAM_WORKDIR)/$(cdbs_upstream_local_tarball)" ; \
++	fi
++
++	@md5current=`md5sum "$(DEB_UPSTREAM_WORKDIR)/$(cdbs_upstream_local_tarball)" | sed -e 's/ .*//'`; \
++	if [ -n "$(DEB_UPSTREAM_TARBALL_MD5)" ] ; then \
++		if [ "$$md5current" != "$(DEB_UPSTREAM_TARBALL_MD5)" ] ; then \
++			echo "Expecting upstream tarball md5sum $(DEB_UPSTREAM_TARBALL_MD5), but $$md5current found" ; \
++			echo "Upstream tarball md5sum is NOT trusted! Possible upstream tarball forge!" ; \
++			echo "Purging downloaded file. Try new download." ; \
++			rm -f "$(DEB_UPSTREAM_WORKDIR)/$(cdbs_upstream_local_tarball)" ; \
++			false ; \
++		else \
++			echo "Upstream tarball is trusted!" ; \
++		fi; \
++	else \
++		echo "Upstream tarball NOT trusted (current md5sum is $$md5current)!" ; \
++	fi
++
++	@case "$(cdbs_upstream_local_tarball)" in \
++	    *.tar.gz)  unpack="gunzip -c";; \
++	    *.tar.bz2) unpack="bunzip2 -c";    uncompress="bunzip2";; \
++	    *.tar.Z)   unpack="uncompress -c"; uncompress="uncompress";; \
++	    *.tar)     unpack="cat";           uncompress="true";; \
++	    *) echo "Unknown extension for upstream tarball $(cdbs_upstream_local_tarball)"; false;; \
++	esac && \
++	if [ -n "$(strip $(DEB_UPSTREAM_REPACKAGE_EXCLUDE))" ]; then \
++		echo "Repackaging tarball ..." && \
++		mkdir -p "$(DEB_UPSTREAM_WORKDIR)/$(DEB_UPSTREAM_REPACKAGE_TAG)" && \
++		$$unpack "$(DEB_UPSTREAM_WORKDIR)/$(cdbs_upstream_local_tarball)" \
++			| tar -x -C "$(DEB_UPSTREAM_WORKDIR)/$(DEB_UPSTREAM_REPACKAGE_TAG)" $(patsubst %,--exclude='%',$(DEB_UPSTREAM_REPACKAGE_EXCLUDE)) && \
++		GZIP=-9 tar -b1 -czf "$(cdbs_upstream_repackaged_tarball)" -C "$(DEB_UPSTREAM_WORKDIR)/$(DEB_UPSTREAM_REPACKAGE_TAG)" $(DEB_UPSTREAM_TARBALL_SRCDIR) && \
++		echo "Cleaning up" && \
++		rm -rf "$(DEB_UPSTREAM_WORKDIR)/$(DEB_UPSTREAM_REPACKAGE_TAG)"; \
++	elif [ -n "$$uncompress" ]; then \
++		echo "Recompressing tarball ..." && \
++		$$uncompress "$(DEB_UPSTREAM_WORKDIR)/$(cdbs_upstream_local_tarball)"; \
++		bzip -9 "$(DEB_UPSTREAM_WORKDIR)/$(cdbs_upstream_uncompressed_tarball)"; \
++	fi
++
++DEB_PHONY_RULES += print-version get-orig-source
++
++endif
+--- pcf2bdf-1.04.orig/debian/cdbs/1/rules/copyright-check.mk
++++ pcf2bdf-1.04/debian/cdbs/1/rules/copyright-check.mk
+@@ -0,0 +1,69 @@
++# -*- mode: makefile; coding: utf-8 -*-
++# Copyright © 2005-2007 Jonas Smedegaard <dr@jones.dk>
++# Description: Check for changes to copyright notices in source
++#
++# This program is free software; you can redistribute it and/or
++# modify it under the terms of the GNU General Public License as
++# published by the Free Software Foundation; either version 2, or (at
++# your option) any later version.
++#
++# This program is distributed in the hope that it will be useful, but
++# WITHOUT ANY WARRANTY; without even the implied warranty of
++# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++# General Public License for more details.
++#
++# You should have received a copy of the GNU General Public License
++# along with this program; if not, write to the Free Software
++# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
++# 02111-1307 USA.
++
++# TODO: Save scan as "file: match" (needs rewrite of main loop in perl)
++
++# TODO: Save scan as "file (license): match" (needs /usr/bin/licensecheck from kdesdk-scripts)
++
++_cdbs_scripts_path ?= /usr/lib/cdbs
++_cdbs_rules_path ?= /usr/share/cdbs/1/rules
++_cdbs_class_path ?= /usr/share/cdbs/1/class
++
++ifndef _cdbs_rules_copyright-check
++_cdbs_rules_copyright-check := 1
++
++include $(_cdbs_rules_path)/buildcore.mk$(_cdbs_makefile_suffix)
++
++cdbs_copyright-check_find_opts := -not -regex 'debian/.*' -not -regex '\(.*/\)?config\.\(guess\|sub\|rpath\)\(\..*\)?'
++cdbs_copyright-check_egrep_opts := --text -rih '(copyright|\(c\) ).*[0-9]{4}'
++
++pre-build:: debian/stamp-copyright-check
++
++debian/stamp-copyright-check:
++	@echo 'Scanning upstream source for new/changed copyright notices (except debian subdir!)...'
++	find * -type f $(cdbs_copyright-check_find_opts) -exec cat '{}' ';' \
++		| tr '\r' '\n' \
++		| LC_ALL=C sed -e 's/[^[:print:]]//g' \
++		| egrep $(cdbs_copyright-check_egrep_opts) \
++		| sed -e 's/^[[:space:]*#]*//' -e 's/[[:space:]]*$$//' \
++		| LC_ALL=C sort -u \
++		> debian/copyright_newhints
++	@if [ ! -f debian/copyright_hints ]; then touch debian/copyright_hints; fi
++	@newstrings=`diff -u debian/copyright_hints debian/copyright_newhints | sed '1,2d' | egrep '^\+' | sed 's/^\+//'`; \
++		if [ -n "$$newstrings" ]; then \
++			echo "Error: The following new or changed copyright notices discovered:"; \
++			echo "$$newstrings"; \
++			echo "Trying to locate the files containing the new/changed copyright notices..."; \
++			echo "(Strings part of binary data you need to resolve yourself)"; \
++			find * -type f $(cdbs_copyright-check_find_opts) -exec grep -F -l -e "$$newstrings" '{}' ';'; \
++			echo; \
++			echo "To fix the situation please do the following:"; \
++			echo "  1) Investigate the above changes and update debian/copyright as needed"; \
++			echo "  2) Replace debian/copyright_hints with debian/copyright_newhints"; \
++			exit 1; \
++		fi
++	
++	@echo 'No new copyright notices found - assuming no news is good news...'
++	rm -f debian/copyright_newhints
++	touch $@
++
++clean::
++	rm -f debian/stamp-copyright-check
++
++endif
+--- pcf2bdf-1.04.orig/debian/cdbs/1/rules/buildcore.mk
++++ pcf2bdf-1.04/debian/cdbs/1/rules/buildcore.mk
+@@ -0,0 +1,30 @@
++# -*- mode: makefile; coding: utf-8 -*-
++# Copyright © 2006 Jonas Smedegaard <dr@jones.dk>
++# Description: Check for cdbs-autoupdate in DEB_BUILD_OPTIONS
++#
++# This program is free software; you can redistribute it and/or
++# modify it under the terms of the GNU General Public License as
++# published by the Free Software Foundation; either version 2, or (at
++# your option) any later version.
++#
++# This program is distributed in the hope that it will be useful, but
++# WITHOUT ANY WARRANTY; without even the implied warranty of
++# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++# General Public License for more details.
++#
++# You should have received a copy of the GNU General Public License
++# along with this program; if not, write to the Free Software
++# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
++# 02111-1307 USA.
++
++_cdbs_scripts_path ?= /usr/lib/cdbs
++_cdbs_rules_path ?= /usr/share/cdbs/1/rules
++_cdbs_class_path ?= /usr/share/cdbs/1/class
++
++include $(_cdbs_rules_path)/buildvars.mk$(_cdbs_makefile_suffix)
++
++ifneq (,$(findstring cdbs-autoupdate,$(DEB_BUILD_OPTIONS)))
++DEB_AUTO_UPDATE_DEBIAN_CONTROL = yes
++endif
++
++include $(_cdbs_rules_path)/buildcore.mk$(_cdbs_makefile_suffix)
+--- pcf2bdf-1.04.orig/debian/patches/README
++++ pcf2bdf-1.04/debian/patches/README
+@@ -0,0 +1,3 @@
++0xxx: Grabbed from upstream development.
++1xxx: Possibly relevant for upstream adoption.
++2xxx: Only relevant for official Debian release.
+--- pcf2bdf-1.04.orig/debian/patches/series
++++ pcf2bdf-1.04/debian/patches/series
+@@ -0,0 +1 @@
++1001_C++_is_not_C.patch
+--- pcf2bdf-1.04.orig/debian/patches/1001_C++_is_not_C.patch
++++ pcf2bdf-1.04/debian/patches/1001_C++_is_not_C.patch
+@@ -0,0 +1,20 @@
++--- pcf2bdf-1.04.orig/Makefile.gcc
+++++ pcf2bdf-1.04/Makefile.gcc
++@@ -2,7 +2,7 @@
++ 
++ CC		= gcc
++ CFLAGS		= -Wall -O2
++-CXX		= $(CC)
+++#CXX		= $(CC)
++ CXXFLAGS	= $(CFLAGS)
++ PREFIX		= /usr/local
++ BINPATH		= $(PREFIX)/bin
++@@ -10,7 +10,7 @@
++ 
++ all:		pcf2bdf
++ 
++-pcf2bdf:	pcf2bdf.o
+++#pcf2bdf:	pcf2bdf.o
++ 
++ clean:
++ 	-$(RM) pcf2bdf pcf2bdf.exe pcf2bdf.o *~
+--- pcf2bdf-1.04.orig/debian/README.cdbs-tweaks
++++ pcf2bdf-1.04/debian/README.cdbs-tweaks
+@@ -0,0 +1,106 @@
++CDBS tweak
++==========
++
++CDBS is great. In some corner cases, however, some parts of CDBS
++sometimes needs a few tweaks to work optimally.
++
++This is a collection of such tweaks. The goal is for these tweaks to be
++absorbed into upstream CDBS. We just haven't found time yet to discuss
++them at the CDBS developers' mailinglist. And possible we do not all
++agree that the tweaks are so great - therefore this "staging area".
++
++If you found this file below debian/ subdir in a source package, most
++probably only a subset of the below mentioned tweaks are relevant and
++have been shipped with the package. The repository of all these tweaks
++is here: svn://svn.debian.org/build-common/people/js/overlay/
++
++Web access: http://svn.debian.org/wsvn/build-common/people/js/overlay/
++
++
++
++Improved support for cdbs-autoupdate
++------------------------------------
++
++CDBS invented a cool way to help keep build-dependencies up-to-date.
++
++It is disabled by default, as messing with debian/rules at build time
++violates Debian Policy: A build must not change conditions for building.
++
++Some consider this CDBS feature evil.
++
++Some enable the feature within a package, and gets smacked by ftp-master
++or others (there's even a lintian check to complain about it now).
++
++This tweak enables the feature when the build environment contains the
++non-default hint "cdbs-autoupdate" in the DEB_BUILD_OPTIONS variable.
++
++
++
++New buildinfo rule
++------------------
++
++See package description for "buildinfo" for more info.
++
++
++
++Improved support for multiple compilations
++------------------------------------------
++
++Create and clean builddir _after_ resolving per-package DEB_BUILDDIR.
++
++Honour per-package DEB_BUILDDIR in makefile class.
++
++
++
++Various improvements to python-distutils class
++----------------------------------------------
++
++Use full path to python interpreter (Python Policy section 1.3.2).
++
++Add CDBS_BUILD_DEPENDS to old policy method.
++
++Fix CDBS_BUILD_DEPENDS in new policy methods to only depend on debhelper
++when actually used.
++
++Fix DEB_PYTHON_SIMPLE_PACKAGES sometimes installed twice (and only one
++of them honouring DEB_PYTHON_COMPILE_VERSION).
++
++Unify install path using new DEB_PYTHON_DESTDIR.
++
++Quote install path.
++
++
++
++New copyright-check rule
++------------------------
++
++Refuse to build if the source is found to contain different copyright
++info than earlier builds.
++
++
++
++New kernelpatches rule
++----------------------
++
++Small wrapper around dh-kpatches, taking care of build-dependencies too.
++
++
++
++New routines for handling upstream tarball
++------------------------------------------
++
++Rules and variables to help downloading, validating and repackaging
++upstream tarball.
++
++Implements the rules print-version and get-orig-source commonly used
++for group-maintained packages with Debian-specific patches maintained in
++SVN or some other VCS, and automated fetching virgin upstream tarball
++(possibly massaged after download e.g. to strip non-DFSG material).
++
++
++
++Support for custom BTS info
++---------------------------
++
++Include BTS control info found in debian/*.bts files, or alternatively
++redirect bug reports to the email address defined in DEB_BTS_EMAIL.
+--- pcf2bdf-1.04.orig/debian/control.in
++++ pcf2bdf-1.04/debian/control.in
+@@ -0,0 +1,16 @@
++Source: pcf2bdf
++Section: x11
++Priority: optional
++Maintainer: Jonas Smedegaard <dr@jones.dk>
++Build-Depends: @cdbs@
++Standards-Version: 3.7.2
++
++Package: pcf2bdf
++Architecture: any
++Depends: ${shlibs:Depends}
++Description: convert X11 font from PCF to BDF format
++ Pcf2bdf is a font de-compiler.  It converts an X11 font from Portable
++ Compiled Format (PCF) to Bitmap Distribution Format (BDF).
++ .
++ FONTBOUNDINGBOX in a BDF file is not used by bdftopcf, so pcf2bdf
++ generates irresponsible values.
+--- pcf2bdf-1.04.orig/debian/compat
++++ pcf2bdf-1.04/debian/compat
+@@ -0,0 +1 @@
++4
+--- pcf2bdf-1.04.orig/debian/control
++++ pcf2bdf-1.04/debian/control
+@@ -0,0 +1,16 @@
++Source: pcf2bdf
++Section: x11
++Priority: optional
++Maintainer: Jonas Smedegaard <dr@jones.dk>
++Build-Depends: cdbs (>= 0.4.23-1.1), debhelper (>= 4.2.0), quilt, patchutils (>= 0.2.25), cdbs (>= 0.4.27-1), dh-buildinfo
++Standards-Version: 3.7.2
++
++Package: pcf2bdf
++Architecture: any
++Depends: ${shlibs:Depends}
++Description: convert X11 font from PCF to BDF format
++ Pcf2bdf is a font de-compiler.  It converts an X11 font from Portable
++ Compiled Format (PCF) to Bitmap Distribution Format (BDF).
++ .
++ FONTBOUNDINGBOX in a BDF file is not used by bdftopcf, so pcf2bdf
++ generates irresponsible values.
+--- pcf2bdf-1.04.orig/debian/watch
++++ pcf2bdf-1.04/debian/watch
+@@ -0,0 +1,3 @@
++# run the "uscan" command to check for upstream updates and more.
++version=3
++http://www.tsg.ne.jp/GANA/S/pcf2bdf/pcf2bdf-(.*)\.tgz debian uupdate
+--- pcf2bdf-1.04.orig/debian/copyright
++++ pcf2bdf-1.04/debian/copyright
+@@ -0,0 +1,31 @@
++This is pcf2bdf, packaged for Debian GNU systems.
++
++Upstream author: TAGA Nayuta <nayuta@ganaware.jp>
++
++Upstream source: http://www.tsg.ne.jp/GANA/S/pcf2bdf/
++
++Copyright and licensing info:
++
++	Copyright (c) 2002, TAGA Nayuta <nayuta@ganaware.jp>
++	
++	Permission is hereby granted, free of charge, to any person
++	obtaining a copy of this software and associated documentation
++	files (the "Software"), to deal in the Software without
++	restriction, including without limitation the rights to use,
++	copy, modify, merge, publish, distribute, sublicense, and/or
++	sell copies of the Software, and to permit persons to whom the
++	Software is furnished to do so, subject to the following
++	conditions:
++	
++	The above copyright notice and this permission notice shall be
++	included in all copies or substantial portions of the
++	Software.
++	
++	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY
++	KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
++	WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
++	PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
++	COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
++	OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
++	SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
