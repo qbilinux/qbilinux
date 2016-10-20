@@ -1,6 +1,6 @@
 #!/bin/sh
 ##############################################################
-url='ftp://ftp.dti.ad.jp/pub/net/OpenLDAP/openldap-release/openldap-2.4.30.tgz'
+url='http://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-2.4.30.tgz'
 pkgbase=openldap
 vers=2.4.30
 arch=`uname -m`
