@@ -84,13 +84,12 @@ compress_all() {
 }  
 
 W=`pwd`
-WD=/tmp
 #WD=/home/kojima/Build
 S[$i]=$W/${src[$i]}
 if [ "$arch" = "x86_64" ]; then
-    B=$WD/build
+    B=$W/build
 else
-    B=$WD/build32
+    B=$W/build32
 fi
 
 P=$W/work ; C=$W/pivot

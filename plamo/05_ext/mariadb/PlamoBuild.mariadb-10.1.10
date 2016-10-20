@@ -1,6 +1,6 @@
 #!/bin/sh
 ##############################################################
-url='ftp://ftp.yz.yamagata-u.ac.jp/pub/dbms/mariadb/mariadb-10.1.10/source/mariadb-10.1.10.tar.gz'
+url='https://downloads.mariadb.com/MariaDB/mariadb-10.1.10/source/mariadb-10.1.10.tar.gz'
 pkgbase=mariadb
 vers=10.1.10
 arch=`uname -m`
