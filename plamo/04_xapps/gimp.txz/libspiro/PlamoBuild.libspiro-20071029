@@ -1,6 +1,6 @@
 #!/bin/sh
 ##############################################################
-url='http://sourceforge.net/projects/libspiro/files/libspiro/20071029/libspiro_src-20071029.tar.bz2/download'
+url='http://sourceforge.net/projects/libspiro/files/libspiro/20071029/libspiro_src-20071029.tar.bz2'
 pkgbase=libspiro
 vers=20071029
 arch=`uname -m`

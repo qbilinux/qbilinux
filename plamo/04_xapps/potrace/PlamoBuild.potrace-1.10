@@ -1,6 +1,6 @@
 #!/bin/sh
 ##############################################################
-url='http://potrace.sourceforge.net/download/potrace-1.10.tar.gz'
+url='http://potrace.sourceforge.net/download/1.10/potrace-1.10.tar.gz'
 pkgbase=potrace
 vers=1.10
 arch=`uname -m`
