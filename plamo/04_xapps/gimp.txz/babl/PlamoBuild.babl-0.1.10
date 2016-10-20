@@ -1,6 +1,6 @@
 #!/bin/sh
 ##############################################################
-url='ftp://ftp.gtk.org/pub/babl/0.1/babl-0.1.10.tar.bz2'
+url='https://download.gimp.org/pub/babl/0.1/babl-0.1.10.tar.bz2'
 pkgbase=babl
 vers=0.1.10
 arch=`uname -m`

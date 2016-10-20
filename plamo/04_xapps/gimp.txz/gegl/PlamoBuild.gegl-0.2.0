@@ -1,6 +1,6 @@
 #!/bin/sh
 ##############################################################
-url='ftp://ftp.gimp.org/pub/gegl/0.2/gegl-0.2.0.tar.bz2'
+url='https://download.gimp.org/pub/gegl/0.2/gegl-0.2.0.tar.bz2'
 pkgbase=gegl
 vers=0.2.0
 arch=`uname -m`
