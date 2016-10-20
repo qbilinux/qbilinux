@@ -1,6 +1,6 @@
 #!/bin/sh
 ##############################################################
-url='git://anongit.freedesktop.org/xorg/driver/xf86-video-intel'
+url='git://anongit.freedesktop.org/xorg/driver/xf86-video-intel.git'
 pkgbase=xf86_video_intel
 vers=git_20150924
 arch=`uname -m`
@@ -114,10 +114,21 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
-    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
-    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
-    if [ ! -f ${i##*/} ] ; then wget $i ; fi
-    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
+    case ${i##*.} in
+    git)
+      if [ ! -d `basename ${i##*/} .git` ] ; then
+        git clone $i
+      else
+        ( cd `basename ${i##*/} .git` ; git pull origin master )
+      fi
+      ;;
+    *)
+      if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+      if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
+      if [ ! -f ${i##*/} ] ; then wget $i ; fi
+      if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
+      ;;
+    esac
   done
   for i in $url ; do
     case ${i##*.} in

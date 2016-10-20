@@ -1,6 +1,6 @@
 #!/bin/sh
 ##############################################################
-url='ftp://ftp.ring.gr.jp/pub/X/opengroup/individual/driver/xf86-video-nouveau-1.0.11.tar.bz2'
+url='https://www.x.org/releases/individual/driver/xf86-video-nouveau-1.0.11.tar.bz2'
 pkgbase=xf86_video_nouveau
 vers=1.0.11
 arch=`uname -m`
