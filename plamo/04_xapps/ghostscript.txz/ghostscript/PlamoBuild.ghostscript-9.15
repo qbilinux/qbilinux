@@ -1,6 +1,6 @@
 #!/bin/sh
 ##############################################################
-url="http://ghostscript.com/releases/ghostscript-9.15.tar.bz2"
+url="http://downloads.ghostscript.com/public/old-gs-releases/ghostscript-9.15.tar.bz2"
 pkgbase=ghostscript
 vers=9.15
 arch=`uname -m`

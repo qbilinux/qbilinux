@@ -1,6 +1,6 @@
 #!/bin/sh
 ##############################################################
-rul='http://downloads.sourceforge.net/project/gtkspell/2.0.16/gtkspell-2.0.16.tar.gz'
+url='https://sourceforge.net/projects/gtkspell/files/2.0.16/gtkspell-2.0.16.tar.gz'
 pkgbase=gtkspell
 vers=2.0.16
 arch=`uname -m`
