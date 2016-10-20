@@ -187,10 +187,10 @@ else
   done
 fi
 if [ $opt_download -eq 1 ] ; then
-  if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
-  if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
-  if [ ! -f ${i##*/} ] ; then wget $i ; fi
-  if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
+  if [ ! -f ${archive} ] ; then cp ${SRC_DIR}/${archive} . ; fi
+  if [ ! -f ${archive} ] ; then wget ${SRC_URL}/${archive} ; fi
+  if [ ! -f ${archive} ] ; then wget $url ; fi
+  if [ ! -f ${SRC_DIR}/${archive} ] ; then cp -p ${archive} ${SRC_DIR} ; fi
   if [ ! -d $extdir ]; then
       tar xvpf ${archive}
   fi
