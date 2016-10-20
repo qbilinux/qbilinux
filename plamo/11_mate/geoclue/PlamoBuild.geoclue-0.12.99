@@ -1,13 +1,11 @@
 #!/bin/sh
 ##############################################################
 url='http://cgit.freedesktop.org/geoclue/snapshot/geoclue-0.12.99.tar.bz2'
-url='input sourcecode url here'
 verify=
 pkgbase=geoclue
 vers=0.12.99
 commitid=
-# arch=x86_64
-arch=`uname -m | sed -e 's/i.86/i586/'`
+arch=`uname -m`
 build=P1m1
 src=geoclue-0.12.99
 OPT_CONFIG=''

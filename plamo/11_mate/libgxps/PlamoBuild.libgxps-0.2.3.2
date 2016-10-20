@@ -167,6 +167,7 @@ for i in $url ; do
 case ${i##*.} in
 gz) tar xvpzf ${i##*/} ;;
 bz2) tar xvpjf ${i##*/} ;;
+xz) tar xvf ${i##*/} ;;
 git) ( cd `basename ${i##*/} .git`
 git checkout origin/master
 if [ -n "$commitid" ] ; then
