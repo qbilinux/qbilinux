@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url="http://netpbm.svn.sourceforge.net/viewvc/netpbm/stable/?view=tar"
 pkgbase=netpbm
-vers=10.47.51
+vers=10.47.63
+url="https://sourceforge.net/projects/netpbm/files/super_stable/10.47.63/netpbm-10.47.63.tgz"
 arch=`uname -m`
 build=P2m1
-src=netpbm-code-2299-trunk
+src=netpbm-${vers}
 OPT_CONFIG=''
 DOCS='README installnetpbm'
 patchfiles=''
@@ -138,13 +138,12 @@ convert() {
 }
 
 W=`pwd`
-WD=/tmp
 for i in `seq 0 $((${#src[@]} - 1))` ; do
   S[$i]=$W/${src[$i]} 
   if [ $arch = "x86_64" ]; then
-      B[$i]=$WD/build`test ${#src[@]} -eq 1 || echo $i`
+      B[$i]=$W/build`test ${#src[@]} -eq 1 || echo $i`
   else
-      B[$i]=$WD/build32`test ${#src[@]} -eq 1 || echo $i`
+      B[$i]=$W/build32`test ${#src[@]} -eq 1 || echo $i`
   fi      
 done
 P=$W/work ; C=$W/pivot
@@ -190,6 +189,7 @@ if [ $opt_download -eq 1 ] ; then
     tar) tar xvpf ${i##*/} ;;
     gz) tar xvpzf ${i##*/} ;;
     bz2) tar xvpjf ${i##*/} ;;
+    tgz) tar xvf ${i##*/} ;;
     esac
   done
 fi
