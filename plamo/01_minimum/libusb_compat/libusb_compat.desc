@@ -1,0 +1,9 @@
+libusb_compat & y & y & y &y
+libusb-compat ライブラリ
+&
+新しい1.0系のlibusbで、古い0.12系のライブラリを使うための
+互換性保持用のライブラリ
+&
+libusb-compat library
+&
+compatible layer for legacy libusb-0.12

@@ -1,0 +1,7 @@
+libdbusmenu_qt & y & y & y & y
+Dbus-menu用Qtライブラリ
+&
+DBus経由でメニューを項目をやりとりするための
+DBus-menu機能をQt用に実装したライブラリ
+&
+&

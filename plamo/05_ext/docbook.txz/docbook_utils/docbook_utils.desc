@@ -1,0 +1,8 @@
+docbook_utils & y & y & y & y
+Docbookユーティリティ
+&
+SGML形式で書かれたファイルをHTMLやRTF，Postscript,PDF等の
+形式に変換するための jw とSGMLファイル間の差分を取るための
+sgmldiff を収めたパッケージ
+&
+&

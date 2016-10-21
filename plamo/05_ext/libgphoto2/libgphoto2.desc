@@ -1,0 +1,12 @@
+libgphoto2 & y & y & y & y
+libgphoto2 デジタルカメラ用ライブラリ
+&
+libgphoto2 はさまざまな種類のデジカメを操作可能なライブラリです
+&
+libgphoto2: library for digital photography
+&
+gPhoto is a set of software applications and libraries for use in
+digital photography. gPhoto supports not just retrieving of images
+from camera devices, but also upload and remote controlled
+configuration and capture, depending on whether the camera supports
+those features.

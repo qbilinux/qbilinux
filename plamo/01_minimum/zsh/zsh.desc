@@ -1,0 +1,14 @@
+zsh & n & y & y & y
+高機能シェル zsh
+&
+zshはインタラクティブ使用のためのシェルとして設計されていますが、
+また強力なスクリプト言語でもあります。bash, ksh, tcsh の多くの
+便利な特徴を備え、かつ zsh 独自の強力な機能を持っています。
+それゆえ、zsh は究極のシェルとも言われます。
+&
+zsh
+&
+Zsh is a shell designed for interactive use, although it is
+also a powerful scripting language.  Many of the useful features
+of bash, ksh, and tcsh were incorporated into zsh; many original
+features were added.

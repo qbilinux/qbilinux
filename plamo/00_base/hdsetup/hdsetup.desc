@@ -1,0 +1,11 @@
+hdsetup & y & y & y & y
+Plamo Linux セットアップ/パッケージ管理システム
+&
+Slackware 由来のセットアップ/パッケージ管理ツールです．
+あらかじめ用意された *.tgz ファイルをインストールしたり
+インストールしたパッケージを閲覧したり，削除するための
+コマンドが用意されています．
+&
+Slackware setup/management packages
+&
+setup/management packages for Plamo Linux(Slackware)

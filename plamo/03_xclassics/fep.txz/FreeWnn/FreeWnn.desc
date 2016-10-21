@@ -1,0 +1,14 @@
+FreeWnn & n & y & y & y
+かな漢字変換システム FreeWnn
+&
+日本語入力・変換システム Wnn4.2 を元にした FreeWnn パッケージ
+です。Wnn4 は、京都大学数理解析研究所、オムロン株式会社、
+株式会社アステックの三者によって開発されました。
+ネットワークを経由したかな漢字変換が可能で、UNIX 上の仮名
+漢字変換システムとして古くから使われています。
+クライアントとして mule (多言語 Emacs), jvim (日本語 vim),
+kinput2 (X 用日本語入力フロントエンド)が用意されています。
+&
+FreeWnn - kana-kanji conversion server
+&
+FreeWnn is a kana kanji conversion server.

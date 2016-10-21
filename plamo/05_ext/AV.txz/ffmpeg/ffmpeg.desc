@@ -1,0 +1,12 @@
+ffmpeg & y & y & y & y
+FFmpeg 動画CODECSライブラリ
+&
+FFmpeg は各種形式に対応したオーディオ/ビデオ CODEC ライブラリ
+です
+&
+FFmpeg stream audio/video library
+&
+FFmpeg is a complete solution to record, convert and stream audio and
+video. It includes libavcodec, the leading audio/video codec
+library. FFmpeg is developed under Linux, but it can compiled under
+most operating systems, including Windows.

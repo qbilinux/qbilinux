@@ -1,0 +1,8 @@
+sysvinit & y & y & y & y
+システム起動ツール
+&
+システムを起動するために必要なコマンドです．
+&
+SysVinit
+&
+System initialize program for Linux.

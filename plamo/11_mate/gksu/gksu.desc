@@ -1,0 +1,7 @@
+gksu & y & y & y & y
+su/sudoのGUI用フロントエンド
+&
+Gtkベースのウィンドウ機能を用いてsuやsudoの処理を実現するツール
+&
+GKSu is a library that provides a Gtk+ frontend to su and sudo.
+&

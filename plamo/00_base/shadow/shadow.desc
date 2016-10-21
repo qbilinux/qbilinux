@@ -1,0 +1,11 @@
+shadow & y & y & y & y
+シャドウパスワード用コマンド
+&
+Linux PAM に対応した shadow password 関連のプログラムです．
+login, passwd, chsh, adduser 等のコマンドを含みます．
+&
+Shadow password program
+&
+login program for shadow password suites. Includes
+basic authentification related programs such as login, passwd,
+chsh, adduser, and so on.

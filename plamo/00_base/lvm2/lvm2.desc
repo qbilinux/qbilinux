@@ -1,0 +1,10 @@
+lvm2 & y & y & y & y
+Logical Volume Manager バージョン2
+&
+LVM(Logical Volume Maneger)は，HDD を論理ボリュームとして管理して，
+必要に応じてパーティションのサイズを調整する機能を提供します
+&
+lvm2
+&
+LVM(Logical Volume Manager) manage HDDs as logical volumes and
+make available additional volumes for created partitions.

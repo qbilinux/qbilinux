@@ -1,0 +1,10 @@
+net_tools & y & y & y & y
+ネットワーク用コマンド
+&
+arp, ifconfig, route, nameif といったネットワーク設定用
+コマンド集
+&
+network commands
+&
+net_tools includes arp, ifconfig, nameif,
+plipconfig, rarp route and so on.

@@ -1,0 +1,11 @@
+glew & y & y & y & y
+OpenGL拡張機能組み込みライブラリ
+&
+GLEW(OpenGL Extension Wrangler library)は，
+OpenGLの拡張ライブラリ機能を動的組み込むための
+ライブラリです
+&
+GLEW : OpenGL Extension Wrangler
+&
+The OpenGL Extension Wrangler Library (GLEW) is
+a cross-platform open-source C/C++ extension loading library.

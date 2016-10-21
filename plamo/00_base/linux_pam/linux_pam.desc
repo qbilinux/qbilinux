@@ -1,0 +1,12 @@
+linux_pam & y & y & y & y
+認証機能管理システム
+&
+PAM(Pluggable Authentification Modules)は，それぞれの認証機能を
+モジュール化し，/etc/pam.d/ 以下の指定により動的に変更することを
+可能にします．
+&
+Linux PAM
+&
+PAM(Pluggable Authentification Modules) is a new authentification
+mechanism which can change authentification method dynamically for
+each program.

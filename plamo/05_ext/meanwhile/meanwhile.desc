@@ -1,0 +1,13 @@
+meanwhile & y & y & y & y
+meanwhile: 同期通信用ライブラリ
+&
+meanwhile は Lotus sametime プロトコルをOSSで実装した
+ライブラリで，IM や電子会議などの同期通信機能をサポートします
+&
+meanwhile: OSS implementation of Lotus Sametime protocol
+&
+The heart of the Meanwhile Project is the Meanwhile library, providing
+the basic Lotus Sametime session functionality along with the core
+services; Presence Awareness, Instant Messaging, Multi-user
+Conferencing, Preferences Storage, Identity Resolution, and File
+Transfer.

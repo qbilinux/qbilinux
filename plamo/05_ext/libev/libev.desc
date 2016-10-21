@@ -1,0 +1,9 @@
+libev & y & y & y & y
+高速なイベントループライブラリ
+&
+I/O処理のような非同期操作を効率よく行うための
+イベントループライブラリ
+&
+libev: high-performance event loop library
+&
+libev is a high-performance event loop/event model with lots of features.

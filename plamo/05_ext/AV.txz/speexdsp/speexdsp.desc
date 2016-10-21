@@ -1,0 +1,12 @@
+speexdsp & y & y & y & y
+Speex DSP ライブラリ
+&
+Speex コーデックライブラリと Speex DSP ライブラリは，別々のソースツリー
+に分割されました。
+&
+Speex DSP library
+&
+The speex codec library and the speex DSP library are splitted into
+separate source trees.  Both projects received build-system improve-
+ments, bugfixes, and cleanup.  The speex codec's VBR tuning was
+improved, while the speexdsp resampler got some NEON optimizations.

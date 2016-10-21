@@ -1,0 +1,9 @@
+unzip & y & y & y & y
+ZIP形式展開ツール
+&
+unzip コマンドにファイル名のコード自動変換機能を組み込んだバージョン
+です．
+&
+unzip
+&
+This unzip command can convert Japanese codesets automatically

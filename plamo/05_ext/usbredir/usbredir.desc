@@ -1,0 +1,11 @@
+usbredir & y & y & y & y
+USB デバイスリダイレクタ
+&
+USB ポートの情報をネットワーク経由でリダイレクトするためのツールです。
+&
+USB device redirector
+&
+usbredir is the name of a network protocol for sending usb device
+traffic over a network connection.  It is also the name of the
+software package offering a parsing library, a usbredirhost library
+and several utilities implementing this protocol.

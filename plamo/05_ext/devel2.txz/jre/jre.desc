@@ -1,0 +1,8 @@
+jre & y & y & y & y
+Java Runtime 環境
+&
+Javaで書かれたアプリを動かすためのRuntime環境．
+Java用のアプリを開発するためには，別途
+SDK(JDK)環境が必要です．
+&
+&

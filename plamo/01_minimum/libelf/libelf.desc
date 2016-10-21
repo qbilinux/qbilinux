@@ -1,0 +1,8 @@
+libelf & n & y & y & y
+ELF形式操作ライブラリ
+&
+ELF形式のバイナリファイルの情報を操作するためのライブラリ
+&
+library for ELF
+&
+libraries for handling ELF format binaries.

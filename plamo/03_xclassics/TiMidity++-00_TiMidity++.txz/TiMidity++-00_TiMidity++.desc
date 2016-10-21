@@ -1,0 +1,18 @@
+TiMidity++-00_TiMidity++ & y & y & y & y
+MIDI-to-WAVE 変換およびプレーヤー
+&
+TiMidity++ は，MIDI を WAVE に変換したり演奏したりします。
+ALSA ドライバに対応し，ALSA シーケンサのソフトウェア音源
+として利用できます。
+パッケージ時点での最新版 hourly tar ball を採用しています。
+さらに高品位な音色にするには，続けて 88proS パッケージを
+インストールしてください。
+&
+MIDI-to-WAVE converter and player
+&
+TiMidity++ is a MIDI to WAVE converter and player.
+It supports ALSA driver, and can use as a software
+synthesizer via ALSA sequencer.
+This package takes in the latest hourly tar ball.
+Please install 88proS package later to enjoy more
+high quality sound.

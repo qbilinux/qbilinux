@@ -1,0 +1,16 @@
+hostapd & y & y & y & y
+IEEE 802.11 AP, IEEE 802.1X/WPA/WPA2/EAP/RADIUS 認証モジュール
+&
+Linux ベースの無線 LAN アクセス・ポイントにおいて，WPA2 による強力な暗
+号化と認証を実現する hostapd (Host Access Point デーモン) は，構成を行
+うのがかなり簡単であることに加え，WPA2 パーソナルと WPA2 エンタープライ
+ズをサポートし，独特の方法で WPA2 パーソナルを強力かつ簡単に管理できる
+ように変更します。
+&
+IEEE 802.11 AP, IEEE 802.1X/WPA/WPA2/EAP/RADIUS Authenticator
+&
+hostapd, the Host Access Point daemon, provides strong WPA2 encryption
+and authentication on Linux-based wireless access points.  It is fairly
+simple to configure, supports WPA2-Personal and Enterprise, and also
+provides a unique modification to WPA2-Personal that makes it both
+strong and simple to administer.

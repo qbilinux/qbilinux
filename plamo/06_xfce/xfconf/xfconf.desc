@@ -1,0 +1,10 @@
+xfconf  & n & y & y & y
+Xfce 用設定システム
+&
+xfconf はXfce-4.0以来用いられてきた MCS に代る，
+新しい設定システムです．
+&
+Xfce configuration system
+&
+xfconf is the new configuration system for Xfce4.6,
+replacing the old MCS system that had been present since 4.0.0.

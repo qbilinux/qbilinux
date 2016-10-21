@@ -1,0 +1,10 @@
+mailx & y & y & y & y
+BSD 版メーラ mailx
+&
+BSD Mail は ed に似たコマンド体系を持った、ファイルの代わりに
+メールを処理するプログラムです。小さくて、標準となっています
+メールを使う場合にはインストールしておいた方がいいでしょう。
+&
+BSD mailx
+&
+mailx is a small mail system developed in BSD

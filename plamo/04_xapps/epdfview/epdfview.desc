@@ -1,0 +1,9 @@
+epdfview & y & y & y & y
+epdf: シンプルな PDF ビューワ
+&
+epdfview は poppler ライブラリを用いたシンプルな
+PDFビューワです．
+&
+simple PDF viewer: epdfview
+&
+epdfview is a simple PDF viewer using poppler library.

@@ -1,0 +1,8 @@
+libvorbis & y & y & y & y
+Vorbis 音声圧縮ライブラリ
+&
+Vorbis は Xiph.org が開発した音声用のフリーな圧縮ライブラリです。
+&
+libvorbis
+&
+libvorbis is a library for Ogg Vorbis sound format.

@@ -1,0 +1,7 @@
+ifuse & y & y & y & y
+iPhone/iPod用FUSEモジュール
+&
+FUSE(Filesystem in USEr space)経由で
+iPhone/iPod touch等をマウントするためのモジュール
+&
+&

@@ -1,0 +1,10 @@
+file & y & y & y & y
+ファイル形式確認コマンド
+&
+file はあらかじめ登録されている情報に基いて
+ファイルの種類を判別するコマンドです．
+&
+file
+&
+file is a command to descriminate a kind of file
+from pre-registerd header formats.

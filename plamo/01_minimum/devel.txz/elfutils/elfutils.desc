@@ -1,0 +1,8 @@
+elfutils & y & y & y & y
+ELFフォーマット用ユーティリティ
+&
+汎用的なbinutilsの機能を
+ELF(Executable and Linkable Format)形式用に
+特化したツール集
+&
+&

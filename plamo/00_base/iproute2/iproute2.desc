@@ -1,0 +1,10 @@
+iproute2 & y & y & y & y
+新しいネットワーク設定ツール iproute2
+&
+iproute2 はLinuxの新しいネットワーク機能を使うための設定ツール
+です．
+&
+Advanced Networking Tools iproute2
+&
+iproute2 is an advanced network configuration tools for
+newer kernel.

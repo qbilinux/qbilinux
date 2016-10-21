@@ -1,0 +1,9 @@
+apel & y & y & y & y
+Emacs 互換性向上ライブラリ APEL
+&
+APEL は Emacs のバージョン間の違いを吸収するためのライブラリです。
+&
+APEL (A Portable Emacs Library)
+&
+APEL is a emacs lisp library to absorb versioning differences
+between each Emacs.

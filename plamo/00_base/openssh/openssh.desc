@@ -1,0 +1,10 @@
+openssh & y & y & y & y
+暗号化通信コマンド
+&
+OpenSSH は rlogin/rcp/telnet に代るプログラムで
+やりとりするデータを暗号化しセキュリティを高めます
+&
+OpenSSH
+&
+OpenSSH includes ssh/scp program which substitute
+r-commands(rcp/rlogin/telnet) for secure connection.

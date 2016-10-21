@@ -1,0 +1,8 @@
+groff & y & y & y & y
+man 形式の整形ツール
+&
+groff は man ページを整形するために必要なコマンドです
+&
+groff with JP patch
+&
+groff is a text formatter which used in  man pages.

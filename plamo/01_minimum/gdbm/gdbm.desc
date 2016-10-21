@@ -1,0 +1,10 @@
+gdbm & y & y & y & y
+GNUデータベースツール
+&
+gdbm はバークレー DB と同等の機能を持つ GNU 版のデータベース
+ツールです．
+&
+GNU Database Management tool
+&
+GDBM is a GNU version of Database Management tool like
+Berkeley DB.

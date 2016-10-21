@@ -1,0 +1,9 @@
+libvdpau & y & y & y & y
+libvdpau
+&
+ビデオカードの持つハードウェアエンコード/デコード機能を
+操作するために開発された
+VDPAU(Video Decode and Presentation API for Unix)用
+ライブラリ
+&
+&

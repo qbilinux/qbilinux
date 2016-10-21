@@ -1,0 +1,22 @@
+mf2t & y & y & y & y
+標準 MIDI ファイルとテキストを相互に変換
+&
+mf2t，t2mf は，標準 MIDI ファイル(SMF)形式のファイルを，簡単な
+規則にのっとりテキストに変換したり，逆にそのテキストを SMF に
+戻したりしてくれるツールです。これによって生成されたテキストは，
+読めばすぐ解るような書式になっているので，エディタなどで編集する
+ことが出来ますし，sed などのテキスト自動編集ツールに食わせることで，
+SMF を色々な切り口で自動編集することが容易になっています。
+\n
+Netherland の Piet van Oostrum さんによって作成されました。
+&
+Converter between standard MIDI file and ASCII text format
+&
+Mf2t and t2mf are programs to convert a standard MIDI file (SMF) into
+an ASCII representation of it that is both compact and easily parsable,
+and reparses the text representation into SMF.  The text representation
+is chosen such that it is easily recognized and manipulated by programs
+like sed.  Yet it is also humanly readable so that it can be manipulated
+with an ordinary text editor.
+\n
+Mf2t is created by Piet van Oostrum in Netherland.

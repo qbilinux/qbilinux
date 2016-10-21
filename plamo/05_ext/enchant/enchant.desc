@@ -1,0 +1,10 @@
+enchant & y & y & y & y
+Enchantスペルチェッカー
+&
+Enchantはさまざまな言語に対応可能なスペルチェック用ライブラリです
+&
+Enchant spell check library
+&
+On the surface, Enchant appears to be a generic spell checking library.
+You can request dictionaries from it, ask if a word is correctly spelled,
+get corrections for a misspelled word, etc..

@@ -1,0 +1,9 @@
+lshw & y & y & y & y
+ハードウェア一覧表示コマンド
+&
+lshw はインストールされているハードウェアの一覧リストを出力
+するコマンドです。
+&
+lshw
+&
+lshw is a command to display installed hardware lists.

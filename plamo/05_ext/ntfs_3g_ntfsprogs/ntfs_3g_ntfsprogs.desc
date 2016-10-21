@@ -1,0 +1,10 @@
+ntfs_3g_ntfsprogs & y & y & y & y
+NTFS-3g : 書き込み可能な NTFS の実装
+&
+NTFS-3gはTuxera社が公開しているフリーなNTFSの実装で、
+Linuxからはfuseを使ってNTFSの書き込みも可能になっています。
+&
+NTTFS-3g: Tuxera's NTFS implementation
+&
+NTFS-3g is a free NTFS implementation by Tuxera.
+NTFS-3g arrows you to write NTFS from Linux using fuse.

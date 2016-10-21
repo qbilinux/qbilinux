@@ -1,0 +1,17 @@
+dnsmasq & y & y & y & y
+dnsmasq (簡易 DNS/DHCP サーバ)
+&
+dnsmasq は軽量で，DNS フォワーダや DHCP サーバをお手軽に構築できます。
+小規模ネットワーク向けに，DNS(もしくは DHCP)を提供するように設計され，
+グローバルな DNS には保持されないローカルマシンの名前を解決できます。
+\n
+dnsmasq は，Simon Kelley によって書かれました。
+&
+dnsmasq (small DNS and DHCP server)
+&
+Dnsmasq is a lightweight, easy to configure DNS forwarder and DHCP
+server.  It is designed to provide DNS (and optionally DHCP) to a
+small network, and can serve the names of local machines which are not
+in the global DNS.
+\n
+Dnsmasq was written by Simon Kelley.

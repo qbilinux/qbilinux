@@ -1,0 +1,14 @@
+aaa_base & y & y & y & y
+Linux の基本的なファイルシステムパッケージ
+&
+基本的なディレクトリ構造を作成して、root のメールボックス
+に Linux 歓迎メールを追加します。:-) このパッケージは、
+一番最初にインストールされ、決してアンインストールしては
+いけません。
+&
+Basic Linux file system package
+&
+This package makes basic directory structure and adds an
+email to root's mailbox welcoming them to Linux. :)
+This package should be installed first, and never
+uninstalled.

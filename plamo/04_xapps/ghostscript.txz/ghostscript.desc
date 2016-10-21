@@ -1,0 +1,16 @@
+ghostscript & y & y & y & y
+GPL ghostsciprt
+&
+ESP版ghostcriptの機能がマージされたGPL版Ghostscript パッケージです。
+多くのプリンタドライバが static に組み込まれており、標準では
+x11 ドライバが使用されます。デフォルトでは日本語フォントはIPA
+明朝，IPAゴシックを使う設定になっています．ドキュメントは
+/usr/doc/gs-XXX/ にあります。
+このパッケージは CMPS キットを含んでいます．
+&
+ESP Ghostsciprt
+&
+GPL Ghostscript which includes ESP Ghostscript that supports
+CUPS is an interpreter for the PostScript language.
+Ghostscript in this package has various
+built-in printer drivers.

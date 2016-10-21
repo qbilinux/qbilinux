@@ -1,0 +1,11 @@
+libunique & y & y & y & y
+シングルインスタンス用ライブラリ libuniq
+&
+libunique は同時実行インスタンスを単一にするためのライブラリです
+&
+libunique
+&
+LibUnique is a library for writing single instance applications, that
+is applications that are run once and every further call to the same
+binary either exits immediately or sends a command to the running
+instance.

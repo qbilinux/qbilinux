@@ -1,0 +1,13 @@
+cryptsetup & y & y & y & y
+暗号化ブロックデバイスの設定
+&
+cryptsetup は，暗号化デバイスの設定用コマンドラインインタフェースを提供
+します。Linux カーネルのデバイスマッパーターゲット dm-crypt を使い暗号
+化されます。このバージョンの cryptsetup は LUKS のサポートが統合されて
+います。
+&
+configures encrypted block devices
+&
+Cryptsetup provides a command-line interface for configuring encrypted
+devices.  This is done using the Linux kernel device mapper target
+dm-crypt.  This version of cryptsetup has integrated support for LUKS.

@@ -1,0 +1,12 @@
+dcron & y & y & y & y
+コマンド自動実行ツール
+&
+dcron は指定した日時に繰り返しコマンドを実行するための
+コマンドです．dcron は vixie cron ほど高機能な指定はできませんが
+必要な機能はそなえています．
+&
+Dillon cron
+&
+dcron is a command to execute registerd commands at registered
+date and time. Dcron doesn't have so many features like vixie cron,
+but has equipped with required features.

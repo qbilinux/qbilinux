@@ -1,0 +1,11 @@
+grep & y & y & y & y
+文字列検出コマンド
+&
+GREP(Global Regular ExPression)は入力ファイル(あるいは標
+準入力)に指定されたパターンにマッチする行があるかどうか
+を検出するツールです。
+&
+GNU grep
+&
+GREP(Global Regular ExPression) command which can handle
+large files(over 2GB file).

@@ -1,0 +1,8 @@
+system_tools_backends & y & y & y & y
+システムツール用バックエンド
+&
+DBus経由でシステム情報を管理するためのツール
+&
+system tools backends
+&
+daemon for managing system information on DBus

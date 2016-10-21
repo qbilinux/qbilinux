@@ -1,0 +1,9 @@
+wavpack & y & y & y & y
+可逆圧縮フォーマット wavpack
+&
+wavpack は可逆(ロスレス)形式でオーディオファイルを
+圧縮するツールです。
+&
+loss-less compressed format wavpack
+&
+wavpack is a loss-less audio file compressor.

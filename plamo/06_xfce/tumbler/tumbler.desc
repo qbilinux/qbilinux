@@ -1,0 +1,8 @@
+tumbler & y & y & y & y
+DBus用サムネイラーTumbler
+&
+DBus経由で各種画像のサムネイルを操作するためのサービス
+&
+tumbler thumbnailer
+&
+tumbler is a DBus based service to make thumbnails

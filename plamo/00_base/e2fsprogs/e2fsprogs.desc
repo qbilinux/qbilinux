@@ -1,0 +1,20 @@
+e2fsprogs & y & y & y & y
+ext2/ext3 fs 用各種ユーティリティ
+&
+ext2/ext3 ファイルシステムを操作するための各種ユーティリティ
+です。このパッケージには以下のようなコマンドが入っていま
+す：chattr, lsattr, mke2fs, mklost+found, tune2fs, fsck,
+e2fsck, debugfs, dumpe2fs,flushb, badblocks。
+\n
+これらのユーティリティは Remy Card(ext2fs の開発者兼管理者)と
+Thedore T'so が作成しました。
+&
+ext2/ext3 fs utiles
+&
+utilites for operate ext2/ext3 filesystem
+includes :
+chattr, lsattr, mke2fs, mklost+found, tune2fs, fsck,
+e2fsck, debugfs, dumpe2fs,flushb, badblocks.
+\n
+These utilities were made by Remy Card and
+Thedore T'so.

@@ -1,0 +1,8 @@
+hdparm & y & y & y & y
+ATA(IDE) HDパラメータ操作コマンド
+&
+hdparm は ATA ディスクの各種パラメータを操作するためのコマンドです
+&
+hdparm
+&
+hdparm is a command to operate some parameters of ATA disks.

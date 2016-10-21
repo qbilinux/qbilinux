@@ -1,0 +1,9 @@
+dbus_glib & y & y & y & y
+D-Bus glib binding
+&
+アプリ間で周辺機器の情報をやりとりするD-Busをglibから使うための
+バインディングです．
+&
+D-Bus glib binding
+&
+dbus_glib is a glib binding for message bus system, D-Bus.

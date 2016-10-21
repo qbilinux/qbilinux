@@ -1,0 +1,10 @@
+esound & y & y & y & y
+Esound サウンドシステム
+&
+esound はネットワーク透過の音声サーバです。
+複数のクライアントからの出力をミキシングすることもできます。
+&
+esound
+&
+esound is a network-transparent sound server.
+It can mix up sound outputs from some clients.

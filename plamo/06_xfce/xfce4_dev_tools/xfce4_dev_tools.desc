@@ -1,0 +1,9 @@
+xfce4_dev_tools  & n & y & y & y
+Xfce4 用開発ツール
+&
+Xfce4 用のソフトウェアを開発するためのツール類
+&
+Xfce4 development tools
+&
+The Xfce developer tools provide a collection of scripts and M4 macros 
+that are required to build the Xfce core desktop components.

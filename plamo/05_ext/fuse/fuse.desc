@@ -1,0 +1,9 @@
+fuse & y & y & y & y
+ユーザ領域用ファイルシステムサービス
+&
+fuseは，ユーザ領域用プログラムにファイルシステムを実装するためのインターフェイスを提供
+します
+&
+Filesystem in User space
+&
+Filesystem in User space

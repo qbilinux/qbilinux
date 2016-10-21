@@ -1,0 +1,9 @@
+emacs_w3m & y & y & y & y
+Emacs 用 WWW ビューワ(w3m)
+&
+テキストベースのウェブブラウザ w3m を使って，Emacs 経由で Web ページを
+閲覧可能にします。
+&
+WWW viewer for Emacs
+&
+emacs_w3m is a WWW browser for Emacs which uses w3m.

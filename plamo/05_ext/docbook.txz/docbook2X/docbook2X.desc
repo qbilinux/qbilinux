@@ -1,0 +1,8 @@
+docbook2X & y & y & y & y
+Docbookコンバータ docbook2X
+&
+Docbook形式で書かれたドキュメントを
+Unixのman形式やGNU texinfo形式に変換する
+ツール
+&
+&

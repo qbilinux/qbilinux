@@ -1,0 +1,10 @@
+devel & n & y & y & y
+C/C++ 言語用開発環境
+&
+gcc/g++ や gmake, bison, flex, binutils  など，
+主に C/C++ 言語用の開発環境です
+&
+C/C++ language development tools
+&
+Language envrionment for gcc/g++, which includes
+gmake, bison flex, binutils

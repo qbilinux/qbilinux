@@ -1,0 +1,7 @@
+libxshmfence & y & y & y & y
+libxshmfence
+&
+Linuxのfutexes(Fast User-space mutexes)上に
+Xのイベント用APIを提供するためのライブラリ
+&
+&

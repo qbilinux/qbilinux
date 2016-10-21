@@ -1,0 +1,9 @@
+unclutter & y & y & y & y
+カーソル消去プログラム
+&
+uncluterは一定時間操作されなかったカーソルポインタを消去して，
+文書の閲覧や文字の入力をしやすくするプログラムです．
+&
+unclutter
+&
+unclutter is a small command to hide un-moved cursor.

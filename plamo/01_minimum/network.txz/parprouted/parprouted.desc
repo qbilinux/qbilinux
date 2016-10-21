@@ -1,0 +1,14 @@
+parprouted & y & y & y & y
+透過 IP(第 3 層)プロキシ ARP ブリッジツール
+&
+透過なファイアウォールを作成したり，異なる MAC プロトコルのネットワーク
+をブリッジするのに便利なツールです。また，通常のブリッジと異なり，無線
+ノード背後のイーサネットネットワークをブリッジする際，WDS 機能や第 2 層
+のブリッジを使わずに，プロキシ ARP ブリッジを可能にします。
+&
+transparent IP (Layer 3) proxy ARP bridging tool
+&
+This is useful for creation of transparent firewalls and bridging
+networks with different MAC protocols.  Also, unlike standard
+bridging, proxy ARP bridging allows to bridge Ethernet networks
+behind wireless nodes without using WDS or layer 2 bridging.

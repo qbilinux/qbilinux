@@ -1,0 +1,7 @@
+libiodbc & y & y & y & y
+ODBC用ライブラリ
+&
+RDBMSにアクセスするためのODBC(Open DataBase Connectivity)
+機能を提供するライブラリ
+&
+&

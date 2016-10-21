@@ -1,0 +1,10 @@
+apr & y & y & y & y
+Apache Portable Runtime library
+&
+apr library は，元々 Apache httpd 用に開発された機能のうち，
+他のソフトウェアからも使われることが多い機能をライブラリ化した
+ものです．
+&
+Apache Portable Runtime library
+&
+APR is a portable library developed by Apache project.

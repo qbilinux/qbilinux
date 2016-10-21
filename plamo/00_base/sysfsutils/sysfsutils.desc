@@ -1,0 +1,10 @@
+sysfsutils & y & y & y & y
+sys fs ユーティリティ
+&
+最近のカーネルが採用している sysfs(/sys) を操作するための
+ユーティリティ集
+&
+sysfs utils
+&
+this package contains tools for manipulating sysfs which adopted
+current linux kernel.

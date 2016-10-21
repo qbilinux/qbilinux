@@ -1,0 +1,9 @@
+doxygen & y & y & y & y
+ドキュメント生成ツール doxygen
+&
+doxygen はソースコードに埋め込まれた情報から各種ドキュメントを生成するためのツールです．
+&
+source code documentation generating tool
+&
+Doxygen is a documentation system for C++, C, Java, Objective-C, Python,
+IDL (Corba and Microsoft flavors), Fortran, VHDL, PHP, C#, and to some extent D.

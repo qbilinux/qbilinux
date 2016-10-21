@@ -1,0 +1,9 @@
+docbook_dsssl & y & y & y & y
+Docbook DSSSL スタイルシート
+&
+DocBook DTD形式で記述されたドキュメントを
+DSSSL(Document Style Semantics and Style Language)
+経由でHTML形式やプリントアウト形式等に変換するための
+スタイルシート
+&
+&

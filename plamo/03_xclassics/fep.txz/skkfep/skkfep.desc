@@ -1,0 +1,12 @@
+skkfep & y & y & y & y
+SKK 風の漢字入力フロントエンド skkfep
+&
+skkfep は，NEmacs/Mule 用の漢字入力システムである SKK と似た，UNIX用の
+漢字入力フロントエンドです。skkfep を使えば，NEmacs/Mule を使っていない
+ときにも SKK 風の日本語入力が実現できます。
+&
+SKK-like Kana-to-Kanji Front End Processor skkfep
+&
+Skkfep is a kanji input front end for UNIX like to SKK that is the
+kanji input system for NEmacs/Mule.  Even if NEmacs/Mule is not used,
+SKK-like Japanese input can be achieved by using skkfep.

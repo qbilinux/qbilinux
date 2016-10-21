@@ -1,0 +1,9 @@
+lsof & y & y & y & y
+ファイル使用プロセス走査ツール
+&
+lsof は各種プロセスがどのようにリソースを利用しているかを調べるための
+コマンドです
+&
+lsof
+&
+lsof is a command to show how all processes use CPU resources.

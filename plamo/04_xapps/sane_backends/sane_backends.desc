@@ -1,0 +1,8 @@
+sane_backends & y & y & y & y
+スキャナ制御用ライブラリ
+&
+スキャナをコントロールするためのライブラリです。
+&
+sane-backends 1.0.17
+&
+SANE is a library for controlling scanner.

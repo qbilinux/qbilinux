@@ -1,0 +1,10 @@
+zenity & y & y & y & y
+ダイアログボックスツールzenity
+&
+zenityはGTK+のダイアログボックスを
+スクリプト等から簡単に操作するためのツールです
+&
+zenity dialog box tool
+&
+zenity is a program that will display GTK+ dialogs,
+and return the users input. 

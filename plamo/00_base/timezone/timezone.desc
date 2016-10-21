@@ -1,0 +1,9 @@
+timezone & y & y & y & y
+タイムゾーン情報集
+&
+glibc2から分離されたタイムゾーンのデータファイルと
+設定用コマンドです。
+&
+zoneinfo-2003e + configuration commands
+&
+time zone data and configuration commands.

@@ -1,0 +1,8 @@
+libzip & y & y & y & y
+libzip
+&
+zip アーカイブを扱うためのライブラリです。
+&
+libzip
+&
+C library for reading, creating, and modifying zip archives.

@@ -1,0 +1,7 @@
+gcc & y & y & y & y
+GCC/Cコンパイラ
+&
+GCC(GNU Compiler Collection)のベースとなるCコンパイラ部
+c++やgcj等にはこのパッケージが必要
+&
+&

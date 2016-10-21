@@ -1,0 +1,11 @@
+desktop_file_utils & n & y & y & y
+デスクトップファイルユーテイリテイ
+&
+desktop-entry-specification に従ったデスクトップ環境を
+提供するためのユーテイリテイ
+&
+Desktop file utilities for desktop-entry spec
+&
+desktop-file-utils contains a few command line utilities for working
+with desktop entries. It requires GLib to compile, because the
+implementation requires Unicode utilities and such.

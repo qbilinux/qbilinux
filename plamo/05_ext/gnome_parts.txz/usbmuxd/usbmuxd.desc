@@ -1,0 +1,7 @@
+usbmuxd & y & y & y & y
+USB multi-plexer デーモン
+&
+USB越しにiPodやiPhoneを操作する際，
+アクセスを調整するのに必要なデーモン
+&
+&

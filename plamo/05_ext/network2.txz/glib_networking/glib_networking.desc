@@ -1,0 +1,7 @@
+glib_networking & y & y & y & y
+Glib用ネットワーク関連モジュール
+&
+Glibにネットワーク関連の機能を追加するための
+giomodule群
+&
+&

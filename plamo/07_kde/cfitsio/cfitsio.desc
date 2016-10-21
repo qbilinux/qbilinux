@@ -1,0 +1,8 @@
+cfitsio & y & y & y & y
+cfitsio FITSファイル操作ライブラリ
+&
+cfitsioは天文学分野で広く利用されている
+FITS(Flexible Image Transport System)形式のファイルを
+操作するためのライブラリです．
+&
+&

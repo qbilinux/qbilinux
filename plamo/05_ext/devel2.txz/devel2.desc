@@ -1,0 +1,8 @@
+devel2 & y & y & y & y
+開発環境その2
+&
+gfortranやgcjといった比較的使う機会の少ないGCCのフロントエンドと，
+boostやfftw,fribidiといった用途が限定的なライブラリ等を集めて
+います
+&
+&

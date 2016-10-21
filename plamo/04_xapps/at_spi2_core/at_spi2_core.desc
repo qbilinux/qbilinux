@@ -1,0 +1,8 @@
+at_spi2_core & y & y & y & y
+AT SPI2 core
+&
+GNOME Accessibilityプロジェクトの成果であるAt-Spi2のコアパッケージで，
+GNOME環境で利用できるユーザ補助機能へのインターフェイスとアプリケーション
+向けのライブラリを提供します．
+&
+&

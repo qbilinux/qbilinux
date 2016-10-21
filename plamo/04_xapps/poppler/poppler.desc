@@ -1,0 +1,8 @@
+poppler & y & y & y & y
+PDF用ライブラリ poppler
+&
+popplerはxpdfを元にしたPDF処理用ライブラリです．
+&
+popler: shared library for PDF
+&
+popler is a shared library for PDF.

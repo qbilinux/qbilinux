@@ -1,0 +1,9 @@
+libdvdread & y & y & y & y
+DVDビデオ読出ライブラリ
+&
+DVDビデオイメージを読み出す基本機能を提供するライブラリです。
+&
+DVD-Video Reading Library
+&
+A library which provides a simple foundation for reading
+DVD-Video images.

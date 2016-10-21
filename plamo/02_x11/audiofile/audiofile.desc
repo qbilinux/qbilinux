@@ -1,0 +1,10 @@
+audiofile & y & y & y & y
+オーディオファイルライブラリ
+&
+さまざまな形式のディジタル音声ファイルを
+共通の方法で操作できるようにするライブラリ
+&
+audiofile
+&
+The Audio File Library provides a uniform programming interface to
+standard digital audio file formats.

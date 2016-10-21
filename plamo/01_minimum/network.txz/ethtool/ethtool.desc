@@ -1,0 +1,9 @@
+ethtool & y & y & y & y
+イーサネットカード設定ツール ethtool
+&
+ethtool はイーサネットの速度や送受信の可否等を設定するための
+ツールです
+&
+ethernet configuration tool
+&
+ethtool is a command to configure ethernet card.

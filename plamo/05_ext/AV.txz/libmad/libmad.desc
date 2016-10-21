@@ -1,0 +1,10 @@
+libmad & y & y & y & y
+MPEG オーディオデコーダライブラリ
+&
+MPEG-1/MPEG-2 形式のオーディオデータを操作するためのライブラリ
+&
+MPEG Audio Decoder Library
+&
+A MPEG audio decoder library which currently supports MPEG-1
+and the MPEG-2 extension. All three audio layers (Layer I,
+Layer II and Layer III a.k.a. MP3) are fully implemented.

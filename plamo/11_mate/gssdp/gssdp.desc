@@ -1,0 +1,9 @@
+gssdp & y & y & y & y
+GObjectベースのSSDP
+&
+ネットワーク上にある各種サービスを自動的に見つけるための
+SSDP(Simple Service Discovery Protocol)をGObject経由で操作するための
+パッケージ
+&
+A GObject-based API for handling resource discovery and announcement over SSDP
+&

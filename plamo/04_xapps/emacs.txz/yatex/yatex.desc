@@ -1,0 +1,8 @@
+yatex & y & y & y & y
+TeX 文章作成支援マクロ(野鳥) YaTeX
+&
+TeX/LaTeX の入力・編集を支援するための Emacs 用マクロパッケージです。
+&
+YaTeX (Yet Another TeX macro)
+&
+Yatex helps TeX/LaTeX writing with Emacs.

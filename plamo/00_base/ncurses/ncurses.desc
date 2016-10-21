@@ -1,0 +1,12 @@
+ncurses & y & y & y & y
+キャラクタ画面制御用ライブラリ
+&
+ncurses は，コンソール(テキスト)画面の表示を制御するための機能を
+提供するライブラリです．less や vi といった基本的なアプリケーション
+がこのライブラリを利用するので忘れずにインストールしてください．
+&
+ncurses  libraries
+&
+ncurses library provides fundamental functions for many programs which
+handle console(test) screen. Fundamental programs such as less and vi
+use this library, so you must install this package.

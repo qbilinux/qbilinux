@@ -1,0 +1,8 @@
+libffi & y & y & y & y
+Foreign Function Interfaceライブラリ
+&
+libffiはPythonやJavaといった言語のライブラリを
+C言語から使うような，異なる言語間の関数呼出を
+可能にするライブラリです
+&
+&

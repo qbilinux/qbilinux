@@ -1,0 +1,9 @@
+gamin & y & y & y & y
+ファイル変更モニタ gamin
+&
+gamin は SGI が公開している FAM(File Alteration Monitor)と互換性を持つように
+開発されているファイル/デイレクトリの変更モニタツールです．
+&
+gamin : another file alternate monitor
+&
+gamin in another file and directory monitoring system

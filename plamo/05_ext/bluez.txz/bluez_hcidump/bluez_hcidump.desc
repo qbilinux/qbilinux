@@ -1,0 +1,7 @@
+bluez_hcidump & y & y & y & y
+HCIデータダンプツール
+&
+Bluetooth機器がやりとりするHCI(Host Controller
+Interface)データをダンプするツール
+&
+&

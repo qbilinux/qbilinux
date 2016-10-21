@@ -1,0 +1,9 @@
+at & y & y & y & y
+時限実行ツール
+&
+at/atd は指定した時刻に登録したコマンドを実行するための
+コマンドです．
+&
+at
+&
+at/atd invokes a command at registerd time.

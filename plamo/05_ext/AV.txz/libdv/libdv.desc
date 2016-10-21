@@ -1,0 +1,10 @@
+libdv & y & y & y & y
+Quaser DV コーデックライブラリ
+&
+DVビデオで用いられているDVコーデックを処理するためのライブラリ
+&
+libdv:Quaser DV codec
+&
+The Quasar DV codec (libdv) is a software codec for DV video,
+the encoding format used by most digital camcorders, typically
+those that support the IEEE 1394 (a.k.a. FireWire or i.Link) interface

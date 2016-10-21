@@ -1,0 +1,10 @@
+xosview & y & y & y & y
+システム状況監視コマンド
+&
+CPU やメモリ、スワップ、ディスクの利用状況をグラフィカル
+に表示するプログラムです。
+&
+System usage viewer xosview
+&
+xosview displays system usages such as CPU load,
+mem, disk swap, etc. graphically.

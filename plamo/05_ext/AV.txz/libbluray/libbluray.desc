@@ -1,0 +1,8 @@
+libbluray & y & y & y & y
+Bluray disc 操作用ライブラリ
+&
+Bluray discを操作するためのライブラリですが，
+商用のBluray discはたいてい暗号化されており，
+このライブラリだけでは再生できません
+&
+&

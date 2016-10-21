@@ -1,0 +1,7 @@
+libassuan & y & y & y & y 
+IPC通信暗号化ライブラリ libassuan
+&
+プロセス間通信を暗号化するAssuanプロトコルをGnuPGを用いて
+実現するためのライブライリ
+&
+&

@@ -1,0 +1,8 @@
+libarchive & y & y & y & y
+libarchive
+&
+アーカイブの読み書きを行うためのライブラリです。
+&
+libarchive
+&
+a programming library that can create and read several different streaming archive formats

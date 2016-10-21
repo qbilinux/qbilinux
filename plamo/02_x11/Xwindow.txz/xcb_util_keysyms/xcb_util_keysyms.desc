@@ -1,0 +1,6 @@
+xcb_util_keysyms & y & y & y & y
+xcb-util-keysyms ライブラリ
+&
+xcb-utilライブラリにkeysyms関連の機能を追加するライブラリ
+&
+&

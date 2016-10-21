@@ -1,0 +1,10 @@
+mp4v2 & y & y & y & y
+MP4 データ操作用ライブラリ
+&
+ISO-IEC:14496-1:2001 MPEG-4 Systems で定義された mp4 形式のマルチメディア
+データを操作するためのライブラリ
+&
+mp4v2
+&
+The MP4v2 library provides an API to create and modify mp4 files as
+defined by ISO-IEC:14496-1:2001 MPEG-4 Systems.

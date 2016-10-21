@@ -1,0 +1,10 @@
+libmateweather & y & y & y & y
+気象情報収集用ライブラリ
+&
+オンラインサービスから各地の気象についての
+情報を収集するためのライブラリ
+&
+library to access weather information from online services
+&
+libmateweather is a library to access weather information from online
+services for numerous locations.

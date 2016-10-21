@@ -1,0 +1,7 @@
+automake & y & y & y & y
+GNU Automake
+&
+GNU Autoconfと連携した,Makefileのテンプレートファイル
+(Makefile.in)を生成するためのツール
+&
+&

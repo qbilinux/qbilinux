@@ -1,0 +1,13 @@
+startup_notification & y & y & y & y
+ソフトウェア起動通知用ライブラリ
+&
+startup-notification ライブラリは，ダブルクリック等で
+起動されたソフトウェアの情報を，起動した側のソフトウェアに
+伝え，起動中は時間待ちアイコンを表示したりするなどの機能を
+実現します
+&
+startup notification library
+&
+startup notification is a mechanism allowing a desktop
+environment to track application startup, to provide user
+feedback and other features.

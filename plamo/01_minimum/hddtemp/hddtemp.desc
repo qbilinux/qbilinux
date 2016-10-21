@@ -1,0 +1,10 @@
+hddtemp & y & y & y & y
+HDD温度監視ツール
+&
+S.M.A.R.T. 機能に対応しているHDD の温度情報を監視する
+ツールです
+&
+HDD temperature monitoring tool
+&
+hddtemp can monotor temperature of the HDD drive
+which has S.M.A.R.T. capability.

@@ -1,0 +1,10 @@
+devs & y & y & y & y
+デバイスファイル
+&
+/dev ディレクトリへインストールされる、各種ハードウェア
+用スペシャルファイルです。
+&
+device files
+&
+These are special device files for each hardware and
+installed in /dev directory

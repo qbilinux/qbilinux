@@ -1,0 +1,10 @@
+nkf & y & y & y & y
+文字コード変換コマンド
+&
+NKFはUNIXの世界で古くから使われている文字コード変換ツールです。
+バージョン2以降ではUTF-8も変換できるようになりました。
+&
+Network Kanji Filter
+&
+NKF is a character code conversion command which can handle
+UTF-8.

@@ -1,0 +1,10 @@
+libxfce4util & n & y & y & y
+Xfce4 用ユーティリティ集
+&
+Xfce4 で使うさまざまなユーティリティを集めたパッケージ
+&
+Utilities for Xfce4
+&
+The Utilities and Scripts provides an about dialog for Xfce 4, an
+application launcher, and several useful scripts that are also used by
+other Xfce components such as the panel and the desktop menu.
