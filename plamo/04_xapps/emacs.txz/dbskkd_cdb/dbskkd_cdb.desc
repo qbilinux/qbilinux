@@ -1,0 +1,10 @@
+dbskkd_cdb & y & y & y & y
+dbskkd_cdb
+&
+dbskkd-cdb は，skkserv と同様の機能を提供する SKK 用の共通辞書サーバー
+で，辞書は D.J.Bernstein の cdb を使ってデータベース化し，検索を高速化
+しています。
+&
+dbskkd_cdb
+&
+dbskkd_cdb is a common dictionary server for SKK.

@@ -1,0 +1,12 @@
+dhcp & y & y & y & y
+DHCP 操作ツール
+&
+ISC が配布している DHCP server/client パッケージです。
+Plamo-3.x までの Plamo は dhcpcd を採用していましたが、
+4.0 では ISC DHCP に変更しました。
+&
+ISC DHCP
+&
+DHCP server/client packaged provided by ISC.
+Plamo 3.x used dhcpcd package, but 4.0 uses ISC version
+of DHCP package.

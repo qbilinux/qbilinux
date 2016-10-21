@@ -1,0 +1,12 @@
+berkeley_db & y & y & y & y
+バークレーDBシステム
+&
+Sleepycat 社がメンテナンスしている Berkeley DB の
+最新版です．古いバージョン(1.85)との互換性を
+とるためのヘッダファイルも用意されています．
+&
+Berkeley DB
+&
+Berkeley DB library which maintained by Sleepycat inc.
+This is the newest version of Berkeley DB 4.x series now and
+includes compatible header files for older(1.85) version.

@@ -1,0 +1,11 @@
+libxfcegui4  & n & y & y & y
+Xfce4 GUI 用ライブラリ
+&
+Xfce4 の各種ライブラリのうち GUI に関係するライブラリを集めたパッケージ
+&
+Xfce4 GUI library
+&
+The core librairies provide common functionnalities to the Xfce
+environment. There are three libraries which provides non-graphical
+helper functions, widgets and convenience functions for graphical user
+interfaces, and functions for settings management.

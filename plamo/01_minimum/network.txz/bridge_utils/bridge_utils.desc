@@ -1,0 +1,9 @@
+bridge_utils & y & y & y & y
+イーサネットブリッジ設定ツール
+&
+bridge-utils は Linux をイーサネットブリッジとして利用
+する際に必要となるツールです．
+&
+ethernet bridge configuration tool
+&
+bridge-utils is a tool to manage Linux ethernet-bridge.

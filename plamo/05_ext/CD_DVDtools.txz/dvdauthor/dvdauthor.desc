@@ -1,0 +1,10 @@
+dvdauthor & y & y & y & y
+DVD-Video ファイルシステムを作成
+&
+dvdauthor は DVD プレイヤーに挿入すると再生する DVD ムービーを，
+有効な mpeg2 ストリームから生成するプログラムです。
+&
+create DVD-Video file system
+&
+dvdauthor is a program that will generate a DVD movie from a valid
+mpeg2 stream that should play when you put it in a DVD player.

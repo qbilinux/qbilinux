@@ -1,0 +1,7 @@
+emacs_mini & y & y & y & y
+emacs without X
+&
+Xlib等，GUI用のライブラリをリンクしない
+コンソール用のEmacs
+&
+&

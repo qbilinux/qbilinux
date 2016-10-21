@@ -1,0 +1,10 @@
+usbutils & y & y & y & y
+USB情報表示ツール
+&
+usbutils(lsusb)は lspci と同様，カーネルに認識されているUSB の
+ベンダー ID 等を表示するツールです
+&
+usbutils
+&
+usbutils(lsusb) is a command to show USB id listings which alike
+lspci.

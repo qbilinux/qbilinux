@@ -1,0 +1,10 @@
+socat & y & y & y & y
+ソケットリレーツール
+&
+socat は 2 つの独立したデータチャンネル間で，双方向データ転送を中継する
+ツールです。
+&
+socket relay tool
+&
+socat is a relay for bidirectional data transfer between two
+independent data channels.

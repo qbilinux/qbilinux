@@ -1,0 +1,14 @@
+grub & y & y & y & y
+GRand Unified Boot loader
+&
+GRUB は元々 GNU HURD 用に開発されたブートローダ
+ですが、Linux FreeBSD, NetBSD などもブート可能
+です。Linux98 ではデフォルトのブートローダが
+GRUB になっています．
+&
+GRUB : GRand Unified Boot loader
+&
+GRUB was originally developed for GNU HURD, but
+it can also boot Linux, FreeBSD and NetBSD.
+Plamo Linux uses LILO for default bootloader,
+but installation FD was booted by GRUB.

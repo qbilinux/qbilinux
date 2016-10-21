@@ -1,0 +1,6 @@
+xf86_input_vmmouse & y & y & y & y
+xf86_input_vmmouse
+&
+VMwareのVMMouseプロトコル用ドライバ
+&
+&

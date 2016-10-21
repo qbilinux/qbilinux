@@ -1,0 +1,11 @@
+libcddb & y & y & y & y
+CDDB アクセスライブラリ libcddb
+&
+音楽CDのタイトルやインデックスを集めたCDDBデータベースに
+アクセスするためのライブラリ
+&
+CDDB access library
+&
+This module/script gets the CDDB info for an audio cd.
+You need a cdrom drive and an active internet connection in order to
+read the access the CDDB information.

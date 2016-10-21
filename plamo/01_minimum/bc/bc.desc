@@ -1,0 +1,12 @@
+bc & n & y & y & y
+Gnu bc - 任意精度演算言語
+&
+bc はコマンドを逐次実行しながら対話的に計算する任意精度の演算
+言語です。文法は多少なりとも C 言語に似ています。
+この bc は GNU readline ライブラリをリンクしています。
+&
+Gnu bc - arbitrary calculator language
+&
+bc is a language that supports arbitrary precision numbers with
+interactive execution statements.
+This bc is linked with GNU readline library.

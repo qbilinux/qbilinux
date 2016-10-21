@@ -1,0 +1,6 @@
+xf86_video_intel & y & y & y & y
+xf86_video_intel
+&
+Intelの各種ビデオチップ用ドライバ
+&
+&

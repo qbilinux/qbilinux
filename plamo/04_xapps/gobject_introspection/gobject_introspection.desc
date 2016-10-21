@@ -1,0 +1,8 @@
+gobject_introspection & y & y & y & y
+GObject用API情報収集ツール
+&
+PythonやValaといった言語からGObjectを操作するさまざまなライブラリ類を
+利用するために，それらライブラリのAPI情報を収集し，
+XML形式で提供するためのツール．
+&
+&

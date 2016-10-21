@@ -1,0 +1,8 @@
+os_prober & y & y & y & y
+OS prober
+&
+grub2のgrub-makecfgから呼び出され，grub.cfgに
+Dual boot可能な設定を登録する際に必要となる，
+HDD上に存在している他のOSを検出するためのコマンド．
+&
+&

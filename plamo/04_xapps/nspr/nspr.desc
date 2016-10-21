@@ -1,0 +1,11 @@
+nspr & y & y & y & y
+NSPR(NetScape Portable Runtime)ライブラリ
+&
+NSPRはNetscape社が公開したスレッドやI/O処理を抽象化するための
+ライブラリです
+&
+NSPR(NetScape Portable Runtime)library
+&
+Netscape Portable Runtime, or NSPR, a platform abstraction library,
+makes all operating systems it supports appear the same
+to (for example) Mozilla-style web-browsers.

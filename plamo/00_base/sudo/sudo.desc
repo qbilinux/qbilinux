@@ -1,0 +1,11 @@
+sudo & y & y & y & y
+ルート権限代行コマンド
+&
+sudo は，実行に root 権限が必要なコマンドを
+あらかじめ指定したユーザのみに実行を許可する
+ためのコマンドです．
+&
+sudo
+&
+Sudo afford special users to use commands which
+should be used only by root.

@@ -1,0 +1,9 @@
+sg3_utils & y & y & y & y
+SG(SCSI Generic) utils ver3
+&
+SCSIデバイスを直接するコマンドを発行するユーテイリテイ
+&
+SG(SCSI Generic) utils ver3
+&
+sg3_utils contains commands for handling low level
+SCSI command.

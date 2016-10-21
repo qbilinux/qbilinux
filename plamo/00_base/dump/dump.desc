@@ -1,0 +1,10 @@
+dump & y & y & y & y
+ファイルシステムバックアップツール
+&
+dump/restore はファイルシステムの状態をテープやファイルに出力
+保存するためのコマンドです．
+&
+dump
+&
+dump/restore is a command to dump the filestystem(s) to tape
+media or file.

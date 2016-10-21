@@ -1,0 +1,11 @@
+attr & y & y & y & y
+attr 管理ツール
+&
+attr はファイルやディレクトリに与えられた属性を拡張するためのツールで，
+ACLと組み合わせると，従来よりもきめ細かいセキュリティ設定を可能にします
+&
+attr control tool
+&
+Extended attributes are name:value pairs associated permanently with
+files and directories, similar to the environment strings associated
+with a process.

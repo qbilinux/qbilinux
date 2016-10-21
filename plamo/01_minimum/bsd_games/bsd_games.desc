@@ -1,0 +1,18 @@
+bsd_games & y & y & y & y
+BSD 由来のテキスト版ゲーム集
+&
+BSD UNIX の時代から遊ばれ続けてきた CUI ベースのゲーム集です。
+このパッケージには以下のゲームが入っています。
+  arithmetic atc backgammon bcd caesar canfield cfscores cribbage
+  factor fish fortune hangman hunt mille monop morse number pom ppt
+  primes rain robots sail snake teachgammon trek wargames worm worms
+  wump
+&
+Classic games from BSD
+&
+CUI based game collection that first appeared in BSD UNIX.
+Some classical games running on console.  include:
+  arithmetic atc backgammon bcd caesar canfield cfscores cribbage
+  factor fish fortune hangman hunt mille monop morse number pom ppt
+  primes rain robots sail snake teachgammon trek wargames worm worms
+  wump

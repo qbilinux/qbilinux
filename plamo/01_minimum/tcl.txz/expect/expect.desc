@@ -1,0 +1,8 @@
+expect & y & y & y & y
+Tcl 用自動応答プログラム Expect
+&
+Expect は，対話的処理を自動的に進めるための Tcl 用拡張ライブラリです。
+&
+auto answer program Expect
+&
+expect can answer telnet, tp, passwd, fsck automatically.

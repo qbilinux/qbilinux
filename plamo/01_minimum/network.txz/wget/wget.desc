@@ -1,0 +1,10 @@
+wget & y & y & y & y
+ファイルダウンロードコマンド wget
+&
+wget は，ncftp 等の FTP クライアントとは異なり，非対話的に FTP/HTTP サ
+ーバに接続するためのプログラムです。FTP だけではなく HTTP プロトコルも
+理解するので Web サーバからデータをダウンロードする際にも利用できます。
+&
+wget
+&
+wget is a comand line program to retrieve URL.

@@ -1,0 +1,13 @@
+diffstat & y & y & y & y
+diff ファイルから変更のグラフを生成する
+&
+このプログラムは‘diff’プログラムの出力を読み込み，変更行の総数の
+ヒストグラムを生成する簡単なフィルタです。どのファイルが変更された
+のか，パッチファイルをざっと見るのに役立ちます。
+&
+produces graph of changes introduced by a diff file
+&
+This program is a simple filter that reads the output of the 'diff'
+program, and produces a histogram of the total number of lines that
+were changed.  It is useful for scanning a patch file to see which
+files were changed.

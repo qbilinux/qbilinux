@@ -1,0 +1,8 @@
+babl & y & y & y & y
+ピクセルフォーマット変換ライブラリ
+&
+bablは，さまざまな形式が存在するピクセルデータを，
+高速に相互変換するためのライブラリです
+&
+&
+babl is a dynamic, any to any, pixel format translation library.

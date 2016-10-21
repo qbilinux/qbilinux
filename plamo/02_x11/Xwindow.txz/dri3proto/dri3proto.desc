@@ -1,0 +1,7 @@
+dri3proto & y & y & y & y
+DRI3用プロトタイプ宣言
+&
+アプリケーションがXサーバを介さず直接ビデオカードを
+操作するためのDirect Rendering Infrastructure v3用の定義集
+&
+&

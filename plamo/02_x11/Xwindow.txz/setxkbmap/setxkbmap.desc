@@ -1,0 +1,6 @@
+setxkbmap & y & y & y & y
+setxkbmap
+&
+XKB拡張機能を用いてキーボードを設定するコマンド
+&
+&

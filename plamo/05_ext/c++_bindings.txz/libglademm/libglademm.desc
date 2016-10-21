@@ -1,0 +1,6 @@
+libglademm & y & y & y & y
+Glade用バインディング
+&
+Gtk+用GUIビリダーGladeをC++から使うためのバインディング
+&
+&

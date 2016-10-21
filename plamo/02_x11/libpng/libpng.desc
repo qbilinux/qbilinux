@@ -1,0 +1,9 @@
+libpng & y & y & y & y
+PNGフォーマット操作ライブラリ
+&
+libpng は PNG(Portable Network Graphics)画像を処理する
+際に必要となるライブラリです．
+&
+PNG library
+&
+libpng is a library for handle PNG(Portable Network Graphics) graphics.

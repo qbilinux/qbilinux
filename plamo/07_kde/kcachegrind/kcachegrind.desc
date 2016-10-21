@@ -1,0 +1,7 @@
+kcachegrind & y & y & y & y
+kcachegrind
+&
+valgrind等のプロファイル結果をグラフィカルに表示するための
+KDE用フロントエンド
+&
+&

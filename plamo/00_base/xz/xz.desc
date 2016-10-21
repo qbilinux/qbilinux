@@ -1,0 +1,9 @@
+xz & y & y & y & y
+XZ圧縮ツール
+&
+XZはLZMA(Lempel-Ziv-Markov chain algorithm)圧縮を
+採用したファイル圧縮ツールです．
+圧縮にはやや時間がかかりますが，展開は高速で，
+bzip2よりも高い圧縮率を誇ります．
+&
+&

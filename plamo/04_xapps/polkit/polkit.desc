@@ -1,0 +1,7 @@
+polkit & n & y & y & y
+Policy Kit
+&
+PolicyKitはシステム内の権限を sudo などよりも細かく制御する
+アプリケーション開発用ツールキットです
+&
+&

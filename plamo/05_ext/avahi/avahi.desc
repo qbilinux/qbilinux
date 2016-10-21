@@ -1,0 +1,16 @@
+avahi & n & y & y & y
+mDNS/DNS-SD サーバ avahi
+&
+Apple Rendezvous互換のmDNSディスカバリサービスとIP自設定機能
+を提供します。
+\n
+GNOMEは、mDNSディスカバリを用いたサーバブラウジングを提供し
+ています。また、iTunesサーバ等の構築時にも必須のサービスです。
+&
+avahi, A mDNS/DNS-SD Server
+&
+It provides mDNS discovery and IP autoconfiguration which is
+compatible to Apple's Rendezvous.
+\n
+GNOME has a feature of browsing via mDNS discovery. It also
+required to develop iTunes server.

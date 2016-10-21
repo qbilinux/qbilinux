@@ -1,0 +1,14 @@
+libgcc & y & y & y & y
+GCC用ライブラリ
+&
+GCCが利用する /usr/lib/libgcc_s.so.1 と /usr/lib/libstdc++.so.6.0.3 のみを
+抽出したライブラリです．d ディレクトリのgccパッケージをインストールすると
+上書きされますが，開発環境をインストールしていない環境でもこれらのライブ
+ラリを利用するために別途パッケージ化しました．
+&
+GCC basic libraries
+&
+Two shared libraries which includes libgcc_s.so.1 and
+libstdc++.so.6.0.3 which were used for GCC-compiled binaries.
+These libraries are provided by d/gcc package, but if you don't need gcc
+evironment, you should install this libraries.

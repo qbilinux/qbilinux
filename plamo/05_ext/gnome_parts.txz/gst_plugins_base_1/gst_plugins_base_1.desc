@@ -1,0 +1,7 @@
+gst_plugins_base_1 & y & y & y & y
+GStreamer-1.x Plugin用基盤
+&
+GStreamer-1.xで各種プラグインを利用するための
+基盤となるライブラリ
+&
+&

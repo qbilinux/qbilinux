@@ -1,0 +1,8 @@
+libproxy & y & y & y & y
+libproxy
+&
+プロキシ設定を自動化するためのライブラリ
+&
+libproxy
+&
+libproxy is a library that provides automatic proxy configuration management.

@@ -1,0 +1,8 @@
+libkdcraw & y & y & y & y
+libkdcraw RAWデータ操作用ライブラリ
+&
+libkdcrawは，Kipi-Pluginsプロジェクトの一部で，
+LibRawライブラリを使ってRAW形式の画像データをC++から操作するための
+ライブラリです．
+&
+&

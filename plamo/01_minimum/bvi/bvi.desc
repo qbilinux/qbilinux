@@ -1,0 +1,12 @@
+bvi & y & y & y & y
+バイナリファイルエディタ
+&
+bvi はバイナリファイル用でディスプレイ志向のエディタで，vi テキストエデ
+ィタをベースにしています。vi に慣れ親しんでいるなら，本エディタをすぐに
+立ち上げて，編集を始めることができます！
+&
+binary file editor
+&
+The bvi is a display-oriented editor for binary files, based on the vi
+text editor.  If you are familiar with vi, just start the editor and
+begin to edit!

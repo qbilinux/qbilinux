@@ -1,0 +1,14 @@
+man_pages & y & y & y & y
+オンラインドキュメント集
+&
+online で表示するマニュアルページ集です．Plamo では，デフォルトで
+日本語の man ページを表示するので，英語版のページを表示したい
+場合は LANG 環境変数を C に変更してください．これらの man ページ
+は http://www.tldp.org/docs.html#man で集積されています．
+&
+Man-pages(on line man pages)
+&
+On-line documents about linux commands. In Plamo Linux, default
+locale set to ja_JP.eucJP, so if you want to read English man
+pages, you need to "setnev LANG C"(in tcsh) or "export LANG=C"(bash)
+These pages have been compiled at http://www.tldp.org/docs.html#man.

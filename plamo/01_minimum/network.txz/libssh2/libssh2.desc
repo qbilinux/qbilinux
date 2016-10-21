@@ -1,0 +1,8 @@
+libssh2 & y & y & y & y
+SSH2 用ライブラリ libssh2
+&
+SSH2 プロトコルをライブラリとして使用するためのパッケージ
+&
+SSH2 library
+&
+A library for using SSH2 protocol

@@ -1,0 +1,15 @@
+cpio & y & y & y & y
+CPIO形式アーカイバ
+&
+GNU cpio パッケージです。cpio はファイルのアーカイブを管
+理するためのコマンドです。
+\n
+cpio はファイルを cpio や tar の形式のアーカイブファイルに
+保存したり取りだしたりします。これらの形式では、パス名や所有者、
+タイムスタンプ、アクセス権限などの情報が保存されます。
+&
+GNU cpio
+&
+GNU cpio package. cpio is a command for manage file archive.
+This package also include mt program for control tape streamer
+cpio can handle  cpio or tar format archives.

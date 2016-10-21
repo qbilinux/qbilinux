@@ -1,0 +1,10 @@
+bzip2 & y & y & y & y
+bzip2 ファイル圧縮コマンド
+&
+bzip2 は gzip よりも高い圧縮率を誇りますが，その分
+スピードが遅くメモリ使用量も gzip よりも多くなります．
+&
+bzip2
+&
+bzip2 is a compress/decompress command which compress more
+efficiently than gzip but needs more memories and run slower than gzip.

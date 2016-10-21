@@ -1,0 +1,8 @@
+obex_data_server & y & y & y & y
+OBEXデータサーバ
+&
+デバイス間でバイナリデータをやりとりする
+OBEX(OBject EXchange)プロトコルをDBus経由で
+利用するためのソフトウェア
+&
+&

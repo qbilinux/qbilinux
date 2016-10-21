@@ -1,0 +1,9 @@
+libspiro & y & y & y & y
+クロソイド曲線ライブラリ
+&
+高速道路の設計等によく利用されるクロソイド曲線(オイラー螺旋)を用いて
+美しい曲線を描くためのライブラリ
+&
+&
+Spiro is the creation of Raph Levien. 
+It simplifies the drawing of beautiful curves. 

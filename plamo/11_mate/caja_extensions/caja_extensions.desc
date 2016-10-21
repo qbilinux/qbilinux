@@ -1,0 +1,9 @@
+caja_extensions & y & y & y & y
+Cajaファイルマネージャ用拡張機能集
+&
+Cajaファイルマネージャに認証機能やイメージコンバーター，
+メール送信，端末実行等の機能を追加するパッケージ
+&
+Extensions for Caja file manager, include gksu, image-converter,
+open-terminal, send-to, and share.
+&

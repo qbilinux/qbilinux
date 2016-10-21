@@ -1,0 +1,10 @@
+pcre & y & y & y & y
+PERL互換正規表現用ライブラリ
+&
+PCRE(Perl-compatible regular expression library)は
+Perl 互換の正規表現機能を提供するためのライブラリです．
+&
+pcre
+&
+pcre(Perl Compatible Regular Express library) is a library
+which afford Perl compatible regular expression.

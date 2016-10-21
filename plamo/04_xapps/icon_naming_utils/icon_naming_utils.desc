@@ -1,0 +1,11 @@
+icon_naming_utils & n & y & y & y
+アイコン名操作用ツール
+&
+Icon Naming Specification で定められたアイコン名と
+従来のアイコン名の互換性をとるためのツール
+&
+icon naming utilities
+&
+icon-naming-utils is a script for maintaining backwards compatibility with
+current desktop icon themes, while migrating to the names specified in the
+Icon Naming Specification [1]

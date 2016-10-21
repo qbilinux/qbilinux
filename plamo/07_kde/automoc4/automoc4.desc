@@ -1,0 +1,7 @@
+automoc4 & y & y & y & y
+automoc4 Qt4用mocファイル自動作成ツール
+&
+Qt4の機能を使う際に必要となるmoc(Meta Object Compiler)
+ファイルを自動的に生成するためのツールです．
+&
+&

@@ -1,0 +1,9 @@
+NetworkManager & y & y & y & y
+NetworkManager
+&
+ネットワークの検知と設定を自動的に行うツール．
+Plamo LinuxではNetworkManagerは利用していないものの，
+ヘッダファイルやライブラリを必要とするソフトウェアの
+ために含めています．
+&
+&

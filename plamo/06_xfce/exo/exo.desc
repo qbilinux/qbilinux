@@ -1,0 +1,10 @@
+exo & n & y & y & y
+libexo 
+&
+libexo は XFce 上でのアプリケーション開発用の機能拡張ライブラリです．
+&
+libexo
+&
+This is libexo, an extension library to Xfce, developed by os-cillation. While
+Xfce comes with quite a few libraries that are targeted at desktop development,
+libexo is targeted at application development.

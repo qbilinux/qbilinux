@@ -1,0 +1,9 @@
+hicolor_icon_theme & n & y & y & y
+ハイカラー用アイコンテーマ
+&
+アイコン定義の枠組みです
+&
+fallback theme for icons
+&
+This is the default fallback theme used by implementations of the icon
+theme specification.

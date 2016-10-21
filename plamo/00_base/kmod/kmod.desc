@@ -1,0 +1,9 @@
+kmod & y & y & y & y
+モジュール管理用コマンド
+&
+module-init-tools に代わるモジュール管理用ツールです。
+&
+kmod
+&
+kmod is a new commands for module load/unload for
+2.6/3.x kernel.

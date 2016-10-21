@@ -1,0 +1,10 @@
+libcdio & y & y & y & y
+CD-ROM 読み込み用ライブラリ libcdio
+&
+CD-ROM を操作して必要なデータを読み込む機能を提供するライブラリ
+&
+libcdio
+&
+This library is to encapsulate CD-ROM reading and control.
+Applications wishing to be oblivious of the OS- and device-dependant
+properties of a CD-ROM can use this library.

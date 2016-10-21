@@ -1,0 +1,8 @@
+dotconf & y & y & y & y
+設定ファイルの構文解析ライブラリ
+&
+設定ファイルを構文解析する C ライブラリです。
+&
+Configuration file parser library
+&
+A C library for parsing configuration files.

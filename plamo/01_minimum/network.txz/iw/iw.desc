@@ -1,0 +1,10 @@
+iw & y & y & y & y
+Linux 無線デバイスの設定ツール
+&
+このパッケージには，無線ネットワーキングを設定したり，情報を表示できる
+ツール `iw' が含まれます。
+&
+tool for configuring Linux wireless devices
+&
+This package contains the `iw' tool which allows you to configure and
+show information about wireless networking.

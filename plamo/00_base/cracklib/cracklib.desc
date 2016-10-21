@@ -1,0 +1,11 @@
+cracklib & y & y & y & y
+パスワードチェック用ライブラリ
+&
+cracklib はパスワードに辞書に載っているような
+安易な単語を使っていないかチェックするための
+ライブラリです．
+&
+cracklib
+&
+Cracklib used to check the password which uses
+easily asumable words.

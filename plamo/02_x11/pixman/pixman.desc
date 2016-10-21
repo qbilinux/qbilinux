@@ -1,0 +1,8 @@
+pixman & y & y & y & y
+ピクセル操作用ライブラリ
+&
+X Window が利用する，ピクセル操作用の低レベルライブラリ
+&
+low-level pixel manipulation library
+&
+Library of low-level pixel manipulation routines

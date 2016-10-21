@@ -1,0 +1,6 @@
+xf86_video_fbdev & y & y & y & y
+xf86_video_fbdev
+&
+Framebufferデバイス用のドライバ
+&
+&

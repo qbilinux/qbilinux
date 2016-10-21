@@ -1,0 +1,10 @@
+fetchmail & y & y & y & y
+メール取り込みコマンド fetchmail
+&
+fetchmail はメールサーバからローカルマシンへメールを落して
+くる際に便利なプログラムです．
+&
+fetchmail
+&
+fetchmail is a mail deliver agent which transfer mails from
+mailserver to your localhost.

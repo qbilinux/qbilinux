@@ -1,0 +1,8 @@
+xf86_input_libinput & y & y & y & y
+xf86用libinputインプットドライバ
+&
+X.Orgからlibinputを操作するためのドライバ
+&
+libinput driver for X.org
+&
+libinput driver for X.org environment

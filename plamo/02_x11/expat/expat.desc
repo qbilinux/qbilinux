@@ -1,0 +1,9 @@
+expat & y & y & y & y
+XML parsing library expat
+&
+expat は C で書かれた XML パース用ライブラリです．最近は多くの設定ファイルが
+XML 化されており，fontconfig 等もこのライブラリを必要とします．
+&
+XML parsing library expat
+&
+expat is an XML parsing library written in C.

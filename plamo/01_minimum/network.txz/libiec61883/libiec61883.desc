@@ -1,0 +1,11 @@
+libiec61883 & y & y & y & y
+IEC61883を実装したライブラリ libiec61883
+&
+Firewire と呼ばれる，ストリーミング DV や MPEG-2，オーディオ機能などを
+扱う IEEE1394 のディジタルインタフェースを定義した IEC61883 を扱うライ
+ブラリです。
+&
+implementation of IEC61883
+&
+The libiec61883 library provides a higher level API for streaming DV,
+MPEG-2 and audio over Linux IEEE 1394.

@@ -1,0 +1,10 @@
+mtools & y & y & y & y
+DOS/Windows用FD操作コマンド
+&
+mtools は MS-DOS/Windows なフロッピーディスクを
+操作するための一連のコマンドを提供します．
+&
+mtools
+&
+mtools offer commands which manipulate DOS/Windows
+floppy disk from Linux

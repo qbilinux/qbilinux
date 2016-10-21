@@ -1,0 +1,13 @@
+postfix & y & y & y & y
+メール配送プログラム postfix
+&
+postfix は sendmail ほど過去との互換性にはこだわらずに
+開発されたメール配送プログラムです。メールの送受信に
+必要な機能がコンパクトなプログラムに分割され、それぞれの
+プログラムが共働して処理を行うように設計されています。
+&
+MUA Postfix postfix
+&
+Postfix is a newly designed MUA for Internet Mail
+service which divided into many small programs and
+they corporate to work as mail transfer system.

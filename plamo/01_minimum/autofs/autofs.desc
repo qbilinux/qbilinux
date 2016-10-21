@@ -1,0 +1,12 @@
+autofs & y & y & y & y
+自動マウント制御用デーモン
+&
+autofs はオートマウントの管理を行なうデーモンです。バージョン4
+系列では、Sun互換のマップによる管理が可能です。デフォルトでは、
+/etc/auto.master にマップを記述してください。
+&
+autofs
+&
+autofs is a daemon to manage the automount feature. In the version
+4 series, you can manage it with the Sun-compatible style maps.
+By default, define map into /etc/auto.master.

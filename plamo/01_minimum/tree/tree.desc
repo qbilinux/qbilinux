@@ -1,0 +1,9 @@
+tree & y & y & y & y
+ディレクトリ/ファイル樹状表示コマンド
+&
+tree は指定したディレクトリ以下のファイルやディレクトリとツリー状に表示する
+コマンドです．
+&
+tree
+&
+tree is a small program which shows files and directories in tree view.

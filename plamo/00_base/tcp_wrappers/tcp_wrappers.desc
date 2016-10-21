@@ -1,0 +1,10 @@
+tcp_wrappers & y & y & y & y
+TCP ラッパーツール
+&
+tcp_wrappers は，クライアントの IP アドレスを元に接続の可否を
+制御するツールです．このパッケージには Debian 方面で開発された
+CIDRパッチを適用しています．
+&
+TCP wrapper tools
+&
+tcp_wrappers control access/deny actions from clients IP addr.

@@ -1,0 +1,17 @@
+tix & n & y & y & y
+拡張版 Tk ウィジェット
+&
+Tix (Tk Interface eXtension)は Tcl/Tk や Python/Tkinter の
+拡張ライブラリで，GUI ツールキットライブラリである Tk により
+高度で複雑なウィジェット(GUI 部品)を追加するオープンソースの
+ソフトウェアです。
+&
+Tk Interface eXtension (Tix)
+&
+The Tix library is an extension to the Tk toolkit that contains
+over 40 new widgets for Tk.  Highlights includeListbox, Directory
+List/Tree View, SpreadSheet, Tabular Listbox,
+ComboBox, Motif style FileSelectBox, MS Windows Style FileSelectBox,
+PanelWindow, NoteBook, Spin Control widget, and many more.  With
+these new widgets, your applications will look great and interact
+with your users in intuitive ways.

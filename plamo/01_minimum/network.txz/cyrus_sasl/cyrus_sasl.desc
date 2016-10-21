@@ -1,0 +1,10 @@
+cyrus_sasl & y & y & y & y
+Cyrus SASL library
+&
+Cyrus SASL は SMTP Auth 等のユーザ認証用の機能をあつめた
+ライブラリです。
+&
+Cyrus SASL library
+&
+Cyrus SASL is a set of authentification libraries for
+Simple Authentication and Security Layer protocol.

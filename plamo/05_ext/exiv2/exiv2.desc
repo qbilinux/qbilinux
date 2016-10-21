@@ -1,0 +1,9 @@
+exiv2 & y & y & y & y
+exiv2
+&
+画像のメタデータを扱うためのライブラリ、およびユーティリティです。
+&
+exiv2
+&
+a C++ library and a command line utility to read and
+write Exif, IPTC and XMP image metadata.

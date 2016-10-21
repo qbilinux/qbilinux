@@ -1,0 +1,8 @@
+libgxps & y & y & y & y
+XPSドキュメント用ライブラリ
+&
+Microsoftが開発したXMSベースの電子文書フォーマット形式
+XPS(XML Paper Specification)を操作するためのライブラリ
+&
+libgxps is a GObject based library for handling and rendering XPS documents. 
+&

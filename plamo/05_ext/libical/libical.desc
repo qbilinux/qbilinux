@@ -1,0 +1,12 @@
+libical & y & y & y & y
+libical: スケジュール管理用ライブラリ
+&
+libicalはネットワーク経由でスケジュール調整するための
+icalendar形式のデータを処理するためのライブラリです
+&
+libical: schedule management library
+&
+libical is a library for iCalendar computer file format
+which allows internet users to send meeting requests and
+tasks to other internet users, via email, or
+sharing files with an .ics extension.

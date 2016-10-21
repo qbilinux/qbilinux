@@ -1,0 +1,11 @@
+nss & y & y & y & y
+NSS(Network Security Service)ライブラリ
+&
+Network Security Serviceライブラリは，プラットフォーム非依存で
+SSLやS/MIMEに対応した暗号化機能を提供するためのライブラリ集です
+&
+NSS(Network Security Service)library
+&
+Network Security Services (NSS) is a set of libraries designed to
+support cross-platform development of security-enabled client and
+server applications.

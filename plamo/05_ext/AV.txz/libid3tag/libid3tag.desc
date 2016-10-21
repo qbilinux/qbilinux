@@ -1,0 +1,9 @@
+libid3tag & y & y & y & y
+ID3 タグ用ライブラリ libid3tag
+&
+MP3 ファイル等が利用している ID3 タグ情報を操作するためのライブラリ
+&
+ID3tag Access Library for Libmad
+&
+A library for accessing ID3 tags, which is to be used with
+libmad. Both ID3v1 and ID3v2 can be handled with it.

@@ -1,0 +1,10 @@
+gzip & y & y & y & y
+gzip 圧縮形式操作コマンド
+&
+gzip はファイルを圧縮・展開するためのプログラム
+です。このバージョンの gzip は over 2G なファイルに
+も対応しています。
+&
+GNU zip compression utilities.
+&
+GZIP is a compression utitily

@@ -1,0 +1,12 @@
+ncftp & y & y & y & y
+高機能FTPクライアント ncftp
+&
+ncftp はフルスクリーンで対話的に FTPサーバからデータを
+ダウンロードする際に便利なプログラムです．コマンドラインから
+利用するための ncftpget/ncftpls，ファイルをサーバに upload
+するための ncftpput などのプログラムも含まれています．
+&
+ncftp
+&
+ncftp is a FTP client program which can handle anonymous ftp
+easily.

@@ -1,0 +1,11 @@
+etc & y & y & y & y
+/etc ディレクトリに展開される各種設定ファイル
+&
+/etc ディレクトリは、伝統的に設定ファイルや管理用のプロ
+グラムを置く場所です。
+&
+configuration files for /etc directory
+&
+Most configuration files are put in /etc directory.
+Many configuration files for system setup installed
+from this package.

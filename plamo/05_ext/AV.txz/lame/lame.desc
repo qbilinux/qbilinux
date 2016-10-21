@@ -1,0 +1,12 @@
+lame & y & y & y & y
+MP3 エンコーダ lame
+&
+LAME(Lame Ain't an Mp3 Encoder)は LGPL で公開されている MP3 エンコーダ
+で，変換速度，音質ともに定評があります。コマンドラインプログラムとして
+だけでなく，ライブラリ単体で使用することもできます。
+&
+MP3 Encoder LAME
+&
+LAME is a LGPL MP3 encoder. It is now a highly evolved MP3
+encoder, with quality and speed. It is available as not only
+a comman-line tool, but also a library.

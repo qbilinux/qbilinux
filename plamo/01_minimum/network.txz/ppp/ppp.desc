@@ -1,0 +1,16 @@
+ppp & y & y & y & y
+PPP接続ツール
+&
+PPP(Point to Point Protocol)接続を実現するためのツールです。
+ダイアルアップPPPとPPPoEに対応しています。PPP接続を行なうに
+は、カーネルにPPP機能を組み込んでおく必要があります。
+\n
+PPP設定用スクリプトのpppsetupも付属しています。
+&
+PPP for Linux
+&
+PPP (Point to Point Protocol) tools, which supports both of
+dialup and PPPoE. You must set up the kernel to be installed
+PPP driver.
+\n
+Also including pppsetup, the PPP setup script.

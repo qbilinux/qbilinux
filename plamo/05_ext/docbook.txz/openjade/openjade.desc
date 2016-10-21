@@ -1,0 +1,8 @@
+openjade & y & y & y & y
+DSSSLプロセッサの実装
+&
+SGML/XMLとして定義されているDSSSL(Document Style 
+Semantics and Specification Language)言語で記述された
+文書ファイルを，指定された出力形式に変換するプロセッサです
+&
+&

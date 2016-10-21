@@ -1,0 +1,13 @@
+xmascot & y & y & y & y
+X ウィンドウ用マスコット
+&
+表示されたマスコットは、「画面上でゆれる」、「くさりの長さ
+をかえられる」、「音声データを準備することでしゃべる」、
+「定時になるとアラーム機能を持つ」、機能を持っています。
+&
+Mascot program for X xmascot 2.6a
+&
+"xmascot" show a mascot character on X. You can change many
+kinds of mascot as you like. The mascot on your X window
+swings when you receive new mail or alarm you as pre-set
+hour.

@@ -1,0 +1,11 @@
+libcap & y & y & y & y
+capability管理ツール
+&
+最近のカーネルで可能になったPOSIX 1e互換のcapability機能を
+操作するためのツールとライブラリ
+&
+Libcap - Library to allow POSIX 1e capabilities
+&
+This contains the libcap library and utilities which enable users of
+linux (2.1.x or later) to use the POSIX 1e capability support built
+into the linux kernel.

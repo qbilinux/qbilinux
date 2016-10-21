@@ -1,0 +1,8 @@
+shared_mime_info & n & y & y & y
+shared-mime-info
+&
+mime コントロールを行うデータベースです
+&
+shared-mime-info
+&
+The shared-mime-info package contains the core database of common types.

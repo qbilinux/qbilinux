@@ -1,0 +1,9 @@
+libsamplerate & y & y & y & y
+サンプリング周波数変換ライブラリ
+&
+サンプリングされたデジタルオーディオデータのサンプリング周波数を変換す
+るためのライブラリです。
+&
+libsamplerate
+&
+sample rate converting library

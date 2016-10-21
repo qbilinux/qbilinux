@@ -1,0 +1,10 @@
+cpufrequtils & y & y & y & y
+CPU周波数操作ツール
+&
+CPUの動作周波数を動的に変更するためのツールとライブラリ
+&
+cpufrequtils
+&
+To make access to the Linux kernel cpufreq subsystem easier
+for users and cpufreq userspace tools, a cpufrequtils
+package was created.

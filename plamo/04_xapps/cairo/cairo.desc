@@ -1,0 +1,10 @@
+cairo & n & y & y & y
+2Dグラフィックライブラリ
+&
+クロスプラットフォームな2Dベクトルグラフィックスライブラリで
+す。GTK+が描画バックエンドとして用います。
+&
+Cairo, A 2D Graphics Library
+&
+A cross-platform 2D vector graphics library. GTK+ uses it as
+a backend for drawing.

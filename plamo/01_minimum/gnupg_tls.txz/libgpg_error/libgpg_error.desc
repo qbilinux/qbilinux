@@ -1,0 +1,7 @@
+libgpg_error & y & y & y & y 
+GnuPG用共通エラーライブラリ libgpg_error
+&
+GPGやibgcrypt,libksb等，GnuPG関連のソフトウェアに
+共通するエラー値定義用ライブラリ
+&
+&

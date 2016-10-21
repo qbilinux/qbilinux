@@ -1,0 +1,19 @@
+extipl & y & y & y & y
+IBM 互換パーティション選択型ブートローダのインストーラ
+&
+extipl とは「拡張 IPL」を意味しており，IBM-PC 互換機用に作成
+された IBM 純正 HD-IPL と互換なブートローダです。このブートロ
+ーダを使うと起動するパーティションを選択したり，また BIOS か
+ら見える HDD の中から起動に使う HDD を選択したりできます。
+extipl コマンドは ExtIPL(拡張 IPL)のインストーラで，4 種類の
+IPL が内蔵されており，このうち 3 種類は大容量 HDD 用の LBA ア
+クセスをサポートしています。
+&
+a partition-selectable boot loader/installer for IBM compatible
+&
+Extipl stands for "Extended IPL".  That is an IBM's HD-IPL
+compatible boot strap code for IBM-PC compatible computers.
+But it allows to select one of partitions, or one of several
+BIOS supported HDDs.  Extipl is the installer of ExtIPL.
+it has 4 IPLs and three of them supports the LBA access for
+large HDD.

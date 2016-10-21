@@ -1,0 +1,12 @@
+xfplamoconfig & y & y & y & y
+Xorg/XFree86 サーバ設定ツール xfplamoconfig
+&
+xfplamoconfig は Plamo Linux オリジナルの Xorg/XFree86
+サーバ設定ツールです．日本語で簡単に xorg.conf/XF86Config を
+作成できます．マウス・ホイールやワイド液晶の画面
+モードも簡単に設定できます．
+&
+xfplamoconfig - Configuration tool for Xorg/XFree86
+&
+The xfplamoconfig is a tool to configure Xorg/XFree86 server.
+This tool supports mouse wheel and wide LCD settings.

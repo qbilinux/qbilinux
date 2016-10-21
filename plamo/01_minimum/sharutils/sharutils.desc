@@ -1,0 +1,11 @@
+sharutils & y & y & y & y
+shar/uuencode形式操作ツール
+&
+sharutils はバイナリファイルをテキスト化してメールで添付
+するような作業に必要な shar/unshar, uuencode/uudecode 等の
+パッケージです．
+&
+sharutils
+&
+Sharutils include shar/unshar and uuencode/uudecode commands
+to convert from binary files into text files.

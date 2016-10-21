@@ -1,0 +1,10 @@
+gawk & y & y & y & y
+GNU 版 AWK コマンドインタープリタ
+&
+AWK は UNIX に古くから存在している行指向のスクリプト
+言語です．
+gawk は GNU 版の AWK コマンドインタープリタです．
+&
+gawk(GNU AWK)  with multibyte extension
+&
+gawk

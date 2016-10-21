@@ -1,0 +1,10 @@
+time & y & y & y & y
+コマンド実行時間表示コマンド
+&
+time はコマンドの実行時間やCPUの使用時間などを調べる
+コマンドです。
+&
+time
+&
+time is a command to check the elapsed time and cpu time
+to execute commands.

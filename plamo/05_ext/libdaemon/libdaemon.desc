@@ -1,0 +1,9 @@
+libdaemon & y & y & y & y
+daemon作成用ライブラリ
+&
+libdaemon は daemon として動作するソフトウエアの開発を
+容易にするためのライブラリです
+&
+library for daemon software
+&
+libdaemon is a library for making daemon software easy.

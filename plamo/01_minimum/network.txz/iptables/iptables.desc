@@ -1,0 +1,10 @@
+iptables & y & y & y & y
+アクセス制御管理ツール iptables
+&
+iptablesは，パケットの送受信を管理するnetfilter/iptables機能を
+制御するためのコマンド集です。
+&
+iptables
+&
+iptables is a new mechanism for Linux 2.4 to filter
+packets.

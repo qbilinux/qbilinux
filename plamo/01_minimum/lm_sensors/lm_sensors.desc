@@ -1,0 +1,13 @@
+lm_sensors & y & y & y & y
+センサー管理ツール lmsensors
+&
+CPUの温度やファンの回転数など，マザーボードから得られる各種情報
+を管理するツールです．
+IBM Thinkpad のシリーズではシステムを破損する可能性があるので
+使用しないでください．
+&
+lm_sensors: sensoring motherboard information
+&
+lm_sensors provides functionalities such as monitoring
+CPU and MotherBoard temperature, fans speed and status
+of the voltages.

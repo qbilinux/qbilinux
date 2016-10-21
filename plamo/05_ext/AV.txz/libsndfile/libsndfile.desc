@@ -1,0 +1,11 @@
+libsndfile & y & y & y & y
+サウンドファイル操作用ライブラリ
+&
+wav や aiff，au など，様々な形式のサンプリングデータを統一して操作する
+ための API を提供するライブラリです。
+&
+libsndfile
+&
+Libsndfile is a C library for reading and writing files containing
+sampled sound (such as MS Windows WAV and the Apple/SGI AIFF format)
+through one standard library interface.

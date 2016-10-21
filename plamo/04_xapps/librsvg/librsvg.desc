@@ -1,0 +1,9 @@
+librsvg & y & y & y & y
+svg用ライブラリ
+&
+svg形式のベクターデータを処理するためのライブラリ
+&
+library for svg
+&
+librsvg is a component used within software applications to enable
+support for SVG-format scalable graphics.

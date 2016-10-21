@@ -1,0 +1,10 @@
+which & y & y & y & y
+コマンド位置表示コマンド
+&
+which は指定したコマンドがコマンドパス上のどこにあるかを教えてくれます。
+なお、tcshの場合、which は内蔵機能になっています。
+&
+which
+&
+which tells the location of the command in the PATH variable. In tcsh,
+which is a built-in command.

@@ -1,0 +1,13 @@
+kernel & y & y & y & y
+Linux 4.x カーネル
+&
+Plamo-6.x 用のデフォルトカーネルです。構築時の設定は /boot/config にあ
+ります．このカーネルは Generic x86_64 CPU 用になっているので，お使いの
+マシンに合わせて再構築することをお勧めします。
+&
+Linux kernel 4.x
+&
+This is the kernel package for Plamo-6.x default setting.  Config file
+for kernel build was stored in /boot/config.  This kernel was built
+for Generic x86_64 CPU, so we recommend you to rebuilt the kernel for
+your system.

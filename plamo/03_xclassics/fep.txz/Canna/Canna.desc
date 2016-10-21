@@ -1,0 +1,15 @@
+Canna & y & y & y & y
+かな漢字変換システム Canna
+&
+日本語入力・変換システム Canna のサーバおよびそのクライアントを
+利用する場合に選択します。Canna は NEC UX/4800 の日本語入力シス
+テムと互換性があり、もうひとつの代表的な日本語入力システムである
+Wnn よりも動作が軽いという特長があります。逐次自動変換もサポート
+しています。このパッケージでは 140,000 語を越える自立語を収録し
+た cannadic をデフォルトで使用する設定になっています。
+クライアントとして Mule (多言語 Emacs), jvim (日本語 vim),
+kinput2 (X 用日本語入力フロントエンド) が用意されています。
+&
+Canna - kana-kanji conversion server
+&
+kana-kanji conversion server Canna

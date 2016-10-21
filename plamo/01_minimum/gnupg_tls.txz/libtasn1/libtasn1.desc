@@ -1,0 +1,8 @@
+libtasn1 & y & y & y & y 
+ANS.1用ライブラリ libtasn1
+&
+マシン固有の技法などに依存せず、
+曖昧さのないデータ構造や伝達規則の記述を可能とする形式規則
+Abstract Syntax Notation One（ASN.1）用のライブラリ
+&
+&

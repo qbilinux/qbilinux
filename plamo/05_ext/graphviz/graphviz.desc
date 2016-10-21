@@ -1,0 +1,16 @@
+graphviz & y & y & y & y
+グラフ可視化ソフトウェア
+&
+Graphviz は，AT and T 研究所が開発したオープンソースのツールパッケージ
+で，DOT 言語のスクリプトで示されたグラフを描画します。パッケージには，
+アプリケーションソフトウェアからツールを使うためのライブラリも含まれま
+す。
+&
+Graph Visualization Software
+&
+Graphviz is open source graph visualization software.  Graph
+visualization is a way of representing structural information as
+diagrams of abstract graphs and networks.  It has important
+applications in networking, bioinformatics, software engineering,
+database and web design, machine learning, and in visual interfaces
+for other technical domains.

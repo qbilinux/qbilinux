@@ -1,0 +1,7 @@
+libnfsidmap & y & y & y & y 
+NFS id map用ライブラリ libnfsidmap
+&
+NFSサーバとクライアント間でユーザのIDを
+マッピングする機能を提供するライブラリ
+&
+&

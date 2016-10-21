@@ -1,0 +1,8 @@
+vdpauinfo & y & y & y & y
+VDPAU 情報ツール
+&
+glxinfo 風 NVIDIA VDPAU ケーパビリティを問い合わせて表示するツール
+&
+VDPAU info tool
+&
+Query and display NVIDIA VDPAU capabilities, a la glxinfo

@@ -1,0 +1,7 @@
+network2 & y & y & y & y
+ネットワーク環境その2
+&
+sambaやopenldap，httpd,heimdal, proftpdといったサーバ系のソフトウェアと，
+neon, net_snmp, lftp 等，比較的利用頻度の低いクライアント系ソフトウェア集
+&
+&

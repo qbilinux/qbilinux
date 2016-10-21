@@ -1,0 +1,7 @@
+lcms2 & y & y & y & y
+littleCMS version2
+&
+Cで書かれた色管理(CMM)エンジンのversion2です．
+APIがversion1とは異なっているようなので，両者とも収録しています．
+&
+&

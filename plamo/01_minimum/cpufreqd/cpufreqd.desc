@@ -1,0 +1,11 @@
+cpufreqd & y & y & y & y
+CPU周波数管理デーモン
+&
+cpufreqd は温度や電池残量を元に，CPUの周波数を動的に管理する
+デーモンです
+&
+CPU frequency control daemon
+&
+A small daemon to adjust cpu speed and voltage (and not only)
+for kernels using any of the cpufreq drivers available.
+Cpufreqd is not a userspace governor.

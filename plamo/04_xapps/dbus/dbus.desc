@@ -1,0 +1,16 @@
+dbus & y & y & y & y
+D-BUSプロセス間通信ライブラリ
+&
+D-BUSは、FreeDesktopプロジェクトの成果で、メッセージバスと呼
+ばれる、メッセージ指向の単純なプロセス間通信を提供します。
+\n
+HALサービスにおけるコンポーネント間通信に利用されます。
+&
+D-BUS, An IPC Library
+&
+D-BUS provides a simple IPC scheme based on messages, called
+message bus, which is developped as a result of FreeDesktop
+project.
+\n
+It is used for communications between components in the HAL
+services.

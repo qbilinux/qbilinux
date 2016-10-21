@@ -1,0 +1,9 @@
+jack_audio_connection_kit & y & y & y & y
+Jackオーディオコネクションキット
+&
+サウンド関係のアプリ間の入出力を接続するAPIを提供する
+サーバデーモン
+&
+Jack audio connection kit
+&
+JACK is system for handling real-time, low latency audio (and MIDI).

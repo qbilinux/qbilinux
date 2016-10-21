@@ -1,0 +1,9 @@
+nilfs_utils & y & y & y & y
+Nilfs2 ユーティリティ
+&
+新しく採用されたログファイシステムである Nilfs2
+用の各種コマンド
+&
+Nilfs2 Utils
+&
+Utilities for Nilfs2

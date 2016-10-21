@@ -1,0 +1,22 @@
+bash & y & y & y & y
+GNU bash
+&
+GNU Bourne-Again SHell です。Bash は sh と互換のコマンド
+インタープリタで、標準入力やファイルからコマンドを読みこ
+んで実行します。Bash は sh と互換機能だけではなく、Korn
+シェル(ksh)や C シェル(csh)からの有益な機能を多数取りこ
+んでいます。Bash の最終目標は IEEE Posix Shell and Tools
+specification(IEEE WG 1003.2) に準拠することです。起動ス
+クリプトの多くが bash を使っているため、システムの起動に
+はbash が必須です。
+&
+GNU bash
+&
+GNU Bourne-Again SHell. Bash is a sh compatible command
+interpreter, and read command from file or stdio and
+execute these command。Bash is not only sh compatible,
+but also include some useful functions from Korn shell
+(ksh) or  C shell(csh). Bash will attempt to certify
+IEEE Posix Shell and Tools specification(IEEE WG 1003.2)
+Many rc scripts use bash so you must install bash
+for your system

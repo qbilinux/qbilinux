@@ -1,0 +1,10 @@
+dosfstools & y & y & y & y
+DOS形式フォーマットツール
+&
+dosfstools はフロッピーディスクを MS-DOS の形式にフォーマット
+するためのツールです．
+&
+dosfstools
+&
+dosfstools contains some tools to format floopies with MS-DOS
+file system.

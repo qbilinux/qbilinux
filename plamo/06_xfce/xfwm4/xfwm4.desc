@@ -1,0 +1,10 @@
+xfwm4  & n & y & y & y
+Xfce4 ウィンドウマネージャ
+&
+xfwm4 は Xfce4 用のウィンドウマネージャです
+&
+Xfce4 Window Manager
+&
+It manages the placement of application windows on the screen,
+provides window decorations and manages workspaces or virtual
+desktops.

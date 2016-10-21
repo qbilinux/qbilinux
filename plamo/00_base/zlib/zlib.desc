@@ -1,0 +1,8 @@
+zlib & y & y & y & y
+圧縮機能提供ライブラリ
+&
+zlib は gzip 圧縮/展開機能をライブラリとして提供します。
+&
+zlib
+&
+zlib library provides gzip compress/decompress functions.
