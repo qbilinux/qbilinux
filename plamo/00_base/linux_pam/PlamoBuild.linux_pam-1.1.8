@@ -3,12 +3,11 @@
 ######################################################################
 pkgbase=linux_pam
 vers=1.1.8
-url="https://fedorahosted.org/releases/l/i/linux-pam/Linux-PAM-${vers}.tar.bz2
-    https://raw.githubusercontent.com/willysr/csb/master/pam/pam-1.1.8-cve-2013-7041.patch
-    https://raw.githubusercontent.com/willysr/csb/master/pam/pam-1.1.8-cve-2014-2583.patch"
+url="https://fedorahosted.org/releases/l/i/linux-pam/Linux-PAM-${vers}.tar.bz2"
 arch=`uname -m`
 build=P2m1
 src=Linux-PAM-$vers
+patchfiles="cve-2013-7041.patch cve-2014-2583.patch"
 OPT_CONFIG="--enable-shared --enable-read-both-confs --disable-nis"
 DOCS="NEWS ABOUT-NLS Copyright README COPYING AUTHORS CHANGELOG
     ChangeLog INSTALL ChangeLog-CVS"
@@ -207,9 +206,17 @@ if [ $opt_config -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     if [ -d ${B[$i]} ] ; then rm -rf ${B[$i]} ; fi ; cp -a ${S[$i]} ${B[$i]}
   done
-  cd $B
-  patch -Np1 -i $W/pam-1.1.8-cve-2013-7041.patch
-  patch -Np1 -i $W/pam-1.1.8-cve-2014-2583.patch
+  for i in `seq 0 $((${#B[@]} - 1))` ; do
+    cd ${B[$i]}
+    for j in ${patchfiles[$i]} ; do
+      case ${j##*.} in
+      gz) gunzip -c $W/$j | patch -Np1 -i - ;;
+      bz2) bunzip2 -c $W/j | patch -Np1 -i - ;;
+      xz) unxz -c $W/$j | patch -Np1 -i - ;;
+      *) patch -Np1 -i $W/$j ;;
+      esac
+    done
+  done
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
@@ -342,6 +349,10 @@ if [ $opt_package -eq 1 ] ; then
       ln $docdir/$src/$myname.gz $docdir/${src[$i]}
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
+  done
+  for patch in $patchfiles ; do
+    cp $W/$patch $docdir/$src/$patch
+    gzip_one $docdir/$src/$patch
   done
   mv $docdir/Linux-PAM $docdir/$src/doc
   mv $docdir/$src/{doc,{ABOUT-NLS,Copyright,README,COPYING,AUTHORS}.gz} $C
