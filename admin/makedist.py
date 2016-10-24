@@ -31,21 +31,15 @@ for file in fild_all_files(args[1]):
         desclist = []
         for ll in os.listdir(srcpath):
             if os.path.isdir(os.path.join(srcpath, ll)):
+                basename = ll
                 for lll in os.listdir(os.path.join(srcpath, ll)):
                     # Plamobuild.bash-4.3.30, bash-4.3.30-x86_64-P1.txz, bash.desc
-                    if fnmatch.fnmatch(lll, 'PlamoBuild.*'):
-                        parts = lll.split('-');
-                        filename, basename = parts[0].split('.')
-                        version = parts[1]
-                        #print filename
-                        print basename
-                        #print version
+                    if fnmatch.fnmatch(lll, basename+'.desc'):
                         for llll in os.listdir(os.path.join(srcpath, ll)):
                             #if fnmatch.fnmatch(llll, basename+'-'+version+'*.txz'):
                             if fnmatch.fnmatch(llll, basename+'*.txz'):
                                 pkglist.append(os.path.join(srcpath, ll, llll))
-                            if fnmatch.fnmatch(llll, basename+'.desc'):
-                                desclist.append(os.path.join(srcpath, ll, llll))
+                                desclist.append(os.path.join(srcpath, ll, basename+'.desc'))
         #print pkglist
         #print desclist
         if not os.path.exists(dstpath) :
