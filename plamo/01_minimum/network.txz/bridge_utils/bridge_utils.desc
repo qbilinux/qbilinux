@@ -1,4 +1,5 @@
 bridge_utils & y & y & y & y
+&
 イーサネットブリッジ設定ツール
 &
 bridge-utils は Linux をイーサネットブリッジとして利用

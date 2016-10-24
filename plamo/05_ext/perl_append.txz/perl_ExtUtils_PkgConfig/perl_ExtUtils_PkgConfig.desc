@@ -1,4 +1,5 @@
 perl_ExtUtils_PkgConfig & & & &
+&
 Perl pkg-config インターフェイス
 &
 Perlからpkg-configシステムを利用するためのモジュール

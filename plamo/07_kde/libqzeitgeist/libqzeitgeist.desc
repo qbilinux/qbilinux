@@ -1,4 +1,5 @@
 libqzeitgeist & y & y & y & y
+&
 libqzeitgeist
 &
 ユーザの活動履歴を記録するZeitgeist機能をQtから利用するためのライブラリ

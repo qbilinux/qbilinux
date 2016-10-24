@@ -1,4 +1,5 @@
 mlocate & y & y & y & y
+&
 merge locate
 &
 mlocateは、locate/updatedbの新しい実装で、updatedbが既存のデータベースを再利用して

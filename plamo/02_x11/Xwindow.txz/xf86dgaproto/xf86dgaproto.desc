@@ -1,4 +1,5 @@
 xf86dgaproto & y & y & y & y
+&
 xf86dgaproto
 &
 クライアントが直接フレームバッファを操作できるようになる

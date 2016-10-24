@@ -1,4 +1,5 @@
 libdaemon & y & y & y & y
+&
 daemon作成用ライブラリ
 &
 libdaemon は daemon として動作するソフトウエアの開発を

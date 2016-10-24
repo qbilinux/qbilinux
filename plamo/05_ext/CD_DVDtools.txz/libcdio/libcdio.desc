@@ -1,4 +1,5 @@
 libcdio & y & y & y & y
+&
 CD-ROM 読み込み用ライブラリ libcdio
 &
 CD-ROM を操作して必要なデータを読み込む機能を提供するライブラリ

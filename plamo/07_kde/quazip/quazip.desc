@@ -1,4 +1,5 @@
 quazip & y & y & y & y
+&
 Qt版zipライブラリ
 &
 ZIP形式のファイルを操作するlibzipをQt経由で利用できるようにした

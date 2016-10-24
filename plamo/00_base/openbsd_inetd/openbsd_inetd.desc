@@ -1,4 +1,5 @@
 openbsd_inetd & y & y & y & y
+&
 OpenBSD由来のinetd
 &
 OpenBSDで開発が続いているinetdスーパーデーモン

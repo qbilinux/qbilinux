@@ -1,4 +1,5 @@
 linux_pam & y & y & y & y
+&
 認証機能管理システム
 &
 PAM(Pluggable Authentification Modules)は，それぞれの認証機能を

@@ -1,4 +1,5 @@
 libXxf86vm & y & y & y & y
+&
 libXxf86vm
 &
 ビデオモードを操作するXF86-VidMode拡張機能用ライブラリ

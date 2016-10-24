@@ -1,4 +1,5 @@
 libotf & y & y & y & y
+&
 OpenType Font 操作ライブラリ
 &
 OpenType 形式のフォントを操作するためのライブラリです。

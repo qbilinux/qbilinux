@@ -1,4 +1,5 @@
 libusb_compat & y & y & y &y
+&
 libusb-compat ライブラリ
 &
 新しい1.0系のlibusbで、古い0.12系のライブラリを使うための

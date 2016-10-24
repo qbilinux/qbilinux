@@ -1,4 +1,5 @@
 libdmtx & y & y & y & y
+&
 2次元バーコード操作ライブラリ libdmtx
 &
 libdmtxはECC200規格に準じた2次元バーコードを操作するための

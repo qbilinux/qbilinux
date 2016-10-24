@@ -1,4 +1,5 @@
 apel & y & y & y & y
+&
 Emacs 互換性向上ライブラリ APEL
 &
 APEL は Emacs のバージョン間の違いを吸収するためのライブラリです。

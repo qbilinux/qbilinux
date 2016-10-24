@@ -1,4 +1,5 @@
 fetchmail & y & y & y & y
+&
 メール取り込みコマンド fetchmail
 &
 fetchmail はメールサーバからローカルマシンへメールを落して

@@ -1,4 +1,5 @@
 ntp & y & y & y & y
+&
 時間同期コマンド ntp
 &
 ntp は，NTP(Network Time Protocol)を用いて高精度の時間同期を行うサーバ/

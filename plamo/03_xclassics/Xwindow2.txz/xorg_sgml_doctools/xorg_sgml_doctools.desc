@@ -1,4 +1,5 @@
 xorg_sgml_doctools & y & y & y & y
+&
 xorg_sgml_doctools
 &
 Xのドキュメントに用いられている各種SGML定義を

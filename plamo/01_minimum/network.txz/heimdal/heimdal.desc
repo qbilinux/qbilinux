@@ -1,4 +1,5 @@
 heimdal & y & y & y & y
+&
 Kerberos5のフリーな実装 Heimdal
 &
 HeimdalはMITが開発したKerberos5の機能を，

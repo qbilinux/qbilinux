@@ -1,4 +1,5 @@
 proftpd & y & y & y & y
+&
 FTPサーバ proftpd
 &
 セキュリティを重視して開発されたFTPサーバ

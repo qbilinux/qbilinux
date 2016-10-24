@@ -1,4 +1,5 @@
 libgcc & y & y & y & y
+&
 GCC用ライブラリ
 &
 GCCが利用する /usr/lib/libgcc_s.so.1 と /usr/lib/libstdc++.so.6.0.3 のみを

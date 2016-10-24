@@ -1,4 +1,5 @@
 gc & n & y & y & y
+&
 Boehm GC
 &
 Boehm GC は C/C++ から使える Garbage Collection 用ライブラリです

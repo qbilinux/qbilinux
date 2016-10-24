@@ -1,4 +1,5 @@
 bind & y & y & y & y
+&
 名前解決(BIND)用パッケージ
 &
 TCP/IP 用の名前管理デーモン(named)と dig や dnsquery, host,

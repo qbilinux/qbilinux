@@ -1,4 +1,5 @@
 libva_intel_driver & y & y & y & y
+&
 libva-intel
 &
 Intel製GPUからVA APIを使うためのドライバ

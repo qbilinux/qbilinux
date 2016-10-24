@@ -1,4 +1,5 @@
 traceroute & y & y & y & y
+&
 traceroute
 &
 指定したホストへの経路を調べるためのコマンドです。

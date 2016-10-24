@@ -1,4 +1,5 @@
 lftp & y & y & y & y
+&
 FTPクライアントソフト lftp
 &
 lftpはマルチスレッド化されたFTPクライアントです

@@ -1,4 +1,5 @@
 gst_ffmpeg & y & y & y & y
+&
 FFmpeg用GStreamerプラグイン
 &
 GStreamer-0.10からFFmpegの機能を使うためのプラグイン

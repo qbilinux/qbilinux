@@ -1,4 +1,5 @@
 setserial & y & y & y & y
+&
 シリアルポート設定ツール setserial
 &
 setserial はシリアルポートを設定するためのツールです

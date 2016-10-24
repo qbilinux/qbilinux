@@ -1,4 +1,5 @@
 xf86_input_libinput & y & y & y & y
+&
 xf86用libinputインプットドライバ
 &
 X.Orgからlibinputを操作するためのドライバ

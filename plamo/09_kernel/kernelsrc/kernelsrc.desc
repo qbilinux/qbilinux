@@ -1,4 +1,5 @@
 kernelsrc & y & y & y & y
+&
 Linux kernel ソースコード
 &
 Linux カーネルのソースコードです。元々のカーネルソースに unicon パッチ，

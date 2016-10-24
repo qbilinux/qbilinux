@@ -1,4 +1,5 @@
 apr & y & y & y & y
+&
 Apache Portable Runtime library
 &
 apr library は，元々 Apache httpd 用に開発された機能のうち，

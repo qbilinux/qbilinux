@@ -1,4 +1,5 @@
 libinput & y & y & y & y
+&
 入力処理ライブラリlibinput
 &
 libinputは，WaylandやX.Orgのドライバから

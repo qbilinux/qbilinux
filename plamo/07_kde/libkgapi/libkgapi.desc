@@ -1,4 +1,5 @@
 libkgapi & y & y & y & y
+&
 Google用API
 &
 KDEからGoogleが提供する各種APIを使うためのライブラリ

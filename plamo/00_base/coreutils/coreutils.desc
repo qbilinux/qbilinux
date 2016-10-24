@@ -1,4 +1,5 @@
 coreutils & y & y & y & y
+&
 ファイル操作ツール群
 &
 以前は textutils と sh_utils に分かれていた各種基本コマンドが

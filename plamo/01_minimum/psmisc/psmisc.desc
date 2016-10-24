@@ -1,4 +1,5 @@
 psmisc & y & y & y & y
+&
 プロセス操作ツール psmisc
 &
 killall, fuser, pstree を含んだパッケージです．

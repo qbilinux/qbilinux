@@ -1,4 +1,5 @@
 pycurl & y & y & y & y
+&
 cURL用Python3モジュール
 &
 URL操作ライブラリcURLをPython3から操作するためのモジュール

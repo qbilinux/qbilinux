@@ -1,4 +1,5 @@
 libunique & y & y & y & y
+&
 シングルインスタンス用ライブラリ libuniq
 &
 libunique は同時実行インスタンスを単一にするためのライブラリです

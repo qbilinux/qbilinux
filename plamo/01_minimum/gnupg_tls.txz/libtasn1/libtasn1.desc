@@ -1,4 +1,5 @@
 libtasn1 & y & y & y & y 
+&
 ANS.1用ライブラリ libtasn1
 &
 マシン固有の技法などに依存せず、

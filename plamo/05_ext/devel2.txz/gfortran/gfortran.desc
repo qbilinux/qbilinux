@@ -1,4 +1,5 @@
 gfortran & y & y & y & y
+&
 GCC FORTRAN
 &
 GCC のうち FORTRAN プログラムをコンパイルするのに必要な

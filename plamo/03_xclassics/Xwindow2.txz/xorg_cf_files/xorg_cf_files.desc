@@ -1,4 +1,5 @@
 xorg_cf_files & y & y & y & y
+&
 xorg_cf_files
 &
 Xのビルド時に用いられるimake用の各種設定ファイル

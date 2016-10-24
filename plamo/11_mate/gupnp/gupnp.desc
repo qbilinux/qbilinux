@@ -1,4 +1,5 @@
 gupnp & y & y & y & y
+&
 GOjectベースのUPnPサービス用フレームワーク
 &
 GObjectとlibsoupで実装されたUPnP(Universal Plug and Play)用フレームワーク

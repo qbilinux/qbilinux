@@ -1,4 +1,5 @@
 gobject_introspection & y & y & y & y
+&
 GObject用API情報収集ツール
 &
 PythonやValaといった言語からGObjectを操作するさまざまなライブラリ類を

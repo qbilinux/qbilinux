@@ -1,4 +1,5 @@
 TiMidity++-00_TiMidity++ & y & y & y & y
+&
 MIDI-to-WAVE 変換およびプレーヤー
 &
 TiMidity++ は，MIDI を WAVE に変換したり演奏したりします。

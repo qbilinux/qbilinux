@@ -1,4 +1,5 @@
 imake & y & y & y & y
+&
 imake
 &
 ImakefileからMakefileを生成するためのコマンド

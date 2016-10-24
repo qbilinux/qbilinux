@@ -1,4 +1,5 @@
 LuaJIT & y & y & y & y
+&
 JIT版Lua
 &
 JITを使って高速化したLuaコンパイラ

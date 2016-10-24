@@ -1,4 +1,5 @@
 meanwhile & y & y & y & y
+&
 meanwhile: 同期通信用ライブラリ
 &
 meanwhile は Lotus sametime プロトコルをOSSで実装した

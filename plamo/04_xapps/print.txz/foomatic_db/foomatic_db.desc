@@ -1,4 +1,5 @@
 foomatic_db & y & y & y & y
+&
 Foomaticプリンタデータベース
 &
 FoomaticはXMLで記述されたデータベースから生成したPPDファイルを用いて，

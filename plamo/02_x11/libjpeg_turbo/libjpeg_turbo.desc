@@ -1,4 +1,5 @@
 libjpeg_turbo & y & y & y & y
+&
 JPEG操作用ライブラリ
 &
 jpeg-turboはアセンブラやSIMD命令を使ってjpeg処理を

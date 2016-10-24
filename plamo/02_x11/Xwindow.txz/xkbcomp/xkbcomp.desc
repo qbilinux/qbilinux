@@ -1,4 +1,5 @@
 xkbcomp & y & y & y & y
+&
 xkbcomp
 &
 XKBのキーボード設定ファイルをコンパイルするコマンド

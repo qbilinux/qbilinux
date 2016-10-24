@@ -1,4 +1,5 @@
 jack_audio_connection_kit & y & y & y & y
+&
 Jackオーディオコネクションキット
 &
 サウンド関係のアプリ間の入出力を接続するAPIを提供する

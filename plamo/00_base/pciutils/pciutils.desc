@@ -1,4 +1,5 @@
 pciutils & y & y & y & y
+&
 PCI 管理/設定ツール
 &
 pciutils は PCI バスに接続している周辺機器ののIDを表示したり設定を

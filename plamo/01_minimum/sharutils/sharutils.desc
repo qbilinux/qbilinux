@@ -1,4 +1,5 @@
 sharutils & y & y & y & y
+&
 shar/uuencode形式操作ツール
 &
 sharutils はバイナリファイルをテキスト化してメールで添付

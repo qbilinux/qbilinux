@@ -1,4 +1,5 @@
 phonon_backend_gstreamer & y & y & y & y
+&
 Gstreamer用Phononバックエンド
 &
 PhononのバックエンドにGstreamerを使うためのライブラリ

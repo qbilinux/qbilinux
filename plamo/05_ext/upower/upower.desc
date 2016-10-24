@@ -1,4 +1,5 @@
 upower & y & y & y & y
+&
 電源管理ツールUpower
 &
 DBus経由で電源情報を管理するツール

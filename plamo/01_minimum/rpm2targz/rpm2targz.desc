@@ -1,4 +1,5 @@
 rpm2targz & y & y & y & y
+&
 RPMパッケージ変換ツール
 &
 rpmパッケージをtar.gz形式や cpio形式に変換するためのコマンドです。

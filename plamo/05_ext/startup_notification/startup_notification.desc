@@ -1,4 +1,5 @@
 startup_notification & y & y & y & y
+&
 ソフトウェア起動通知用ライブラリ
 &
 startup-notification ライブラリは，ダブルクリック等で

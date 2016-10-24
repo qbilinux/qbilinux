@@ -1,4 +1,5 @@
 libnotify & y & y & y & y
+&
 libnotify：イベント通知ライブラリ
 &
 Desktop Notification 規格に定義されたデスクトップ通知を

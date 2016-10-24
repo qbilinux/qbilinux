@@ -1,4 +1,5 @@
 autoconf & y & y & y & y
+&
 GNU Autoconf
 &
 さまざまなUnix系環境の違いを吸収して適切なMakefileを生成する

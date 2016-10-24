@@ -1,4 +1,5 @@
 xmodmap & y & y & y & y
+&
 xmodmap
 &
 ctrlやaltといった修飾キーの意味を調整するコマンド

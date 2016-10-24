@@ -1,4 +1,5 @@
 xf86_input_mouse & y & y & y & y
+&
 xf86_input_mouse
 &
 マウス用ドライバ

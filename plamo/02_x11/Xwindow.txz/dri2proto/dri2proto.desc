@@ -1,4 +1,5 @@
 dri2proto & y & y & y & y
+&
 dri2proto
 &
 Xサーバを介さずにアプリケーションが直接GPUを操作できる

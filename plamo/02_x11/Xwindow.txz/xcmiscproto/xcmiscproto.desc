@@ -1,4 +1,5 @@
 xcmiscproto & y & y & y & y
+&
 xcmiscproto
 &
 Xlibからサーバに利用可能なリソースIDを問い合わせる

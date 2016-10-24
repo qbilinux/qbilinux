@@ -1,4 +1,5 @@
 smproxy & y & y & y & y
+&
 smproxy
 &
 X11R6のセッション管理機能に対応していない

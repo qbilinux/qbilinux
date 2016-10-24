@@ -1,4 +1,5 @@
 iptables & y & y & y & y
+&
 アクセス制御管理ツール iptables
 &
 iptablesは，パケットの送受信を管理するnetfilter/iptables機能を

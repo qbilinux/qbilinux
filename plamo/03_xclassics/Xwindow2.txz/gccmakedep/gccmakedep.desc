@@ -1,4 +1,5 @@
 gccmakedep & y & y & y & y
+&
 gccmakedep
 &
 GCCのプリプロセッサ機能を用いて，Makefile中で利用可能なオブジェクト間の

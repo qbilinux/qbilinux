@@ -1,4 +1,5 @@
 polkit_kde_agent_1 & y & y & y & y
+&
 Polkit-kde-agent-1
 &
 Polkitを使って認証を受ける際に，

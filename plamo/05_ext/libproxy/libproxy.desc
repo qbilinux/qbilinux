@@ -1,4 +1,5 @@
 libproxy & y & y & y & y
+&
 libproxy
 &
 プロキシ設定を自動化するためのライブラリ

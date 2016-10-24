@@ -1,4 +1,5 @@
 gksu & y & y & y & y
+&
 su/sudoのGUI用フロントエンド
 &
 Gtkベースのウィンドウ機能を用いてsuやsudoの処理を実現するツール

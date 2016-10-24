@@ -1,4 +1,5 @@
 xkbevd & y & y & y & y
+&
 xkbevd
 &
 XKBイベントを監視するデーモン

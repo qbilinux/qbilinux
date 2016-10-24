@@ -1,4 +1,5 @@
 rasqal & y & y & y & y
+&
 RDF クエリライブラリ Rasqal
 &
 rasqal は RDF に対するクエリを処理するためのライブラリです

@@ -1,4 +1,5 @@
 libarchive & y & y & y & y
+&
 libarchive
 &
 アーカイブの読み書きを行うためのライブラリです。

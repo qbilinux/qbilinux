@@ -1,4 +1,5 @@
 libX11 & y & y & y & y
+&
 libX11
 &
 X11のCoreプロトコル用ライブラリ

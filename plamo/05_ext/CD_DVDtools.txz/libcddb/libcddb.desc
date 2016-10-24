@@ -1,4 +1,5 @@
 libcddb & y & y & y & y
+&
 CDDB アクセスライブラリ libcddb
 &
 音楽CDのタイトルやインデックスを集めたCDDBデータベースに

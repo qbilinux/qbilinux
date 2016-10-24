@@ -1,4 +1,5 @@
 cpio & y & y & y & y
+&
 CPIO形式アーカイバ
 &
 GNU cpio パッケージです。cpio はファイルのアーカイブを管

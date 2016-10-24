@@ -1,4 +1,5 @@
 kernel & y & y & y & y
+&
 Linux 4.x カーネル
 &
 Plamo-6.x 用のデフォルトカーネルです。構築時の設定は /boot/config にあ

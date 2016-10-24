@@ -1,4 +1,5 @@
 usbutils & y & y & y & y
+&
 USB情報表示ツール
 &
 usbutils(lsusb)は lspci と同様，カーネルに認識されているUSB の

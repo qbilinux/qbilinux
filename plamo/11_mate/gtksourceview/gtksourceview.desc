@@ -1,4 +1,5 @@
 gtksourceview & y & y & y & y
+&
 GTK+シンタックス強調用ウィジェット
 &
 GtkSourceViewは，Gtk+の標準のマルチラインエディタを拡張して，

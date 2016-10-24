@@ -1,4 +1,5 @@
 findutils & y & y & y & y
+&
 ファイル検索ユーティリティ
 &
 GNU 版の find, xargs, locate などのプログラム集です。

@@ -1,4 +1,5 @@
 libspectre & y & y & y & y
+&
 libspectre: PostScript レンダリングライブラリ
 &
 libspectre はlibgsを使ってPostscript ファイルを処理するための

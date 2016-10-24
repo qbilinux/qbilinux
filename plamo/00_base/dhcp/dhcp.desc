@@ -1,4 +1,5 @@
 dhcp & y & y & y & y
+&
 DHCP 操作ツール
 &
 ISC が配布している DHCP server/client パッケージです。

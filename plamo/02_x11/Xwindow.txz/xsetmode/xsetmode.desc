@@ -1,4 +1,5 @@
 xsetmode & y & y & y & y
+&
 xsetmode
 &
 入力デバイスの入力モードを設定するコマンド

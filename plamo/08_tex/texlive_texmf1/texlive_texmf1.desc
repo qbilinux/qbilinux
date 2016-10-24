@@ -1,4 +1,5 @@
 texlive_texmf1 & y & y & y & y 
+&
 texlive_texmf1
 &
 ptexliveはTeX関連ソフトウェアの一大集積ディストリビューションです．
