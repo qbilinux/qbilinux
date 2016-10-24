@@ -2,15 +2,14 @@
 
 ######################################################################
 pkgbase=grep
-vers=2.20
-url="http://ftp.gnu.org/gnu/grep/grep-${vers}.tar.xz
-    https://raw.githubusercontent.com/maximeh/buildroot/master/package/grep/0001-fix-CVE-2015-1345.patch"
+vers=2.26
+url="http://ftp.gnu.org/gnu/grep/grep-${vers}.tar.xz"
 arch=`uname -m`
-build=P3m1
+build=P0m1
 src=$pkgbase-$vers
 OPT_CONFIG="--disable-perl-regexp"
-DOCS="INSTALL NEWS README AUTHORS ABOUT-NLS COPYING THANKS TODO
-    ChangeLog-2009 README-alpha README-release ChangeLog"
+DOCS="ABOUT-NLS AUTHORS COPYING ChangeLog ChangeLog-2009 INSTALL NEWS
+    README README-alpha README-release THANKS THANKS.in TODO"
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -208,7 +207,6 @@ if [ $opt_config -eq 1 ] ; then
     if [ -d ${B[$i]} ] ; then rm -rf ${B[$i]} ; fi ; cp -a ${S[$i]} ${B[$i]}
   done
   cd $B
-  patch -Np1 -i $W/0001-fix-CVE-2015-1345.patch
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
