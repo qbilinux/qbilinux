@@ -1,0 +1,27 @@
+#!/bin/bash
+
+seek_dir () {
+#    dfas dfa/fdafsd/fdafd/afkdjsakf/PlamoBuild*
+
+    DIR=${1%/*}
+    SCN=${1##*/}
+    CAT=${DIR%/*}
+    BASE=${DIR##*/}
+    echo $DIR
+    echo $SCN
+    echo $CAT
+    echo $BASE
+
+    echo "pushd $DIR"
+    echo "sh ./$SCN download config build package |& tee $BASE.log"
+    echo "popd"
+    ( cd $DIR ; sh ./$SCN download config build |& tee $BASE.make.log )
+    ( cd $DIR ; sudo sh ./$SCN package |& tee $BASE.pakcgae.log )
+}
+
+if [ $# = 1 ] ; then
+    seek_dir $1 ;
+else
+    echo "usage: $0 [buildscript_dir]"
+fi
+
