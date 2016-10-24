@@ -1,4 +1,5 @@
 libffi & y & y & y & y
+&
 Foreign Function Interfaceライブラリ
 &
 libffiはPythonやJavaといった言語のライブラリを

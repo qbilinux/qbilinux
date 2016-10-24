@@ -1,4 +1,5 @@
 libXpm & y & y & y & y
+&
 libXpm
 &
 X Pixmap(XPM)形式のデータを処理するライブラリ

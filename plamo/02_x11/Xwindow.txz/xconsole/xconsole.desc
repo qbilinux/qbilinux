@@ -1,4 +1,5 @@
 xconsole & y & y & y & y
+&
 xconsole
 &
 /dev/consoleに出力されるシステムメッセージを表示する

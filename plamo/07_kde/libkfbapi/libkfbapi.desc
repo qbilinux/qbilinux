@@ -1,4 +1,5 @@
 libkfbapi & y & y & y & y
+&
 KDE版FaceBook API用ライブラリ
 &
 FaceBookが提供している各種APIをKDE環境から利用するためのライブラリ

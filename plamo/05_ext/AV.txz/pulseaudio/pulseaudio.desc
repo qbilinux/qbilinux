@@ -1,4 +1,5 @@
 pulseaudio & y & y & y & y
+&
 PulseAudio オーディオシステム
 &
 PulseAudio は，これまでの Esound サウンドシステムにとって代わるべく開発

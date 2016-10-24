@@ -1,4 +1,5 @@
 usbmuxd & y & y & y & y
+&
 USB multi-plexer デーモン
 &
 USB越しにiPodやiPhoneを操作する際，

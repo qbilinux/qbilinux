@@ -1,4 +1,5 @@
 fonttosfnt & y & y & y & y
+&
 fonttosfnt
 &
 ビットマップフォントをTrueTypeフォントのように扱うためのコマンド

@@ -1,4 +1,5 @@
 NetworkManager & y & y & y & y
+&
 NetworkManager
 &
 ネットワークの検知と設定を自動的に行うツール．

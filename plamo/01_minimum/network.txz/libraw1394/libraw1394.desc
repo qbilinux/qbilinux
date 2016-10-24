@@ -1,4 +1,5 @@
 libraw1394 & y & y & y & y
+&
 IEEE1394 raw device ライブラリ libraw1394
 &
 libraw1394 は IEEE1394 デバイスにアクセスするための raw level

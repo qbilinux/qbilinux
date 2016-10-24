@@ -1,4 +1,5 @@
 xf86_input_evdev & y & y & y & y
+&
 xf86_input_evdev
 &
 Linux用汎用イベント入力ドライバ

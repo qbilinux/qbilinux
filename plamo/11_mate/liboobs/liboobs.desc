@@ -1,4 +1,5 @@
 liboobs & y & y & y & y
+&
 system-tools-backends への GObject ベースのインタフェース
 &
 liboobs は system-tools-backends への GObject ベースのインタフェースを

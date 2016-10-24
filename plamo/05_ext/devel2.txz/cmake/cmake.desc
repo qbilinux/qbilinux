@@ -1,4 +1,5 @@
 cmake & y & y & y & y
+&
 クロスプラットフォーム make
 &
 cmakeは，UnixやWindows,MacOSといった複数の

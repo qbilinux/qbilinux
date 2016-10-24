@@ -1,4 +1,5 @@
 linux_firmware & y & y & y & y
+&
 各種firmware集
 &
 Copyright等の都合でカーネルソースと共には

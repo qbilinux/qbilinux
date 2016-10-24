@@ -1,4 +1,5 @@
 shadow & y & y & y & y
+&
 シャドウパスワード用コマンド
 &
 Linux PAM に対応した shadow password 関連のプログラムです．

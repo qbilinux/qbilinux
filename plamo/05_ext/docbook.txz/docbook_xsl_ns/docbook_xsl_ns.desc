@@ -1,4 +1,5 @@
 docbook_xsl_ns & y & y & y & y
+&
 DocBook-XSL用ネームスペース
 &
 DocBook-XSLを利用してXMLファイルを変換する際に

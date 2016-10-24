@@ -1,4 +1,5 @@
 garcon & y & y & y & y
+&
 garconメニューライブラリ
 &
 garconは，Glib/GIO上に実装されたメニュー機能を操作するためのライブラリです

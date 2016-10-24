@@ -1,4 +1,5 @@
 libiec61883 & y & y & y & y
+&
 IEC61883を実装したライブラリ libiec61883
 &
 Firewire と呼ばれる，ストリーミング DV や MPEG-2，オーディオ機能などを

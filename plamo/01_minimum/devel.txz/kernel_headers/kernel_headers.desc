@@ -1,4 +1,5 @@
 kernel_headers & y & y & y & y
+&
 Linux カーネルヘッダ
 &
 Linux のソースコードから make headers_install で抽出したカーネルヘッダ

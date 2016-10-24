@@ -1,4 +1,5 @@
 xvidtune & y & y & y & y
+&
 xvidtune
 &
 XFree86-VidMode拡張機能を使って，Xサーバのビデオモードを設定するコマンド

@@ -1,4 +1,5 @@
 tcp_wrappers & y & y & y & y
+&
 TCP ラッパーツール
 &
 tcp_wrappers は，クライアントの IP アドレスを元に接続の可否を

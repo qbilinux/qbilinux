@@ -1,4 +1,5 @@
 gamin & y & y & y & y
+&
 ファイル変更モニタ gamin
 &
 gamin は SGI が公開している FAM(File Alteration Monitor)と互換性を持つように

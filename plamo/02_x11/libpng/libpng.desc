@@ -1,4 +1,5 @@
 libpng & y & y & y & y
+&
 PNGフォーマット操作ライブラリ
 &
 libpng は PNG(Portable Network Graphics)画像を処理する

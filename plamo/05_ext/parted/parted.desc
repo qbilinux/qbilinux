@@ -1,4 +1,5 @@
 parted & y & y & y & y
+&
 GNU parted
 &
 partedはHDD上の各種パーティションを操作するための

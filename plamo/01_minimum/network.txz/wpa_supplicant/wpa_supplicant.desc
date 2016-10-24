@@ -1,4 +1,5 @@
 wpa_supplicant & y & y & y & y
+&
 IEEE 802.11i 認証用ソフトウェア
 &
 IEEE 802.11iに定義されたWPA2やWPA，WEPなどの認証処理を

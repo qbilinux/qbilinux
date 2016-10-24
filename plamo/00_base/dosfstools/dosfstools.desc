@@ -1,4 +1,5 @@
 dosfstools & y & y & y & y
+&
 DOS形式フォーマットツール
 &
 dosfstools はフロッピーディスクを MS-DOS の形式にフォーマット

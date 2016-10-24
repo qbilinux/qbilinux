@@ -1,4 +1,5 @@
 at_spi2_core & y & y & y & y
+&
 AT SPI2 core
 &
 GNOME Accessibilityプロジェクトの成果であるAt-Spi2のコアパッケージで，

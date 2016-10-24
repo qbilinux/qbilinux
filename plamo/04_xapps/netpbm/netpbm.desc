@@ -1,4 +1,5 @@
 netpbm & y & y & y & y
+&
 画像フォーマット変換ツール
 &
 ppm/pbm/pnm/pgm 形式を中心に、xpm や bmp、gif といった各種

@@ -1,4 +1,5 @@
 xf86_input_synaptics & y & y & y & y
+&
 xf86_input_synaptics
 &
 Synaptics製タッチパッド用ドライバ

@@ -1,4 +1,5 @@
 qhull & y & y & y & y
+&
 3次元データ操作ライブラリ
 &
 qhullは凸包(convex hull)、

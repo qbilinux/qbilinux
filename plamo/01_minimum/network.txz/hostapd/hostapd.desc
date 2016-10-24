@@ -1,4 +1,5 @@
 hostapd & y & y & y & y
+&
 IEEE 802.11 AP, IEEE 802.1X/WPA/WPA2/EAP/RADIUS 認証モジュール
 &
 Linux ベースの無線 LAN アクセス・ポイントにおいて，WPA2 による強力な暗

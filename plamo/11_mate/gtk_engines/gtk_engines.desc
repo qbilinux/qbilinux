@@ -1,4 +1,5 @@
 gtk_engines & y & y & y & y
+&
 GTK2 に対するテーマ/エンジン
 &
 GTK Engines パッケージは GTK2 に対するテーマ/エンジンを提供します。

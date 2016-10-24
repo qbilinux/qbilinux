@@ -1,4 +1,5 @@
 libmatekbd & y & y & y & y
+&
 キーボード設定用ライブラリ
 &
 libmatekbdはlibgnomekbdから派生したキーボード設定用ライブラリです．

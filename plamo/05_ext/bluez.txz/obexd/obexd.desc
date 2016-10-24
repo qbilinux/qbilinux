@@ -1,4 +1,5 @@
 obexd & y & y & y & y
+&
 OBEXデーモン/クライアント
 &
 OBEX(OBject EXchange)プロトコルをDBus経由でやりとり

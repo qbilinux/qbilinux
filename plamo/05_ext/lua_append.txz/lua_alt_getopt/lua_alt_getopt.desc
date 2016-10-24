@@ -1,4 +1,5 @@
 lua_alt_getopt & y & y & y & y
+&
 Lua用getopモジュール
 &
 Luaにgetopt --longと同等のオプションを指定可能にするモジュール

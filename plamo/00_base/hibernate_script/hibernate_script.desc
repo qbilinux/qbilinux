@@ -1,4 +1,5 @@
 hibernate_script & y & y & y & y
+&
 ハイバネーション用スクリプト
 &
 カーネルに組み込まれている swsuspend2 の機能を用いてシステムを

@@ -1,4 +1,5 @@
 gpgme & y & y & y & y 
+&
 gpgme:GnuPG Made Easy
 &
 GnuPGの諸機能をライブラリとしてアプリケーションに提供するライブラリ

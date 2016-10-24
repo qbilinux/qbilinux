@@ -1,4 +1,5 @@
 wget & y & y & y & y
+&
 ファイルダウンロードコマンド wget
 &
 wget は，ncftp 等の FTP クライアントとは異なり，非対話的に FTP/HTTP サ

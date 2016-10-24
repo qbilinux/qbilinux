@@ -1,4 +1,5 @@
 colord & y & y & y & y
+&
 色管理用デーモンcolord
 &
 colordは入出力デバイスごとの色調整情報を管理する

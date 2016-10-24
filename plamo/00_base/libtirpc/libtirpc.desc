@@ -1,4 +1,5 @@
 libtirpc & y & y & y & y
+&
 TI-RPC用ライブラリ libtirpc
 &
 SUNが開発したトランスポート層に依存しないRPC機能を

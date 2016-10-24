@@ -1,4 +1,5 @@
 xcb_util_wm & y & y & y & y
+&
 xcb-util-wm ライブラリ
 &
 xcb-utilライブラリにWM関連の機能を追加するライブラリ

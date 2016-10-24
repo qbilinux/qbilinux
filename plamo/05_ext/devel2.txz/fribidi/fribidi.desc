@@ -1,4 +1,5 @@
 fribidi & y & y & y & y
+&
 fribidi ライブラリ
 &
 fribidiはunicodeの双方向文字列表示機能を実現するライブラリ

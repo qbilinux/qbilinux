@@ -1,4 +1,5 @@
 alsa_lib & y & y & y & y
+&
 ALSA用ライブラリ
 &
 ALSA(Advanced Linux Sound Archtecture)用のライブラリ

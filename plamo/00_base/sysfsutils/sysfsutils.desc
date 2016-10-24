@@ -1,4 +1,5 @@
 sysfsutils & y & y & y & y
+&
 sys fs ユーティリティ
 &
 最近のカーネルが採用している sysfs(/sys) を操作するための

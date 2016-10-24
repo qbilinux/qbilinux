@@ -1,4 +1,5 @@
 rpcbind & y & y & y & y 
+&
 RPCポート管理用デーモン rpcbind
 &
 RPC経由で提供される各種サービスが，どのRPCポート上で動いているかを

@@ -1,4 +1,5 @@
 poppler & y & y & y & y
+&
 PDF用ライブラリ poppler
 &
 popplerはxpdfを元にしたPDF処理用ライブラリです．

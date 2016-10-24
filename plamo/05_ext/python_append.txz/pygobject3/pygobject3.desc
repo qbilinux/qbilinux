@@ -1,4 +1,5 @@
 pygobject3 & y & y & y & y
+&
 Gobject用Python3モジュール
 &
 GobjectをPython3から操作するためのモジュール

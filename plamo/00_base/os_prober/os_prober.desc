@@ -1,4 +1,5 @@
 os_prober & y & y & y & y
+&
 OS prober
 &
 grub2のgrub-makecfgから呼び出され，grub.cfgに

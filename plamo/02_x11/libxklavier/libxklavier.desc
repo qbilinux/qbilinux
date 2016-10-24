@@ -1,4 +1,5 @@
 libxklavier & y & y & y & y
+&
 XKB 支援ライブラリ
 &
 libklavier は XKB を使いやすくするためのライブラリです．

@@ -1,4 +1,5 @@
 avahi & n & y & y & y
+&
 mDNS/DNS-SD サーバ avahi
 &
 Apple Rendezvous互換のmDNSディスカバリサービスとIP自設定機能

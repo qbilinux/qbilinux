@@ -1,4 +1,5 @@
 navi2ch & y & y & y & y
+&
 Emacs 用 2ch ビューワ navi2ch
 &
 navi2ch は elisp で書かれた Emacs 用の 2ch ビューワです。

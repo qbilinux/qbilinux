@@ -1,4 +1,5 @@
 taglib & y & y & y & y
+&
 ID3 タグ操作用ライブラリ
 &
 taglib は MP3 ファイルなどの ID3 タグを操作するための

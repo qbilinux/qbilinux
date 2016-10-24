@@ -1,4 +1,5 @@
 libical & y & y & y & y
+&
 libical: スケジュール管理用ライブラリ
 &
 libicalはネットワーク経由でスケジュール調整するための

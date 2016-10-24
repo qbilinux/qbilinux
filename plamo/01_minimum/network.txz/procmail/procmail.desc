@@ -1,4 +1,5 @@
 procmail & y & y & y & y
+&
 メール振り分けプログラム procmail
 &
 procmail を使えば，メールサーバやメーリングリストを作ったり，届いたメー

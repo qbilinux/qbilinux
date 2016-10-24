@@ -1,4 +1,5 @@
 libobasis_extension_beanshell_script_provider & y & y & y & y
+&
 beanshell script provider
 &
 BeanShell(Java VM上で動くJavaに準じたスクリプト言語)用の

@@ -1,4 +1,5 @@
 procinfo_ng & y & y & y & y
+&
 /proc ファイルシステム監視ツール
 &
 procinfo は /proc ファイルシステムから情報を

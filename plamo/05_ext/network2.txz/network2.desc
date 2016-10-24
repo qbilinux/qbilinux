@@ -1,4 +1,5 @@
 network2 & y & y & y & y
+&
 ネットワーク環境その2
 &
 sambaやopenldap，httpd,heimdal, proftpdといったサーバ系のソフトウェアと，

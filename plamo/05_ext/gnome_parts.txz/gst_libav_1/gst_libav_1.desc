@@ -1,4 +1,5 @@
 gst_libav_1 & y & y & y & y
+&
 libav用GStreamerプラグイン
 &
 GStreamer-1.xからlibav(ffmpegのフォーク)の機能を使うための

@@ -1,4 +1,5 @@
 openjpeg & y & y & y & y
+&
 JPEG2000用ライブラリ OpenJpeg
 &
 OpenJpeg は JPEG2000 形式のライブラリです．

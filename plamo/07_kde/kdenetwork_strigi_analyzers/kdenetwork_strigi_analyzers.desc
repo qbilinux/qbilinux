@@ -1,4 +1,5 @@
 kdenetwork_strigi_analyzers & y & y & y & y
+&
 kdenetwork_strigi_analyzers
 &
 各種ネットワークプロトコルをstrigiで解析するための

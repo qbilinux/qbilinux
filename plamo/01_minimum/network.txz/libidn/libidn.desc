@@ -1,4 +1,5 @@
 libidn & y & y & y & y
+&
 国際ドメイン名用ライブラリ libidn
 &
 libidn は多国語ドメイン名を処理するための

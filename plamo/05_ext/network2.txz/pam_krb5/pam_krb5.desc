@@ -1,4 +1,5 @@
 pam_krb5 & y & y & y & y
+&
 Kerberos5用PAM
 &
 PAM経由でKerberos5認証を利用するためのモジュール

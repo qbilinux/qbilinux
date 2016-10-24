@@ -1,4 +1,5 @@
 mdadm & y & y & y & y
+&
 RAID 構築ツール
 &
 mdadm は RAID を構築する際に使うコマンドです

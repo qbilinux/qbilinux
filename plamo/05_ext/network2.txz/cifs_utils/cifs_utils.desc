@@ -1,4 +1,5 @@
 cifs_utils & y & y & y & y
+&
 CIFS用ユーティリティ
 &
 SMBの後継であるCIFS(Common Internet File System)を

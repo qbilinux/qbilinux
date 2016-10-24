@@ -1,4 +1,5 @@
 zeroconf_ioslave & y & y & y & y
+&
 zeroconf ioslave
 &
 KDE用ネットワークサービス発見用デーモン

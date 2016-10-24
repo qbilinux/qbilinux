@@ -1,4 +1,5 @@
 cpufreqd & y & y & y & y
+&
 CPU周波数管理デーモン
 &
 cpufreqd は温度や電池残量を元に，CPUの周波数を動的に管理する

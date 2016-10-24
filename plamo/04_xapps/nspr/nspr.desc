@@ -1,4 +1,5 @@
 nspr & y & y & y & y
+&
 NSPR(NetScape Portable Runtime)ライブラリ
 &
 NSPRはNetscape社が公開したスレッドやI/O処理を抽象化するための

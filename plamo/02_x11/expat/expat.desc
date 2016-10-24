@@ -1,4 +1,5 @@
 expat & y & y & y & y
+&
 XML parsing library expat
 &
 expat は C で書かれた XML パース用ライブラリです．最近は多くの設定ファイルが

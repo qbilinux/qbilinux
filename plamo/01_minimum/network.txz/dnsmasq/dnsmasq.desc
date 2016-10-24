@@ -1,4 +1,5 @@
 dnsmasq & y & y & y & y
+&
 dnsmasq (簡易 DNS/DHCP サーバ)
 &
 dnsmasq は軽量で，DNS フォワーダや DHCP サーバをお手軽に構築できます。

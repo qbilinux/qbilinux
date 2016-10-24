@@ -1,4 +1,5 @@
 remctl & y & y & y & y
+&
 リモート認証用サーバ/クライアント
 &
 KerberosのGSS-API認証などを利用するための

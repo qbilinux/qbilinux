@@ -1,4 +1,5 @@
 libcap & y & y & y & y
+&
 capability管理ツール
 &
 最近のカーネルで可能になったPOSIX 1e互換のcapability機能を

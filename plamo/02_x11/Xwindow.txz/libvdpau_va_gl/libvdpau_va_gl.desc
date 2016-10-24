@@ -1,4 +1,5 @@
 libvdpau_va_gl & y & y & y & y
+&
 libvdpau-va-gl
 &
 OpenGL経由でVA/VDPAU機能を操作するためのライブラリ

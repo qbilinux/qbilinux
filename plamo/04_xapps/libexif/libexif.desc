@@ -1,4 +1,5 @@
 libexif & n & y & y & y
+&
 EXIFデータ操作用ライブラリ
 &
 libexif はデジカメ画像の EXIF ファイルを操作するためのライブラリです．

@@ -1,4 +1,5 @@
 libXinerama & y & y & y & y
+&
 libXinerama
 &
 マルチディスプレイを可能にするXinerama拡張機能用ライブラリ

@@ -1,4 +1,5 @@
 ipaddr_py & y & y & y & y
+&
 IP アドレス操作ライブラリ
 &
 Python から IPv4/IPv6 を操作するライブラリです。

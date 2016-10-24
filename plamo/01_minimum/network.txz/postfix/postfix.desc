@@ -1,4 +1,5 @@
 postfix & y & y & y & y
+&
 メール配送プログラム postfix
 &
 postfix は sendmail ほど過去との互換性にはこだわらずに

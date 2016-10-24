@@ -1,4 +1,5 @@
 libzip & y & y & y & y
+&
 libzip
 &
 zip アーカイブを扱うためのライブラリです。

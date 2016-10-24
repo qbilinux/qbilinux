@@ -1,4 +1,5 @@
 libpthread_stubs & y & y & y & y
+&
 libpthread_stubs
 &
 pthreadライブラリ用のstub

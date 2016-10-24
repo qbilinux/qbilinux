@@ -1,4 +1,5 @@
 grub & y & y & y & y
+&
 GRand Unified Boot loader
 &
 GRUB は元々 GNU HURD 用に開発されたブートローダ

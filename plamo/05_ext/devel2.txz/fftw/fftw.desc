@@ -1,4 +1,5 @@
 fftw & y & y & y & y
+&
 高速フーリエ変換ライブラリ fftw
 &
 fftw(the Fastest Fourier Transform in West)は離散フーリエ変換を

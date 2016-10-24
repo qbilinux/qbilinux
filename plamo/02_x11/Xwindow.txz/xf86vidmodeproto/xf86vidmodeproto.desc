@@ -1,4 +1,5 @@
 xf86vidmodeproto & y & y & y & y
+&
 xf86vidmodeproto
 &
 ビデオカードの持ついくつかのモードを動的に変更可能にする

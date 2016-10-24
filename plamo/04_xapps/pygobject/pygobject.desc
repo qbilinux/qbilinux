@@ -1,4 +1,5 @@
 pygobject & y & y & y & y
+&
 Python-gobjectモジュール
 &
 PythonからGlibのオブジェクト(gobject)を

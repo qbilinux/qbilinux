@@ -1,4 +1,5 @@
 openssh & y & y & y & y
+&
 暗号化通信コマンド
 &
 OpenSSH は rlogin/rcp/telnet に代るプログラムで

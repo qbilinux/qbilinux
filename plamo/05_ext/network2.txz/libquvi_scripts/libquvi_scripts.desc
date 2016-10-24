@@ -1,4 +1,5 @@
 libquvi_scripts & y & y & y & y
+&
 libquvi用埋め込みスクリプト
 &
 libquviが利用する，埋め込み型のLuaスクリプト

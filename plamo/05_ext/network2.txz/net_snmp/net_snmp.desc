@@ -1,4 +1,5 @@
 net_snmp & y & y & y & y
+&
 OSS版SNMP
 &
 SNMP(Simple Network Management Protocol)は，ネットワークに接続された

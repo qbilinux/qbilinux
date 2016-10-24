@@ -1,4 +1,5 @@
 docbook & n & y & y & y
+&
 DocBook形式処理ツール群
 &
 DocBook形式のSGML/XML処理システムです. SGMLパーサopenjadeや,

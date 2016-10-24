@@ -1,4 +1,5 @@
 redland & y & y & y & y
+&
 RDF 用ライブラリ Redland
 &
 redland は RDF 用の API を提供するライブラリです

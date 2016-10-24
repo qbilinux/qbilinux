@@ -1,4 +1,5 @@
 efibootmgr & y & y & y & y
+&
 EFI boot manager
 &
 UEFI環境から起動するために、

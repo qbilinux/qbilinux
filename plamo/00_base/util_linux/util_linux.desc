@@ -1,4 +1,5 @@
 util_linux & y & y & y & y
+&
 Linux 専用ユーティリティコマンド集
 &
 mount/umount, fdisk, fsck, mkswap 等の基本コマンドを集めたパッケージです。

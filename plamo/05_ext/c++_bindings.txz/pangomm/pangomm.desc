@@ -1,4 +1,5 @@
 pangomm & y & y & y & y
+&
 pango用C++バインディング
 &
 Gtk+の画面に多言語を表示するためのPangoライブラリを

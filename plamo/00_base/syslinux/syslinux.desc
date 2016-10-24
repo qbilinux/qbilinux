@@ -1,4 +1,5 @@
 syslinux & y & y & y & y
+&
 FD 用 Linux ブートローダ
 &
 syslinuxはFDやUSBメモリからカーネルを起動するための

@@ -1,4 +1,5 @@
 lvm2 & y & y & y & y
+&
 Logical Volume Manager バージョン2
 &
 LVM(Logical Volume Maneger)は，HDD を論理ボリュームとして管理して，

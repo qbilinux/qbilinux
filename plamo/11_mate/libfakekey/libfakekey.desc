@@ -1,4 +1,5 @@
 libfakekey & y & y & y & y
+&
 Xキー押下変換ライブラリ
 &
 libfakekeyはUTF-8な文字コードを仮想的なXキー押下に変換するための

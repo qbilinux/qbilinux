@@ -1,4 +1,5 @@
 gparted & y & y & y & y
+&
 parted GUI
 &
 partedをGUI経由で利用するためのコマンド

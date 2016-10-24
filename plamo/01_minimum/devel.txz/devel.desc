@@ -1,4 +1,5 @@
 devel & n & y & y & y
+&
 C/C++ 言語用開発環境
 &
 gcc/g++ や gmake, bison, flex, binutils  など，

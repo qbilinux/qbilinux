@@ -1,4 +1,5 @@
 grep & y & y & y & y
+&
 文字列検出コマンド
 &
 GREP(Global Regular ExPression)は入力ファイル(あるいは標
