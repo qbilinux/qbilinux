@@ -3,7 +3,7 @@
 ######################################################################
 pkgbase=os_prober
 vers=1.56
-url="http://distribution-us.hexxeh.net/raspbian/archive/raspbian/pool/main/o/os-prober/os-prober_${vers}.tar.gz"
+url="ftp://ftp.slackware.org.uk/salix/i486/14.0/source/ap/os-prober/os-prober_${vers}.tar.gz"
 arch=`uname -m`
 build=P2m1
 src=os-prober-$vers
