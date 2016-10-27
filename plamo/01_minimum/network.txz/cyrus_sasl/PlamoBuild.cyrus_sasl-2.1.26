@@ -2,17 +2,15 @@
 
 ######################################################################
 pkgbase=cyrus_sasl
-vers=2.1.23
-url="ftp://ftp.cyrusimap.org/cyrus-sasl/cyrus-sasl-${vers}.tar.gz
-    ftp://plamo.linet.gr.jp/pub/Plamo-src.new/plamo/01_minimum/network.txz/cyrus_sasl/cyrus-sasl-blfs.patch.gz
-    ftp://plamo.linet.gr.jp/pub/Plamo-src.new/plamo/01_minimum/network.txz/cyrus_sasl/cyrus-sasl-64bit-plugindir.patch.gz"
+vers=2.1.26
+url="ftp://ftp.cyrusimap.org/cyrus-sasl/cyrus-sasl-${vers}.tar.gz"
 arch=`uname -m`
-build=P4m1
+build=P0m1
 src=cyrus-sasl-$vers
 patchfiles="cyrus-sasl-blfs.patch.gz cyrus-sasl-64bit-plugindir.patch.gz"
 OPT_CONFIG="--with-dbpath=/var/lib/sasl/sasldb2
     --with-saslauthd=/var/run/saslauthd"
-DOCS="README AUTHORS COPYING ChangeLog INSTALL NEWS"
+DOCS="AUTHORS COPYING ChangeLog INSTALL INSTALL.TXT NEWS README"
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
