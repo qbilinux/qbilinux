@@ -299,7 +299,7 @@ if [ $opt_package -eq 1 ] ; then
   done
 
   for f in $srcfiles ; do
-      cp $B/$f $docdir/$src/$f
+      cp $W/$f $docdir/$src/$f
       gzip_one $docdir/$src/$f
   done
 
