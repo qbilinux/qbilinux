@@ -1,17 +1,18 @@
 #!/bin/sh
 ##############################################################
-url='http://git.overlays.gentoo.org/gitweb/?p=proj/rpm2targz.git;a=snapshot;h=4dc68a994ebcec662b3bcf8870ba733821abd894;sf=tbz2'
 pkgbase=rpm2targz
 vers=9.0.0.3g
-arch=x86_64
-# arch=i586
-build=P1
-src=rpm2targz-4dc68a9
+url="https://cgit.gentoo.org/proj/rpm2targz.git/snapshot/rpm2targz-${vers}.tar.bz2"
+arch=`uname -m`
+build=P1m1
+src=rpm2targz-${vers}
 OPT_CONFIG=''
 DOCS='rpm2targz.README rpm2targz.README.Gentoo'
 patchfiles=''
 addfile='rpm2cpio'
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -238,7 +239,7 @@ if [ $opt_package -eq 1 ] ; then
   install -m755 $W/$addfile $P/usr/bin
 
   mkdir -p $P/usr/share/doc/$pkgbase-$vers
-  cp rpmoffset.c $P/usr/share/doc/$pkgbase-$vers
+  cp $W/$addfile $P/usr/share/doc/$pkgbase-$vers
 
 # remove locales except ja
 # 
