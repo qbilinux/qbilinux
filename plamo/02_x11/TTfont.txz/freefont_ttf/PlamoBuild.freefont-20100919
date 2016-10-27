@@ -143,14 +143,12 @@ if [ $opt_config -eq 1 ] ; then
        patch -p1 < $W/$patch
     done
     echo "no need to configure. proceed to build."
-    opt_build=1
   done
 fi
 if [ $opt_build -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     echo "no need to build proceed to package."
-    opt_package=1
   done
 fi
 if [ $opt_package -eq 1 ] ; then

@@ -137,12 +137,9 @@ if [ $opt_config -eq 1 ] ; then
 #   記述します。
 ######################################################################
   echo "no need to configure. proceed to build."
-  opt_build=1
-
 fi
 if [ $opt_build -eq 1 ] ; then
   echo "no need to build. proceed to package."
-  opt_package=1
 fi
 if [ $opt_package -eq 1 ] ; then
   if [ `id -u` -ne 0 ] ; then
