@@ -268,7 +268,7 @@ EOF
 # touch -t `date '+%m%d0900'` $pkg.tar ; gzip $pkg.tar ; touch $pkg.tar.gz
 # mv $pkg.tar.gz $pkg.tgz
   cd $P
-  /sbin/makepkg ../$pkg.tgz <<EOF
+  /sbin/makepkg ../$pkg.txz <<EOF
 y
 1
 EOF
