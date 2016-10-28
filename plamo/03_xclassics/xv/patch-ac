@@ -1,0 +1,19 @@
+*** Makefile.std.orig	2016-10-28 15:08:56.266655619 +0900
+--- Makefile.std	2016-10-28 15:11:09.639988845 +0900
+***************
+*** 63,69 ****
+  PNG    = -DDOPNG
+  PNGDIR = /usr/lib64
+  PNGINC = -I/usr/include
+! PNGLIB = -L$(PNGDIR) -lpng
+  
+  
+  ###
+--- 63,69 ----
+  PNG    = -DDOPNG
+  PNGDIR = /usr/lib64
+  PNGINC = -I/usr/include
+! PNGLIB = -L$(PNGDIR) -lpng14
+  
+  
+  ###

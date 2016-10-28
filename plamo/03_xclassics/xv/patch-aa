@@ -1,0 +1,19 @@
+*** xvpng.c.orig	Fri Oct 28 15:06:57 2016
+--- xvpng.c	Fri Oct 28 15:01:52 2016
+***************
+*** 25,31 ****
+  
+  #ifdef HAVE_PNG
+  
+! #include "png.h"
+  
+  /*** Stuff for PNG Dialog box ***/
+  #define PWIDE 318
+--- 25,31 ----
+  
+  #ifdef HAVE_PNG
+  
+! #include "libpng14/png.h"
+  
+  /*** Stuff for PNG Dialog box ***/
+  #define PWIDE 318
