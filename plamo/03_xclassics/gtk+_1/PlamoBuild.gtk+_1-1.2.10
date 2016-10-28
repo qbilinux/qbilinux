@@ -2,7 +2,8 @@
 
 ######################################################################
 url="http://ftp.gnome.org/pub/gnome/sources/gtk+/1.2/gtk+-1.2.10.tar.gz
-    http://plamo.linet.gr.jp/~tamuki/src/gtk+-1.2.10-61.fc9.src.tar.gz"
+    http://plamo.linet.gr.jp/~tamuki/src/gtk+-1.2.10-61.fc9.src.tar.gz
+    http://www.linuxfromscratch.org/patches/downloads/gtk+/gtk+-1.2.10-config_update-1.patch"
 pkgbase=gtk+_1
 vers=1.2.10
 arch=`uname -m`
@@ -232,6 +233,7 @@ if [ $opt_config -eq 1 ] ; then
   patch -Np1 -i $W/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-ppc64.patch
   patch -Np1 -i $W/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-no_undefined.patch
   patch -Np1 -i $W/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-multilib.patch
+  patch -Np1 -i $W/gtk+-1.2.10-config_update-1.patch
   cp -p /usr/share/libtool/config/config.{guess,sub} .
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
