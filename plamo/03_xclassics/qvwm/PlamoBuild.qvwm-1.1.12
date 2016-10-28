@@ -1,12 +1,12 @@
 #!/bin/sh
 
 ######################################################################
-url="http://www.csg.is.titech.ac.jp/~kourai/qvwm/archive/qvwm/qvwm-1.1.12.tar.gz
+url="http://pupngo.dk/source/qvwm-1.1.12.tar.gz
     http://plamo.linet.gr.jp/~tamuki/src/qvwm-1.1.12-timer.diff.gz
-    http://www.csg.is.titech.ac.jp/~kourai/qvwm/archive/qvwm/qvbanner-1.0.2.tar.gz
+    http://pupngo.dk/source/qvbanner-1.0.2-src-11.00.tar.gz
     http://plamo.linet.gr.jp/~tamuki/src/qvbanner-1.0.2-expire.patch.gz
     http://plamo.linet.gr.jp/~tamuki/src/qvwm_sounds.tar.bz2
-    http://www.fvwm.org/generated/icon_download/fvwm_icons-20070101.tar.bz2
+    http://ftp.openbsd.org/pub/OpenBSD/distfiles/fvwm_icons-20070101.tar.gz
     http://plamo.linet.gr.jp/~tamuki/src/plamo_pixmaps.tar.bz2"
 pkgbase=qvwm
 vers=1.1.12
