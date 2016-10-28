@@ -2,7 +2,8 @@
 
 ######################################################################
 url="http://ftp.gnome.org/pub/gnome/sources/glib/1.2/glib-1.2.10.tar.gz
-    http://plamo.linet.gr.jp/~tamuki/src/glib-1.2.10-29.fc9.src.tar.gz"
+    http://plamo.linet.gr.jp/~tamuki/src/glib-1.2.10-29.fc9.src.tar.gz
+    http://www.linuxfromscratch.org/patches/downloads/glib/glib-1.2.10-config_update-1.patch"
 pkgbase=glib_1
 vers=1.2.10
 arch=`uname -m`
@@ -210,6 +211,7 @@ if [ $opt_config -eq 1 ] ; then
   patch -Np1 -i $W/glib-1.2.10-29.fc9.src/glib-1.2.10-underquoted.patch
   patch -Np1 -i $W/glib-1.2.10-29.fc9.src/glib-1.2.10-no_undefined.patch
   patch -Np1 -i $W/glib-1.2.10-29.fc9.src/glib-1.2.10-multilib.patch
+  patch -Np1 -i $W/glib-1.2.10-config_update-1.patch
   for i in `seq 0 $((${#B[@]} - 1))` ; do
   cp -p /usr/share/libtool/config/config.{guess,sub} .
     cd ${B[$i]}
