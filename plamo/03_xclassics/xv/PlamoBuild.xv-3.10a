@@ -304,6 +304,9 @@ if [ $opt_config -eq 1 ] ; then
   patch -Np1 -i $W/xv-3.10a-grab.patch
   patch -Np1 -i $W/xv-3.10a-plamo-patch
   patch -Np1 -i $W/xvimage.c-cast.patch
+  patch -Np0 -i $W/patch-aa
+  patch -Np0 -i $W/patch-ab
+  patch -Np0 -i $W/patch-ac
   cp -p Makefile.std Makefile.std.orig
   sed '/^BINDIR =/s@/local@@g' Makefile.std.orig \
       | sed '/^MANDIR =/s@local@share@g' \
@@ -381,6 +384,9 @@ if [ $opt_package -eq 1 ] ; then
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
+  install $W/patch-aa $docdir/$src
+  install $W/patch-ab $docdir/$src
+  install $W/patch-ac $docdir/$src
   mv $docdir/xv $docdir/$src/lib
   mv $docdir/$src/{lib,$myname.gz} $C
   mv $C/{lib,$myname.gz} $docdir/$src

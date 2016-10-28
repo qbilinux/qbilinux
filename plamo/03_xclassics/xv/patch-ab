@@ -1,0 +1,19 @@
+*** Makefile.orig	Fri Oct 28 15:05:12 2016
+--- Makefile	Fri Oct 28 15:03:10 2016
+***************
+*** 69,75 ****
+  ###
+  PNG    = -DDOPNG
+  #PNGDIR = /usr/local/src/libpng
+! PNGLIB = -lpng
+  
+  
+  ###
+--- 69,75 ----
+  ###
+  PNG    = -DDOPNG
+  #PNGDIR = /usr/local/src/libpng
+! PNGLIB = -lpng14
+  
+  
+  ###
