@@ -7,6 +7,7 @@ vers=2.6
 arch=`uname -m`
 build=P1m1
 src=$pkgbase-$vers
+patchfiles="fix-png.patch"
 OPT_CONFIG="--enable-libplotter --enable-libxmi"
 DOCS="README AUTHORS COPYING ChangeLog INSTALL NEWS THANKS TODO COMPAT
     INSTALL.pkg INSTALL.fonts KNOWN_BUGS ONEWS PROBLEMS"
@@ -206,6 +207,9 @@ if [ $opt_config -eq 1 ] ; then
   done
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
+    for patch in $patchfiles ; do
+       patch -p1 < $W/$patch
+    done
     if [ -f Makefile ] ; then
       make clean
     fi
@@ -264,6 +268,10 @@ if [ $opt_package -eq 1 ] ; then
       ln $docdir/$src/$myname.gz $docdir/${src[$i]}
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
+  done
+  for patch in $patchfiles ; do
+      cp $W/$patch $docdir/$src/$patch
+      gzip_one $docdir/$src/$patch
   done
   convert
   tar cvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
