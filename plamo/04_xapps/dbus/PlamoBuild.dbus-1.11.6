@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://dbus.freedesktop.org/releases/dbus/dbus-1.6.18.tar.gz'
 pkgbase=dbus
-vers=1.6.18
+vers=1.11.6
+url="http://dbus.freedesktop.org/releases/dbus/dbus-${vers}.tar.gz"
 arch=`uname -m`
-build=P1m1
-src=dbus-1.6.18
+build=P0m1
+src=dbus-${vers}
 OPT_CONFIG='--with-console-auth-dir=/var/run/console --disable-static  --with-xml=expat --without-systemdsystemunitdir --disable-systemd '
 DOCS='AUTHORS COPYING ChangeLog ChangeLog.pre-1-0 ChangeLog.pre-1-2 HACKING INSTALL NEWS NEWS.pre-1-0 NEWS.pre-1-2 README README.cygwin README.launchd README.win README.wince'
 patchfiles=''
