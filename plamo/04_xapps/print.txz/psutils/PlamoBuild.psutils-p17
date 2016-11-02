@@ -1,6 +1,6 @@
 #!/bin/sh
 ##############################################################
-url='http://gd.tuwien.ac.at/publishing/tex/tex-utils/psutils/psutils-p17.tar.gz'
+url='https://www.ctan.org/tex-archive/obsolete/support/psutils/psutils-p17.tar.gz'
 pkgbase=psutils
 vers=1.17
 arch=`uname -m`
