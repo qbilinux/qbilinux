@@ -2,9 +2,9 @@
 ##############################################################
 url=''
 pkgbase=libreoffice_plamoenv
-vers=5.0
+vers=5.1
 arch=noarch
-build=P1m1
+build=P0m1
 src='libreoffice_plamoenv'
 OPT_CONFIG=''
 DOCS=''
