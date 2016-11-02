@@ -1,23 +1,73 @@
 #!/bin/sh
-wget http://download.documentfoundation.org/libreoffice/stable/5.1.6/rpm/x86_64/LibreOffice_5.1.6_Linux_x86-64_rpm_helppack_ja.tar.gz
-tar xvf LibreOffice_5.1.6_Linux_x86-64_rpm_helppack_ja.tar.gz
+
+arch=`uname -m`
+case $arch in
+    x86_64)
+	archdir=x86_64
+	archfile=x86-64
+	;;
+    *)
+	archdir=x86
+	archfile=x86
+	;;
+esac
+
+#####################################################################################
+filename="LibreOffice_5.1.6_Linux_${archfile}_rpm_helppack_ja.tar.gz"
+dirname="LibreOffice_5.1.6.2_Linux_${archfile}_rpm_helppack_ja"
+rev=5.1.6.2-2
+downloaddir="http://download.documentfoundation.org/libreoffice/stable/5.1.6/rpm"
+
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
+#####################################################################################
 
 W=`pwd`
-cd LibreOffice_5.1.6.2_Linux_x86-64_rpm_helppack_ja/RPMS
-for i in *.rpm ; do
-    file=${i%.*}
-    arch=${file##*.}
-    rev=5.1.6.2-2
-    rev2=${rev//-/_}
-    base=${file%-$rev*}
-    base2=${base//-/_}
-    base3=${base2//5.1/}
-    echo ++++
-    echo $file
-    echo $arch
-    echo $rev2
-    echo $base2
-    echo $base3
-    rpm2tar -O $i | xz > $base3-$rev2-$arch-P0m1.txz
-    mv $base3-$rev2-$arch-P0m1.txz $W
-done
+if [ $# -eq 0 ] ; then
+    opt_download=1 ; opt_config=1 ; opt_build=1 ; opt_package=1
+else
+    opt_download=0 ; opt_config=0 ; opt_build=0 ; opt_package=0
+    for i in $@ ; do
+	case $i in
+	    download) opt_download=1 ;;
+	    config) opt_config=1 ;;
+	    build) opt_build=1 ;;
+	    package) opt_package=1 ;;
+	esac
+    done
+fi
+if [ $opt_download -eq 1 ] ; then
+    if [ ! -f ${filename} ] ; then cp ${SRC_DIR}/${filename} . ; fi
+    if [ ! -f ${filename} ] ; then wget ${SRC_URL}/${filename} ; fi
+    if [ ! -f ${filename} ] ; then
+	wget ${downloaddir}/${archdir}/${filename} ;
+    fi
+    if [ ! -f ${SRC_DIR}/${filename} ] ; then cp -p ${filename} ${SRC_DIR} ; fi
+    
+    tar xvf ${filename}
+fi
+if [ $opt_config -eq 1 ] ; then
+    echo 'nothin to done for config.'
+fi
+if [ $opt_build -eq 1 ] ; then
+    echo 'nothin to done for build.'
+fi
+if [ $opt_package -eq 1 ] ; then
+    cd $dirname/RPMS
+    for i in *.rpm ; do
+	file=${i%.*}
+	farch=${file##*.}
+	rev2=${rev//-/_}
+	base=${file%-$rev*}
+	base2=${base//-/_}
+	base3=${base2//5.1/}
+	echo ++++
+	echo $file
+	echo $farch
+	echo $rev2
+	echo $base2
+	echo $base3
+	rpm2tar -O $i | xz > $base3-$rev2-$farch-P0m1.txz
+	mv $base3-$rev2-$farch-P0m1.txz $W
+    done
+fi
