@@ -2,7 +2,7 @@
 ##############################################################
 url="svn co svn://svn.icculus.org/smpeg/tags/release_2_0_0/"
 pkgbase=smpeg
-vers=r394
+vers=2.0.0
 arch=`uname -m`
 build=P1m1
 src=release_2_0_0
@@ -179,10 +179,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
-    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
-    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
-    if [ ! -f ${i##*/} ] ; then wget $i ; fi
-    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
+#    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+#    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
+#    if [ ! -f ${i##*/} ] ; then wget $i ; fi
+#    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
     echo $url | sh
   done
   for i in $url ; do
