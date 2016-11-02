@@ -1,0 +1,19 @@
+*** build/configure.orig	Fri Mar 23 13:23:11 2012
+--- build/configure	Thu Nov  3 02:21:56 2016
+***************
+*** 10687,10693 ****
+  fi
+  done
+  
+!         OS_CFLAGS="-D_XOPEN_SOURCE=500"
+          ;;
+      *)
+          for ac_header in poll.h
+--- 10687,10693 ----
+  fi
+  done
+  
+!         OS_CFLAGS="-D_XOPEN_SOURCE=600"
+          ;;
+      *)
+          for ac_header in poll.h
