@@ -1,9 +1,9 @@
 #!/bin/sh
 ##############################################################
 pkgbase=glib
-vers=2.47.5
-url="http://ftp.acc.umu.se/pub/gnome/sources/glib/${vers%.*}/glib-${vers}.tar.xz"
-verify="http://ftp.acc.umu.se/pub/gnome/sources/glib/${vers%.*}/glib-${vers}.sha256sum"
+vers=2.51.0
+url="http://ftp.gnome.org/pub/gnome/sources/glib/${vers%.*}/glib-${vers}.tar.xz"
+verify="http://ftp.gnome.org/pub/gnome/sources/glib/${vers%.*}/glib-${vers}.sha256sum"
 commitid=
 arch=`uname -m`
 build=P1m1
