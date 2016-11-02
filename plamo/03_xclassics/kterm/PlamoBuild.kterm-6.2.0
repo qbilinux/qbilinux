@@ -1,7 +1,7 @@
 #!/bin/sh
 
 ######################################################################
-url="http://ftp.x.org/contrib/applications/kterm-6.2.0.tar.gz
+url="http://distfiles.icmpv6.org/distfiles/kterm/kterm-6.2.0.tar.gz
     http://plamo.linet.gr.jp/~tamuki/src/kterm-patches.tar.gz
     http://plamo.linet.gr.jp/~tamuki/src/kterm-ja_ad.tar.gz"
 pkgbase=kterm

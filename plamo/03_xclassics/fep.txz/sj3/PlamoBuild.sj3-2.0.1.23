@@ -1,27 +1,15 @@
 #!/bin/sh
 
 ######################################################################
-url="http://jaist.dl.sourceforge.jp/canna/9565/Canna37p3.tar.bz2
-    http://plamo.linet.gr.jp/~tamuki/src/Canna37p3-keybind.patch.gz
-    http://www.nslabs.jp/archives/nicolatter-1.7.9.tar.gz
-    http://ftp.st.ryukoku.ac.jp/pub/japanese-im/libspt/libspt-1.1.tar.bz2
-    http://plamo.linet.gr.jp/~tamuki/src/libspt-1.1-set_timefield.patch.gz
-    http://cannadic.oucrc.org/cannadic-0.95c.tar.gz"
-pkgbase=Canna
-vers=37p3
+url="https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/sj3/sj3-2.0.1.23.tar.bz2"
+pkgbase=sj3
+vers=2.0.1.23
 arch=`uname -m`
 build=P1m1
-src[0]=Canna37p3
-src[1]=libspt-1.1
-src[2]=cannadic-0.95c
-OPT_CONFIG[0]=""
-OPT_CONFIG[1]=""
-OPT_CONFIG[2]=""
-DOCS[0]="`echo canuum/{COPYRIGHT,README.{copyright,jp}}`
-    ChangeLog CHANGES.jp COPYRIGHT INSTALL INSTALL.jp OCHANGES.jp
-    README README.jp RKCCONF.jp WHATIS WHATIS.jp"
-DOCS[1]="CHANGES COPYRIGHT INSTALL"
-DOCS[2]="README.ja COPYING"
+src=$pkgbase-$vers
+OPT_CONFIG="--sysconfdir=/usr/share --localstatedir=/var/lib/sj3
+    --docdir=/usr/share/sj3/doc --with-user=bin --with-group=bin"
+DOCS="README CHANGES.eucJP README.eucJP"
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -208,50 +196,30 @@ if [ $opt_download -eq 1 ] ; then
     case ${i##*.} in
     tar) tar xvpf ${i##*/} ;;
     gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    bz2) tar xvpf ${i##*/} ;;
     esac
   done
+  touch -t 200802171546.35 $S
 fi
 if [ $opt_config -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     if [ -d ${B[$i]} ] ; then rm -rf ${B[$i]} ; fi ; cp -a ${S[$i]} ${B[$i]}
   done
-  cd ${B[0]}
-  gunzip -c $W/Canna37p3-keybind.patch.gz | patch -Np1 -i -
-  patch -Np1 -i $W/nicolatter-1.7.9/patch/Canna37p1-q1.diff
-  cp -p Canna.conf Canna.conf.orig
-  cat <<- "EOF" | patch Canna.conf
-	143c143
-	< cannaPrefix = DefCannaPrefix
-	---
-	> cannaPrefix = /usr
-	149,151c149,151
-	< cannaLibDir = DefCannaLibDir
-	< XCOMM cannaManDir = $(cannaPrefix)/share/man
-	< cannaManDir = $(cannaPrefix)/man
-	---
-	> cannaLibDir = /usr/lib64/canna
-	> cannaManDir = $(cannaPrefix)/share/man
-	> XCOMM cannaManDir = $(cannaPrefix)/man
-	154,155c154,155
-	< libCannaDir = DefLibCannaDir
-	< ErrDir  = DefErrDir
-	---
-	> libCannaDir = /usr/lib64
-	> ErrDir  = /var/log/canna
-	240c240
-	< DicDir   = $(cannaLibDir)/dic
-	---
-	> DicDir   = /var/lib/canna/dic
-	333c333
-	< JMNLOCALE = ja
-	---
-	> JMNLOCALE = ja_JP.eucJP
-	EOF
-  cd ${B[1]}
-  gunzip -c $W/libspt-1.1-set_timefield.patch.gz | patch -Np1 -i -
+  cd $B
   cp -p Makefile.in Makefile.in.orig
-  sed 's@man$@share/man@g' Makefile.in.orig > Makefile.in
+  sed 's@ \($(SJ3VARDIR)\)@ $(DESTDIR)\1@g' Makefile.in.orig > Makefile.in
+  cp -p lib/sj3rkcv/Makefile.in lib/sj3rkcv/Makefile.in.orig
+  sed '/rk_DATA =/s@sjrk@@g' lib/sj3rkcv/Makefile.in.orig \
+      > lib/sj3rkcv/Makefile.in
+  cp -p src/sj3serv/Makefile.in src/sj3serv/Makefile.in.orig
+  sed 's@examples/sj3@sj3/examples@g' src/sj3serv/Makefile.in.orig \
+      > src/sj3serv/Makefile.in
+  cp -p src/sj3proxy/Makefile.in src/sj3proxy/Makefile.in.orig
+  sed 's@examples/sj3@sj3/examples@g' src/sj3proxy/Makefile.in.orig \
+      > src/sj3proxy/Makefile.in
+  cp -p dict/Makefile.in dict/Makefile.in.orig
+  sed 's@ \($(SJ3DICTDIR)\)@ $(DESTDIR)\1@g' dict/Makefile.in.orig \
+      > dict/Makefile.in
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
@@ -266,20 +234,12 @@ if [ $opt_config -eq 1 ] ; then
           --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
     fi
   done
-  cd ${B[0]}
-  xmkmf
-  cd canuum
-  xmkmf -a
 fi
 if [ $opt_build -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
-      case $i in
-      0) make canna ; ( cd canuum ; make ) ;;
-      1) make ;;
-      2) make maindic ;;
-      esac
+      make
     fi
   done
 fi
@@ -296,81 +256,49 @@ if [ $opt_package -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
-      if [ $i -eq 0 ] ; then
-        make -i install install.man DESTDIR=$P
-        ( cd canuum ; make install install.man DESTDIR=$P )
-      elif [ $i -eq 1 ] ; then
-        make -i install DESTDIR=$P
-      fi
+      make -i install DESTDIR=$P
     fi
   done
-  cd ${B[2]}
-  cannadicdir=$P/var/lib/canna/dic/canna
-  install -o bin -g bin -m 0664 gcanna.c[bl]d $cannadicdir
-  install -o bin -g bin -m 0664 gcannaf.ctd $cannadicdir
-  cp -p $cannadicdir/dics.dir $cannadicdir/dics.dir.orig
-  cat <<- "EOF" | patch $cannadicdir/dics.dir
-	25a26,28
-	> gcanna.cbd(gcanna.mwd)		-gcanna---
-	> gcanna.cld(gcanna.mwd)		-gcanna---
-	> gcannaf.ctd(.swd)		-gcannaf---
-	EOF
-  cannalibdir=$P/usr/lib64/canna
-  cp -p $cannalibdir/default.canna $cannalibdir/default.canna.orig
-  cat <<- "EOF" | patch $cannalibdir/default.canna
-	27c27,29
-	<  "iroha"
-	---
-	>  "gcanna"
-	>  "gcannaf"
-	> ; "iroha"
-	EOF
   touch $W/i.et
   cd $W
   find $P ! -type l -newer i.st ! -newer i.et \
       -exec touch -t `date '+%m%d0900'` {} \;
   compress
-  strip_bindir $P/usr/libexec
-  gzip_dir $mandir/ja_JP.eucJP/man1
-  gzip_dir $mandir/ja_JP.eucJP/man3
+  sed 's@prefix.*run@"/tmp@g' $P/usr/share/sj3/examples/sj3serv.lua.example \
+      > $P/usr/share/sj3/sj3serv.lua
+  touch -t `date '+%m%d0900'` $P/usr/share/sj3 $P/usr/share/sj3/sj3serv.lua
   install -d $P/etc/rc.d/init.d
-  cat <<- "EOF" > $P/etc/rc.d/init.d/canna.r
+  cat <<- "EOF" > $P/etc/rc.d/init.d/sj3.r
 	#!/bin/sh
 	
-	SERVER=/usr/sbin/cannaserver
-	KILLER=/usr/sbin/cannakill
+	SERVER=/usr/sbin/sj3serv
+	KILLER="killall sj3serv"
 	LOCKD=/var/lock/subsys
 	
 	[ -f $SERVER ] || exit 0
 	case "$1" in
 	start)
-	  echo "Starting Canna server:"
-	  rm -f /tmp/.iroha_unix/IROHA
-	  $SERVER -inet
-	  [ -d $LOCKD ] && touch $LOCKD/canna
+	  echo "Starting Sj3 server:"
+	  $SERVER
+	  [ -d $LOCKD ] && touch $LOCKD/sj3
 	  ;;
 	stop)
-	  echo "Shutting down Canna server:"
+	  echo "Shutting down Sj3 server:"
 	  $KILLER
-	  [ -d $LOCKD ] && rm -f $LOCKD/canna
+	  [ -d $LOCKD ] && rm -f $LOCKD/sj3
 	  ;;
 	install)
-	  echo canna network
+	  echo sj3 network
 	  ;;
 	*)
-	  echo "Usage: canna {start|stop}"
+	  echo "Usage: sj3 {start|stop}"
 	  exit 1
 	  ;;
 	esac
 	exit 0
 	EOF
-  chmod 755 $P/etc/rc.d/init.d/canna.r
-  touch -t `date '+%m%d0900'` $P/etc/rc.d/init.d/canna.r
-  cat <<- "EOF" > $P/etc/hosts.canna
-	localhost
-	unix
-	EOF
-  touch -t `date '+%m%d0900'` $P/etc/hosts.canna
+  chmod 755 $P/etc/rc.d/init.d/sj3.r
+  touch -t `date '+%m%d0900'` $P/etc/rc.d/init.d/sj3.r
   for i in `seq 0 $((${#DOCS[@]} - 1))` ; do
     for j in ${DOCS[$i]} ; do
       for k in ${S[$i]}/$j ; do
@@ -388,29 +316,16 @@ if [ $opt_package -eq 1 ] ; then
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
-  cp -a $S/doc $docdir/$src
-  chown -R root.root $docdir/$src/doc
-  find $docdir/$src/doc -name ".cvsignore" -exec rm -f {} \;
-  ( cd $docdir ; find $src/doc -type d -exec touch -r $W/{} {} \; )
-  mv $docdir/$src/{doc,{INSTALL{,.jp},OCHANGES.jp,README{,.jp},RKCCONF.jp,WHATIS{,.jp},$myname}.gz} $C
-  mv $C/{doc,{INSTALL{,.jp},OCHANGES.jp,README{,.jp},RKCCONF.jp,WHATIS{,.jp},$myname}.gz} $docdir/$src
-  touch -r $S $docdir/$src
   convert
-  prune_symlink $mandir/ja_JP.eucJP/man3
   tar cvpf $pkg.tar -C $P `cd $P ; find usr/sbin | tail -n+2`
   tar rvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/libexec | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/lib64 -maxdepth 1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/include -maxdepth 1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P var/lib/canna
-  tar rvpf $pkg.tar -C $P var/log/canna
-  tar rvpf $pkg.tar -C $P etc/rc.d/init.d/canna.r
-  tar rvpf $pkg.tar -C $P etc/hosts.canna
+  tar rvpf $pkg.tar -C $P `cd $P ; find usr/lib64 ! -name pkgconfig | tail -n+2`
+  tar rvpf $pkg.tar -C $P `cd $P ; find usr/include | tail -n+2`
+  tar rvpf $pkg.tar -C $P usr/share/sj3
+  tar rvpf $pkg.tar -C $P var/lib/sj3
+  tar rvpf $pkg.tar -C $P etc/rc.d/init.d/sj3.r
   tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man3 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/ja_JP.eucJP/man1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/ja_JP.eucJP/man3 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/doc -maxdepth 1 | tail -n+2`
+  tar rvpf $pkg.tar -C $P usr/share/doc/$src
   tar rvpf $pkg.tar -C $P install/doinst.sh
   touch -t `date '+%m%d0900'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
   mv $pkg.tar.xz $pkg.txz
