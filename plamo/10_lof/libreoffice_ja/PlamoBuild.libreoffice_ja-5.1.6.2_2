@@ -1,0 +1,23 @@
+#!/bin/sh
+wget http://download.documentfoundation.org/libreoffice/stable/5.1.6/rpm/x86_64/LibreOffice_5.1.6_Linux_x86-64_rpm_langpack_ja.tar.gz
+tar xvf LibreOffice_5.1.6_Linux_x86-64_rpm_langpack_ja.tar.gz
+
+W=`pwd`
+cd LibreOffice_5.1.6.2_Linux_x86-64_rpm_langpack_ja/RPMS
+for i in *.rpm ; do
+    file=${i%.*}
+    arch=${file##*.}
+    rev=5.1.6.2-2
+    rev2=${rev//-/_}
+    base=${file%-$rev*}
+    base2=${base//-/_}
+    base3=${base2//5.1/}
+    echo ++++
+    echo $file
+    echo $arch
+    echo $rev2
+    echo $base2
+    echo $base3
+    rpm2tar -O $i | xz > $base3-$rev2-$arch-P0m1.txz
+    mv $base3-$rev2-$arch-P0m1.txz $W
+done
