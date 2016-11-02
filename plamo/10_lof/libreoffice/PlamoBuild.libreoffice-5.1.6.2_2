@@ -17,6 +17,7 @@ filename="LibreOffice_5.1.6_Linux_${archfile}_rpm.tar.gz"
 dirname="LibreOffice_5.1.6.2_Linux_${archfile}_rpm"
 rev=5.1.6.2-2
 downloaddir="http://download.documentfoundation.org/libreoffice/stable/5.1.6/rpm"
+build=P0m1
 
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -67,7 +68,7 @@ if [ $opt_package -eq 1 ] ; then
 	echo $rev2
 	echo $base2
 	echo $base3
-	rpm2tar -O $i | xz > $base3-$rev2-$farch-P0m1.txz
+	rpm2tar -O $i | xz > $base3-$rev2-$farch-${build}.txz
 	mv $base3-$rev2-$farch-P0m1.txz $W
     done
 fi
