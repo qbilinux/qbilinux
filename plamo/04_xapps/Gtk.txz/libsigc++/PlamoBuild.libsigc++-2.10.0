@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=libsigc++
-vers=2.6.2
+vers=2.10.0
 url="http://ftp.gnome.org/pub/gnome/sources/libsigc++/${vers%.*}/libsigc++-${vers}.tar.xz"
 verify="http://ftp.gnome.org/pub/gnome/sources/libsigc++/${vers%.*}/libsigc++-${vers}.sha256sum"
 commitid=
 arch=`uname -m`
-build=P1m1
+build=P0m1
 src=libsigc++-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README'
