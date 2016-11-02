@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='svn co svn://svn.icculus.org/smpeg/trunk smpeg'
+url="svn co svn://svn.icculus.org/smpeg/tags/release_2_0_0/"
 pkgbase=smpeg
 vers=r394
 arch=`uname -m`
 build=P1m1
-src=smpeg-r394
+src=release_2_0_0
 OPT_CONFIG='--disable-static'
 DOCS='COPYING README README.SDL_mixer TODO'
 patchfiles=''
@@ -183,6 +183,7 @@ if [ $opt_download -eq 1 ] ; then
     if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
     if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
+    echo $url | sh
   done
   for i in $url ; do
     case ${i##*.} in
