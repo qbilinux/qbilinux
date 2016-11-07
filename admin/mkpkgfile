@@ -15,8 +15,16 @@ seek_dir () {
     echo "pushd $DIR"
     echo "sh ./$SCN download config build package |& tee $BASE.log"
     echo "popd"
-    ( cd $DIR ; sh ./$SCN download config build |& tee $BASE.make.log )
-    ( cd $DIR ; sudo sh ./$SCN package |& tee $BASE.pakcgae.log )
+    pushd $DIR
+    if [ -f $BASE.make.log ] ; then
+	mv $BASE.make.log $BASE.make.log.1
+    fi
+    if [ -f $BASE.pakcgae.log ] ; then
+	mv $BASE.pakcgae.log $BASE.pakcgae.log.1
+    fi
+    sh ./$SCN download config build |& tee $BASE.make.log
+    sudo sh ./$SCN package |& tee $BASE.pakcgae.log
+    popd
 }
 
 if [ $# = 1 ] ; then
