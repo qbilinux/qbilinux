@@ -6,6 +6,7 @@ import fnmatch
 import shutil
 
 args=sys.argv
+argc=len(args)
 
 #print args
 #print os.path.dirname(args[0])
@@ -16,6 +17,18 @@ def fild_all_files(directory):
         for file in files:
             yield os.path.join(root, file)
 
+if (argc != 2):
+    print ""
+    print "copy pakege file and make tagfile form Plamo Linux distrobution."
+    print ""
+    print "Usage: "+args[0]+" buildir destdie"
+    print ""
+    print "   buildir: directory contains package and desc file."
+    print "   destdir: direcotry for Plamo Linux distrobution"
+    print ""
+    print "   ex) "+args[0]+" Plamo-src/plamo Plamo-hoge/x86_64"
+    quit()
+    
 for file in fild_all_files(args[1]):
     if fnmatch.fnmatch(file, '*/00header.desc'):
         print "###########"
@@ -25,11 +38,6 @@ for file in fild_all_files(args[1]):
         srcparentpath=os.path.dirname(srcpath)
         dstpath=os.path.join(args[2], srcpath)
         dstfile=os.path.join(dstpath, srcfile)
-        #print srcpath
-        #print srcparentpath
-        #print srcfile
-        #print dstpath
-        #print dstfile
         pkglist = []
         desclist = []
         for ll in os.listdir(srcpath):
@@ -43,6 +51,7 @@ for file in fild_all_files(args[1]):
                             if fnmatch.fnmatch(llll, basename+'*.txz'):
                                 pkglist.append(os.path.join(srcpath, ll, llll))
                                 desclist.append(os.path.join(srcpath, ll, basename+'.desc'))
+
         #print pkglist
         #print desclist
         if not os.path.exists(dstpath) :
