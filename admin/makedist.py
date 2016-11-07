@@ -9,7 +9,7 @@ args=sys.argv
 argc=len(args)
 
 #print args
-#print os.path.dirname(args[0])
+#print argc
 
 def fild_all_files(directory):
     for root, dirs, files in os.walk(directory):
@@ -17,7 +17,7 @@ def fild_all_files(directory):
         for file in files:
             yield os.path.join(root, file)
 
-if (argc != 2):
+if (argc != 3):
     print ""
     print "copy pakege file and make tagfile form Plamo Linux distrobution."
     print ""
@@ -45,12 +45,21 @@ for file in fild_all_files(args[1]):
                 basename = ll
                 for lll in os.listdir(os.path.join(srcpath, ll)):
                     # Plamobuild.bash-4.3.30, bash-4.3.30-x86_64-P1.txz, bash.desc
-                    if fnmatch.fnmatch(lll, basename+'.desc'):
+                    # if fnmatch.fnmatch(lll, basename+'.desc'):
+                    #     for llll in os.listdir(os.path.join(srcpath, ll)):
+                    #         #if fnmatch.fnmatch(llll, basename+'-'+version+'*.txz'):
+                    #         if fnmatch.fnmatch(llll, basename+'*.txz'):
+                    #             pkglist.append(os.path.join(srcpath, ll, llll))
+                    #             desclist.append(os.path.join(srcpath, ll, basename+'.desc'))
+                    if fnmatch.fnmatch(lll, '*.desc'):
+                        basename2, ext2=os.path.splitext(lll)
+                        #print "--- "+basename2
+                        #print "--- "+ext2
                         for llll in os.listdir(os.path.join(srcpath, ll)):
-                            #if fnmatch.fnmatch(llll, basename+'-'+version+'*.txz'):
-                            if fnmatch.fnmatch(llll, basename+'*.txz'):
+                            #print llll
+                            if fnmatch.fnmatch(llll, basename2+'*.txz'):
                                 pkglist.append(os.path.join(srcpath, ll, llll))
-                                desclist.append(os.path.join(srcpath, ll, basename+'.desc'))
+                                desclist.append(os.path.join(srcpath, ll, basename2+'.desc'))
 
         #print pkglist
         #print desclist
