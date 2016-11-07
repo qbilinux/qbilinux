@@ -7,6 +7,9 @@ import shutil
 
 args=sys.argv
 
+#print args
+#print os.path.dirname(args[0])
+
 def fild_all_files(directory):
     for root, dirs, files in os.walk(directory):
         yield root
@@ -71,5 +74,5 @@ for file in fild_all_files(args[1]):
             out.write(f.read())
             out.write('\n')
             f.close()
-        out.close()            
-        #os.system('makedesc.pl -a '+of)
+        out.close()
+        os.system("cd "+os.path.dirname(of)+"; "+os.path.abspath(os.path.dirname(args[0]))+'/makedesc.pl -a '+os.path.basename(of))
