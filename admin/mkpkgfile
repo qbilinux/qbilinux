@@ -16,7 +16,7 @@ seek_dir () {
     pushd $DIR
 
     # check Plamobuild script and make log.
-    if [ $opt_force -eq 1 ] || [ -f $BASE.make.log -a $$BASE.make.log -nt $SCN ] ; then
+    if [ $opt_force -eq 1 ] || [ ! -f $BASE.make.log ] || [ -f $BASE.make.log -a $$BASE.make.log -nt $SCN ] ; then
     
 	# backup log file
 	if [ -f $BASE.make.log ] ; then
