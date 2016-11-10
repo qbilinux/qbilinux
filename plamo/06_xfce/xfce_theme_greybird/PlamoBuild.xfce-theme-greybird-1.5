@@ -117,6 +117,10 @@ else
   suffix=""
 fi
 
+if [ $arch = "noarch" ]; then
+  target=""
+fi
+
 if [ $# -eq 0 ] ; then
   opt_download=0 ; opt_config=1 ; opt_build=1 ; opt_package=1
 else
