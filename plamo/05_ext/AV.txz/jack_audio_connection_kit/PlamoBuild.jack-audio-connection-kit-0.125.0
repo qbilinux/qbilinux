@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://jackaudio.org/downloads/jack-audio-connection-kit-0.121.3.tar.gz'
 pkgbase=jack_audio_connection_kit
-vers=0.121.3
+vers=0.125.0
+url="http://jackaudio.org/downloads/jack-audio-connection-kit-${vers}.tar.gz"
 arch=`uname -m`
-build=P1m1
-src=jack-audio-connection-kit-0.121.3
+build=P0m1
+src=jack-audio-connection-kit-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING COPYING.GPL COPYING.LGPL README TODO'
 patchfiles=''
