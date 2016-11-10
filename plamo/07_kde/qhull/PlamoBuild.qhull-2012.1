@@ -188,7 +188,7 @@ if [ $opt_download -eq 1 ] ; then
     case ${i##*.} in
     tar) tar xvpf ${i##*/} ;;
     gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    tgz) tar xvpf ${i##*/} ;;
     esac
   done
 fi
