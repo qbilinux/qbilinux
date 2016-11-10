@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='git clone https://github.com/l-smash/l-smash.git'
 pkgbase=l_smash
-vers=20141207
+vers=2.9.1
+url='https://github.com/l-smash/l-smash/archive/v2.9.1.tar.gz'
 arch=`uname -m`
 build=P1m1
-src=l-smash-20141207
+src=l-smash-${vers}
 OPT_CONFIG='--enable-shared --disable-static'
 DOCS='LICENSE'
 patchfiles=''
