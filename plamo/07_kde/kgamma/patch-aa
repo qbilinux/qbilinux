@@ -1,0 +1,19 @@
+*** kgamma-4.14.3/CMakeLists.txt.orig	Thu Oct  9 16:07:16 2014
+--- kgamma-4.14.3/CMakeLists.txt	Wed Nov  2 19:09:42 2016
+***************
+*** 9,15 ****
+  # X11_xf86vmode discovery is done by FindX11
+  macro_log_feature(X11_xf86vmode_FOUND "X11 Video Mode Extension (xf86vm)" "Required to build kgamma." "http://www.x.org" TRUE "" "")
+  
+! check_include_files(strstream HAVE_STRSTREAM_H)
+  configure_file(config-kgamma.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-kgamma.h)
+  
+  add_definitions(${QT_DEFINITIONS} ${KDE4_DEFINITIONS})
+--- 9,15 ----
+  # X11_xf86vmode discovery is done by FindX11
+  macro_log_feature(X11_xf86vmode_FOUND "X11 Video Mode Extension (xf86vm)" "Required to build kgamma." "http://www.x.org" TRUE "" "")
+  
+! check_include_file(strstream HAVE_STRSTREAM_H)
+  configure_file(config-kgamma.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-kgamma.h)
+  
+  add_definitions(${QT_DEFINITIONS} ${KDE4_DEFINITIONS})
