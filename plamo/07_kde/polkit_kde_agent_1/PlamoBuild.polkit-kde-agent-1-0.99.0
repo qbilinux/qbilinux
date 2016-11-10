@@ -1,6 +1,6 @@
 #!/bin/sh
 ##############################################################
-url='ftp://ftp.kde.org/pub/kde/stable/apps/KDE4.x/admin/polkit-kde-agent-1-0.99.0.tar.bz2'
+url='http://download.kde.org/stable/apps/KDE4.x/admin/polkit-kde-agent-1-0.99.0.tar.bz2'
 pkgbase=polkit_kde_agent_1
 vers=0.99.0
 arch=`uname -m`

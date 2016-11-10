@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://kde.maniatek.com/audex/files/audex-0.74b1.tar.xz'
 pkgbase=audex
-vers=0.74b1
+vers=0.79
+url="https://sourceforge.net/projects/audex/files/src/audex-${vers}.tar.xz"
 arch=`uname -m`
-build=P2m1
-src=audex-0.74b1
+build=P0m1
+src=audex-${vers}
 OPT_CONFIG=''
 DOCS='CHANGELOG README TODO'
 patchfiles='encoderassistant.cpp-utf8.patch'
@@ -125,6 +125,7 @@ if [ $opt_download -eq 1 ] ; then
     tar) tar xvpf ${i##*/} ;;
     gz) tar xvpzf ${i##*/} ;;
     bz2) tar xvpjf ${i##*/} ;;
+    xz) tar xvpf ${i##*/} ;;
     esac
   done
 fi
