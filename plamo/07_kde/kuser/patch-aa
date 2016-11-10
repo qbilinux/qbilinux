@@ -1,0 +1,27 @@
+*** kuser-4.14.3/CMakeLists.txt.orig	Sun Aug  4 13:22:20 2013
+--- kuser-4.14.3/CMakeLists.txt	Wed Nov  2 19:40:53 2016
+***************
+*** 35,45 ****
+  set(KU_FIRSTGID 500 CACHE STRING "First GID of normal users")
+  set(KU_USERPRIVATEGROUP true CACHE STRING "User private groups by default")
+  
+! check_include_files(shadow.h HAVE_SHADOW_H)
+! check_include_files(crypt.h HAVE_CRYPT_H)
+! check_include_files(sys/stat.h HAVE_SYS_STAT_H)
+! check_include_files(unistd.h HAVE_UNISTD_H)
+! check_include_files(paths.h HAVE_PATHS_H)
+  check_library_exists(crypt crypt "" HAVE_CRYPT_LIBRARY)
+  
+  set(CMAKE_REQUIRED_INCLUDES pwd.h)
+--- 35,45 ----
+  set(KU_FIRSTGID 500 CACHE STRING "First GID of normal users")
+  set(KU_USERPRIVATEGROUP true CACHE STRING "User private groups by default")
+  
+! check_include_file(shadow.h HAVE_SHADOW_H)
+! check_include_file(crypt.h HAVE_CRYPT_H)
+! check_include_file(sys/stat.h HAVE_SYS_STAT_H)
+! check_include_file(unistd.h HAVE_UNISTD_H)
+! check_include_file(paths.h HAVE_PATHS_H)
+  check_library_exists(crypt crypt "" HAVE_CRYPT_LIBRARY)
+  
+  set(CMAKE_REQUIRED_INCLUDES pwd.h)
