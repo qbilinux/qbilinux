@@ -189,6 +189,7 @@ if [ $opt_download -eq 1 ] ; then
     tar) tar xvpf ${i##*/} ;;
     gz) tar xvpzf ${i##*/} ;;
     bz2) tar xvpjf ${i##*/} ;;
+    zip) unzip -x ${i##*/} ;;
     esac
   done
 fi
