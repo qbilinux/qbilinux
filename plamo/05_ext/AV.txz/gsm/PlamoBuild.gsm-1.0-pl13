@@ -10,7 +10,7 @@ OPT_CONFIG=''
 DOCS='ChangeLog INSTALL README'
 # patch URL: http://ftp.de.debian.org/debian/pool/main/libg/libgsm/libgsm_1.0.13-3.diff.gz
 patchfiles='libgsm_1.0.13-3.diff'
-patch2="gsm-1.0_Makefile.patch"
+#patch2="gsm-1.0_Makefile.patch"
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
