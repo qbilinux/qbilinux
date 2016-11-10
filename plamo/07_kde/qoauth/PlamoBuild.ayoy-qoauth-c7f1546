@@ -1,11 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='https://github.com/ayoy/qoauth/zipball/master'
+url='https://github.com/ayoy/qoauth/archive/v1.0.1.tar.gz'
+#url='https://github.com/ayoy/qoauth/zipball/master'
 pkgbase=qoauth
 vers=1.0.1
 arch=`uname -m`
 build=P1m1
-src=ayoy-qoauth-c7f1546
+src=qoauth-1.0.1
 OPT_CONFIG=''
 DOCS='CHANGELOG LICENSE README'
 patchfiles=''

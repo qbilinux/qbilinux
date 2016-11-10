@@ -1,6 +1,6 @@
 #!/bin/sh
 ##############################################################
-url='ftp://ftp.kde.org/pub/kde/stable/prison/1.0/src/prison-1.0.tar.gz'
+url='http://download.kde.org/stable/prison/1.0/src/prison-1.0.tar.gz'
 pkgbase=prison
 vers=1.0
 arch=`uname -m`

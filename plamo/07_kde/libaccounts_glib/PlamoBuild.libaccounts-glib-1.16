@@ -1,6 +1,8 @@
 #!/bin/sh
 ##############################################################
-url='http://accounts-sso.googlecode.com/files/libaccounts-glib-1.16.tar.gz'
+#url='http://accounts-sso.googlecode.com/files/libaccounts-glib-1.16.tar.gz'
+#url='https://gitlab.com/accounts-sso/libaccounts-glib/repository/archive.tar.gz?ref=1.16'
+url='http://pkgs.fedoraproject.org/repo/pkgs/libaccounts-glib/libaccounts-glib-1.16.tar.gz/9cdb46354885a8973bccd05090360361/libaccounts-glib-1.16.tar.gz'
 pkgbase=libaccounts_glib
 vers=1.16
 arch=`uname -m`

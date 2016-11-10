@@ -1,11 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='http://accounts-sso.googlecode.com/files/signon-8.56.tar.bz2'
+#url='http://accounts-sso.googlecode.com/files/signon-8.56.tar.bz2'
+url='https://gitlab.com/accounts-sso/signond/repository/archive.tar.bz2?ref=8.56'
 pkgbase=signon
 vers=8.56
 arch=`uname -m`
 build=P1m1
-src=signon-8.56
+src=signond-8.56-6e6e65e874b6a7ef2f8fc7ccd8c6c6411dd26cb8
 OPT_CONFIG=''
 DOCS='COPYING INSTALL README TODO common-installs-config.pri'
 patchfiles=''

@@ -1,6 +1,6 @@
 #!/bin/sh
 ##############################################################
-url='ftp://ftp.kde.org/pub/kde/stable/libqzeitgeist/0.8.0/src/libqzeitgeist-0.8.0.tar.bz2'
+url='ftp://ftp.ne.jp/X/kde/stable/libqzeitgeist/0.8.0/src/libqzeitgeist-0.8.0.tar.bz2'
 pkgbase=libqzeitgeist
 vers=0.8.0
 arch=`uname -m`

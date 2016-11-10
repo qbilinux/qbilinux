@@ -1,6 +1,6 @@
 #!/bin/sh
 ##############################################################
-url='http://accounts-sso.googlecode.com/files/accounts-qt-1.11.tar.bz2'
+url='http://pkgs.fedoraproject.org/repo/pkgs/libaccounts-qt/accounts-qt-1.11.tar.bz2/a76f26849603f229399dc46eb83ed5a8/accounts-qt-1.11.tar.bz2'
 pkgbase=accounts_qt
 vers=1.11
 arch=`uname -m`
