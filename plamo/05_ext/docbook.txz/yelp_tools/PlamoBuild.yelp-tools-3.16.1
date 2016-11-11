@@ -1,6 +1,6 @@
 #!/bin/sh
 ##############################################################
-url=ftp://ftp.gnome.org/pub/gnome/sources/yelp-tools/3.16/yelp-tools-3.16.1.tar.xz
+url='ftp://ftp.gnome.org/pub/gnome/sources/yelp-tools/3.16/yelp-tools-3.16.1.tar.xz'
 pkgbase=yelp_tools
 vers=3.16.1
 arch=`uname -m`
@@ -191,6 +191,7 @@ if [ $opt_download -eq 1 ] ; then
     tar) tar xvpf ${i##*/} ;;
     gz) tar xvpzf ${i##*/} ;;
     bz2) tar xvpjf ${i##*/} ;;
+    xz) tar xvpf ${i##*/} ;;
     esac
   done
 fi
