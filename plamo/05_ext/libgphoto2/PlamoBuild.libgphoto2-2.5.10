@@ -1,11 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='http://sourceforge.net/projects/gphoto/files/libgphoto/2.5.5.1/libgphoto2-2.5.5.1.tar.bz2'
 pkgbase=libgphoto2
-vers=2.5.5.1
+vers=2.5.10
+url="http://sourceforge.net/projects/gphoto/files/libgphoto/${vers}/libgphoto2-${vers}.tar.bz2
+     https://github.com/gphoto/libgphoto2/commit/0df14db.patch"
 arch=`uname -m`
-build=P1m1
-src=libgphoto2-2.5.5.1
+build=P0m1
+src=libgphoto2-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='ABOUT-NLS AUTHORS COPYING ChangeLog HACKING INSTALL MAINTAINERS NEWS README README.packaging installcheck.mk'
 patchfiles=''
@@ -142,7 +143,8 @@ if [ $opt_config -eq 1 ] ; then
     for patch in $patchfiles ; do
        patch -p1 < $W/$patch
     done
-
+    patch -p1 < $W/0df14db.patch
+    
     # if [ -f autogen.sh ] ; then
     #   sh ./autogen.sh
     # fi
