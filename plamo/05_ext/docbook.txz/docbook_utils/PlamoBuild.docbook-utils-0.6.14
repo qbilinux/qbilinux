@@ -1,6 +1,7 @@
 #!/bin/sh
 ##############################################################
-url='http://sources-redhat.mirrors.redwire.net/docbook-tools/new-trials/SOURCES/docbook-utils-0.6.14.tar.gz'
+#url='http://sources-redhat.mirrors.redwire.net/docbook-tools/new-trials/SOURCES/docbook-utils-0.6.14.tar.gz'
+url='http://pkgs.fedoraproject.org/repo/pkgs/docbook-utils/docbook-utils-0.6.14.tar.gz/6b41b18c365c01f225bc417cf632d81c/docbook-utils-0.6.14.tar.gz'
 pkgbase=docbook_utils
 vers=0.6.14
 arch=`uname -m`

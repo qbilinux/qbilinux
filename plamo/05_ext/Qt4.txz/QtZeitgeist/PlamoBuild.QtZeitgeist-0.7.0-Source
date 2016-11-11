@@ -1,6 +1,7 @@
 #!/bin/sh
 ##############################################################
-url='http://releases.zeitgeist-project.com/qzeitgeist/QtZeitgeist-0.7.0.tar.bz2'
+#url='http://releases.zeitgeist-project.com/qzeitgeist/QtZeitgeist-0.7.0.tar.bz2'
+url='http://pkgs.fedoraproject.org/repo/pkgs/libqzeitgeist/QtZeitgeist-0.7.0.tar.bz2/e58d4b988bbab812f8bd6878d87c0956/QtZeitgeist-0.7.0.tar.bz2'
 pkgbase=QtZeitgeist
 vers=0.7.0
 arch=`uname -m`

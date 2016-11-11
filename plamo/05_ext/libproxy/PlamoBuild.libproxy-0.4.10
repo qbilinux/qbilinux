@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://libproxy.googlecode.com/files/libproxy-0.4.10.tar.gz'
 pkgbase=libproxy
 vers=0.4.10
+url="https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/libproxy/libproxy-${vers}.tar.gz"
 arch=`uname -m`
 build=P1m1
-src=libproxy-0.4.10
+src=libproxy-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README'
 patchfiles=''

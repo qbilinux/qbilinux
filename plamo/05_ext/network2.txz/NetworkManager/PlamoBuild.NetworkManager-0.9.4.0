@@ -1,6 +1,6 @@
 #!/bin/sh
 ##############################################################
-url='http://ftp.gnome.org/pub/GNOME/sources/NetworkManager/0.9/NetworkManager-0.9.4.0.tar.bz2'
+url='http://ftp.gnome.org/pub/GNOME/sources/NetworkManager/0.9/NetworkManager-0.9.4.0.tar.xz'
 pkgbase=NetworkManager
 vers=0.9.4.0
 arch=`uname -m`
@@ -189,6 +189,7 @@ if [ $opt_download -eq 1 ] ; then
     tar) tar xvpf ${i##*/} ;;
     gz) tar xvpzf ${i##*/} ;;
     bz2) tar xvpjf ${i##*/} ;;
+    xz) tar xvpf ${i##*/} ;;
     esac
   done
 fi

@@ -1,6 +1,8 @@
 #!/bin/sh
 ##############################################################
-url='http://www.fenix.ne.jp/~G-HAL/soft/nosettle/anthy-9100h.patch13-release-2011213.alt-depgraph-110208-angie.zipdic-201101.tar.lzma'
+#url='http://www.fenix.ne.jp/~G-HAL/soft/nosettle/anthy-9100h.patch13-release-2011213.alt-depgraph-110208-angie.zipdic-201101.tar.lzma'
+#url='https://ja.osdn.net/projects/anthy/downloads/37536/anthy-9100h.tar.gz'
+url='http://www.fenix.ne.jp/~G-HAL/soft/nosettle/anthy-9100h.patch13-release-2016X10.alt-depgraph-120315-angie.zipdic-201101.tar.lzma'
 pkgbase=anthy
 vers=9100h
 arch=`uname -m`

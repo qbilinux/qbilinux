@@ -1,6 +1,6 @@
 #!/bin/sh
 ##############################################################
-url='ftp://ftp.kde.org/pub/kde/stable/apps/KDE4.x/admin/polkit-qt-1-0.112.0.tar.bz2'
+url='http://download.kde.org/stable/apps/KDE4.x/admin/polkit-qt-1-0.112.0.tar.bz2'
 pkgbase=polkit_qt_1
 vers=0.112.0
 arch=`uname -m`

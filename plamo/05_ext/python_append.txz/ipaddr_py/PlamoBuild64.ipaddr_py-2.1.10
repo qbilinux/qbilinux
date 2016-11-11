@@ -1,7 +1,8 @@
 #!/bin/sh
 
 ######################################################################
-url="https://ipaddr-py.googlecode.com/files/ipaddr-2.1.10.tar.gz"
+#url="https://ipaddr-py.googlecode.com/files/ipaddr-2.1.10.tar.gz"
+url="http://pkgs.fedoraproject.org/repo/pkgs/python-ipaddr/ipaddr-2.1.10.tar.gz/f315ac829218e9735c5d772d59a3e0e7/ipaddr-2.1.10.tar.gz"
 pkgbase=ipaddr_py
 vers=2.1.10
 arch=`uname -m`
