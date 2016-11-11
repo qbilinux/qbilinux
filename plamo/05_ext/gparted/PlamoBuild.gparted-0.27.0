@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://sourceforge.net/projects/gparted/files/gparted/gparted-0.13.1/gparted-0.13.1.tar.bz2'
 pkgbase=gparted
-vers=0.13.1
+vers=0.27.0
+url="http://sourceforge.net/projects/gparted/files/gparted/gparted-${vers}/gparted-${vers}.tar.gz"
 arch=`uname -m`
-build=P1m1
-src=gparted-0.13.1
+build=P0m1
+src=gparted-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README'
 patchfiles=''
