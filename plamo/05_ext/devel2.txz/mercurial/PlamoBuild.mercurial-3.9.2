@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://mercurial.selenic.com/release/mercurial-3.3.2.tar.gz'
 pkgbase=mercurial
-vers=3.3.2
+vers=3.9.2
+url="https://www.mercurial-scm.org/release/mercurial-${vers}.tar.gz"
 arch=`uname -m`
-build=P1m1
-src=mercurial-3.3.2
+build=P0m1
+src=mercurial-${vers}
 OPT_CONFIG=''
 DOCS='COPYING README'
 patchfiles=''
