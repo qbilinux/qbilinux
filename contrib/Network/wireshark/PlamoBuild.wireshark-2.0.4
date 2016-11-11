@@ -5,12 +5,14 @@ vers=2.0.4
 url="http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-${vers}.tar.bz2"
 verify="http://wiresharkdownloads.riverbed.com/wireshark/src/all-versions/SIGNATURES-${vers}.txt"
 arch=`uname -m`
-build=P1
+build=P1m1
 src=${pkgbase}-${vers}
 OPT_CONFIG='--with-qt=4 --with-gtk3=yes --with-pcap --with-zlib --with-ssl'
 DOCS='AUTHORS CMakeOptions.txt COPYING CPackConfig.txt ChangeLog INSTALL INSTALL.configure NEWS README README.DECT README.aix README.bsd README.cmake README.hpux README.irix README.linux README.macos README.tru64 README.vmware README.windows'
 patchfiles=''
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -128,9 +130,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
-    if [ ! -f ${i##*/} ] ; then
-      wget $i
-    fi
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
+    if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
   for i in $verify ; do
     if [ ! -f ${i##*/} ] ; then

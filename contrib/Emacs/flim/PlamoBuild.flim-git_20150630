@@ -6,12 +6,14 @@ url="https://github.com/wanderlust/flim.git"
 verify=
 commitid=034c012bc50c29b4da8f4bb3a7fc0d991de44e3e
 arch=noarch
-build=P1
+build=P1m1
 src=flim
 OPT_CONFIG=''
 DOCS='ChangeLog NEWS README.en README.ja'
 patchfiles=''
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
