@@ -1,6 +1,6 @@
 #!/bin/sh
 ##############################################################
-url='http://qtscriptgenerator.googlecode.com/files/qtscriptgenerator-src-0.2.0.tar.gz'
+url='https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/qtscriptgenerator/qtscriptgenerator-src-0.2.0.tar.gz'
 pkgbase=qtscriptgenerator
 vers=0.2.0
 arch=`uname -m`

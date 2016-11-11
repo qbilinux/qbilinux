@@ -1,6 +1,7 @@
 #!/bin/sh
 ##############################################################
-url='http://search.cpan.org/CPAN/authors/id/G/GR/GRANTM/XML-Simple-2.20.tar.gz'
+#url='http://search.cpan.org/CPAN/authors/id/G/GR/GRANTM/XML-Simple-2.20.tar.gz'
+url='http://pkgs.fedoraproject.org/repo/pkgs/perl-XML-Simple/XML-Simple-2.20.tar.gz/4d10964e123b76eca36678464daa63cd/XML-Simple-2.20.tar.gz'
 pkgbase=perl_XML_Simple
 vers=2.20
 arch=`uname -m`

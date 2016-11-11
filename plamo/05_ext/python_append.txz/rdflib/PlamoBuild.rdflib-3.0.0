@@ -1,6 +1,6 @@
 #!/bin/sh
 ##############################################################
-url='http://www.rdflib.net/rdflib-3.0.0.tar.gz'
+url='https://pypi.python.org/packages/27/52/31eccb7d41792973bdf90f618ecd00ee3a8cea14cbdc63b42bdaa4165ef1/rdflib-3.0.0.tar.gz'
 pkgbase=rdflib
 vers=3.0.0
 arch=`uname -m`

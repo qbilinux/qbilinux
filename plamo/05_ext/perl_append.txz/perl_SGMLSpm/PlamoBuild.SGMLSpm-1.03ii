@@ -1,6 +1,7 @@
 #!/bin/sh
 ##############################################################
-url='http://search.cpan.org/CPAN/authors/id/D/DM/DMEGG/SGMLSpm-1.03ii.tar.gz'
+#url='http://search.cpan.org/CPAN/authors/id/D/DM/DMEGG/SGMLSpm-1.03ii.tar.gz'
+url='http://pkgs.fedoraproject.org/repo/pkgs/perl-SGMLSpm/SGMLSpm-1.03ii.tar.gz/5bcb197fd42e67d51c739b1414d514a7/SGMLSpm-1.03ii.tar.gz'
 pkgbase=perl_SGMLSpm
 vers=1.03ii
 arch=`uname -m`
@@ -144,14 +145,12 @@ if [ $opt_config -eq 1 ] ; then
     done
     sed -i -e "s|mkdir|mkdir -p|" Makefile
     echo "no need to configure. proceed to build"
-    opt_build=1
   done
 fi
 if [ $opt_build -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     echo "no need to build. proceed to package"
-    opt_package=1
   done
 fi
 if [ $opt_package -eq 1 ] ; then

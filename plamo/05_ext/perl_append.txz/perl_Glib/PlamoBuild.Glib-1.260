@@ -1,6 +1,6 @@
 #!/bin/sh
 ##############################################################
-url='http://search.cpan.org/CPAN/authors/id/X/XA/XAOC/Glib-1.260.tar.gz'
+url='https://sourceforge.net/projects/gtk2-perl/files/Glib/1.260/Glib-1.260.tar.gz'
 pkgbase=perl_Glib
 vers=1.260
 arch=`uname -m`

@@ -1,6 +1,6 @@
 #!/bin/sh
 ##############################################################
-url='https://mp4v2.googlecode.com/files/mp4v2-2.0.0.tar.bz2'
+url='https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/mp4v2/mp4v2-2.0.0.tar.bz2'
 pkgbase=mp4v2
 vers=2.0.0
 arch=`uname -m`

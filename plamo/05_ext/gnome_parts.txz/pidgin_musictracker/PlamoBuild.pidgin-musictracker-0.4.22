@@ -1,6 +1,6 @@
 #!/bin/sh
 ##############################################################
-url='http://pidgin-musictracker.googlecode.com/files/pidgin-musictracker-0.4.22.tar.bz2'
+url="https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/pidgin-musictracker/pidgin-musictracker-0.4.22.tar.bz2"
 pkgbase=pidgin_musictracker
 vers=0.4.22
 arch=`uname -m`

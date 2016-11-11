@@ -1,6 +1,6 @@
 #!/bin/sh
 ##############################################################
-url='input sourcecode url here'
+url='https://pypi.python.org/packages/bd/22/e1df75dffb7679344bcf986abd473d7c0e22ba976f2caef31551e394a3a2/pyPdf-1.13.tar.gz'
 pkgbase=pyPdf
 vers=1.13
 arch=`uname -m`

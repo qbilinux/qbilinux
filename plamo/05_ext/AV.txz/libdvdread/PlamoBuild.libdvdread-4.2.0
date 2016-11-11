@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://ftp.de.debian.org/debian/pool/main/libd/libdvdread/libdvdread_4.2.0.orig.tar.gz'
 pkgbase=libdvdread
 vers=4.2.0
+url="http://download.videolan.org/pub/videolan/libdvdread/libdvdread-${vers}.tar.bz2"
 arch=`uname -m`
 build=P1m1
-src=libdvdread-4.2.0
+src=libdvdread-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog DEVELOPMENT-POLICY.txt INSTALL NEWS README TODO'
 patchfiles=''

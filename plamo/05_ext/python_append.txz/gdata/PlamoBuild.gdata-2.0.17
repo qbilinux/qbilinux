@@ -1,6 +1,7 @@
 #!/bin/sh
 ##############################################################
-url='http://gdata-python-client.googlecode.com/files/gdata-2.0.17.tar.gz'
+#url='http://gdata-python-client.googlecode.com/files/gdata-2.0.17.tar.gz'
+url='https://pypi.python.org/packages/b2/e0/6e062327b211e9b1c5f30f65a9a65cf49eb1d3a7da3ce42fdc9a9e128535/gdata-2.0.17.tar.gz'
 pkgbase=gdata
 vers=2.0.17
 arch=`uname -m`
