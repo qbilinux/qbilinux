@@ -1,12 +1,12 @@
 #!/bin/sh
 
 ######################################################################
-url="http://www.mplayerhq.hu/MPlayer/releases/mplayer-export-snapshot.tar.bz2"
+url="http://www.mplayerhq.hu/MPlayer/releases/MPlayer-1.3.0.tar.xz"
 pkgbase=mplayer
-vers=20150122
+vers=1.3.0
 arch=`uname -m`
-build=P2m1
-src=mplayer-export-2015-01-22
+build=P0m1
+src=MPlayer-1.3.0
 OPT_CONFIG="--confdir=/etc/mplayer --enable-gui --enable-radio
     --disable-inet6 --disable-ossaudio --disable-esd --language=ja
     --enable-runtime-cpudetection"
@@ -199,6 +199,7 @@ if [ $opt_download -eq 1 ] ; then
     tar) tar xvpf ${i##*/} ;;
     gz) tar xvpzf ${i##*/} ;;
     bz2) tar xvpjf ${i##*/} ;;
+    xz) tar xvpf ${i##*/} ;;
     esac
   done
 fi
