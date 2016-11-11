@@ -1,11 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='http://www.riverbankcomputing.co.uk/static/Downloads/QScintilla2/QScintilla-gpl-2.5.1.tar.gz'
 pkgbase=QScintilla_gpl
-vers=2.5.1
+vers=2.9.3
+#url='http://www.riverbankcomputing.co.uk/static/Downloads/QScintilla2/QScintilla-gpl-2.5.1.tar.gz'
+url='https://sourceforge.net/projects/pyqt/files/QScintilla2/QScintilla-2.9.3/QScintilla_gpl-2.9.3.tar.gz'
 arch=`uname -m`
-build=P1m1
-src=QScintilla-gpl-2.5.1
+build=P0m1
+src=QScintilla_gpl-${vers}
 OPT_CONFIG=''
 DOCS='GPL_EXCEPTION.TXT GPL_EXCEPTION_ADDENDUM.TXT LICENSE.GPL2 LICENSE.GPL3 NEWS OPENSOURCE-NOTICE.TXT README'
 patchfiles=''
@@ -210,7 +211,7 @@ if [ $opt_config -eq 1 ] ; then
     #   sh ./autogen.sh
     # fi
 
-    cd Qt4
+    cd Qt4Qt5
     export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
     export LDFLAGS='-Wl,--as-needed' 
     export CC="gcc -isystem /usr/include $target" 
@@ -225,7 +226,7 @@ if [ $opt_config -eq 1 ] ; then
 fi
 if [ $opt_build -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
-    cd ${B[$i]}/Qt4
+    cd ${B[$i]}/Qt4Qt5
     if [ -f Makefile ] ; then
       export LDFLAGS='-Wl,--as-needed'
       make -j3
@@ -243,7 +244,7 @@ if [ $opt_package -eq 1 ] ; then
   if [ -d $C ] ; then rm -rf $C ; fi ; mkdir -p $C
   touch $W/i.st ; sleep 1
   for i in `seq 0 $((${#B[@]} - 1))` ; do
-    cd ${B[$i]}/Qt4
+    cd ${B[$i]}/Qt4Qt5
     for mk in `find . -name "[Mm]akefile" ` ; do
         sed -i -e 's|GCONFTOOL = /usr/bin/gconftool-2|GCONFTOOL = echo|' $mk
     done
