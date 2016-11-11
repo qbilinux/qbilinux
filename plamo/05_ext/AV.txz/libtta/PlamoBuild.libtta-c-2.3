@@ -1,14 +1,15 @@
 #!/bin/sh
 ##############################################################
-url='http://sourceforge.net/projects/tta/files/tta/libtta-c/libtta-c-2.0.tar.gz/download'
 pkgbase=libtta
-vers=2.0
+vers=2.3
+url="https://sourceforge.net/projects/tta/files/tta/libtta/libtta-c-${vers}.tar.gz"
 arch=`uname -m`
-build=P1m1
-src=libtta-c-2.0
+build=P0m1
+src=libtta-c-2.3
 OPT_CONFIG='--disable-static --enable-shared'
 DOCS='COPYING README'
-patchfiles='libtta-c-2.0-shared-library.patch libtta-c-2.0-set-permission.patch'
+#patchfiles='libtta-c-2.0-shared-library.patch libtta-c-2.0-set-permission.patch'
+patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
