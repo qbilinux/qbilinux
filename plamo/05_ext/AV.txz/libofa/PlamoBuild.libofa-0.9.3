@@ -1,6 +1,6 @@
 #!/bin/sh
 ##############################################################
-url='http://musicip-libofa.googlecode.com/files/libofa-0.9.3.tar.gz'
+url='https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/musicip-libofa/libofa-0.9.3.tar.gz'
 pkgbase=libofa
 vers=0.9.3
 arch=`uname -m`
@@ -8,7 +8,8 @@ build=P2m1
 src=libofa-0.9.3
 OPT_CONFIG='--enable-static=no'
 DOCS='AUTHORS COPYING README'
-patchfiles='current-c++-style.patch'
+#patchfiles='current-c++-style.patch'
+patchfiles='01_gcc41.diff 02_example-open.diff 03_example-size_type.diff 04_libofa.pc-deps.diff 05_gcc43.diff 06_gcc44.diff fix_ftbfs.diff fix-ftbfs-gcc4.7.diff 07_libltdl.diff'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
