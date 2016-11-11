@@ -6,12 +6,14 @@ url="https://github.com/wanderlust/semi.git"
 verify=
 commitid=35c9ff77db07ace4b7178189c1fe45118ebf9a65
 arch=noarch
-build=P1
+build=P1m1
 src=semi
 OPT_CONFIG=''
 DOCS='ChangeLog NEWS README.en README.ja TODO'
 patchfiles=''
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {

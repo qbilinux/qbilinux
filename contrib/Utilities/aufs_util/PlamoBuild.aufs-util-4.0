@@ -7,12 +7,14 @@ url="git://git.code.sf.net/p/aufs/aufs-util"
 verify=
 commitid=26d549
 arch=`uname -m`
-build=P1
+build=P1m1
 src=aufs-util
 OPT_CONFIG=''
 DOCS='README'
 patchfiles=''
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {

@@ -6,12 +6,14 @@ url='git://github.com/wanderlust/wanderlust.git'
 commitid=868dd6fea81470e78090a980b8083868031f1e4c
 sample='https://raw.github.com/tenforward/PlamoTemplate/master/.emacs.d/site-start.d/wl.el'
 arch=noarch
-build=P1
+build=P1m1
 src=wanderlust
 OPT_CONFIG=''
 DOCS='COPYING ChangeLog INSTALL INSTALL.ja NEWS NEWS.ja README.md README.ja'
 patchfiles='fix-texinfo.patch'
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {

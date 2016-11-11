@@ -6,12 +6,14 @@ url="https://github.com/cvs-m17n-org/MU-CITE.git"
 verify=
 commitid=afb11633fc73cf0480912d72f411c5398e806a04
 arch=noarch
-build=P1
+build=P1m1
 src=MU-CITE
 OPT_CONFIG=''
 DOCS='ChangeLog NEWS README.en'
 patchfiles=''
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
