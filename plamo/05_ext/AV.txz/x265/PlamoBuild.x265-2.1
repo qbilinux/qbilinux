@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
-url='hg https://bitbucket.org/multicoreware/x265'
+url='https://bitbucket.org/multicoreware/x265/downloads/x265_2.1.tar.gz'
 pkgbase=x265
-vers=20150309
+vers=2.1
 arch=`uname -m`
-build=P1m1
-src=x265
+build=P0m1
+src=x265_2.1
 OPT_CONFIG=''
 DOCS='COPYING readme.rst'
-patchfiles='x265-libdir.patch'
+patchfiles='x265_2.1-libdir.patch'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -147,7 +147,7 @@ if [ $opt_config -eq 1 ] ; then
     done
 
     cd ${B[$i]}
-    cmake $W/x265/source -DCMAKE_INSTALL_PREFIX:PATH=/usr/
+    cmake $W/$src/source -DCMAKE_INSTALL_PREFIX:PATH=/usr/
   done
 fi
 if [ $opt_build -eq 1 ] ; then
