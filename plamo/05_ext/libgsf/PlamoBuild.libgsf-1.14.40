@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://ftp.gnome.org/pub/gnome/sources/libgsf/1.14/libgsf-1.14.24.tar.xz'
 pkgbase=libgsf
-vers=1.14.24
+vers=1.14.40
+url="http://ftp.gnome.org/pub/gnome/sources/libgsf/1.14/libgsf-${vers}.tar.xz"
 arch=`uname -m`
 build=P1m1
-src=libgsf-1.14.24
+src=libgsf-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING COPYING.LIB ChangeLog HACKING INSTALL NEWS README TODO'
 patchfiles=''
@@ -125,6 +125,7 @@ if [ $opt_download -eq 1 ] ; then
     tar) tar xvpf ${i##*/} ;;
     gz) tar xvpzf ${i##*/} ;;
     bz2) tar xvpjf ${i##*/} ;;
+    xz) tar xvpf ${i##*/} ;;
     esac
   done
 fi
