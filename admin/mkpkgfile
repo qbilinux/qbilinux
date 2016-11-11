@@ -15,8 +15,23 @@ seek_dir () {
     echo "pushd $DIR"
     pushd $DIR
 
+    # check log file
+    if [ $opt_check -eq 1 ] ; then
+	echo "###### $DIR"
+	if [ -f $BASE.make.log ] ; then
+	    grep Error $BASE.make.log 
+	else
+	    echo "not make.log file"
+	fi
+
+	if [ -f $BASE.pakcgae.log ] ; then
+	    grep Error $BASE.pakcgae.log 
+	else
+	    echo "not package.log file"
+	fi
+	
     # check Plamobuild script and make log.
-    if [ $opt_force -eq 1 ] || [ ! -f $BASE.make.log ] || [ -f $BASE.make.log -a $$BASE.make.log -nt $SCN ] ; then
+    elif [ $opt_force -eq 1 ] || [ ! -f $BASE.make.log ] || [ -f $BASE.make.log -a $$BASE.make.log -nt $SCN ] ; then
     
 	# backup log file
 	if [ -f $BASE.make.log ] ; then
@@ -39,10 +54,12 @@ seek_dir () {
 if [ $# = 1 -o $# = 2 ] ; then
 
     opt_force=0
-    while getopts f OPT
+    opt_check=0
+    while getopts fc OPT
     do
 	case $OPT in
 	    "f" ) opt_force=1 ;;
+	    "c" ) opt_check=1 ;;
 	esac
     done
 
