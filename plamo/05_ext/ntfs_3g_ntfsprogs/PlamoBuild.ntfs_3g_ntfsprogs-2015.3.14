@@ -2,13 +2,13 @@
 
 ######################################################################
 url="http://tuxera.com/opensource/ntfs-3g_ntfsprogs-2015.3.14.tgz
-    http://cache.gmane.org//gmane/linux/debian/devel/secure-testing/general/6910-001.bin
     https://github.com/PhantomX/slackbuilds/raw/master/ntfs-3g/patches/ntfs-3g_ntfsprogs-2011.10.9-RC-ntfsck-unsupported-return-0.patch"
 pkgbase=ntfs_3g_ntfsprogs
 vers=2015.3.14
 arch=`uname -m`
 build=P2m1
 src=ntfs-3g_ntfsprogs-$vers
+patchfiles="0002-CVE-2015-3202.patch"
 OPT_CONFIG=""
 DOCS="INSTALL TODO.ntfsprogs README NEWS ChangeLog CREDITS COPYING.LIB
     COPYING AUTHORS"
@@ -189,16 +189,11 @@ else
   done
 fi
 if [ $opt_download -eq 1 ] ; then
-  alt=0002-CVE-2015-3202.patch
   for i in $url ; do
-    if [ ${i##*/} == 6910-001.bin ] ; then
-      [ ! -f $alt ] && wget $i -O $alt
-    elif [ ! -f ${i##*/} ] ; then
       if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
       if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
       if [ ! -f ${i##*/} ] ; then wget $i ; fi
       if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
-    fi
   done
   for i in $url ; do
     case ${i##*.} in
@@ -215,6 +210,11 @@ if [ $opt_config -eq 1 ] ; then
   done
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
+    for patch in $patchfiles ; do
+       patch -p1 < $W/$patch
+    done
+    patch -p1 < $W/ntfs-3g_ntfsprogs-2011.10.9-RC-ntfsck-unsupported-return-0.patch
+    
     if [ -f Makefile ] ; then
       make clean
     fi
@@ -273,6 +273,10 @@ if [ $opt_package -eq 1 ] ; then
       ln $docdir/$src/$myname.gz $docdir/${src[$i]}
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
+  done
+  for patch in $patchfiles ; do
+      cp $W/$patch $docdir/$src/$patch
+      gzip_one $docdir/$src/$patch
   done
   convert
   tar cvpf $pkg.tar -C $P `cd $P ; find usr/sbin | tail -n+2`
