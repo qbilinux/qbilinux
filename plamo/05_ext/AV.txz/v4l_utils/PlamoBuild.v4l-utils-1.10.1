@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://linuxtv.org/downloads/v4l-utils/v4l-utils-0.8.4.tar.bz2'
 pkgbase=v4l_utils
-vers=0.8.4
+vers=1.10.1
+url="https://linuxtv.org/downloads/v4l-utils/v4l-utils-${vers}.tar.bz2"
 arch=`uname -m`
-build=P1m1
-src=v4l-utils-0.8.4
+build=P0m1
+src=v4l-utils-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='COPYING COPYING.LIB ChangeLog INSTALL README README.lib README.lib-multi-threading TODO'
 patchfiles=''
@@ -142,9 +142,21 @@ if [ $opt_config -eq 1 ] ; then
     for patch in $patchfiles ; do
        patch -p1 < $W/$patch
     done
-    echo "no need to configure. proceed to build"
-    opt_build=1
 
+    # if [ -f autogen.sh ] ; then
+    #   sh ./autogen.sh
+    # fi
+
+    if [ -x configure ] ; then
+       export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
+       export LDFLAGS='-Wl,--as-needed' 
+        CC="gcc -isystem /usr/include $target" CXX="g++ -isystem /usr/include $target " \
+          ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
+      if [ $? != 0 ]; then
+	  echo "configure error. $0 script stop"
+	  exit 255
+      fi
+    fi
   done
 fi
 if [ $opt_build -eq 1 ] ; then
