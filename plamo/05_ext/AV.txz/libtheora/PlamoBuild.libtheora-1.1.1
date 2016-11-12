@@ -203,7 +203,8 @@ if [ $opt_config -eq 1 ] ; then
     for patch in $patchfiles ; do
        patch -p1 < $W/$patch
     done
-
+    sed -i 's/png_\(sizeof\)/\1/g' examples/png2theora.c
+    
     # if [ -f autogen.sh ] ; then
     #   sh ./autogen.sh
     # fi
