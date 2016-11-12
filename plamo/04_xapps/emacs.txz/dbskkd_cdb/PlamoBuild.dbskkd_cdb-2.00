@@ -1,7 +1,7 @@
 #!/bin/sh
 
 ######################################################################
-url="http://dbskkd-cdb.googlecode.com/files/dbskkd-cdb-2.00.tar.gz
+url="https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/dbskkd-cdb/dbskkd-cdb-2.00.tar.gz
     http://openlab.ring.gr.jp/skk/dic/SKK-JISYO.L.gz
     http://openlab.ring.gr.jp/skk/dic/SKK-JISYO.jinmei.gz
     http://openlab.ring.gr.jp/skk/dic/SKK-JISYO.fullname.gz
