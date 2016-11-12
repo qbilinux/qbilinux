@@ -1,0 +1,8 @@
+help2man & y & y & y & y
+&
+GNU help2man
+&
+help2man is a script to create simple man pages from the --help and
+--version output of programs.
+&
+&
