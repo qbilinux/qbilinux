@@ -31,7 +31,7 @@ seek_dir () {
 	fi
 	
     # check Plamobuild script and make log.
-    elif [ $opt_force -eq 1 ] || [ ! -f $BASE.make.log ] || [ -f $BASE.make.log -a $$BASE.make.log -nt $SCN ] ; then
+    elif [ $opt_force -eq 1 ] || [ ! -f $BASE.make.log ] || [ $BASE.make.log -ot $SCN ] ; then
     
 	# backup log file
 	if [ -f $BASE.make.log ] ; then
