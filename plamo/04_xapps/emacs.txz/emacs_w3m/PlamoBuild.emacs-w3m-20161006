@@ -1,10 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='cvs -d :pserver:anonymous@cvs.namazu.org:/storage/cvsroot co emacs-w3m'
+url='http://circle2.org/pub/source/emacs-w3m-20161006.tar.bz2'
+#url='cvs -d :pserver:anonymous@cvs.namazu.org:/storage/cvsroot co emacs-w3m'
 pkgbase=emacs_w3m
-vers=20121018
+vers=20161006
 arch=`uname -m`
-build=P1m1
+build=P0m1
 src=emacs-w3m
 OPT_CONFIG=''
 DOCS='COPYING ChangeLog ChangeLog.1 NEWS NEWS.ja README README.ja'
