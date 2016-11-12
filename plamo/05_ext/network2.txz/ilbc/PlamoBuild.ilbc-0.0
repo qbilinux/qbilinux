@@ -1,13 +1,14 @@
 #!/bin/sh
 ##############################################################
-url="http://www.ietf.org/rfc/rfc3951.txt"
+#url="http://www.ietf.org/rfc/rfc3951.txt"
+url="https://sourceforge.net/projects/twinklephone/files/Original/ilbc-rfc3951.tar.gz"
 pkgbase=ilbc
 vers=0.0
 arch=`uname -m`
 build=P1m1
-src=ilbc-0.0
+src=ilbc-rfc3951
 OPT_CONFIG=''
-DOCS='gips_iLBClicense.txt Makefile'
+DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README'
 patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
