@@ -2,22 +2,15 @@
 ##############################################################
 pkgbase=emacs
 vers=25.1
-url="http://ftp.jaist.ac.jp/pub/GNU/emacs/emacs-${vers}.tar.xz"
+url="http://ftp.jaist.ac.jp/pub/GNU/emacs/emacs-${vers}.tar.xz http://homepage1.nifty.com/blankspace/emacs/wb-line-number.el"
 verify=
 arch=`uname -m`
 build=P0m1
 src=${pkgbase}-${vers}
 OPT_CONFIG='--with-xim --without-imagemagick --with-x --with-x-toolkit=gtk3 --without-rsvg --without-gsettings --without-selinux'
-#OPT_CONFIG='--without-all --without-x'
 DOCS='COPYING ChangeLog INSTALL README'
-# this patch is bug with glib 2.31 and emacs >= 23.3
-# http://debbugs.gnu.org/cgi/bugreport.cgi?bug=9754
-# https://bugs.launchpad.net/ubuntu/+source/emacs23/+bug/902043
-#patchfiles='emacs-xgselect.patch'
-patchfiles='emacs-24.2-add_txz.patch patch-aa'
-#file1=menu-tree.el
-file1_url="http://cdn11.atwikiimg.com/s-irie/?plugin=ref&serial=91"
-file2='http://homepage1.nifty.com/blankspace/emacs/wb-line-number.el'
+patchfiles='emacs-24.2-add_txz.patch'
+file2='wb-line-number.el'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -283,6 +276,8 @@ if [ $opt_package -eq 1 ] ; then
     fi
   fi
   if [ -d $P ] ; then rm -rf $P ; fi ; mkdir -p $P
+  if [ -d ${P}_bin ] ; then rm -rf ${P}_bin ; fi ; mkdir -p ${P}_bin
+  if [ -d ${P}_lib ] ; then rm -rf ${P}_lib ; fi
   if [ -d $C ] ; then rm -rf $C ; fi ; mkdir -p $C
   touch $W/i.st ; sleep 1
   for i in `seq 0 $((${#B[@]} - 1))` ; do
@@ -386,26 +381,31 @@ EOF
 # tar rvpf $pkg.tar -C $P usr/share/doc/$src
 # touch -t `date '+%m%d0900'` $pkg.tar ; gzip $pkg.tar ; touch $pkg.tar.gz
 # mv $pkg.tar.gz $pkg.tgz
-  mkdir -p $P.${pkg}/usr/bin
-  mkdir -p $P.${pkg}/usr/share/doc
-  rm $P/usr/bin/emacs
-  mv $P/usr/bin/emacs-$vers $P.${pkg}/usr/bin/emacs-$vers
-  (cd $P.${pkg}/usr/bin; ln -sf emacs-$vers emacs)
-  mv $P/usr/share/doc/$src $P.${pkg}/usr/share/doc/${pkgbase}-$vers
-  cd $P.${pkg}
+  mv $P ${P}_lib
+  
+  mkdir -p ${P}/usr/bin
+  mkdir -p ${P}/usr/share/doc
+  mv ${P}_lib/usr/bin/emacs-$vers ${P}/usr/bin/emacs-$vers
+  (cd ${P}_lib/usr/bin; rm emacs)
+  (cd ${P}/usr/bin; ln -sf emacs-$vers emacs)
+  mv ${P}_lib/usr/share/doc/$src ${P}/usr/share/doc/${pkgbase}-$vers
+
+  #
+  mkdir -p ${P}_bin/usr
+  mv ${P}_lib/usr/bin ${P}_lib/usr/libexec ${P}_bin/usr
+#   cd ${P}_bin
+#   /sbin/makepkg ../${pkgbin}.$compress <<EOF
+# y
+# 1
+# EOF
+#   cd ${P}_lib
+#   /sbin/makepkg ../${pkglib}.$compress <<EOF
+# y
+# 1
+# EOF
+  
+  cd ${P}
   /sbin/makepkg ../${pkg}.$compress <<EOF
-y
-1
-EOF
-  mkdir -p $P.${pkgbin}/usr
-  mv $P/usr/bin $P/usr/libexec $P.${pkgbin}/usr
-  cd $P.${pkgbin}
-  /sbin/makepkg ../${pkgbin}.$compress <<EOF
-y
-1
-EOF
-  cd $P
-  /sbin/makepkg ../${pkglib}.$compress <<EOF
 y
 1
 EOF
