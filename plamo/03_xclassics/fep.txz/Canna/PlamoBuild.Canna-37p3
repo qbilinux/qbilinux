@@ -26,35 +26,6 @@ SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
 
-fscheck() {
-  PANGRAM="The quick brown fox jumps over the lazy dog."
-  echo -n "Checking for the filesystem ... "
-  mkdir pangram ; ( cd pangram ; touch $PANGRAM )
-  mv pangram pangram~ ; mkdir pangram ; touch -r pangram~ pangram
-  tar cpf pangram.tar pangram ; rmdir pangram ; mv pangram~ pangram
-  for i in $PANGRAM ; do tar rpf pangram.tar pangram/$i ; done
-  touch -t `date '+%m%d0900'` pangram.tar ; gzip pangram.tar
-  touch pangram.tar.gz ; mv pangram.tar.gz pangram1.tgz
-  tar cpf pangram.tar pangram
-  touch -t `date '+%m%d0900'` pangram.tar ; gzip pangram.tar
-  touch pangram.tar.gz ; mv pangram.tar.gz pangram2.tgz
-  if cmp -s pangram1.tgz pangram2.tgz ; then
-    echo "OK"
-    rm -rf pangram pangram1.tgz pangram2.tgz
-  else
-    echo "NG"
-    cat <<- "EOF"
-	Hmm, packaging may not be done properly on this filesystem.
-	Would you please try again on a default filesystem, thanks!
-	
-	Happy packaging!!
-	
-	Quitting...
-	EOF
-    exit
-  fi
-}
-
 install2() {
   install -d ${2%/*} ; install -m 644 $1 $2
 }
