@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='https://github.com/vathpela/efibootmgr'
 pkgbase=efibootmgr
-vers=git_20151010
+vers=0.12
+url="https://github.com/vathpela/efibootmgr-devel/archive/efibootmgr-0.12.tar.gz"
 arch=`uname -m`
-build=P1
-src=efibootmgr-devel
+build=P0m1
+src=efibootmgr-devel-efibootmgr-0.12
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING INSTALL README doc/ChangeLog doc/TODO'
 patchfiles='efibootmgr-add-efi_guid_zero.patch'
