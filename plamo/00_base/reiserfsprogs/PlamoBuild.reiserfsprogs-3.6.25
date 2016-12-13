@@ -2,10 +2,10 @@
 
 ######################################################################
 pkgbase=reiserfsprogs
-vers=3.6.21
-url="https://www.kernel.org/pub/linux/kernel/people/jeffm/reiserfsprogs/v${vers}/reiserfsprogs-${vers}.tar.bz2"
+vers=3.6.25
+url="https://www.kernel.org/pub/linux/kernel/people/jeffm/reiserfsprogs/v${vers}/reiserfsprogs-${vers}.tar.xz"
 arch=`uname -m`
-build=P2m1
+build=P0m1
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="NEWS README AUTHORS INSTALL ChangeLog COPYING CREDITS"
@@ -131,7 +131,6 @@ convert() {
   for i in `seq 9` n ; do prune_symlink $mandir/man$i ; done
 }
 
-#fscheck
 W=`pwd`
 for i in `seq 0 $((${#src[@]} - 1))` ; do
   S[$i]=$W/${src[$i]} ; B[$i]=$W/build`test ${#src[@]} -eq 1 || echo $i`
@@ -165,9 +164,10 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
+    *) tar xpf ${i##*/} ;;
     esac
   done
 fi
