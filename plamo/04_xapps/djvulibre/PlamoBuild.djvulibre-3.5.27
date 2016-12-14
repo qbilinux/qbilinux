@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://downloads.sourceforge.net/djvu/djvulibre-3.5.24.tar.gz'
 pkgbase=djvulibre
-vers=3.5.24
+vers=3.5.27
+url="http://downloads.sourceforge.net/djvu/djvulibre-${vers}.tar.gz"
 arch=`uname -m`
-build=P1m1
-src=djvulibre-3.5.24
+build=P0m1
+src=djvulibre-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='COPYING INSTALL NEWS README README_macosx README_packagers README_qt4 README_win32 TODO'
 patchfiles=''
