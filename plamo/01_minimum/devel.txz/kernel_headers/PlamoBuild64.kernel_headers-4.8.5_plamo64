@@ -1,20 +1,20 @@
 #!/bin/sh -x
 
 ######################################################################
-url="https://www.kernel.org/pub/linux/kernel/v4.x/linux-4.7.2.tar.xz
-    ftp://plamo.linet.gr.jp/pub/Plamo-test/kernelsrc_patches/UNICON/vd_unicon-kernel-20160730-4.7.patch
+url="https://www.kernel.org/pub/linux/kernel/v4.x/linux-4.8.5.tar.xz
+    ftp://plamo.linet.gr.jp/pub/Plamo-test/kernelsrc_patches/UNICON/vd_unicon-kernel-20161008-4.8.patch
     ftp://plamo.linet.gr.jp/pub/Plamo-test/kernelsrc_patches/UNICON/vd_unicon-kernel-fonts-20140614.patch.bz2
     git://github.com/sfjro/aufs4-standalone.git
-    ftp://plamo.linet.gr.jp/pub/Plamo-test/kernelsrc_patches/mcp/4.7-panic_beep.patch
-    ftp://plamo.linet.gr.jp/pub/Plamo-test/kernelsrc_patches/mcp/4.7-morse_code_panics.patch
-    ftp://plamo.linet.gr.jp/pub/Plamo-test/kernelsrc_patches/toi/tuxonice-for-linux-4.7.0-2016-07-30.patch.bz2
+    ftp://plamo.linet.gr.jp/pub/Plamo-test/kernelsrc_patches/mcp/4.8-panic_beep.patch
+    ftp://plamo.linet.gr.jp/pub/Plamo-test/kernelsrc_patches/mcp/4.8-morse_code_panics.patch
+    ftp://plamo.linet.gr.jp/pub/Plamo-test/kernelsrc_patches/toi/tuxonice-for-linux-4.8.0-2016-10-08.patch.bz2
     ftp://plamo.linet.gr.jp/pub/Plamo-test/kernelsrc_patches/ovlfs/overlayfs-allow_unprivileged_mounts.patch
-    ftp://plamo.linet.gr.jp/pub/Plamo-test/kernelsrc_patches/config-4.7.2-plamo64"
+    ftp://plamo.linet.gr.jp/pub/Plamo-test/kernelsrc_patches/config-4.8.5-plamo64"
 pkgbase=kernel_headers
-vers=4.7.2_plamo64
+vers=4.8.5_plamo64
 arch=i386
-build=P1m1
-src=linux-4.7.2
+build=P1m2
+src=linux-4.8.5
 patchfiles=""
 OPT_CONFIG=""
 DOCS=""
@@ -140,7 +140,6 @@ convert() {
   for i in `seq 9` n ; do prune_symlink $mandir/man$i ; done
 }
 
-#fscheck
 W=`pwd`
 for i in `seq 0 $((${#src[@]} - 1))` ; do
   S[$i]=$W/${src[$i]} ; B[$i]=$W/build`test ${#src[@]} -eq 1 || echo $i`
@@ -205,7 +204,7 @@ if [ $opt_download -eq 1 ] ; then
     bz2|tbz) tar xvpjf ${i##*/} ;;
     xz|txz) tar xvpJf ${i##*/} ;;
     git) ( cd `basename ${i##*/} .git`
-        git checkout origin/aufs4.7 ; git reset --hard 30de7bf ) ;;
+        git checkout origin/aufs4.8 ; git reset --hard e9fd128 ) ;;
     esac
   done
 fi
@@ -225,7 +224,7 @@ if [ $opt_config -eq 1 ] ; then
     done
   done
   cd $B
-  patch -Np1 -i $W/vd_unicon-kernel-20160730-4.7.patch
+  patch -Np1 -i $W/vd_unicon-kernel-20161008-4.8.patch
   bunzip2 -c $W/vd_unicon-kernel-fonts-20140614.patch.bz2 | patch -Np1 -i -
   patch -Np1 -i $W/aufs4-standalone/aufs4-kbuild.patch
   patch -Np1 -i $W/aufs4-standalone/aufs4-base.patch
@@ -234,11 +233,11 @@ if [ $opt_config -eq 1 ] ; then
   cp -av $W/aufs4-standalone/Documentation .
   cp -av $W/aufs4-standalone/fs .
   cp -pv $W/aufs4-standalone/include/uapi/linux/aufs_type.h include/uapi/linux
-  patch -Np1 -i $W/4.7-panic_beep.patch
-  patch -Np1 -i $W/4.7-morse_code_panics.patch
-  bunzip2 -c $W/tuxonice-for-linux-4.7.0-2016-07-30.patch.bz2 | patch -Np1 -i -
+  patch -Np1 -i $W/4.8-panic_beep.patch
+  patch -Np1 -i $W/4.8-morse_code_panics.patch
+  bunzip2 -c $W/tuxonice-for-linux-4.8.0-2016-10-08.patch.bz2 | patch -Np1 -i -
   patch -Np1 -i $W/overlayfs-allow_unprivileged_mounts.patch
-  cp -p $W/config-4.7.7-plamo64 .config
+  cp -p $W/config-4.8.5-plamo64 .config
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
