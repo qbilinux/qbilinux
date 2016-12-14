@@ -2,7 +2,7 @@
 export LANG=C
 ##############################################################
 pkgbase=nss
-vers=3.26
+vers=3.27.1
 url="http://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_${vers//./_}_RTM/src/nss-${vers}.tar.gz"
 arch=`uname -m`
 build=P1m1
@@ -10,7 +10,7 @@ src=${pkgbase}-${vers}
 OPT_CONFIG=''
 DOCS=''
 # http://www.linuxfromscratch.org/patches/blfs/svn/nss-3.26-standalone-1.patch
-patchfiles='nss-3.26-standalone-1.patch'
+patchfiles='nss-3.27.1-standalone-1.patch'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -186,9 +186,9 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
     esac
   done
 fi
