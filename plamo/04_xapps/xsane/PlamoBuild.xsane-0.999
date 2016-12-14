@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
-url='http://www.xsane.org/download/xsane-0.998.tar.gz'
 pkgbase=xsane
-vers=0.998
+vers=0.999
+url="http://www.xsane.org/download/xsane-${vers}.tar.gz"
 arch=`uname -m`
-build=P3m1
-src=xsane-0.998
+build=P0m1
+src=xsane-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='ICM.TODO xsane-WIN32-README.txt xsane-WIN32-compilation.txt xsane-WIN32-compilation.txt.old xsane.AUTHOR xsane.COPYING xsane.INSTALL xsane.NEWS xsane.TODO'
-patchfiles=''
+patchfiles='patch-aa'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
