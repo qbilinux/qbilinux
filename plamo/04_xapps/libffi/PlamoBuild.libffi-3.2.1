@@ -1,19 +1,14 @@
 #!/bin/sh
 ##############################################################
-url='ftp://sourceware.org/pub/libffi/libffi-3.0.13.tar.gz'
 pkgbase=libffi
-vers=3.0.13
+vers=3.2.1
+url="ftp://sourceware.org/pub/libffi/libffi-${vers}.tar.gz"
 arch=`uname -m`
-build=P1m1
-src=libffi-3.0.13
+build=P0m1
+src=libffi-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='ChangeLog ChangeLog.libffi ChangeLog.libgcj ChangeLog.v1 LICENSE README'
 patchfiles=''
-if [ "$arch" = "x86_64" ]; then
-  compatlibs='libffi.so.4.0.1-64'
-else
-  compatlibs='libffi.so.4.0.1-32'
-fi
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -195,10 +190,7 @@ if [ $opt_package -eq 1 ] ; then
 ######################################################################
 # * make install でコピーされないファイルがある場合はここに記述します。
 ######################################################################
-  for compat in $compatlibs ; do
-      tgt=`echo $compat | cut -f1 -d'-'`
-      cp $W/$compat $P/usr/${libdir}/$tgt
-  done
+  (cd $P/usr/${libdir}; ln -s libffi.so.6 libffi.so.4)
   mkdir -p $docdir/$src
 # remove locales except ja
 # 
