@@ -2,15 +2,15 @@
 
 ######################################################################
 pkgbase=libgpg_error
-vers=1.17
+vers=1.25
 url="https://www.gnupg.org/ftp/gcrypt/libgpg-error/libgpg-error-${vers}.tar.bz2"
 arch=`uname -m`
-build=P2m1
+build=P0m1
 src=libgpg-error-$vers
 patchfiles=""
 OPT_CONFIG=""
 DOCS="NEWS INSTALL ABOUT-NLS COPYING COPYING.LIB AUTHORS ChangeLog
-    THANKS README ChangeLog-2011"
+    THANKS README ChangeLog-2011 VERSION"
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
