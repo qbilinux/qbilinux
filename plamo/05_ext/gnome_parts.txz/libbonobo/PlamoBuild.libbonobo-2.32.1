@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
-url='http://ftp.gnome.org/pub/gnome/sources/libbonobo/2.24/libbonobo-2.24.3.tar.bz2'
 pkgbase=libbonobo
-vers=2.24.3
+vers=2.32.1
+url="http://ftp.gnome.org/pub/gnome/sources/libbonobo/2.32/libbonobo-${vers}.tar.bz2"
 arch=`uname -m`
-build=P2m1
-src=libbonobo-2.24.3
+build=P0m1
+src=libbonobo-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING COPYING.LIB ChangeLog MAINTAINERS NEWS README TODO changes.txt'
-patchfiles=''
+patchfiles='30-gstaticrecmutex.diff'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
