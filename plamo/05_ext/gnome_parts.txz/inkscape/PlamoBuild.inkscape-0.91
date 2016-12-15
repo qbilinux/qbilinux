@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=inkscape
-vers=0.48.5
-url="http://inkscape.global.ssl.fastly.net/media/sourceforge/files/0.48.5/inkscape-0.48.5.tar.bz2"
+vers=0.91
+url="https://inkscape.org/en/gallery/item/3860/inkscape-${vers}.tar.bz2"
 arch=`uname -m`
-build=P1m1
-src=inkscape-0.48.5
+build=P0m1
+src=inkscape-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING COPYING.LIB ChangeLog INSTALL NEWS README README.ca.txt README.de.txt README.es.txt README.fr.txt README.it.txt README.osx.txt README.pt_BR.txt README.sk.txt README.sr.txt'
 patchfiles=''
@@ -154,8 +154,8 @@ if [ $opt_config -eq 1 ] ; then
     elif [ -x configure ] ; then
        export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
        export LDFLAGS='-Wl,--as-needed' 
-       export CC="gcc -isystem /usr/include $target" 
-       export CXX="g++ -isystem /usr/include $target "
+       export CC="gcc -isystem /usr/include $target -std=c++11" 
+       export CXX="g++ -isystem /usr/include $target -std=c++11"
        ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
     fi
       if [ $? != 0 ]; then
