@@ -1,0 +1,46 @@
+=== modified file 'src/mpris.c'
+--- ubuntu-current/src/mpris.c	2013-10-22 06:39:09 +0000
++++ ubuntu-merged/src/mpris.c	2013-10-22 06:41:05 +0000
+@@ -57,7 +57,7 @@
+ #define DBUS_MPRIS_STATUS_SIGNAL	"StatusChange"
+ 
+ #define DBUS_TYPE_G_STRING_VALUE_HASHTABLE (dbus_g_type_get_map ("GHashTable", G_TYPE_STRING, G_TYPE_VALUE))
+-#define DBUS_TYPE_MPRIS_STATUS             (dbus_g_type_get_struct ("GValueArray", G_TYPE_INT, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT, G_TYPE_INVALID))
++#define DBUS_TYPE_MPRIS_STATUS             (dbus_g_type_get_struct ("GArray", G_TYPE_INT, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT, G_TYPE_INVALID))
+ 
+ #define mpris_debug(fmt, ...)	purple_debug(PURPLE_DEBUG_INFO, "MPRIS", \
+ 					fmt, ## __VA_ARGS__);
+@@ -145,12 +145,12 @@
+ }
+ 
+ static void
+-mpris_status_signal_struct_cb(DBusGProxy *player_proxy, GValueArray *sigstruct, struct TrackInfo *ti)
++mpris_status_signal_struct_cb(DBusGProxy *player_proxy, GArray *sigstruct, struct TrackInfo *ti)
+ {
+         int status = -1;
+         if (sigstruct)
+           {
+-            GValue *v = g_value_array_get_nth(sigstruct, 0);
++            GValue *v = &g_array_index(sigstruct, GValue,0);
+             status = g_value_get_int(v);
+           }
+ 
+@@ -324,7 +324,7 @@
+       }
+     else
+       {
+-        GValueArray *s = 0;
++        GArray *s = 0;
+         result = dbus_g_proxy_call_with_timeout(player->proxy, "GetStatus", DBUS_TIMEOUT*10, &error,
+                                                 G_TYPE_INVALID,
+                                                 DBUS_TYPE_MPRIS_STATUS, &s,
+@@ -333,7 +333,7 @@
+         if (result)
+           {
+             mpris_status_signal_struct_cb(NULL, s, &(player->ti));
+-            g_value_array_free(s);
++            g_array_free(s, TRUE);
+           }
+       }
+ 
+
