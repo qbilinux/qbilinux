@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='http://p11-glue.freedesktop.org/releases/p11-kit-0.13.tar.gz'
 pkgbase=p11_kit
-vers=0.13
+vers=0.23.2
+url="http://p11-glue.freedesktop.org/releases/p11-kit-${vers}.tar.gz"
 arch=`uname -m`
-build=P1m1
-src=p11-kit-0.13
-OPT_CONFIG=''
+build=P0m1
+src=p11-kit-${vers}
+OPT_CONFIG='--without-trust-paths'
 DOCS='ABOUT-NLS AUTHORS COPYING ChangeLog INSTALL NEWS README'
 patchfiles=''
 compress=txz
