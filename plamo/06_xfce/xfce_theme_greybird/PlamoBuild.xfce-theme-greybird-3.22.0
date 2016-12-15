@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=xfce_theme_greybird
-vers=1.5
+vers=3.22.0
 url="https://github.com/shimmerproject/Greybird/archive/v${vers}.tar.gz"
 verify=
 commitid=
 arch=noarch
-build=P1m1
+build=P0m1
 src=Greybird-${vers}
 OPT_CONFIG=''
 DOCS='LICENSE.CC LICENSE.GPL README'
