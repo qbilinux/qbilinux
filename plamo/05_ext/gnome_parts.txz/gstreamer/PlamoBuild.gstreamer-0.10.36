@@ -8,7 +8,7 @@ build=P1m1
 src=gstreamer-0.10.36
 OPT_CONFIG='--disable-static --enable-introspection=yes'
 DOCS='ABOUT-NLS AUTHORS COPYING ChangeLog INSTALL MAINTAINERS NEWS README RELEASE TODO'
-patchfiles=''
+patchfiles='gstreamer-change-priv_gst_parse_yylex-arguments.patch'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
