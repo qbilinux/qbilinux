@@ -9,7 +9,7 @@ src=libtta-c-2.3
 OPT_CONFIG='--disable-static --enable-shared'
 DOCS='COPYING README'
 #patchfiles='libtta-c-2.0-shared-library.patch libtta-c-2.0-set-permission.patch'
-patchfiles=''
+patchfiles='libtta-c-2.3-shared-library.patch'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -249,8 +249,6 @@ if [ $opt_package -eq 1 ] ; then
       export LDFLAGS='-Wl,--as-needed'
       make install DESTDIR=$P
     fi
-    ( cd $P/usr/${libdir} ; ln -sf libtta-c.a libtta.a )
-    ( cd $P/usr/${libdir} ; ln -sf libtta-c.so.2.0 libtta.so.2.0 )
   done
 ######################################################################
 # * make install でコピーされないファイルがある場合はここに記述します。

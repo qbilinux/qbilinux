@@ -1,0 +1,66 @@
+*** libtta-c-2.3/Makefile.in	2015-02-20 15:37:28.000000000 +0900
+--- build/Makefile.in	2016-11-21 16:36:22.129878643 +0900
+***************
+*** 266,272 ****
+  CCASDEPMODE = @CCASDEPMODE@
+  CCASFLAGS = @CCASFLAGS@
+  CCDEPMODE = @CCDEPMODE@
+! CFLAGS = @CFLAGS@
+  CPP = @CPP@
+  CPPFLAGS = @CPPFLAGS@
+  CYGPATH_W = @CYGPATH_W@
+--- 266,272 ----
+  CCASDEPMODE = @CCASDEPMODE@
+  CCASFLAGS = @CCASFLAGS@
+  CCDEPMODE = @CCDEPMODE@
+! CFLAGS = @CFLAGS@ -fPIC
+  CPP = @CPP@
+  CPPFLAGS = @CPPFLAGS@
+  CYGPATH_W = @CYGPATH_W@
+***************
+*** 358,364 ****
+  top_builddir = @top_builddir@
+  top_srcdir = @top_srcdir@
+  AUTOMAKE_OPTIONS = no-dependencies foreign
+! lib_LIBRARIES = libtta.a
+  libtta_a_SOURCES = libtta.c libtta.h filter.h
+  @CPU_ARM_TRUE@@ENABLE_ASM_TRUE@EXTRA_libtta_a_SOURCES = filter_arm.S
+  @CPU_ARM_TRUE@@ENABLE_ASM_TRUE@libtta_a_LIBADD = filter_arm.o
+--- 358,364 ----
+  top_builddir = @top_builddir@
+  top_srcdir = @top_srcdir@
+  AUTOMAKE_OPTIONS = no-dependencies foreign
+! lib_LIBRARIES = libtta.a libtta.so.2.3
+  libtta_a_SOURCES = libtta.c libtta.h filter.h
+  @CPU_ARM_TRUE@@ENABLE_ASM_TRUE@EXTRA_libtta_a_SOURCES = filter_arm.S
+  @CPU_ARM_TRUE@@ENABLE_ASM_TRUE@libtta_a_LIBADD = filter_arm.o
+***************
+*** 433,439 ****
+  	  echo " $(INSTALL_DATA) $$list2 '$(DESTDIR)$(libdir)'"; \
+  	  $(INSTALL_DATA) $$list2 "$(DESTDIR)$(libdir)" || exit $$?; }
+  	@$(POST_INSTALL)
+! 	@list='$(lib_LIBRARIES)'; test -n "$(libdir)" || list=; \
+  	for p in $$list; do \
+  	  if test -f $$p; then \
+  	    $(am__strip_dir) \
+--- 433,439 ----
+  	  echo " $(INSTALL_DATA) $$list2 '$(DESTDIR)$(libdir)'"; \
+  	  $(INSTALL_DATA) $$list2 "$(DESTDIR)$(libdir)" || exit $$?; }
+  	@$(POST_INSTALL)
+! 	@list='libtta.a'; test -n "$(libdir)" || list=; \
+  	for p in $$list; do \
+  	  if test -f $$p; then \
+  	    $(am__strip_dir) \
+***************
+*** 456,461 ****
+--- 456,465 ----
+  	$(AM_V_AR)$(libtta_a_AR) libtta.a $(libtta_a_OBJECTS) $(libtta_a_LIBADD)
+  	$(AM_V_at)$(RANLIB) libtta.a
+  
++ libtta.so.2.3:	$(libtta_a_OBJECTS) $(libtta_a_DEPENDENCIES) 
++ 	-rm -f libtta.so.2.3
++ 	$(CC) -o $@ -shared $?
++ 
+  mostlyclean-compile:
+  	-rm -f *.$(OBJEXT)
+  
