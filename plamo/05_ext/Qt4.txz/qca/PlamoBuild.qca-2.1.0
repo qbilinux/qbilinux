@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://delta.affinix.com/download/qca/2.0/qca-2.0.3.tar.bz2'
 pkgbase=qca
-vers=2.0.3
+vers=2.1.0
+url="http://delta.affinix.com/download/qca/2.0/qca-${vers}.tar.gz"
 arch=`uname -m`
-build=P1m1
-src=qca-2.0.3
+build=P0m1
+src=qca-${vers}
 OPT_CONFIG=''
 DOCS='COPYING INSTALL README TODO installwin.bat'
 patchfiles=''
@@ -217,6 +217,13 @@ if [ $opt_config -eq 1 ] ; then
          export CXX="g++ -isystem /usr/include $target "
          ./configure --prefix=/usr --libdir=/usr/${libdir}  ${OPT_CONFIG[$i]}
      fi
+       if [ -f $S/CMakeLists.txt ]; then
+          export PKG_CONFIG_PATH=/opt/kde/${libdir}/pkgconfig:/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
+          export LDFLAGS='-Wl,--as-needed' 
+          export CC="gcc -isystem /usr/include $target" 
+          export CXX="g++ -isystem /usr/include $target "
+       cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DLIB_INSTALL_DIR:PATH=/usr/${libdir} -DLIB_SUFFIX=$suffix ${OPT_CONFIG} $S
+       fi
       if [ $? != 0 ]; then
 	  echo "configure error. $0 script stop"
 	  exit 255
@@ -249,7 +256,7 @@ if [ $opt_package -eq 1 ] ; then
     done
     if [ -f Makefile ] ; then
       export LDFLAGS='-Wl,--as-needed'
-      make install INSTALL_ROOT=$P
+      make install DESTDIR=$P
     fi
   done
 ######################################################################
