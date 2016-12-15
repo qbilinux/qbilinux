@@ -10,6 +10,7 @@ build=P2m1
 src=scim-bridge-$vers
 OPT_CONFIG="--disable-static"
 DOCS="AUTHORS README COPYING ChangeLog NEWS INSTALL"
+patchfiles='patch-aa patch-ab'
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -177,6 +178,9 @@ if [ $opt_config -eq 1 ] ; then
   done
   cd $B
   gunzip -c $W/scim-bridge-0.4.16-not_declared.patch.gz | patch -Np1 -i -
+  for patch in $patchfiles ; do
+      patch -p1 < $W/$patch
+  done
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
@@ -242,6 +246,10 @@ if [ $opt_package -eq 1 ] ; then
       ln $docdir/$src/$myname.gz $docdir/${src[$i]}
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
+  done
+  for patch in $patchfiles ; do
+      cp $W/$patch $docdir/$src/$patch
+      gzip_one $docdir/$src/$patch
   done
   convert
   tar cvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`

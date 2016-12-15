@@ -1,0 +1,12 @@
+*** scim-bridge-0.4.16/agent/scim-bridge-agent-signal-listener.cpp	2008-11-02 15:44:50.000000000 +0900
+--- build/agent/scim-bridge-agent-signal-listener.cpp	2016-11-15 04:15:16.419960858 +0900
+***************
+*** 22,27 ****
+--- 22,28 ----
+  #include <signal.h>
+  #include <stdio.h>
+  #include <string.h>
++ #include <unistd.h>
+  
+  #include <sys/socket.h>
+  #include <sys/types.h>
