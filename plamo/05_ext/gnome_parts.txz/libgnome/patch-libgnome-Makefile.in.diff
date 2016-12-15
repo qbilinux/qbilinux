@@ -1,0 +1,12 @@
+*** libgnome-2.32.1/libgnome/Makefile.in	2011-01-31 22:36:49.000000000 +0900
+--- build/libgnome/Makefile.in	2016-11-21 17:57:06.453099351 +0900
+***************
+*** 311,317 ****
+  	-I$(srcdir)/..						\
+  	$(WARN_CFLAGS)						\
+  	$(LIBGNOME_CFLAGS)					\
+- 	-DG_DISABLE_DEPRECATED					\
+  	-DLIBGNOME_PREFIX=\""$(prefix)"\"			\
+  	-DLIBGNOME_LIBDIR=\""$(libdir)"\"			\
+  	-DLIBGNOME_DATADIR=\""$(datadir)"\"			\
+--- 311,316 ----
