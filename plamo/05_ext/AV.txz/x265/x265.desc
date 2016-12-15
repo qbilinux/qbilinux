@@ -1,0 +1,9 @@
+x265 & y & y & y & y
+&
+HEVC エンコーダ
+&
+x265はHEVCエンコードするためのライブラリです
+&
+HEVC encoder
+&
+x265 is a librafry for encoding HEVC video stream.
