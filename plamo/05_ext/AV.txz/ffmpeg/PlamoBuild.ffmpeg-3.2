@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://www.ffmpeg.org/releases/ffmpeg-2.5.4.tar.bz2'
 pkgbase=ffmpeg
-vers=2.5.4
+vers=3.2
+url="http://www.ffmpeg.org/releases/ffmpeg-${vers}.tar.bz2"
 arch=`uname -m`
-build=P1m1
-src=ffmpeg-2.5.4
+build=P0m1
+src=ffmpeg-${vers}
 OPT_CONFIG="--enable-shared --disable-static --disable-debug --enable-runtime-cpudetect"
 # Arch Linux configurations
 OPT_CONFIG="$OPT_CONFIG \
@@ -32,7 +32,6 @@ OPT_CONFIG="$OPT_CONFIG \
 #  --enable-libfaac "
 # もうちょっと追加
 OPT_CONFIG="$OPT_CONFIG \
- --enable-libvo-aacenc \
  --enable-libvo-amrwbenc
  --enable-libass"
 DOCS='COPYING.GPLv2 COPYING.GPLv3 COPYING.LGPLv2.1 COPYING.LGPLv3 CREDITS Changelog INSTALL.md LICENSE.md MAINTAINERS README.md RELEASE RELEASE_NOTES VERSION'
