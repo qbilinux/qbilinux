@@ -1,6 +1,6 @@
 #!/bin/sh
 ##############################################################
-url='git clone git://anongit.kde.org/libkfbapi'
+url='git://anongit.kde.org/libkfbapi'
 # HEAD is now at b2d1717 Stop looking for xsltproc.
 pkgbase=libkfbapi
 vers=20140616
