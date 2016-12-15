@@ -1,14 +1,14 @@
 #!/bin/sh
 
 ######################################################################
-url="https://api.opensuse.org/public/source/devel:languages:tcl/itk/itk3.4-20080207.tar.bz2
+pkgbase=itk
+vers=3.4.2
+url="https://sourceforge.net/projects/incrtcl/files/%5BIncr%20Tcl_Tk%5D-source/Itk%203.4.2/itk3.4.2.tar.gz
     http://jaist.dl.sourceforge.net/sourceforge/tcl/tcl8.5.10-src.tar.gz
     http://jaist.dl.sourceforge.net/sourceforge/tcl/tk8.5.10-src.tar.gz"
-pkgbase=itk
-vers=3.4
 arch=`uname -m`
-build=P1m1
-src=itk$vers
+build=P0m1
+src=itk3.4
 OPT_CONFIG="--with-itcl=/usr/lib64"
 DOCS="license.terms CHANGES ChangeLog INCOMPATIBLE README TODO"
 SRC_URL="http://circle2.org/pub/source/"
