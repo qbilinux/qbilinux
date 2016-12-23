@@ -8,7 +8,7 @@ url="https://download.samba.org/pub/ppp/ppp-${vers}.tar.gz
 arch=`uname -m`
 build=P1m1
 src=$pkgbase-$vers
-patchfiles=""
+patchfiles="patch-aa"
 OPT_CONFIG=""
 DOCS="Changes-2.3 FAQ PLUGINS README.* SETUP"
 SRC_URL="http://circle2.org/pub/source/"
@@ -288,6 +288,10 @@ if [ $opt_package -eq 1 ] ; then
       ln $docdir/$src/$myname.gz $docdir/${src[$i]}
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
+  done
+  for patch in $patchfiles ; do
+    cp $W/$patch $docdir/$src/$patch
+    gzip_one $docdir/$src/$patch
   done
   cp -p $W/scripts/README.plamo.euc $docdir/$src
   chown root.root $docdir/$src/README.plamo.euc
