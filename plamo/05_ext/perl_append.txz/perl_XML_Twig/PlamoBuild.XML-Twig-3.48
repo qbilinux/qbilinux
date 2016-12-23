@@ -4,7 +4,7 @@ url='http://search.cpan.org/CPAN/authors/id/M/MI/MIROD/XML-Twig-3.48.tar.gz'
 pkgbase=perl_XML_Twig
 vers=3.48
 arch=`uname -m`
-build=P1m1
+build=P1m2
 src=XML-Twig-3.48
 OPT_CONFIG=''
 DOCS='README Changes'
@@ -213,7 +213,7 @@ if [ $opt_config -eq 1 ] ; then
 #       sh ./autogen.sh
 #     fi
     if [ -f Makefile.PL ] ; then
-        perl ./Makefile.PL
+        perl ./Makefile.PL -y
     fi
   done
 fi
