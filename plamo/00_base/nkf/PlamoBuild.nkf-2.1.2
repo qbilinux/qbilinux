@@ -5,10 +5,11 @@ pkgbase=nkf
 vers=2.1.2
 url="http://jaist.dl.sourceforge.jp/nkf/53171/nkf-${vers}.tar.gz"
 arch=`uname -m`
-build=P4m1
+build=P4m2
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="INSTALL INSTALL.j"
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -266,13 +267,10 @@ if [ $opt_package -eq 1 ] ; then
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
   convert
-  tar cvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
-  tar rvpf $pkg.tar -C $P \
-      usr/$libdir/perl5/site_perl/5.14.2/$arch-linux-thread-multi/{auto/NKF,NKF.pm}
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man3 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/ja_JP.eucJP/man1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  touch -t `date '+%m%d0900'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi
