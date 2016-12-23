@@ -1,0 +1,25 @@
+*** open-iscsi-2.0.874/usr/Makefile	Fri Sep 30 03:33:24 2016
+--- build/usr/Makefile	Fri Dec 23 20:03:22 2016
+***************
+*** 54,63 ****
+  
+  iscsid: $(ISCSI_LIB_SRCS) $(INITIATOR_SRCS) $(DISCOVERY_SRCS) \
+  	iscsid.o session_mgmt.o discoveryd.o mntcheck.o
+! 	$(CC) $(CFLAGS) $(LDFLAGS) $^ -o $@  -lisns -lcrypto -lrt -lmount
+  
+  iscsiadm: $(ISCSI_LIB_SRCS) $(DISCOVERY_SRCS) iscsiadm.o session_mgmt.o mntcheck.o
+! 	$(CC) $(CFLAGS) $(LDFLAGS) $^ -o $@ -lisns -lcrypto -lmount
+  
+  iscsistart: $(ISCSI_LIB_SRCS) $(INITIATOR_SRCS) $(FW_BOOT_SRCS) \
+  		iscsistart.o statics.o
+--- 54,63 ----
+  
+  iscsid: $(ISCSI_LIB_SRCS) $(INITIATOR_SRCS) $(DISCOVERY_SRCS) \
+  	iscsid.o session_mgmt.o discoveryd.o mntcheck.o
+! 	$(CC) $(CFLAGS) $(LDFLAGS) $^ -o $@  -lisns -lcrypto -lrt -lmount -lslp
+  
+  iscsiadm: $(ISCSI_LIB_SRCS) $(DISCOVERY_SRCS) iscsiadm.o session_mgmt.o mntcheck.o
+! 	$(CC) $(CFLAGS) $(LDFLAGS) $^ -o $@ -lisns -lcrypto -lmount -lslp
+  
+  iscsistart: $(ISCSI_LIB_SRCS) $(INITIATOR_SRCS) $(FW_BOOT_SRCS) \
+  		iscsistart.o statics.o
