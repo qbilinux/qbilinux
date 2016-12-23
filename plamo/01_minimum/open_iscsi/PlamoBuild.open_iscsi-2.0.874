@@ -2,12 +2,12 @@
 
 ######################################################################
 pkgbase=open_iscsi
-vers=2.0_873
-url="http://fossies.org/linux/misc/open-iscsi-2.0-873.tar.gz"
+vers=2.0.874
+url="https://fossies.org/linux/misc/open-iscsi-${vers}.tar.gz"
 arch=`uname -m`
-build=P5m1
-src=open-iscsi-2.0-873
-patchfiles=""
+build=P0m1
+src=open-iscsi-${vers}
+patchfiles="patch-aa"
 OPT_CONFIG=""
 DOCS="COPYING Changelog README THANKS TODO"
 SRC_URL="http://circle2.org/pub/source/"
@@ -210,28 +210,6 @@ if [ $opt_config -eq 1 ] ; then
     done
   done
   cd $B
-  cp -p Makefile Makefile.orig
-  cat <<- "EOF" | patch Makefile
-	118c118
-	< 	if [ ! -f /etc/iscsi/iscsid.conf ]; then \
-	---
-	> 	if true || [ ! -f /etc/iscsi/iscsid.conf ]; then \
-	131c131
-	< 	if [ ! -f /etc/iscsi/initiatorname.iscsi ]; then \
-	---
-	> 	if true || [ ! -f /etc/iscsi/initiatorname.iscsi ]; then \
-	EOF
-  cp -p usr/Makefile{,.orig}
-  cat <<- "EOF" | patch usr/Makefile
-	57c57
-	< 	$(CC) $(CFLAGS) $^ -o $@  -L../utils/open-isns -lisns
-	---
-	> 	$(CC) $(CFLAGS) $^ -o $@  -L../utils/open-isns -lisns -lslp
-	60c60
-	< 	$(CC) $(CFLAGS) $^ -o $@ -L../utils/open-isns -lisns
-	---
-	> 	$(CC) $(CFLAGS) $^ -o $@ -L../utils/open-isns -lisns -lslp
-	EOF
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
@@ -338,6 +316,10 @@ if [ $opt_package -eq 1 ] ; then
       ln $docdir/$src/$myname.gz $docdir/${src[$i]}
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
+  done
+  for patch in $patchfiles ; do
+    cp $W/$patch $docdir/$src/$patch
+    gzip_one $docdir/$src/$patch
   done
   convert
   install -d $P/install
