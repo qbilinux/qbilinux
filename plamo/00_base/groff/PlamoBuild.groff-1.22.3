@@ -2,13 +2,10 @@
 
 ######################################################################
 pkgbase=groff
-vers=1.18.1.1
-url="http://ftp.gnu.org/gnu/groff/old/groff-${vers}.tar.gz
-    https://launchpad.net/ubuntu/+archive/primary/+files/groff_1.18.1.1-20.diff.gz
-    ftp://plamo.linet.gr.jp/pub/Plamo-src.new/plamo/00_base/groff/groff-1.18.1.1-fix-minus-char.patch.gz
-    ftp://plamo.linet.gr.jp/pub/Plamo-src.new/plamo/00_base/groff/groff-1.18.1.1-polyfill_fix.patch.gz"
+vers=1.22.3
+url="http://ftp.gnu.org/gnu/groff/groff-${vers}.tar.gz"
 arch=`uname -m`
-build=P5m1
+build=P0m1
 src=$pkgbase-$vers
 patchfiles=""
 OPT_CONFIG="--enable-multibyte"
@@ -214,9 +211,6 @@ if [ $opt_config -eq 1 ] ; then
     done
   done
   cd $B
-  gunzip -c $W/groff_1.18.1.1-20.diff.gz | patch -Np1 -i -
-  gunzip -c $W/groff-1.18.1.1-fix-minus-char.patch.gz | patch -Np1 -i -
-  gunzip -c $W/groff-1.18.1.1-polyfill_fix.patch.gz | patch -Np1 -i -
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
