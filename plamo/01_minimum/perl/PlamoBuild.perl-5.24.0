@@ -2,15 +2,12 @@
 
 ######################################################################
 pkgbase=perl
-vers=5.14.2
-url="http://www.cpan.org/src/perl-${vers}.tar.bz2
-    ftp://plamo.linet.gr.jp/pub/Plamo-src.new/plamo/01_minimum/perl/perl-5.12.1-Configure_multilib-1.patch.gz
-    ftp://plamo.linet.gr.jp/pub/Plamo-src.new/plamo/01_minimum/perl/CVE-2013-1667.patch.gz"
+vers=5.24.0
+url="http://www.cpan.org/src/perl-${vers}.tar.bz2"
 arch=`uname -m`
-build=P4m1
+build=P0m1
 src=$pkgbase-$vers
-patchfiles="perl-5.12.1-Configure_multilib-1.patch.gz
-    CVE-2013-1667.patch.gz"
+patchfiles="perl-5.12.1-Configure_multilib-1.patch"
 OPT_CONFIG=""
 DOCS="`echo README.{irix,mpeix,haiku}` README `echo README.{dgux,bs2000}`
     `echo README.{aix,hurd,symbian,openbsd,epoc,macosx,cygwin,solaris}`
@@ -210,25 +207,12 @@ if [ $opt_config -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     for j in ${patchfiles[$i]} ; do
-      case ${j##*.} in
-      gz) gunzip -c $W/$j | patch -Np1 -i - ;;
-      bz2) bunzip2 -c $W/j | patch -Np1 -i - ;;
-      xz) unxz -c $W/$j | patch -Np1 -i - ;;
-      *) patch -Np1 -i $W/$j ;;
-      esac
+      patch -Np1 -i $W/$j
     done
   done
   cd $B
   cp -p hints/linux.sh{,.orig}
   cat <<- EOF | patch hints/linux.sh
-	66,68c66,68
-	< if test -L /lib/libc.so.6; then
-	<     libc=\`ls -l /lib/libc.so.6 | awk '{print \$NF}'\`
-	<     libc=/lib/\$libc
-	---
-	> if test -L /$libdir/libc.so.6; then
-	>     libc=\`ls -l /$libdir/libc.so.6 | awk '{print \$NF}'\`
-	>     libc=/$libdir/\$libc
 	463a464
 	> installstyle="$libdir/perl5"
 	EOF
@@ -311,6 +295,10 @@ if [ $opt_package -eq 1 ] ; then
       ln $docdir/$src/$myname.gz $docdir/${src[$i]}
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
+  done
+  for patch in $patchfiles ; do
+      cp $W/$patch $docdir/$src/$patch
+      gzip_one $docdir/$src/$patch
   done
   convert
   tar cvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
