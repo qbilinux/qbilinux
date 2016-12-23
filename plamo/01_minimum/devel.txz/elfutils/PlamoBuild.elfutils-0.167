@@ -2,14 +2,12 @@
 
 ######################################################################
 pkgbase=elfutils
-vers=0.161
-url="https://fedorahosted.org/releases/e/l/elfutils/0.161/elfutils-${vers}.tar.bz2
-    ftp://plamo.linet.gr.jp/pub/Plamo-src.new/plamo/01_minimum/devel.txz/elfutils/elfutils-portability-0.161.patch.gz
-    ftp://plamo.linet.gr.jp/pub/Plamo-src.new/plamo/01_minimum/devel.txz/elfutils/CVE-2014-9447.patch.gz"
+vers=0.167
+url="https://fedorahosted.org/releases/e/l/elfutils/${vers}/elfutils-${vers}.tar.bz2"
 arch=`uname -m`
-build=P3m2
+build=P0m1
 src=$pkgbase-$vers
-patchfiles="elfutils-portability-0.161.patch.gz CVE-2014-9447.patch.gz"
+patchfiles=""
 OPT_CONFIG="--program-prefix=eu-"
 DOCS="COPYING THANKS NOTES AUTHORS ABOUT-NLS COPYING-GPLV2 NEWS
     COPYING-LGPLV3 CONTRIBUTING INSTALL TODO README ChangeLog"
