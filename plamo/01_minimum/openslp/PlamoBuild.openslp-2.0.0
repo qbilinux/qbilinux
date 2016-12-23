@@ -2,10 +2,10 @@
 
 ######################################################################
 pkgbase=openslp
-vers=1.2.1
+vers=2.0.0
 url="http://downloads.sourceforge.net/openslp/openslp-${vers}.tar.gz"
 arch=`uname -m`
-build=P3m1
+build=P0m1
 src=$pkgbase-$vers
 patchfiles=""
 OPT_CONFIG=""
