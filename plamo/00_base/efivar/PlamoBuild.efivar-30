@@ -1,12 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='git clone https://github.com/rhinstaller/efivar/'
 pkgbase=efivar
-vers=0.21
-# git describe --tags : 0.21-9-g88c3ca8
+vers=30
+url="https://github.com/rhinstaller/efivar/releases/download/30/efivar-30.tar.bz2"
 arch=`uname -m`
-build=P1
-src=efivar
+build=P0m1
+src=efivar-${vers}
 OPT_CONFIG=''
 DOCS='COPYING README.md TODO'
 patchfiles=''
