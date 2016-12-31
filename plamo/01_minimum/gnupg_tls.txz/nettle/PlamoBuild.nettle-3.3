@@ -125,6 +125,8 @@ if [ $opt_download -eq 1 ] ; then
       fi
       ;;
     *)
+      if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+      if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
       if [ ! -f ${i##*/} ] ; then
         wget $i
         for sig in asc sig{,n} {md5,sha{1,256}}{,sum} ; do
