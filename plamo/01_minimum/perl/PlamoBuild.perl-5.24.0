@@ -16,6 +16,7 @@ DOCS="`echo README.{irix,mpeix,haiku}` README `echo README.{dgux,bs2000}`
     `echo README.{beos,amiga,macos,qnx,vos,os400}` Copying
     `echo README.{jp,micro,os390,dos,freebsd,os2,uts,vms,netware}`
     AUTHORS `echo README.{tru64,ce}`"
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -211,22 +212,6 @@ if [ $opt_config -eq 1 ] ; then
     done
   done
   cd $B
-  cp -p hints/linux.sh{,.orig}
-  cat <<- EOF | patch hints/linux.sh
-	463a464
-	> installstyle="$libdir/perl5"
-	EOF
-  cp -p cpan/Compress-Raw-Zlib/config.in{,.orig}
-  cat <<- EOF | patch cpan/Compress-Raw-Zlib/config.in
-	19,21c19,21
-	< BUILD_ZLIB      = True
-	< INCLUDE         = ./zlib-src
-	< LIB             = ./zlib-src
-	---
-	> BUILD_ZLIB      = False
-	> INCLUDE         = /usr/include
-	> LIB             = /usr/$libdir
-	EOF
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
@@ -241,15 +226,36 @@ if [ $opt_config -eq 1 ] ; then
           --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
     fi
   done
-  ./Configure -des -Dprefix=/usr -Dvendorprefix=/usr \
-     -Dman1dir=/usr/share/man/man1 -Dman3dir=/usr/share/man/man3 \
-     -Dcc="gcc" -Dusethreads -Duseshrplib
+  if [ $arch = "x86_64" ]; then
+      arch_opts="-Dcccdlflags='-fPIC'"
+  else
+      arch_opts=""
+  fi
+    sh Configure \
+       -des \
+       -Dprefix=/usr \
+       -Dvendorprefix=/usr \
+       -Dprivlib=/usr/share/perl5 \
+       -Darchlib=/usr/${libdir}/perl5 \
+       -Dsitelib=/usr/share/perl5/site_perl \
+       -Dsitearch=/usr/${libdir}/perl5/site_perl \
+       -Dvendorlib=/usr/share/perl5/vendor_perl \
+       -Dvendorarch=/usr/${libdir}/perl5/vendor_perl \
+       -Dman1dir=/usr/share/man/man1 \
+       -Dman3dir=/usr/share/man/man3 \
+       -Dpager="/usr/bin/less -isR"  \
+       -Dcc='gcc -isystem /usr/include' \
+       -Dlddlflags="-shared ${LDFLAGS}" \
+       -Dldflags="${LDFLAGS}" \
+       -Dusethreads \
+       ${arch_opts} \
+       -Duseshrplib
 fi
 if [ $opt_build -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
-      make
+      make -j4
     fi
   done
 fi
@@ -301,11 +307,11 @@ if [ $opt_package -eq 1 ] ; then
       gzip_one $docdir/$src/$patch
   done
   convert
-  tar cvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/$libdir/perl5
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man3 | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  touch -t `date '+%m%d0900'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi
