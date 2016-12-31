@@ -2,13 +2,12 @@
 
 ######################################################################
 pkgbase=binutils
-vers=2.25
-url="http://ftp.gnu.org/gnu/binutils/binutils-${vers}.tar.bz2
-    ftp://plamo.linet.gr.jp/pub/Plamo-src.new/plamo/01_minimum/devel.txz/binutils/pr16825.patch.gz"
+vers=2.27
+url="http://ftp.gnu.org/gnu/binutils/binutils-${vers}.tar.bz2"
 arch=`uname -m`
-build=P2m2
+build=P0m1
 src=$pkgbase-$vers
-patchfiles="pr16825.patch.gz"
+patchfiles=""
 OPT_CONFIG="--enable-shared"
 DOCS="ChangeLog COPYING* MAINTAINERS README*"
 SRC_URL="http://circle2.org/pub/source/"
