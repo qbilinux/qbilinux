@@ -2,10 +2,10 @@
 
 ######################################################################
 pkgbase=ntp
-vers=4.2.8p8
+vers=4.2.8p9
 url="http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/ntp-${vers}.tar.gz"
 arch=`uname -m`
-build=P1m1
+build=P0m1
 src=$pkgbase-$vers
 patchfiles=""
 OPT_CONFIG=""
@@ -221,9 +221,10 @@ if [ $opt_config -eq 1 ] ; then
       rm -rf config.cache config.log
     fi
     if [ -x configure ] ; then
-      ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
-          --libdir='${exec_prefix}'/$libdir --infodir='${prefix}'/share/info \
-          --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
+	export LDFLAGS="-L/usr/lib64/perl5/CORE"
+	./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
+		    --libdir='${exec_prefix}'/$libdir --infodir='${prefix}'/share/info \
+		    --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
     fi
   done
 fi
