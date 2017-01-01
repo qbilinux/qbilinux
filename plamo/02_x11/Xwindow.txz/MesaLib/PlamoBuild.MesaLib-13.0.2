@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='ftp://ftp.freedesktop.org/pub/mesa/11.0.9/mesa-11.0.9.tar.xz'
 pkgbase=MesaLib
-vers=11.0.9
+vers=13.0.2
+url="ftp://ftp.freedesktop.org/pub/mesa/${vers}/mesa-${vers}.tar.xz"
 arch=`uname -m`
-build=P1m1
-src=mesa-11.0.9
+build=P0m1
+src=mesa-${vers}
 OPT_CONFIG='--enable-texture-float 
          --enable-llvm-shared-libs
          --enable-gles1  --enable-gles2 
@@ -17,7 +17,7 @@ OPT_CONFIG='--enable-texture-float
 DOCS='docs/*'
 
 # http://www.linuxfromscratch.org/patches/blfs/svn/MesaLib-9.1.6-add_xdemos-1.patch
-patchfiles='MesaLib-10.1.0-svga_texture-1.patch MesaLib-9.1.6-add_xdemos-1.patch Mesa-11.0.5-x86_tls_entry.patch Mesa-11.0.5-nouveau_unorderd.patch'
+patchfiles='MesaLib-9.1.6-add_xdemos-1.patch'
 
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
