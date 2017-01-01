@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://dri.freedesktop.org/libdrm/libdrm-2.4.65.tar.bz2'
 pkgbase=libdrm
-vers=2.4.65
+vers=2.4.74
+url="http://dri.freedesktop.org/libdrm/libdrm-${vers}.tar.bz2"
 arch=`uname -m`
-build=P1m1
-src=libdrm-2.4.65
+build=P0m1
+src=libdrm-${vers}
 OPT_CONFIG='--enable-udev'
 DOCS='README'
 patchfiles=''
