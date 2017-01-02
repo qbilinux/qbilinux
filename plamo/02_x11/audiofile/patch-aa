@@ -1,0 +1,20 @@
+*** audiofile-0.3.6/libaudiofile/modules/SimpleModule.h	Mon Jan  2 09:00:51 2017
+--- build/libaudiofile/modules/SimpleModule.h	Wed Mar  6 14:30:03 2013
+***************
+*** 123,129 ****
+  	typedef typename IntTypes<Format>::UnsignedType UnsignedType;
+  
+  	static const int kScaleBits = (Format + 1) * CHAR_BIT - 1;
+! 	static const int kMinSignedValue = -1 << kScaleBits;
+  
+  	struct signedToUnsigned : public std::unary_function<SignedType, UnsignedType>
+  	{
+--- 123,130 ----
+  	typedef typename IntTypes<Format>::UnsignedType UnsignedType;
+  
+  	static const int kScaleBits = (Format + 1) * CHAR_BIT - 1;
+! 	static const int kMaxSignedValue = (((1 << (kScaleBits - 1)) - 1) << 1) + 1;
+! 	static const int kMinSignedValue = -kMaxSignedValue - 1;
+  
+  	struct signedToUnsigned : public std::unary_function<SignedType, UnsignedType>
+  	{
