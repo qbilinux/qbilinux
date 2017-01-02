@@ -9,13 +9,7 @@ build=P0m1
 src=$pkgbase-$vers
 patchfiles="perl-5.12.1-Configure_multilib-1.patch"
 OPT_CONFIG=""
-DOCS="`echo README.{irix,mpeix,haiku}` README `echo README.{dgux,bs2000}`
-    `echo README.{aix,hurd,symbian,openbsd,epoc,macosx,cygwin,solaris}`
-    `echo README.{vmesa,riscos}` MANIFEST README.plan9 Artistic
-    `echo README.{hpux,tw,ko,linux,win32,cn}` INSTALL Changes
-    `echo README.{beos,amiga,macos,qnx,vos,os400}` Copying
-    `echo README.{jp,micro,os390,dos,freebsd,os2,uts,vms,netware}`
-    AUTHORS `echo README.{tru64,ce}`"
+DOCS="AUTHORS Artistic Changes Copying INSTALL MANIFEST README README.aix README.amiga README.android README.bs2000 README.ce README.cn README.cygwin README.dos README.freebsd README.haiku README.hpux README.hurd README.irix README.jp README.ko README.linux README.macos README.macosx README.micro README.netware README.openbsd README.os2 README.os390 README.os400 README.plan9 README.qnx README.riscos README.solaris README.symbian README.synology README.tru64 README.tw README.vms README.vos README.win32"
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -246,7 +240,7 @@ if [ $opt_config -eq 1 ] ; then
        -Dpager="/usr/bin/less -isR"  \
        -Dcc='gcc -isystem /usr/include' \
        -Dlddlflags="-shared ${LDFLAGS}" \
-       -Dldflags="${LDFLAGS}" \
+       -Uldflags="${LDFLAGS}" \
        -Dusethreads \
        ${arch_opts} \
        -Duseshrplib
@@ -280,11 +274,6 @@ if [ $opt_package -eq 1 ] ; then
   find $P ! -type l -newer i.st ! -newer i.et \
       -exec touch -t `date '+%m%d0900'` {} \;
   compress
-  for i in `find $P/usr/$libdir/perl5/$vers/$arch-linux-thread-multi \
-      -name "*.so"` ; do
-    strip_libdir ${i%/*}
-    touch -t `date '+%m%d0900'` ${i%/*}
-  done
   for i in `seq 0 $((${#DOCS[@]} - 1))` ; do
     for j in ${DOCS[$i]} ; do
       for k in ${S[$i]}/$j ; do
