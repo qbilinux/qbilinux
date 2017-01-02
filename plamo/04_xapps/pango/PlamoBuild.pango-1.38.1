@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://ftp.gnome.org/pub/gnome/sources/pango/1.36/pango-1.36.8.tar.xz'
 pkgbase=pango
-vers=1.36.8
+vers=1.38.1
+url="http://ftp.gnome.org/pub/gnome/sources/pango/1.38/pango-${vers}.tar.xz"
 arch=`uname -m`
-build=P1m1
-src=pango-1.36.8
+build=P0m1
+src=pango-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING ChangeLog* HACKING INSTALL MAINTAINERS NEWS README README.win32 THANKS'
 patchfiles=''
