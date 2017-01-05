@@ -1,4 +1,5 @@
 #!/bin/bash
+export LANG=C
 
 seek_dir () {
 #    dfas dfa/fdafsd/fdafd/afkdjsakf/PlamoBuild*
@@ -18,38 +19,52 @@ seek_dir () {
     # check log file
     if [ $opt_check -eq 1 ] ; then
 	echo "###### $DIR"
-	if [ -f $BASE.make.log ] ; then
-	    grep Error $BASE.make.log 
+	if [ -f 00.make.log ] ; then
+	    grep Error 00.make.log 
 	else
 	    echo "not make.log file"
 	fi
 
-	if [ -f $BASE.package.log ] ; then
-	    grep Error $BASE.package.log 
+	if [ -f 00.package.log ] ; then
+	    grep Error 00.package.log 
 	else
 	    echo "not package.log file"
 	fi
 	
     # check Plamobuild script and make log.
-    elif [ $opt_force -eq 1 ] || [ ! -f $BASE.make.log ] || [ $BASE.make.log -ot $SCN ] ; then
+    elif [ $opt_force -eq 1 ] || [ ! -f 00.make.log ] || [ 00.make.log -ot $SCN ] ; then
     
 	# backup log file
-	if [ -f $BASE.make.log.1 ] ; then
-	    mv $BASE.make.log.1 $BASE.make.log.2
+	if [ -f 01.make.log ] ; then
+	    mv 01.make.log 02.make.log
 	fi
-	if [ -f $BASE.package.log.1 ] ; then
-	    mv $BASE.package.log.1 $BASE.package.log.2
+	if [ -f 01.package.log ] ; then
+	    mv 01.package.log 02.package.log
 	fi
-	if [ -f $BASE.make.log ] ; then
-	    mv $BASE.make.log $BASE.make.log.1
+	if [ -f 00.make.log ] ; then
+	    mv 00.make.log 01.make.log
 	fi
-	if [ -f $BASE.package.log ] ; then
-	    mv $BASE.package.log $BASE.package.log.1
+	if [ -f 00.package.log ] ; then
+	    mv 00.package.log 01.package.log
 	fi
 	
 	# execute
-	sh ./$SCN download config build |& tee $BASE.make.log
-	sudo sh ./$SCN package |& tee $BASE.package.log
+	sh ./$SCN download config build |& tee 00.make.log
+	sudo sh ./$SCN package |& tee 00.package.log
+
+	# make diff file.
+	if [ -f 01.make.log ] ; then
+	    diff -c 00.make.log 01.make.log > 00.make.log.01.diff
+	fi
+	if [ -f 02.make.log ] ; then
+	    diff -c 00.make.log 02.make.log > 00.make.log.02.diff
+	fi
+	if [ -f 01.package.log ] ; then
+	    diff -c 00.package.log 01.package.log > 00.package.log.01.diff
+	fi
+	if [ -f 02.package.log ] ; then
+	    diff -c 00.package.log 02.package.log > 00.package.log.02.diff
+	fi
     else
 	echo "*** skip: make.log newer than PlamoBuild. If you want to build, use -f option."
     fi
