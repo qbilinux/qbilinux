@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
-url='https://www.x.org/archive/individual/app/sessreg-1.0.8.tar.bz2'
 pkgbase=sessreg
-vers=1.0.8
+vers=1.1.0
+url="https://www.x.org/archive/individual/app/sessreg-${vers}.tar.bz2"
 arch=`uname -m`
-build=P1m1
-src=sessreg-1.0.8
+build=P0m1
+src=sessreg-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog INSTALL README'
-patchfiles=''
+patchfiles='0001-Makefile.am-Error-Fix.patch'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
