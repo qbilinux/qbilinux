@@ -10,6 +10,8 @@ arch=`uname -m`
 build=P1m1
 src=glib-$vers
 OPT_CONFIG=""
+patchfiles='patch-aa'
+compress=txz
 DOCS="README AUTHORS COPYING ChangeLog INSTALL NEWS README.win32"
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -183,6 +185,9 @@ if [ $opt_config -eq 1 ] ; then
   patch -Np1 -i $W/glib-1.2.10-29.fc9.src/glib-1.2.10-no_undefined.patch
   patch -Np1 -i $W/glib-1.2.10-29.fc9.src/glib-1.2.10-multilib.patch
   patch -Np1 -i $W/glib-1.2.10-config_update-1.patch
+  for patch in $patchfiles ; do
+      patch -p1 < $W/$patch
+  done
   for i in `seq 0 $((${#B[@]} - 1))` ; do
   cp -p /usr/share/libtool/config/config.{guess,sub} .
     cd ${B[$i]}
@@ -245,19 +250,16 @@ if [ $opt_package -eq 1 ] ; then
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
+  for patch in $patchfiles ; do
+    cp $W/$patch $docdir/$src/$patch
+    gzip_one $docdir/$src/$patch
+  done
   convert
-  tar cvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/lib64 -name libglib*`
-  tar rvpf $pkg.tar -C $P usr/lib64/glib
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/lib64/pkgconfig | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/lib64 -name libgmodule*`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/lib64 -name libgthread*`
-  tar rvpf $pkg.tar -C $P usr/include/glib-1.2
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/aclocal | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/info | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  tar rvpf $pkg.tar -C $P install/doinst.sh
-  touch -t `date '+%m%d0900'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+  cd $P
+
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi
