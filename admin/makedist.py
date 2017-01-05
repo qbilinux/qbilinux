@@ -42,7 +42,9 @@ for file in fild_all_files(args[1]):
         desclist = []
         for ll in os.listdir(srcpath):
             if os.path.isdir(os.path.join(srcpath, ll)):
-                basename = ll
+                basename, ext=os.path.splitext(ll)
+                flg_name = 0
+                flg_head = 0
                 for lll in os.listdir(os.path.join(srcpath, ll)):
                     # Plamobuild.bash-4.3.30, bash-4.3.30-x86_64-P1.txz, bash.desc
                     # if fnmatch.fnmatch(lll, basename+'.desc'):
@@ -60,6 +62,12 @@ for file in fild_all_files(args[1]):
                             if fnmatch.fnmatch(llll, basename2+'*.txz'):
                                 pkglist.append(os.path.join(srcpath, ll, llll))
                                 desclist.append(os.path.join(srcpath, ll, basename2+'.desc'))
+                    if fnmatch.fnmatch(lll, basename+'.desc'):
+                        flg_name = 1
+                    if fnmatch.fnmatch(lll, '00header.desc'):
+                        flg_head = 1
+                if flg_name == 1 and flg_head == 1:
+                    desclist.append(os.path.join(srcpath, ll, basename+'.desc'))
 
         #print pkglist
         #print desclist
