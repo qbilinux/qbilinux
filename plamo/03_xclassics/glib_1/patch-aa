@@ -1,0 +1,19 @@
+*** glib-1.2.10/glib.h	Tue Feb 27 12:44:38 2001
+--- build/glib.h	Thu Jan  5 17:45:33 2017
+***************
+*** 204,210 ****
+  #ifndef G_INLINE_FUNC
+  #  ifdef __GNUC__
+  #    ifdef __OPTIMIZE__
+! #      define G_INLINE_FUNC extern inline
+  #    else
+  #      undef G_CAN_INLINE
+  #      define G_INLINE_FUNC extern
+--- 204,210 ----
+  #ifndef G_INLINE_FUNC
+  #  ifdef __GNUC__
+  #    ifdef __OPTIMIZE__
+! #      define G_INLINE_FUNC static inline
+  #    else
+  #      undef G_CAN_INLINE
+  #      define G_INLINE_FUNC extern
