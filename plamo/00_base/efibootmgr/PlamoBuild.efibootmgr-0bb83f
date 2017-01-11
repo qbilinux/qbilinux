@@ -1,14 +1,15 @@
 #!/bin/sh
 ##############################################################
 pkgbase=efibootmgr
-vers=0.12
-url="https://github.com/vathpela/efibootmgr-devel/archive/efibootmgr-0.12.tar.gz"
+vers=0bb83cf
+#url="https://github.com/vathpela/efibootmgr-devel/archive/efibootmgr-0.12.tar.gz"
+url="https://github.com/vathpela/efibootmgr-devel"
 arch=`uname -m`
 build=P0m1
-src=efibootmgr-devel-efibootmgr-0.12
+src=efibootmgr-devel
 OPT_CONFIG=''
-DOCS='AUTHORS COPYING INSTALL README doc/ChangeLog doc/TODO'
-patchfiles='efibootmgr-add-efi_guid_zero.patch'
+DOCS='AUTHORS COPYING INSTALL README TODO'
+patchfiles=''
 compress=txz
 ##############################################################
 
@@ -113,14 +114,10 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
-    if [ ! -f ${i##*/} ] ; then wget $i ; fi
-  done
-  for i in $url ; do
-    case ${i##*.} in
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
-    *) tar xvpf ${i##*/} ;;
-    esac
+      if [ ! -d ${i##*/} ] ; then
+	  git clone $i ;
+      fi
+      (cd ${i##*/}; git checkout $vers)
   done
 fi
 
@@ -181,10 +178,7 @@ if [ $opt_package -eq 1 ] ; then
   touch $W/i.st ; sleep 1
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
-    mkdir -p $P/usr/sbin
-    install src/efibootmgr/efibootmgr $P/usr/sbin
-    mkdir -p $P/usr/share/man/man8
-    install src/man/man8/efibootmgr.8 $P/usr/share/man/man8/
+    make install DESTDIR=$P
     
   done
 ######################################################################
