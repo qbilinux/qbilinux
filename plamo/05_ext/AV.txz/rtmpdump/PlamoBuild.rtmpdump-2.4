@@ -1,6 +1,6 @@
 #!/bin/sh
 ##############################################################
-url='git clone git://git.ffmpeg.org/rtmpdump'
+url='git://git.ffmpeg.org/rtmpdump'
 pkgbase=rtmpdump
 vers=2.4
 arch=`uname -m`
@@ -119,12 +119,19 @@ else
   done
 fi
 if [ $opt_download -eq 1 ] ; then
-  for i in $url ; do
-    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
-    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
-    if [ ! -f ${i##*/} ] ; then wget $i ; fi
-    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
-  done
+    for i in $url ; do
+	case ${url%//*} in
+	    git:)
+		git clone $i
+		;;
+	    *)
+		if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+		if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
+		if [ ! -f ${i##*/} ] ; then wget $i ; fi
+		if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
+		;;
+	esac
+    done
   for i in $url ; do
     case ${i##*.} in
     tar) tar xvpf ${i##*/} ;;
