@@ -2,10 +2,10 @@
 
 ######################################################################
 pkgbase=gc
-vers=7.1
+vers=7.6.0
 url="http://www.hboehm.info/gc/gc_source/gc-${vers}.tar.gz"
 arch=`uname -m`
-build=P3m1
+build=P0m1
 src=$pkgbase-$vers
 patchfiles=""
 OPT_CONFIG=""
