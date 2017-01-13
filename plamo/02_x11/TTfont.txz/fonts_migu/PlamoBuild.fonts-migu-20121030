@@ -1,6 +1,9 @@
 #!/bin/sh
 ##############################################################
-url='http://jaist.dl.sourceforge.jp/mix-mplus-ipa/57240/migu-1p-20121030.zip http://jaist.dl.sourceforge.jp/mix-mplus-ipa/57240/migu-1p-20121030.zip http://jaist.dl.sourceforge.jp/mix-mplus-ipa/57240/migu-1m-20121030.zip http://jaist.dl.sourceforge.jp/mix-mplus-ipa/57240/migu-2m-20121030.zip'
+url="http://jaist.dl.sourceforge.jp/mix-mplus-ipa/57240/migu-1p-20121030.zip
+	http://jaist.dl.sourceforge.jp/mix-mplus-ipa/57240/migu-1p-20121030.zip
+	http://jaist.dl.sourceforge.jp/mix-mplus-ipa/57240/migu-1m-20121030.zip
+	http://jaist.dl.sourceforge.jp/mix-mplus-ipa/57240/migu-2m-20121030.zip"
 pkgbase=fonts_migu
 vers=20121030
 arch=noarch
