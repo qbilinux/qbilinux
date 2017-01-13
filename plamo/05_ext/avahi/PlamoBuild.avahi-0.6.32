@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://avahi.org/download/avahi-0.6.31.tar.gz'
 pkgbase=avahi
-vers=0.6.31
+vers=0.6.32
+url="https://github.com/lathiat/avahi/releases/download/v${vers}/avahi-${vers}.tar.gz"
 arch=`uname -m`
-build=P2m1
-src=avahi-0.6.31
+build=P0m1
+src=avahi-${vers}
 OPT_CONFIG='--disable-static --disable-qt3 --disable-qt4 --disable-mono --with-distro=slackware --disable-python'
 DOCS='ABOUT-NLS ChangeLog LICENSE README'
 patchfiles=''
