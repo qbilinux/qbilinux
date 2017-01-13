@@ -3,13 +3,14 @@
 ######################################################################
 pkgbase=net_tools
 vers=1.60
-url="http://downloads.sourceforge.net/net-tools/net-tools-${vers}.tar.bz2
-    http://simosnet.com/livecdroom/source/solydxk/main/n/net-tools/net-tools_1.60-26.diff.gz"
+url="http://downloads.sourceforge.net/net-tools/net-tools-${vers}.tar.bz2"
 arch=`uname -m`
 build=P2m1
 src=net-tools-$vers
 OPT_CONFIG=""
 DOCS="ABOUT-NLS COPYING INSTALLING README README.ipv6 TODO"
+patchfiles='net-tools_1.60-26.diff patch-aa'
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -177,7 +178,9 @@ if [ $opt_config -eq 1 ] ; then
     if [ -d ${B[$i]} ] ; then rm -rf ${B[$i]} ; fi ; cp -a ${S[$i]} ${B[$i]}
   done
   cd $B
-  gunzip -c $W/net-tools_1.60-26.diff.gz | patch -Np1 -i -
+  for patch in $patchfiles ; do
+      patch -p1 < $W/$patch
+  done
   for i in `cat debian/patches/series` ; do
     patch -Np1 -i debian/patches/$i
   done
@@ -269,14 +272,15 @@ if [ $opt_package -eq 1 ] ; then
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
+  for patch in $patchfiles ; do
+      cp $W/$patch $docdir/$src/$patch
+      gzip_one $docdir/$src/$patch
+  done
   convert
-  tar cvpf $pkg.tar -C $P `cd $P ; find sbin | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find bin | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man5 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man8 | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  tar rvpf $pkg.tar -C $P install/doinst.sh
-  touch -t `date '+%m%d0900'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi
