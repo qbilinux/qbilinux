@@ -8,9 +8,11 @@ arch=`uname -m`
 build=P2m1
 src=$pkgbase-$vers
 OPT_CONFIG="--libexecdir=/lib/udev --sysconfdir=/etc
-    --disable-introspection --enable-rule_generator"
-DOCS="README extras/keymap/README.keymap.txt INSTALL ChangeLog NEWS
+    --disable-introspection --enable-rule_generator --disable-keymap"
+DOCS="README INSTALL ChangeLog NEWS
     TODO COPYING"
+patchfiles='fix_uint_error.patch'
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -179,6 +181,9 @@ if [ $opt_config -eq 1 ] ; then
   done
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
+    for patch in $patchfiles ; do
+       patch -p1 < $W/$patch
+    done
     if [ -f Makefile ] ; then
       make clean
     fi
@@ -246,24 +251,15 @@ if [ $opt_package -eq 1 ] ; then
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
+  for patch in $patchfiles ; do
+      cp $W/$patch $docdir/$src/$patch
+      gzip_one $docdir/$src/$patch
+  done
   convert
-  prune_symlink $P/lib/udev
-  touch -t `date '+%m%d0900'` $P/lib/udev
-  tar cvpf $pkg.tar -C $P `cd $P ; find sbin | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/sbin | tail -n+2`
-  tar rvpf $pkg.tar -C $P lib/udev
-  tar rvpf $pkg.tar -C $P `cd $P ; find $libdir | tail -n+2`
-  tar rvpf $pkg.tar -C $P \
-      `cd $P ; find usr/$libdir ! -name pkgconfig | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/include -maxdepth 1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/pkgconfig | tail -n+2`
-  tar rvpf $pkg.tar -C $P \
-      `cd $P ; find usr/share/gtk-doc/html -maxdepth 1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P etc/udev
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man7 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man8 | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  tar rvpf $pkg.tar -C $P install/doinst.sh
-  touch -t `date '+%m%d0900'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi
