@@ -11,7 +11,7 @@ OPT_CONFIG="--enable-unicode --enable-gui --with-sdl --enable-shared --enable-in
 --enable-sockets --enable-dataobj --enable-ipc --enable-arcstream --enable-backtrace \
 --enable-catch-segvs --with-opengl --with-x " # --with-odbc --with-zlib"
 DOCS="INSTALL-MSW.txt INSTALL-OS2.txt README-MSW.txt readme*.txt"
-patchfiles=''
+patchfiles='gtk_fix.patch'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -125,9 +125,9 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
-    *) tar xvpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
+    *) tar xpf ${i##*/} ;;
     esac
   done
 fi
