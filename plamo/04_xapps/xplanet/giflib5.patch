@@ -1,0 +1,162 @@
+Index: b/src/libimage/gif.c
+===================================================================
+--- a/src/libimage/gif.c
++++ b/src/libimage/gif.c
+@@ -38,32 +38,34 @@ read_gif(const char *filename, int *widt
+     GifRecordType record_type;
+     GifRowType *buffer = NULL;
+ 
+-    int i, j;
++    int i, j, err;
+     int color_index;
+     unsigned char *ptr = NULL;
+ 
+-    infile = DGifOpenFileName(filename);
++    infile = DGifOpenFileName(filename, &err);
+ 
+     if (infile == NULL)
+     {
+-        PrintGifError();
++        fprintf(stderr, "\nGIF-LIB error: %s.\n", GifErrorString(err));
+         return(0);
+     }
+ 
+     do
+     {
+-        if (DGifGetRecordType(infile, &record_type) == GIF_ERROR) 
++        err = DGifGetRecordType(infile, &record_type);
++        if (err != GIF_OK) 
+         {
+-            PrintGifError();
++            fprintf(stderr, "\nGIF-LIB error: %s.\n", GifErrorString(err));
+             return(0);
+         }
+ 
+         switch (record_type)
+         {
+         case IMAGE_DESC_RECORD_TYPE:
+-            if (DGifGetImageDesc(infile) == GIF_ERROR)
++            err = DGifGetImageDesc(infile);
++            if (err != GIF_OK)
+             {
+-                PrintGifError();
++                fprintf(stderr, "\nGIF-LIB error: %s.\n", GifErrorString(err));
+                 return(0);
+             }
+ 
+@@ -105,16 +107,18 @@ read_gif(const char *filename, int *widt
+             /* Skip extension blocks */
+             int ext_code;
+             GifByteType *ext;
+-            if (DGifGetExtension(infile, &ext_code, &ext) == GIF_ERROR) 
++            err = DGifGetExtension(infile, &ext_code, &ext);
++            if (err != GIF_OK) 
+             {
+-                PrintGifError();
++                fprintf(stderr, "\nGIF-LIB error: %s.\n", GifErrorString(err));
+                 return(0);
+             }
+             while (ext != NULL) 
+             {
+-                if (DGifGetExtensionNext(infile, &ext) == GIF_ERROR) 
++                err = DGifGetExtensionNext(infile, &ext);
++                if (err != GIF_OK) 
+                 {
+-                    PrintGifError();
++                    fprintf(stderr, "\nGIF-LIB error: %s.\n", GifErrorString(err));
+                     return(0);
+                 }
+             }
+@@ -154,14 +158,14 @@ read_gif(const char *filename, int *widt
+     
+     free(buffer);
+ 
+-    DGifCloseFile(infile);
++    DGifCloseFile(infile, NULL);
+     return(1);
+ }
+ 
+ int 
+ write_gif(const char *filename, int width, int height, char *rgb)
+ {
+-    int i;
++    int i, err;
+     int colormap_size = 256;
+     GifByteType *red, *green, *blue, *buffer, *ptr;
+     GifFileType *outfile;
+@@ -178,7 +182,7 @@ write_gif(const char *filename, int widt
+         return(0);
+     }
+ 
+-    colormap = MakeMapObject(colormap_size, NULL);
++    colormap = GifMakeMapObject(colormap_size, NULL);
+ 
+     for (i = 0; i < width * height; i++)
+     {
+@@ -187,10 +191,11 @@ write_gif(const char *filename, int widt
+         blue[i]  = (GifByteType) rgb[3*i+2];
+     }
+   
+-    if (QuantizeBuffer(width, height, &colormap_size, red, green, blue,   
+-                       buffer, colormap->Colors) == GIF_ERROR)
++    err = GifQuantizeBuffer(width, height, &colormap_size, red, green, blue,   
++                            buffer, colormap->Colors);
++    if (err != GIF_OK)
+     {
+-        PrintGifError();
++        fprintf(stderr, "\nGIF-LIB error: %s.\n", GifErrorString(err));
+         return(0);
+     }
+ 
+@@ -198,24 +203,24 @@ write_gif(const char *filename, int widt
+     free(green);
+     free(blue);
+ 
+-    outfile = EGifOpenFileName((char *) filename, FALSE);
++    outfile = EGifOpenFileName((char *) filename, 0, &err);
+     if (outfile == NULL)
+     {
+-        PrintGifError();
++        fprintf(stderr, "\nGIF-LIB error: %s.\n", GifErrorString(err));
+         return(0);
+     }
+ 
+-    if (EGifPutScreenDesc(outfile, width, height, colormap_size, 0, colormap)
+-        == GIF_ERROR)
++    err = EGifPutScreenDesc(outfile, width, height, colormap_size, 0, colormap);
++    if (err != GIF_OK)
+     {
+-        PrintGifError();
++        fprintf(stderr, "\nGIF-LIB error: %s.\n", GifErrorString(err));
+         return(0);
+     }
+ 
+-    if (EGifPutImageDesc(outfile, 0, 0, width, height, FALSE, NULL)
++    if (EGifPutImageDesc(outfile, 0, 0, width, height, 0, NULL)
+         == GIF_ERROR)
+     {
+-        PrintGifError();
++        fprintf(stderr, "\nGIF-LIB error: %s.\n", GifErrorString(err));
+         return(0);
+     }
+ 
+@@ -224,7 +229,7 @@ write_gif(const char *filename, int widt
+     {
+         if (EGifPutLine(outfile, ptr, width) == GIF_ERROR)
+         {
+-            PrintGifError();
++            fprintf(stderr, "\nGIF-LIB error: %s.\n", GifErrorString(err));
+             return(0);
+         }
+         ptr += width;
+@@ -232,8 +237,8 @@ write_gif(const char *filename, int widt
+ 
+     EGifSpew(outfile);
+ 
+-    if (EGifCloseFile(outfile) == GIF_ERROR) 
+-        PrintGifError();
++    if (EGifCloseFile(outfile, NULL) == GIF_ERROR) 
++        fprintf(stderr, "\nGIF-LIB error: %s.\n", GifErrorString(err));
+ 
+     free(buffer);
+ 
