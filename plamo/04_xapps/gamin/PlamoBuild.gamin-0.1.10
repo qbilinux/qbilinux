@@ -9,7 +9,7 @@ build=P1m1
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="README AUTHORS COPYING TODO NEWS Copyright ChangeLog INSTALL"
-patchfiles='0001-Fix-compilation-of-recent-glib-removing-G_CONST_RETU.patch'
+patchfiles='21_no_g_const_return.patch'
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
