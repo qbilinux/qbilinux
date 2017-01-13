@@ -147,7 +147,7 @@ if [ $opt_config -eq 1 ] ; then
     done
 
     cd ${B[$i]}
-    cmake $W/$src/source -DCMAKE_INSTALL_PREFIX:PATH=/usr/
+    cmake $W/$src/source -DCMAKE_INSTALL_PREFIX:PATH=/usr/ -DLIB_INSTALL_DIR:PATH=/usr/${libdir}
   done
 fi
 if [ $opt_build -eq 1 ] ; then
