@@ -1,0 +1,19 @@
+*** loudmouth-1.4.3/loudmouth/lm-error.c	2008-10-30 05:48:15.000000000 +0900
+--- build/loudmouth/lm-error.c	2017-01-13 15:47:47.393376174 +0900
+***************
+*** 19,25 ****
+   */
+  
+  #include <config.h>
+! #include <glib/gerror.h>
+  #include "lm-error.h"
+  
+  /**
+--- 19,25 ----
+   */
+  
+  #include <config.h>
+! #include <glib.h>
+  #include "lm-error.h"
+  
+  /**
