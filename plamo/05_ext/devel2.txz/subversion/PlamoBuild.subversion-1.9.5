@@ -1,13 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=subversion
-vers=1.9.4
+vers=1.9.5
 url="http://ftp.meisei-u.ac.jp/mirror/apache/dist/subversion/subversion-${vers}.tar.bz2"
-verify="https://www.apache.org/dist/subversion/subversion-${vers}.tar.bz2.asc"
+verify=""
 arch=`uname -m`
-build=P1m1
+build=P0m1
 src=${pkgbase}-${vers}
-# OPT_CONFIG='--disable-static --with-gssapi=/usr/heimdal'
 OPT_CONFIG='--disable-static'
 DOCS='INSTALL LICENSE README'
 patchfiles=''
