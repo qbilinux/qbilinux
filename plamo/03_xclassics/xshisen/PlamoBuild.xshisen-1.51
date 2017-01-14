@@ -1,11 +1,7 @@
 #!/bin/sh
 
 ######################################################################
-url="http://ftp.nsysu.edu.tw/FreeBSD/ports/local-distfiles/hrs/xshisen-1.51.tar.gz
-    http://plamo.linet.gr.jp/~tamuki/src/xshisen-debian-bug213957.patch.gz
-    http://plamo.linet.gr.jp/~tamuki/src/xshisen-debian-bug289784.patch.gz
-    http://plamo.linet.gr.jp/~tamuki/src/xshisen-1.51-delete-hintArray.patch.gz
-    http://plamo.linet.gr.jp/~tamuki/src/xshisen-1.51-DESTDIR.patch.gz"
+url="http://ftp.nsysu.edu.tw/FreeBSD/ports/local-distfiles/hrs/xshisen-1.51.tar.gz"
 pkgbase=xshisen
 vers=1.51
 arch=`uname -m`
@@ -14,6 +10,12 @@ src=$pkgbase-$vers
 OPT_CONFIG="--sharedstatedir=/var/games
     --x-includes=/usr/include --x-libraries=/usr/lib64"
 DOCS="INSTALL INSTALL.jp ChangeLog LICENSE README"
+patchfiles='xshisen-debian-bug213957.patch
+	xshisen-debian-bug289784.patch
+	xshisen-1.51-delete-hintArray.patch
+	xshisen-1.51-DESTDIR.patch
+	narrowing_conversion.patch'
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -180,10 +182,9 @@ if [ $opt_config -eq 1 ] ; then
     if [ -d ${B[$i]} ] ; then rm -rf ${B[$i]} ; fi ; cp -a ${S[$i]} ${B[$i]}
   done
   cd $B
-  gunzip -c $W/xshisen-debian-bug213957.patch.gz | patch -Np0 -i -
-  gunzip -c $W/xshisen-debian-bug289784.patch.gz | patch -Np0 -i -
-  gunzip -c $W/xshisen-1.51-delete-hintArray.patch.gz | patch -Np1 -i -
-  gunzip -c $W/xshisen-1.51-DESTDIR.patch.gz | patch -Np1 -i -
+    for patch in $patchfiles ; do
+       patch -p1 < $W/$patch
+    done
   cp -p configure configure.orig
   sed '/LIBS=/s@Xaw@Xaw3d@g' configure.orig > configure
   cat <<- "EOF" | patch configure
@@ -252,16 +253,15 @@ if [ $opt_package -eq 1 ] ; then
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
+  for patch in $patchfiles ; do
+      cp $W/$patch $docdir/$src/$patch
+      gzip_one $docdir/$src/$patch
+  done
   convert
-  tar cvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/lib64/X11/app-defaults/XShisen
-  tar rvpf $pkg.tar -C $P usr/lib64/X11/ja_JP.eucJP/app-defaults/XShisen
-  tar rvpf $pkg.tar -C $P usr/lib64/X11/pl/app-defaults/XShisen
-  tar rvpf $pkg.tar -C $P usr/share/xshisen
-  tar rvpf $pkg.tar -C $P var/games/xshisen.scores
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man6 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/ja_JP.eucJP/man6 | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  touch -t `date '+%m%d0900'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi

@@ -1,0 +1,11 @@
+--- xshisen-1.51/body.C.SIGSEGV	2002-07-07 16:22:35.000000000 +0900
++++ xshisen-1.51/body.C	2009-03-13 23:45:23.000000000 +0900
+@@ -227,7 +227,7 @@
+     p = new Point[max_c][2];
+     t = new Point[xsize*ysize/PKIND];
+ 
+-    if (hintNum == 0)
++    if (hintNum != 0)
+         delete[] hintArray;
+     for(int i=0; i<PKIND; i++) {
+         piepos[i]->GetPosArray(t, num);
