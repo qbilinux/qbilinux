@@ -1,0 +1,60 @@
+--- xshisen-1.51/Makefile.in.orig	2002-07-10 12:16:48.000000000 +0900
++++ xshisen-1.51/Makefile.in	2011-10-20 08:49:18.000000000 +0900
+@@ -52,25 +52,25 @@
+ install: install-resource install-prog
+ 
+ install-prog: $(PROGS)
+-	@echo "XShisen executable directory is " $(bindir)
+-	@$(MKDIR) $(bindir)
+-	@chmod 755 $(bindir)
+-	$(INSTALLP) $(PROGS) $(bindir)/$(PROGS)
+-	@echo "XShisen data directory is " $(XSHISENLIB)
+-	@$(MKDIR) $(XSHISENDAT)
+-	@chmod 755 $(XSHISENDAT)
+-	@if [ -f $(XSHISENDAT)/$(SCF) ]; then \
++	@echo "XShisen executable directory is " $(DESTDIR)$(bindir)
++	@$(MKDIR) $(DESTDIR)$(bindir)
++	@chmod 755 $(DESTDIR)$(bindir)
++	$(INSTALLP) $(PROGS) $(DESTDIR)$(bindir)/$(PROGS)
++	@echo "XShisen data directory is " $(DESTDIR)$(XSHISENDAT)
++	@$(MKDIR) $(DESTDIR)$(XSHISENDAT)
++	@chmod 755 $(DESTDIR)$(XSHISENDAT)
++	@if [ -f $(DESTDIR)$(XSHISENDAT)/$(SCF) ]; then \
+ 	echo "Old high-score file exists."; \
+-	else\
+-	$(INSTALL) -m 0666 $(SCF) $(XSHISENDAT)/$(SCF); \
++	else \
++	$(INSTALL) -m 0666 $(SCF) $(DESTDIR)$(XSHISENDAT)/$(SCF); \
+ 	fi
+-	@$(MKDIR) $(XSHISENLIB)
++	@$(MKDIR) $(DESTDIR)$(XSHISENLIB)
+ 	@set -x; \
+ 	for dir in pixmaps/s?; do \
+ 		dn=`basename $$dir`; \
+-		$(MKDIR) $(XSHISENLIB)/$$dn; \
++		$(MKDIR) $(DESTDIR)$(XSHISENLIB)/$$dn; \
+ 		for file in $$dir/*.xpm; do \
+-			fn=$(XSHISENLIB)/$$dn/`basename $$file`; \
++			fn=$(DESTDIR)$(XSHISENLIB)/$$dn/`basename $$file`; \
+ 			$(INSTALLD) $$file $$fn; \
+ 		done; \
+ 	done
+@@ -87,13 +87,13 @@
+ 	done
+ 
+ install.man: man/$(exec_name).6
+-	-$(MKDIR) $(MANDIR)/man6
+-	$(INSTALLD) man/$(exec_name).6 $(MANDIR)/man6/$(exec_name).6
+-	-[ -n "$(LANG)" ] && $(MKDIR) $(MANDIR)/$(LANG)
++	-$(MKDIR) $(DESTDIR)$(MANDIR)/man6
++	$(INSTALLD) man/$(exec_name).6 $(DESTDIR)$(MANDIR)/man6/$(exec_name).6
++	-[ -n "$(LANG)" ] && $(MKDIR) $(DESTDIR)$(MANDIR)/$(LANG)
+ 	-@set -x; \
+ 	for lang in $(LANGS); do \
+-	[ -d $(MANDIR)/$$lang/man6 ] || $(MKDIR) $(MANDIR)/$$lang/man6; \
+-	[ -f man/$(exec_name).6.$$lang ] && $(INSTALLD) man/$(exec_name).6.$$lang $(MANDIR)/$$lang/man6/$(exec_name).6; \
++	[ -d $(DESTDIR)$(MANDIR)/$$lang/man6 ] || $(MKDIR) $(DESTDIR)$(MANDIR)/$$lang/man6; \
++	[ -f man/$(exec_name).6.$$lang ] && $(INSTALLD) man/$(exec_name).6.$$lang $(DESTDIR)$(MANDIR)/$$lang/man6/$(exec_name).6; \
+ 	done
+ 
+ clean:
