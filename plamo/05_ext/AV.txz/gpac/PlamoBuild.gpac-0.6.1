@@ -1,8 +1,8 @@
 #!/bin/sh
 ##############################################################
-url='svn co https://gpac.svn.sourceforge.net/svnroot/gpac/trunk/gpac gpac'
 pkgbase=gpac
-vers=r5619
+vers=0.6.1
+url="https://github.com/gpac/gpac/archive/v0.6.1.tar.gz"
 arch=`uname -m`
 build=P0m1
 src=gpac-${vers}
@@ -114,8 +114,19 @@ else
   done
 fi
 if [ $opt_download -eq 1 ] ; then
-  svn co https://gpac.svn.sourceforge.net/svnroot/gpac/trunk/gpac gpac
-  (cd gpac; svn checkout -r ${rev})a
+  for i in $url ; do
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
+    if [ ! -f ${i##*/} ] ; then wget $i ; fi
+    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
+  done
+  for i in $url ; do
+    case ${i##*.} in
+    tar) tar xpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
+    esac
+  done
 fi
 
 if [ $opt_config -eq 1 ] ; then
