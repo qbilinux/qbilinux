@@ -1,0 +1,12 @@
+*** build.orig/configure.in	2017-01-14 11:56:32.113925187 +0900
+--- build/configure.in	2017-01-14 11:57:05.040592522 +0900
+***************
+*** 220,226 ****
+  dnl Check for c++ features
+  AC_LANG_SAVE
+  AC_LANG_CPLUSPLUS
+- AC_CHECK_HEADERS(libcw/sys.h)
+  AC_CHECK_HEADERS(cctype climits cstdio cstdlib bitset cstring)
+  AC_CHECK_HEADERS(fstream iostream iomanip vector \
+  	,,AC_MSG_ERROR([Missing a vital header file for id3lib - download them here: http://gcc.gnu.org/libstdc++/ or better - compile a newer compiler like gcc3.x])
+--- 220,225 ----
