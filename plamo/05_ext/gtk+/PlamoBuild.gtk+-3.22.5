@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://ftp.gnome.org/pub/gnome/sources/gtk+/3.14/gtk+-3.14.4.tar.xz'
 pkgbase=gtk+
-vers=3.14.4
+vers=3.22.5
+url="http://ftp.gnome.org/pub/gnome/sources/gtk+/3.22/gtk+-${vers}.tar.xz"
 arch=`uname -m`
-build=P3m1
-src=gtk+-3.14.4
+build=P0m1
+src=gtk+-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog HACKING INSTALL NEWS NEWS.pre-1-0 README README.commits README.win32'
 patchfiles=''
