@@ -1,13 +1,13 @@
 #!/bin/sh
 ##############################################################
 pkgbase=inkscape
-vers=0.91
-url="https://inkscape.org/en/gallery/item/3860/inkscape-${vers}.tar.bz2"
+vers=0.92.0
+url="https://inkscape.org/gallery/item/10552/inkscape-${vers}.tar.bz2"
 arch=`uname -m`
 build=P0m1
 src=inkscape-${vers}
 OPT_CONFIG=''
-DOCS='AUTHORS COPYING COPYING.LIB ChangeLog INSTALL NEWS README README.ca.txt README.de.txt README.es.txt README.fr.txt README.it.txt README.osx.txt README.pt_BR.txt README.sk.txt README.sr.txt'
+DOCS='AUTHORS COPYING ChangeLog GPL2.txt GPL3.txt INSTALL NEWS README README.ca.txt README.de.txt README.es.txt README.fr.txt README.it.txt README.osx.txt README.pt_BR.txt README.sk.txt README.sr.txt'
 patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
@@ -147,17 +147,13 @@ if [ $opt_config -eq 1 ] ; then
     #   sh ./autogen.sh
     # fi
 
-    if [ -f setup.py ]; then
-        python ./setup.py config        
-    elif [ -f Makefile.PL ]; then
-        perl ./Makefile.PL
-    elif [ -x configure ] ; then
-       export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
-       export LDFLAGS='-Wl,--as-needed' 
-       export CC="gcc -isystem /usr/include $target -std=c++11" 
-       export CXX="g++ -isystem /usr/include $target -std=c++11"
-       ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
-    fi
+      if [ -f $S/CMakeLists.txt ]; then
+          export PKG_CONFIG_PATH=/opt/kde/${libdir}/pkgconfig:/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
+          export LDFLAGS='-Wl,--as-needed' 
+          export CC="gcc -I /usr/include $target" 
+          export CXX="g++ -I /usr/include $target"
+          cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DLIB_INSTALL_DIR:PATH=/usr/${libdir} -DLIB_SUFFIX=$suffix ${OPT_CONFIG} $S
+      fi
       if [ $? != 0 ]; then
 	  echo "configure error. $0 script stop"
 	  exit 255
