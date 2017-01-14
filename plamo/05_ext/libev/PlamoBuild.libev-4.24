@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=libev
-vers=4.22
+vers=4.24
 url="http://dist.schmorp.de/libev/libev-${vers}.tar.gz"
 commitid=
 arch=`uname -m`
-build=P1m1
+build=P0m1
 src=libev-${vers}
 OPT_CONFIG=''
 DOCS='LICENSE README'
@@ -125,6 +125,8 @@ if [ $opt_download -eq 1 ] ; then
       fi
       ;;
     *)
+      if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+      if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
       if [ ! -f ${i##*/} ] ; then
         wget $i
         for sig in asc sig{,n} {md5,sha{1,256}}{,sum} ; do
@@ -139,6 +141,7 @@ if [ $opt_download -eq 1 ] ; then
           if [ $? -ne 0 ] ; then echo "archive verify failed" ; exit ; fi
         fi
       fi
+      if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
       ;;
     esac
   done
