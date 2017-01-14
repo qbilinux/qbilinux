@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://downloads.sourceforge.net/project/boost/boost/1.54.0/boost_1_54_0.tar.bz2'
 pkgbase=boost
-vers=1.54.0
+vers=1.63.0
+url="https://sourceforge.net/projects/boost/files/boost/1.63.0/boost_1_63_0.tar.bz2"
 arch=`uname -m`
-build=P1m1
-src=boost_1_54_0
+build=P0m1
+src=boost_1_63_0
 OPT_CONFIG=''
 DOCS='INSTALL LICENSE_1_0.txt'
 patchfiles='boost-1.54.0-glibc-1.patch'
