@@ -1,15 +1,16 @@
 #!/bin/sh
 
 ######################################################################
-url="http://jaist.dl.sourceforge.net/sourceforge/xosview/xosview-1.8.3.tar.gz
-    http://plamo.linet.gr.jp/~tamuki/src/xosview-1.8.3-conversion.patch.gz"
 pkgbase=xosview
-vers=1.8.3
+vers=1.19
+url="http://www.pogo.org.uk/~mark/xosview/releases/xosview-${vers}.tar.gz"
 arch=`uname -m`
-build=P1m1
+build=P0m1
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="CHANGES COPYING* README* TODO"
+patchfiles=''
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -176,43 +177,6 @@ if [ $opt_config -eq 1 ] ; then
     if [ -d ${B[$i]} ] ; then rm -rf ${B[$i]} ; fi ; cp -a ${S[$i]} ${B[$i]}
   done
   cd $B
-  gunzip -c $W/xosview-1.8.3-conversion.patch.gz | patch -Np1 -i -
-  cp -p config/Makefile.top.in{,.orig}
-  sed '/XAPPLOADDIR=/s@/lib@/lib64@g' config/Makefile.top.in.orig \
-      > config/Makefile.top.in
-  cat <<- "EOF" | patch config/Makefile.top.in
-	58a59,63
-	> 	@echo "***  Making sure $(DESTDIR)$(BINDIR) exists..."
-	> 	@if [ ! -d $(DESTDIR)$(BINDIR) ]; then \
-	> 	  echo "***  Making $(DESTDIR)$(BINDIR)..."; \
-	> 	  mkdir -p $(DESTDIR)$(BINDIR); \
-	> 	fi
-	60c65,70
-	< 	@INSTALL_PROGRAM@ @INSTALL_ARGS@ xosview $(BINDIR)
-	---
-	> 	@INSTALL_PROGRAM@ @INSTALL_ARGS@ xosview $(DESTDIR)$(BINDIR)
-	> 	@echo "***  Making sure $(DESTDIR)$(XAPPLOADDIR) exists..."
-	> 	@if [ ! -d $(DESTDIR)$(XAPPLOADDIR) ]; then \
-	> 	  echo "***  Making $(DESTDIR)$(XAPPLOADDIR)..."; \
-	> 	  mkdir -p $(DESTDIR)$(XAPPLOADDIR); \
-	> 	fi
-	62,66c72,76
-	< 	@INSTALL_DATA@ Xdefaults $(XAPPLOADDIR)/XOsview
-	< 	@echo "***  Making sure $(MANDIR) exists..."
-	< 	@if [ ! -d $(MANDIR) ]; then \
-	< 	  echo "***  Making $(MANDIR)..."; \
-	< 	  mkdir $(MANDIR); \
-	---
-	> 	@INSTALL_DATA@ Xdefaults $(DESTDIR)$(XAPPLOADDIR)/XOsview
-	> 	@echo "***  Making sure $(DESTDIR)$(MANDIR) exists..."
-	> 	@if [ ! -d $(DESTDIR)$(MANDIR) ]; then \
-	> 	  echo "***  Making $(DESTDIR)$(MANDIR)..."; \
-	> 	  mkdir -p $(DESTDIR)$(MANDIR); \
-	69c79
-	< 	@INSTALL_DATA@ xosview.1 $(MANDIR)
-	---
-	> 	@INSTALL_DATA@ xosview.1 $(DESTDIR)$(MANDIR)
-	EOF
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
@@ -249,7 +213,7 @@ if [ $opt_package -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
-      make install DESTDIR=$P
+      make install DESTDIR=$P PREFIX=/usr
     fi
   done
   touch $W/i.et
@@ -275,10 +239,10 @@ if [ $opt_package -eq 1 ] ; then
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
   convert
-  tar cvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/lib64/X11/app-defaults | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  touch -t `date '+%m%d0900'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi
