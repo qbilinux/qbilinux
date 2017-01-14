@@ -9,7 +9,7 @@ build=P0m1
 src=id3lib-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog HISTORY INSTALL NEWS README THANKS TODO'
-patchfiles='id3lib-3.8.3_gcc4.diff'
+patchfiles='id3lib-3.8.3_gcc4.diff configure.patch'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -174,15 +174,13 @@ if [ $opt_config -eq 1 ] ; then
       patch -p1 < $W/$patch
     done
 
-    # if [ -f autogen.sh ] ; then
-    #   sh ./autogen.sh
-    # fi
+    autoconf
 
     if [ -x configure ] ; then
       export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
       export LDFLAGS='-Wl,--as-needed' 
-      export CFLAGS="-isystem /usr/include $target" 
-      export CPPFLAGS="-isystem /usr/include $target "
+      export CFLAGS="-I /usr/include $target" 
+      export CPPFLAGS="-I /usr/include $target "
       ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
     fi
     if [ $? != 0 ]; then
@@ -196,7 +194,7 @@ if [ $opt_build -eq 1 ] ; then
     cd ${B[$i]}
     if [ -f Makefile ] ; then
       export LDFLAGS='-Wl,--as-needed'
-      make -j3
+      make
     fi
     if [ $? != 0 ]; then
       echo "make error. $0 script stop"
