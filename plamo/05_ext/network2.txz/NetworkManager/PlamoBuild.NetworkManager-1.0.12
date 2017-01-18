@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://ftp.gnome.org/pub/GNOME/sources/NetworkManager/0.9/NetworkManager-0.9.4.0.tar.xz'
 pkgbase=NetworkManager
-vers=0.9.4.0
+vers=1.0.12
+url="https://download.gnome.org/sources/NetworkManager/1.0/NetworkManager-${vers}.tar.xz"
 arch=`uname -m`
-build=P1m1
-src=NetworkManager-0.9.4.0
+build=P0m1
+src=NetworkManager-${vers}
 OPT_CONFIG='--with-distro=slackware'
 DOCS='ABOUT-NLS AUTHORS COPYING ChangeLog INSTALL NEWS README TODO'
 patchfiles=''
@@ -218,8 +218,8 @@ if [ $opt_config -eq 1 ] ; then
     if [ -x configure ] ; then
         export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
         export LDFLAGS='-Wl,--as-needed' 
-        export CC="gcc -isystem /usr/include $target" 
-        export CXX="g++ -isystem /usr/include $target "
+        export CC="gcc -I /usr/include $target" 
+        export CXX="g++ -I /usr/include $target "
         ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
     fi
     if [ $? != 0 ]; then
