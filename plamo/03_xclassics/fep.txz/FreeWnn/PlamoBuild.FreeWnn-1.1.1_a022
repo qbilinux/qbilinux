@@ -118,7 +118,7 @@ prune_symlink() {
 	( cd $LINKGOESIN ; rm -rf $LINKNAMEIS )
 	( cd $LINKGOESIN ; ln -sf $LINKPOINTSTO $LINKNAMEIS )
 	EOF
-      rm -rf $LINE ; touch -t `date '+%m%d0900'` install/doinst.sh $LINE
+      rm -rf $LINE ; touch -t `date '+%m%d0000'` install/doinst.sh $LINE
       COUNT=$(($COUNT + 1))
       LINE=`sed -n "${COUNT}p" /tmp/iNsT-a.$$`
     done
@@ -225,12 +225,12 @@ if [ $opt_package -eq 1 ] ; then
   touch $W/i.et
   cd $W
   find $P ! -type l -newer i.st ! -newer i.et \
-      -exec touch -t `date '+%m%d0900'` {} \;
+      -exec touch -t `date '+%m%d0000'` {} \;
   compress
   strip_bindir $P/usr/bin/Wnn4
   strip_bindir $P/usr/bin/cWnn4
   strip_bindir $P/usr/bin/kWnn4
-  touch -t `date '+%m%d0900'` $P/usr/bin/{,c,k}Wnn4
+  touch -t `date '+%m%d0000'` $P/usr/bin/{,c,k}Wnn4
   install -d $P/etc/rc.d/init.d
   cat <<- "EOF" > $P/etc/rc.d/init.d/wnn.r
 	#!/bin/sh
@@ -262,7 +262,7 @@ if [ $opt_package -eq 1 ] ; then
 	exit 0
 	EOF
   chmod 755 $P/etc/rc.d/init.d/wnn.r
-  touch -t `date '+%m%d0900'` $P/etc/rc.d/init.d/wnn.r
+  touch -t `date '+%m%d0000'` $P/etc/rc.d/init.d/wnn.r
   for i in `seq 0 $((${#DOCS[@]} - 1))` ; do
     for j in ${DOCS[$i]} ; do
       for k in ${S[$i]}/$j ; do
@@ -273,7 +273,7 @@ if [ $opt_package -eq 1 ] ; then
     done
     if [ $i -eq 0 ] ; then
       install $myname $docdir/$src
-      touch -t `date '+%m%d0900'` $docdir/$src/$myname
+      touch -t `date '+%m%d0000'` $docdir/$src/$myname
       gzip_one $docdir/$src/$myname
     else
       ln $docdir/$src/$myname.gz $docdir/${src[$i]}
@@ -288,7 +288,7 @@ if [ $opt_package -eq 1 ] ; then
 	( cd /usr/lib64/wnn/ja_JP/dic/gerodic ; /usr/bin/Wnn4/wnntouch * )
 	#%% end
 	EOF
-  touch -t `date '+%m%d0900'` $P/usr/include/wnn $P/install/doinst.sh
+  touch -t `date '+%m%d0000'` $P/usr/include/wnn $P/install/doinst.sh
   tar cvpf $pkg.tar -C $P `cd $P ; find usr/bin -maxdepth 1 | tail -n+2`
   tar rvpf $pkg.tar -C $P `cd $P ; find usr/lib64 -maxdepth 1 | tail -n+2`
   tar rvpf $pkg.tar -C $P `cd $P ; find usr/include -maxdepth 1 | tail -n+2`
@@ -299,6 +299,6 @@ if [ $opt_package -eq 1 ] ; then
   tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man5 | tail -n+2`
   tar rvpf $pkg.tar -C $P usr/share/doc/$src
   tar rvpf $pkg.tar -C $P install/doinst.sh
-  touch -t `date '+%m%d0900'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
+  touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
   mv $pkg.tar.xz $pkg.txz
 fi
