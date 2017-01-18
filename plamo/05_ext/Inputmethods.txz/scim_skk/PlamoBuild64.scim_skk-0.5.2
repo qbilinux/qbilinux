@@ -11,6 +11,8 @@ src=scim-skk-$vers
 OPT_CONFIG="--disable-static"
 DOCS="NEWS TODO README.ja README AUTHORS INSTALL ABOUT-NLS ChangeLog
     COPYING"
+patchfiles='gtk.patch'
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -187,6 +189,9 @@ if [ $opt_config -eq 1 ] ; then
 	EOF
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
+    for patch in $patchfiles ; do
+       patch -p1 < $W/$patch
+    done
     if [ -f Makefile ] ; then
       make clean
     fi
@@ -250,11 +255,15 @@ if [ $opt_package -eq 1 ] ; then
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
+  for patch in $patchfiles ; do
+      cp $W/$patch $docdir/$src/$patch
+      gzip_one $docdir/$src/$patch
+  done
   convert
-  tar cvpf $pkg.tar -C $P usr/lib64/scim-1.0
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/locale -name *.mo`
-  tar rvpf $pkg.tar -C $P usr/share/scim
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  touch -t `date '+%m%d0900'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi
