@@ -1,14 +1,14 @@
-#!/bin/sh
+g#!/bin/sh
 ##############################################################
-url='http://www.libimobiledevice.org/downloads/libimobiledevice-1.1.4.tar.bz2'
 pkgbase=libimobiledevice
-vers=1.1.4
+vers=1.2.0
+url="http://www.libimobiledevice.org/downloads/libimobiledevice-${vers}.tar.bz2"
 arch=`uname -m`
-build=P3m1
-src=libimobiledevice-1.1.4
+build=P0m1
+src=libimobiledevice-${vers}
 OPT_CONFIG='--enable-dev-tools'
 DOCS='AUTHORS COPYING COPYING.LESSER NEWS README'
-patchfiles='fix-insecure-tmp-dir.patch'
+patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
