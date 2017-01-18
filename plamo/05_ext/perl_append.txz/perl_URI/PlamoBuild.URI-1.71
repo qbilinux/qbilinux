@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://search.cpan.org/CPAN/authors/id/G/GA/GAAS/URI-1.60.tar.gz'
 pkgbase=perl_URI
-vers=1.60
+vers=1.71
+url="http://search.cpan.org/CPAN/authors/id/E/ET/ETHER/URI-${vers}.tar.gz"
 arch=`uname -m`
-build=P1m2
-src=URI-1.60
+build=P0m2
+src=URI-${vers}
 OPT_CONFIG=''
 DOCS='README'
 patchfiles=''
