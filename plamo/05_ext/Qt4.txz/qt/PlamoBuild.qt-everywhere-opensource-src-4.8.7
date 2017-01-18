@@ -6,9 +6,9 @@ vers=4.8.7
 arch=`uname -m`
 build=P1m1
 src=qt-everywhere-opensource-src-4.8.7
-OPT_CONFIG='-reduce-exports -release -nomake examples -nomake demos -system-sqlite -no-nis -opensource -confirm-license -no-phonon -no-phonon-backend -gstreamer -qt-sql-mysql -plugin-sql-mysql -qt-sql-sqlite -plugin-sql-sqlite  -I/opt/mysql/include -I/opt/pgsql/include -L/opt/pgsql/lib -L/opt/mysql/lib'
+OPT_CONFIG='-reduce-exports -release -no-javascript-jit -no-webkit -nomake examples -nomake demos -system-sqlite -no-nis -opensource -confirm-license -no-phonon -no-phonon-backend -gstreamer -qt-sql-mysql -plugin-sql-mysql -qt-sql-sqlite -plugin-sql-sqlite  -I/opt/mysql/include -I/opt/pgsql/include -L/opt/pgsql/lib -L/opt/mysql/lib'
 DOCS='.LICENSE-ALLOS .LICENSE-ALLOS-US .LICENSE-DESKTOP .LICENSE-DESKTOP-US .LICENSE-EMBEDDED .LICENSE-EMBEDDED-US .LICENSE-EVALUATION .LICENSE-EVALUATION-US INSTALL LGPL_EXCEPTION.txt LICENSE.FDL LICENSE.GPL3 LICENSE.LGPL README'
-patchfiles=''
+patchfiles='qt-everywhere-opensource-src-4.8.7-gcc6.patch'
 if [ "$arch" = "x86_64" ]; then
     OPT_CONFIG=$OPT_CONFIG" -prefix /usr/lib64/qt -libdir /usr/lib64 -L /opt/mysql/lib64"    
 else
@@ -158,15 +158,15 @@ if [ $opt_config -eq 1 ] ; then
 
       if [ -x configure ] ; then
          export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
-         export LDFLAGS='-Wl,--as-needed' 
+         # export LDFLAGS='-Wl,--as-needed' 
          # export CFLAGS='-Os'
          # export CXXLAGS='-Os'
 	 #if [ -x /usr/bin/clang -a -x /usr/bin/clang++ ]; then
 	 #    export CC="clang"
 	 #    export CXX="clang++"
 	 #else
-             export CC="gcc -isystem /usr/include $target"
-             export CXX="g++ -isystem /usr/include $target"
+             export CC="gcc -I /usr/include $target"
+             export CXX="g++ -I /usr/include -std=gnu++98 $target"
 	 #fi
          ./configure -bindir /usr/bin  -docdir /usr/share/${src} -headerdir /usr/include $OPT_CONFIG
      fi
