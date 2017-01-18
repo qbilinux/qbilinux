@@ -1,16 +1,17 @@
 #!/bin/sh
 
 ######################################################################
-url="http://downloads.sourceforge.net/cdrdao/cdrdao-1.2.3.tar.bz2
-    http://plamo.linet.gr.jp/~tamuki/src/cdrdao-1.2.3-stat.patch.gz"
+url="http://downloads.sourceforge.net/cdrdao/cdrdao-1.2.3.tar.bz2"
 pkgbase=cdrdao
 vers=1.2.3
-arch=`uname -m | sed 's/i.86/i586/'`
+arch=`uname -m`
 build=P1m1
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="NEWS AUTHORS README INSTALL ChangeLog README.PlexDAE
     README.Win32 CREDITS COPYING"
+patchfiles='cdrdao-1.2.3-stat.patch cdrdao_conversion.patch'
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -177,10 +178,11 @@ if [ $opt_config -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     if [ -d ${B[$i]} ] ; then rm -rf ${B[$i]} ; fi ; cp -a ${S[$i]} ${B[$i]}
   done
-  cd $B
-  gunzip -c $W/cdrdao-1.2.3-stat.patch.gz | patch -Np1 -i -
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
+    for patch in $patchfiles ; do
+       patch -p1 < $W/$patch
+    done
     if [ -f Makefile ] ; then
       make clean
     fi
@@ -240,11 +242,15 @@ if [ $opt_package -eq 1 ] ; then
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
+  for patch in $patchfiles ; do
+      cp $W/$patch $docdir/$src/$patch
+      gzip_one $docdir/$src/$patch
+  done
   convert
-  tar cvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/cdrdao
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  touch -t `date '+%m%d0900'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi
