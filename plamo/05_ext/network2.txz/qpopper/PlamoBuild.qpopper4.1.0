@@ -16,7 +16,7 @@ else
 fi
 
 DOCS='License.txt README GUIDE.pdf'
-patchfiles=''
+patchfiles='sys_errlist.patch'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
