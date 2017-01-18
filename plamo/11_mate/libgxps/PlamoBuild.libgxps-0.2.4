@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://ftp.gnome.org/pub/gnome/sources/libgxps/0.2/libgxps-0.2.3.2.tar.xz'
 pkgbase=libgxps
-vers=0.2.3.2
+vers=0.2.4
+url="http://ftp.gnome.org/pub/gnome/sources/libgxps/0.2/libgxps-${vers}.tar.xz"
 arch=`uname -m`
-build=P1m1
-src=libgxps-0.2.3.2
+build=P0m1
+src=libgxps-${vers}
 OPT_CONFIG='  --enable-static=no --enable-man --enable-introspection=auto'
 DOCS='AUTHORS COPYING ChangeLog NEWS README TODO'
 patchfiles=''
