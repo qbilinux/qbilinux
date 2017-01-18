@@ -153,6 +153,7 @@ xmandir=$P/usr/X11R7/share/man
 docdir=$P/usr/share/doc
 myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
+export PYTHON="python3"
 
 if [ $arch = "x86_64" ]; then
     target="-m64"
