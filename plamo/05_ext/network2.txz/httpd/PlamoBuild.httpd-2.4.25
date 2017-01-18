@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=httpd
-vers=2.4.23
+vers=2.4.25
 url="http://www.apache.org/dist/httpd/httpd-${vers}.tar.gz"
 verify=$url.asc
 arch=`uname -m`
-build=P1m1
+build=P0m1
 src=${pkgbase}-${vers}
 OPT_CONFIG="--enable-layout=Slackware-FHS --enable-mods-shared=all --enable-mods-shared=cgi --enable-mpms-shared=all --mandir=/usr/share/man"
 DOCS='ABOUT_APACHE INSTALL InstallBin.dsp LICENSE README README.platforms'
