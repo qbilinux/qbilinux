@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
-url='https://downloads.mariadb.com/MariaDB/mariadb-10.1.10/source/mariadb-10.1.10.tar.gz'
 pkgbase=mariadb
-vers=10.1.10
+vers=10.1.20
+url="https://downloads.mariadb.com/MariaDB/mariadb-${vers}/source/mariadb-${vers}.tar.gz"
 arch=`uname -m`
-build=P1m1
-src=mariadb-10.1.10
+build=P0m1
+src=mariadb-${vers}
 OPT_CONFIG="-DWITH_EMBEDDED_SERVER:BOOL=ON"
 DOCS='COPYING COPYING.LESSER COPYING.thirdparty CREDITS EXCEPTIONS-CLIENT INSTALL-SOURCE INSTALL-WIN-SOURCE KNOWN_BUGS.txt README'
-patchfiles='patch-b'
+patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -334,10 +334,10 @@ y
 1
 EOF
 
-  cd $W/work2
-  /sbin/makepkg ../mariadb_testsuits-$vers-$arch-$build.txz <<EOF
-y
-1
-EOF
+#  cd $W/work2
+#  /sbin/makepkg ../mariadb_testsuits-$vers-$arch-$build.txz <<EOF
+#y
+#1
+#EOF
 
 fi
