@@ -8,7 +8,7 @@ build=P0m1
 src=qt-mobility-opensource-src-1.2.2
 OPT_CONFIG=''
 DOCS='INSTALL.symbian INSTALL.txt LGPL_EXCEPTION.txt LICENSE.LGPL LICENSE.PREVIEW.COMMERCIAL'
-patchfiles=''
+patchfiles='fix_narrowing_conversion.patch fix_qmagnetrometer_error.patch'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -185,10 +185,10 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
-    xz) tar xvpf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
+    xz) tar xpf ${i##*/} ;;
     esac
   done
 fi
