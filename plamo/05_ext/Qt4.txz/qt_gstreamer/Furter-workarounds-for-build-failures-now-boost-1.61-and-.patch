@@ -1,0 +1,87 @@
+From: Maximiliano Curia <maxy@gnuservers.com.ar>
+Date: Tue, 9 Aug 2016 12:56:44 +0200
+Subject: Furter workarounds for build failures (now boost>=1.61 and moc)
+
+Otherwise I get the following error message:
+'usr/include/boost/type_traits/detail/has_binary_operator.hp:50:
+Parse error at "BOOST_JOIN"'.
+
+Now the header: boost/type_traits.hpp also triggers the issue.
+---
+ src/QGlib/connect.h     | 2 ++
+ src/QGlib/connectimpl.h | 2 ++
+ src/QGlib/refpointer.h  | 2 ++
+ src/QGlib/value.cpp     | 2 ++
+ src/QGlib/value.h       | 2 ++
+ 5 files changed, 10 insertions(+)
+
+diff --git a/src/QGlib/connect.h b/src/QGlib/connect.h
+index acab694..2b320f0 100644
+--- a/src/QGlib/connect.h
++++ b/src/QGlib/connect.h
+@@ -25,7 +25,9 @@
+ #include <QtCore/QSharedPointer>
+ #include <QtCore/QFlags>
+ #include <QtCore/QHash>
++#ifndef Q_MOC_RUN
+ #include <boost/type_traits.hpp>
++#endif
+ #include <boost/utility/enable_if.hpp>
+ 
+ namespace QGlib {
+diff --git a/src/QGlib/connectimpl.h b/src/QGlib/connectimpl.h
+index 3f40d1d..67fd60e 100644
+--- a/src/QGlib/connectimpl.h
++++ b/src/QGlib/connectimpl.h
+@@ -26,7 +26,9 @@
+ # include "refpointer.h"
+ # include <QtCore/QList>
+ # include <stdexcept>
++#ifndef Q_MOC_RUN
+ # include <boost/type_traits.hpp>
++#endif
+ 
+ 
+ namespace QGlib {
+diff --git a/src/QGlib/refpointer.h b/src/QGlib/refpointer.h
+index 966c0ba..67030b7 100644
+--- a/src/QGlib/refpointer.h
++++ b/src/QGlib/refpointer.h
+@@ -23,7 +23,9 @@
+ #include "type.h"
+ #include "wrap.h"
+ #include <cstddef>
++#ifndef Q_MOC_RUN
+ #include <boost/type_traits.hpp>
++#endif
+ #include <boost/utility/enable_if.hpp>
+ #include <QtCore/QHash>
+ 
+diff --git a/src/QGlib/value.cpp b/src/QGlib/value.cpp
+index 932ffad..2bcb71e 100644
+--- a/src/QGlib/value.cpp
++++ b/src/QGlib/value.cpp
+@@ -19,7 +19,9 @@
+ #include "value.h"
+ #include "string.h"
+ #include <cstring>
++#ifndef Q_MOC_RUN
+ #include <boost/type_traits.hpp>
++#endif
+ #include <glib-object.h>
+ #include <QtCore/QDebug>
+ #include <QtCore/QReadWriteLock>
+diff --git a/src/QGlib/value.h b/src/QGlib/value.h
+index 6d10736..e1f96f3 100644
+--- a/src/QGlib/value.h
++++ b/src/QGlib/value.h
+@@ -24,7 +24,9 @@
+ #include "refpointer.h"
+ #include "error.h"
+ #include <boost/mpl/if.hpp>
++#ifndef Q_MOC_RUN
+ #include <boost/type_traits.hpp>
++#endif
+ #include <stdexcept>
+ #include <QtCore/QString>
+ #include <QtCore/QDebug>

@@ -8,7 +8,7 @@ build=P1m1
 src=qt-gstreamer-1.2.0
 OPT_CONFIG=''
 DOCS='COPYING HACKING NEWS README'
-patchfiles=''
+patchfiles='find_gstconfig_properly.patch upstream_workaroud_boost_ftbfs.patch Furter-workarounds-for-build-failures-now-boost-1.61-and-.patch'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -150,8 +150,8 @@ if [ $opt_config -eq 1 ] ; then
        if [ -f $S/CMakeLists.txt ]; then
           export PKG_CONFIG_PATH=/opt/kde/${libdir}/pkgconfig:/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
           export LDFLAGS='-Wl,--as-needed' 
-          export CC="gcc -isystem /usr/include $target" 
-          export CXX="g++ -isystem /usr/include $target "
+          export CC="gcc -I /usr/include $target" 
+          export CXX="g++ -I /usr/include $target "
        cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DLIB_INSTALL_DIR:PATH=/usr/${libdir} -DLIB_SUFFIX=$suffix ${OPT_CONFIG} $S
        fi
       if [ $? != 0 ]; then
