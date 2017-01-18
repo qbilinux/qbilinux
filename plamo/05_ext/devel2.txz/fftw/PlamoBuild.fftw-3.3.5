@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://www.fftw.org/fftw-3.3.tar.gz'
 pkgbase=fftw
-vers=3.3
+vers=3.3.5
+url="http://www.fftw.org/fftw-${vers}.tar.gz"
 arch=`uname -m`
-build=P2m1
-src=fftw-3.3
+build=P0m1
+src=fftw-${vers}
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README TODO'
 patchfiles=''
 compress=txz
@@ -193,7 +193,7 @@ if [ $opt_download -eq 1 ] ; then
 fi
 
 CFLAGS+=" -O3 -fomit-frame-pointer -malign-double -fstrict-aliasing -ffast-math"
-CONFIGURE="./configure F77=gfortran --prefix=/usr --libdir=/usr/${libdir} --enable-shared --enable-threads"
+CONFIGURE="./configure F77=gfortran --prefix=/usr --libdir=/usr/${libdir} --enable-shared --enable-threads --disable-fortran"
 
 if [ -d ${B} ] ; then rm -rf ${B} ; fi ; cp -a ${S} ${B}
 if [ -d ${P} ] ; then rm -rf ${P} ; fi ; mkdir -p ${P}
@@ -201,8 +201,8 @@ if [ -d ${P} ] ; then rm -rf ${P} ; fi ; mkdir -p ${P}
 export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
 export CFLAGS=" -O3 -fomit-frame-pointer -malign-double -fstrict-aliasing -ffast-math"
 export LDFLAGS='-Wl,--as-needed' 
-export CC="gcc -isystem /usr/include $target" 
-export CXX="g++ -isystem /usr/include $target"
+export CC="gcc -I /usr/include $target" 
+export CXX="g++ -I /usr/include $target"
 
 cd ${B}
 # build & install double precision
