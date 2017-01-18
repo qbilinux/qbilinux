@@ -1,0 +1,55 @@
+*** scim-anthy-1.2.7/src/Makefile.in	2009-01-16 11:33:59.000000000 +0900
+--- build/src/Makefile.in	2017-01-17 16:11:10.110067743 +0900
+***************
+*** 173,180 ****
+  GLIBC21 = @GLIBC21@
+  GMSGFMT = @GMSGFMT@
+  GREP = @GREP@
+- GTK2_CFLAGS = @GTK2_CFLAGS@
+- GTK2_LIBS = @GTK2_LIBS@
+  HAVE_ASPRINTF = @HAVE_ASPRINTF@
+  HAVE_POSIX_PRINTF = @HAVE_POSIX_PRINTF@
+  HAVE_SNPRINTF = @HAVE_SNPRINTF@
+--- 173,178 ----
+***************
+*** 403,413 ****
+  helpermoduledir = @SCIM_MODULEDIR@/Helper
+  helpermodule_LTLIBRARIES = $(HELPER_MODULE)
+  anthy_imengine_helper_la_SOURCES = scim_anthy_helper.cpp
+! anthy_imengine_helper_la_CFLAGS = @GTK2_CFLAGS@ \
+  				    @SCIM_CFLAGS@ \
+  				    @SCIM_DEBUG_FLAGS@
+  
+! anthy_imengine_helper_la_CXXFLAGS = @GTK2_CFLAGS@ \
+  				    @SCIM_CFLAGS@ \
+  				    @SCIM_DEBUG_FLAGS@
+  
+--- 401,411 ----
+  helpermoduledir = @SCIM_MODULEDIR@/Helper
+  helpermodule_LTLIBRARIES = $(HELPER_MODULE)
+  anthy_imengine_helper_la_SOURCES = scim_anthy_helper.cpp
+! anthy_imengine_helper_la_CFLAGS = @SCIM_GTKUTILS_CFLAGS@ \
+  				    @SCIM_CFLAGS@ \
+  				    @SCIM_DEBUG_FLAGS@
+  
+! anthy_imengine_helper_la_CXXFLAGS = @SCIM_GTKUTILS_CFLAGS@ \
+  				    @SCIM_CFLAGS@ \
+  				    @SCIM_DEBUG_FLAGS@
+  
+***************
+*** 415,421 ****
+                                      -rpath $(setupmoduledir) \
+                                      -module \
+  				    @LIBTOOL_EXPORT_OPTIONS@ \
+! 				    @GTK2_LIBS@ \
+  				    @INTLLIBS@ \
+  				    @SCIM_LIBS@
+  
+--- 413,419 ----
+                                      -rpath $(setupmoduledir) \
+                                      -module \
+  				    @LIBTOOL_EXPORT_OPTIONS@ \
+! 				    @SCIM_GTKUTILS_LIBS@ \
+  				    @INTLLIBS@ \
+  				    @SCIM_LIBS@
+  
