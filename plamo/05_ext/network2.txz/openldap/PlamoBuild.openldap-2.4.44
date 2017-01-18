@@ -1,16 +1,16 @@
 #!/bin/sh
 ##############################################################
-url='http://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-2.4.30.tgz'
 pkgbase=openldap
-vers=2.4.30
+vers=2.4.44
+url="http://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-${vers}.tgz"
 arch=`uname -m`
-build=P1m1
-src=openldap-2.4.30
+build=P0m1
+src=openldap-${vers}
 # OPT_CONFIG='--libexecdir=/usr/sbin --disable-static --enable-ipv6 --enable-syslog --enable-local --enable-bdb --enable-hdb --enable-crypt --enable-dynamic --with-threads --disable-wrappers  --without-fetch --enable-spasswd --with-cyrus-sasl --enable-overlays=mod --enable-modules=yes'
 
 OPT_CONFIG='--libexecdir=/usr/sbin --disable-debug --disable-static --enable-syslog --enable-dynamic  --enable-crypt --enable-modules  --enable-overlays=mod --enable-rlookups'
 DOCS='INSTALL LICENSE README'
-patchfiles='mutex-end-of-struct-sigsegv.patch'
+patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
