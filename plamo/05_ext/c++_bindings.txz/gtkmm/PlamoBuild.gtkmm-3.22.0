@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://ftp.gnome.org/pub/GNOME/sources/gtkmm/3.4/gtkmm-3.4.1.tar.xz'
 pkgbase=gtkmm
-vers=3.4.1
+vers=3.22.0
+url="http://ftp.gnome.org/pub/GNOME/sources/gtkmm/3.22/gtkmm-${vers}.tar.xz"
 arch=`uname -m`
-build=P1m1
-src=gtkmm-3.4.1
+build=P0m1
+src=gtkmm-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING COPYING.tools ChangeLog INSTALL NEWS README README.SUN README.win32 win32_installer'
 patchfiles=''
@@ -125,6 +125,7 @@ if [ $opt_download -eq 1 ] ; then
     tar) tar xvpf ${i##*/} ;;
     gz) tar xvpzf ${i##*/} ;;
     bz2) tar xvpjf ${i##*/} ;;
+    xz) tar xvpf ${i##*/} ;;
     esac
   done
 fi
@@ -150,8 +151,8 @@ if [ $opt_config -eq 1 ] ; then
       if [ -x configure ] ; then
          export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
          export LDFLAGS='-Wl,--as-needed' 
-         export CC="gcc -isystem /usr/include $target" 
-         export CXX="g++ -isystem /usr/include $target "
+         export CC="gcc -I /usr/include $target" 
+         export CXX="g++ -std=c++11 -I /usr/include $target "
          ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
      fi
       if [ $? != 0 ]; then
