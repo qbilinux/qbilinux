@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='svn co http://svn.xiph.org/trunk/cdparanoia'
+url='http://downloads.xiph.org/releases/cdparanoia/cdparanoia-III-10.2.src.tgz'
 pkgbase=cdparanoia
-vers=svn_18683
+vers=10.2
 arch=`uname -m`
-build=P1m1
-src=cdparanoia-svn
+build=P0m1
+src=cdparanoia-III-10.2
 OPT_CONFIG='--disable-static'
 DOCS='COPYING-GPL COPYING-LGPL README'
 patchfiles=''
@@ -122,9 +122,7 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    tgz) tar xvpf ${i##*/} ;;
     esac
   done
 fi
