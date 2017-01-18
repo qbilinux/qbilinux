@@ -212,8 +212,8 @@ if [ $opt_config -eq 1 ] ; then
    cd $B
       if [ -f $S/CMakeLists.txt ]; then
           export PKG_CONFIG_PATH=/opt/kde/${libdir}/pkgconfig:/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
-          export CC="gcc -isystem /usr/include $target" 
-          export CXX="g++ -isystem /usr/include $target"
+          export CC="gcc -I /usr/include $target" 
+          export CXX="g++ -I /usr/include $target"
           cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/kde -DLIB_INSTALL_DIR:PATH=/opt/kde/${libdir} -DLIB_SUFFIX=$suffix ${OPT_CONFIG} $S
       fi
       if [ $? != 0 ]; then
