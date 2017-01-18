@@ -8,7 +8,7 @@ url="http://jaist.dl.sourceforge.net/sourceforge/pmidi/pmidi-1.6.0.tar.gz
     http://plamo.linet.gr.jp/~tamuki/src/vkeybd-0.1.17-awe_voice_h.patch.gz
     http://pkl.net/~node/software/alsa-patch-bay/alsa-patch-bay-1.0.0.tar.gz
     http://plamo.linet.gr.jp/~tamuki/src/alsa-patch-bay-1.0.0-not_declared.patch.gz
-    http://fltk.org/pub/fltk/1.1.10/fltk-1.1.10-source.tar.gz"
+    http://fltk.org/pub/fltk/1.3.4/fltk-1.3.4-source.tar.gz"
 pkgbase=alsa_apps
 vers=1.1
 arch=`uname -m`
@@ -202,8 +202,8 @@ if [ $opt_config -eq 1 ] ; then
   cp -p Makefile.in Makefile.in.orig
   sed 's@$(bindir)/alsa@alsa@g' Makefile.in.orig \
       | sed 's@$(bindir)/jack@$(DESTDIR)$(bindir)/jack@g' > Makefile.in
-  cd $W/fltk-1.1.10
-  ./configure --prefix=$W/fltk CFLAGS="-fPIC" CXXFLAGS="-fPIC"
+  cd $W/fltk-1.3.4
+  ./configure --prefix=$W/fltk CFLAGS="-fPIC -Wno-narrowing" CXXFLAGS="-fPIC -Wno-narrowing"
   make
   make install
   OPT_CONFIG[3]="${OPT_CONFIG[3]} --with-fltk-config=$W/fltk/bin"
@@ -220,7 +220,7 @@ if [ $opt_config -eq 1 ] ; then
         ./configure --prefix=/usr --libdir='${prefix}'/lib64 \
             --infodir='${prefix}'/share/info \
             --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]} \
-            CXXFLAGS="-g -O2 -fPIC" CFLAGS="-g -O2 -fPIC"
+            CXXFLAGS="-g -O2 -fPIC -Wno-narrowing" CFLAGS="-g -O2 -fPIC -Wno-narrowing"
       else
         ./configure --prefix=/usr --libdir='${prefix}'/lib64 \
             --infodir='${prefix}'/share/info \
