@@ -15,6 +15,7 @@ DOCS="README AUTHORS COPYING ChangeLog INSTALL NEWS TODO ChangeLog.[123]
     INSTALL.ja README.ja doc/C/CHANGES.02i doc/C/FAQ
     `echo doc/C/README.{dl,sf,tk,xskin,xaw,alsaseq,m2m,mts,w32}`
     `echo doc/ja_JP.eucJP/README.{dl,sf,tk,xskin,xaw,alsaseq,m2m,mts,w32}`"
+patchfiles='inline.patch'
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -186,6 +187,9 @@ if [ $opt_config -eq 1 ] ; then
   sed '/MAX_CHANNELS/s@32@80@g' timidity/timidity.h.orig > timidity/timidity.h
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
+    for patch in $patchfiles ; do
+      patch -p1 < $W/$patch
+    done
     if [ -f Makefile ] ; then
       make clean
     fi
@@ -270,6 +274,10 @@ if [ $opt_package -eq 1 ] ; then
       ln $docdir/$src/$myname.gz $docdir/${src[$i]}
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
+  done
+  for patch in $patchfiles ; do
+    cp $W/$patch $docdir/$src/$patch
+    gzip_one $docdir/$src/$patch
   done
   convert
   tar cvpf $pkg.tar -C $P usr/bin/timidity
