@@ -118,7 +118,7 @@ prune_symlink() {
 	( cd $LINKGOESIN ; rm -rf $LINKNAMEIS )
 	( cd $LINKGOESIN ; ln -sf $LINKPOINTSTO $LINKNAMEIS )
 	EOF
-      rm -rf $LINE ; touch -t `date '+%m%d0900'` install/doinst.sh $LINE
+      rm -rf $LINE ; touch -t `date '+%m%d0000'` install/doinst.sh $LINE
       COUNT=$(($COUNT + 1))
       LINE=`sed -n "${COUNT}p" /tmp/iNsT-a.$$`
     done
@@ -252,10 +252,10 @@ if [ $opt_package -eq 1 ] ; then
   touch $W/i.et
   cd $W
   find $P ! -type l -newer i.st ! -newer i.et \
-      -exec touch -t `date '+%m%d0900'` {} \;
+      -exec touch -t `date '+%m%d0000'` {} \;
   compress
   strip_libdir $P/usr/$libdir/slang/v2/modules
-  touch -t `date '+%m%d0900'` $P/usr/$libdir/slang/v2/modules
+  touch -t `date '+%m%d0000'` $P/usr/$libdir/slang/v2/modules
   for i in `seq 0 $((${#DOCS[@]} - 1))` ; do
     for j in ${DOCS[$i]} ; do
       for k in ${S[$i]}/$j ; do
@@ -266,7 +266,7 @@ if [ $opt_package -eq 1 ] ; then
     done
     if [ $i -eq 0 ] ; then
       install $myname $docdir/$src
-      touch -t `date '+%m%d0900'` $docdir/$src/$myname
+      touch -t `date '+%m%d0000'` $docdir/$src/$myname
       gzip_one $docdir/$src/$myname
     else
       ln $docdir/$src/$myname.gz $docdir/${src[$i]}
@@ -276,7 +276,7 @@ if [ $opt_package -eq 1 ] ; then
   mv $docdir/slsh $docdir/$src
   mv $docdir/slang $docdir/$src/doc
   rm $docdir/$src/doc/v2/COPYING
-  touch -t `date '+%m%d0900'` $docdir/$src/doc/v2
+  touch -t `date '+%m%d0000'` $docdir/$src/doc/v2
   mv $docdir/$src/{slsh,doc,{README,UPGRADE.txt,INSTALL.vms,$myname}.gz} $C
   mv $C/{slsh,doc,{README,UPGRADE.txt,INSTALL.vms,$myname}.gz} $docdir/$src
   touch -r $S $docdir/$src
@@ -291,6 +291,6 @@ if [ $opt_package -eq 1 ] ; then
   tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man1 | tail -n+2`
   tar rvpf $pkg.tar -C $P usr/share/doc/$src
   tar rvpf $pkg.tar -C $P install/doinst.sh
-  touch -t `date '+%m%d0900'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
+  touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
   mv $pkg.tar.xz $pkg.txz
 fi

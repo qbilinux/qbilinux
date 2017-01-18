@@ -20,10 +20,10 @@ fscheck() {
   mv pangram pangram~ ; mkdir pangram ; touch -r pangram~ pangram
   tar cpf pangram.tar pangram ; rmdir pangram ; mv pangram~ pangram
   for i in $PANGRAM ; do tar rpf pangram.tar pangram/$i ; done
-  touch -t `date '+%m%d0900'` pangram.tar ; gzip pangram.tar
+  touch -t `date '+%m%d0000'` pangram.tar ; gzip pangram.tar
   touch pangram.tar.gz ; mv pangram.tar.gz pangram1.tgz
   tar cpf pangram.tar pangram
-  touch -t `date '+%m%d0900'` pangram.tar ; gzip pangram.tar
+  touch -t `date '+%m%d0000'` pangram.tar ; gzip pangram.tar
   touch pangram.tar.gz ; mv pangram.tar.gz pangram2.tgz
   if cmp -s pangram1.tgz pangram2.tgz ; then
     echo "OK"
@@ -145,7 +145,7 @@ prune_symlink() {
 	( cd $LINKGOESIN ; rm -rf $LINKNAMEIS )
 	( cd $LINKGOESIN ; ln -sf $LINKPOINTSTO $LINKNAMEIS )
 	EOF
-      rm -rf $LINE ; touch -t `date '+%m%d0900'` install/doinst.sh $LINE
+      rm -rf $LINE ; touch -t `date '+%m%d0000'` install/doinst.sh $LINE
       COUNT=$(($COUNT + 1))
       LINE=`sed -n "${COUNT}p" /tmp/iNsT-a.$$`
     done
@@ -286,14 +286,14 @@ if [ $opt_package -eq 1 ] ; then
   touch $W/i.et
   cd $W
   find $P ! -type l -newer i.st ! -newer i.et \
-      -exec touch -t `date '+%m%d0900'` {} \;
+      -exec touch -t `date '+%m%d0000'` {} \;
   compress
   strip_bindir $P/usr/libexec/pulse
   strip_libdir $P/usr/$libdir/pulseaudio
   strip_libdir $P/usr/$libdir/pulse-$vers/modules
-  touch -t `date '+%m%d0900'` $P/usr/libexec/pulse
-  touch -t `date '+%m%d0900'` $P/usr/$libdir/pulseaudio
-  touch -t `date '+%m%d0900'` $P/usr/$libdir/pulse-$vers/modules
+  touch -t `date '+%m%d0000'` $P/usr/libexec/pulse
+  touch -t `date '+%m%d0000'` $P/usr/$libdir/pulseaudio
+  touch -t `date '+%m%d0000'` $P/usr/$libdir/pulse-$vers/modules
   for i in `seq 0 $((${#DOCS[@]} - 1))` ; do
     for j in ${DOCS[$i]} ; do
       for k in ${S[$i]}/$j ; do
@@ -304,7 +304,7 @@ if [ $opt_package -eq 1 ] ; then
     done
     if [ $i -eq 0 ] ; then
       install $myname $docdir/$src
-      touch -t `date '+%m%d0900'` $docdir/$src/$myname
+      touch -t `date '+%m%d0000'` $docdir/$src/$myname
       gzip_one $docdir/$src/$myname
     else
       ln $docdir/$src/$myname.gz $docdir/${src[$i]}
@@ -312,14 +312,14 @@ if [ $opt_package -eq 1 ] ; then
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
   convert
-  touch -t `date '+%m%d0900'` $P/usr/share/bash-completion/completions
+  touch -t `date '+%m%d0000'` $P/usr/share/bash-completion/completions
   cat <<- "EOF" >> $P/install/doinst.sh
 	if [ -x usr/bin/esd ] ; then
 	  ( cd usr/bin ; rm -rf esd )
 	  ( cd usr/bin ; ln -sf esdcompat esd )
 	fi
 	EOF
-  touch -t `date '+%m%d0900'` $P/install/doinst.sh
+  touch -t `date '+%m%d0000'` $P/install/doinst.sh
   tar cvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
   tar rvpf $pkg.tar -C $P usr/libexec/pulse
   tar rvpf $pkg.tar -C $P usr/$libdir/pulseaudio
@@ -345,6 +345,6 @@ if [ $opt_package -eq 1 ] ; then
   tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man5 | tail -n+2`
   tar rvpf $pkg.tar -C $P usr/share/doc/$src
   tar rvpf $pkg.tar -C $P install/doinst.sh
-  touch -t `date '+%m%d0900'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
+  touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
   mv $pkg.tar.xz $pkg.txz
 fi

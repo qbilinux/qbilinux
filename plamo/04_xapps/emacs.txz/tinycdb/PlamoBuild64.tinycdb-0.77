@@ -116,7 +116,7 @@ prune_symlink() {
 	( cd $LINKGOESIN ; rm -rf $LINKNAMEIS )
 	( cd $LINKGOESIN ; ln -sf $LINKPOINTSTO $LINKNAMEIS )
 	EOF
-      rm -rf $LINE ; touch -t `date '+%m%d0900'` install/doinst.sh $LINE
+      rm -rf $LINE ; touch -t `date '+%m%d0000'` install/doinst.sh $LINE
       COUNT=$(($COUNT + 1))
       LINE=`sed -n "${COUNT}p" /tmp/iNsT-a.$$`
     done
@@ -202,7 +202,7 @@ if [ $opt_build -eq 1 ] ; then
   done
   files=`ar t libcdb.a`
   for j in $files libcdb.a ; do
-    touch -r $j $j.mt ; touch -t `date '+%m%d0900'` $j
+    touch -r $j $j.mt ; touch -t `date '+%m%d0000'` $j
   done
   ar rv libcdb.a $files
   for j in $files libcdb.a ; do touch -r $j.mt $j ; rm $j.mt ; done
@@ -226,11 +226,11 @@ if [ $opt_package -eq 1 ] ; then
   touch $W/i.et
   cd $W
   find $P ! -type l -newer i.st ! -newer i.et \
-      -exec touch -t `date '+%m%d0900'` {} \;
+      -exec touch -t `date '+%m%d0000'` {} \;
   compress
   dt=`date -d "$(date '+%m/%d') 09:00" '+%s'`
   sed -i "2s/^\(.\{16\}\).\{10\}/\1$dt/g" $P/usr/lib64/libcdb.a
-  touch -t `date '+%m%d0900'` $P/usr/lib64/libcdb.a
+  touch -t `date '+%m%d0000'` $P/usr/lib64/libcdb.a
   for i in `seq 0 $((${#DOCS[@]} - 1))` ; do
     for j in ${DOCS[$i]} ; do
       for k in ${S[$i]}/$j ; do
@@ -241,7 +241,7 @@ if [ $opt_package -eq 1 ] ; then
     done
     if [ $i -eq 0 ] ; then
       install $myname $docdir/$src
-      touch -t `date '+%m%d0900'` $docdir/$src/$myname
+      touch -t `date '+%m%d0000'` $docdir/$src/$myname
       gzip_one $docdir/$src/$myname
     else
       ln $docdir/$src/$myname.gz $docdir/${src[$i]}
@@ -256,6 +256,6 @@ if [ $opt_package -eq 1 ] ; then
   tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man3 | tail -n+2`
   tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man5 | tail -n+2`
   tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  touch -t `date '+%m%d0900'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
+  touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
   mv $pkg.tar.xz $pkg.txz
 fi

@@ -306,7 +306,7 @@ if [ $opt_package -eq 1 ] ; then
 # tar cvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
 # tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man1 | tail -n+2`
 # tar rvpf $pkg.tar -C $P usr/share/doc/$src
-# touch -t `date '+%m%d0900'` $pkg.tar ; gzip $pkg.tar ; touch $pkg.tar.gz
+# touch -t `date '+%m%d0000'` $pkg.tar ; gzip $pkg.tar ; touch $pkg.tar.gz
 # mv $pkg.tar.gz $pkg.tgz
   cd $P
   /sbin/makepkg ../$pkg.$compress <<EOF

@@ -126,7 +126,7 @@ prune_symlink() {
 	( cd $LINKGOESIN ; rm -rf $LINKNAMEIS )
 	( cd $LINKGOESIN ; ln -sf $LINKPOINTSTO $LINKNAMEIS )
 	EOF
-      rm -rf $LINE ; touch -t `date '+%m%d0900'` install/doinst.sh $LINE
+      rm -rf $LINE ; touch -t `date '+%m%d0000'` install/doinst.sh $LINE
       COUNT=$(($COUNT + 1))
       LINE=`sed -n "${COUNT}p" /tmp/iNsT-a.$$`
     done
@@ -246,12 +246,12 @@ if [ $opt_package -eq 1 ] ; then
   touch $W/i.et
   cd $W
   find $P ! -type l -newer i.st ! -newer i.et \
-      -exec touch -t `date '+%m%d0900'` {} \;
+      -exec touch -t `date '+%m%d0000'` {} \;
   compress
   gzip_dir $mandir/ja_JP.eucJP/man1
   gzip_dir $mandir/fr_FR/man1
   find qvwm_sounds -type f -exec cp -p {} $P/usr/share/qvwm/sounds \;
-  touch -t `date '+%m%d0900'` $P/usr/share/qvwm/sounds
+  touch -t `date '+%m%d0000'` $P/usr/share/qvwm/sounds
   chown -R root.root $P/usr/share/qvwm/sounds
   pixmapsdir=$P/usr/include/X11/pixmaps
   install -d $P/usr/include/X11
@@ -269,7 +269,7 @@ if [ $opt_package -eq 1 ] ; then
     done
     if [ $i -eq 0 ] ; then
       install $myname $docdir/$src
-      touch -t `date '+%m%d0900'` $docdir/$src/$myname
+      touch -t `date '+%m%d0000'` $docdir/$src/$myname
       gzip_one $docdir/$src/$myname
     else
       ln $docdir/$src/$myname.gz $docdir/${src[$i]}
@@ -284,6 +284,6 @@ if [ $opt_package -eq 1 ] ; then
   tar rvpf $pkg.tar -C $P usr/share/man/ja_JP.eucJP/man1/qvwm.1x.gz
   tar rvpf $pkg.tar -C $P usr/share/man/fr_FR/man1/qvwm.1x.gz
   tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/doc -maxdepth 1 | tail -n+2`
-  touch -t `date '+%m%d0900'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
+  touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
   mv $pkg.tar.xz $pkg.txz
 fi

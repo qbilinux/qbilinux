@@ -122,7 +122,7 @@ prune_symlink() {
 	( cd $LINKGOESIN ; rm -rf $LINKNAMEIS )
 	( cd $LINKGOESIN ; ln -sf $LINKPOINTSTO $LINKNAMEIS )
 	EOF
-      rm -rf $LINE ; touch -t `date '+%m%d0900'` install/doinst.sh $LINE
+      rm -rf $LINE ; touch -t `date '+%m%d0000'` install/doinst.sh $LINE
       COUNT=$(($COUNT + 1))
       LINE=`sed -n "${COUNT}p" /tmp/iNsT-a.$$`
     done
@@ -258,7 +258,7 @@ if [ $opt_package -eq 1 ] ; then
 
   touch $W/i.et
   cd $W
-  find $P ! -type l -newer i.st ! -newer i.et       -exec touch -t `date '+%m%d0900'` {} \;
+  find $P ! -type l -newer i.st ! -newer i.et       -exec touch -t `date '+%m%d0000'` {} \;
   compress
 ######################################################################
 # * compress 対象以外で圧縮したいディレクトリやファイルがある場合はここ
@@ -275,7 +275,7 @@ if [ $opt_package -eq 1 ] ; then
     done
     if [ $i -eq 0 ] ; then
       install $myname $docdir/$src
-      touch -t `date '+%m%d0900'` $docdir/$src/$myname
+      touch -t `date '+%m%d0000'` $docdir/$src/$myname
       gzip_one $docdir/$src/$myname
     else
       ln $docdir/$src/$myname.gz $docdir/${src[$i]}
@@ -300,7 +300,7 @@ if [ $opt_package -eq 1 ] ; then
 # tar cvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
 # tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man1 | tail -n+2`
 # tar rvpf $pkg.tar -C $P usr/share/doc/$src
-# touch -t `date '+%m%d0900'` $pkg.tar ; gzip $pkg.tar ; touch $pkg.tar.gz
+# touch -t `date '+%m%d0000'` $pkg.tar ; gzip $pkg.tar ; touch $pkg.tar.gz
 # mv $pkg.tar.gz $pkg.tgz
   cd $P
   /sbin/makepkg ../$pkg.$compress <<EOF
