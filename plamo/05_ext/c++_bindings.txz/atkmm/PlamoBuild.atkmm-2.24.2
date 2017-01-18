@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://ftp.gnome.org/pub/gnome/sources/atkmm/2.22/atkmm-2.22.7.tar.xz'
 pkgbase=atkmm
-vers=2.22.7
+vers=2.24.2
+url="http://ftp.gnome.org/pub/gnome/sources/atkmm/2.24/atkmm-${vers}.tar.xz"
 arch=`uname -m`
-build=P1m1
-src=atkmm-2.22.7
+build=P0m1
+src=atkmm-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING COPYING.tools ChangeLog INSTALL NEWS README'
 patchfiles=''
@@ -217,8 +217,8 @@ if [ $opt_config -eq 1 ] ; then
       if [ -x configure ] ; then
          export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
          export LDFLAGS='-Wl,--as-needed' 
-         export CC="gcc -isystem /usr/include $target" 
-         export CXX="g++ -std=c++11 -isystem /usr/include $target "
+         export CC="gcc -I /usr/include $target" 
+         export CXX="g++ -std=c++11 -I /usr/include $target "
          ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
      fi
       if [ $? != 0 ]; then
