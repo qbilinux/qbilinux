@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://download.savannah.gnu.org/releases/linphone/ortp/sources/ortp-0.23.0.tar.gz'
 pkgbase=ortp
-vers=0.23.0
+vers=0.27.0
+url="http://download.savannah.gnu.org/releases/linphone/ortp/sources/ortp-${vers}.tar.gz"
 arch=`uname -m`
-build=P1m1
-src=ortp-0.23.0
+build=P0m1
+src=ortp-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README TODO'
 patchfiles=''
