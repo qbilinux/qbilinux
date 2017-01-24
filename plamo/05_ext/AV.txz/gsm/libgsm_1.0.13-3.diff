@@ -1,0 +1,1062 @@
+--- libgsm-1.0.13.orig/debian/changelog
++++ libgsm-1.0.13/debian/changelog
+@@ -0,0 +1,169 @@
++libgsm (1.0.13-3) unstable; urgency=low
++
++  * Fix cut and paste error in long description (Closes: #544896)
++
++ -- Jochen Friedrich <jochen@scram.de>  Mon, 19 Oct 2009 16:25:39 +0200
++
++libgsm (1.0.13-2) unstable; urgency=low
++
++  * Fix long descriptions (Closes: #544896)
++  * Fix lintain warnings:
++   o Add README.source pointing to dpatch documentation
++   o Add patch to fix man pages
++
++ -- Jochen Friedrich <jochen@scram.de>  Tue, 13 Oct 2009 19:18:45 +0200
++
++libgsm (1.0.13-1) unstable; urgency=low
++
++  * New upstream version
++   o clarify license (Closes: #397047)
++  * Enable fixed-point on armel too. Thanks to Martin Guy 
++    <martinwguy@gmail.com> for the patch (Closes: #540522)
++  * Bumped policy version to 3.8.3
++  * Add cross-building support. Thanks to Neil Williams <codehelp@debian.org>
++    for the patch (Closes: #465222)
++  * Add debug package
++  * Change watch file to new location (Closes: #449626)
++
++ -- Jochen Friedrich <jochen@scram.de>  Tue, 18 Aug 2009 17:57:31 +0200
++
++libgsm (1.0.12-1) unstable; urgency=low
++
++  * New upstream release
++   o change in the WAV#49 portion of gsm_implode.c
++
++ -- Jochen Friedrich <jochen@scram.de>  Mon, 12 Nov 2007 19:11:43 +0100
++
++libgsm (1.0.10-14) unstable; urgency=low
++
++  * Change build system to debhelper and dpatch (Closes: #437371)
++  * Bumped policy version to 3.7.2
++  * Rename config.h to gsm_config.h (Closes: #428989)
++
++ -- Jochen Friedrich <jochen@scram.de>  Fri, 02 Nov 2007 17:12:06 +0100
++
++libgsm (1.0.10-13) unstable; urgency=low
++
++  * Fixed desciption synopsis
++  * Removed /usr/doc link from postinst and prerm
++  * Changed shlibs[.local] to not include the Debian revision
++  * Added watch file
++  * Added own doc directory for libgsm-tools
++
++ -- Jochen Friedrich <jochen@scram.de>  Sat, 31 Jul 2004 10:08:59 +0200
++
++libgsm (1.0.10-12) unstable; urgency=low
++
++  * New maintainer (Closes: #227785)
++  * Bumped policy version to 3.6.1 (no changes)
++  * Ack NMUs from Marcin Owsiany <porridge@debian.org>
++    (Closes: #148765, #99540, #166400, #178147, #171770)
++  * Cleaned up compiler warnings on 64 bit platforms (Closes: #226561)
++  * Changed errno handling again to avoid breaking on multithreaded
++    applications. Hurd should also be happy now (Closes: #164191, #164194)
++  * Add C++ guard to gsm.h (Closes: #202712)
++    Thanks to Anand Kumria <wildfire@progsoc.org> for the patch.
++  * Renamed libgsm-bin to libgsm-utils and moved to sound as suggested
++    by Santiago Garcia Mantinan <manty@debian.org> (Closes: #109741)
++
++ -- Jochen Friedrich <jochen@scram.de>  Sun, 25 Jan 2004 09:44:07 +0100
++
++libgsm (1.0.10-11.2) unstable; urgency=low
++
++  * Install both gsm.h in /usr/include/ to retain upstream compatibility AND
++    all the other header files in /usr/include/gsm/ in case some program uses
++    them. Thanks to Alex Romosan for pointing such program out. Closes: #178147
++
++ -- Marcin Owsiany <porridge@debian.org>  Mon, 27 Jan 2003 17:45:41 +0100
++
++libgsm (1.0.10-11.1) unstable; urgency=low
++
++  * Install only the required gsm.h header in /usr/include/ instead of bunch
++    of files in /usr/include/gsm/ (libgsm1-dev). Closes: #166400.
++  * Install needed symlinks to section 3 manpages. Closes: #99540.
++  * Don't define USE_FLOAT_MUL on arm. Closes: #148765.
++
++ -- Marcin Owsiany <porridge@debian.org>  Thu,  7 Nov 2002 22:01:29 +0100
++
++libgsm (1.0.10-11) unstable; urgency=low
++
++  * Compile it with -DWAV49. Closes: #102387.
++  * Cleaning here and there to make lintian happy.
++  * Fixed some bashisms on debian/rules.
++  * Removed some redundant files from the doc directory.
++  * NMU to remove the dust that covered it.
++
++ -- Santiago Garcia Mantinan <manty@debian.org>  Wed, 22 Aug 2001 15:10:43 +0200
++
++libgsm (1.0.10-10) unstable; urgency=low
++
++  * Update copyright information.
++  * Update to Standards Version 3.0.1.
++  * Add mime type for gsm audio. (Closes: #36861)
++
++ -- Martin Mitchell <martin@debian.org>  Sun, 29 Aug 1999 00:00:58 +1000
++
++libgsm (1.0.10-9) unstable; urgency=low
++
++  * Ignore errors on chown in makefile to fix powerpc compilation.
++
++ -- Martin Mitchell <martin@debian.org>  Sun, 13 Sep 1998 03:28:19 +1000
++
++libgsm (1.0.10-8) unstable; urgency=low
++
++  * Add -f flag to chown in rules file to work around chown symlink problem.
++
++ -- Martin Mitchell <martin@debian.org>  Sun, 13 Sep 1998 02:53:01 +1000
++
++libgsm (1.0.10-7) unstable; urgency=low
++
++  * Change section from devel to libs.
++  * Call ldconfig in postinst.
++  * Source changes for powerpc compilation.
++
++ -- Martin Mitchell <martin@debian.org>  Wed,  9 Sep 1998 03:47:16 +1000
++
++libgsm (1.0.10-6) frozen unstable; urgency=high
++
++  * Fix package overlap between bo and hamm version of this library. (#22454)
++  * Update to Standards Version 2.4.1.
++
++ -- Martin Mitchell <martin@debian.org>  Wed, 20 May 1998 06:02:22 +1000
++
++libgsm (1.0.10-5) unstable; urgency=low
++
++  * Rename doc directory to libgsm1, fixing 'no copyright' bug. (#19356)
++  * Add symlinks for doc directories for dev and bin packages.
++  * Fix symlink to shlib to be after the shlib in the package.
++
++ -- Martin Mitchell <martin@debian.org>  Fri, 13 Mar 1998 00:17:43 +1100
++
++libgsm (1.0.10-4) unstable; urgency=low
++
++  * Add libgsm1 package dependencies. fixes: (#15374)
++
++ -- Martin Mitchell <martin@debian.org>  Sat, 29 Nov 1997 03:13:07 +1100
++
++libgsm (1.0.10-3) unstable; urgency=low
++
++  * New maintainer.
++  * Libc6 release.
++  * Renamed -dev package to include library version.
++
++ -- Martin Mitchell <martin@debian.org>  Sun, 23 Nov 1997 22:34:12 +1100
++
++libgsm (1.0.10-2) unstable; urgency=low
++
++  * Re-compiled with -D_REENTRANT.
++
++ -- Klee Dienes <klee@debian.org>  Sat, 25 Jan 1997 16:31:28 -0500
++
++libgsm (1.0.10-1) unstable; urgency=low
++
++  * Initial Release.
++
++ -- Klee Dienes <klee@debian.org>  Fri, 24 Jan 1997 14:50:55 -0500
++
++Local variables:
++mode: debian-changelog
++End:
+--- libgsm-1.0.13.orig/debian/libgsm-tools.install
++++ libgsm-1.0.13/debian/libgsm-tools.install
+@@ -0,0 +1 @@
++debian/tmp/usr/bin/*
+--- libgsm-1.0.13.orig/debian/control
++++ libgsm-1.0.13/debian/control
+@@ -0,0 +1,105 @@
++Source: libgsm
++Section: libs
++Priority: optional
++Maintainer: Jochen Friedrich <jochen@scram.de>
++Standards-Version: 3.8.3
++Build-Depends: debhelper (> 7), dpatch
++
++Package: libgsm1
++Section: libs
++Architecture: any
++Depends: ${shlibs:Depends}
++Conflicts: libgsm-dev
++Description: Shared libraries for GSM speech compressor
++ This package contains runtime shared libraries for libgsm, an
++ implementation of the European GSM 06.10 provisional standard for
++ full-rate speech transcoding, prI-ETS 300 036, which uses RPE/LTP
++ (residual pulse excitation/long term prediction) coding at 13 kbit/s.
++ .
++ GSM 06.10 compresses frames of 160 13-bit samples (8 kHz sampling
++ rate, i.e. a frame rate of 50 Hz) into 260 bits; for compatibility
++ with typical UNIX applications, our implementation turns frames of 160
++ 16-bit linear samples into 33-byte frames (1650 Bytes/s).
++ The quality of the algorithm is good enough for reliable speaker
++ recognition; even music often survives transcoding in recognizable 
++ form (given the bandwidth limitations of 8 kHz sampling rate).
++ .
++ The interfaces offered are a front end modelled after compress(1), and
++ a library API.  Compression and decompression run faster than realtime
++ on most SPARCstations.  The implementation has been verified against the
++ ETSI standard test patterns.
++
++Package: libgsm1-dbg
++Section: debug
++Priority: extra
++Architecture: any
++Depends: libgsm1 (= ${binary:Version})
++Description: Shared libraries for GSM speech compressor (debug symbols)
++ This package contains debug symbols for libgsm, an implementation
++ of the European GSM 06.10 provisional standard for full-rate speech
++ transcoding, prI-ETS 300 036, which uses RPE/LTP (residual pulse
++ excitation/long term prediction) coding at 13 kbit/s.
++ .
++ GSM 06.10 compresses frames of 160 13-bit samples (8 kHz sampling
++ rate, i.e. a frame rate of 50 Hz) into 260 bits; for compatibility
++ with typical UNIX applications, our implementation turns frames of 160
++ 16-bit linear samples into 33-byte frames (1650 Bytes/s).
++ The quality of the algorithm is good enough for reliable speaker
++ recognition; even music often survives transcoding in recognizable 
++ form (given the bandwidth limitations of 8 kHz sampling rate).
++ .
++ The interfaces offered are a front end modelled after compress(1), and
++ a library API.  Compression and decompression run faster than realtime
++ on most SPARCstations.  The implementation has been verified against the
++ ETSI standard test patterns.
++
++Package: libgsm1-dev
++Section: libdevel
++Architecture: any
++Depends: libgsm1 (= ${binary:Version})
++Conflicts: libgsm1 (<= 1.0.10-2), libgsm-dev
++Replaces: libgsm-dev
++Description: Development libraries for a GSM speech compressor
++ This package contains header files and development libraries for
++ libgsm, an implementation of the European GSM 06.10 provisional
++ standard for full-rate speech transcoding, prI-ETS 300 036, which
++ uses RPE/LTP (residual pulse excitation/long term prediction) coding
++ at 13 kbit/s.
++ .
++ GSM 06.10 compresses frames of 160 13-bit samples (8 kHz sampling
++ rate, i.e. a frame rate of 50 Hz) into 260 bits; for compatibility
++ with typical UNIX applications, our implementation turns frames of 160
++ 16-bit linear samples into 33-byte frames (1650 Bytes/s).
++ The quality of the algorithm is good enough for reliable speaker
++ recognition; even music often survives transcoding in recognizable 
++ form (given the bandwidth limitations of 8 kHz sampling rate).
++ .
++ The interfaces offered are a front end modelled after compress(1), and
++ a library API.  Compression and decompression run faster than realtime
++ on most SPARCstations.  The implementation has been verified against the
++ ETSI standard test patterns.
++
++Package: libgsm-tools
++Replaces: libgsm-bin
++Section: sound
++Architecture: any
++Depends: ${shlibs:Depends}
++Description: User binaries for a GSM speech compressor
++ This package contains user binaries for libgsm, an implementation of
++ the European GSM 06.10 provisional standard for full-rate speech
++ transcoding, prI-ETS 300 036, which uses RPE/LTP (residual pulse
++ excitation/long term prediction) coding at 13 kbit/s.
++ .
++ GSM 06.10 compresses frames of 160 13-bit samples (8 kHz sampling
++ rate, i.e. a frame rate of 50 Hz) into 260 bits; for compatibility
++ with typical UNIX applications, our implementation turns frames of 160
++ 16-bit linear samples into 33-byte frames (1650 Bytes/s).
++ The quality of the algorithm is good enough for reliable speaker
++ recognition; even music often survives transcoding in recognizable 
++ form (given the bandwidth limitations of 8 kHz sampling rate).
++ .
++ The interfaces offered are a front end modelled after compress(1), and
++ a library API.  Compression and decompression run faster than realtime
++ on most SPARCstations.  The implementation has been verified against the
++ ETSI standard test patterns.
++
+--- libgsm-1.0.13.orig/debian/copyright
++++ libgsm-1.0.13/debian/copyright
+@@ -0,0 +1,47 @@
++This is the Debian GNU/Linux prepackaged version of libgsm, an implementation of the
++European GSM 06.10 provisional standard for full-rate speech
++transcoding, prI-ETS 300 036, which uses RPE/LTP (residual pulse
++excitation/long term prediction) coding at 13 kbit/s.
++
++This package was put together by Klee Dienes <klee@debian.org>, from
++sources retrieved from
++<URL:http://kbs.cs.tu-berlin.de/~jutta/toast.html>.
++This package was maintained by Martin Mitchell <martin@debian.org>.
++This package is now maintained by Jochen Friedrich <jochen@scram.de>.
++
++Copyright 1992, 1993, 1994 by Jutta Degener and Carsten Bormann,
++Technische Universitaet Berlin
++
++Any use of this software is permitted provided that this notice is not
++removed and that neither the authors nor the Technische Universitaet Berlin
++are deemed to have made any representations as to the suitability of this
++software for any purpose nor are held responsible for any defects of
++this software.  THERE IS ABSOLUTELY NO WARRANTY FOR THIS SOFTWARE.
++
++As a matter of courtesy, the authors request to be informed about uses
++this software has found, about bugs in this software, and about any
++improvements that may be of general interest.
++
++Berlin, 28.11.1994
++Jutta Degener
++Carsten Bormann
++
++                                 oOo
++
++Since the original terms of 15 years ago maybe do not make our
++intentions completely clear given today's refined usage of the legal
++terms, we append this additional permission:
++
++      Permission to use, copy, modify, and distribute this software
++      for any purpose with or without fee is hereby granted,
++      provided that this notice is not removed and that neither
++      the authors nor the Technische Universitaet Berlin are
++      deemed to have made any representations as to the suitability
++      of this software for any purpose nor are held responsible
++      for any defects of this software.  THERE IS ABSOLUTELY NO
++      WARRANTY FOR THIS SOFTWARE.
++
++Berkeley/Bremen, 05.04.2009
++Jutta Degener
++Carsten Bormann
++
+--- libgsm-1.0.13.orig/debian/compat
++++ libgsm-1.0.13/debian/compat
+@@ -0,0 +1 @@
++7
+--- libgsm-1.0.13.orig/debian/libgsm1.dirs
++++ libgsm-1.0.13/debian/libgsm1.dirs
+@@ -0,0 +1 @@
++usr/lib
+--- libgsm-1.0.13.orig/debian/rules
++++ libgsm-1.0.13/debian/rules
+@@ -0,0 +1,73 @@
++#! /usr/bin/make -f
++
++include /usr/share/dpatch/dpatch.make
++
++.PHONY: build clean binary binary-indep binary-arch
++
++DEB_HOST_GNU_TYPE=$(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
++DEB_BUILD_GNU_TYPE=$(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
++ifneq ($(DEB_HOST_GNU_TYPE),$(DEB_BUILD_GNU_TYPE))
++CROSS=CC=$(DEB_HOST_GNU_TYPE)-gcc
++else
++CROSS=
++endif
++
++ifneq (,$(filter arm%,$(DEB_HOST_ARCH)))
++MULTYPE=''
++else
++MULTYPE='-DUSE_FLOAT_MUL'
++endif
++
++build: build-stamp
++build-stamp: patch-stamp
++	dh_testdir
++	$(MAKE) $(CROSS) CCFLAGS='-c -g -O2 -fPIC -Wall -D_GNU_SOURCE -D_REENTRANT -DNeedFunctionPrototypes=1 -DWAV49' MULHACK=$(MULTYPE) all
++	touch build-stamp
++
++clean: unpatch
++	dh_testdir
++	$(MAKE) clean
++	rm -f lib/*
++	dh_clean
++
++install: build
++	dh_testdir
++	dh_testroot
++	dh_installdirs
++	mkdir -p debian/tmp/usr/lib debian/tmp/usr/bin
++	$(MAKE) $(CROSS) INSTALL_ROOT=debian/tmp/usr GSM_INSTALL_INC=debian/libgsm1-dev/usr/include/gsm GSM_INSTALL_MAN=debian/libgsm1-dev/usr/share/man/man3 TOAST_INSTALL_MAN=debian/libgsm-tools/usr/share/man/man1 install
++	ln -s gsm/gsm.h debian/libgsm1-dev/usr/include/gsm.h
++	cp inc/*.h debian/libgsm1-dev/usr/include/gsm
++	mv lib/*so debian/libgsm1-dev/usr/lib
++	mv lib/*so.* debian/libgsm1/usr/lib
++	ln -s toast.1 debian/libgsm-tools/usr/share/man/man1/tcat.1
++	ln -s toast.1 debian/libgsm-tools/usr/share/man/man1/untoast.1
++	ln -s gsm.3 debian/libgsm1-dev/usr/share/man/man3/gsm_create.3
++	ln -s gsm.3 debian/libgsm1-dev/usr/share/man/man3/gsm_destroy.3
++	ln -s gsm.3 debian/libgsm1-dev/usr/share/man/man3/gsm_decode.3
++	ln -s gsm.3 debian/libgsm1-dev/usr/share/man/man3/gsm_encode.3
++	ln -s gsm_explode.3 debian/libgsm1-dev/usr/share/man/man3/gsm_implode.3
++
++	dh_install
++
++binary:	binary-indep binary-arch
++
++binary-indep: build install
++
++binary-arch: build install
++	dh_testdir
++	dh_testroot
++	dh_installmime
++	dh_installdocs -plibgsm1 -plibgsm-tools
++	dh_installchangelogs -plibgsm1 -plibgsm-tools -A ChangeLog
++	ln -sf libgsm1 debian/libgsm1-dev/usr/share/doc/libgsm1-dev
++	ln -sf libgsm1 debian/libgsm1-dbg/usr/share/doc/libgsm1-dbg
++	dh_strip --dbg-package=libgsm1-dbg
++	dh_compress
++	dh_fixperms
++	dh_makeshlibs -V
++	dh_installdeb
++	dh_shlibdeps
++	dh_gencontrol
++	dh_md5sums
++	dh_builddeb
+--- libgsm-1.0.13.orig/debian/libgsm1-dev.dirs
++++ libgsm-1.0.13/debian/libgsm1-dev.dirs
+@@ -0,0 +1,4 @@
++usr/include/gsm
++usr/share/man/man3
++usr/share/doc
++usr/lib
+--- libgsm-1.0.13.orig/debian/libgsm1-dev.install
++++ libgsm-1.0.13/debian/libgsm1-dev.install
+@@ -0,0 +1 @@
++debian/tmp/usr/lib/*.a
+--- libgsm-1.0.13.orig/debian/libgsm1.docs
++++ libgsm-1.0.13/debian/libgsm1.docs
+@@ -0,0 +1,2 @@
++README
++MACHINES
+--- libgsm-1.0.13.orig/debian/watch
++++ libgsm-1.0.13/debian/watch
+@@ -0,0 +1,2 @@
++version=2
++http://user.cs.tu-berlin.de/~jutta/gsm/ gsm-([\d+\.]+|\d+)(\.tar|\.tgz)(\.gz|\.bz2|)
+--- libgsm-1.0.13.orig/debian/libgsm-tools.dirs
++++ libgsm-1.0.13/debian/libgsm-tools.dirs
+@@ -0,0 +1,2 @@
++usr/bin
++usr/share/man/man1
+--- libgsm-1.0.13.orig/debian/libgsm-tools.mime
++++ libgsm-1.0.13/debian/libgsm-tools.mime
+@@ -0,0 +1 @@
++audio/x-gsm; /usr/bin/toast -dcs '%s' > /dev/audio ; description=GSM Audio
+--- libgsm-1.0.13.orig/debian/libgsm1-dbg.dirs
++++ libgsm-1.0.13/debian/libgsm1-dbg.dirs
+@@ -0,0 +1 @@
++usr/share/doc
+--- libgsm-1.0.13.orig/debian/README.source
++++ libgsm-1.0.13/debian/README.source
+@@ -0,0 +1,8 @@
++This package uses dpatch to manage all modifications to the upstream
++source.  Changes are stored in the source package as diffs in
++debian/patches and applied during the build.  Please see:
++
++    /usr/share/doc/dpatch/README.source.gz
++
++for more information on how to apply the patches, modify patches, or
++remove a patch.
+--- libgsm-1.0.13.orig/debian/patches/00list
++++ libgsm-1.0.13/debian/patches/00list
+@@ -0,0 +1,6 @@
++01_makefile
++02_cplusplus
++03_config
++04_includes
++05_compiler_warnings
++06_fix_manpages.dpatch
+--- libgsm-1.0.13.orig/debian/patches/01_makefile.dpatch
++++ libgsm-1.0.13/debian/patches/01_makefile.dpatch
+@@ -0,0 +1,78 @@
++#! /bin/sh /usr/share/dpatch/dpatch-run
++## 01_makefile.dpatch by  <jochen@scram.de>
++##
++## All lines beginning with `## DP:' are a description of the patch.
++## DP: New patch generated from libgsm 1.0.10-14 diff.gz
++
++@DPATCH@
++diff -urNad libgsm-1.0.12~/Makefile libgsm-1.0.12/Makefile
++--- libgsm-1.0.12~/Makefile	2007-11-01 15:37:52.000000000 +0100
+++++ libgsm-1.0.12/Makefile	2007-11-01 15:43:06.000000000 +0100
++@@ -96,7 +96,7 @@
++ #  Other tools
++ 
++ SHELL		= /bin/sh
++-LN		= ln
+++LN		= ln -s
++ BASENAME 	= basename
++ AR		= ar
++ ARFLAGS		= cr
++@@ -140,6 +140,7 @@
++ # Targets
++ 
++ LIBGSM	= $(LIB)/libgsm.a
+++LIBGSMSO= $(LIB)/libgsm.so
++ 
++ TOAST	= $(BIN)/toast
++ UNTOAST	= $(BIN)/untoast
++@@ -279,7 +280,7 @@
++ 
++ # Target rules
++ 
++-all:		$(LIBGSM) $(TOAST) $(TCAT) $(UNTOAST)
+++all:		$(LIBGSM) $(LIBGSMSO) $(TOAST) $(TCAT) $(UNTOAST)
++ 		@-echo $(ROOT): Done.
++ 
++ tst:		$(TST)/lin2cod $(TST)/cod2lin $(TOAST) $(TST)/test-result
++@@ -299,6 +300,11 @@
++ 
++ # The basic API: libgsm
++ 
+++$(LIBGSMSO):	$(LIB) $(GSM_OBJECTS)
+++		$(LD) -o $@.1.0.12 -shared -Xlinker -soname -Xlinker libgsm.so.1 $(GSM_OBJECTS) -lc
+++		ln -fs libgsm.so.1.0.12 lib/libgsm.so.1
+++		ln -fs libgsm.so.1.0.12 lib/libgsm.so
+++
++ $(LIBGSM):	$(LIB) $(GSM_OBJECTS)
++ 		-rm $(RMFLAGS) $(LIBGSM)
++ 		$(AR) $(ARFLAGS) $(LIBGSM) $(GSM_OBJECTS)
++@@ -308,15 +314,15 @@
++ # Toast, Untoast and Tcat -- the compress-like frontends to gsm.
++ 
++ $(TOAST):	$(BIN) $(TOAST_OBJECTS) $(LIBGSM)
++-		$(LD) $(LFLAGS) -o $(TOAST) $(TOAST_OBJECTS) $(LIBGSM) $(LDLIB)
+++		$(LD) $(LFLAGS) -o $(TOAST) $(TOAST_OBJECTS) $(LIBGSMSO) $(LDLIB)
++ 
++ $(UNTOAST):	$(BIN) $(TOAST)
++ 		-rm $(RMFLAGS) $(UNTOAST)
++-		$(LN) $(TOAST) $(UNTOAST)
+++		$(LN) toast $(UNTOAST)
++ 
++ $(TCAT):	$(BIN) $(TOAST)
++ 		-rm $(RMFLAGS) $(TCAT)
++-		$(LN) $(TOAST) $(TCAT)
+++		$(LN) toast $(TCAT)
++ 
++ 
++ # The local bin and lib directories
++@@ -426,7 +432,9 @@
++ 
++ clean:	semi-clean
++ 		-rm $(RMFLAGS) $(LIBGSM) $(ADDTST)/add		\
++-			$(TOAST) $(TCAT) $(UNTOAST)	\
+++			$(LIBGSMSO) $(LIB)/libgsm.so.1.0.12	\
+++			$(LIB)libgsm.so.1			\
+++			$(TOAST) $(TCAT) $(UNTOAST)		\
++ 			$(ROOT)/gsm-1.0.tar.Z
++ 
++ 
+--- libgsm-1.0.13.orig/debian/patches/02_cplusplus.dpatch
++++ libgsm-1.0.13/debian/patches/02_cplusplus.dpatch
+@@ -0,0 +1,32 @@
++#! /bin/sh /usr/share/dpatch/dpatch-run
++## 02_cplusplus.dpatch by  <jochen@scram.de>
++##
++## All lines beginning with `## DP:' are a description of the patch.
++## DP: No description.
++
++@DPATCH@
++diff -urNad libgsm-1.0.10~/inc/gsm.h libgsm-1.0.10/inc/gsm.h
++--- libgsm-1.0.10~/inc/gsm.h	2007-11-01 15:37:52.000000000 +0100
+++++ libgsm-1.0.10/inc/gsm.h	2007-11-01 15:44:52.000000000 +0100
++@@ -54,6 +54,10 @@
++ #define	GSM_OPT_FRAME_INDEX	5
++ #define	GSM_OPT_FRAME_CHAIN	6
++ 
+++#ifdef __cplusplus
+++extern "C" {
+++#endif
+++
++ extern gsm  gsm_create 	GSM_P((void));
++ extern void gsm_destroy GSM_P((gsm));	
++ 
++@@ -66,6 +70,10 @@
++ extern int  gsm_explode GSM_P((gsm, gsm_byte   *, gsm_signal *));
++ extern void gsm_implode GSM_P((gsm, gsm_signal *, gsm_byte   *));
++ 
+++#ifdef __cplusplus
+++}
+++#endif
+++
++ #undef	GSM_P
++ 
++ #endif	/* GSM_H */
+--- libgsm-1.0.13.orig/debian/patches/03_config.dpatch
++++ libgsm-1.0.13/debian/patches/03_config.dpatch
+@@ -0,0 +1,161 @@
++#! /bin/sh /usr/share/dpatch/dpatch-run
++## 03_config.dpatch by  <jochen@scram.de>
++##
++## All lines beginning with `## DP:' are a description of the patch.
++## DP: No description.
++
++@DPATCH@
++diff -urNad libgsm-1.0.10~/Makefile libgsm-1.0.10/Makefile
++--- libgsm-1.0.10~/Makefile	2007-11-01 15:37:52.000000000 +0100
+++++ libgsm-1.0.10/Makefile	2007-11-01 15:48:02.000000000 +0100
++@@ -151,7 +151,7 @@
++ 
++ HEADERS	=	$(INC)/proto.h		\
++ 		$(INC)/unproto.h	\
++-		$(INC)/config.h		\
+++		$(INC)/gsm_config.h	\
++ 		$(INC)/private.h	\
++ 		$(INC)/gsm.h		\
++ 		$(INC)/toast.h		\
++diff -urNad libgsm-1.0.10~/inc/config.h libgsm-1.0.10/inc/config.h
++--- libgsm-1.0.10~/inc/config.h	2007-11-01 15:37:52.000000000 +0100
+++++ libgsm-1.0.10/inc/config.h	1970-01-01 01:00:00.000000000 +0100
++@@ -1,37 +0,0 @@
++-/*
++- * Copyright 1992 by Jutta Degener and Carsten Bormann, Technische
++- * Universitaet Berlin.  See the accompanying file "COPYRIGHT" for
++- * details.  THERE IS ABSOLUTELY NO WARRANTY FOR THIS SOFTWARE.
++- */
++-
++-/*$Header: /tmp_amd/presto/export/kbs/jutta/src/gsm/RCS/config.h,v 1.5 1996/07/02 11:26:20 jutta Exp $*/
++-
++-#ifndef	CONFIG_H
++-#define	CONFIG_H
++-
++-/*efine	SIGHANDLER_T	int 		/* signal handlers are void	*/
++-/*efine HAS_SYSV_SIGNAL	1		/* sigs not blocked/reset?	*/
++-
++-#define	HAS_STDLIB_H	1		/* /usr/include/stdlib.h	*/
++-#define	HAS_LIMITS_H	1		/* /usr/include/limits.h	*/
++-#define	HAS_FCNTL_H	1		/* /usr/include/fcntl.h		*/
++-#define	HAS_ERRNO_DECL	1		/* errno.h declares errno	*/
++-
++-#define	HAS_FSTAT 	1		/* fstat syscall		*/
++-#define	HAS_FCHMOD 	1		/* fchmod syscall		*/
++-#define	HAS_CHMOD 	1		/* chmod syscall		*/
++-#define	HAS_FCHOWN 	1		/* fchown syscall		*/
++-#define	HAS_CHOWN 	1		/* chown syscall		*/
++-/*efine	HAS__FSETMODE 	1		/* _fsetmode -- set file mode	*/
++-
++-#define	HAS_STRING_H 	1		/* /usr/include/string.h 	*/
++-/*efine	HAS_STRINGS_H	1		/* /usr/include/strings.h 	*/
++-
++-#define	HAS_UNISTD_H	1		/* /usr/include/unistd.h	*/
++-#define	HAS_UTIME	1		/* POSIX utime(path, times)	*/
++-/*efine	HAS_UTIMES	1		/* use utimes()	syscall instead	*/
++-#define	HAS_UTIME_H	1		/* UTIME header file		*/
++-#define	HAS_UTIMBUF	1		/* struct utimbuf		*/
++-/*efine	HAS_UTIMEUSEC   1		/* microseconds in utimbuf?	*/
++-
++-#endif	/* CONFIG_H */
++diff -urNad libgsm-1.0.10~/inc/gsm_config.h libgsm-1.0.10/inc/gsm_config.h
++--- libgsm-1.0.10~/inc/gsm_config.h	1970-01-01 01:00:00.000000000 +0100
+++++ libgsm-1.0.10/inc/gsm_config.h	2007-11-01 15:46:19.000000000 +0100
++@@ -0,0 +1,37 @@
+++/*
+++ * Copyright 1992 by Jutta Degener and Carsten Bormann, Technische
+++ * Universitaet Berlin.  See the accompanying file "COPYRIGHT" for
+++ * details.  THERE IS ABSOLUTELY NO WARRANTY FOR THIS SOFTWARE.
+++ */
+++
+++/*$Header: /tmp_amd/presto/export/kbs/jutta/src/gsm/RCS/config.h,v 1.5 1996/07/02 11:26:20 jutta Exp $*/
+++
+++#ifndef	CONFIG_H
+++#define	CONFIG_H
+++
+++/*efine	SIGHANDLER_T	int 		-* signal handlers are void	*/
+++/*efine HAS_SYSV_SIGNAL	1		-* sigs not blocked/reset?	*/
+++
+++#define	HAS_STDLIB_H	1		/* /usr/include/stdlib.h	*/
+++#define	HAS_STDIO_H 	1		/* /usr/include/stdio.h 	*/
+++/*efine	HAS_LIMITS_H	1		-* /usr/include/limits.h	*/
+++#define	HAS_FCNTL_H	1		/* /usr/include/fcntl.h		*/
+++
+++#define	HAS_FSTAT 	1		/* fstat syscall		*/
+++#define	HAS_FCHMOD 	1		/* fchmod syscall		*/
+++#define	HAS_CHMOD 	1		/* chmod syscall		*/
+++#define	HAS_FCHOWN 	1		/* fchown syscall		*/
+++#define	HAS_CHOWN 	1		/* chown syscall		*/
+++/*efine	HAS__FSETMODE 	1		-* _fsetmode -- set file mode	*/
+++
+++#define	HAS_STRING_H 	1		/* /usr/include/string.h 	*/
+++/*efine	HAS_STRINGS_H	1		-* /usr/include/strings.h 	*/
+++
+++#define	HAS_UNISTD_H	1		/* /usr/include/unistd.h	*/
+++#define	HAS_UTIME	1		/* POSIX utime(path, times)	*/
+++/*efine	HAS_UTIMES	1		-* use utimes()	syscall instead	*/
+++#define	HAS_UTIME_H	1		/* UTIME header file		*/
+++/*efine	HAS_UTIMBUF	1		-* struct utimbuf		*/
+++/*efine	HAS_UTIMEUSEC   1		-* microseconds in utimbuf?	*/
+++
+++#endif	/* CONFIG_H */
++diff -urNad libgsm-1.0.10~/inc/toast.h libgsm-1.0.10/inc/toast.h
++--- libgsm-1.0.10~/inc/toast.h	2007-11-01 15:37:52.000000000 +0100
+++++ libgsm-1.0.10/inc/toast.h	2007-11-01 15:48:17.000000000 +0100
++@@ -9,7 +9,7 @@
++ #ifndef	TOAST_H
++ #define	TOAST_H				/* Guard against multiple includes */
++ 
++-#include "config.h"
+++#include "gsm_config.h"
++ 
++ #include <sys/types.h>
++ #include <sys/stat.h>
++diff -urNad libgsm-1.0.10~/src/code.c libgsm-1.0.10/src/code.c
++--- libgsm-1.0.10~/src/code.c	2007-11-01 15:37:52.000000000 +0100
+++++ libgsm-1.0.10/src/code.c	2007-11-01 15:48:34.000000000 +0100
++@@ -6,7 +6,7 @@
++ 
++ /* $Header: /tmp_amd/presto/export/kbs/jutta/src/gsm/RCS/code.c,v 1.3 1996/07/02 09:59:05 jutta Exp $ */
++ 
++-#include	"config.h"
+++#include	"gsm_config.h"
++ 
++ 
++ #ifdef	HAS_STDLIB_H
++diff -urNad libgsm-1.0.10~/src/gsm_create.c libgsm-1.0.10/src/gsm_create.c
++--- libgsm-1.0.10~/src/gsm_create.c	1996-07-02 16:32:44.000000000 +0200
+++++ libgsm-1.0.10/src/gsm_create.c	2007-11-01 15:48:48.000000000 +0100
++@@ -6,7 +6,7 @@
++ 
++ static char const	ident[] = "$Header: /tmp_amd/presto/export/kbs/jutta/src/gsm/RCS/gsm_create.c,v 1.4 1996/07/02 09:59:05 jutta Exp $";
++ 
++-#include	"config.h"
+++#include	"gsm_config.h"
++ 
++ #ifdef	HAS_STRING_H
++ #include	<string.h>
++diff -urNad libgsm-1.0.10~/src/gsm_destroy.c libgsm-1.0.10/src/gsm_destroy.c
++--- libgsm-1.0.10~/src/gsm_destroy.c	1996-07-02 16:32:39.000000000 +0200
+++++ libgsm-1.0.10/src/gsm_destroy.c	2007-11-01 15:48:57.000000000 +0100
++@@ -7,7 +7,7 @@
++ /* $Header: /tmp_amd/presto/export/kbs/jutta/src/gsm/RCS/gsm_destroy.c,v 1.3 1994/11/28 19:52:25 jutta Exp $ */
++ 
++ #include "gsm.h"
++-#include "config.h"
+++#include "gsm_config.h"
++ #include "proto.h"
++ 
++ #ifdef	HAS_STDLIB_H
++diff -urNad libgsm-1.0.10~/tls/taste.c libgsm-1.0.10/tls/taste.c
++--- libgsm-1.0.10~/tls/taste.c	1996-07-02 16:33:05.000000000 +0200
+++++ libgsm-1.0.10/tls/taste.c	2007-11-01 15:49:54.000000000 +0100
++@@ -10,7 +10,7 @@
++ #include	<string.h>
++ #include	<memory.h>
++ 
++-#include	"config.h"
+++#include	"gsm_config.h"
++ 
++ #ifdef	HAS_STDLIB_H
++ #	include	<stdlib.h>
+--- libgsm-1.0.13.orig/debian/patches/04_includes.dpatch
++++ libgsm-1.0.13/debian/patches/04_includes.dpatch
+@@ -0,0 +1,50 @@
++#! /bin/sh /usr/share/dpatch/dpatch-run
++## 04_includes.dpatch by  <jochen@scram.de>
++##
++## All lines beginning with `## DP:' are a description of the patch.
++## DP: No description.
++
++@DPATCH@
++diff -urNad libgsm-1.0.10~/inc/toast.h libgsm-1.0.10/inc/toast.h
++--- libgsm-1.0.10~/inc/toast.h	2007-11-01 15:37:52.000000000 +0100
+++++ libgsm-1.0.10/inc/toast.h	2007-11-01 15:52:33.000000000 +0100
++@@ -16,11 +16,12 @@
++ 
++ #include <stdio.h>
++ #include <ctype.h>
+++#include <pthread.h>
++ #include <signal.h>
++ 
++ #include <errno.h>
++-#ifndef	HAS_ERRNO_DECL
++-	 extern int	errno;
+++#ifndef errno
+++ extern int	errno;
++ #endif
++ 
++ #ifdef	HAS_LIMITS_H
++@@ -37,6 +38,10 @@
++ # endif
++ #endif
++ 
+++#ifdef  HAS_STDIO_H
+++# include <stdio.h>
+++#endif
+++
++ #include "gsm.h"
++ 
++ #ifndef	S_ISREG
++diff -urNad libgsm-1.0.10~/src/code.c libgsm-1.0.10/src/code.c
++--- libgsm-1.0.10~/src/code.c	2007-11-01 15:37:52.000000000 +0100
+++++ libgsm-1.0.10/src/code.c	2007-11-01 15:52:33.000000000 +0100
++@@ -9,8 +9,8 @@
++ #include	"config.h"
++ 
++ 
++-#ifdef	HAS_STDLIB_H
++-#include	<stdlib.h>
+++#ifdef	HAS_STRING_H
+++#include	<string.h>
++ #else
++ #	include "proto.h"
++ 	extern char	* memcpy P((char *, char *, int));
+--- libgsm-1.0.13.orig/debian/patches/05_compiler_warnings.dpatch
++++ libgsm-1.0.13/debian/patches/05_compiler_warnings.dpatch
+@@ -0,0 +1,105 @@
++#! /bin/sh /usr/share/dpatch/dpatch-run
++## 05_compiler_warnings.dpatch by  <jochen@scram.de>
++##
++## All lines beginning with `## DP:' are a description of the patch.
++## DP: No description.
++
++@DPATCH@
++diff -urNad libgsm-1.0.10~/src/debug.c libgsm-1.0.10/src/debug.c
++--- libgsm-1.0.10~/src/debug.c	2007-11-01 15:37:52.000000000 +0100
+++++ libgsm-1.0.10/src/debug.c	2007-11-01 15:53:42.000000000 +0100
++@@ -49,7 +49,7 @@
++ 	fprintf( stderr, "%s [%d .. %d]: ", name, from, to );
++ 	while (from <= to) {
++ 
++-		fprintf(stderr, "%d ", ptr[ from ] );
+++		fprintf(stderr, "%ld ", ptr[ from ] );
++ 		from++;
++ 		if (nprinted++ >= 7) {
++ 			nprinted = 0;
++@@ -63,14 +63,14 @@
++ 	char		* name,
++ 	longword	  value	)
++ {
++-	fprintf(stderr, "%s: %d\n", name, (long)value );
+++	fprintf(stderr, "%s: %ld\n", name, (long)value );
++ }
++ 
++ void gsm_debug_word P2(  (name, value),
++ 	char	* name,
++ 	word	  value	)
++ {
++-	fprintf(stderr, "%s: %d\n", name, (long)value);
+++	fprintf(stderr, "%s: %ld\n", name, (long)value);
++ }
++ 
++ #endif
++diff -urNad libgsm-1.0.10~/src/toast.c libgsm-1.0.10/src/toast.c
++--- libgsm-1.0.10~/src/toast.c	2007-11-01 15:37:52.000000000 +0100
+++++ libgsm-1.0.10/src/toast.c	2007-11-01 15:53:42.000000000 +0100
++@@ -251,8 +251,8 @@
++ {
++ 	char * s;
++ 	if (!(s = malloc(len))) {
++-		fprintf(stderr, "%s: failed to malloc %d bytes -- abort\n",
++-			progname, len);
+++		fprintf(stderr, "%s: failed to malloc %ld bytes -- abort\n",
+++			progname, (long) len);
++ 		onintr();
++ 		exit(1);
++ 	}
++@@ -270,7 +270,7 @@
++ 	maxlen = strlen(name) + 1 + strlen(want) + strlen(cut);
++ 	p = strcpy(emalloc(maxlen), name);
++ 
++-	if (s = suffix(p, cut)) strcpy(s, want);
+++	if ((s = suffix(p, cut))) strcpy(s, want);
++ 	else if (*want && !suffix(p, want)) strcat(p, want);
++ 
++ 	return p;
++@@ -386,7 +386,7 @@
++ 		ut[0] = instat.st_atime;
++ 		ut[1] = instat.st_mtime;
++ 
++-		(void) utime(outname, ut);
+++		(void) utime(outname, (struct utimbuf *)ut);
++ 
++ #endif	/* UTIMBUF */
++ 	}
++@@ -416,7 +416,7 @@
++ 	}
++ 	if (st->st_nlink > 1 && !f_cat && !f_precious) {
++ 		fprintf(stderr, 
++-		      "%s: \"%s\" has %s other link%s -- unchanged.\n",
+++		      "%s: \"%s\" has %d other link%s -- unchanged.\n",
++ 			progname,name,st->st_nlink - 1,"s" + (st->st_nlink<=2));
++ 		return 0;
++ 	}
++@@ -585,8 +585,8 @@
++ 
++ 		if (cc != sizeof(s)) {
++ 			if (cc >= 0) fprintf(stderr,
++-			"%s: incomplete frame (%d byte%s missing) from %s\n",
++-					progname, sizeof(s) - cc,
+++			"%s: incomplete frame (%ld byte%s missing) from %s\n",
+++					progname, (long) sizeof(s) - cc,
++ 					"s" + (sizeof(s) - cc == 1),
++ 					inname ? inname : "stdin" );
++ 			gsm_destroy(r);
++@@ -624,8 +624,6 @@
++ 
++ static int process P1((name), char * name)
++ {
++-	int step = 0;
++-
++ 	out     = (FILE *)0;
++ 	in      = (FILE *)0;
++ 
++@@ -779,7 +777,6 @@
++ 	case 'h': help();    exit(0);
++ 
++ 	default: 
++-	usage:
++ 		fprintf(stderr,
++ 	"Usage: %s [-fcpdhvuaslFC] [files...] (-h for help)\n",
++ 			progname);
+--- libgsm-1.0.13.orig/debian/patches/06_fix_manpages.dpatch
++++ libgsm-1.0.13/debian/patches/06_fix_manpages.dpatch
+@@ -0,0 +1,146 @@
++#! /bin/sh /usr/share/dpatch/dpatch-run
++## 06_fix_manpages.dpatch by  <jochen@scram.de>
++##
++## All lines beginning with `## DP:' are a description of the patch.
++## DP: No description.
++
++@DPATCH@
++diff -urNad libgsm-1.0.13~/man/gsm.3 libgsm-1.0.13/man/gsm.3
++--- libgsm-1.0.13~/man/gsm.3	2009-10-14 11:17:29.000000000 +0200
+++++ libgsm-1.0.13/man/gsm.3	2009-10-14 12:10:49.000000000 +0200
++@@ -3,7 +3,6 @@
++ .\" Universitaet Berlin.  See the accompanying file "COPYRIGHT" for
++ .\" details.  THERE IS ABSOLUTELY NO WARRANTY FOR THIS SOFTWARE.
++ .\"
++-.PU
++ .TH GSM 3 
++ .SH NAME
++ gsm_create, gsm_destroy, gsm_encode, gsm_decode \(em GSM\ 06.10 lossy sound compression
++diff -urNad libgsm-1.0.13~/man/gsm_explode.3 libgsm-1.0.13/man/gsm_explode.3
++--- libgsm-1.0.13~/man/gsm_explode.3	2009-10-14 11:17:29.000000000 +0200
+++++ libgsm-1.0.13/man/gsm_explode.3	2009-10-14 12:10:49.000000000 +0200
++@@ -3,7 +3,6 @@
++ .\" Universitaet Berlin.  See the accompanying file "COPYRIGHT" for
++ .\" details.  THERE IS ABSOLUTELY NO WARRANTY FOR THIS SOFTWARE.
++ .\"
++-.PU
++ .TH GSM_EXPLODE 3 
++ .SH NAME
++ gsm_explode, gsm_implode \(em GSM\ 06.10 supplementary
++diff -urNad libgsm-1.0.13~/man/gsm_option.3 libgsm-1.0.13/man/gsm_option.3
++--- libgsm-1.0.13~/man/gsm_option.3	2009-10-14 11:17:29.000000000 +0200
+++++ libgsm-1.0.13/man/gsm_option.3	2009-10-14 12:13:14.000000000 +0200
++@@ -3,7 +3,6 @@
++ .\" Universitaet Berlin.  See the accompanying file "COPYRIGHT" for
++ .\" details.  THERE IS ABSOLUTELY NO WARRANTY FOR THIS SOFTWARE.
++ .\"
++-.PU
++ .TH GSM_OPTION 3 
++ .SH NAME
++ gsm_option \(em customizing the GSM 06.10 implementation
++@@ -39,19 +38,19 @@
++ .I GSM_OPT_VERBOSE
++ Verbosity level.
++ .br
++-.in+5
+++.RS
++ This option is only supported if the library was compiled
++ with debugging turned on, and may be used by developers of
++ compression algorithms to aid debugging.
++ .br
++ The verbosity level can be changed at any time during encoding or decoding.
++-.in-5
+++.RE
++ .sp
++ .PP
++ .I GSM_OPT_FAST
++ Faster compression algorithm.
++ .br
++-.in+5
+++.RS
++ This implementation offers a not strictly standard-compliant, but
++ faster compression algorithm that is compatible with the regular
++ method and does not noticably degrade audio quality.
++@@ -70,14 +69,13 @@
++ to set or query it.
++ .br
++ This option can be set any time during encoding or decoding.
++-.in-5
++-.ne 5
+++.RE
++ .sp
++ .PP
++ .I GSM_OPT_LTP_CUT
++ Enable, disable, or query the LTP cut-off optimization.
++ .br
++-.in+5
+++.RS
++ During encoding, the search for the long-term correlation
++ lag forms the bottleneck of the algorithm. 
++ The ltp-cut option enables an approximation that disregards most
++@@ -95,12 +93,13 @@
++ This option can be set any time during encoding
++ or decoding; it will only affect the encoding pass, not
++ the decoding.
+++.RE
++ .sp
++ .PP
++ .I GSM_OPT_WAV49
++ WAV-style byte ordering.
++ .br
++-.in+5
+++.RS
++ A WAV file of type #49 contains GSM 06.10-encoded frames.
++ Unfortunately, the framing and code ordering of the WAV version
++ are incompatible with the native ones of this GSM 06.10 library.
++@@ -131,12 +130,13 @@
++ .br
++ Thanks to Jeff Chilton for the detective work and first free
++ implementation of this version of the GSM 06.10 encoding.
+++.RE
++ .sp
++ .PP
++ .I GSM_OPT_FRAME_CHAIN
++ Query or set the chaining byte.
++ .br
++-.in+5
+++.RS
++ Between the two frames of a WAV-style encoding, the GSM 06.10 library
++ must keep track of one half-byte that is technically part of the first
++ frame, but will be written as the first four bits of the second.
++@@ -148,13 +148,14 @@
++ .fi
++ .br 
++ This option can be queried and set at any time.
+++.RE
++ .sp
++ .PP
++ .I GSM_OPT_FRAME_INDEX
++ Query or set the current frame's index in a format's
++ alternating list of frames.
++ .br
++-.in+5
+++.RS
++ The WAV #49 framing uses two alternating types of frames.
++ Which type the next GSM-coded frame belongs to can be queried, or,
++ when decoding, announced, using
++@@ -173,7 +174,7 @@
++ option, it can be used to position on arbitrary GSM frames
++ within a format like WAV #49 (not accounting for the lost
++ internal GSM state).
++-.in-5
+++.RE
++ .SH "RETURN VALUE"
++ gsm_option() returns -1 if an option is not supported, the
++ previous value of the option otherwise.
++diff -urNad libgsm-1.0.13~/man/gsm_print.3 libgsm-1.0.13/man/gsm_print.3
++--- libgsm-1.0.13~/man/gsm_print.3	2009-10-14 11:17:29.000000000 +0200
+++++ libgsm-1.0.13/man/gsm_print.3	2009-10-14 12:10:49.000000000 +0200
++@@ -3,7 +3,6 @@
++ .\" Universitaet Berlin.  See the accompanying file "COPYRIGHT" for
++ .\" details.  THERE IS ABSOLUTELY NO WARRANTY FOR THIS SOFTWARE.
++ .\"
++-.PU
++ .TH GSM_PRINT 3 
++ .SH NAME
++ gsm_print \(em GSM\ 06.10 supplementary function for debugging
