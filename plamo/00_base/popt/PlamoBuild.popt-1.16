@@ -208,7 +208,7 @@ if [ $opt_config -eq 1 ] ; then
       sh ./autogen.sh
     fi
 
-    sed -i -e 's|lib/pkgconfig|lib64/pkgconfig|' Makefile.in
+    sed -i -e "s|lib/pkgconfig|${libdir}/pkgconfig|" Makefile.in
 
     if [ -x configure ] ; then
        export PKG_CONFIG_PATH=/usr/X11R7/${libdir}/pkgconfig:/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
