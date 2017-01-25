@@ -1,8 +1,7 @@
 #!/bin/sh -x
 
 ######################################################################
-url="https://www.kernel.org/pub/linux/kernel/v4.x/linux-4.8.5.tar.xz
-    ftp://plamo.linet.gr.jp/pub/Plamo-test/kernelsrc_patches/UNICON/vd_unicon-kernel-20161008-4.8.patch
+url="https://www.kernel.org/pub/linux/kernel/v4.x/linux-4.8.17.tar.xz
     ftp://plamo.linet.gr.jp/pub/Plamo-test/kernelsrc_patches/UNICON/vd_unicon-kernel-fonts-20140614.patch.bz2
     git://github.com/sfjro/aufs4-standalone.git
     ftp://plamo.linet.gr.jp/pub/Plamo-test/kernelsrc_patches/mcp/4.8-panic_beep.patch
@@ -11,11 +10,11 @@ url="https://www.kernel.org/pub/linux/kernel/v4.x/linux-4.8.5.tar.xz
     ftp://plamo.linet.gr.jp/pub/Plamo-test/kernelsrc_patches/ovlfs/overlayfs-allow_unprivileged_mounts.patch
     ftp://plamo.linet.gr.jp/pub/Plamo-test/kernelsrc_patches/config-4.8.5-plamoSMP"
 pkgbase=kernel
-vers=4.8.5_plamoSMP
+vers=4.8.17_plamoSMP
 arch=`uname -m`
-build=P1
-src=linux-4.8.5
-patchfiles=""
+build=P1m1
+src=linux-4.8.17
+patchfiles="vd_unicon-kernel-20170113-4.8.patch"
 OPT_CONFIG=""
 DOCS=""
 SRC_URL="http://circle2.org/pub/source/"
@@ -224,7 +223,6 @@ if [ $opt_config -eq 1 ] ; then
     done
   done
   cd $B
-  patch -Np1 -i $W/vd_unicon-kernel-20161008-4.8.patch
   bunzip2 -c $W/vd_unicon-kernel-fonts-20140614.patch.bz2 | patch -Np1 -i -
   patch -Np1 -i $W/aufs4-standalone/aufs4-kbuild.patch
   patch -Np1 -i $W/aufs4-standalone/aufs4-base.patch
@@ -265,7 +263,7 @@ if [ $opt_build -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
-      make
+      make -j6
     fi
   done
 fi
@@ -316,6 +314,10 @@ if [ $opt_package -eq 1 ] ; then
       ln $docdir/$src/$myname.gz $docdir/${src[$i]}
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
+  done
+  for patch in $patchfiles ; do
+      cp $W/$patch $docdir/$src/$patch
+      gzip_one $docdir/$src/$patch
   done
   convert
   prune_symlink $P/boot
