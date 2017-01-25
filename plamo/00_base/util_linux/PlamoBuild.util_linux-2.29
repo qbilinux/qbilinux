@@ -2,10 +2,10 @@
 
 ######################################################################
 pkgbase=util_linux
-vers=2.28
+vers=2.29
 url="http://www.kernel.org/pub/linux/utils/util-linux/v${vers}/util-linux-${vers}.tar.xz"
 arch=`uname -m`
-build=P1m1
+build=P0m1
 src=util-linux-$vers
 OPT_CONFIG="--localstatedir=/var --disable-setpriv --disable-last
     --disable-mesg --disable-chfn-chsh --disable-login --disable-nologin
