@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
-url='https://sourceforge.net/projects/lame/files/lame/3.98.4/lame-3.98.4.tar.gz'
 pkgbase=lame
-vers=3.98.4
+vers=3.99.5
+url="https://sourceforge.net/projects/lame/files/lame/3.99/lame-${vers}.tar.gz"
 arch=`uname -m`
-build=P1m1
-src=lame-3.98.4
+build=P0m1
+src=lame-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='COPYING ChangeLog HACKING INSTALL INSTALL.configure LICENSE README README.WINGTK TODO'
-patchfiles=''
+patchfiles='configure.patch'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
