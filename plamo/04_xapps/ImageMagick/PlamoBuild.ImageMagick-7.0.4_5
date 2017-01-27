@@ -1,16 +1,18 @@
 #!/bin/sh
 ##############################################################
 pkgbase=ImageMagick
-vers=7.0.4_3
-url="https://www.imagemagick.org/download/ImageMagick-7.0.4-3.tar.xz"
+vers=7.0.4_5
+url="https://www.imagemagick.org/download/ImageMagick-7.0.4-5.tar.xz"
 commitid=
 arch=`uname -m`
 build=P0m1
-src=ImageMagick-7.0.4-3
+src=ImageMagick-7.0.4-5
 OPT_CONFIG=''
 DOCS='AUTHORS.txt ChangeLog Install-mac.txt Install-unix.txt Install-vms.txt Install-windows.txt LICENSE NEWS.txt Platforms.txt QuickStart.txt README.txt'
 patchfiles=''
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
@@ -123,6 +125,8 @@ if [ $opt_download -eq 1 ] ; then
       fi
       ;;
     *)
+      if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+      if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
       if [ ! -f ${i##*/} ] ; then
         wget $i
         for sig in asc sig{,n} {md5,sha{1,256}}{,sum} ; do
@@ -137,6 +141,7 @@ if [ $opt_download -eq 1 ] ; then
           if [ $? -ne 0 ] ; then echo "archive verify failed" ; exit ; fi
         fi
       fi
+      if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
       ;;
     esac
   done
