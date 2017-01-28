@@ -22,6 +22,7 @@ DOCS[0]="`echo canuum/{COPYRIGHT,README.{copyright,jp}}`
     README README.jp RKCCONF.jp WHATIS WHATIS.jp"
 DOCS[1]="CHANGES COPYRIGHT INSTALL"
 DOCS[2]="README.ja COPYING"
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -155,6 +156,13 @@ mandir=$P/usr/share/man
 docdir=$P/usr/share/doc
 myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
+if [ $arch = "x86_64" ]; then
+    target="-m64"
+    libdir="lib64"
+else
+    target="-m32"
+    libdir="lib"
+fi
 if [ $# -eq 0 ] ; then
   opt_download=1 ; opt_config=1 ; opt_build=1 ; opt_package=1
 else
@@ -191,6 +199,7 @@ if [ $opt_config -eq 1 ] ; then
   gunzip -c $W/Canna37p3-keybind.patch.gz | patch -Np1 -i -
   patch -Np1 -i $W/nicolatter-1.7.9/patch/Canna37p1-q1.diff
   cp -p Canna.conf Canna.conf.orig
+if [ $arch = "x86_64" ]; then
   cat <<- "EOF" | patch Canna.conf
 	143c143
 	< cannaPrefix = DefCannaPrefix
@@ -219,7 +228,37 @@ if [ $opt_config -eq 1 ] ; then
 	---
 	> JMNLOCALE = ja_JP.eucJP
 	EOF
-  cd ${B[1]}
+else
+  cat <<- "EOF" | patch Canna.conf
+	143c143
+	< cannaPrefix = DefCannaPrefix
+	---
+	> cannaPrefix = /usr
+	149,151c149,151
+	< cannaLibDir = DefCannaLibDir
+	< XCOMM cannaManDir = $(cannaPrefix)/share/man
+	< cannaManDir = $(cannaPrefix)/man
+	---
+	> cannaLibDir = /usr/lib/canna
+	> cannaManDir = $(cannaPrefix)/share/man
+	> XCOMM cannaManDir = $(cannaPrefix)/man
+	154,155c154,155
+	< libCannaDir = DefLibCannaDir
+	< ErrDir  = DefErrDir
+	---
+	> libCannaDir = /usr/lib
+	> ErrDir  = /var/log/canna
+	240c240
+	< DicDir   = $(cannaLibDir)/dic
+	---
+	> DicDir   = /var/lib/canna/dic
+	333c333
+	< JMNLOCALE = ja
+	---
+	> JMNLOCALE = ja_JP.eucJP
+	EOF
+fi
+cd ${B[1]}
   gunzip -c $W/libspt-1.1-set_timefield.patch.gz | patch -Np1 -i -
   cp -p Makefile.in Makefile.in.orig
   sed 's@man$@share/man@g' Makefile.in.orig > Makefile.in
@@ -232,7 +271,7 @@ if [ $opt_config -eq 1 ] ; then
       rm -rf config.cache config.log
     fi
     if [ -x configure ] ; then
-      ./configure --prefix=/usr --libdir='${prefix}'/lib64 \
+      ./configure --prefix=/usr --libdir='${prefix}'/${libdir} \
           --infodir='${prefix}'/share/info \
           --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
     fi
@@ -286,7 +325,7 @@ if [ $opt_package -eq 1 ] ; then
 	> gcanna.cld(gcanna.mwd)		-gcanna---
 	> gcannaf.ctd(.swd)		-gcannaf---
 	EOF
-  cannalibdir=$P/usr/lib64/canna
+  cannalibdir=$P/usr/${libdir}/canna
   cp -p $cannalibdir/default.canna $cannalibdir/default.canna.orig
   cat <<- "EOF" | patch $cannalibdir/default.canna
 	27c27,29
@@ -367,22 +406,10 @@ if [ $opt_package -eq 1 ] ; then
   mv $C/{doc,{INSTALL{,.jp},OCHANGES.jp,README{,.jp},RKCCONF.jp,WHATIS{,.jp},$myname}.gz} $docdir/$src
   touch -r $S $docdir/$src
   convert
-  prune_symlink $mandir/ja_JP.eucJP/man3
-  tar cvpf $pkg.tar -C $P `cd $P ; find usr/sbin | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/libexec | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/lib64 -maxdepth 1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/include -maxdepth 1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P var/lib/canna
-  tar rvpf $pkg.tar -C $P var/log/canna
-  tar rvpf $pkg.tar -C $P etc/rc.d/init.d/canna.r
-  tar rvpf $pkg.tar -C $P etc/hosts.canna
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man3 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/ja_JP.eucJP/man1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/ja_JP.eucJP/man3 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/doc -maxdepth 1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P install/doinst.sh
-  touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi
