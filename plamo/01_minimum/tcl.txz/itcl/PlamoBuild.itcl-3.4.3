@@ -9,7 +9,8 @@ arch=`uname -m`
 build=P0m1
 src=itcl$vers
 OPT_CONFIG=""
-DOCS="license.terms CHANGES ChangeLog INCOMPATIBLE README TODO"
+DOCS="license.terms"
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -89,6 +90,7 @@ gzip_one() {
 
 compress() {
   for i in {$P,$P/usr}/{sbin,bin} ; do strip_bindir $i ; done
+  for i in {$P,$P/usr}/lib ; do strip_libdir $i ; done
   for i in {$P,$P/usr}/lib64 ; do strip_libdir $i ; done
   if [ -f $infodir/dir ] ; then rm -f $infodir/dir ; fi
   gzip_dir $infodir
@@ -127,6 +129,7 @@ prune_symlink() {
 
 convert() {
   for i in {$P,$P/usr}/{sbin,bin} ; do prune_symlink $i ; done
+  for i in {$P,$P/usr}/lib ; do prune_symlink $i ; done
   for i in {$P,$P/usr}/lib64 ; do prune_symlink $i ; done
   prune_symlink $infodir
   for i in `seq 9` n ; do prune_symlink $mandir/man$i ; done
@@ -143,6 +146,15 @@ mandir=$P/usr/share/man
 docdir=$P/usr/share/doc
 myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
+if [ $arch = "x86_64" ]; then
+    target="-m64"
+    libdir="lib64"
+    suffix="64"
+else
+    target="-m32"
+    libdir="lib"
+    suffix=""
+fi
 if [ $# -eq 0 ] ; then
   opt_download=1 ; opt_config=1 ; opt_build=1 ; opt_package=1
 else
@@ -185,7 +197,7 @@ if [ $opt_config -eq 1 ] ; then
       rm -rf config.cache config.log
     fi
     if [ -x configure ] ; then
-      ./configure --prefix=/usr --libdir='${prefix}'/lib64 \
+      ./configure --prefix=/usr --libdir='${prefix}'/${libdir} \
           --infodir='${prefix}'/share/info \
           --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]} \
           --exec-prefix=/usr
@@ -221,7 +233,7 @@ if [ $opt_package -eq 1 ] ; then
   find $P ! -type l -newer i.st ! -newer i.et \
       -exec touch -t `date '+%m%d0000'` {} \;
   compress
-  strip_libdir $P/usr/lib64/itcl3.4
+  strip_libdir $P/usr/${libdir}/itcl3.4
   touch -t `date '+%m%d0000'` $P/usr/lib64/itcl3.4
   for i in `seq 0 $((${#DOCS[@]} - 1))` ; do
     for j in ${DOCS[$i]} ; do
@@ -240,11 +252,10 @@ if [ $opt_package -eq 1 ] ; then
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
-  convert
-  tar cvpf $pkg.tar -C $P `cd $P ; find usr/lib64 -maxdepth 1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/include | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/mann | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi
