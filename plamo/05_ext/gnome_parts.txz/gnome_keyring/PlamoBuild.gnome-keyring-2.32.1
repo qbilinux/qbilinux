@@ -6,7 +6,11 @@ vers=2.32.1
 arch=`uname -m`
 build=P1m1
 src=gnome-keyring-2.32.1
-OPT_CONFIG='--disable-static --with-pam-dir=/lib64/security'
+if [ $arch = "x86_64" ]; then
+    OPT_CONFIG='--disable-static --with-pam-dir=/lib64/security'
+else
+    OPT_CONFIG='--disable-static --with-pam-dir=/lib/security'
+fi
 DOCS='AUTHORS COPYING COPYING.LIB ChangeLog ChangeLog.old HACKING INSTALL NEWS README'
 patchfiles='egg-asn1x.patch'
 compress=txz
