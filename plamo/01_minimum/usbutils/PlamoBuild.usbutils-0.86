@@ -6,7 +6,11 @@ vers=0.86
 arch=`uname -m`
 build=P1m1
 src=usbutils-0.86
-OPT_CONFIG='--datarootdir=/usr/lib64'
+if [ $arch = "x86_64" ]; then
+    OPT_CONFIG='--datarootdir=/usr/lib64'
+else
+    OPT_CONFIG='--datarootdir=/usr/lib'
+fi
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README'
 patchfiles=''
 compress=txz
