@@ -248,8 +248,8 @@ if [ $opt_package -eq 1 ] ; then
       export LDFLAGS='-Wl,--as-needed'
       make install DESTDIR=$P
     fi
-    mkdir -p $P/usr/lib64/gimp/2.0/plug-ins
-    ( cd $P/usr/lib64/gimp/2.0/plug-ins ; ln -sf /usr/bin/xsane xsane )
+    mkdir -p $P/usr/${libdir}/gimp/2.0/plug-ins
+    ( cd $P/usr/${libdir}/gimp/2.0/plug-ins ; ln -sf /usr/bin/xsane xsane )
   done
 ######################################################################
 # * make install でコピーされないファイルがある場合はここに記述します。
