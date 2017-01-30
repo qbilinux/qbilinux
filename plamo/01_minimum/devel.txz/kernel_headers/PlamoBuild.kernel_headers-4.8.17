@@ -7,14 +7,21 @@ url="https://www.kernel.org/pub/linux/kernel/v4.x/linux-4.8.17.tar.xz
     ftp://plamo.linet.gr.jp/pub/Plamo-test/kernelsrc_patches/mcp/4.8-panic_beep.patch
     ftp://plamo.linet.gr.jp/pub/Plamo-test/kernelsrc_patches/mcp/4.8-morse_code_panics.patch
     ftp://plamo.linet.gr.jp/pub/Plamo-test/kernelsrc_patches/toi/tuxonice-for-linux-4.8.0-2016-10-08.patch.bz2
-    ftp://plamo.linet.gr.jp/pub/Plamo-test/kernelsrc_patches/ovlfs/overlayfs-allow_unprivileged_mounts.patch
-    ftp://plamo.linet.gr.jp/pub/Plamo-test/kernelsrc_patches/config-4.8.5-plamoSMP"
+    ftp://plamo.linet.gr.jp/pub/Plamo-test/kernelsrc_patches/ovlfs/overlayfs-allow_unprivileged_mounts.patch"
 pkgbase=kernel_headers
-vers=4.8.17_plamoSMP
-arch=i386
+arch=`uname -m`
 build=P1m1
 src=linux-4.8.17
 patchfiles="vd_unicon-kernel-20170113-4.8.patch"
+configfile64="config-4.8.5-plamo64"
+configfile32="config-4.8.5-plamoSMP"
+if [ $arch = "x86_64" ]; then
+    vers=4.8.17_plamo64
+    configfile=$configfile64
+else
+    vers=4.8.17_plamoSMP
+    configfile=$configfile32
+fi
 OPT_CONFIG=""
 DOCS=""
 SRC_URL="http://circle2.org/pub/source/"
@@ -235,7 +242,7 @@ if [ $opt_config -eq 1 ] ; then
   patch -Np1 -i $W/4.8-morse_code_panics.patch
   bunzip2 -c $W/tuxonice-for-linux-4.8.0-2016-10-08.patch.bz2 | patch -Np1 -i -
   patch -Np1 -i $W/overlayfs-allow_unprivileged_mounts.patch
-  cp -p $W/config-4.8.5-plamoSMP .config
+  cp -p $W/${configfile} .config
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
@@ -304,6 +311,12 @@ if [ $opt_package -eq 1 ] ; then
       cp $W/$patch $docdir/$src/$patch
       gzip_one $docdir/$src/$patch
   done
+
+  cp $W/$configfile32 $docdir/$src/$configfile32
+  gzip_one $docdir/$src/$configfile32
+  cp $W/$configfile64 $docdir/$src/$configfile64
+  gzip_one $docdir/$src/$configfile64
+
   convert
   tar cvpf $pkg.tar -C $P `cd $P ; find usr/include -maxdepth 1 | tail -n+2`
   tar rvpf $pkg.tar -C $P usr/share/doc/$src
