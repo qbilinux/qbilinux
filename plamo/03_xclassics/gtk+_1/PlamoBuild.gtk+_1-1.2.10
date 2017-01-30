@@ -92,6 +92,7 @@ gzip_one() {
 
 compress() {
   for i in {$P,$P/usr}/{sbin,bin} ; do strip_bindir $i ; done
+  for i in {$P,$P/usr}/lib ; do strip_libdir $i ; done
   for i in {$P,$P/usr}/lib64 ; do strip_libdir $i ; done
   if [ -f $infodir/dir ] ; then rm -f $infodir/dir ; fi
   gzip_dir $infodir
@@ -130,6 +131,7 @@ prune_symlink() {
 
 convert() {
   for i in {$P,$P/usr}/{sbin,bin} ; do prune_symlink $i ; done
+  for i in {$P,$P/usr}/lib ; do prune_symlink $i ; done
   for i in {$P,$P/usr}/lib64 ; do prune_symlink $i ; done
   prune_symlink $infodir
   for i in `seq 9` n ; do prune_symlink $mandir/man$i ; done
@@ -215,7 +217,7 @@ if [ $opt_config -eq 1 ] ; then
   patch -Np1 -i $W/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-no_undefined.patch
   patch -Np1 -i $W/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-multilib.patch
   patch -Np1 -i $W/gtk+-1.2.10-config_update-1.patch
-  cp -p /usr/share/libtool/config/config.{guess,sub} .
+  #cp -p /usr/share/libtool/config/config.{guess,sub} .
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
