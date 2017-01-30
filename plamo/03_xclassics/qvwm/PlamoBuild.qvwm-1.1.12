@@ -19,6 +19,7 @@ OPT_CONFIG[1]=""
 DOCS[0]="README `echo doc/{COPYING,BUGS.{en,fr,jp},CHANGES.{en,jp}}`
     `echo doc/{FAQ,INSTALL,README,TODO}.{en,fr,jp}`"
 DOCS[1]="COPYING `echo README.{jp,en,fr}` `echo CHANGES.{jp,en}`"
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -98,6 +99,7 @@ gzip_one() {
 
 compress() {
   for i in {$P,$P/usr}/{sbin,bin} ; do strip_bindir $i ; done
+  for i in {$P,$P/usr}/lib ; do strip_libdir $i ; done
   for i in {$P,$P/usr}/lib64 ; do strip_libdir $i ; done
   if [ -f $infodir/dir ] ; then rm -f $infodir/dir ; fi
   gzip_dir $infodir
@@ -136,6 +138,7 @@ prune_symlink() {
 
 convert() {
   for i in {$P,$P/usr}/{sbin,bin} ; do prune_symlink $i ; done
+  for i in {$P,$P/usr}/lib ; do prune_symlink $i ; done
   for i in {$P,$P/usr}/lib64 ; do prune_symlink $i ; done
   prune_symlink $infodir
   for i in `seq 9` n ; do prune_symlink $mandir/man$i ; done
@@ -210,7 +213,7 @@ if [ $opt_config -eq 1 ] ; then
     if [ -x configure ] ; then
         export CC="gcc -I /usr/include $target -Wno-narrowing" 
         export CXX="g++ -I /usr/include $target -Wno-narrowing"
-      ./configure --prefix=/usr --libdir='${prefix}'/lib64 \
+      ./configure --prefix=/usr --libdir='${prefix}'/${libdir} \
           --infodir='${prefix}'/share/info \
           --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
     fi
@@ -276,14 +279,10 @@ if [ $opt_package -eq 1 ] ; then
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
-  convert
-  tar cvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/qvwm
-  tar rvpf $pkg.tar -C $P usr/include/X11/pixmaps
-  tar rvpf $pkg.tar -C $P usr/share/man/man1/qvwm.1x.gz
-  tar rvpf $pkg.tar -C $P usr/share/man/ja_JP.eucJP/man1/qvwm.1x.gz
-  tar rvpf $pkg.tar -C $P usr/share/man/fr_FR/man1/qvwm.1x.gz
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/doc -maxdepth 1 | tail -n+2`
-  touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi
