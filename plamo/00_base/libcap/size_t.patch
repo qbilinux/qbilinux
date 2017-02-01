@@ -1,0 +1,19 @@
+*** libcap-2.25/libcap/Makefile	2016-01-31 09:01:41.000000000 +0900
+--- build/libcap/Makefile	2017-02-01 21:37:36.853340797 +0900
+***************
+*** 22,28 ****
+  
+  ifeq ($(BUILD_GPERF),yes)
+  USE_GPERF_OUTPUT = $(GPERF_OUTPUT)
+! INCLUDE_GPERF_OUTPUT = -include $(GPERF_OUTPUT)
+  endif
+  
+  libcap.pc: libcap.pc.in
+--- 22,28 ----
+  
+  ifeq ($(BUILD_GPERF),yes)
+  USE_GPERF_OUTPUT = $(GPERF_OUTPUT)
+! INCLUDE_GPERF_OUTPUT = -include stddef.h -include $(GPERF_OUTPUT)
+  endif
+  
+  libcap.pc: libcap.pc.in
