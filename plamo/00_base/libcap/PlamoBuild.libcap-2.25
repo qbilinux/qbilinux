@@ -2,13 +2,14 @@
 
 ######################################################################
 pkgbase=libcap
-vers=2.22
-url="http://ftp.de.debian.org/debian/pool/main/libc/libcap2/libcap2_${vers}.orig.tar.gz"
+vers=2.25
+url="https://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2/libcap-${vers}.tar.xz"
 arch=`uname -m`
-build=P2m1
+build=P0m1
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="CHANGELOG License README"
+patchfiles='size_t.patch'
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -167,7 +168,7 @@ if [ $opt_download -eq 1 ] ; then
     case ${i##*.} in
     tar) tar xvpf ${i##*/} ;;
     gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    *) tar xpf ${i##*/} ;;
     esac
   done
 fi
@@ -177,6 +178,9 @@ if [ $opt_config -eq 1 ] ; then
   done
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
+    for patch in $patchfiles ; do
+       patch -p1 < $W/$patch
+    done
     if [ -f Makefile ] ; then
       make clean
     fi
@@ -241,6 +245,10 @@ if [ $opt_package -eq 1 ] ; then
       ln $docdir/$src/$myname.gz $docdir/${src[$i]}
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
+  done
+  for patch in $patchfiles ; do
+      cp $W/$patch $docdir/$src/$patch
+      gzip_one $docdir/$src/$patch
   done
   convert
   tar cvpf $pkg.tar -C $P `cd $P ; find sbin | tail -n+2`
