@@ -7,8 +7,13 @@ vers=1.51
 arch=`uname -m`
 build=P1m1
 src=$pkgbase-$vers
-OPT_CONFIG="--sharedstatedir=/var/games
-    --x-includes=/usr/include --x-libraries=/usr/lib64"
+if [ $arch = "x86_64" ]; then
+    OPT_CONFIG="--sharedstatedir=/var/games
+	--x-includes=/usr/include --x-libraries=/usr/lib64"
+else
+    OPT_CONFIG="--sharedstatedir=/var/games
+	--x-includes=/usr/include --x-libraries=/usr/lib"
+fi
 DOCS="INSTALL INSTALL.jp ChangeLog LICENSE README"
 patchfiles='xshisen-debian-bug213957.patch
 	xshisen-debian-bug289784.patch
