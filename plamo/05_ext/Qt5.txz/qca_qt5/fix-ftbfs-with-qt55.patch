@@ -1,0 +1,15 @@
+Description: Fix FTBFS with QT 5.5
+Author: Mateusz Łukasik <mati75@linuxmint.pl>
+Bug-Debian: https://bugs.debian.org/<put here>
+
+--- a/include/QtCrypto/qca_basic.h
++++ b/include/QtCrypto/qca_basic.h
+@@ -33,6 +33,8 @@
+ #ifndef QCA_BASIC_H
+ #define QCA_BASIC_H
+ 
++#include <QIODevice>
++
+ #include "qca_core.h"
+ 
+ // Qt5 comes with QStringLiteral for wrapping string literals, which Qt4 does
