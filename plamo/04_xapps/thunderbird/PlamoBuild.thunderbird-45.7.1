@@ -3,16 +3,16 @@ unset LS_BLOCK_SIZE
 export LANG=C
 ##############################################################
 pkgbase=thunderbird
-vers=45.3.0
+vers=45.7.1
 url="http://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/${vers}/source/${pkgbase}-${vers}.source.tar.xz"
 #verify=$url.asc
 arch=`uname -m`
-build=P1m1
+build=P0m1
 src=thunderbird-${vers}
 thunderbird_tag=THUNDERBIRD_${vers//./_}_RELEASE
 OPT_CONFIG=''
 DOCS='mail/README.html'
-patchfiles='thunderbird.desktop.patch'
+patchfiles='patch-b thunderbird.desktop.patch'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -200,10 +200,10 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
-    xz) tar xvpf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
+    xz) tar xpf ${i##*/} ;;
     esac
   done
 fi
@@ -319,8 +319,8 @@ fi
 if [ $opt_build -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
-    export CFLAGS="-isystem /usr/include $target"
-    export CPPFLAGS="-isystem /usr/include $target"
+    export CFLAGS="-I /usr/include $target"
+    export CPPFLAGS="-I /usr/include $target"
     export LDFLAGS='-Wl,--as-needed'
     make -f client.mk build
   done
