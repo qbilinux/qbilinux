@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=qca
-vers=2.1.0
-url="http://delta.affinix.com/download/qca/2.0/qca-${vers}.tar.gz"
+vers=2.1.1
+url="http://download.kde.org/stable/qca/2.1.1/src/qca-2.1.1.tar.xz"
 arch=`uname -m`
 build=P0m1
 src=qca-${vers}
-OPT_CONFIG=''
+OPT_CONFIG='-DQT4_BUILD=ON'
 DOCS='COPYING INSTALL README TODO installwin.bat'
 patchfiles=''
 compress=txz
@@ -187,7 +187,7 @@ if [ $opt_download -eq 1 ] ; then
     case ${i##*.} in
     tar) tar xvpf ${i##*/} ;;
     gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    *) tar xpf ${i##*/} ;;
     esac
   done
 fi
@@ -213,15 +213,15 @@ if [ $opt_config -eq 1 ] ; then
       if [ -x configure ] ; then
          export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
          export LDFLAGS='-Wl,--as-needed' 
-         export CC="gcc -isystem /usr/include $target" 
-         export CXX="g++ -isystem /usr/include $target "
+         export CC="gcc -I /usr/include $target -Wno-error=deprecated-declarations" 
+         export CXX="g++ -I /usr/include $target "
          ./configure --prefix=/usr --libdir=/usr/${libdir}  ${OPT_CONFIG[$i]}
      fi
        if [ -f $S/CMakeLists.txt ]; then
           export PKG_CONFIG_PATH=/opt/kde/${libdir}/pkgconfig:/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
           export LDFLAGS='-Wl,--as-needed' 
-          export CC="gcc -isystem /usr/include $target" 
-          export CXX="g++ -isystem /usr/include $target "
+          export CC="gcc -I /usr/include $target -Wno-error=deprecated-declarations" 
+          export CXX="g++ -I /usr/include $target "
        cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DLIB_INSTALL_DIR:PATH=/usr/${libdir} -DLIB_SUFFIX=$suffix ${OPT_CONFIG} $S
        fi
       if [ $? != 0 ]; then
