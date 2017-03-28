@@ -1,11 +1,10 @@
 #!/bin/sh
 ##############################################################
-#url='http://search.cpan.org/CPAN/authors/id/D/DM/DMEGG/SGMLSpm-1.03ii.tar.gz'
-url='http://pkgs.fedoraproject.org/repo/pkgs/perl-SGMLSpm/SGMLSpm-1.03ii.tar.gz/5bcb197fd42e67d51c739b1414d514a7/SGMLSpm-1.03ii.tar.gz'
+url="http://search.cpan.org/CPAN/authors/id/R/RA/RAAB/SGMLSpm-1.1.tar.gz"
 pkgbase=perl_SGMLSpm
-vers=1.03ii
+vers=1.1
 arch=`uname -m`
-build=P3m2
+build=P0m1
 src=SGMLSpm
 OPT_CONFIG=''
 DOCS='COPYING ChangeLog README TODO'
@@ -168,7 +167,7 @@ if [ $opt_package -eq 1 ] ; then
     perl_version=`perl -v | grep "^This is perl 5," | gawk '{print $9}' | tr -d '(v)' `
     if [ -f Makefile ] ; then
       mkdir -p $P/usr/bin
-      make install BINDIR=$P/usr/bin PERL5DIR=$P/usr/$libdir/perl5/site_perl/$perl_version MODULEDIR=$P/usr/$libdir/perl5/site_perl/$perl_version/SGMLS
+      make install BINDIR=$P/usr/bin PERL5DIR=$P/usr/$libdir/perl5/site_perl/ MODULEDIR=$P/usr/$libdir/perl5/site_perl/SGMLS
     fi
   done
 ######################################################################
