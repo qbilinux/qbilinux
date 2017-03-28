@@ -1,21 +1,21 @@
 #!/bin/sh -x
 
 ######################################################################
-url="https://www.kernel.org/pub/linux/kernel/v4.x/linux-4.9.9.tar.xz
+url="https://www.kernel.org/pub/linux/kernel/v4.x/linux-4.9.18.tar.xz
     git://github.com/sfjro/aufs4-standalone.git
     ftp://plamo.linet.gr.jp/pub/Plamo-test/kernelsrc_patches/ovlfs/overlayfs-allow_unprivileged_mounts.patch"
 pkgbase=kernel
 arch=`uname -m`
 build=P0m1
-src=linux-4.9.9
+src=linux-4.9.18
 patchfiles="vd_unicon-kernel-20170213-4.9.patch vd_unicon-kernel-fonts-20140614.patch"
 configfile64="config-4.9-plamo64"
 configfile32="config-4.9-plamoSMP"
 if [ $arch = "x86_64" ]; then
-    vers=4.9.9_plamo64
+    vers=4.9.18_plamo64
     configfile=$configfile64
 else
-    vers=4.9.9_plamoSMP
+    vers=4.9.18_plamoSMP
     configfile=$configfile32
 fi
 aufs_vers=4.9
