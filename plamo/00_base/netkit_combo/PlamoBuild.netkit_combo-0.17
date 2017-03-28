@@ -46,6 +46,8 @@ DOCS="README
     `echo netkit-tftp/{BUGS,ChangeLog,README}`
     `echo netkit-timed/{BUGS,ChangeLog,README,timed/CHANGES}`
     `echo netwrite/{COPYING,ChangeLog,README{,.old}}`"
+patchfiles='fixup_wait3_api_change.patch'
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -254,6 +256,11 @@ if [ $opt_config -eq 1 ] ; then
   cd $B
   gunzip -c $W/netkit-combo-0.17-diffs.patch.gz | patch -Np1 -i -
   gunzip -c $W/netkit-combo-0.17-tirpc.patch.gz | patch -Np1 -i -
+
+  for patch in $patchfiles ; do
+      patch -p1 < $W/$patch
+  done
+  
   find . -name "Makefile" -exec sed -i 's@$(RPCGEN)@& -Y /usr/bin@g' {} \;
   for i in $B/*/configure ; do sed -i '/^MANDIR=/s@man@share/man@g' $i ; done
   for i in `seq 0 $((${#B[@]} - 1))` ; do
@@ -316,6 +323,10 @@ if [ $opt_package -eq 1 ] ; then
       ln $docdir/$src/$myname.gz $docdir/${src[$i]}
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
+  done
+  for patch in $patchfiles ; do
+      cp $W/$patch $docdir/$src/$patch
+      gzip_one $docdir/$src/$patch
   done
   rm $docdir/$src/netkit-routed/ChangeLog.gz
   install2 $B/netkit-routed/ChangeLog $docdir/$src/netkit-routed
