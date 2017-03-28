@@ -2,12 +2,12 @@
 
 ######################################################################
 pkgbase=microcode_ctl
-vers=2.1_6
-url="https://fedorahosted.org/released/microcode_ctl/microcode_ctl-2.1-6.tar.xz
-    http://downloadmirror.intel.com/24616/eng/microcode-20150107.tgz"
+vers=2.1_11
+url="https://fedorahosted.org/released/microcode_ctl/microcode_ctl-2.1-11.tar.xz
+    https://downloadmirror.intel.com/26400/eng/microcode-20161104.tgz"
 arch=`uname -m`
-build=P3m1
-src=$pkgbase-2.1-6
+build=P0m1
+src=$pkgbase-2.1-11
 OPT_CONFIG=""
 DOCS="README Changelog"
 SRC_URL="http://circle2.org/pub/source/"
@@ -196,7 +196,7 @@ if [ $opt_build -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
-      make MICROCODE_INTEL=$W/microcode-20150107.tgz
+      make MICROCODE_INTEL=$W/microcode-20161104.tgz
     fi
   done
 fi
