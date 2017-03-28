@@ -1,6 +1,6 @@
 #!/bin/sh
 ##############################################################
-url='http://libgsm.sourcearchive.com/downloads/1.0.13-3/libgsm_1.0.13.orig.tar.gz'
+url='http://libgsm.sourcearchive.com/downloads/1.0.13-4/libgsm_1.0.13.orig.tar.gz'
 pkgbase=gsm
 vers=1.0_pl13
 arch=`uname -m`
