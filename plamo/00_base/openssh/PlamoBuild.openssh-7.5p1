@@ -2,10 +2,10 @@
 
 ######################################################################
 pkgbase=openssh
-vers=7.3p1
+vers=7.5p1
 url="http://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-${vers}.tar.gz"
 arch=`uname -m`
-build=P2m1
+build=P0m1
 src=$pkgbase-$vers
 patchfiles=""
 OPT_CONFIG="--sysconfdir=/etc/ssh --with-pam --with-privsep-user=sshd
