@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=remctl
-vers=3.2
+vers=3.12
 url="http://archives.eyrie.org/software/ARCHIVE/remctl/remctl-${vers}.tar.gz"
 arch=`uname -m`
-build=P3m1
+build=P0m1
 src=remctl-${vers}
-OPT_CONFIG='--disable-static --with-gssapi=/usr/heimdal --enable-reduced-depends --enable-perl --enable-python --enable-ruby --enable-php'
+OPT_CONFIG='--disable-static --with-gssapi=/usr/heimdal --enable-reduced-depends --enable-perl --enable-python --enable-ruby --enable-php --with-gssapi-includ=/usr/heimdal/include'
 DOCS='LICENSE NEWS README TODO'
 patchfiles=''
 compress=txz
@@ -150,8 +150,8 @@ if [ $opt_config -eq 1 ] ; then
       if [ -x configure ] ; then
          export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
          export LDFLAGS='-Wl,--as-needed' 
-         export CC="gcc -isystem /usr/include $target" 
-         export CXX="g++ -isystem /usr/include $target "
+         export CC="gcc -I /usr/include -I /usr/heimdal/include $target" 
+         export CXX="g++ -I /usr/include -I /usr/heimdal/include $target "
          ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
      fi
       if [ $? != 0 ]; then
