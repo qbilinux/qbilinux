@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url="https://download.savannah.gnu.org/releases/m17n/m17n-db-1.6.5.tar.gz"
+url="http://download.savannah.gnu.org/releases/m17n/m17n-db-1.7.0.tar.gz"
 pkgbase=m17n_db
-vers=1.6.5
+vers=1.7.0
 arch=noarch
 build=P1m1
-src=m17n-db-1.6.5
+src=m17n-db-1.7.0
 OPT_CONFIG=''
 DOCS='ABOUT-NLS AUTHORS COPYING ChangeLog INSTALL NEWS README'
 patchfiles=''
