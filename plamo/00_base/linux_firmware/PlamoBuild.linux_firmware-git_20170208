@@ -2,10 +2,11 @@
 
 ######################################################################
 pkgbase=linux_firmware
-vers=git_20160112
+vers=git_20170208
+git_vers=6d3bc88
 url="https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git"
 arch=noarch
-build=P2m1
+build=P0m1
 src=linux-firmware
 OPT_CONFIG=""
 DOCS="GPL-3 `echo LICENCE.{Abilis,IntcSST2,Marvell,OLPC}` LICENSE.radeon
@@ -182,7 +183,7 @@ if [ $opt_download -eq 1 ] ; then
     gz) tar xvpzf ${i##*/} ;;
     bz2) tar xvpjf ${i##*/} ;;
     git) ( cd `basename ${i##*/} .git`
-        git checkout origin/master ; git reset --hard 40e9ae8
+        git checkout origin/master ; git reset --hard ${git_vers}
         git set-file-times ) ;;
     esac
   done
