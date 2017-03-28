@@ -176,10 +176,10 @@ if [ $opt_config -eq 1 ] ; then
        patch -p1 < $W/$patch
     done
 
-    #if [ -f autogen.sh ] ; then
-    #  sh ./autogen.sh
-    #fi
-    autoreconf
+    if [ -f autogen.sh ] ; then
+      sh ./autogen.sh
+    fi
+    #autoreconf
 
     if [ -x configure ] ; then
       export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
@@ -220,7 +220,7 @@ if [ $opt_package -eq 1 ] ; then
     done
     if [ -f Makefile ] ; then
       export LDFLAGS='-Wl,--as-needed'
-      make install DESTDIR=$P
+      make install DESTDIR=$P -k
     fi
     ( cd $P/usr/bin ; mv docbook2man docbook2x-man ; mv docbook2texi docbook2x-texi )
     sed -i 's|http://docbook2x.sf.net/latest|/usr/share/docbook2X|g' $P/usr/bin/db2x_xsltproc
