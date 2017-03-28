@@ -1,9 +1,0 @@
-qhull & y & y & y & y
-&
-3次元データ操作ライブラリ
-&
-qhullは凸包(convex hull)、
-ドローネ三角形分割（Delaunay triangulation）、
-ボロノイ図（Voronoi diagram）などを作るためのソフトウェアです．
-&
-&

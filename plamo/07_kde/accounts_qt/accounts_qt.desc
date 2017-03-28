@@ -1,8 +1,0 @@
-accounts_qt & y & y & y & y
-&
-Qt版libaccounts
-&
-glib経由でオンラインアカウントデータベースを利用するための
-libaccounts_glibをQt経由で利用できるようにしたライブラリ
-&
-&
