@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=ImageMagick
-vers=7.0.4_5
-url="https://www.imagemagick.org/download/ImageMagick-7.0.4-5.tar.xz"
+vers=7.0.5_4
+url="https://www.imagemagick.org/download/ImageMagick-7.0.5-4.tar.xz"
 commitid=
 arch=`uname -m`
 build=P0m1
-src=ImageMagick-7.0.4-5
+src=ImageMagick-7.0.5-4
 OPT_CONFIG=''
 DOCS='AUTHORS.txt ChangeLog Install-mac.txt Install-unix.txt Install-vms.txt Install-windows.txt LICENSE NEWS.txt Platforms.txt QuickStart.txt README.txt'
 patchfiles=''
