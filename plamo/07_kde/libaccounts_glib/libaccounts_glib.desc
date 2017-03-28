@@ -1,8 +1,0 @@
-libaccounts_glib & y & y & y & y
-&
-glib版 libaccounts
-&
-オンラインアカウントデータベースを利用するための
-機能をglib上に実装したライブラリ
-&
-&
