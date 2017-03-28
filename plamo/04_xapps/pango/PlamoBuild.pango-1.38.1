@@ -261,10 +261,6 @@ if [ $opt_package -eq 1 ] ; then
 ######################################################################
   mkdir -p $docdir/$src
   mkdir $P/install
- cat <<EOF >$P/install/initpkg
-/usr/bin/pango-querymodules > /etc/pango/pango.modules
-EOF
-
 
 # remove locales except ja
 # 
