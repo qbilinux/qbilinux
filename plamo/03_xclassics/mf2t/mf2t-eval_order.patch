@@ -1,0 +1,323 @@
+Path: g2news2.google.com!news3.google.com!feeder.news-service.com!188.40.43.213.MISMATCH!feeder.eternal-september.org!eternal-september.org!not-for-mail
+From: nide@ics.nara-wu.ac.jp (NIDE Naoyuki)
+Newsgroups: fj.sources
+Subject: patch for mf2t
+Date: Fri, 25 Dec 2009 17:54:32 GMT
+Organization: A noiseless patient Spider
+Lines: 305
+Message-ID: <091226025432.M0109852@yamane.ics.nara-wu.ac.jp>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-2022-jp
+Content-Transfer-Encoding: 7bit
+X-Trace: news.eternal-september.org U2FsdGVkX18yy6cSX91Y0u+R/CIVpavhmaUUS+uv7syj24dmbRCXmzLIl3PVtCv7Gx0zyLPDmpHmULD2B3P9De46KYuCn8FJJ7ObGn02/mvIU3AJQ8KebWFycAd05wU9nN43pGwrRCOiQOm9DyrCJA==
+X-Complaints-To: abuse@eternal-september.org
+NNTP-Posting-Date: Fri, 25 Dec 2009 17:54:33 +0000 (UTC)
+X-Newsreader: mnews [version 1.22PL7] 2003-09/29(Mon)
+X-Auth-Sender: U2FsdGVkX18yB2AH3/7rVM2yObpE00ByPSwZ/hbDa7U=
+Cancel-Lock: sha1:N5xrMBDM89Pr5LN8TgjA7dXRl54=
+
+  新出@奈良女子大学であります。
+
+  MIDIファイルのテキスト化、およびその逆変換をするmf2t, t2mfというツール
+(1996年製!)が知られていますが、小規模なバグを発見したので、その修正パッ
+チです。
+
+  そのバグとは、mf2tのプログラムミスです。Cのソース中に、減算の被減数の
+方が減数よりも先に評価されないと正しく動かないコードが混じっていますが、
+Cにはそういう保証はないので、コンパイラ依存で正しく動くか動かないかが変
+わってしまいます。それを直すものです。なお、mf2t/t2mfはPlamo Linuxでもパッ
+ケージとして提供されているようですが、この点の修正がされていないようなの
+で、もしかすると同じ問題で正しく動いていないかもしれません。
+
+  ついでに、t2mfがシーク不能な出力先(パイプなど)にも正しい出力を行えるよ
+うな改良も追加しました。これにより、オリジナルのt2mfではできなかった
+
+    mf2t XXX.mid|perl -pe 's/(?<=n=)\d+/$& + 1/e'|t2mf|timidity /dev/stdin
+
+のようなこともできるようになっています。
+
+  ちなみに、オリジナルのmf2t/t2mfは
+
+	ftp://ftp.cs.ruu.nl/pub/MIDI/PROGRAMS/mf2tsrc.zip
+
+にあります。同じものを
+
+	ftp://hayabusa.ics.nara-wu.ac.jp/pub/nide/misc/orig_dist/mf2tsrc.tgz
+
+にも置きました。UNIX系でコンパイルするには、上記を展開後、この記事のパッ
+チをあてて、mf2tディレクトリにて make -f makefile.unx で大体いけるはずです。
+
+						nide@ics.nara-wu.ac.jp
+------------------------------------------------------------------------
+diff -ruN mf2t.orig/crack.c mf2t/crack.c
+--- mf2t.orig/crack.c	1993-06-09 18:24:20.000000000 +0900
++++ mf2t/crack.c	2009-12-25 16:58:02.000000000 +0900
+@@ -76,13 +76,13 @@
+ 	    pv = pvcon;
+ 	else
+ 	    {
+-	    if (++arg_index >= argc) return(NULL); 
++	    if (++arg_index >= argc) return('\0'); 
+ 	    pv = argv[arg_index];
+ 	    if (*pv != '-') 
+-		return(NULL);
++		return('\0');
+ 	    }
+ 	pv++;		/* skip '-' or prev. flag */
+-	if (*pv != NULL)
++	if (*pv != '\0')
+ 	    {
+ 	    if ((flgp=strchr(flags,*pv)) != NULL)
+ 		{
+@@ -100,6 +100,6 @@
+ 	    }
+ 	pvcon = NULL;
+ 	}
+-    return(NULL);
++    return('\0');
+     }
+ 
+diff -ruN mf2t.orig/makefile.unx mf2t/makefile.unx
+--- mf2t.orig/makefile.unx	1996-04-04 13:19:40.000000000 +0900
++++ mf2t/makefile.unx	2009-12-25 16:58:02.000000000 +0900
+@@ -1,9 +1,9 @@
+ # $Id: makefile.unx,v 1.3 1991/11/15 19:31:00 piet Rel $
+ 
+-CFLAGS = -O
++CFLAGS = -O2 -DUNIX
+ # If you have an old version of flex that defines yyleng
+ # as a macro rather than a variable, uncomment the following line:
+-# CFLAGS = -O -DNO_YYLENG_VAR
++# CFLAGS = -O2 -DUNIX -DNO_YYLENG_VAR
+ 
+ SRCS = crack.c mf2t.c midifile.c midifile.h t2mf.c t2mf.h \
+        t2mf.fl t2mflex.c yyread.c \
+@@ -16,16 +16,16 @@
+ all:	$(EXECS)
+ 
+ t2mf:	midifile.o t2mf.o t2mf.h t2mflex.o crack.o
+-	$(CC) t2mf.o midifile.o crack.o t2mflex.o -o t2mf
++	$(CC) -s t2mf.o midifile.o crack.o t2mflex.o -o t2mf
+ 	
+ t2mflex.c: t2mf.fl
+-	flex -is -Ce t2mf.fl
+-	mv lex.yy.c t2mflex.c
++	flex -i -s -Ce t2mf.fl && mv lex.yy.c t2mflex.c || touch t2mflex.c
++# if flex does not exist (or fails), use the attached t2mflex.c
+ 
+ t2mflex.o: t2mflex.c t2mf.h
+ 
+ mf2t:	midifile.o mf2t.o crack.o
+-	$(CC) mf2t.o midifile.o crack.o -o mf2t
++	$(CC) -s mf2t.o midifile.o crack.o -o mf2t
+ 
+ tar:	
+ 	tar cf mf2t.tar $(SRCS)
+@@ -33,3 +33,6 @@
+ 
+ zip:	$(SRCS)
+ 	zip -9 mf2t $(SRCS)
++
++clean:
++	rm -f *.o $(EXECS) core
+diff -ruN mf2t.orig/mf2t.c mf2t/mf2t.c
+--- mf2t.orig/mf2t.c	1995-12-15 16:36:08.000000000 +0900
++++ mf2t/mf2t.c	2009-12-25 16:58:17.000000000 +0900
+@@ -8,6 +8,11 @@
+ #include <stdio.h>
+ #include <ctype.h>
+ #include <fcntl.h>
++#ifdef __STDC__
++# include <stdlib.h> /* for exit() */
++# include <string.h> /* for strerror() */
++# include <errno.h> /* for errno */
++#endif
+ #include "midifile.h"
+ 
+ static int TrkNr;
+@@ -107,7 +112,7 @@
+ 	T0 = 0;
+ 	M0 = 0;
+ 	mfread();
+-	if (ferror(F)) error ("Output file error");
++	if (ferror(stdout)) error ("Output file error");
+ 	fclose(F);
+ 	exit(0);
+ }
+@@ -118,15 +123,24 @@
+ char *mode;
+ {
+ 	FILE *f;
++#ifndef __STDC__
+ 	extern int errno;
++# ifndef strerror
+ 	extern char *sys_errlist[];
++#  define strerror(n) sys_errlist[n]
++# endif
+ 	extern int sys_nerr;
++#endif
+ 	char *errmess;
+ 
+ 	if ( (f=fopen(name,mode)) == NULL ) {
+ 		(void) fprintf(stderr,"*** ERROR *** Cannot open '%s'!\n",name);
++#ifdef __STDC__
++		if (1)
++#else
+ 		if ( errno <= sys_nerr )
+-			errmess = sys_errlist[errno];
++#endif
++			errmess = strerror(errno);
+ 		else
+ 			errmess = "Unknown error!";
+ 		(void) fprintf(stderr,"************* Reason: %s\n",errmess);
+diff -ruN mf2t.orig/midifile.c mf2t/midifile.c
+--- mf2t.orig/midifile.c	1995-09-23 19:25:52.000000000 +0900
++++ mf2t/midifile.c	2009-12-25 16:58:02.000000000 +0900
+@@ -53,11 +53,19 @@
+ #endif
+ 
+ #include <stdio.h>
+-#include <malloc.h>
++#ifndef __STDC__
++# include <malloc.h>
++#else
++# include <stdlib.h> /* instead of <malloc.h> */
++#endif
+ 
+ char *strcpy(), *strcat();
+ /*char *malloc();*/
+-void exit(), free();
++void exit();
++/*void free();*/
++
++static readtrack(), badbyte(), metaevent(), sysex(), chanmessage();
++static msginit(), msgleng(), msgadd(), biggermsg();
+ 
+ /* public stuff */
+ 
+@@ -236,7 +244,10 @@
+ 		case 0xff:			/* meta event */
+ 
+ 			type = egetc();
+-			lookfor = Mf_toberead - readvarinum();
++			lookfor = readvarinum();
++			lookfor = Mf_toberead - lookfor; /* Modified by Nide;
++			   lookfor = Mf_toberead - readvarinum(); may not work
++			   because readvarinum() modifies Mf_toberead */
+ 			msginit();
+ 
+ 			while ( Mf_toberead > lookfor )
+@@ -247,7 +258,8 @@
+ 
+ 		case 0xf0:		/* start of system exclusive */
+ 
+-			lookfor = Mf_toberead - readvarinum();
++			lookfor = readvarinum();
++			lookfor = Mf_toberead - lookfor; /* Mod by Nide */
+ 			msginit();
+ 			msgadd(0xf0);
+ 
+@@ -262,7 +274,8 @@
+ 
+ 		case 0xf7:	/* sysex continuation or arbitrary stuff */
+ 
+-			lookfor = Mf_toberead - readvarinum();
++			lookfor = readvarinum();
++			lookfor = Mf_toberead - lookfor; /* Mod by Nide */
+ 
+ 			if ( ! sysexcontinue )
+ 				msginit();
+diff -ruN mf2t.orig/t2mf.c mf2t/t2mf.c
+--- mf2t.orig/t2mf.c	1995-12-15 16:35:24.000000000 +0900
++++ mf2t/t2mf.c	2009-12-25 17:03:31.000000000 +0900
+@@ -5,7 +5,13 @@
+  * Convert text file to a MIDI file.
+  */
+ 
+-#include <malloc.h>
++#ifndef __STDC__
++# include <malloc.h>
++#else
++# include <stdlib.h> /* instead of <malloc.h> */
++# include <string.h> /* for strerror() */
++# include <errno.h> /* for errno */
++#endif
+ #include <fcntl.h>
+ #include <stdio.h>
+ #include <ctype.h>
+@@ -66,6 +72,9 @@
+ {
+     	FILE *efopen();
+ 	int flg;
++#ifdef UNIX
++	FILE *Ftmp = NULL;
++#endif
+ 
+ 	while (flg = crack (argc, argv, "Rr", 0)) {
+ 		switch (flg) {
+@@ -91,6 +100,13 @@
+ #else
+         F = fdopen (fileno(stdout), "wb");
+ #endif
++#ifdef UNIX
++	if(lseek(fileno(F), 0L, 1) == -1L){
++	    Ftmp = F;
++	    if(NULL == (F = tmpfile()))
++		error("Can't create tmpfile"), exit(1);
++	}
++#endif
+       }
+ 
+     Mf_putc = fileputc;
+@@ -102,6 +118,16 @@
+     M0 = 0;
+     T0 = 0;
+     translate();
++    if(ferror(F)) error("Output file error"), exit(1);
++#ifdef UNIX
++    if(Ftmp != NULL){
++	int c;
++	rewind(F);
++	while(EOF != (c = getc(F))) putc(c, Ftmp);
++	if(ferror(Ftmp)) error("Output file error"), exit(1);
++	fclose(Ftmp);
++    }
++#endif
+     fclose(F);
+     fclose(yyin);
+     exit(0);
+@@ -113,15 +139,24 @@
+ char *mode;
+ {
+     FILE *f;
++#ifndef __STDC__
+     extern int errno;
++# ifndef strerror
+     extern char *sys_errlist[];
++#  define strerror(n) sys_errlist[n]
++# endif
+     extern int sys_nerr;
++#endif
+     char *errmess;
+ 
+     if ( (f=fopen(name,mode)) == NULL ) {
+         (void) fprintf(stderr,"*** ERROR *** Cannot open '%s'!\n",name);
++#ifdef __STDC__
++        if (1)
++#else
+         if ( errno <= sys_nerr )
+-            errmess = sys_errlist[errno];
++#endif
++            errmess = strerror(errno);
+         else
+             errmess = "Unknown error!";
+         (void) fprintf(stderr,"************* Reason: %s\n",errmess);
+diff -ruN mf2t.orig/t2mf.fl mf2t/t2mf.fl
+--- mf2t.orig/t2mf.fl	1993-01-22 14:17:32.000000000 +0900
++++ mf2t/t2mf.fl	2009-12-25 16:58:02.000000000 +0900
+@@ -96,3 +96,5 @@
+ <<EOF>>			return EOF;
+ 
+ %%
++
++int yywrap(){return 1;}
