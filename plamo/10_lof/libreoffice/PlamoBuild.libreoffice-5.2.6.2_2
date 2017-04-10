@@ -13,10 +13,10 @@ case $arch in
 esac
 
 #####################################################################################
-filename="LibreOffice_5.2.5_Linux_${archfile}_rpm.tar.gz"
-dirname="LibreOffice_5.2.5.1_Linux_${archfile}_rpm"
-rev=5.2.5.1-1
-downloaddir="http://download.documentfoundation.org/libreoffice/stable/5.2.5/rpm"
+filename="LibreOffice_5.2.6_Linux_${archfile}_rpm.tar.gz"
+dirname="LibreOffice_5.2.6.2_Linux_${archfile}_rpm"
+rev=5.2.6.2-2
+downloaddir="http://download.documentfoundation.org/libreoffice/stable/5.2.6/rpm"
 build=P0m1
 
 SRC_URL="http://circle2.org/pub/source/"
