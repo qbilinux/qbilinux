@@ -2,12 +2,12 @@
 
 ######################################################################
 pkgbase=git
-vers=2.8.3
+vers=2.12.2
 url="https://www.kernel.org/pub/software/scm/git/git-${vers}.tar.gz
     https://www.kernel.org/pub/software/scm/git/git-manpages-${vers}.tar.gz
     http://plamo.linet.gr.jp/~tamuki/src/git-set-file-times"
 arch=`uname -m`
-build=P1m1
+build=P0m1
 src=$pkgbase-$vers
 OPT_CONFIG="--sysconfdir=/etc"
 DOCS="COPYING INSTALL LGPL-2.1 README.md RelNotes command-list.txt"
@@ -185,9 +185,9 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
     esac
   done
 fi
