@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-1.4.4.tar.xz'
 pkgbase=gst_plugins_bad_1
-vers=1.4.4
+vers=1.10.4
+url="http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-${vers}.tar.xz"
 arch=`uname -m`
-build=P1m1
-src=gst-plugins-bad-1.4.4
+build=P0m1
+src=gst-plugins-bad-${vers}
 OPT_CONFIG=''
 DOCS='ABOUT-NLS AUTHORS COPYING COPYING.LIB ChangeLog INSTALL NEWS README RELEASE'
 patchfiles='xvid_add_pthread.patch'
@@ -122,9 +122,9 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
-    *) tar xvpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
+    *) tar xpf ${i##*/} ;;
     esac
   done
 fi
