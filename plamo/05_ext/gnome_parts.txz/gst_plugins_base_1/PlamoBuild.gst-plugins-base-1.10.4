@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-1.4.4.tar.xz'
 pkgbase=gst_plugins_base_1
-vers=1.4.4
+vers=1.10.4
+url="http://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-${vers}.tar.xz"
 arch=`uname -m`
-build=P1m1
-src=gst-plugins-base-1.4.4
+build=P0m1
+src=gst-plugins-base-${vers}
 OPT_CONFIG=''
 DOCS='ABOUT-NLS AUTHORS COPYING COPYING.LIB ChangeLog INSTALL NEWS README RELEASE'
 patchfiles=''
@@ -122,9 +122,9 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
-    *) tar xvpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
+    *) tar xpf ${i##*/} ;;
     esac
   done
 fi
@@ -154,8 +154,8 @@ if [ $opt_config -eq 1 ] ; then
     elif [ -x configure ] ; then
        export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
        export LDFLAGS='-Wl,--as-needed' 
-       export CC="gcc -isystem /usr/include $target" 
-       export CXX="g++ -isystem /usr/include $target "
+       export CC="gcc -I /usr/include $target" 
+       export CXX="g++ -I /usr/include $target "
        ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
     fi
       if [ $? != 0 ]; then
