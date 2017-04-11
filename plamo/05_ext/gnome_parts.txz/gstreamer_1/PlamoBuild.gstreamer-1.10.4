@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.4.4.tar.xz'
 pkgbase=gstreamer_1
-vers=1.4.4
+vers=1.10.4
+url="http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-${vers}.tar.xz"
 arch=`uname -m`
-build=P1m1
-src=gstreamer-1.4.4
+build=P0m1
+src=gstreamer-${vers}
 OPT_CONFIG=''
 DOCS='ABOUT-NLS AUTHORS COPYING ChangeLog INSTALL MAINTAINERS NEWS README RELEASE TODO'
 patchfiles=''
