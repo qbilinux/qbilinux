@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
 pkgbase=proftpd
-vers=1.3.5b
+vers=1.3.6
 url="ftp://ftp.proftpd.org/distrib/source/proftpd-${vers}.tar.gz"
 verify=$url.asc
 arch=`uname -m`
-build=P1m1
+build=P0m1
 src=${pkgbase}-${vers}
 OPT_CONFIG='--enable-dso --enable-ipv6 --enable-openssl --with-modules=mod_tls:mod_auth_pam --with-shared=mod_sftp:mod_sftp_pam'
-DOCS='COPYING ChangeLog INSTALL NEWS README README.AIX README.DSO README.FreeBSD README.IPv6 README.LDAP README.PAM README.Solaris2.5x README.Unixware README.capabilities README.classes README.controls README.cygwin README.facl README.modules README.ports RELEASE_NOTES'
+DOCS='COPYING CREDITS ChangeLog INSTALL NEWS README.AIX README.DSO README.FreeBSD README.IPv6 README.LDAP README.PAM README.Solaris2.5x README.Unixware README.capabilities README.classes README.controls README.cygwin README.facl README.modules README.ports RELEASE_NOTES'
 patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
@@ -155,9 +155,9 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
-    *) tar xvpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
+    *) tar xpf ${i##*/} ;;
     esac
   done
 fi
