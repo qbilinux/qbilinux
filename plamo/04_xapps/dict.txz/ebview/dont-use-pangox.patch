@@ -1,0 +1,217 @@
+Description: Don't check for pangox, it's not needed.
+Bug-Debian: 
+Author: Emilio Pozuelo Monfort <pochu@debian.org>
+
+--- a/configure
++++ b/configure
+@@ -782,8 +782,8 @@
+ build_cpu
+ build
+ LIBTOOL
+-PANGOX_LIBS
+-PANGOX_CFLAGS
++PANGO_LIBS
++PANGO_CFLAGS
+ GTK_LIBS
+ GTK_CFLAGS
+ PKG_CONFIG
+@@ -909,8 +909,8 @@
+ PKG_CONFIG
+ GTK_CFLAGS
+ GTK_LIBS
+-PANGOX_CFLAGS
+-PANGOX_LIBS
++PANGO_CFLAGS
++PANGO_LIBS
+ XMKMF'
+ 
+ 
+@@ -1564,9 +1564,9 @@
+   PKG_CONFIG  path to pkg-config utility
+   GTK_CFLAGS  C compiler flags for GTK, overriding pkg-config
+   GTK_LIBS    linker flags for GTK, overriding pkg-config
+-  PANGOX_CFLAGS
+-              C compiler flags for PANGOX, overriding pkg-config
+-  PANGOX_LIBS linker flags for PANGOX, overriding pkg-config
++  PANGO_CFLAGS
++              C compiler flags for PANGO, overriding pkg-config
++  PANGO_LIBS  linker flags for PANGO, overriding pkg-config
+   XMKMF       Path to xmkmf, Makefile generator for X Window System
+ 
+ Use these variables to override the choices made by `configure' or to help
+@@ -5862,20 +5862,20 @@
+ 
+ 
+ pkg_failed=no
+-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for PANGOX" >&5
+-$as_echo_n "checking for PANGOX... " >&6; }
++{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for PANGO" >&5
++$as_echo_n "checking for PANGO... " >&6; }
+ 
+ if test -n "$PKG_CONFIG"; then
+-    if test -n "$PANGOX_CFLAGS"; then
+-        pkg_cv_PANGOX_CFLAGS="$PANGOX_CFLAGS"
++    if test -n "$PANGO_CFLAGS"; then
++        pkg_cv_PANGO_CFLAGS="$PANGO_CFLAGS"
+     else
+         if test -n "$PKG_CONFIG" && \
+-    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"pangox\""; } >&5
+-  ($PKG_CONFIG --exists --print-errors "pangox") 2>&5
++    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"pango\""; } >&5
++  ($PKG_CONFIG --exists --print-errors "pango") 2>&5
+   ac_status=$?
+   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+   test $ac_status = 0; }; then
+-  pkg_cv_PANGOX_CFLAGS=`$PKG_CONFIG --cflags "pangox" 2>/dev/null`
++  pkg_cv_PANGO_CFLAGS=`$PKG_CONFIG --cflags "pango" 2>/dev/null`
+ else
+   pkg_failed=yes
+ fi
+@@ -5884,16 +5884,16 @@
+ 	pkg_failed=untried
+ fi
+ if test -n "$PKG_CONFIG"; then
+-    if test -n "$PANGOX_LIBS"; then
+-        pkg_cv_PANGOX_LIBS="$PANGOX_LIBS"
++    if test -n "$PANGO_LIBS"; then
++        pkg_cv_PANGO_LIBS="$PANGO_LIBS"
+     else
+         if test -n "$PKG_CONFIG" && \
+-    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"pangox\""; } >&5
+-  ($PKG_CONFIG --exists --print-errors "pangox") 2>&5
++    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"pango\""; } >&5
++  ($PKG_CONFIG --exists --print-errors "pango") 2>&5
+   ac_status=$?
+   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+   test $ac_status = 0; }; then
+-  pkg_cv_PANGOX_LIBS=`$PKG_CONFIG --libs "pangox" 2>/dev/null`
++  pkg_cv_PANGO_LIBS=`$PKG_CONFIG --libs "pango" 2>/dev/null`
+ else
+   pkg_failed=yes
+ fi
+@@ -5912,22 +5912,22 @@
+         _pkg_short_errors_supported=no
+ fi
+         if test $_pkg_short_errors_supported = yes; then
+-	        PANGOX_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "pangox"`
++	        PANGO_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "pango"`
+         else
+-	        PANGOX_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "pangox"`
++	        PANGO_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "pango"`
+         fi
+ 	# Put the nasty error message in config.log where it belongs
+-	echo "$PANGOX_PKG_ERRORS" >&5
++	echo "$PANGO_PKG_ERRORS" >&5
+ 
+-	as_fn_error "Package requirements (pangox) were not met:
++	as_fn_error "Package requirements (pango) were not met:
+ 
+-$PANGOX_PKG_ERRORS
++$PANGO_PKG_ERRORS
+ 
+ Consider adjusting the PKG_CONFIG_PATH environment variable if you
+ installed software in a non-standard prefix.
+ 
+-Alternatively, you may set the environment variables PANGOX_CFLAGS
+-and PANGOX_LIBS to avoid the need to call pkg-config.
++Alternatively, you may set the environment variables PANGO_CFLAGS
++and PANGO_LIBS to avoid the need to call pkg-config.
+ See the pkg-config man page for more details.
+ " "$LINENO" 5
+ elif test $pkg_failed = untried; then
+@@ -5937,15 +5937,15 @@
+ is in your PATH or set the PKG_CONFIG environment variable to the full
+ path to pkg-config.
+ 
+-Alternatively, you may set the environment variables PANGOX_CFLAGS
+-and PANGOX_LIBS to avoid the need to call pkg-config.
++Alternatively, you may set the environment variables PANGO_CFLAGS
++and PANGO_LIBS to avoid the need to call pkg-config.
+ See the pkg-config man page for more details.
+ 
+ To get pkg-config, see <http://pkg-config.freedesktop.org/>.
+ See \`config.log' for more details." "$LINENO" 5; }
+ else
+-	PANGOX_CFLAGS=$pkg_cv_PANGOX_CFLAGS
+-	PANGOX_LIBS=$pkg_cv_PANGOX_LIBS
++	PANGO_CFLAGS=$pkg_cv_PANGO_CFLAGS
++	PANGO_LIBS=$pkg_cv_PANGO_LIBS
+         { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+ $as_echo "yes" >&6; }
+ 	:
+--- a/src/preference.c
++++ b/src/preference.c
+@@ -24,11 +24,7 @@
+ #include <langinfo.h>
+ #endif
+ 
+-#ifdef __WIN32__
+-#include <pango/pangowin32.h>
+-#else
+-#include <pango/pangox.h>
+-#endif
++#include <pango/pango.h>
+ 
+ #include "dictbar.h"
+ #include "selection.h"
+@@ -420,30 +416,18 @@
+ 	desc = pango_font_description_from_string(fontset_normal);
+ 	lang =  pango_language_from_string("ja");
+ 
+-#ifdef __WIN32__
+-	fontmap = pango_win32_font_map_for_display();
+-#else
+-	display = gdk_x11_drawable_get_xdisplay(main_window->window);
+-	if(display == NULL){
+-		LOG(LOG_INFO, "display == NULL");
++	context = gtk_widget_get_pango_context(main_window);
++	if(context == NULL){
++		LOG(LOG_INFO, "context == NULL");
+ 		return;
+ 	}
+ 
+-	fontmap = pango_x_font_map_for_display(display);
+-#endif
+-
++	fontmap = pango_context_get_font_map (context);
+ 	if(fontmap == NULL){
+ 		LOG(LOG_INFO, "fontmap == NULL");
+ 		return;
+ 	}
+ 
+-
+-	context = gtk_widget_get_pango_context(main_window);
+-	if(context == NULL){
+-		LOG(LOG_INFO, "context == NULL");
+-		return;
+-	}
+-
+ 	fontset = pango_font_map_load_fontset(fontmap,
+ 					      context,
+ 					      desc,
+--- a/src/Makefile.in
++++ b/src/Makefile.in
+@@ -166,8 +166,8 @@
+ PACKAGE_TARNAME = @PACKAGE_TARNAME@
+ PACKAGE_URL = @PACKAGE_URL@
+ PACKAGE_VERSION = @PACKAGE_VERSION@
+-PANGOX_CFLAGS = @PANGOX_CFLAGS@
+-PANGOX_LIBS = @PANGOX_LIBS@
++PANGO_CFLAGS = @PANGO_CFLAGS@
++PANGO_LIBS = @PANGO_LIBS@
+ PATH_SEPARATOR = @PATH_SEPARATOR@
+ PKG_CONFIG = @PKG_CONFIG@
+ POFILES = @POFILES@
+@@ -240,9 +240,9 @@
+ AM_CPPFLAGS = @EBCONF_PTHREAD_CPPFLAGS@ @EBCONF_EBINCS@ \
+              @EBCONF_ZLIBINCS@ @EBCONF_INTLINCS@
+ 
+-AM_CFLAGS = @PANGOX_CFLAGS@ @GTK_CFLAGS@ @EBCONF_PTHREAD_CFLAGS@  @CYGWIN_CFLAGS@ -Wall
+-AM_CXXFLAGS = @PANGOX_CFLAGS@ @GTK_CFLAGS@ @EBCONF_PTHREAD_CFLAGS@
+-ebview_LDADD = @PANGOX_LIBS@ @GTK_LIBS@ @THREAD_LIBS@ @CYGWIN_CFLAGS@ \
++AM_CFLAGS = @PANGO_CFLAGS@ @GTK_CFLAGS@ @EBCONF_PTHREAD_CFLAGS@  @CYGWIN_CFLAGS@ -Wall
++AM_CXXFLAGS = @PANGO_CFLAGS@ @GTK_CFLAGS@ @EBCONF_PTHREAD_CFLAGS@
++ebview_LDADD = @PANGO_LIBS@ @GTK_LIBS@ @THREAD_LIBS@ @CYGWIN_CFLAGS@ \
+                @EBCONF_EBLIBS@ @EBCONF_ZLIBLIBS@ @EBCONF_INTLLIBS@ @RES_FILE@ @EXTRA_LIBS@
+ 
+ ebview_LDFLAGS = @EBCONF_PTHREAD_LDFLAGS@

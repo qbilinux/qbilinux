@@ -1,0 +1,18 @@
+--- a/src/dialog.c
++++ b/src/dialog.c
+@@ -69,6 +69,7 @@
+ 					GTK_DIALOG_DESTROY_WITH_PARENT /* | GTK_DIALOG_NO_SEPARATOR */,
+ 					GTK_MESSAGE_WARNING,
+ 					GTK_BUTTONS_OK,
++					"%s",
+ 					g_message);
+ 	gtk_dialog_run(GTK_DIALOG(dialog));
+ 	gtk_widget_destroy(dialog);
+@@ -98,6 +99,7 @@
+ 					GTK_DIALOG_DESTROY_WITH_PARENT /* | GTK_DIALOG_NO_SEPARATOR */,
+ 					GTK_MESSAGE_ERROR,
+ 					GTK_BUTTONS_CLOSE,
++					"%s",
+ 					g_message);
+ 					
+ 	gtk_dialog_run(GTK_DIALOG(dialog));
