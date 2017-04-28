@@ -1,15 +1,15 @@
 #!/bin/sh
 ##############################################################
 pkgbase=emacs
-vers=25.1
-url="http://ftp.jaist.ac.jp/pub/GNU/emacs/emacs-${vers}.tar.xz http://homepage1.nifty.com/blankspace/emacs/wb-line-number.el"
+vers=25.2
+url="http://ftp.jaist.ac.jp/pub/GNU/emacs/emacs-${vers}.tar.xz"
 verify=
 arch=`uname -m`
 build=P0m1
 src=${pkgbase}-${vers}
-OPT_CONFIG='--with-xim --with-x --with-x-toolkit=gtk3 --without-rsvg --without-gsettings --without-selinux'
+OPT_CONFIG='--without-all --without-x'
 DOCS='COPYING ChangeLog INSTALL README'
-patchfiles='emacs-24.2-add_txz.patch imagemagic-7.patch'
+patchfiles='emacs-24.2-add_txz.patch'
 file2='wb-line-number.el'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
@@ -174,10 +174,8 @@ pkgbin=${pkgbase}_bin-$vers-$arch-$build
 pkglib=${pkgbase}_lib-$vers-noarch-$build
 
 if [ $arch = "x86_64" ]; then
-    target="-m64"
     libdir="lib64"
 else
-    target="-m32"
     libdir="lib"
 fi
 
@@ -227,7 +225,6 @@ if [ $opt_download -eq 1 ] ; then
     *) tar xpf ${i##*/} ;;
     esac
   done
-  #if [ ! -f menu-tree-el-0.97/"${file1}" ] ; then wget -O ${file1}.tar.gz $file1_url ; tar xvf ${file1}.tar.gz; fi
 fi
 if [ $opt_config -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
@@ -250,7 +247,7 @@ if [ $opt_config -eq 1 ] ; then
     if [ -x configure ] ; then
        export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
        export LDFLAGS='-Wl,--as-needed' 
-        CC="gcc -isystem /usr/include $target" CXX="g++ -isystem /usr/include $target " \
+        CC="gcc -isystem /usr/include" CXX="g++ -isystem /usr/include" \
           ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
       if [ $? != 0 ]; then
 	  echo "configure error. $0 script stop"
@@ -276,6 +273,7 @@ if [ $opt_package -eq 1 ] ; then
     fi
   fi
   if [ -d $P ] ; then rm -rf $P ; fi ; mkdir -p $P
+  if [ -d ${P}_mini ] ; then rm -rf ${P}_mini ; fi ; mkdir -p ${P}_mini
   if [ -d ${P}_bin ] ; then rm -rf ${P}_bin ; fi ; mkdir -p ${P}_bin
   if [ -d ${P}_lib ] ; then rm -rf ${P}_lib ; fi
   if [ -d $C ] ; then rm -rf $C ; fi ; mkdir -p $C
@@ -294,7 +292,6 @@ if [ $opt_package -eq 1 ] ; then
 # * make install でコピーされないファイルがある場合はここに記述します。
 ######################################################################
   mkdir -p $P/usr/share/emacs/site-lisp
-  #install $W/menu-tree-el-0.97/$file1 $P/usr/share/emacs/site-lisp/
   install $W/${file2##*/} $P/usr/share/emacs/site-lisp/
 
   if [ -d $P/usr/share/omf ]; then
@@ -342,8 +339,6 @@ EOF
 # * 他のアーカイブから追加したいファイルがある場合はここに記述します。
 ######################################################################
   mkdir -p $P/usr/share/doc/$src
-  #cp $W/menu-tree-el-0.97/$file1 $P/usr/share/doc/$src
-  cp $W/${file2##*/} $P/usr/share/doc/$src
   for i in `seq 0 $((${#DOCS[@]} - 1))` ; do
     for j in ${DOCS[$i]} ; do
       for k in ${S[$i]}/$j ; do
@@ -366,6 +361,10 @@ EOF
       cp $W/$patch $docdir/$src/$patch
       gzip_one $docdir/$src/$patch
   done
+  for patch in $file2 ; do
+      cp $W/$patch $docdir/$src/$patch
+      gzip_one $docdir/$src/$patch
+  done
 ######################################################################
 # * ドキュメントツリーの調整が必要な場合はここに記述します。
 ######################################################################
@@ -381,31 +380,31 @@ EOF
 # tar rvpf $pkg.tar -C $P usr/share/doc/$src
 # touch -t `date '+%m%d0000'` $pkg.tar ; gzip $pkg.tar ; touch $pkg.tar.gz
 # mv $pkg.tar.gz $pkg.tgz
-  mv $P ${P}_lib
+  cp -pr $P ${P}_lib
   
-  mkdir -p ${P}/usr/bin
-  mkdir -p ${P}/usr/share/doc
-  mv ${P}_lib/usr/bin/emacs-$vers ${P}/usr/bin/emacs-$vers
+  mkdir -p ${P}_mini/usr/bin
+  mkdir -p ${P}_mini/usr/share/doc
+  mv ${P}_lib/usr/bin/emacs-$vers ${P}_mini/usr/bin/emacs_mini-$vers
   (cd ${P}_lib/usr/bin; rm emacs)
-  (cd ${P}/usr/bin; ln -sf emacs-$vers emacs)
-  mv ${P}_lib/usr/share/doc/$src ${P}/usr/share/doc/${pkgbase}-$vers
+  (cd ${P}_mini/usr/bin; ln -sf emacs_mini-$vers emacs_mini)
+  mv ${P}_lib/usr/share/doc/$src ${P}_mini/usr/share/doc/${pkgbase}_mini-$vers
 
   #
   mkdir -p ${P}_bin/usr
   mv ${P}_lib/usr/bin ${P}_lib/usr/libexec ${P}_bin/usr
-#   cd ${P}_bin
-#   /sbin/makepkg ../${pkgbin}.$compress <<EOF
-# y
-# 1
-# EOF
-#   cd ${P}_lib
-#   /sbin/makepkg ../${pkglib}.$compress <<EOF
-# y
-# 1
-# EOF
+  cd ${P}_bin
+  /sbin/makepkg ../${pkgbin}.$compress <<EOF
+y
+1
+EOF
+  cd ${P}_lib
+  /sbin/makepkg ../${pkglib}.$compress <<EOF
+y
+1
+EOF
   
-  cd ${P}
-  /sbin/makepkg ../${pkg}.$compress <<EOF
+  cd ${P}_mini
+  /sbin/makepkg ../${pkgmini}.$compress <<EOF
 y
 1
 EOF
