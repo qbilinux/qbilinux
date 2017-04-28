@@ -1,15 +1,14 @@
 #!/bin/sh
 ##############################################################
-url='http://www.ece.uvic.ca/~mdadams/jasper/software/jasper-1.900.1.zip'
 pkgbase=jasper
-vers=1.900.1
+vers=2.0.12
+url="http://www.ece.uvic.ca/~mdadams/jasper/software/jasper-${vers}.tar.gz"
 arch=`uname -m`
-build=P4m1
-src=jasper-1.900.1
+build=P0m1
+src=jasper-${vers}
 OPT_CONFIG='--enable-shared --disable-static'
-DOCS='ChangeLog INSTALL LICENSE NEWS README'
-# http://www.linuxfromscratch.org/patches/blfs/svn/jasper-1.900.1-security_fixes-1.patch
-patchfiles='01-misc-fixes.patch 02-fix-filename-buffer-overflow.patch 03-CVE-2011-4516-and-CVE-2011-4517.patch 04-CVE-2014-9029.patch 05-CVE-2014-8137.patch 06-CVE-2014-8138.patch 07-CVE-2014-8157.patch 08-CVE-2014-8158.patch'
+DOCS='COPYRIGHT ChangeLog INSTALL LICENSE README'
+patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -213,13 +212,13 @@ if [ $opt_config -eq 1 ] ; then
     #   sh ./autogen.sh
     # fi
 
-      if [ -x configure ] ; then
-         export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
-         export LDFLAGS='-Wl,--as-needed' 
-         export CC="gcc -isystem /usr/include $target" 
-         export CXX="g++ -isystem /usr/include $target "
-         ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
-     fi
+      if [ -f $S/CMakeLists.txt ]; then
+          export PKG_CONFIG_PATH=/opt/kde/${libdir}/pkgconfig:/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
+          export LDFLAGS='-Wl,--as-needed' 
+          export CC="gcc -isystem /usr/include $target" 
+          export CXX="g++ -isystem /usr/include $target "
+	  cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX:PATH=/usr -DLIB_INSTALL_DIR:PATH=/usr/${libdir} -DLIB_SUFFIX=$suffix ${OPT_CONFIG} $S
+      fi
       if [ $? != 0 ]; then
 	  echo "configure error. $0 script stop"
 	  exit 255
