@@ -1,13 +1,13 @@
 #!/bin/sh
 ##############################################################
-url='http://llvm.org/releases/3.7.0/llvm-3.7.0.src.tar.xz
- http://llvm.org/releases/3.7.0/cfe-3.7.0.src.tar.xz
- http://llvm.org/releases/3.7.0/compiler-rt-3.7.0.src.tar.xz'
+url='http://llvm.org/releases/4.0.0/llvm-4.0.0.src.tar.xz
+ http://llvm.org/releases/4.0.0/cfe-4.0.0.src.tar.xz
+ http://llvm.org/releases/4.0.0/compiler-rt-4.0.0.src.tar.xz'
 pkgbase=llvm
-vers=3.7.0
+vers=4.0.0
 arch=`uname -m`
-build=P2m1
-src=llvm-3.7.0
+build=P0m1
+src=llvm-4.0.0
 # these configs translated into cmake style
 # OPT_CONFIG='--enable-libffi  
 #            --enable-optimized
@@ -130,7 +130,7 @@ if [ $opt_download -eq 1 ] ; then
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
     if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
-  tar xvf llvm-${vers}.src.tar.xz
+  tar xf llvm-${vers}.src.tar.xz
 fi
 
 if [ $opt_config -eq 1 ] ; then
@@ -142,10 +142,10 @@ if [ $opt_config -eq 1 ] ; then
 	cp -av llvm-${vers}.src/* $B
 	cd $B
 
-	tar xvf $W/cfe-${vers}.src.tar.xz -C tools
+	tar xf $W/cfe-${vers}.src.tar.xz -C tools
 	mv tools/cfe-${vers}.src tools/clang
 
-	tar xvf $W/compiler-rt-${vers}.src.tar.xz -C projects
+	tar xf $W/compiler-rt-${vers}.src.tar.xz -C projects
 	mv projects/compiler-rt-${vers}.src projects/compiler-rt
 
 	for patch in $patchfiles ; do
