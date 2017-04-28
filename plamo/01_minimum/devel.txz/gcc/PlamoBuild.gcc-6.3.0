@@ -4,18 +4,18 @@ pkgbase=gcc
 vers=6.3.0
 url="http://ftp.tsukuba.wide.ad.jp/software/gcc/releases/gcc-${vers}/gcc-${vers}.tar.bz2 http://isl.gforge.inria.fr/isl-0.18.tar.bz2"
 arch=`uname -m`
-build=P0m1
+build=P0m2
 src=gcc-${vers}
 if [ "$arch" = "x86_64" ]; then
     OPT_CONFIG='--build=x86_64-pc-linux-gnu --host=x86_64-pc-linux-gnu --libexecdir=/usr/lib64 
-   --enable-languages=c,c++,lto 
+   --enable-languages=c,c++,fortran,go,lto 
    --enable-shared --enable-threads=posix --enable-libmpx --with-system-zlib --with-isl --enable-__cxa_atexit 
    --disable-libunwind-exceptions  --disable-libstdcxx-pch --enable-clocale=gnu --enable-gnu-unique-object 
    --enable-linker-build-id --enable-lto --enable-plugin --enable-install-libiberty --with-linker-hash-style=gnu 
    --enable-gnu-indirect-function --disable-multilib --disable-werror  --enable-checking=release'
 else
     OPT_CONFIG='--build=i686-pc-linux-gnu --host=i686-pc-linux-gnu --libexecdir=/usr/lib
-   --enable-languages=c,c++,lto
+   --enable-languages=c,c++,fortran,go,lto
    --enable-shared --enable-threads=posix --enable-libmpx --with-system-zlib --with-isl --enable-__cxa_atexit 
    --disable-libunwind-exceptions  --disable-libstdcxx-pch --enable-clocale=gnu --enable-gnu-unique-object 
    --enable-linker-build-id --enable-lto --enable-plugin --enable-install-libiberty --with-linker-hash-style=gnu 
@@ -320,7 +320,7 @@ if [ $opt_package -eq 1 ] ; then
 #   に記述します(strip_{bin,lib}dir や gzip_{dir,one} を使います)。
 # * 他のアーカイブから追加したいファイルがある場合はここに記述します。
 ######################################################################
-  for i in cc1 cc1plus collect2 f951 lto1 ; do
+  for i in cc1 cc1plus collect2 f951 lto1 go1 ; do
       strip $P/usr/${libdir}/gcc/${arch}-pc-linux-gnu/$vers/$i
   done
   strip -g $P/usr/${libdir}/gcc/${arch}-pc-linux-gnu/$vers/libgcc.a
@@ -415,6 +415,7 @@ if [ $opt_package -eq 1 ] ; then
 y
 1
 EOF
+
 # for g++
   echo "building gcc-g++"
   popd
@@ -441,5 +442,49 @@ y
 1
 EOF
 
+# for fortran
+  echo "building gcc-fortran"
+  popd
+  pkgbase=gfortran
+  pkg=$pkgbase-$vers-$arch-$build
+  if [ -d $P ]; then rm -rf $P ; fi
+  mkdir -p $P/usr/bin $P/usr/${libdir} $P/usr/share/man/man1 $P/usr/share/info
+  mv $P2/usr/bin/{gfortran,${arch}-pc-linux-gnu-gfortran} $P/usr/bin
+  mv $P2/usr/${libdir}/libgfortran* $P/usr/${libdir}/
+  mv $P2/usr/${libdir}/libquadmath* $P/usr/${libdir}/
+  mv $P2/usr/share/info/gfortran.info.gz $P/usr/share/info/
+  mv $P2/usr/share/info/libquadmath.info.gz $P/usr/share/info/
+  mv $P2/usr/share/man/man1/gfortran.1.gz $P/usr/share/man/man1/
+
+  convert
+  pushd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
+# for GCC GO
+  echo "building gcc-go"
+  popd
+  pkgbase=gcc_go
+  pkg=$pkgbase-$vers-$arch-$build
+  if [ -d $P ]; then rm -rf $P ; fi
+  mkdir -p $P/usr/bin $P/usr/${libdir} $P/usr/share/man/man1 $P/usr/share/info
+  mv $P2/usr/bin/{gccgo,${arch}-pc-linux-gnu-gccgo} $P/usr/bin
+  mv $P2/usr/bin/{go,gofmt} $P/usr/bin
+  mv $P2/usr/${libdir}/libgo* $P/usr/${libdir}/
+  mv $P2/usr/${libdir}/libnetgo* $P/usr/${libdir}/
+  mv $P2/usr/${libdir}/go $P/usr/${libdir}/
+  mv $P2/usr/share/info/gccgo.info.gz $P/usr/share/info/
+  mv $P2/usr/share/man/man1/gccgo.1.gz $P/usr/share/man/man1
+  mv $P2/usr/share/man/man1/{go,gofmt}.1.gz $P/usr/share/man/man1
+
+
+  convert
+  pushd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
 
 fi
