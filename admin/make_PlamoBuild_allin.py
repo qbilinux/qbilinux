@@ -94,12 +94,14 @@ vers=%s
 url=%s
 commitid=
 arch=`uname -m`
-build=P1
+build=P0m1
 src=%s-${vers}
 OPT_CONFIG=''
 DOCS='%s'
 patchfiles='%s'
 compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 ''' % (pkgname, vers, url, filename, docs, patchs)
     return header
@@ -217,6 +219,8 @@ if [ $opt_download -eq 1 ] ; then
       fi
       ;;
     *)
+      if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+      if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
       if [ ! -f ${i##*/} ] ; then
         wget $i
         for sig in asc sig{,n} {md5,sha{1,256}}{,sum} ; do
@@ -231,20 +235,21 @@ if [ $opt_download -eq 1 ] ; then
           if [ $? -ne 0 ] ; then echo "archive verify failed" ; exit ; fi
         fi
       fi
+      if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
       ;;
     esac
   done
   for i in $url ; do
     case ${i##*.} in
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
     git) ( cd `basename ${i##*/} .git`
         git checkout master
         if [ -n "$commitid" ] ; then
           git reset --hard $commitid
         fi
         git set-file-times ) ;;
-    *) tar xvpf ${i##*/} ;;
+    *) tar xpf ${i##*/} ;;
     esac
   done
 fi
@@ -275,8 +280,8 @@ if [ $opt_config -eq 1 ] ; then
     if [ -x configure ] ; then
       export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
       export LDFLAGS='-Wl,--as-needed' 
-      export CFLAGS="-isystem /usr/include $target" 
-      export CPPFLAGS="-isystem /usr/include $target "
+      export CFLAGS="-I /usr/include $target" 
+      export CPPFLAGS="-I /usr/include $target "
       ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
     fi'''
     elif type == "KDE":
@@ -302,8 +307,8 @@ if [ $opt_config -eq 1 ] ; then
     if [ -f $S/CMakeLists.txt ]; then
       export PKG_CONFIG_PATH=/opt/kde/${libdir}/pkgconfig:/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
       export LDFLAGS='-Wl,--as-needed' 
-      export CC="gcc -isystem /usr/include $target" 
-      export CXX="g++ -isystem /usr/include $target"
+      export CC="gcc -I /usr/include $target" 
+      export CXX="g++ -I /usr/include $target"
       cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/kde -DLIB_INSTALL_DIR:PATH=/opt/kde/${libdir} -DLIB_SUFFIX=$suffix ${OPT_CONFIG} $S
     fi'''
 
