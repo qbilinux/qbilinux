@@ -1,0 +1,26 @@
+Index: b/src/Makefile.am
+===================================================================
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -5,7 +5,7 @@
+ AM_CFLAGS = @PANGOX_CFLAGS@ @GTK_CFLAGS@ @EBCONF_PTHREAD_CFLAGS@  @CYGWIN_CFLAGS@ -Wall
+ AM_CXXFLAGS = @PANGOX_CFLAGS@ @GTK_CFLAGS@ @EBCONF_PTHREAD_CFLAGS@
+ ebview_LDADD = @PANGOX_LIBS@ @GTK_LIBS@ @THREAD_LIBS@ @CYGWIN_CFLAGS@ \
+-               @EBCONF_EBLIBS@ @EBCONF_ZLIBLIBS@ @EBCONF_INTLLIBS@ @RES_FILE@ @EXTRA_LIBS@
++               @EBCONF_EBLIBS@ @EBCONF_ZLIBLIBS@ @EBCONF_INTLLIBS@ @RES_FILE@ @EXTRA_LIBS@ -lX11
+ ebview_LDFLAGS = @EBCONF_PTHREAD_LDFLAGS@
+ 
+ ebview_SOURCES = \
+Index: b/src/Makefile.in
+===================================================================
+--- a/src/Makefile.in
++++ b/src/Makefile.in
+@@ -243,7 +243,7 @@
+ AM_CFLAGS = @PANGO_CFLAGS@ @GTK_CFLAGS@ @EBCONF_PTHREAD_CFLAGS@  @CYGWIN_CFLAGS@ -Wall
+ AM_CXXFLAGS = @PANGO_CFLAGS@ @GTK_CFLAGS@ @EBCONF_PTHREAD_CFLAGS@
+ ebview_LDADD = @PANGO_LIBS@ @GTK_LIBS@ @THREAD_LIBS@ @CYGWIN_CFLAGS@ \
+-               @EBCONF_EBLIBS@ @EBCONF_ZLIBLIBS@ @EBCONF_INTLLIBS@ @RES_FILE@ @EXTRA_LIBS@
++               @EBCONF_EBLIBS@ @EBCONF_ZLIBLIBS@ @EBCONF_INTLLIBS@ @RES_FILE@ @EXTRA_LIBS@ -lX11
+ 
+ ebview_LDFLAGS = @EBCONF_PTHREAD_LDFLAGS@
+ ebview_SOURCES = \
