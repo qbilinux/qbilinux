@@ -2,8 +2,8 @@
 
 ######################################################################
 pkgbase=aspell6_en
-vers=7.1-0
-url="ftp://ftp.gnu.org/gnu/aspell/dict/en/aspell6-en-${vers}.tar.bz2"
+vers=7.1_0
+url="ftp://ftp.gnu.org/gnu/aspell/dict/en/aspell6-en-7.1-0.tar.bz2"
 arch=`uname -m`
 build=P2m1
 src=aspell6-en-7.1-0
