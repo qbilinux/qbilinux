@@ -1,0 +1,33 @@
+diff -Ewb -Naru wnn7.old/wnn7egg-com.el wnn7/wnn7egg-com.el
+--- wnn7.old/elisp/emacs20/wnn7egg-com.el	2011-07-20 15:50:02.000000000 +0900
++++ wnn7/elisp/emacs20/wnn7egg-com.el	2011-07-20 22:48:26.000000000 +0900
+@@ -313,10 +313,16 @@
+ (defun comm-unpack-u32 ()
+   (progn
+     (comm-require-process-output 4)
++    (if (= integer_width_29bit 1)
+     (+ (lsh (comm-following+forward-char) 24)
+        (lsh (comm-following+forward-char) 16)
+        (lsh (comm-following+forward-char) 8)
+-       (comm-following+forward-char))))
++	   (comm-following+forward-char))
++      ;; for 62bit width
++      (ash (lsh (+ (lsh (comm-following+forward-char) 24)
++		   (lsh (comm-following+forward-char) 16)
++		   (lsh (comm-following+forward-char) 8)
++		   (comm-following+forward-char)) 30) -30))))
+ 
+ (defun comm-unpack-u16 ()
+   (progn
+diff -Ewb -Naru wnn7.old/wnn7egg-edep.el wnn7/wnn7egg-edep.el
+--- wnn7.old/elisp/emacs20/wnn7egg-edep.el	2011-07-20 15:50:02.000000000 +0900
++++ wnn7/elisp/emacs20/wnn7egg-edep.el	2011-07-20 22:40:14.000000000 +0900
+@@ -57,7 +57,7 @@
+ 
+ ;;; Code:
+ 
+-
++(defconst integer_width_29bit (logxor (lsh (lsh 1 29) -29) 1))
+ (if (featurep 'xemacs)
+     (progn
+       (defun set-buffer-multibyte (flag)
