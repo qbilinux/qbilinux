@@ -1,0 +1,520 @@
+--- wnn7/elisp/emacs20/wnn7egg-cnv.el~	2002-05-26 15:00:00 +0000
++++ wnn7/elisp/emacs20/wnn7egg-cnv.el	2009-06-02 23:26:55 +0000
+@@ -883,6 +883,14 @@
+ 	  (undo-boundary))
+       (setq i (1+ i))
+       ))
++
++  ;; Workaround to remove position to which `undo' goes.
++  (if (car buffer-undo-list)
++      (if (numberp (cadr buffer-undo-list))
++	  (setcdr buffer-undo-list (nthcdr 2 buffer-undo-list)))
++    (if (numberp (nth 2 buffer-undo-list))
++	(setcdr (cdr buffer-undo-list) (nthcdr 3 buffer-undo-list))))
++
+   (setq egg:*sai-henkan-end* (point))
+   (wnn7-server-hindo-update)
+   (when egg-predict-status
+--- wnn7/elisp/emacs20/wnn7egg-com.el~	2002-05-26 15:00:00 +0000
++++ wnn7/elisp/emacs20/wnn7egg-com.el	2009-06-02 23:26:55 +0000
+@@ -73,6 +73,8 @@
+ ;; Japanese
+ 
+ (eval-and-compile
++  (if (string< mule-version "6.0") ;; Emacs 22 or lesser.
++      (progn
+ (define-ccl-program ccl-decode-fixed-euc-jp
+   `(2
+     ((r2 = ,(charset-id 'japanese-jisx0208))
+@@ -125,8 +127,24 @@
+       (read r0)
+       (repeat)))))
+ )
++;; From Handa-san. [mule-ja : No.09414]
++(define-charset 'fixed-euc-jp
++  "Fixed EUC Japanese"
++  :dimension 2
++  :superset '(ascii
++	      (katakana-jisx0201 . #x80)
++	      (japanese-jisx0208 . #x8080)
++	      (japanese-jisx0212 . #x8000)))
++
++(define-coding-system 'fixed-euc-jp
++  "Coding System for fixed EUC Japanese"
++  :mnemonic ?W
++  :coding-type 'charset
++  :charset-list '(fixed-euc-jp))
++))
+ 
+-(if (not (coding-system-p 'fixed-euc-jp))
++(if (and (string< mule-version "6.0") ;; Emacs 22 or lesser.
++	 (not (coding-system-p 'fixed-euc-jp)))
+     (make-coding-system 'fixed-euc-jp 4 ?W 
+ 		"Coding System for fixed EUC Japanese"
+ 		(cons ccl-decode-fixed-euc-jp ccl-encode-fixed-euc-jp)))
+--- wnn7/elisp/emacs20/wnn7egg-jsymbol.el~	2002-05-26 15:00:00 +0000
++++ wnn7/elisp/emacs20/wnn7egg-jsymbol.el	2009-06-02 23:26:55 +0000
+@@ -821,9 +821,9 @@
+     (while (<  32 ku)
+       (let ((ten 126))
+ 	(while (< 32 ten)
+-	  (setq result (cons 
+-			(let ((str (make-string 1 0)))
+-			  (aset str 0 (make-char 'japanese-jisx0208  ku ten))
++	  (setq result (cons
++			(let ((str (make-string
++				    1 (make-char 'japanese-jisx0208 ku ten))))
+ 			  (cons str str))
+ 			result))
+ 	  (setq ten (1- ten))))
+@@ -835,9 +835,9 @@
+     (while (<=  48 ku)
+       (let ((ten 126))
+ 	(while (<= 33 ten)
+-	  (setq result (cons 
+-			(let ((str (make-string 1 0)))
+-			  (aset str 0 (make-char 'japanese-jisx0208 ku ten))
++	  (setq result (cons
++			(let ((str (make-string
++				    1 (make-char 'japanese-jisx0208 ku ten))))
+ 			  (cons str str))
+ 			result))
+ 	  (setq ten (1- ten))))
+@@ -849,9 +849,9 @@
+     (while (<= 80 ku)
+       (let ((ten 126))
+ 	(while (<= 33 ten)
+-	  (setq result (cons 
+-			(let ((str (make-string 1 0)))
+-			  (aset str 0 (make-char 'japanese-jisx0208 ku ten))
++	  (setq result (cons
++			(let ((str (make-string
++				    1 (make-char 'japanese-jisx0208 ku ten))))
+ 			  (cons str str))
+ 			result))
+ 	  (setq ten (1- ten))))
+@@ -863,9 +863,9 @@
+     (while (<=  34 ku)
+       (let ((ten 126))
+ 	(while (<= 33 ten)
+-	  (setq result (cons 
+-			(let ((str (make-string 1 0))) ; by T.Shingu
+-			  (aset str 0 (make-char 'japanese-jisx0212 ku ten))
++	  (setq result (cons
++			(let ((str (make-string ; by T.Shingu
++				    1 (make-char 'japanese-jisx0212 ku ten))))
+ 			  (cons str str))
+ 			result))
+ 	  (setq ten (1- ten))))
+--- wnn7/elisp/emacs20/wnn7egg-rpc.el~	2002-05-26 15:00:00 +0000
++++ wnn7/elisp/emacs20/wnn7egg-rpc.el	2009-06-02 23:26:55 +0000
+@@ -1231,9 +1231,9 @@
+ 
+ (defmacro wnn7rpc-with-write-file (filename error-handler &rest body)
+   `(condition-case error
+-       (with-temp-file ,filename
+-	 (let ((coding-system-for-read 'no-conversion)
+-	       (coding-system-for-write 'no-conversion))
++       (let ((coding-system-for-read 'no-conversion)
++	     (coding-system-for-write 'no-conversion))
++	 (with-temp-file ,filename
+ 	   (set-buffer-multibyte nil)
+ 	   ,@body))
+      (file-error ,error-handler)))
+--- wnn7/elisp/emacs20/wnn7egg.el~	2002-05-26 15:00:00 +0000
++++ wnn7/elisp/emacs20/wnn7egg.el	2009-06-02 23:26:55 +0000
+@@ -435,8 +435,9 @@
+     (require 'overlay))
+ 
+ (if (not (featurep 'xemacs))
+-    (defun characterp (form)
++    (defun egg-characterp (form)
+       (numberp form))
++  (defalias 'egg-characterp 'characterp)
+   ;; 97.2.4 Created by J.Hein to simulate Mule-2.3
+   (defun egg-read-event ()
+     "FSFmacs event emulator that shoves non key events into
+@@ -451,7 +452,7 @@
+ 	      (setq ch (or (event-to-character event) key))
+ 	    (if (eq 1 (event-modifier-bits event))
+ 		(setq ch
+-		      (if (characterp key)
++		      (if (egg-characterp key)
+ 			  (or (int-to-char (- (char-to-int key) 96))
+ 			      (int-to-char (- (char-to-int key) 64)))
+ 			(event-to-character event)))
+@@ -461,14 +462,14 @@
+ 
+ (defun coerce-string (form)
+   (cond((stringp form) form)
+-       ((characterp form) (char-to-string form))))
++       ((egg-characterp form) (char-to-string form))))
+ 
+ (defun coerce-internal-string (form)
+   (cond((stringp form)
+ 	(if (= (length form) 1) 
+ 	    (string-to-char form)
+ 	  form))
+-       ((characterp form) form)))
++       ((egg-characterp form) form)))
+ 
+ ;;; kill-all-local-variables から保護する local variables を指定できる
+ ;;; ように変更する。
+@@ -707,10 +708,10 @@
+ 
+ (defun menu:item-string (item)
+   (cond ((stringp item) item)
+-	((characterp item) (char-to-string item))
++	((egg-characterp item) (char-to-string item))
+ 	((consp item)
+ 	 (let ((str (cond ((stringp (car item)) (car item))
+-			  ((characterp (car item)) (char-to-string (car item)))
++			  ((egg-characterp (car item)) (char-to-string (car item)))
+ 			  (t ""))))
+ 	   (if menu:*display-item-value*
+ 	       (format "%s [%s]" str (cdr item))
+@@ -719,7 +720,7 @@
+ 
+ (defun menu:item-value (item)
+   (cond ((stringp item) item)
+-	((characterp item) (char-to-string item))
++	((egg-characterp item) (char-to-string item))
+ 	((consp item) (cdr item))
+ 	(t "")))
+ 
+@@ -1297,13 +1298,14 @@
+ 			(for-each* (cdr vars) body)
+ 			(list 'setq tvar (list 'cdr tvar))))))))
+ 			     
+-(put 'dolist 'lisp-indent-hook 1)
+-
+-(defmacro dolist (pair &rest body)
+-  "(dolist (VAR LISTFORM) . BODY) はVAR に順次 LISTFORM の要素を束縛し
+-て BODY を実行する"
+-
+-  (for-each* (list pair) (cons 'progn body)))
++(eval-when-compile (require 'cl)) ;; dolist
++;;;(put 'dolist 'lisp-indent-hook 1)
++;;;
++;;;(defmacro dolist (pair &rest body)
++;;;  "(dolist (VAR LISTFORM) . BODY) はVAR に順次 LISTFORM の要素を束縛し
++;;;て BODY を実行する"
++;;;
++;;;  (for-each* (list pair) (cons 'progn body)))
+ 
+ ;;;
+ ;;; defrule
+@@ -1332,7 +1334,7 @@
+       (and (consp action)
+ 	   (or (stringp (car action))
+ 	       (and (consp (car action))
+-		    (characterp (car (car action))))
++		    (egg-characterp (car (car action))))
+ 	       (null (car action)))
+ 	   (or (null (car (cdr action)))
+ 	       (stringp (car (cdr action)))))))
+@@ -1667,15 +1669,15 @@
+ 	(insert ch))
+       
+       (defun its:ordinal-charp (ch)
+-	(and (characterp ch) (<= ch 127)
++	(and (egg-characterp ch) (<= ch 127)
+ 	     (eq (lookup-key fence-mode-map (char-to-string ch)) 'fence-self-insert-command)))
+       
+       (defun its:delete-charp (ch)
+-	(and (characterp ch) (<= ch 127)
++	(and (egg-characterp ch) (<= ch 127)
+ 	     (eq (lookup-key fence-mode-map (char-to-string ch)) 'fence-backward-delete-char)))
+       
+       (defun its:tabp (ch)
+-	(and (characterp ch) (<= ch 127)
++	(and (egg-characterp ch) (<= ch 127)
+ 	     (eq (lookup-key fence-mode-map (char-to-string ch)) 'egg-predict-start-parttime)))
+ 
+       (defvar egg:fence-buffer nil "Buffer fence is active in")
+@@ -1700,12 +1702,28 @@
+ 	  nil)
+       (following-char)))
+   
++  (defun its:read-char-exclusive (&optional prompt inherit-input-method)
++    "`read-char-exclusive' that behaves like the ones in Emacs 22 or older."
++    (let (event char mask base)
++      (while (not char)
++	(setq event (read-event prompt inherit-input-method)
++	      char nil)
++	;; The code stolen from poe.el.
++	(cond ((symbolp event)
++	       ;; mask is (BASE-TYPE MODIFIER-BITS) or nil.
++	       (if (and (setq mask (get event 'event-symbol-element-mask))
++			(setq base (get (car mask) 'ascii-character)))
++		   (setq char (logior base (car (cdr mask))))))
++	      ((integerp event)
++	       (setq char event))))
++      char))
++
+   (defun its:read-char ()
+     (if (= (point) its:*buff-e*)
+ 	(progn 
+ 	  (setq its:*char-from-buff* nil)
+ 	  (if its:*interactive*
+-	      (read-char-exclusive)
++	      (its:read-char-exclusive)
+ 	    nil))
+       (let ((ch (following-char)))
+ 	(setq its:*char-from-buff* t)
+@@ -1879,7 +1897,7 @@
+ 	      (cons (list string 
+ 			  (let ((action-output (action-output action)))
+ 			    (cond((and (consp action-output)
+-				       (characterp (car action-output)))
++				       (egg-characterp (car action-output)))
+ 				  (format "%s..."
+ 				  (nth (car action-output) (cdr action-output))))
+ 				 ((stringp action-output)
+@@ -1967,7 +1985,7 @@
+       (setq action (get-action newmap))
+ 
+       (cond
+-       ((and its:*interactive* (not its:*char-from-buff*) (characterp ch) (= ch ?\^@))
++       ((and its:*interactive* (not its:*char-from-buff*) (egg-characterp ch) (= ch ?\^@))
+ 	(delete-region its:*buff-s* (point))
+ 	(let ((i 1))
+ 	  (while (<= i its:*level*)
+@@ -2445,6 +2463,18 @@
+ 			   'egg-self-insert-command
+ 			   global-map)
+ 
++(if (let ((keymap (make-sparse-keymap)))
++      (suppress-keymap keymap)
++      (lookup-key keymap [remap]))
++    ;; Emacs 22 and greater.
++    (defadvice suppress-keymap (after remap-egg-self-insert-command activate)
++      "Remap `egg-self-insert-command' to `undefined'."
++      (define-key (ad-get-arg 0) [remap egg-self-insert-command] 'undefined))
++  (defadvice suppress-keymap (after remap-egg-self-insert-command activate)
++    "Remap `egg-self-insert-command' to `undefined'."
++    (substitute-key-definition 'egg-self-insert-command 'undefined
++			       (ad-get-arg 0) global-map)))
++
+ ;; 入力予測直前登録削除用の対応
+ (substitute-key-definition 'delete-backward-char 
+ 			   'egg-delete-backward-char
+@@ -2622,7 +2652,7 @@
+ 	  (egg:enter-fence-mode-and-self-insert))
+       (progn
+ 	(if (and (eq last-command 'egg-self-insert-command)
+-		 (> last-command-char ? ))
++		 (> last-command-event ? ))
+ 	    (egg:cancel-undo-boundary))
+ 	(self-insert-command arg)
+ 	(if egg-insert-after-hook
+@@ -2880,6 +2910,14 @@
+       (egg-predict-clear))
+     (resume-undo-list)
+     (insert kakutei-string)
++
++  ;; Workaround to remove position to which `undo' goes.
++  (if (car buffer-undo-list)
++      (if (numberp (cadr buffer-undo-list))
++	  (setcdr buffer-undo-list (nthcdr 2 buffer-undo-list)))
++    (if (numberp (nth 2 buffer-undo-list))
++	(setcdr (cdr buffer-undo-list) (nthcdr 3 buffer-undo-list))))
++
+     (when (wnn7-p)
+       (if (> (length kakutei-string) 0)
+ 	  (progn
+--- wnn7/elisp/xemacs21/wnn7egg-jsymbol.el~	2002-05-26 15:00:00 +0000
++++ wnn7/elisp/xemacs21/wnn7egg-jsymbol.el	2009-06-02 23:26:55 +0000
+@@ -821,9 +821,9 @@
+     (while (<  32 ku)
+       (let ((ten 126))
+ 	(while (< 32 ten)
+-	  (setq result (cons 
+-			(let ((str (make-string 1 0)))
+-			  (aset str 0 (make-char 'japanese-jisx0208  ku ten))
++	  (setq result (cons
++			(let ((str (make-string
++				    1 (make-char 'japanese-jisx0208 ku ten))))
+ 			  (cons str str))
+ 			result))
+ 	  (setq ten (1- ten))))
+@@ -835,9 +835,9 @@
+     (while (<=  48 ku)
+       (let ((ten 126))
+ 	(while (<= 33 ten)
+-	  (setq result (cons 
+-			(let ((str (make-string 1 0)))
+-			  (aset str 0 (make-char 'japanese-jisx0208 ku ten))
++	  (setq result (cons
++			(let ((str (make-string
++				    1 (make-char 'japanese-jisx0208 ku ten))))
+ 			  (cons str str))
+ 			result))
+ 	  (setq ten (1- ten))))
+@@ -849,9 +849,9 @@
+     (while (<= 80 ku)
+       (let ((ten 126))
+ 	(while (<= 33 ten)
+-	  (setq result (cons 
+-			(let ((str (make-string 1 0)))
+-			  (aset str 0 (make-char 'japanese-jisx0208 ku ten))
++	  (setq result (cons
++			(let ((str (make-string
++				    1 (make-char 'japanese-jisx0208 ku ten))))
+ 			  (cons str str))
+ 			result))
+ 	  (setq ten (1- ten))))
+@@ -863,9 +863,9 @@
+     (while (<=  34 ku)
+       (let ((ten 126))
+ 	(while (<= 33 ten)
+-	  (setq result (cons 
+-			(let ((str (make-string 1 0))) ; by T.Shingu
+-			  (aset str 0 (make-char 'japanese-jisx0212 ku ten))
++	  (setq result (cons
++			(let ((str (make-string ; by T.Shingu
++				    1 (make-char 'japanese-jisx0212 ku ten))))
+ 			  (cons str str))
+ 			result))
+ 	  (setq ten (1- ten))))
+--- wnn7/elisp/xemacs21/wnn7egg.el~	2002-05-26 15:00:00 +0000
++++ wnn7/elisp/xemacs21/wnn7egg.el	2009-06-02 23:26:55 +0000
+@@ -435,8 +435,9 @@
+     (require 'overlay))
+ 
+ (if (not (featurep 'xemacs))
+-    (defun characterp (form)
++    (defun egg-characterp (form)
+       (numberp form))
++  (defalias 'egg-characterp 'characterp)
+   ;; 97.2.4 Created by J.Hein to simulate Mule-2.3
+   (defun egg-read-event ()
+     "FSFmacs event emulator that shoves non key events into
+@@ -451,7 +452,7 @@
+ 	      (setq ch (or (event-to-character event) key))
+ 	    (if (eq 1 (event-modifier-bits event))
+ 		(setq ch
+-		      (if (characterp key)
++		      (if (egg-characterp key)
+ 			  (or (int-to-char (- (char-to-int key) 96))
+ 			      (int-to-char (- (char-to-int key) 64)))
+ 			(event-to-character event)))
+@@ -461,14 +462,14 @@
+ 
+ (defun coerce-string (form)
+   (cond((stringp form) form)
+-       ((characterp form) (char-to-string form))))
++       ((egg-characterp form) (char-to-string form))))
+ 
+ (defun coerce-internal-string (form)
+   (cond((stringp form)
+ 	(if (= (length form) 1) 
+ 	    (string-to-char form)
+ 	  form))
+-       ((characterp form) form)))
++       ((egg-characterp form) form)))
+ 
+ ;;; kill-all-local-variables から保護する local variables を指定できる
+ ;;; ように変更する。
+@@ -707,10 +708,10 @@
+ 
+ (defun menu:item-string (item)
+   (cond ((stringp item) item)
+-	((characterp item) (char-to-string item))
++	((egg-characterp item) (char-to-string item))
+ 	((consp item)
+ 	 (let ((str (cond ((stringp (car item)) (car item))
+-			  ((characterp (car item)) (char-to-string (car item)))
++			  ((egg-characterp (car item)) (char-to-string (car item)))
+ 			  (t ""))))
+ 	   (if menu:*display-item-value*
+ 	       (format "%s [%s]" str (cdr item))
+@@ -719,7 +720,7 @@
+ 
+ (defun menu:item-value (item)
+   (cond ((stringp item) item)
+-	((characterp item) (char-to-string item))
++	((egg-characterp item) (char-to-string item))
+ 	((consp item) (cdr item))
+ 	(t "")))
+ 
+@@ -1297,13 +1298,14 @@
+ 			(for-each* (cdr vars) body)
+ 			(list 'setq tvar (list 'cdr tvar))))))))
+ 			     
+-(put 'dolist 'lisp-indent-hook 1)
+-
+-(defmacro dolist (pair &rest body)
+-  "(dolist (VAR LISTFORM) . BODY) はVAR に順次 LISTFORM の要素を束縛し
+-て BODY を実行する"
+-
+-  (for-each* (list pair) (cons 'progn body)))
++(eval-when-compile (require 'cl)) ;; dolist
++;;;(put 'dolist 'lisp-indent-hook 1)
++;;;
++;;;(defmacro dolist (pair &rest body)
++;;;  "(dolist (VAR LISTFORM) . BODY) はVAR に順次 LISTFORM の要素を束縛し
++;;;て BODY を実行する"
++;;;
++;;;  (for-each* (list pair) (cons 'progn body)))
+ 
+ ;;;
+ ;;; defrule
+@@ -1332,7 +1334,7 @@
+       (and (consp action)
+ 	   (or (stringp (car action))
+ 	       (and (consp (car action))
+-		    (characterp (car (car action))))
++		    (egg-characterp (car (car action))))
+ 	       (null (car action)))
+ 	   (or (null (car (cdr action)))
+ 	       (stringp (car (cdr action)))))))
+@@ -1667,15 +1669,15 @@
+ 	(insert ch))
+       
+       (defun its:ordinal-charp (ch)
+-	(and (characterp ch) (<= ch 127)
++	(and (egg-characterp ch) (<= ch 127)
+ 	     (eq (lookup-key fence-mode-map (char-to-string ch)) 'fence-self-insert-command)))
+       
+       (defun its:delete-charp (ch)
+-	(and (characterp ch) (<= ch 127)
++	(and (egg-characterp ch) (<= ch 127)
+ 	     (eq (lookup-key fence-mode-map (char-to-string ch)) 'fence-backward-delete-char)))
+       
+       (defun its:tabp (ch)
+-	(and (characterp ch) (<= ch 127)
++	(and (egg-characterp ch) (<= ch 127)
+ 	     (eq (lookup-key fence-mode-map (char-to-string ch)) 'egg-predict-start-parttime)))
+ 
+       (defvar egg:fence-buffer nil "Buffer fence is active in")
+@@ -1879,7 +1881,7 @@
+ 	      (cons (list string 
+ 			  (let ((action-output (action-output action)))
+ 			    (cond((and (consp action-output)
+-				       (characterp (car action-output)))
++				       (egg-characterp (car action-output)))
+ 				  (format "%s..."
+ 				  (nth (car action-output) (cdr action-output))))
+ 				 ((stringp action-output)
+@@ -1967,7 +1969,7 @@
+       (setq action (get-action newmap))
+ 
+       (cond
+-       ((and its:*interactive* (not its:*char-from-buff*) (characterp ch) (= ch ?\^@))
++       ((and its:*interactive* (not its:*char-from-buff*) (egg-characterp ch) (= ch ?\^@))
+ 	(delete-region its:*buff-s* (point))
+ 	(let ((i 1))
+ 	  (while (<= i its:*level*)
+@@ -2445,6 +2447,11 @@
+ 			   'egg-self-insert-command
+ 			   global-map)
+ 
++(defadvice suppress-keymap (after remap-egg-self-insert-command activate)
++  "Remap `egg-self-insert-command' to `undefined'."
++  (substitute-key-definition 'egg-self-insert-command 'undefined
++			     (ad-get-arg 0) global-map))
++
+ ;; 入力予測直前登録削除用の対応
+ (substitute-key-definition 'delete-backward-char 
+ 			   'egg-delete-backward-char
