@@ -2,8 +2,21 @@
 # -*- coding: euc-jp -*-
 
 import os, pickle
+import sys
 
-basedir = '/home/ftp/pub/Plamo-6.x/'
+args=sys.argv
+argc=len(args)
+
+if (argc != 2):
+    print "Script to create allpkgs.pickle for get_pkginfo.py"
+    print ""
+    print "Usage: "+args[0]+" topdir"
+    print ""
+    print "   ex) "+args[0]+" Plamo-6.x/"
+    print ""
+    quit()
+
+basedir = args[1] + '/'
 archdir = ('x86/', 'x86_64/')
 channel = ('plamo', 'contrib')
 
@@ -49,7 +62,7 @@ for arch in archdir:
                 dirs.remove('11_mate.old')
             for i in files:
                 if '.txz' in i or '.tgz' in i:
-                    print i
+                    #print i
                     (base, vers, p_arch, tmp) = i.split('-')
                     (build, ext) = tmp.split('.')
                     path = root.replace(basedir + arch, '')
