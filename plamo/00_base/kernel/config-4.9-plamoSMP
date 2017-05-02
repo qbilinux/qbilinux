@@ -1,6 +1,6 @@
 #
 # Automatically generated file; DO NOT EDIT.
-# Linux/x86 4.9.9 Kernel Configuration
+# Linux/x86 4.9.24 Kernel Configuration
 #
 # CONFIG_64BIT is not set
 CONFIG_X86_32=y
@@ -3893,6 +3893,7 @@ CONFIG_UNICON=y
 CONFIG_UNICON_EUCJP=m
 CONFIG_UNICON_JIS=m
 CONFIG_UNICON_SJIS=m
+CONFIG_UNICON_KSCM=m
 # CONFIG_FB_CIRRUS is not set
 # CONFIG_FB_PM2 is not set
 # CONFIG_FB_CYBER2000 is not set
