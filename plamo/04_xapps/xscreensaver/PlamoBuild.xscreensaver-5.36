@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://www.jwz.org/xscreensaver/xscreensaver-5.34.tar.gz'
 pkgbase=xscreensaver
-vers=5.34
+vers=5.36
+url="http://www.jwz.org/xscreensaver/xscreensaver-${vers}.tar.gz"
 arch=`uname -m`
-build=P1m1
-src=xscreensaver-5.34
+build=P0m1
+src=xscreensaver-${vers}
 OPT_CONFIG='--with-pam --with-shadow --with-gtk --with-gl --with-pixbuf --with-xpm --with-jpeg'
 DOCS='INSTALL README README.VMS README.hacking'
 patchfiles=''
@@ -188,10 +188,10 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
-    *) tar xvpf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
+    *) tar xpf ${i##*/} ;;
     esac
   done
 fi
