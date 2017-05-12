@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://prdownloads.sourceforge.net/swig/swig-2.0.2.tar.gz'
 pkgbase=swig
-vers=2.0.2
+vers=3.0.12
+url="https://sourceforge.net/projects/swig/files/swig/swig-${vers}/swig-${vers}.tar.gz"
 arch=`uname -m`
-build=P1m1
-src=swig-2.0.2
+build=P0m1
+src=swig-${vers}
 OPT_CONFIG=''
 DOCS='INSTALL LICENSE LICENSE-GPL LICENSE-UNIVERSITIES README RELEASENOTES TODO'
 patchfiles=''
