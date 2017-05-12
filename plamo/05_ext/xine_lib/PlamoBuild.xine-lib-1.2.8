@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
-url='http://sourceforge.net/projects/xine/files/xine-lib/1.2.6/xine-lib-1.2.6.tar.xz'
 pkgbase=xine_lib
-vers=1.2.6
+vers=1.2.8
+url="http://sourceforge.net/projects/xine/files/xine-lib/${vers}/xine-lib-${vers}.tar.xz"
 arch=`uname -m`
-build=P1m1
-src=xine-lib-1.2.6
+build=P0m1
+src=xine-lib-${vers}
 OPT_CONFIG=''
 DOCS='ABOUT-NLS AUTHORS COPYING COPYING.LIB ChangeLog INSTALL NEWS README TODO'
-patchfiles='xine-lib-ffmpeg3.patch'
+patchfiles='wand.patch'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -122,9 +122,9 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
-    *) tar xvpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
+    *) tar xpf ${i##*/} ;;
     esac
   done
 fi
