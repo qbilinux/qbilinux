@@ -1,13 +1,13 @@
 #!/bin/sh
 ##############################################################
 pkgbase=vala
-vers=0.26.1
+vers=0.36.3
 url="http://ftp.gnome.org/pub/gnome/sources/${pkgbase}/${vers:0:4}/${pkgbase}-${vers}.tar.xz"
-verify="http://ftp.gnome.org/pub/gnome/sources/vala/0.26/vala-0.26.1.sha256sum"
+verify="http://ftp.gnome.org/pub/gnome/sources/${pkgbase}/${vers:0:4}/${pkgbase}-${vers}.sha256sum"
 commitid=
 arch=`uname -m`
-build=P1m1
-src=vala-0.26.1
+build=P0m1
+src=vala-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING ChangeLog ChangeLog.pre-0-4 ChangeLog.pre-0-5-7 INSTALL MAINTAINERS NEWS README THANKS'
 patchfiles=''
@@ -167,15 +167,15 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
     git) ( cd `basename ${i##*/} .git`
         git checkout origin/master
         if [ -n "$commitid" ] ; then
           git reset --hard $commitid
         fi
         git set-file-times ) ;;
-    *) tar xvpf ${i##*/} ;;
+    *) tar xpf ${i##*/} ;;
     esac
   done
 fi
