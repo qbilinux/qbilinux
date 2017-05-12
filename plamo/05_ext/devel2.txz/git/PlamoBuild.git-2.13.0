@@ -2,15 +2,17 @@
 
 ######################################################################
 pkgbase=git
-vers=2.12.2
+vers=2.13.0
 url="https://www.kernel.org/pub/software/scm/git/git-${vers}.tar.gz
-    https://www.kernel.org/pub/software/scm/git/git-manpages-${vers}.tar.gz
-    http://plamo.linet.gr.jp/~tamuki/src/git-set-file-times"
+    https://www.kernel.org/pub/software/scm/git/git-manpages-${vers}.tar.gz"
 arch=`uname -m`
 build=P0m1
 src=$pkgbase-$vers
 OPT_CONFIG="--sysconfdir=/etc"
 DOCS="COPYING INSTALL LGPL-2.1 README.md RelNotes command-list.txt"
+patchfiles=''
+addfiles='git-set-file-times'
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -197,6 +199,9 @@ if [ $opt_config -eq 1 ] ; then
   done
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
+    for patch in $patchfiles ; do
+       patch -p1 < $W/$patch
+    done
     if [ -f Makefile ] ; then
       make clean
     fi
@@ -264,26 +269,18 @@ if [ $opt_package -eq 1 ] ; then
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
+
+  for patch in $patchfiles $addfiles ; do
+      cp $W/$patch $docdir/$src/$patch
+      gzip_one $docdir/$src/$patch
+  done
+
   convert
-  tar cvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/libexec/git-core
-  tar rvpf $pkg.tar -C $P \
-      `cd $P ; find usr/$libdir/perl5/site_perl/5.14.2 -maxdepth 1 -name Git*`
-  tar rvpf $pkg.tar -C $P \
-      `cd $P ; find usr/$libdir/perl5/site_perl/5.14.2/*-linux-thread-multi/auto \
-      -maxdepth 1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P \
-      `cd $P ; find usr/$libdir/perl5/5.14.2/*-linux-thread-multi | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/git-core
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/locale -name git.mo`
-  tar rvpf $pkg.tar -C $P usr/share/gitweb
-  tar rvpf $pkg.tar -C $P usr/share/gitk
-  tar rvpf $pkg.tar -C $P usr/share/git-gui
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man3 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man5 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man7 | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi
