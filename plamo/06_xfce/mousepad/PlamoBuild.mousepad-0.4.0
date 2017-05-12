@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://archive.xfce.org/src/apps/mousepad/0.3/mousepad-0.3.0.tar.bz2'
 pkgbase=mousepad
-vers=0.3.0
+vers=0.4.0
+url="http://archive.xfce.org/src/apps/mousepad/${vers%.*}/mousepad-${vers}.tar.bz2"
 arch=`uname -m`
-build=P1m1
-src=mousepad-0.3.0
+build=P0m1
+src=mousepad-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README TODO'
 patchfiles=''
@@ -122,9 +122,9 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
-    *) tar xvpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
+    *) tar xpf ${i##*/} ;;
     esac
   done
 fi
