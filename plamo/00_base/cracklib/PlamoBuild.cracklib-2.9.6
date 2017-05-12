@@ -2,16 +2,16 @@
 
 ######################################################################
 pkgbase=cracklib
-vers=2.8.18
-url="http://downloads.sourceforge.net/cracklib/cracklib-2.8.18.tar.gz
-    http://downloads.sourceforge.net/cracklib/cracklib-words-20080507.gz
-    ftp://plamo.linet.gr.jp/pub/Plamo-src.new/plamo/00_base/cracklib/cracklib-2.8.15-heimdal-1.patch"
+vers=2.9.6
+url="https://github.com/cracklib/cracklib/releases/download/cracklib-2.9.6/cracklib-2.9.6.tar.gz
+	https://github.com/cracklib/cracklib/releases/download/cracklib-2.9.6/cracklib-words-2.9.6.gz"
 arch=`uname -m`
-build=P4m1
+build=P0m2
 src=$pkgbase-$vers
 OPT_CONFIG="--with-default-dict=/lib/cracklib/pw_dict"
 DOCS="README-WORDS README-DAWG NEWS AUTHORS INSTALL ABOUT-NLS
     README-LICENSE README COPYING.LIB ChangeLog"
+patchfiles="cracklib-2.9.6-heimdal.patch"
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -179,7 +179,9 @@ if [ $opt_config -eq 1 ] ; then
     if [ -d ${B[$i]} ] ; then rm -rf ${B[$i]} ; fi ; cp -a ${S[$i]} ${B[$i]}
   done
   cd $B
-  patch -Np1 -i $W/cracklib-2.8.15-heimdal-1.patch
+  # for patch in $patchfiles ; do
+  #     patch -p1 < $W/$patch
+  # done
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
@@ -220,11 +222,11 @@ if [ $opt_package -eq 1 ] ; then
     fi
   done
   install -d $P/$libdir
-  cp -p $P/usr/$libdir/libcrack.so.2.8.1 $P/$libdir
-  ln -sf /$libdir/libcrack.so.2.8.1 $P/usr/$libdir/libcrack.so.2
-  ln -sf /$libdir/libcrack.so.2.8.1 $P/usr/$libdir/libcrack.so
+  cp -p $P/usr/$libdir/libcrack.so.2.9.0 $P/$libdir
+  ln -sf /$libdir/libcrack.so.2.9.0 $P/usr/$libdir/libcrack.so.2
+  ln -sf /$libdir/libcrack.so.2.9.0 $P/usr/$libdir/libcrack.so
   install -d $P/usr/share/dict
-  zcat $W/cracklib-words-20080507.gz > $P/usr/share/dict/cracklib-words
+  zcat $W/cracklib-words-2.9.6.gz > $P/usr/share/dict/cracklib-words
   echo `hostname` >> $P/usr/share/dict/cracklib-extra-words
   ln -s cracklib-words $P/usr/share/dict/words
   install -d $P/lib/cracklib
@@ -250,9 +252,13 @@ if [ $opt_package -eq 1 ] ; then
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
+  for patch in $patchfiles ; do
+    cp $W/$patch $docdir/$src/$patch
+    gzip_one $docdir/$src/$patch
+  done
   convert
   prune_symlink $P/usr/share/dict
-  rm $P/usr/$libdir/libcrack.so.2.8.1
+  rm $P/usr/$libdir/libcrack.so.2.9.0
   cat <<- EOF >> $P/install/doinst.sh
 	#%% begin initialize $pkg
 	EOF
