@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=which
-vers=2.20
+vers=2.21
 url="http://ftp.gnu.org/gnu/which/which-${vers}.tar.gz"
 arch=`uname -m`
-build=P1m1
-src=which-2.20
+build=P0m1
+src=which-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING INSTALL NEWS README README.alias'
 patchfiles=''
