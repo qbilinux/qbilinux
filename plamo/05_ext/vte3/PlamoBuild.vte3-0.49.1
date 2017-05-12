@@ -1,12 +1,12 @@
 #!/bin/sh
 
 ######################################################################
-url="http://ftp.gnome.org/pub/GNOME/sources/vte/0.34/vte-0.34.7.tar.xz"
 pkgbase=vte3
-vers=0.34.7
+vers=0.49.1
+url="http://ftp.gnome.org/pub/GNOME/sources/vte/0.49/vte-${vers}.tar.xz"
 arch=`uname -m`
-build=P3m1
-src=vte-$vers
+build=P0m1
+src=vte-${vers}
 OPT_CONFIG="--sysconfdir=/etc --disable-static --enable-introspection"
 DOCS="MAINTAINERS NEWS README AUTHORS COPYING HACKING ChangeLog
     ChangeLog.pre-git"
