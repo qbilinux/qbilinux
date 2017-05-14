@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=gptfdisk
-vers=1.0.0
+vers=1.0.1
 url="http://sourceforge.net/projects/gptfdisk/files/gptfdisk/${vers}/gptfdisk-${vers}.tar.gz"
 verify=
 commitid=
 arch=`uname -m`
-build=P1m1
+build=P0m1
 src=gptfdisk-${vers}
 OPT_CONFIG=''
 DOCS='COPYING NEWS README'
@@ -167,15 +167,15 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
     git) ( cd `basename ${i##*/} .git`
         git checkout master
         if [ -n "$commitid" ] ; then
           git reset --hard $commitid
         fi
         git set-file-times ) ;;
-    *) tar xvpf ${i##*/} ;;
+    *) tar xpf ${i##*/} ;;
     esac
   done
 fi
