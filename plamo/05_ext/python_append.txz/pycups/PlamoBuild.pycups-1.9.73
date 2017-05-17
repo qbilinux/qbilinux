@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='https://pypi.python.org/packages/source/p/pycups/pycups-1.9.70.tar.bz2'
 pkgbase=pycups
-vers=1.9.70
+vers=1.9.73
+url="https://pypi.python.org/packages/source/p/pycups/pycups-${vers}.tar.bz2"
 arch=`uname -m`
-build=P1m1
-src=pycups-1.9.70
+build=P0m1
+src=pycups-${vers}
 OPT_CONFIG=''
 DOCS='COPYING NEWS README TODO'
 patchfiles=''
