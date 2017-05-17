@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://cairographics.org/releases/pycairo-1.10.0.tar.bz2'
 pkgbase=pycairo
 vers=1.10.0
+url="http://cairographics.org/releases/pycairo-${vers}.tar.bz2 http://www.linuxfromscratch.org/patches/blfs/8.0/pycairo-1.10.0-waf_unpack-1.patch http://www.linuxfromscratch.org/patches/blfs/8.0/pycairo-1.10.0-waf_python_3_4-1.patch"
 arch=`uname -m`
-build=P1m1
-src=pycairo-1.10.0
+build=P1m2
+src=pycairo-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING COPYING.LESSER INSTALL NEWS README'
 patchfiles=''
@@ -185,9 +185,9 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
     esac
   done
 fi
@@ -204,16 +204,13 @@ if [ $opt_config -eq 1 ] ; then
     for patch in $patchfiles ; do
        patch -p1 < $W/$patch
     done
-
-    python_vers=`python --version |& grep " 3."`
-    if [ "$python_vers.x" == "x." ]; then
-	echo "You need python as python3"
-	echo "change link about python"
-	exit
-    fi
-
-    ./waf --prefix=/usr --libdir=/usr/${libdir} configure
-
+    patch -Np1 -i $W/pycairo-1.10.0-waf_unpack-1.patch
+    wafdir=$(./waf unpack)
+    pushd $wafdir
+    patch -Np1 -i $W/pycairo-1.10.0-waf_python_3_4-1.patch
+    popd
+    unset wafdir
+    PYTHON=/usr/bin/python3 ./waf configure --prefix=/usr --libdir=/usr/${libdir}
     
   done
 fi
@@ -221,7 +218,6 @@ if [ $opt_build -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     ./waf build
-
     
   done
 fi
