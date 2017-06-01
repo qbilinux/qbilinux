@@ -4,13 +4,13 @@ pkgbase=openldap
 vers=2.4.44
 url="http://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-${vers}.tgz"
 arch=`uname -m`
-build=P0m1
+build=P0m2
 src=openldap-${vers}
 # OPT_CONFIG='--libexecdir=/usr/sbin --disable-static --enable-ipv6 --enable-syslog --enable-local --enable-bdb --enable-hdb --enable-crypt --enable-dynamic --with-threads --disable-wrappers  --without-fetch --enable-spasswd --with-cyrus-sasl --enable-overlays=mod --enable-modules=yes'
 
 OPT_CONFIG='--libexecdir=/usr/sbin --disable-debug --disable-static --enable-syslog --enable-dynamic  --enable-crypt --enable-modules  --enable-overlays=mod --enable-rlookups'
 DOCS='INSTALL LICENSE README'
-patchfiles=''
+patchfiles='20170517_rtandy_Fix-double-free-of-search-base-with-page-size-0.patch'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -124,10 +124,10 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
-    tgz) tar xvpf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
+    tgz) tar xpf ${i##*/} ;;
     esac
   done
 fi
