@@ -2,8 +2,8 @@
 
 ######################################################################
 pkgbase=util_linux
-vers=2.29
-url="http://www.kernel.org/pub/linux/utils/util-linux/v${vers}/util-linux-${vers}.tar.xz"
+vers=2.29.2
+url="http://www.kernel.org/pub/linux/utils/util-linux/v2.29/util-linux-${vers}.tar.xz"
 arch=`uname -m`
 build=P0m1
 src=util-linux-$vers
@@ -181,10 +181,10 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz|tgz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
-    xz) tar xvpJf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz|tgz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
+    xz) tar xpJf ${i##*/} ;;
     esac
   done
 fi
