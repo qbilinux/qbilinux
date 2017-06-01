@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://sourceforge.net/projects/lcms/files/lcms/1.19/lcms-1.19.tar.gz'
 pkgbase=lcms
-vers=1.19
+vers=2.8
+url="https://sourceforge.net/projects/lcms/files/lcms/2.8/lcms2-${vers}.tar.gz"
 arch=`uname -m`
-build=P2m1
-src=lcms-1.19
+build=P0m1
+src=lcms2-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README.1ST install.gcc'
 patchfiles=''
