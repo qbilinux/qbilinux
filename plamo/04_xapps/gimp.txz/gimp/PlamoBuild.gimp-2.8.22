@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase=gimp
-vers=2.8.20
+vers=2.8.22
 url="http://download.gimp.org/pub/gimp/v2.8/gimp-${vers}.tar.bz2"
 arch=`uname -m`
 build=P0m1
