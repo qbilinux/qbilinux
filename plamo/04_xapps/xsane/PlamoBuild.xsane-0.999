@@ -4,11 +4,11 @@ pkgbase=xsane
 vers=0.999
 url="http://www.xsane.org/download/xsane-${vers}.tar.gz"
 arch=`uname -m`
-build=P0m1
+build=P0m2
 src=xsane-${vers}
-OPT_CONFIG='--disable-static'
+OPT_CONFIG=''
 DOCS='ICM.TODO xsane-WIN32-README.txt xsane-WIN32-compilation.txt xsane-WIN32-compilation.txt.old xsane.AUTHOR xsane.COPYING xsane.INSTALL xsane.NEWS xsane.TODO'
-patchfiles='patch-aa'
+patchfiles='xsane-0.995-xdg-open.patch xsane-0.995-close-fds.patch xsane-0.996-no-eula.patch xsane-0.997-off-root-build.patch xsane-0.999-no-file-selected.patch xsane-0.997-ipv6.patch xsane-0.998-preview-selection.patch xsane-0.998-libpng.patch xsane-0.998-wmclass.patch xsane-0.998-desktop-file.patch xsane-0.999-man-page.patch xsane-0.999-pdf-no-high-bpp.patch xsane-0.999-lcms2.patch xsane-0.999-coverity.patch xsane-0.999-snprintf-update.patch xsane-0.999-signal-handling.patch xsane-0.999-7-autoconf.patch'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -184,9 +184,9 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
     esac
   done
 fi
@@ -211,7 +211,7 @@ if [ $opt_config -eq 1 ] ; then
     if [ -x configure ] ; then
        export PKG_CONFIG_PATH=/usr/X11R7/${libdir}/pkgconfig:/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
        export LDFLAGS='-Wl,--as-needed' 
-        CC="gcc -isystem /usr/include $target" CXX="g++ -isystem /usr/include $target " \
+        CC="gcc -I /usr/include $target" CXX="g++ -I /usr/include $target " \
           ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
       if [ $? != 0 ]; then
 	  echo "configure error. $0 script stop"

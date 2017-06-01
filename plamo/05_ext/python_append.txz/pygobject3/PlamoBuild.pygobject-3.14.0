@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://ftp.gnome.org/pub/GNOME/sources/pygobject/3.14/pygobject-3.14.0.tar.xz'
 pkgbase=pygobject3
 vers=3.14.0
+url="http://ftp.gnome.org/pub/GNOME/sources/pygobject/3.14/pygobject-${vers}.tar.xz"
 arch=`uname -m`
-build=P1m1
-src=pygobject-3.14.0
+build=P1m2
+src=pygobject-${vers}
 OPT_CONFIG='--with-python=python3 --disable-static'
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS PKG-INFO README'
 patchfiles=''
@@ -122,9 +122,9 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz) tar xvpzf ${i##*/} ;;
-    *) tar xvf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    *) tar xf ${i##*/} ;;
     esac
   done
 fi
