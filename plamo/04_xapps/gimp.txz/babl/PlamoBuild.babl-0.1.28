@@ -1,13 +1,13 @@
 #!/bin/sh
 ##############################################################
-url='https://download.gimp.org/pub/babl/0.1/babl-0.1.10.tar.bz2'
 pkgbase=babl
-vers=0.1.10
+vers=0.1.28
+url="https://download.gimp.org/pub/babl/0.1/babl-${vers}.tar.bz2"
 arch=`uname -m`
 build=P1m1
-src=babl-0.1.10
+src=babl-${vers}
 OPT_CONFIG=''
-DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README TODO'
+DOCS='AUTHORS COPYING INSTALL NEWS README TODO'
 patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
@@ -122,9 +122,9 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
     esac
   done
 fi
@@ -150,8 +150,8 @@ if [ $opt_config -eq 1 ] ; then
       if [ -x configure ] ; then
          export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
          export LDFLAGS='-Wl,--as-needed' 
-         export CC="gcc -isystem /usr/include $target" 
-         export CXX="g++ -isystem /usr/include $target "
+         export CC="gcc -I /usr/include $target" 
+         export CXX="g++ -I /usr/include $target "
          ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
      fi
       if [ $? != 0 ]; then
