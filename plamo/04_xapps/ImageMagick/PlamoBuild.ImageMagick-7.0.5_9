@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=ImageMagick
-vers=7.0.5_4
-url="https://www.imagemagick.org/download/ImageMagick-7.0.5-4.tar.xz"
+vers=7.0.5_9
+url="https://www.imagemagick.org/download/ImageMagick-7.0.5-9.tar.xz"
 commitid=
 arch=`uname -m`
 build=P0m1
-src=ImageMagick-7.0.5-4
+src=ImageMagick-7.0.5-9
 OPT_CONFIG=''
 DOCS='AUTHORS.txt ChangeLog Install-mac.txt Install-unix.txt Install-vms.txt Install-windows.txt LICENSE NEWS.txt Platforms.txt QuickStart.txt README.txt'
 patchfiles=''
@@ -147,15 +147,15 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
     git) ( cd `basename ${i##*/} .git`
         git checkout master
         if [ -n "$commitid" ] ; then
           git reset --hard $commitid
         fi
         git set-file-times ) ;;
-    *) tar xvpf ${i##*/} ;;
+    *) tar xpf ${i##*/} ;;
     esac
   done
 fi
