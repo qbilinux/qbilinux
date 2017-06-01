@@ -2,12 +2,12 @@
 
 ######################################################################
 pkgbase=shadow
-vers=git_20130908
-url="https://github.com/shadow-maint/shadow.git
+vers=4.5
+url="https://github.com/shadow-maint/shadow/releases/download/4.5/shadow-4.5.tar.xz
     ftp://plamo.linet.gr.jp/pub/Plamo-src.new/plamo/00_base/shadow/shadow-adduser-20160122"
 arch=`uname -m`
-build=P5m1
-src=$pkgbase
+build=P0m1
+src=$pkgbase-$vers
 OPT_CONFIG="--sysconfdir=/etc --enable-man --without-selinux
     --with-libcrack"
 DOCS="COPYING ChangeLog NEWS README TODO"
@@ -173,12 +173,13 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
     git) ( cd `basename ${i##*/} .git`
         git checkout origin/master ; git reset --hard 578947e
         git set-file-times ) ;;
+    *) tar xpf ${i##*/} ;;
     esac
   done
 fi
@@ -306,7 +307,7 @@ if [ $opt_config -eq 1 ] ; then
 	---
 	> #ENVIRON_FILE	/etc/environment
 	EOF
-  ./autogen.sh
+  #./autogen.sh
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
