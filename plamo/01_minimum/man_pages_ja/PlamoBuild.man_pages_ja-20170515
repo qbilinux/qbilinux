@@ -2,14 +2,12 @@
 
 ######################################################################
 pkgbase=man_pages_ja
-vers=20100415
-url="https://pkgs.fedoraproject.org/repo/pkgs/man-pages-ja/man-pages-ja-20100415.tar.gz/78041d36eb491cd5b0eaf16aac34361a/man-pages-ja-20100415.tar.gz
-    ftp://plamo.linet.gr.jp/pub/Plamo-src.new/plamo/01_minimum/man_pages_ja/manpage_list
-    ftp://plamo.linet.gr.jp/pub/Plamo-src.new/plamo/01_minimum/man_pages_ja/man-pages-ja-20100828-plamo.tar.gz"
+vers=20170515
+url="https://linuxjm.osdn.jp/man-pages-ja-${vers}.tar.gz"
 arch=noarch
-build=P4m1
+build=P0m1
 src=man-pages-ja-$vers
-patchfiles=""
+patchfiles="manpage_list"
 OPT_CONFIG=""
 DOCS="manual/LDP_man-pages/translation_list ChangeLog README INSTALL"
 SRC_URL="http://circle2.org/pub/source/"
@@ -189,10 +187,10 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz|tgz) tar xvpzf ${i##*/} ;;
-    bz2|tbz) tar xvpjf ${i##*/} ;;
-    xz|txz) tar xvpJf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz|tgz) tar xpzf ${i##*/} ;;
+    bz2|tbz) tar xpjf ${i##*/} ;;
+    xz|txz) tar xpJf ${i##*/} ;;
     esac
   done
 fi
@@ -202,14 +200,14 @@ if [ $opt_config -eq 1 ] ; then
   done
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
-    for j in ${patchfiles[$i]} ; do
-      case ${j##*.} in
-      gz) gunzip -c $W/$j | patch -Np1 -i - ;;
-      bz2) bunzip2 -c $W/j | patch -Np1 -i - ;;
-      xz) unxz -c $W/$j | patch -Np1 -i - ;;
-      *) patch -Np1 -i $W/$j ;;
-      esac
-    done
+    # for j in ${patchfiles[$i]} ; do
+    #   case ${j##*.} in
+    #   gz) gunzip -c $W/$j | patch -Np1 -i - ;;
+    #   bz2) bunzip2 -c $W/j | patch -Np1 -i - ;;
+    #   xz) unxz -c $W/$j | patch -Np1 -i - ;;
+    #   *) patch -Np1 -i $W/$j ;;
+    #   esac
+    # done
   done
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
@@ -251,19 +249,17 @@ if [ $opt_package -eq 1 ] ; then
     fi
   done
   for i in `seq 8` ; do
-    install -d $mandir/ja_JP.eucJP/man$i
+    install -d $mandir/ja_JP.UTF-8/man$i
   done
   while read manpage ; do
-    install -m 644 manual/$manpage $mandir/ja_JP.eucJP/man${manpage##*.}
+    install -m 644 manual/$manpage $mandir/ja_JP.UTF-8/man${manpage##*.}
   done < $W/manpage_list
-  install -m 644 $W/man-pages-ja-20100828-plamo/manual/coreutils/* \
-      $mandir/ja_JP.eucJP/man1
   touch $W/i.et
   cd $W
   find $P ! -type l -newer i.st ! -newer i.et \
       -exec touch -t `date '+%m%d0000'` {} \;
   compress
-  for i in `seq 8` ; do gzip_dir $mandir/ja_JP.eucJP/man$i ; done
+  for i in `seq 8` ; do gzip_dir $mandir/ja_JP.UTF-8/man$i ; done
   for i in `seq 0 $((${#DOCS[@]} - 1))` ; do
     for j in ${DOCS[$i]} ; do
       for k in ${S[$i]}/$j ; do
@@ -281,23 +277,27 @@ if [ $opt_package -eq 1 ] ; then
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
+  for patch in $patchfiles ; do
+    cp $W/$patch $docdir/$src/$patch
+    gzip_one $docdir/$src/$patch
+  done
   convert
   tar cvpf $pkg.tar -C $P \
-      `cd $P ; find usr/share/man/ja_JP.eucJP/man1 | tail -n+2`
+      `cd $P ; find usr/share/man/ja_JP.UTF-8/man1 | tail -n+2`
   tar rvpf $pkg.tar -C $P \
-      `cd $P ; find usr/share/man/ja_JP.eucJP/man2 | tail -n+2`
+      `cd $P ; find usr/share/man/ja_JP.UTF-8/man2 | tail -n+2`
   tar rvpf $pkg.tar -C $P \
-      `cd $P ; find usr/share/man/ja_JP.eucJP/man3 | tail -n+2`
+      `cd $P ; find usr/share/man/ja_JP.UTF-8/man3 | tail -n+2`
   tar rvpf $pkg.tar -C $P \
-      `cd $P ; find usr/share/man/ja_JP.eucJP/man4 | tail -n+2`
+      `cd $P ; find usr/share/man/ja_JP.UTF-8/man4 | tail -n+2`
   tar rvpf $pkg.tar -C $P \
-      `cd $P ; find usr/share/man/ja_JP.eucJP/man5 | tail -n+2`
+      `cd $P ; find usr/share/man/ja_JP.UTF-8/man5 | tail -n+2`
   tar rvpf $pkg.tar -C $P \
-      `cd $P ; find usr/share/man/ja_JP.eucJP/man6 | tail -n+2`
+      `cd $P ; find usr/share/man/ja_JP.UTF-8/man6 | tail -n+2`
   tar rvpf $pkg.tar -C $P \
-      `cd $P ; find usr/share/man/ja_JP.eucJP/man7 | tail -n+2`
+      `cd $P ; find usr/share/man/ja_JP.UTF-8/man7 | tail -n+2`
   tar rvpf $pkg.tar -C $P \
-      `cd $P ; find usr/share/man/ja_JP.eucJP/man8 | tail -n+2`
+      `cd $P ; find usr/share/man/ja_JP.UTF-8/man8 | tail -n+2`
   tar rvpf $pkg.tar -C $P usr/share/doc/$src
   touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
   mv $pkg.tar.xz $pkg.txz
