@@ -1,0 +1,11 @@
+--- build/configure.orig	2011-01-01 05:28:46.000000000 +0900
++++ build/configure	2017-06-01 22:36:47.716739010 +0900
+@@ -494,7 +494,7 @@
+       nroff="$Fnroff -Tlatin1 -mandoc"
+     fi
+     troff="$Fgroff -Tps -mandoc"
+-    jnroff="$Fgroff -Tnippon -mandocj"
++    jnroff="$Fgroff  -Dutf8 -Tutf8 -mandoc -mja -E"
+   fi
+   eqn="$Fgeqn -Tps"
+   neqn="$Fgeqn -Tlatin1"
