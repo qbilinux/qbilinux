@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='https://sourceforge.net/projects/pstoedit/files/pstoedit/3.62/pstoedit-3.62.tar.gz'
 pkgbase=pstoedit
-vers=3.62
+vers=3.70
+url="https://sourceforge.net/projects/pstoedit/files/pstoedit/${vers}/pstoedit-${vers}.tar.gz"
 arch=`uname -m`
-build=P1m1
-src=pstoedit-3.62
+build=P0m1
+src=pstoedit-${vers}
 OPT_CONFIG=''
 DOCS='copying'
 patchfiles=''
@@ -122,9 +122,9 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
-    *) tar xvpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
+    *) tar xpf ${i##*/} ;;
     esac
   done
 fi
