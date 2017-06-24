@@ -5,7 +5,7 @@ vers=7.0
 url="http://ftp.gnu.org/gnu/readline/readline-${vers}.tar.gz"
 commitid=
 arch=`uname -m`
-build=P0m1
+build=P0m2
 src=readline-${vers}
 OPT_CONFIG='--with-curses'
 DOCS='CHANGELOG COPYING INSTALL NEWS README history.c history.h'
@@ -233,6 +233,11 @@ if [ $opt_package -eq 1 ] ; then
 ######################################################################
   # (cd $P/${libdir} ; ln -sf libreadline.so.7.0 libreadline.so.6 )
   # (cd $P/${libdir} ; ln -sf libhistory.so.7.0 libhistory.so.6 )
+  install -d $P/usr/$libdir
+  rm $P/$libdir/lib{history,readline}.so
+  touch $P/$libdir/lib{history,readline}.so
+  ln -s /$libdir/libhistory.so.7 $P/usr/$libdir/libhistory.so
+  ln -s /$libdir/libreadline.so.7 $P/usr/$libdir/libreadline.so
 
   mkdir -p $docdir/$src
   if [ -d $P/usr/share/omf ]; then
