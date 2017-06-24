@@ -4,7 +4,7 @@ pkgbase=GraphicsMagick
 vers=1.3.25
 url="http://sourceforge.net/projects/graphicsmagick/files/graphicsmagick/${vers}/GraphicsMagick-${vers}.tar.xz"
 arch=`uname -m`
-build=P1m1
+build=P1m2
 src=${pkgbase}-${vers}
 OPT_CONFIG="--disable-static --enable-shared=yes --with-modules --with-perl --enable-magick-compat --docdir=/usr/share/doc/${src}"
 DOCS='ChangeLog ChangeLog.2001 ChangeLog.2002 ChangeLog.2003 ChangeLog.2004 ChangeLog.2005 ChangeLog.2006 ChangeLog.2007 ChangeLog.2008 ChangeLog.2009 ChangeLog.2010 Copyright.txt INSTALL-unix.txt INSTALL-windows.txt NEWS.txt README.txt TODO.txt'
@@ -125,9 +125,9 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    xz) tar xvpf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    xz) tar xpf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
     esac
   done
 fi
