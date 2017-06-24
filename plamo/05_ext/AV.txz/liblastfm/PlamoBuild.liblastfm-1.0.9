@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://cdn.last.fm/client/liblastfm-1.0.3.tar.gz'
 pkgbase=liblastfm
-vers=1.0.3
+vers=1.0.9
+url="https://github.com/lastfm/liblastfm/archive/1.0.9.tar.gz"
 arch=`uname -m`
-build=P1m1
-src=liblastfm-1.0.3
+build=P0m1
+src=liblastfm-1.0.9
 OPT_CONFIG=''
 DOCS='COPYING README.md'
 patchfiles=''
@@ -122,9 +122,9 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
-    *) tar xvpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
+    *) tar xpf ${i##*/} ;;
     esac
   done
 fi
