@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=gnutls
-vers=3.5.11
+vers=3.5.13
 url="http://mirrors.dotsrc.org/gnupg/gnutls/v3.5/gnutls-${vers}.tar.xz"
 arch=`uname -m`
 build=P0m1
