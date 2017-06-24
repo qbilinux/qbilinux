@@ -4,7 +4,7 @@ pkgbase=atril
 vers=1.18.0
 url="http://pub.mate-desktop.org/releases/1.18/atril-${vers}.tar.xz"
 arch=`uname -m`
-build=P0m1
+build=P0m2
 src=atril-${vers}
 OPT_CONFIG='--enable-pixbuf --enable-comics --enable-epub --enable-xps'
 #OPT_CONFIG='--enable-gtk-doc-html=no --enable-djvu=no --disable-epub'
@@ -190,10 +190,10 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
-    xz) tar xvf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
+    xz) tar xf ${i##*/} ;;
     esac
   done
 fi
@@ -221,8 +221,8 @@ if [ $opt_config -eq 1 ] ; then
          export LDFLAGS='-Wl,--as-needed' 
          export CC="gcc -O2" 
          export CPPFLAGS="-I/usr/include/libxml2/libxml"
-         export CC="gcc -isystem /usr/include $target" 
-         export CXX="g++ -isystem /usr/include $target "
+         export CC="gcc -I /usr/include $target" 
+         export CXX="g++ -I /usr/include $target "
          ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
      fi
       if [ $? != 0 ]; then
