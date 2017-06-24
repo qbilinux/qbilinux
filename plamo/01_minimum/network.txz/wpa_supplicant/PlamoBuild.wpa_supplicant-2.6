@@ -2,16 +2,17 @@
 
 ######################################################################
 pkgbase=wpa_supplicant
-vers=2.5
+vers=2.6
 url="http://hostap.epitest.fi/releases/wpa_supplicant-${vers}.tar.gz"
 arch=`uname -m`
-build=P1m1
+build=P0m1
 src=$pkgbase-$vers
-patchfiles=""
+patchfiles="qmake5.patch"
 OPT_CONFIG=""
 DOCS="`echo wpa_supplicant/{README-HS20,eap_testing.txt,README-Windows.txt}`
     `echo wpa_supplicant/{ChangeLog,README-WPS,todo.txt,README-P2P,README}`
     CONTRIBUTIONS COPYING README"
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -189,10 +190,10 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz|tgz) tar xvpzf ${i##*/} ;;
-    bz2|tbz) tar xvpjf ${i##*/} ;;
-    xz|txz) tar xvpJf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz|tgz) tar xpzf ${i##*/} ;;
+    bz2|tbz) tar xpjf ${i##*/} ;;
+    xz|txz) tar xpJf ${i##*/} ;;
     esac
   done
 fi
@@ -384,6 +385,10 @@ if [ $opt_package -eq 1 ] ; then
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
+  for patch in $patchfiles ; do
+    cp $W/$patch $docdir/$src/$patch
+    gzip_one $docdir/$src/$patch
+  done
   cp -a $S/wpa_supplicant/examples $docdir/$src/wpa_supplicant
   chmod -R g-w $docdir/$src/wpa_supplicant/examples
   chown -R root.root $docdir/$src/wpa_supplicant/examples
@@ -399,15 +404,10 @@ if [ $opt_package -eq 1 ] ; then
 	fi
 	EOF
   touch -t `date '+%m%d0000'` $P/install/doinst.sh
-  tar cvpf $pkg.tar -C $P `cd $P ; find usr/sbin | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/dbus-1/system-services | tail -n+2`
-  tar rvpf $pkg.tar -C $P etc/dbus-1/system.d/wpa_supplicant.conf
-  tar rvpf $pkg.tar -C $P etc/rc.d/init.d/wpa_supplicant
-  tar rvpf $pkg.tar -C $P etc/wpa_supplicant.conf.new
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man5 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man8 | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  tar rvpf $pkg.tar -C $P install/doinst.sh
-  touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi

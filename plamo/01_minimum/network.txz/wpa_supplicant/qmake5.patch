@@ -1,0 +1,11 @@
+--- wpa_supplicant-2.6/wpa_supplicant/Makefile	2016-10-03 03:51:11.000000000 +0900
++++ build/wpa_supplicant/Makefile	2017-06-11 12:57:20.560056436 +0900
+@@ -1807,7 +1807,7 @@
+ 	@echo "wpa_gui has been removed - see wpa_gui-qt4 for replacement"
+ 
+ wpa_gui-qt4/Makefile:
+-	qmake -o wpa_gui-qt4/Makefile wpa_gui-qt4/wpa_gui.pro
++	qmake-qt5 -o wpa_gui-qt4/Makefile wpa_gui-qt4/wpa_gui.pro
+ 
+ wpa_gui-qt4/lang/wpa_gui_de.qm: wpa_gui-qt4/lang/wpa_gui_de.ts
+ 	lrelease wpa_gui-qt4/wpa_gui.pro
