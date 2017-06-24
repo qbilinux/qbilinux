@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=libgcrypt
-vers=1.7.5
+vers=1.7.7
 url="https://www.gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-${vers}.tar.bz2"
 arch=`uname -m`
 build=P0m1
@@ -11,6 +11,7 @@ patchfiles=""
 OPT_CONFIG="--with-capabilities"
 DOCS="README ChangeLog-2011 COPYING ChangeLog TODO NEWS README.GIT
     COPYING.LIB THANKS AUTHORS INSTALL"
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -272,13 +273,21 @@ if [ $opt_package -eq 1 ] ; then
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
   convert
-  tar cvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/$libdir | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/include | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/aclocal | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/info | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  tar rvpf $pkg.tar -C $P install/doinst.sh
-  touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+######################################################################
+# * convert 対象以外で刈り取りたいシンボリックリンクがある場合はここに
+#   記述します(prune_symlink を使います)。
+# * 完成した作業ディレクトリから tar イメージを作成する手順を以降に記述
+#   します(こだわりを求めないなら単に makepkg でも良いです)。
+######################################################################
+# tar cvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
+# tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man1 | tail -n+2`
+# tar rvpf $pkg.tar -C $P usr/share/doc/$src
+# touch -t `date '+%m%d0900'` $pkg.tar ; gzip $pkg.tar ; touch $pkg.tar.gz
+# mv $pkg.tar.gz $pkg.tgz
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi
