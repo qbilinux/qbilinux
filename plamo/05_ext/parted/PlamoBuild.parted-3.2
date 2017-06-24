@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://ftp.gnu.org/gnu/parted/parted-3.1.tar.xz'
 pkgbase=parted
-vers=3.1
+vers=3.2
+url="http://ftp.gnu.org/gnu/parted/parted-${vers}.tar.xz"
 arch=`uname -m`
-build=P2m1
-src=parted-3.1
+build=P0m1
+src=parted-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='ABOUT-NLS AUTHORS COPYING ChangeLog INSTALL NEWS README THANKS TODO'
 patchfiles=''
