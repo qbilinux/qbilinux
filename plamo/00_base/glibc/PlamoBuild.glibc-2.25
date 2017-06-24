@@ -5,7 +5,7 @@ pkgbase=glibc
 vers=2.25
 url="http://ftp.gnu.org/gnu/glibc/glibc-${vers}.tar.xz"
 arch=`uname -m`
-build=P0m1
+build=P0m2
 src=$pkgbase-$vers
 OPT_CONFIG="--enable-kernel=2.6.32 --enable-obsolete-rpc"
 DOCS="BUGS CONFORMANCE COPYING* ChangeLog* INSTALL LICENSES NEWS
