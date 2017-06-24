@@ -1,10 +1,10 @@
 #!/bin/sh -x
 ##############################################################
 pkgbase=gcc
-vers=6.3.0
+vers=7.1.0
 url="http://ftp.tsukuba.wide.ad.jp/software/gcc/releases/gcc-${vers}/gcc-${vers}.tar.bz2 http://isl.gforge.inria.fr/isl-0.18.tar.bz2"
 arch=`uname -m`
-build=P0m2
+build=P0m1
 src=gcc-${vers}
 if [ "$arch" = "x86_64" ]; then
     OPT_CONFIG='--build=x86_64-pc-linux-gnu --host=x86_64-pc-linux-gnu --libexecdir=/usr/lib64 
@@ -12,14 +12,14 @@ if [ "$arch" = "x86_64" ]; then
    --enable-shared --enable-threads=posix --enable-libmpx --with-system-zlib --with-isl --enable-__cxa_atexit 
    --disable-libunwind-exceptions  --disable-libstdcxx-pch --enable-clocale=gnu --enable-gnu-unique-object 
    --enable-linker-build-id --enable-lto --enable-plugin --enable-install-libiberty --with-linker-hash-style=gnu 
-   --enable-gnu-indirect-function --disable-multilib --disable-werror  --enable-checking=release'
+   --enable-gnu-indirect-function --disable-multilib --disable-werror  --enable-checking=release --disable-bootstrap'
 else
     OPT_CONFIG='--build=i686-pc-linux-gnu --host=i686-pc-linux-gnu --libexecdir=/usr/lib
    --enable-languages=c,c++,fortran,go,lto
    --enable-shared --enable-threads=posix --enable-libmpx --with-system-zlib --with-isl --enable-__cxa_atexit 
    --disable-libunwind-exceptions  --disable-libstdcxx-pch --enable-clocale=gnu --enable-gnu-unique-object 
    --enable-linker-build-id --enable-lto --enable-plugin --enable-install-libiberty --with-linker-hash-style=gnu 
-   --enable-gnu-indirect-function --disable-multilib --disable-werror  --enable-checking=release'
+   --enable-gnu-indirect-function --disable-multilib --disable-werror  --enable-checking=release --disable-bootstrap'
 fi
 DOCS='ABOUT-NLS COPYING COPYING.LIB COPYING.RUNTIME COPYING3 COPYING3.LIB ChangeLog ChangeLog.tree-ssa INSTALL MAINTAINERS NEWS README'
 patchfiles=''
