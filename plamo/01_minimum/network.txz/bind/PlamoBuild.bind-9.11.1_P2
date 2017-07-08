@@ -2,15 +2,16 @@
 
 ######################################################################
 pkgbase=bind
-vers=9.9.9_P8
-url="http://ftp.isc.org/isc/bind/9.9.9-P8/bind-9.9.9-P8.tar.gz
+vers=9.11.1_P2
+url="http://ftp.isc.org/isc/bind/9.11.1-P2/bind-9.11.1-P2.tar.gz
     http://www.internic.net/domain/named.root"
 arch=`uname -m`
 build=P0m1
-src=$pkgbase-9.9.9-P8
+src=$pkgbase-9.11.1-P2
 patchfiles=""
 OPT_CONFIG="--with-libxml2=no --with-libtool"
 DOCS="CHANGES COPYRIGHT FAQ HISTORY README"
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -409,18 +410,10 @@ if [ $opt_package -eq 1 ] ; then
 	fi
 	EOF
   touch -t `date '+%m%d0000'` $P/install/doinst.sh
-  tar cvpf $pkg.tar -C $P `cd $P ; find usr/sbin | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/$libdir | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/include -maxdepth 1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find etc | tail -n+2`
-  tar rvpf $pkg.tar -C $P var/named
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man3 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man5 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man8 | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  tar rvpf $pkg.tar -C $P install/doinst.sh
-  touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi
