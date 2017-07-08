@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=flex
-vers=2.6.3
+vers=2.6.4
 url="https://github.com/westes/flex/releases/download/v${vers}/flex-${vers}.tar.gz"
 arch=`uname -m`
 build=P0m1
@@ -14,35 +14,6 @@ compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
-
-fscheck() {
-  PANGRAM="The quick brown fox jumps over the lazy dog."
-  echo -n "Checking for the filesystem ... "
-  mkdir pangram ; ( cd pangram ; touch $PANGRAM )
-  mv pangram pangram~ ; mkdir pangram ; touch -r pangram~ pangram
-  tar cpf pangram.tar pangram ; rmdir pangram ; mv pangram~ pangram
-  for i in $PANGRAM ; do tar rpf pangram.tar pangram/$i ; done
-  touch -t `date '+%m%d0000'` pangram.tar ; gzip pangram.tar
-  touch pangram.tar.gz ; mv pangram.tar.gz pangram1.tgz
-  tar cpf pangram.tar pangram
-  touch -t `date '+%m%d0000'` pangram.tar ; gzip pangram.tar
-  touch pangram.tar.gz ; mv pangram.tar.gz pangram2.tgz
-  if cmp -s pangram1.tgz pangram2.tgz ; then
-    echo "OK"
-    rm -rf pangram pangram1.tgz pangram2.tgz
-  else
-    echo "NG"
-    cat <<- "EOF"
-	Hmm, packaging may not be done properly on this filesystem.
-	Would you please try again on a default filesystem, thanks!
-	
-	Happy packaging!!
-	
-	Quitting...
-	EOF
-    exit
-  fi
-}
 
 install2() {
   install -d ${2%/*} ; install -m 644 $1 $2
@@ -162,7 +133,6 @@ convert() {
   for i in `seq 9` n ; do prune_symlink $mandir/man$i ; done
 }
 
-#fscheck
 W=`pwd`
 for i in `seq 0 $((${#src[@]} - 1))` ; do
   S[$i]=$W/${src[$i]} ; B[$i]=$W/build`test ${#src[@]} -eq 1 || echo $i`
@@ -258,7 +228,7 @@ if [ $opt_build -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
-      make
+      make -j6
     fi
   done
 fi
