@@ -1,12 +1,15 @@
 #!/bin/sh
 ##############################################################
 pkgbase=readline7
-vers=7.0
-url="http://ftp.gnu.org/gnu/readline/readline-${vers}.tar.gz"
+vers=7.0p3
+url="http://ftp.gnu.org/gnu/readline/readline-${vers}.tar.gz
+https://ftp.gnu.org/gnu/readline/readline-7.0-patches/readline70-001
+https://ftp.gnu.org/gnu/readline/readline-7.0-patches/readline70-002
+https://ftp.gnu.org/gnu/readline/readline-7.0-patches/readline70-003"
 commitid=
 arch=`uname -m`
-build=P0m2
-src=readline-${vers}
+build=P0m1
+src=readline-7.0
 OPT_CONFIG='--with-curses'
 DOCS='CHANGELOG COPYING INSTALL NEWS README history.c history.h'
 patchfiles=''
@@ -170,6 +173,9 @@ if [ $opt_config -eq 1 ] ; then
 ######################################################################
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
+    patch -p2 -i $W/readline70-001
+    patch -p2 -i $W/readline70-002
+    patch -p2 -i $W/readline70-003
     for patch in $patchfiles ; do
       patch -p1 < $W/$patch
     done
