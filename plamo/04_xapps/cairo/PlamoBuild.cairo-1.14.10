@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=cairo
-vers=1.14.6
-url="http://cairographics.org/releases/cairo-1.14.6.tar.xz"
+vers=1.14.10
+url="http://cairographics.org/releases/cairo-${vers}.tar.xz"
 verify=${url}.sha1
 commitid=
 arch=`uname -m`
-build=P1m1
+build=P0m1
 src=cairo-${vers}
 OPT_CONFIG='--disable-static --enable-xcb --enable-tee --enable-gl'
 DOCS='AUTHORS COPYING COPYING-LGPL-2.1 COPYING-MPL-1.1 ChangeLog ChangeLog.pre-1.0 ChangeLog.pre-1.10 ChangeLog.pre-1.12 ChangeLog.pre-1.2 ChangeLog.pre-1.4 ChangeLog.pre-1.6 ChangeLog.pre-1.8 HACKING INSTALL NEWS README README.win32'
@@ -217,7 +217,7 @@ if [ $opt_build -eq 1 ] ; then
     cd ${B[$i]}
     if [ -f Makefile ] ; then
       export LDFLAGS='-Wl,--as-needed'
-      make -j3
+      make -j6
     fi
     if [ $? != 0 ]; then
       echo "make error. $0 script stop"
