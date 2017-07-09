@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='ftp://ftp.yz.yamagata-u.ac.jp/pub/X11/x.org/individual/driver/xf86-input-libinput-0.14.0.tar.bz2'
 pkgbase=xf86_input_libinput
-vers=0.14.0
+vers=0.25.1
+url="https://www.x.org/releases/individual/driver/xf86-input-libinput-${vers}.tar.bz2"
 arch=`uname -m`
-build=P1m1
-src=xf86-input-libinput-0.14.0
+build=P0m1
+src=xf86-input-libinput-${vers}
 OPT_CONFIG=''
 DOCS='COPYING ChangeLog INSTALL README.md'
 patchfiles=''
