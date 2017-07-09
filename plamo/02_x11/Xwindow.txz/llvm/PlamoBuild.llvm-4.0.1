@@ -1,13 +1,13 @@
 #!/bin/sh
 ##############################################################
-url='http://llvm.org/releases/4.0.0/llvm-4.0.0.src.tar.xz
- http://llvm.org/releases/4.0.0/cfe-4.0.0.src.tar.xz
- http://llvm.org/releases/4.0.0/compiler-rt-4.0.0.src.tar.xz'
 pkgbase=llvm
-vers=4.0.0
+vers=4.0.1
+url="http://llvm.org/releases/${vers}/llvm-${vers}.src.tar.xz
+ http://llvm.org/releases/${vers}/cfe-${vers}.src.tar.xz
+ http://llvm.org/releases/${vers}/compiler-rt-${vers}.src.tar.xz"
 arch=`uname -m`
 build=P0m1
-src=llvm-4.0.0
+src=llvm-${vers}
 # these configs translated into cmake style
 # OPT_CONFIG='--enable-libffi  
 #            --enable-optimized
@@ -210,7 +210,7 @@ if [ $opt_build -eq 1 ] ; then
     cd ${B[$i]}/build_stage
     if [ -f Makefile ] ; then
       # export LDFLAGS='-Wl,--as-needed'
-      make -j3 REQUIRES_RTTI=1 VERBOSE=1
+      make -j10 REQUIRES_RTTI=1 VERBOSE=1
     fi
     if [ -x /usr/bin/sphinx-build ]; then
 	cd ..
@@ -234,9 +234,9 @@ if [ $opt_package -eq 1 ] ; then
       # export LDFLAGS='-Wl,--as-needed'
       make -j1 install DESTDIR=$P
     fi
-    rm $P/usr/${libdir}/LLVMHello*
-    rm $P/usr/${libdir}/BugpointPasses.*
-    rm $P/usr/${libdir}/libgtest*
+    #rm $P/usr/${libdir}/LLVMHello*
+    #rm $P/usr/${libdir}/BugpointPasses.*
+    #rm $P/usr/${libdir}/libgtest*
     # sanitizer/msan_interface.h は Clangパッケージになっているので、
     # LLVMをライブラリとして使いたい場合は使えない
     # 3.4 ではデフォルトでコメントアウトされていた。
