@@ -4,7 +4,7 @@ url='http://freedesktop.org/software/pulseaudio/paprefs/paprefs-0.9.10.tar.xz'
 pkgbase=paprefs
 vers=0.9.10
 arch=`uname -m`
-build=P1m1
+build=P1m2
 src=paprefs-0.9.10
 OPT_CONFIG='--disable-static --disable-lynx'
 DOCS='ABOUT-NLS ChangeLog LICENSE README'
@@ -184,10 +184,10 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
-    xz) tar xvpf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
+    xz) tar xpf ${i##*/} ;;
     esac
   done
 fi
