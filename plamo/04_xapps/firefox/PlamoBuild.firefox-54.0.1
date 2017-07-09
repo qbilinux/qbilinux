@@ -3,7 +3,7 @@ unset LS_BLOCK_SIZE
 export LANG=C
 ##############################################################
 pkgbase=firefox
-vers=53.0.2
+vers=54.0.1
 url="http://ftp.mozilla.org/pub/mozilla.org/firefox/releases/${vers}/source/${pkgbase}-${vers}.source.tar.xz"
 #verify=$url.asc
 arch=`uname -m`
@@ -271,7 +271,7 @@ export MOZILLA_OFFICIAL=0
 CC="gcc"
 CXX="g++"
 
-mk_add_options MOZ_MAKE_FLAGS="-j3"
+mk_add_options MOZ_MAKE_FLAGS="-j8"
 ac_add_options --enable-strip
 ac_add_options --disable-install-strip
 
@@ -332,7 +332,7 @@ if [ $opt_build -eq 1 ] ; then
     export LDFLAGS='-Wl,--as-needed'
     export CFLAGS="-I /usr/include ${target}"
     export CPPFLAGS="-I /usr/include ${target}"
-    export MOZ_MAKE_FLAGS="-j4"
+    export MOZ_MAKE_FLAGS="-j8"
     make -f client.mk build
   done
 fi
