@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://www.llvm.org/releases/3.7.0/libcxxabi-3.7.0.src.tar.xz'
 pkgbase=libcxxabi
-vers=3.7.0
+vers=4.0.1
+url="http://www.llvm.org/releases/${vers}/libcxxabi-${vers}.src.tar.xz"
 arch=`uname -m`
-build=P1m1
-src=libcxxabi-3.7.0.src
+build=P0m1
+src=libcxxabi-${vers}.src
 OPT_CONFIG=''
 DOCS='CREDITS.TXT LICENSE.TXT'
 patchfiles=''
@@ -122,9 +122,9 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
-    *) tar xvpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
+    *) tar xpf ${i##*/} ;;
     esac
   done
 fi
