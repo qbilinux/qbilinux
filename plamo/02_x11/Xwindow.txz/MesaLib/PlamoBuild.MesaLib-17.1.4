@@ -1,8 +1,8 @@
 #!/bin/sh
 ##############################################################
 pkgbase=MesaLib
-vers=13.0.6
-url="ftp://ftp.freedesktop.org/pub/mesa/${vers}/mesa-${vers}.tar.xz"
+vers=17.1.4
+url="ftp://ftp.freedesktop.org/pub/mesa/mesa-${vers}.tar.xz"
 arch=`uname -m`
 build=P0m1
 src=mesa-${vers}
@@ -11,13 +11,13 @@ OPT_CONFIG='--enable-texture-float
          --enable-gles1  --enable-gles2 
          --enable-osmesa --enable-xa --enable-gbm 
          --enable-glx-tls 
-         --with-egl-platforms=drm,x11
-         --with-gallium-drivers=nouveau,r300,r600,radeonsi,svga,swrast,i915,ilo
+         --with-platforms=drm,x11
+         --with-gallium-drivers=nouveau,r300,r600,radeonsi,svga,swrast,i915
          '
 DOCS='docs/*'
 
 # http://www.linuxfromscratch.org/patches/blfs/svn/MesaLib-9.1.6-add_xdemos-1.patch
-patchfiles='mesa-13.0.4-add_xdemos-1.patch'
+patchfiles='mesa-17.1.4-add_xdemos-1.patch'
 
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
@@ -132,9 +132,9 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz) tar xvpzf ${i##*/} ;;
-    xz) tar xvpf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    xz) tar xpf ${i##*/} ;;
     esac
   done
 fi
@@ -166,7 +166,8 @@ if [ $opt_config -eq 1 ] ; then
 	     export CC="clang"
 	 #    # export CXX='clang++ -std=c++11 -stdlib=libc++ -lc++abi'
 	 #    # -std=c++11 を指定すると、あちこちにエラーになるコードがある模様
-	     export CXX='clang++ -stdlib=libc++ -lc++abi'
+	 #    export CXX='clang++ -stdlib=libc++ -lc++abi'
+	     export CXX='clang++'
 	 else
             export LDFLAGS='-Wl,--as-needed' 
 	    export CC="gcc"
