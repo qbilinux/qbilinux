@@ -2,7 +2,7 @@
 export LANG=C
 ##############################################################
 pkgbase=nss
-vers=3.29.5
+vers=3.31
 url="http://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_${vers//./_}_RTM/src/nss-${vers}.tar.gz"
 arch=`uname -m`
 build=P0m1
@@ -10,7 +10,7 @@ src=${pkgbase}-${vers}
 OPT_CONFIG=''
 DOCS=''
 # http://www.linuxfromscratch.org/patches/blfs/svn/nss-3.26-standalone-1.patch
-patchfiles='nss-3.30-standalone-1.patch'
+patchfiles='nss-3.31-standalone-1.patch'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -226,8 +226,8 @@ if [ $opt_build -eq 1 ] ; then
     cd ${B[$i]}
     export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
     export LDFLAGS='-Wl,--as-needed'
-    export CC="gcc -isystem /usr/include $target"
-    export CXX="g++ -isystem /usr/include $target "
+    export CC="gcc -I /usr/include $target"
+    export CXX="g++ -I /usr/include $target "
     export BUILD_OPT=1
     export NSS_USE_SYSTEM_SQLITE=1
     export NSPR_INCLUDE_DIR=/usr/include/nspr
@@ -236,7 +236,7 @@ if [ $opt_build -eq 1 ] ; then
     if [ $arch = "x86_64" ]; then
       export USE_64=1
     fi
-    cd nss && make 
+    cd nss && make
   done
 fi
 if [ $opt_package -eq 1 ] ; then
