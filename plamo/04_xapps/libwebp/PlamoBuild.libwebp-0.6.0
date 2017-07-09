@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://downloads.webmproject.org/releases/webp/libwebp-0.4.1.tar.gz'
-verify=$url.asc
 pkgbase=libwebp
-vers=0.4.1
+vers=0.6.0
+url="https://storage.googleapis.com/downloads.webmproject.org/releases/webp/libwebp-${vers}.tar.gz"
+verify=$url.asc
 arch=`uname -m`
-build=P1m1
+build=P0m1
 src=${pkgbase}-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING ChangeLog NEWS README'
@@ -155,9 +155,9 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
     esac
   done
 fi
