@@ -1,13 +1,13 @@
 #!/bin/sh
 ##############################################################
 pkgbase=nghttp2
-vers=1.10.0
+vers=1.24.0
 url="https://github.com/nghttp2/nghttp2/releases/download/v${vers}/nghttp2-${vers}.tar.xz"
 commitid=
 arch=`uname -m`
-build=P1m1
+build=P0m1
 src=nghttp2-${vers}
-OPT_CONFIG='--enable-asio-lib'
+OPT_CONFIG='--enable-asio-lib --disable-static'
 DOCS='AUTHORS CMakeOptions.txt COPYING ChangeLog INSTALL NEWS README README.rst'
 patchfiles=''
 compress=txz
@@ -147,15 +147,15 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
     git) ( cd `basename ${i##*/} .git`
         git checkout master
         if [ -n "$commitid" ] ; then
           git reset --hard $commitid
         fi
         git set-file-times ) ;;
-    *) tar xvpf ${i##*/} ;;
+    *) tar xpf ${i##*/} ;;
     esac
   done
 fi
