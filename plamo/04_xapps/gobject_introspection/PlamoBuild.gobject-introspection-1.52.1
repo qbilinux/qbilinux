@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://ftp.gnome.org/pub/gnome/sources/gobject-introspection/1.42/gobject-introspection-1.42.0.tar.xz'
 pkgbase=gobject_introspection
-vers=1.42.0
+vers=1.52.1
+url="http://ftp.gnome.org/pub/gnome/sources/gobject-introspection/1.52/gobject-introspection-${vers}.tar.xz"
 arch=`uname -m`
-build=P1m1
-src=gobject-introspection-1.42.0
+build=P0m1
+src=gobject-introspection-${vers}
 OPT_CONFIG='--disable-tests --disable-static'
 DOCS='AUTHORS COPYING COPYING.GPL COPYING.LGPL ChangeLog NEWS README TODO'
 patchfiles=''
@@ -166,7 +166,7 @@ if [ $opt_build -eq 1 ] ; then
     cd ${B[$i]}
     if [ -f Makefile ] ; then
       export LDFLAGS='-Wl,--as-needed'
-      make -j3
+      make -j6
     fi
   done
 fi
