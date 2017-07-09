@@ -1,11 +1,11 @@
 #!/bin/sh
 
 ######################################################################
-url="http://downloads.sourceforge.net/pyparsing/pyparsing-2.0.1.tar.gz"
 pkgbase=pyparsing
-vers=2.0.1
+vers=2.2.0
+url="https://sourceforge.net/projects/pyparsing/files/pyparsing/pyparsing-${vers}/pyparsing-${vers}.tar.gz"
 arch=`uname -m`
-build=P2m1
+build=P0m1
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="CHANGES LICENSE README"
@@ -174,9 +174,9 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
     esac
   done
 fi
@@ -206,7 +206,7 @@ if [ $opt_build -eq 1 ] ; then
       make
     fi
   done
-  python setup.py build
+  python3 setup.py build
 fi
 if [ $opt_package -eq 1 ] ; then
   if [ `id -u` -ne 0 ] ; then
@@ -224,7 +224,7 @@ if [ $opt_package -eq 1 ] ; then
       make install DESTDIR=$P
     fi
   done
-  python setup.py install --root=$P
+  python3 setup.py install --root=$P
   touch $W/i.et
   cd $W
   find $P ! -type l -newer i.st ! -newer i.et \
