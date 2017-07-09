@@ -1,9 +1,9 @@
 #!/bin/sh
 ##############################################################
 pkgbase=glibmm
-vers=2.51.1.1
-url="http://ftp.gnome.org/pub/gnome/sources/glibmm/2.51/glibmm-${vers}.tar.xz"
-verify="http://ftp.gnome.org/pub/gnome/sources/glibmm/2.51/glibmm-${vers}.sha256sum"
+vers=2.52.0
+url="http://ftp.gnome.org/pub/gnome/sources/glibmm/2.52/glibmm-${vers}.tar.xz"
+verify="http://ftp.gnome.org/pub/gnome/sources/glibmm/2.52/glibmm-${vers}.sha256sum"
 commitid=
 arch=`uname -m`
 build=P0m1
