@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='http://webkitgtk.org/releases/webkitgtk-2.4.11.tar.xz'
-verify=
 pkgbase=webkitgtk3
 vers=2.4.11
+url="http://webkitgtk.org/releases/webkitgtk-${vers}.tar.xz"
+verify=
 commitid=
 arch=`uname -m`
-build=P0m1
+build=P0m2
 src=webkitgtk-2.4.11
 OPT_CONFIG='--enable-geolocation --enable-introspection --with-gtk=3.0 --enable-webkit2'
 DOCS='ChangeLog INSTALL NEWS README'
@@ -167,15 +167,15 @@ if [ $opt_download -eq 1 ] ; then
     done
     for i in $url ; do
 	case ${i##*.} in
-	    gz) tar xvpzf ${i##*/} ;;
-	    bz2) tar xvpjf ${i##*/} ;;
+	    gz) tar xpzf ${i##*/} ;;
+	    bz2) tar xpjf ${i##*/} ;;
 	    git) ( cd `basename ${i##*/} .git`
 		   git checkout origin/master
 		   if [ -n "$commitid" ] ; then
 		       git reset --hard $commitid
 		   fi
 		   git set-file-times ) ;;
-	    *) tar xvpf ${i##*/} ;;
+	    *) tar xpf ${i##*/} ;;
 	esac
     done
 fi

@@ -5,10 +5,11 @@ pkgbase=graphviz
 vers=2.40.1
 url="http://www.graphviz.org/pub/graphviz/stable/SOURCES/graphviz-${vers}.tar.gz"
 arch=`uname -m`
-build=P0m2
+build=P0m4
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="NEWS cpl1.0.txt INSTALL ChangeLog README AUTHORS COPYING"
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -200,7 +201,7 @@ if [ $opt_build -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
-      make
+      make -j6
     fi
   done
 fi
@@ -257,32 +258,21 @@ if [ $opt_package -eq 1 ] ; then
 	dot -c
 	#%% end
 	EOF
-  touch -t `date '+%m%d0000'` $P/install/doinst.sh
-  tar cvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/$libdir -maxdepth 1 -name libcdt.*`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/$libdir/pkgconfig | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/$libdir -maxdepth 1 -name libcgraph.*`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/$libdir -maxdepth 1 -name libpathplan.*`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/$libdir -maxdepth 1 -name libxdot.*`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/$libdir -maxdepth 1 -name libgvc.*`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/$libdir -maxdepth 1 -name libgvpr.*`
-  tar rvpf $pkg.tar -C $P usr/$libdir/graphviz
-  tar rvpf $pkg.tar -C $P usr/$libdir/lua/5.1/gv.so
-  tar rvpf $pkg.tar -C $P \
-      `cd $P ; find usr/$libdir/perl5/vendor_perl/5.14.2/*-linux-thread-multi \
-      | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/$libdir/php/modules/gv.so
-  tar rvpf $pkg.tar -C $P \
-      `cd $P ; find usr/$libdir/python*/site-packages | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/$libdir/tcl8.5/graphviz
-  tar rvpf $pkg.tar -C $P usr/include/graphviz
-  tar rvpf $pkg.tar -C $P usr/share/graphviz
-  tar rvpf $pkg.tar -C $P usr/share/php/gv.php
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man3 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man7 | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  tar rvpf $pkg.tar -C $P install/doinst.sh
-  touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+######################################################################
+# * convert 対象以外で刈り取りたいシンボリックリンクがある場合はここに
+#   記述します(prune_symlink を使います)。
+# * 完成した作業ディレクトリから tar イメージを作成する手順を以降に記述
+#   します(こだわりを求めないなら単に makepkg でも良いです)。
+######################################################################
+# tar cvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
+# tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man1 | tail -n+2`
+# tar rvpf $pkg.tar -C $P usr/share/doc/$src
+# touch -t `date '+%m%d0900'` $pkg.tar ; gzip $pkg.tar ; touch $pkg.tar.gz
+# mv $pkg.tar.gz $pkg.tgz
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi

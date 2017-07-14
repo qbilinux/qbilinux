@@ -5,7 +5,7 @@ pkgbase=Python2
 vers=2.7.13
 url="https://www.python.org/ftp/python/${vers}/Python-${vers}.tar.xz"
 arch=`uname -m`
-build=P0m1
+build=P0m2
 src=Python-$vers
 OPT_CONFIG="--enable-shared --with-system-expat --with-system-ffi
     --with-dbmliborder=gdbm:bdb:ndbm"
@@ -252,6 +252,9 @@ if [ $opt_package -eq 1 ] ; then
       make install DESTDIR=$P
     fi
   done
+  # rm $P/usr/bin/python
+  # rm $P/usr/bin/python-config
+  # rm $P/usr/$libdir/pkgconfig/python.pc
   touch $P/usr/bin/{pydoc,idle,2to3,smtpd.py}
   ln -s /usr/$libdir/libpython2.7.so $P/usr/$libdir/python2.7/config
   touch $P/usr/$libdir/python2.7/lib-dynload/*
