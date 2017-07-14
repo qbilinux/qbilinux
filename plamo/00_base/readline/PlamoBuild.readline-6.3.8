@@ -13,7 +13,7 @@ url="http://ftp.gnu.org/gnu/readline/readline-${vers}.tar.gz
     http://ftp.gnu.org/gnu/readline/readline-6.3-patches/readline63-007
     http://ftp.gnu.org/gnu/readline/readline-6.3-patches/readline63-008"
 arch=`uname -m`
-build=P3m2
+build=P3m3
 src=$pkgbase-$vers
 patchfiles=""
 OPT_CONFIG="--with-curses --disable-static"
@@ -265,11 +265,6 @@ if [ $opt_package -eq 1 ] ; then
       make install DESTDIR=$P
     fi
   done
-  install -d $P/usr/$libdir
-  rm $P/$libdir/lib{history,readline}.so
-  touch $P/$libdir/lib{history,readline}.so
-  ln -s /$libdir/libhistory.so.6 $P/usr/$libdir/libhistory.so
-  ln -s /$libdir/libreadline.so.6 $P/usr/$libdir/libreadline.so
   touch $W/i.et
   cd $W
   find $P ! -type l -newer i.st ! -newer i.et \

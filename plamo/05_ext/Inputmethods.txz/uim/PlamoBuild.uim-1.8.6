@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/uim/uim-1.8.6.tar.bz2'
 pkgbase=uim
 vers=1.8.6
+url="https://github.com/uim/uim/releases/download/uim-${vers}/uim-${vers}.tar.bz2"
 arch=`uname -m`
-build=P2m1
-src=uim-1.8.6
+build=P2m2
+src=uim-${vers}
 OPT_CONFIG='--disable-static --enable-kde4-applet --with-canna --with-wnn  --with-wnn-includes=/usr/include/wnn --with-sj3 --with-sqlite3 --with-x --with-expat=/usr --with-qt4 --with-qt4-immodule'
 if [ "$arch" = "x86_64" ]; then
    OPT_CONFIG=$OPT_CONFIG' --with-expat=/usr/lib64 --with-wnn-libraries=/usr/lib64/wnn'
