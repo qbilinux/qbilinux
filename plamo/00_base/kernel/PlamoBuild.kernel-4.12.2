@@ -6,11 +6,11 @@
 url="https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.12.2.tar.xz"
 pkgbase=kernel
 arch=`uname -m`
-build=P0m2
+build=P0m1
 src=linux-4.12.2
 patchfiles="vd_unicon-kernel-20170609-4.11.patch vd_unicon-kernel-fonts-20140614.patch overlayfs-allow_unprivileged_mounts.patch"
 #patchfiles=""
-configfile64="config-4.12-plamo64-2"
+configfile64="config-4.12-plamo64"
 configfile32="config-4.12-plamoSMP"
 if [ $arch = "x86_64" ]; then
     vers=4.12.2_plamo64
