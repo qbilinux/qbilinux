@@ -1,26 +1,26 @@
 #!/bin/sh -x
 
 ######################################################################
-#url="https://www.kernel.org/pub/linux/kernel/v4.x/linux-4.11.7.tar.xz
+#url="https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.12.2.tar.xz
 #    git://github.com/sfjro/aufs4-standalone.git"
-url="https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.12.tar.xz"
+url="https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.12.2.tar.xz"
 pkgbase=kernel
 arch=`uname -m`
-build=P0m1
-src=linux-4.12
-#patchfiles="vd_unicon-kernel-20170213-4.9.patch vd_unicon-kernel-fonts-20140614.patch overlayfs-allow_unprivileged_mounts.patch"
-patchfiles=""
-configfile64="config-4.12-plamo64"
+build=P0m2
+src=linux-4.12.2
+patchfiles="vd_unicon-kernel-20170609-4.11.patch vd_unicon-kernel-fonts-20140614.patch overlayfs-allow_unprivileged_mounts.patch"
+#patchfiles=""
+configfile64="config-4.12-plamo64-2"
 configfile32="config-4.12-plamoSMP"
 if [ $arch = "x86_64" ]; then
-    vers=4.12.0_plamo64
+    vers=4.12.2_plamo64
     configfile=$configfile64
 else
-    vers=4.12.0_plamoSMP
+    vers=4.12.2_plamoSMP
     configfile=$configfile32
 fi
-aufs_vers=4.10
-aufs_git_vers=2de56bb
+aufs_vers=4.x-rcN
+aufs_git_vers=aa7bfb3
 OPT_CONFIG=""
 DOCS=""
 compress=txz
@@ -230,13 +230,13 @@ if [ $opt_config -eq 1 ] ; then
     done
   done
   cd $B
-  # patch -Np1 -i $W/aufs4-standalone/aufs4-kbuild.patch
-  # patch -Np1 -i $W/aufs4-standalone/aufs4-base.patch
-  # patch -Np1 -i $W/aufs4-standalone/aufs4-mmap.patch
-  # patch -Np1 -i $W/aufs4-standalone/aufs4-standalone.patch
-  # cp -av $W/aufs4-standalone/Documentation .
-  # cp -av $W/aufs4-standalone/fs .
-  # cp -pv $W/aufs4-standalone/include/uapi/linux/aufs_type.h include/uapi/linux
+  #patch -Np1 -i $W/aufs4-standalone/aufs4-kbuild.patch
+  #patch -Np1 -i $W/aufs4-standalone/aufs4-base.patch
+  #patch -Np1 -i $W/aufs4-standalone/aufs4-mmap.patch
+  #patch -Np1 -i $W/aufs4-standalone/aufs4-standalone.patch
+  #cp -av $W/aufs4-standalone/Documentation .
+  #cp -av $W/aufs4-standalone/fs .
+  #cp -pv $W/aufs4-standalone/include/uapi/linux/aufs_type.h include/uapi/linux
   cp -p $W/${configfile} .config
   cp -p arch/x86/boot/install.sh{,.orig}
   head -n-9 arch/x86/boot/install.sh.orig > arch/x86/boot/install.sh
