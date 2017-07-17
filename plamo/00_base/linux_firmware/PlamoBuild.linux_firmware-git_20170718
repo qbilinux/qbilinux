@@ -2,8 +2,8 @@
 
 ######################################################################
 pkgbase=linux_firmware
-vers=git_20170208
-git_vers=6d3bc88
+vers=git_20170718
+git_vers=7d2c913
 url="https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git"
 arch=noarch
 build=P0m1
