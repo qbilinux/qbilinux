@@ -3,7 +3,7 @@ unset LS_BLOCK_SIZE
 export LANG=C
 ##############################################################
 pkgbase=firefox
-vers=54.0.1
+vers=55.0.1
 url="http://ftp.mozilla.org/pub/mozilla.org/firefox/releases/${vers}/source/${pkgbase}-${vers}.source.tar.xz"
 #verify=$url.asc
 arch=`uname -m`
@@ -171,10 +171,8 @@ myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
 
 if [ $arch = "x86_64" ]; then
-    target="-m64"
     libdir="lib64"
 else
-    target="-m32"
     libdir="lib"
 fi
 
@@ -330,9 +328,7 @@ if [ $opt_build -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     export LDFLAGS='-Wl,--as-needed'
-    export CFLAGS="-I /usr/include ${target}"
-    export CPPFLAGS="-I /usr/include ${target}"
-    export MOZ_MAKE_FLAGS="-j8"
+    export MOZ_MAKE_FLAGS="-j10"
     make -f client.mk build
   done
 fi
