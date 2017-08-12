@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=binutils
-vers=2.28
+vers=2.29
 url="http://ftp.gnu.org/gnu/binutils/binutils-${vers}.tar.bz2"
 arch=`uname -m`
 build=P0m1
