@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='ftp://invisible-island.net/xterm/xterm-324.tgz'
 pkgbase=xterm
-vers=324
+vers=330
+url="ftp://invisible-island.net/xterm/xterm-${vers}.tgz"
 arch=`uname -m`
-build=P1m1
-src=xterm-324
+build=P0m1
+src=xterm-${vers}
 OPT_CONFIG='--with-app-defaults=/etc/X11/app-defaults'
 DOCS='AAA_README_VMS.txt INSTALL README README.i18n README.os390 THANKS ctlseqs.txt'
 patchfiles=''
@@ -120,9 +120,9 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
-    *) tar xvpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
+    *) tar xpf ${i##*/} ;;
     esac
   done
 fi
