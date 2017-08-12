@@ -190,10 +190,10 @@ if [ -r install/initpkg ]; then
 fi
 
 if [ "$compress" = "gzip" ]; then
-    tar --create --gzip --exclude $PKGNAME --exclude initpkg --file $PKGNAME `ls -f --indicator-style=none | sed '/^\.\{1,2\}$/d'`
+    tar --sort=name --create --gzip --exclude $PKGNAME --exclude initpkg --file $PKGNAME `ls -f --indicator-style=none | sed '/^\.\{1,2\}$/d'`
 elif [ "$compress" = "bzip2" ]; then
-    tar --create --bzip2 --exclude $PKGNAME --exclude initpkg --file $PKGNAME `ls -f --indicator-style=none | sed '/^\.\{1,2\}$/d'`
+    tar --sort=name --create --bzip2 --exclude $PKGNAME --exclude initpkg --file $PKGNAME `ls -f --indicator-style=none | sed '/^\.\{1,2\}$/d'`
 else
-    tar --create --xz --exclude $PKGNAME --exclude initpkg --file $PKGNAME `ls -f --indicator-style=none | sed '/^\.\{1,2\}$/d'`
+    tar --sort=name --create --xz --exclude $PKGNAME --exclude initpkg --file $PKGNAME `ls -f --indicator-style=none | sed '/^\.\{1,2\}$/d'`
 fi
 
