@@ -2,16 +2,16 @@
 
 ######################################################################
 pkgbase=heimdal
-vers=1.5.3
-url="http://www.h5l.org/dist/src/heimdal-${vers}.tar.gz
-    ftp://plamo.linet.gr.jp/pub/Plamo-src.new/plamo/01_minimum/network.txz/heimdal/heimdal-1.5.3-texinfo_fix.patch"
+vers=7.4.0
+url="https://github.com/heimdal/heimdal/releases/download/heimdal-${vers}/heimdal-${vers}.tar.gz"
 arch=`uname -m`
-build=P2m1
+build=P0m1
 src=$pkgbase-$vers
-patchfiles="heimdal-1.5.3-texinfo_fix.patch"
-OPT_CONFIG="--prefix=/usr/heimdal --infodir=/usr/share/info
+patchfiles=""
+OPT_CONFIG="--prefix=/usr --infodir=/usr/share/info
     --mandir=/usr/share/man --with-sqlite3=/usr LIBS=-pthread"
 DOCS="ChangeLog* LICENSE NEWS README TODO"
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -253,45 +253,10 @@ if [ $opt_package -eq 1 ] ; then
       make install DESTDIR=$P
     fi
   done
-  mkdir $P/usr/heimdal/heimdal.tmp
-  mv $P/usr/heimdal/{{{,s}bin,libexec,$libdir,include},heimdal.tmp}
-  mv $P/usr/heimdal{/heimdal.tmp/{{,s}bin,libexec,$libdir,include},}
-  rmdir $P/usr/heimdal/heimdal.tmp
-  install -d $P/usr/$libdir/pkgconfig
-  ln -sf /usr/heimdal/$libdir/pkgconfig/heimdal-gssapi.pc \
-      $P/usr/$libdir/pkgconfig
   ln -sf mech.5 $mandir/man5/qop.5
   install -d $P/etc
   install -m 644 krb5.conf $P/etc
   install -m 644 etc/services.append $P/etc/services.append-kerberos
-  install -d $P/etc/profile.d
-  cat <<- "EOF" > $P/etc/profile.d/heimdal.sh
-	# add /usr/heimdal/bin to $PATH for bash
-	heimdal=/usr/heimdal
-	
-	if [ -n "$PATH" ] ; then
-	  PATH=$PATH:$heimdal/bin
-	else
-	  PATH=/bin:/usr/bin:$heimdal/bin
-	fi
-	if [ `id -u` = 0 ] ; then
-	  PATH=$PATH:$heimdal/sbin
-	fi
-	export PATH
-	EOF
-  cat <<- "EOF" > $P/etc/profile.d/heimdal.csh
-	# add /usr/heimdal/bin to $PATH for tcsh
-	set heimdal=/usr/heimdal
-	
-	if ($?PATH) then
-	  setenv PATH $PATH:$heimdal/bin
-	else
-	  setenv PATH /bin:/usr/bin:$heimdal/bin
-	endif
-	if (`id -u` == 0) then
-	  setenv PATH $PATH:$heimdal/sbin
-	endif
-	EOF
   install -d $P/etc/rc.d/init.d
   cat <<- "EOF" > $P/etc/rc.d/init.d/heimdal
 	#!/bin/sh -f
@@ -307,11 +272,11 @@ if [ $opt_package -eq 1 ] ; then
 	# 2006-01-02	JuK	port to Heimdal on Plamo Linux
 	# 2001-10-01	JuK	port to RH7.1
 	#
-	KDC=/usr/heimdal/libexec/kdc
+	KDC=/usr/libexec/kdc
 	kdcdaemon="heimdal (Kerberos 5 KDC)"
-	KADMIND=/usr/heimdal/libexec/kadmind
+	KADMIND=/usr/libexec/kadmind
 	kdmdaemon="kadmind (Kerberos DB admin. daemon)"
-	KPASSWDD=/usr/heimdal/libexec/kpasswdd
+	KPASSWDD=/usr/libexec/kpasswdd
 	kpwdaemon="kpasswdd (Kerberos password daemon)"
 	
 	kdcpid=`ps ax | grep $KDC | grep -v grep | sed -e 's/^  *//' -e 's/ .*//'`
@@ -418,14 +383,12 @@ if [ $opt_package -eq 1 ] ; then
 	EOF
   touch $W/i.et
   cd $W
-  find $P ! -type l -newer i.st ! -newer i.et \
-      -exec touch -t `date '+%m%d0000'` {} \;
   compress
-  strip_bindir $P/usr/heimdal/bin
-  strip_bindir $P/usr/heimdal/sbin
-  strip_bindir $P/usr/heimdal/libexec/heimdal
-  strip_bindir $P/usr/heimdal/libexec
-  strip_libdir $P/usr/heimdal/$libdir
+  strip_bindir $P/usr/bin
+  strip_bindir $P/usr/sbin
+  strip_bindir $P/usr/libexec/heimdal
+  strip_bindir $P/usr/libexec
+  strip_libdir $P/usr/$libdir
   for i in `seq 0 $((${#DOCS[@]} - 1))` ; do
     for j in ${DOCS[$i]} ; do
       for k in ${S[$i]}/$j ; do
@@ -436,26 +399,18 @@ if [ $opt_package -eq 1 ] ; then
     done
     if [ $i -eq 0 ] ; then
       install $myname $docdir/$src
-      touch -t `date '+%m%d0000'` $docdir/$src/$myname
       gzip_one $docdir/$src/$myname
     else
       ln $docdir/$src/$myname.gz $docdir/${src[$i]}
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
-  prune_symlink $P/usr/heimdal
+  prune_symlink $P/usr
   convert
-  touch -t `date '+%m%d0000'` \
-      $P/usr/heimdal/{{,s}bin,libexec{,/heimdal},$libdir}
-  tar cvpf $pkg.tar -C $P usr/heimdal
-  tar rvpf $pkg.tar -C $P `cd $P ; find etc -type f`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/info | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man3 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man5 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man8 | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  tar rvpf $pkg.tar -C $P install/doinst.sh
-  touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi
