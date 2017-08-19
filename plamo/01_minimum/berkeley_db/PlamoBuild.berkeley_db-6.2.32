@@ -2,15 +2,15 @@
 
 ######################################################################
 pkgbase=berkeley_db
-vers=4.7.25
+vers=6.2.32
 url="http://download.oracle.com/berkeley-db/db-${vers}.tar.gz"
 arch=`uname -m`
-build=P4m1
+build=P0m1
 src=db-$vers
 patchfiles=""
-OPT_CONFIG="--enable-compat185 --enable-cxx --enable-o_direct
-    --enable-pthread_api --enable-rpc"
+OPT_CONFIG="--enable-compat185 --enable-dbm --disable-static --enable-cxx --enable-o_direct"
 DOCS="LICENSE README"
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -260,8 +260,6 @@ if [ $opt_package -eq 1 ] ; then
   chmod -R g-w $P/usr/docs
   touch $W/i.et
   cd $W
-  find $P ! -type l -newer i.st ! -newer i.et \
-      -exec touch -t `date '+%m%d0000'` {} \;
   compress
   for i in `seq 0 $((${#DOCS[@]} - 1))` ; do
     for j in ${DOCS[$i]} ; do
@@ -273,7 +271,6 @@ if [ $opt_package -eq 1 ] ; then
     done
     if [ $i -eq 0 ] ; then
       install $myname $docdir/$src
-      touch -t `date '+%m%d0000'` $docdir/$src/$myname
       gzip_one $docdir/$src/$myname
     else
       ln $docdir/$src/$myname.gz $docdir/${src[$i]}
@@ -285,11 +282,10 @@ if [ $opt_package -eq 1 ] ; then
   mv $C/{docs,$myname.gz} $docdir/$src
   touch -r $S $docdir/$src
   convert
-  tar cvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/$libdir | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/include | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  tar rvpf $pkg.tar -C $P install/doinst.sh
-  touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi
