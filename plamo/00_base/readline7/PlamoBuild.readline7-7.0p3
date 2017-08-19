@@ -8,9 +8,9 @@ https://ftp.gnu.org/gnu/readline/readline-7.0-patches/readline70-002
 https://ftp.gnu.org/gnu/readline/readline-7.0-patches/readline70-003"
 commitid=
 arch=`uname -m`
-build=P0m1
+build=P0m2
 src=readline-7.0
-OPT_CONFIG='--with-curses'
+OPT_CONFIG=''
 DOCS='CHANGELOG COPYING INSTALL NEWS README history.c history.h'
 patchfiles=''
 compress=txz
@@ -202,7 +202,7 @@ if [ $opt_build -eq 1 ] ; then
     cd ${B[$i]}
     if [ -f Makefile ] ; then
       export LDFLAGS='-Wl,--as-needed'
-      make -j3
+      make SHLIB_LIBS="-L/tools/lib -lncursesw"
     fi
     if [ $? != 0 ]; then
       echo "make error. $0 script stop"
@@ -227,7 +227,7 @@ if [ $opt_package -eq 1 ] ; then
     done
     if [ -f Makefile ] ; then
       export LDFLAGS='-Wl,--as-needed'
-      make install DESTDIR=$P
+      make SHLIB_LIBS="-L/tools/lib -lncursesw" install DESTDIR=$P
     fi
     if [ $? != 0 ]; then
       echo "make install error. $0 script stop"
@@ -240,8 +240,6 @@ if [ $opt_package -eq 1 ] ; then
   # (cd $P/${libdir} ; ln -sf libreadline.so.7.0 libreadline.so.6 )
   # (cd $P/${libdir} ; ln -sf libhistory.so.7.0 libhistory.so.6 )
   install -d $P/usr/$libdir
-  rm $P/$libdir/lib{history,readline}.so
-  touch $P/$libdir/lib{history,readline}.so
   ln -s /$libdir/libhistory.so.7 $P/usr/$libdir/libhistory.so
   ln -s /$libdir/libreadline.so.7 $P/usr/$libdir/libreadline.so
 
