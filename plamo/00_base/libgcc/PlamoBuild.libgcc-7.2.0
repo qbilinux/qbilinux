@@ -1,8 +1,8 @@
 #!/bin/sh -x
 ##############################################################
 pkgbase=gcc
-vers=7.1.0
-url="http://ftp.tsukuba.wide.ad.jp/software/gcc/releases/gcc-${vers}/gcc-${vers}.tar.bz2 http://isl.gforge.inria.fr/isl-0.18.tar.bz2"
+vers=7.2.0
+url="http://ftp.tsukuba.wide.ad.jp/software/gcc/releases/gcc-${vers}/gcc-${vers}.tar.xz"
 arch=`uname -m`
 build=P0m1
 src=gcc-${vers}
@@ -202,6 +202,7 @@ if [ $opt_download -eq 1 ] ; then
     tar) tar xpf ${i##*/} ;;
     gz) tar xpzf ${i##*/} ;;
     bz2) tar xpjf ${i##*/} ;;
+    xz) tar xpf ${i##*/} ;;
     esac
   done
 fi
@@ -227,12 +228,6 @@ if [ $opt_config -eq 1 ] ; then
       fi
   done
   cd ..
-
-  if [ ! -L $W/$src/isl ]; then
-      pushd $W/$src
-      ln -sf ../isl-0.18 ./isl
-      popd
-  fi
 
     #if [ -f autogen.sh ] ; then
     #  sh ./autogen.sh
