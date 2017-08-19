@@ -1,10 +1,10 @@
 #!/bin/sh -x
 ##############################################################
 pkgbase=gcc
-vers=7.1.0
-url="http://ftp.tsukuba.wide.ad.jp/software/gcc/releases/gcc-${vers}/gcc-${vers}.tar.bz2"
+vers=7.2.0
+url="http://ftp.tsukuba.wide.ad.jp/software/gcc/releases/gcc-${vers}/gcc-${vers}.tar.xz"
 arch=`uname -m`
-build=P0m2
+build=P0m1
 src=gcc-${vers}
 OPT_CONFIG="--build=${arch}-pc-linux-gnu --host=${arch}-pc-linux-gnu --libexecdir=/usr/lib64 
    --enable-languages=c,c++,fortran,go,lto 
@@ -193,6 +193,7 @@ if [ $opt_download -eq 1 ] ; then
     tar) tar xpf ${i##*/} ;;
     gz) tar xpzf ${i##*/} ;;
     bz2) tar xpjf ${i##*/} ;;
+    xz) tar xpf ${i##*/} ;;
     esac
   done
 fi
