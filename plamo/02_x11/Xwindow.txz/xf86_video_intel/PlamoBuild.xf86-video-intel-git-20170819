@@ -1,10 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='git://anongit.freedesktop.org/xorg/driver/xf86-video-intel.git'
 pkgbase=xf86_video_intel
-vers=git_20150924
+vers=git_20170819
+git_revision=2100efa105e8c9615eda867d39471d78e500b1bb
+url='git://anongit.freedesktop.org/xorg/driver/xf86-video-intel.git'
 arch=`uname -m`
-build=P1m1
+build=P0m1
 src=xf86-video-intel
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING NEWS README RELEASING'
@@ -121,6 +122,7 @@ if [ $opt_download -eq 1 ] ; then
       else
         ( cd `basename ${i##*/} .git` ; git pull origin master )
       fi
+      ( cd `basename ${i##*/} .git` ; git checkout ${git_revision} )
       ;;
     *)
       if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
