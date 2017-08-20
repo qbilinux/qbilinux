@@ -48,8 +48,28 @@ seek_dir () {
 	    mv 00.package.log 01.package.log
 	fi
 	
+	# rm work build directory
+	if [ $opt_notrm -eq 0 ] ; then
+	    sudo rm -rf build build32 work
+	fi
+
+	# move old package
+	if [ $opt_move -eq 1 ] ; then
+	    if [ -f old ] ; then
+		rm -f old
+	    fi
+	    if [ ! -d old ] ; then
+		mkdir old
+	    fi
+	    mv -f ${BASE}-*-*-P*.txz old
+	fi
+	
 	# execute
-	sh ./$SCN download config build |& tee 00.make.log
+	if [ $opt_download -eq 1 ] ; then
+	    sh ./$SCN download patch config build |& tee 00.make.log
+	else
+	    sh ./$SCN patch config build |& tee 00.make.log
+	fi
 	sudo sh ./$SCN package |& tee 00.package.log
 
 	# make diff file.
@@ -65,6 +85,21 @@ seek_dir () {
 	if [ -f 02.package.log ] ; then
 	    diff -c 00.package.log 02.package.log > 00.package.log.02.diff
 	fi
+
+	# install package
+	if [ $opt_install -eq 1 ] ; then
+	    # check error.
+	    # move package file
+	    if [ -f /var/log/packages/${BASE} ] ; then
+		sudo mv /var/log/packages/${BASE} /var/log/packages/${BASE}_pre
+	    fi
+	    # install
+	    sudo installpkg ${BASE}-*-*-P*.txz
+	elif [ $opt_update -eq 1 ] ; then
+	    # install
+	    sudo updatepkg -f ${BASE}-*-*-P*.txz
+	fi
+
     else
 	echo "*** skip: make.log newer than PlamoBuild. If you want to build, use -f option."
     fi
@@ -72,23 +107,40 @@ seek_dir () {
     popd
 }
 
-if [ $# = 1 -o $# = 2 ] ; then
+usage_exit() {
+    echo "usage: $0 [-f] [-c] [-i] [-u] [-d] [-m] [-n] buildscript"
+    echo "\t-d : download."
+    echo "\t-f : force build."
+    echo "\t-c : error check."
+    echo "\t-i : install."
+    echo "\t-u : update."
+    echo "\t-m : move old pkg file to old directory."
+    echo "\t-n : not delete work/build dir before build."
+    exit 1
+}
 
-    opt_force=0
-    opt_check=0
-    while getopts fc OPT
-    do
-	case $OPT in
-	    "f" ) opt_force=1 ;;
-	    "c" ) opt_check=1 ;;
-	esac
-    done
+opt_download=0
+opt_force=0
+opt_check=0
+opt_install=0
+opt_update=0
+opt_notrm=0
+opt_move=0
+while getopts fcid OPT
+do
+    case $OPT in
+	"d" ) opt_download=1 ;;
+	"f" ) opt_force=1 ;;
+	"c" ) opt_check=1 ;;
+	"i" ) opt_install=1 ;;
+	"u" ) opt_update=1 ;;
+	"n" ) opt_notrm=1 ;;
+	"m" ) opt_move=1 ;;
+	"h" ) usage_exit ;;
+    esac
+done
 
-    # cur option
-    shift `expr $OPTIND - 1`
+# cur option
+shift `expr $OPTIND - 1`
 
-    seek_dir $1 ;
-else
-    echo "usage: $0 [-f] [buildscript_dir]"
-fi
-
+seek_dir $1 ;
