@@ -5,7 +5,7 @@ pkgbase=heimdal
 vers=7.4.0
 url="https://github.com/heimdal/heimdal/releases/download/heimdal-${vers}/heimdal-${vers}.tar.gz"
 arch=`uname -m`
-build=P0m1
+build=P0m2
 src=$pkgbase-$vers
 patchfiles=""
 OPT_CONFIG="--prefix=/usr --infodir=/usr/share/info
