@@ -5,7 +5,7 @@ pkgbase=pcre2
 vers=10.23
 url="https://sourceforge.net/projects/pcre/files/pcre2/10.23/pcre2-${vers}.tar.gz"
 arch=`uname -m`
-build=P0m1
+build=P0m2
 src=$pkgbase-$vers
 patchfiles=""
 OPT_CONFIG="--enable-pcre2-16 --enable-pcre2-32 --enable-unicode-properties
@@ -13,6 +13,7 @@ OPT_CONFIG="--enable-pcre2-16 --enable-pcre2-32 --enable-unicode-properties
     --enable-pcre2test-libreadline"
 DOCS="LICENCE README COPYING INSTALL ChangeLog HACKING AUTHORS
     NON-AUTOTOOLS-BUILD NEWS NON-UNIX-USE"
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -281,14 +282,10 @@ if [ $opt_package -eq 1 ] ; then
   mv $C/{doc,{NON-UNIX-USE,$myname}.gz} $docdir/$src
   touch -r $S $docdir/$src
   convert
-  tar cvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
-  tar rvpf $pkg.tar -C $P \
-      `cd $P ; find usr/$libdir ! -name pkgconfig | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/include | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man3 | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  tar rvpf $pkg.tar -C $P install/doinst.sh
-  touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi
