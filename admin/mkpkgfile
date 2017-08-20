@@ -1,0 +1,94 @@
+#!/bin/bash
+export LANG=C
+
+seek_dir () {
+#    dfas dfa/fdafsd/fdafd/afkdjsakf/PlamoBuild*
+
+    DIR=${1%/*}
+    SCN=${1##*/}
+    CAT=${DIR%/*}
+    BASE=${DIR##*/}
+    #echo $DIR
+    #echo $SCN
+    #echo $CAT
+    #echo $BASE
+
+    echo "pushd $DIR"
+    pushd $DIR
+
+    # check log file
+    if [ $opt_check -eq 1 ] ; then
+	echo "###### $DIR"
+	if [ -f 00.make.log ] ; then
+	    grep Error 00.make.log 
+	else
+	    echo "not make.log file"
+	fi
+
+	if [ -f 00.package.log ] ; then
+	    grep Error 00.package.log 
+	else
+	    echo "not package.log file"
+	fi
+	
+    # check Plamobuild script and make log.
+    elif [ $opt_force -eq 1 ] || [ ! -f 00.make.log ] || [ 00.make.log -ot $SCN ] ; then
+    
+	# backup log file
+	if [ -f 01.make.log ] ; then
+	    mv 01.make.log 02.make.log
+	fi
+	if [ -f 01.package.log ] ; then
+	    mv 01.package.log 02.package.log
+	fi
+	if [ -f 00.make.log ] ; then
+	    mv 00.make.log 01.make.log
+	fi
+	if [ -f 00.package.log ] ; then
+	    mv 00.package.log 01.package.log
+	fi
+	
+	# execute
+	sh ./$SCN download config build |& tee 00.make.log
+	sudo sh ./$SCN package |& tee 00.package.log
+
+	# make diff file.
+	if [ -f 01.make.log ] ; then
+	    diff -c 00.make.log 01.make.log > 00.make.log.01.diff
+	fi
+	if [ -f 02.make.log ] ; then
+	    diff -c 00.make.log 02.make.log > 00.make.log.02.diff
+	fi
+	if [ -f 01.package.log ] ; then
+	    diff -c 00.package.log 01.package.log > 00.package.log.01.diff
+	fi
+	if [ -f 02.package.log ] ; then
+	    diff -c 00.package.log 02.package.log > 00.package.log.02.diff
+	fi
+    else
+	echo "*** skip: make.log newer than PlamoBuild. If you want to build, use -f option."
+    fi
+
+    popd
+}
+
+if [ $# = 1 -o $# = 2 ] ; then
+
+    opt_force=0
+    opt_check=0
+    while getopts fc OPT
+    do
+	case $OPT in
+	    "f" ) opt_force=1 ;;
+	    "c" ) opt_check=1 ;;
+	esac
+    done
+
+    # cur option
+    shift `expr $OPTIND - 1`
+
+    seek_dir $1 ;
+else
+    echo "usage: $0 [-f] [buildscript_dir]"
+fi
+
