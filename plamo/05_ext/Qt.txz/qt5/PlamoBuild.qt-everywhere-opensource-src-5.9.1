@@ -1,20 +1,27 @@
 #!/bin/sh
 ##############################################################
 pkgbase=qt5
-vers=5.7.1
-url="http://download.qt.io/archive/qt/5.7/${vers}/single/qt-everywhere-opensource-src-${vers}.tar.xz"
+vers=5.9.1
+url="http://download.qt.io/archive/qt/5.9/${vers}/single/qt-everywhere-opensource-src-${vers}.tar.xz"
 arch=`uname -m`
-build=P0m1
+build=P0m2
 src=qt-everywhere-opensource-src-${vers}
-#OPT_CONFIG='-reduce-exports -release -no-webkit -nomake examples -nomake demos -system-sqlite -no-nis -opensource -confirm-license -no-phonon -no-phonon-backend -gstreamer -qt-sql-mysql -plugin-sql-mysql -qt-sql-sqlite -plugin-sql-sqlite  -I/opt/mysql/include -I/opt/pgsql/include -L/opt/pgsql/lib -L/opt/mysql/lib'
-OPT_CONFIG="-confirm-license -opensource -sysconfdir /etc/xdg -headerdir /usr/include/qt5 -docdir /usr/share/doc/${src} -system-libpng -system-libjpeg -system-zlib -system-sqlite -system-pcre -plugin-sql-sqlite -icu -openssl -verbose -optimized-qmake -dbus-linked -qpa xcb -xcb -glib -accessibility -no-separate-debug-info -no-pch -no-rpath -no-strip -release -no-use-gold-linker -reduce-relocations -pulseaudio -nomake examples"
+OPT_CONFIG="-sysconfdir     /etc/xdg   \
+            -confirm-license           \
+            -opensource                \
+            -dbus-linked               \
+            -openssl-linked            \
+            -system-harfbuzz           \
+            -system-sqlite             \
+            -nomake examples           \
+            -no-rpath                  \
+	    -headerdir /usr/include/qt5 \
+	    -docdir /usr/share/doc/${src} \
+	    -ssl -icu -release -qpa xcb -pulseaudio \
+            -skip qtwebengine"
+#OPT_CONFIG="-no-webkit -confirm-license -opensource -sysconfdir /etc/xdg -headerdir /usr/include/qt5 -docdir /usr/share/doc/${src} -system-libpng -system-libjpeg -system-zlib -system-sqlite -system-pcre -plugin-sql-sqlite -icu -openssl -verbose -optimized-qmake -dbus-linked -qpa xcb -xcb -glib -accessibility -no-separate-debug-info -no-pch -no-rpath -no-strip -release -no-use-gold-linker -reduce-relocations -pulseaudio -nomake examples"
 DOCS='LGPL_EXCEPTION.txt LICENSE.FDL LICENSE.GPLv2 LICENSE.GPLv3 LICENSE.LGPLv21 LICENSE.LGPLv3 LICENSE.PREVIEW.COMMERCIAL README'
 patchfiles=''
-if [ "$arch" = "x86_64" ]; then
-    OPT_CONFIG=$OPT_CONFIG" -prefix /usr/lib64/qt5 -libdir /usr/lib64 -L /opt/mariadb/lib64"    
-else
-    OPT_CONFIG=$OPT_CONFIG" -prefix /usr/lib/qt5 -libdir /usr/lib -L /opt/mariadb/lib"
-fi    
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -157,16 +164,7 @@ if [ $opt_config -eq 1 ] ; then
       if [ -x configure ] ; then
          export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
          export LDFLAGS='-Wl,--as-needed' 
-         # export CFLAGS='-Os'
-         # export CXXLAGS='-Os'
-	 #if [ -x /usr/bin/clang -a -x /usr/bin/clang++ ]; then
-	 #    export CC="clang"
-	 #    export CXX="clang++"
-	 #else
-             export CC="gcc -I /usr/include $target"
-             export CXX="g++ -I /usr/include $target"
-	 #fi
-         ./configure $OPT_CONFIG
+         ./configure -prefix /usr/${libdir}/qt5 -libdir /usr/${libdir} -L /opt/mariadb/${libdir} $OPT_CONFIG
      fi
       if [ $? != 0 ]; then
 	  echo "configure error. $0 script stop"
@@ -181,7 +179,7 @@ if [ $opt_build -eq 1 ] ; then
       export LDFLAGS='-Wl,--as-needed'
       export CFLAGS='-Os'
       export CXXLAGS='-Os'
-      make -j8
+      make
     fi
   done
 fi
