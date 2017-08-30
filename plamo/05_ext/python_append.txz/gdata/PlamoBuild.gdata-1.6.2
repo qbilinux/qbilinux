@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
 #url='http://gdata-python-client.googlecode.com/files/gdata-2.0.17.tar.gz'
-url='https://pypi.python.org/packages/b2/e0/6e062327b211e9b1c5f30f65a9a65cf49eb1d3a7da3ce42fdc9a9e128535/gdata-2.0.17.tar.gz'
 pkgbase=gdata
-vers=2.0.17
+vers=1.6.2
+url='https://github.com/google/google-api-python-client/archive/v1.6.2.tar.gz'
 arch=`uname -m`
-build=P1m1
-src=gdata-2.0.17
+build=P0m1
+src=google-api-python-client-${vers}
 OPT_CONFIG=''
-DOCS='INSTALL.txt README.txt RELEASE_NOTES.txt'
+DOCS='CHANGELOG LICENSE README.md'
 patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
