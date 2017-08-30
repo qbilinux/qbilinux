@@ -1,16 +1,16 @@
 #!/bin/sh
 ##############################################################
 pkgbase=openldap
-vers=2.4.44
+vers=2.4.45
 url="http://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-${vers}.tgz"
 arch=`uname -m`
-build=P0m2
+build=P0m1
 src=openldap-${vers}
 # OPT_CONFIG='--libexecdir=/usr/sbin --disable-static --enable-ipv6 --enable-syslog --enable-local --enable-bdb --enable-hdb --enable-crypt --enable-dynamic --with-threads --disable-wrappers  --without-fetch --enable-spasswd --with-cyrus-sasl --enable-overlays=mod --enable-modules=yes'
 
-OPT_CONFIG='--libexecdir=/usr/sbin --disable-debug --disable-static --enable-syslog --enable-dynamic  --enable-crypt --enable-modules  --enable-overlays=mod --enable-rlookups'
+OPT_CONFIG='--libexecdir=/usr/sbin --disable-debug --disable-static --enable-syslog --enable-dynamic  --enable-crypt --enable-modules  --enable-overlays=mod --enable-rlookups --disable-bdb --disable-hdb'
 DOCS='INSTALL LICENSE README'
-patchfiles='20170517_rtandy_Fix-double-free-of-search-base-with-page-size-0.patch'
+patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
