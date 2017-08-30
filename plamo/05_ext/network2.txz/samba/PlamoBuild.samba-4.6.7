@@ -1,23 +1,21 @@
 #!/bin/sh
 ##############################################################
 pkgbase=samba
-vers=4.6.4
+vers=4.6.7
 url="http://www.samba.org/samba/ftp/stable/samba-${vers}.tar.gz"
 verify=${url/gz/asc}
 arch=`uname -m`
-build=P0m1
+build=P0m2
 src=${pkgbase}-${vers}
 if [ $arch = "x86_64" ]; then
-    target="-m64"
     libdir="lib64"
     suffix="64"
 else
-    target="-m32"
     libdir="lib"
     suffix=""
 fi
 OPT_CONFIG="--with-logfilebase=/var/log/samba --enable-fhs --without-ad-dc --without-systemd --without-regedit --with-pammodulesdir=${libdir}/security"
-DOCS='BUILD_SYSTEMS.txt COPYING PFIF.txt README README.Coding README.cifs-utils README.contributing Roadmap WHATSNEW.txt merged-branches.txt release-scripts'
+DOCS='BUILD_SYSTEMS.txt COPYING PFIF.txt README README.Coding README.cifs-utils README.contributing WHATSNEW.txt'
 patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
@@ -143,8 +141,8 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $verify ; do
     case ${i##*.} in
-    asc) gpg2 --verify ${i##*/} ;;
-    sig) gpg2 --verify ${i##*/} ;;
+    asc) gpg --verify ${i##*/} ;;
+    sig) gpg --verify ${i##*/} ;;
     sha256sum) verify_checksum "sha256sum" ;;
     esac
     if [ $? -ne 0 ]; then
@@ -183,9 +181,8 @@ if [ $opt_config -eq 1 ] ; then
 
     if [ -x configure ] ; then
       export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
-      export LDFLAGS='-Wl,--as-needed' 
-      export CC="gcc -isystem /usr/include $target" 
-      export CXX="g++ -isystem /usr/include $target "
+      export LDFLAGS='-Wl,--as-needed'
+      export PYTHON=python2
       ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var ${OPT_CONFIG[$i]}
     fi
     if [ $? != 0 ]; then
@@ -199,7 +196,9 @@ if [ $opt_build -eq 1 ] ; then
     cd ${B[$i]}
     if [ -f Makefile ] ; then
       export LDFLAGS='-Wl,--as-needed'
-      make -j3
+      export LIBS='-lcurses'
+      export PYTHON=python2
+      make
     fi
   done
 fi
@@ -217,6 +216,7 @@ if [ $opt_package -eq 1 ] ; then
     cd ${B[$i]}
     if [ -f Makefile ] ; then
       export LDFLAGS='-Wl,--as-needed'
+      export PYTHON=python2
       make install DESTDIR=$P
     fi
     ( cd $P/usr/share/swat/help ; for f in manpages/* ; do ln -sf $f . ; done )
