@@ -1,13 +1,13 @@
 #!/bin/sh
 ##############################################################
-url='https://sourceforge.net/projects/numpy/files/NumPy/1.6.2/numpy-1.6.2.tar.gz'
 pkgbase=numpy
-vers=1.6.2
+vers=1.13.1
+url='https://github.com/numpy/numpy/releases/download/v1.13.1/numpy-1.13.1.tar.gz'
 arch=`uname -m`
-build=P1m1
-src=numpy-1.6.2
+build=P0m1
+src=numpy-1.13.1
 OPT_CONFIG='--disable-static'
-DOCS='DEV_README.txt INSTALL.txt LICENSE.txt README.txt THANKS.txt'
+DOCS='INSTALL.rst.txt LICENSE.txt PKG-INFO THANKS.txt'
 patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
