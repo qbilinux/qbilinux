@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=gnupg
-vers=2.1.20
+vers=2.1.23
 url="https://www.gnupg.org/ftp/gcrypt/gnupg/gnupg-${vers}.tar.bz2"
 arch=`uname -m`
 build=P0m1
@@ -11,6 +11,7 @@ patchfiles=""
 OPT_CONFIG="--enable-gpgtar"
 DOCS="ABOUT-NLS README ChangeLog-2011 COPYING ChangeLog TODO NEWS
     README.GIT COPYING.LIB THANKS AUTHORS INSTALL"
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -280,16 +281,10 @@ if [ $opt_package -eq 1 ] ; then
   mv $C/{doc,{THANKS,AUTHORS,INSTALL,$myname}.gz} $docdir/$src
   touch -r $S $docdir/$src
   convert
-  tar cvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/sbin | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/libexec | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/gnupg
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/locale -name *.mo`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/info | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man8 | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  tar rvpf $pkg.tar -C $P install/doinst.sh
-  touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi
