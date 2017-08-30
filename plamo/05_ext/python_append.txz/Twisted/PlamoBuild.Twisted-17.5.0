@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://twistedmatrix.com/Releases/Twisted/12.3/Twisted-12.3.0.tar.bz2'
 pkgbase=Twisted
-vers=12.3.0
+vers=17.5.0
+url="http://twistedmatrix.com/Releases/Twisted/17.5/Twisted-${vers}.tar.bz2"
 arch=`uname -m`
-build=P1m1
-src=Twisted-12.3.0
+build=P0m1
+src=Twisted-${vers}
 OPT_CONFIG=''
 DOCS='INSTALL LICENSE NEWS README'
 patchfiles=''
