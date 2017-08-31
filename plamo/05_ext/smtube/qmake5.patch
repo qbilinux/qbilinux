@@ -1,0 +1,11 @@
+--- smtube-17.5.0/Makefile	2015-09-02 05:55:52.000000000 +0900
++++ build/Makefile	2017-06-11 13:17:17.663393810 +0900
+@@ -12,7 +12,7 @@
+ KDE_ICONS=$(KDE_PREFIX)/share/icons/hicolor/
+ KDE_APPLNK=$(KDE_PREFIX)/share/applications/
+ 
+-QMAKE=qmake
++QMAKE=qmake-qt5
+ MAKE=make
+ LRELEASE=lrelease
+ 

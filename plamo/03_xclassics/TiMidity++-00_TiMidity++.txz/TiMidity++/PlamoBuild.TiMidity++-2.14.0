@@ -6,7 +6,7 @@ url="http://downloads.sourceforge.net/timidity/TiMidity++-2.14.0-140821-1200.tar
 pkgbase=TiMidity++
 vers=2.14.0
 arch=`uname -m`
-build=P3m1
+build=P3m2
 src=$pkgbase-$vers
 OPT_CONFIG="--enable-audio=alsa,arts,esd,jack,ao,vorbis,flac,speex
     --enable-dynamic=ncurses,slang,motif,tcltk,emacs,vt100,xaw,xskin,gtk,server,alsaseq
