@@ -1,10 +1,10 @@
 #!/bin/sh
 ##############################################################
 pkgbase=babl
-vers=0.1.28
+vers=0.1.30
 url="https://download.gimp.org/pub/babl/0.1/babl-${vers}.tar.bz2"
 arch=`uname -m`
-build=P1m1
+build=P0m1
 src=babl-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING INSTALL NEWS README TODO'
