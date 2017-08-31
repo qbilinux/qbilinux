@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
-url='http://sourceforge.net/projects/smtube/files/SMTube/15.5/smtube-15.5.17.tar.bz2'
 pkgbase=smtube
-vers=15.5.17
+vers=17.5.0
+url="https://sourceforge.net/projects/smtube/files/SMTube/${vers}/smtube-${vers}.tar.bz2"
 arch=`uname -m`
-build=P1m1
-src=smtube-15.5.17
+build=P0m1
+src=smtube-${vers}
 OPT_CONFIG=''
 DOCS='Changelog Copying.txt Readme.txt'
-patchfiles=''
+patchfiles='qmake5.patch'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -122,9 +122,9 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
     esac
   done
 fi
@@ -147,7 +147,6 @@ if [ $opt_config -eq 1 ] ; then
     #   sh ./autogen.sh
     # fi
     echo "no need to configure. proceed to build."
-    opt_build=1
 
   done
 fi
@@ -156,7 +155,7 @@ if [ $opt_build -eq 1 ] ; then
     cd ${B[$i]}
     if [ -f Makefile ] ; then
       export LDFLAGS='-Wl,--as-needed'
-      make -j3 PREFIX=/usr
+      make -j3 PREFIX=/usr QMAKE=qmake-qt5
     fi
   done
 fi
