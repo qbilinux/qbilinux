@@ -6,7 +6,7 @@ url="http://ftp.tsukuba.wide.ad.jp/software/gcc/releases/gcc-${vers}/gcc-${vers}
 arch=`uname -m`
 build=P0m1
 src=gcc-${vers}
-OPT_CONFIG="--build=${arch}-pc-linux-gnu --host=${arch}-pc-linux-gnu --libexecdir=/usr/lib64 
+OPT_CONFIG="--build=${arch}-pc-linux-gnu --host=${arch}-pc-linux-gnu
    --enable-languages=c,c++,fortran,go,lto 
    --enable-shared --enable-threads=posix --enable-libmpx --with-system-zlib --with-isl --enable-__cxa_atexit 
    --disable-libunwind-exceptions  --disable-libstdcxx-pch --enable-clocale=gnu --enable-gnu-unique-object 
@@ -231,7 +231,7 @@ if [ $opt_config -eq 1 ] ; then
        export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
        export LDFLAGS='-Wl,--as-needed' 
        # export CC="gcc -isystem /usr/include $target" CXX="g++ -isystem /usr/include $target "
-       $W/$src/configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
+       $W/$src/configure --prefix=/usr --libdir=/usr/${libdir} --libexecdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
       if [ $? != 0 ]; then
 	  echo "configure error. $0 script stop"
 	  exit 255
