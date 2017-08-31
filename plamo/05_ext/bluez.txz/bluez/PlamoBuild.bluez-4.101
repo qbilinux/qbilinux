@@ -4,7 +4,7 @@ url='http://www.kernel.org/pub/linux/bluetooth/bluez-4.101.tar.xz'
 pkgbase=bluez
 vers=4.101
 arch=`uname -m`
-build=P1m1
+build=P1m2
 src=bluez-4.101
 OPT_CONFIG='--disable-static --enable-cups --enable-tools --enable-alsa --enable-gstreamer --enable-usb --enable-hidd --disable-test --without-systemdunitdir'
 DOCS='AUTHORS COPYING COPYING.LIB ChangeLog INSTALL NEWS README TODO'
@@ -150,7 +150,8 @@ if [ $opt_config -eq 1 ] ; then
 
       if [ -x configure ] ; then
          export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
-         export LDFLAGS='-Wl,--as-needed' 
+         export LDFLAGS='-Wl,--as-needed'
+	 export LIBS="-lncursesw"
          export CC="gcc -isystem /usr/include $target" 
          export CXX="g++ -isystem /usr/include $target "
          ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
@@ -166,7 +167,7 @@ if [ $opt_build -eq 1 ] ; then
     cd ${B[$i]}
     if [ -f Makefile ] ; then
       export LDFLAGS='-Wl,--as-needed'
-      make -j3
+      make
     fi
   done
 fi
