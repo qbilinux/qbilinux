@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='http://archive.xfce.org/src/apps/parole/0.5/parole-0.5.4.tar.bz2'
-verify=$url.md5
 pkgbase=parole
-vers=0.5.4
+vers=0.9.2
+url="http://archive.xfce.org/src/apps/parole/0.9/parole-${vers}.tar.bz2"
+verify=$url.md5
 arch=`uname -m`
-build=P1m1
-src=parole-0.5.4
+build=P0m1
+src=parole-${vers}
 OPT_CONFIG='--enable-taglib'
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README THANKS TODO'
 patchfiles=''
@@ -155,9 +155,9 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
-    *) tar xvpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
+    *) tar xpf ${i##*/} ;;
     esac
   done
 fi
@@ -183,8 +183,6 @@ if [ $opt_config -eq 1 ] ; then
     if [ -x configure ] ; then
       export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
       export LDFLAGS='-Wl,--as-needed' 
-      export CC="gcc -isystem /usr/include $target" 
-      export CXX="g++ -isystem /usr/include $target "
       ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
     fi
     if [ $? != 0 ]; then
