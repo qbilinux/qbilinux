@@ -2,7 +2,7 @@
 ##############################################################
 
 pkgbase=smplayer
-vers=17.6.0
+vers=17.8.0
 url="http://downloads.sourceforge.net/smplayer/smplayer-${vers}.tar.bz2"
 arch=`uname -m`
 build=P0m1
