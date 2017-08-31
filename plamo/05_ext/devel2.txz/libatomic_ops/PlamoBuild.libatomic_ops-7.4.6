@@ -1,13 +1,13 @@
 #!/bin/sh
 ##############################################################
-url='http://www.hpl.hp.com/research/linux/atomic_ops/download/libatomic_ops-7.2.tar.gz'
 pkgbase=libatomic_ops
-vers=7.2
+vers=7.4.6
+url="https://github.com/ivmai/libatomic_ops/releases/download/v${vers}/libatomic_ops-${vers}.tar.gz"
 arch=`uname -m`
-build=P1m1
-src=libatomic_ops-7.2
-OPT_CONFIG="--docdir=/usr/share/doc/${src}"
-DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README'
+build=P0m1
+src=libatomic_ops-${vers}
+OPT_CONFIG="--enable-shared --disable-static --docdir=/usr/share/doc/${src}"
+DOCS='AUTHORS COPYING ChangeLog README.md'
 patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
@@ -188,10 +188,10 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
-    *) tar xvpf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
+    *) tar xpf ${i##*/} ;;
     esac
   done
 fi
@@ -210,12 +210,6 @@ if [ $opt_config -eq 1 ] ; then
        patch -p1 < $W/$patch
     done
 
-    sed -i 's#AC_PROG_RANLIB#AC_LIBTOOL_DLOPEN\nAC_PROG_LIBTOOL#' configure.ac
-    sed -i 's#b_L#b_LTL#;s#\.a#.la#g;s#_a_#_la_#' src/Makefile.am
-    sed -i 's#\.a#.so#g;s#\.\./src/#../src/.libs/#g' tests/Makefile.am
-    sed -i 's#pkgdata#doc#' doc/Makefile.am
-    autoreconf -i
-
     # if [ -f autogen.sh ] ; then
     #   sh ./autogen.sh
     # fi
@@ -223,8 +217,8 @@ if [ $opt_config -eq 1 ] ; then
       if [ -x configure ] ; then
          export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
          export LDFLAGS='-Wl,--as-needed' 
-         export CC="gcc -isystem /usr/include $target" 
-         export CXX="g++ -isystem /usr/include $target "
+         export CC="gcc -I /usr/include $target" 
+         export CXX="g++ -I /usr/include $target "
          ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
      fi
       if [ $? != 0 ]; then
