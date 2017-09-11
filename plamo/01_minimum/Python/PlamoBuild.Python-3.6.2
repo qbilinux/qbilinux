@@ -5,7 +5,7 @@ pkgbase=Python
 vers=3.6.2
 url="https://www.python.org/ftp/python/${vers}/Python-${vers}.tar.xz"
 arch=`uname -m`
-build=P0m1
+build=P0m2
 src=$pkgbase-$vers
 OPT_CONFIG="--enable-shared --enable-loadable-sqlite-extensions
     --with-system-expat --with-system-ffi --with-computed-gotos"
@@ -232,9 +232,9 @@ if [ $opt_package -eq 1 ] ; then
       make install DESTDIR=$P
     fi
   done
-  (cd $P/usr/bin; ln -s python3 python)
-  (cd $P/usr/bin; ln -s python3-config python-config)
-  (cd $P/usr/$libdir/pkgconfig; ln -s python3.pc python.pc)
+  # (cd $P/usr/bin; ln -s python3 python)
+  # (cd $P/usr/bin; ln -s python3-config python-config)
+  # (cd $P/usr/$libdir/pkgconfig; ln -s python3.pc python.pc)
   ln -s /usr/$libdir/libpython3.6m.so $P/usr/$libdir/python3.6/config-3.6m
   touch $P/usr/$libdir/python3.6/lib-dynload/*
   touch $W/i.et
