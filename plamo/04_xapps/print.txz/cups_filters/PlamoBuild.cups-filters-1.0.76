@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://www.openprinting.org/download/cups-filters/cups-filters-1.0.61.tar.xz'
 pkgbase=cups_filters
-vers=1.0.61
+vers=1.0.76
+url='http://www.openprinting.org/download/cups-filters/cups-filters-1.0.76.tar.xz'
 arch=`uname -m`
-build=P2m2
-src=cups-filters-1.0.61
+build=P0m1
+src=cups-filters-1.0.76
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README'
 patchfiles=''
