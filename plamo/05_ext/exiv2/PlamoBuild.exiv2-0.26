@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://www.exiv2.org/exiv2-0.23.tar.gz'
 pkgbase=exiv2
-vers=0.23
+vers=0.26
+url="http://www.exiv2.org/builds/exiv2-${vers}-trunk.tar.gz"
 arch=`uname -m`
-build=P1m1
-src=exiv2-0.23
+build=P0m1
+src=exiv2-trunk
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING README'
 patchfiles=''
