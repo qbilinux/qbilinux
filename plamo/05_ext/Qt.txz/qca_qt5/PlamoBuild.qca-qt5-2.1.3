@@ -1,15 +1,15 @@
 #!/bin/sh
 ##############################################################
 pkgbase=qca_qt5
-vers=2.1.0.3
-url='http://download.kde.org/stable/qca-qt5/2.1.0.3/src/qca-qt5-2.1.0.3.tar.xz'
+vers=2.1.3
+url="https://download.kde.org/stable/qca/${vers}/src/qca-${vers}.tar.xz"
 commitid=
 arch=`uname -m`
 build=P0m1
-src=qca-qt5-${vers}
+src=qca-${vers}
 OPT_CONFIG=''
 DOCS='COPYING INSTALL README TODO'
-patchfiles='fix-ftbfs-with-qt55.patch'
+patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
