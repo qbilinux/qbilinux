@@ -303,7 +303,6 @@ EOF
     else
       cat >> mozconfig << EOF
 ac_add_options --host=i686-pc-linux-gnu
-ac_add_options --build=i686-pc-linux-gnu
 mk_add_options CONFIG_GUESS=i686-pc-linux-gnu
 export USE_ARCH=32
 EOF
