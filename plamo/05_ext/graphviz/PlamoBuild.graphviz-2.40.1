@@ -5,10 +5,11 @@ pkgbase=graphviz
 vers=2.40.1
 url="http://www.graphviz.org/pub/graphviz/stable/SOURCES/graphviz-${vers}.tar.gz"
 arch=`uname -m`
-build=P0m5
+build=P0m6
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="NEWS cpl1.0.txt INSTALL ChangeLog README AUTHORS COPYING"
+patchfiles='graphviz-2.40.1-qt5-1.patch'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -184,6 +185,10 @@ if [ $opt_config -eq 1 ] ; then
 	EOF
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
+    for patch in $patchfiles ; do
+      patch -p1 < $W/$patch
+    done
+    ./autogen.sh
     if [ -f Makefile ] ; then
       make clean
     fi
@@ -245,6 +250,10 @@ if [ $opt_package -eq 1 ] ; then
       ln $docdir/$src/$myname.gz $docdir/${src[$i]}
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
+  done
+  for patch in $patchfiles ; do
+    cp $W/$patch $docdir/$src/$patch
+    gzip_one $docdir/$src/$patch
   done
   convert
   for i in . tcl R lua ocaml perl php python ; do
