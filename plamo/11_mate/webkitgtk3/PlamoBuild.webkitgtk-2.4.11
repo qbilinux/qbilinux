@@ -6,7 +6,7 @@ url="http://webkitgtk.org/releases/webkitgtk-${vers}.tar.xz"
 verify=
 commitid=
 arch=`uname -m`
-build=P0m2
+build=P0m3
 src=webkitgtk-2.4.11
 OPT_CONFIG='--enable-geolocation --enable-introspection --with-gtk=3.0 --enable-webkit2'
 DOCS='ChangeLog INSTALL NEWS README'
@@ -216,7 +216,7 @@ if [ $opt_build -eq 1 ] ; then
 	cd ${B[$i]}
 	if [ -f GNUmakefile ] ; then
 	    export LDFLAGS='-Wl,--as-needed'
-	    make Programs_DumpRenderTree_LDFLAGS="-no-fast-install -no-install -lfontconfig" -j4
+	    make Programs_DumpRenderTree_LDFLAGS="-no-fast-install -no-install -lfontconfig"
 	fi
     done
 fi
