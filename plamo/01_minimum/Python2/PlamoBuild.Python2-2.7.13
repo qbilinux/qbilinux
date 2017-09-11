@@ -5,7 +5,7 @@ pkgbase=Python2
 vers=2.7.13
 url="https://www.python.org/ftp/python/${vers}/Python-${vers}.tar.xz"
 arch=`uname -m`
-build=P0m3
+build=P0m4
 src=Python-$vers
 OPT_CONFIG="--enable-shared --with-system-expat --with-system-ffi
     --with-dbmliborder=gdbm:bdb:ndbm"
@@ -287,9 +287,9 @@ if [ $opt_package -eq 1 ] ; then
     cp $W/$patch $docdir/$src/$patch
     gzip_one $docdir/$src/$patch
   done
-  rm $P/usr/bin/python
-  rm $P/usr/bin/python-config
-  rm $P/usr/lib64/pkgconfig/python.pc
+  # rm $P/usr/bin/python
+  # rm $P/usr/bin/python-config
+  # rm $P/usr/lib64/pkgconfig/python.pc
   convert
   
 ######################################################################
