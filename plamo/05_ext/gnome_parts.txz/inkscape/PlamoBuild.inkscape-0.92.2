@@ -1,9 +1,8 @@
 #!/bin/sh
 ##############################################################
 pkgbase=inkscape
-vers=0.92.1
-#url="https://inkscape.org/gallery/item/10552/inkscape-${vers}.tar.bz2"
-url="https://inkscape.org/gallery/item/10682/inkscape-0.92.1.tar_XlpI7qT.bz2"
+vers=0.92.2
+url="https://inkscape.org/en/gallery/item/11254/inkscape-0.92.2.tar.bz2"
 arch=`uname -m`
 build=P0m1
 src=inkscape-${vers}
@@ -123,9 +122,9 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
-    *) tar xvpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
+    *) tar xpf ${i##*/} ;;
     esac
   done
 fi
@@ -148,12 +147,12 @@ if [ $opt_config -eq 1 ] ; then
     #   sh ./autogen.sh
     # fi
 
-      if [ -f $S/CMakeLists.txt ]; then
+      if [ -f CMakeLists.txt ]; then
           export PKG_CONFIG_PATH=/opt/kde/${libdir}/pkgconfig:/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
           export LDFLAGS='-Wl,--as-needed' 
           export CC="gcc -I /usr/include $target" 
           export CXX="g++ -I /usr/include $target"
-          cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DLIB_INSTALL_DIR:PATH=/usr/${libdir} -DLIB_SUFFIX=$suffix ${OPT_CONFIG} $S
+          cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DLIB_INSTALL_DIR:PATH=/usr/${libdir} -DLIB_SUFFIX=$suffix ${OPT_CONFIG} .
       fi
       if [ $? != 0 ]; then
 	  echo "configure error. $0 script stop"
@@ -168,7 +167,7 @@ if [ $opt_build -eq 1 ] ; then
         python setup.py build
     elif [ -f Makefile ] ; then
       export LDFLAGS='-Wl,--as-needed'
-      make -j3
+      make
     fi
   done
 fi
