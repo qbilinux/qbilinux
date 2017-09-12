@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=ImageMagick
-vers=7.0.6_6
-url="https://www.imagemagick.org/download/ImageMagick-7.0.6-6.tar.xz"
+vers=6.9.9_12
+url="https://www.imagemagick.org/download/ImageMagick-${vers/_/-}.tar.xz"
 commitid=
 arch=`uname -m`
 build=P0m1
-src=ImageMagick-7.0.6-6
+src=ImageMagick-${vers/_/-}
 OPT_CONFIG=''
 DOCS='AUTHORS.txt ChangeLog Install-mac.txt Install-unix.txt Install-vms.txt Install-windows.txt LICENSE NEWS.txt Platforms.txt QuickStart.txt README.txt'
 patchfiles=''
@@ -132,7 +132,7 @@ if [ $opt_download -eq 1 ] ; then
         done
         if [ -f ${i##*/}.$sig ] ; then
           case $sig in
-          asc|sig) gpg2 --verify ${i##*/}.$sig ;;
+          asc|sig) gpg --verify ${i##*/}.$sig ;;
           md5|sha1|sha256) ${sig}sum -c ${i##*/}.$sig ;;
           *) $sig -c ${i##*/}.$sig ;;
           esac
