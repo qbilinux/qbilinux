@@ -5,11 +5,11 @@ vers=25.2
 url="http://ftp.jaist.ac.jp/pub/GNU/emacs/emacs-${vers}.tar.xz"
 verify=
 arch=`uname -m`
-build=P0m3
+build=P0m4
 src=${pkgbase}-${vers}
 OPT_CONFIG='--with-xim --with-x --with-x-toolkit=gtk3 --without-rsvg --without-gsettings --without-selinux'
 DOCS='COPYING ChangeLog INSTALL README'
-patchfiles='emacs-24.2-add_txz.patch imagemagic-7.patch'
+patchfiles='emacs-24.2-add_txz.patch'
 file2='wb-line-number.el'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
