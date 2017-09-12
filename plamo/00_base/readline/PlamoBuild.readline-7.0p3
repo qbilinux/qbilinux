@@ -1,6 +1,6 @@
 #!/bin/sh
 ##############################################################
-pkgbase=readline7
+pkgbase=readline
 vers=7.0p3
 url="http://ftp.gnu.org/gnu/readline/readline-${vers}.tar.gz
 https://ftp.gnu.org/gnu/readline/readline-7.0-patches/readline70-001
