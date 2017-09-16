@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=emacs
-vers=25.2
+vers=25.3
 url="http://ftp.jaist.ac.jp/pub/GNU/emacs/emacs-${vers}.tar.xz"
 verify=
 arch=`uname -m`
-build=P0m4
+build=P0m1
 src=${pkgbase}-${vers}
 OPT_CONFIG='--with-xim --with-x --with-x-toolkit=gtk3 --without-rsvg --without-gsettings --without-selinux'
 DOCS='COPYING ChangeLog INSTALL README'
@@ -206,8 +206,8 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $verify ; do
     case ${i##*.} in
-    asc) gpg2 --verify ${i##*/} ;;
-    sig) gpg2 --verify ${i##*/} ;;
+    asc) gpg --verify ${i##*/} ;;
+    sig) gpg --verify ${i##*/} ;;
     sha256sum) verify_checksum "sha256sum" ;;
     esac
     if [ $? -ne 0 ]; then
