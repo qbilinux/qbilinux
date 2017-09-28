@@ -287,8 +287,8 @@ if [ $opt_package -eq 1 ] ; then
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
-  convert
   rm $P/$libdir/lib{history,readline}.so
+  convert
   tar cvpf $pkg.tar -C $P `cd $P ; find $libdir | tail -n+2`
   tar rvpf $pkg.tar -C $P `cd $P ; find usr/$libdir | tail -n+2`
   tar rvpf $pkg.tar -C $P usr/share/doc/$src
