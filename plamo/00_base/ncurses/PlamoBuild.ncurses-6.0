@@ -182,10 +182,10 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz|tgz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
-    xz) tar xvpJf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz|tgz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
+    xz) tar xpJf ${i##*/} ;;
     esac
   done
 fi
