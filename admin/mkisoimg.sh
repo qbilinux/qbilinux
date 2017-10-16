@@ -46,7 +46,7 @@ fi
 
 ver=$2
 arch=$3
-dt=`date +%y%m%d`
+dt=`date +%Y%m%d`
 xorrisofs -o Plamo-nora-${ver}_${arch}_${dt}_dvd.iso \
    -isohybrid-mbr /usr/share/syslinux/isohdpfx.bin \
    -c isolinux/boot.cat \
@@ -74,3 +74,4 @@ xorrisofs -o Plamo-nora-${ver}_${arch}_${dt}_dvd.iso \
 #   -isohybrid-gpt-basdat \
 #   -append_partition 2 0xef ./$1/${arch}/efiboot.img \
 #   $1/${arch}
+sha256sum Plamo-nora-${ver}_${arch}_${dt}_dvd.iso > Plamo-nora-${ver}_${arch}_${dt}_dvd.iso.sha256

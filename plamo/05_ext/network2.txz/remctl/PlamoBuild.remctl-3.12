@@ -4,9 +4,9 @@ pkgbase=remctl
 vers=3.12
 url="http://archives.eyrie.org/software/ARCHIVE/remctl/remctl-${vers}.tar.gz"
 arch=`uname -m`
-build=P0m1
+build=P0m2
 src=remctl-${vers}
-OPT_CONFIG='--disable-static --with-gssapi=/usr/heimdal --enable-reduced-depends --enable-perl --enable-python --enable-ruby --enable-php --with-gssapi-includ=/usr/heimdal/include'
+OPT_CONFIG='--disable-static --with-gssapi=/usr --enable-reduced-depends --enable-perl --enable-python --enable-ruby --enable-php --with-gssapi-include=/usr/include'
 DOCS='LICENSE NEWS README TODO'
 patchfiles=''
 compress=txz

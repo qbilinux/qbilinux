@@ -5,7 +5,7 @@ vers=1.5.4
 url="http://archive.apache.org/dist/apr/apr-util-${vers}.tar.bz2"
 verify=
 arch=`uname -m`
-build=P1m1
+build=P1m2
 src=apr-util-${vers}
 OPT_CONFIG='--with-apr=/usr/bin/apr-1-config --with-berkeley-db'
 DOCS='LICENSE README'
@@ -202,8 +202,8 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $verify ; do
     case ${i##*.} in
-    asc) gpg2 --verify ${i##*/} ;;
-    sig) gpg2 --verify ${i##*/} ;;
+    asc) gpg --verify ${i##*/} ;;
+    sig) gpg --verify ${i##*/} ;;
     sha256sum) verify_checksum "sha256sum" ;;
     esac
     if [ $? -ne 0 ]; then
