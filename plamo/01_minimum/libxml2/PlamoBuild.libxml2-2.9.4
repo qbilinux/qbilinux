@@ -5,7 +5,7 @@ pkgbase=libxml2
 vers=2.9.4
 url="http://xmlsoft.org/sources/libxml2-${vers}.tar.gz"
 arch=`uname -m`
-build=P2m2
+build=P2m3
 src=$pkgbase-$vers
 patchfiles=""
 OPT_CONFIG="--with-history"
@@ -219,7 +219,7 @@ if [ $opt_config -eq 1 ] ; then
       rm -rf config.cache config.log
     fi
     if [ -x configure ] ; then
-      ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
+	./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
           --libdir='${exec_prefix}'/$libdir --infodir='${prefix}'/share/info \
           --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
     fi

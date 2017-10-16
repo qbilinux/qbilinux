@@ -246,7 +246,7 @@ if [ $opt_package -eq 1 ] ; then
       make install DESTDIR=$P
       make install-man DESTDIR=$P
       ( cd $P/usr/bin ; ln -v -sf openjade jade )
-      ( cd $P/usr/lib64
+      ( cd $P/usr/${libdir}
 	  ln -v -sf libogrove.so libgrove.so
 	  ln -v -sf libospgrove.so libspgrove.so
 	  ln -v -sf libostyle.so libstyle.so )
