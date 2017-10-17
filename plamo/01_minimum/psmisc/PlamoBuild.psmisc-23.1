@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=psmisc
-vers=22.21
-url="http://downloads.sourceforge.net/project/psmisc/psmisc/psmisc-${vers}.tar.gz"
+vers=23.1
+url="http://downloads.sourceforge.net/project/psmisc/psmisc/psmisc-${vers}.tar.xz"
 verify=
 commitid=
 arch=`uname -m`
-build=P1m1
+build=P0m1
 src=psmisc-${vers}
 OPT_CONFIG='--exec-prefix=/'
 DOCS='ABOUT-NLS AUTHORS COPYING ChangeLog INSTALL NEWS README'
@@ -152,8 +152,8 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $verify ; do
     case ${i##*.} in
-    asc) gpg2 --verify ${i##*/} ;;
-    sig) gpg2 --verify ${i##*/} ;;
+    asc) gpg --verify ${i##*/} ;;
+    sig) gpg --verify ${i##*/} ;;
     sha256sum) verify_checksum "sha256sum" ;;
     esac
     if [ $? -ne 0 ]; then
@@ -165,15 +165,15 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
     git) ( cd `basename ${i##*/} .git`
         git checkout master
         if [ -n "$commitid" ] ; then
           git reset --hard $commitid
         fi
         git set-file-times ) ;;
-    *) tar xvpf ${i##*/} ;;
+    *) tar xpf ${i##*/} ;;
     esac
   done
 fi
@@ -199,8 +199,6 @@ if [ $opt_config -eq 1 ] ; then
     if [ -x configure ] ; then
       export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
       export LDFLAGS='-Wl,--as-needed' 
-      export CFLAGS="-isystem /usr/include" 
-      export CPPFLAGS="-isystem /usr/include"
       ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
     fi
     if [ $? != 0 ]; then
@@ -214,7 +212,7 @@ if [ $opt_build -eq 1 ] ; then
     cd ${B[$i]}
     if [ -f Makefile ] ; then
       export LDFLAGS='-Wl,--as-needed'
-      make -j3
+      make
     fi
     if [ $? != 0 ]; then
       echo "make error. $0 script stop"
