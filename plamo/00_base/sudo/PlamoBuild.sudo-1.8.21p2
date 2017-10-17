@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=sudo
-vers=1.8.20p2
+vers=1.8.21p2
 url="http://www.sudo.ws/sudo/dist/sudo-${vers}.tar.gz"
 arch=`uname -m`
 build=P0m1
@@ -11,6 +11,7 @@ OPT_CONFIG="--with-pam --without-sendmail --with-env-editor
     --with-all-insults --with-hal-insults --with-secure-path"
 DOCS="ABOUT-NLS ChangeLog INSTALL* MANIFEST NEWS README*
     `echo doc/{CONTRIBUTORS,HISTORY,LICENSE,TROUBLESHOOTING,UPGRADE}`"
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -178,7 +179,7 @@ if [ $opt_download -eq 1 ] ; then
       done
       if [ -f ${i##*/}.$sig ] ; then
         case $sig in
-        asc|sig|sign) gpg2 --verify ${i##*/}.$sig ;;
+        asc|sig|sign) gpg --verify ${i##*/}.$sig ;;
         sha256|sha1|md5) ${sig}sum -c ${i##*/}.$sig ;;
         *) $sig -c ${i##*/}.$sig ;;
         esac
@@ -288,17 +289,10 @@ if [ $opt_package -eq 1 ] ; then
 	fi
 	EOF
   touch -t `date '+%m%d0000'` $P/install/doinst.sh
-  tar cvpf $pkg.tar -C $P `cd $P ; find usr/sbin | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/libexec/sudo
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/include | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/locale -name "*.mo"`
-  tar rvpf $pkg.tar -C $P `cd $P ; find etc -maxdepth 1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P var/{run,db}/sudo
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man5 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man8 | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  tar rvpf $pkg.tar -C $P install/doinst.sh
-  touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi
