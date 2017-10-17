@@ -2,15 +2,15 @@
 
 ######################################################################
 pkgbase=man_pages
-vers=4.11
+vers=4.13
 url="https://www.kernel.org/pub/linux/docs/man-pages/Archive/man-pages-${vers}.tar.xz"
 arch=noarch
 build=P0m1
 src=man-pages-$vers
-patchfiles=""
 OPT_CONFIG=""
-compress=txz
 DOCS="Changes.old README man-pages-4.11.Announce Changes"
+patchfiles=""
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -177,7 +177,7 @@ if [ $opt_download -eq 1 ] ; then
       done
       if [ -f ${i##*/}.$sig ] ; then
         case $sig in
-        asc|sig|sign) gpg2 --verify ${i##*/}.$sig ;;
+        asc|sig|sign) gpg --verify ${i##*/}.$sig ;;
         sha256|sha1|md5) ${sig}sum -c ${i##*/}.$sig ;;
         *) $sig -c ${i##*/}.$sig ;;
         esac
