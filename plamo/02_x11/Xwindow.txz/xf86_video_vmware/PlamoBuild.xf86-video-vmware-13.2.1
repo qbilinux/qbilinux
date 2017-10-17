@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
-url='https://www.x.org/releases/individual/driver/xf86-video-openchrome-0.3.3.tar.bz2'
-pkgbase=xf86_video_openchrome
-vers=0.3.3
+pkgbase=xf86_video_vmware
+vers=13.2.1
+url="https://www.x.org/releases/individual/driver/xf86-video-vmware-${vers}.tar.bz2"
 arch=`uname -m`
-build=P4m1
-src=xf86-video-openchrome-0.3.3
+build=P0m1
+src=xf86-video-vmware-${vers}
 OPT_CONFIG=''
-DOCS='COPYING ChangeLog NEWS README'
-patchfiles='xf86-video-openchrome-0.3.3-glibc-2.20.patch'
+DOCS='COPYING ChangeLog INSTALL README'
+patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -120,9 +120,9 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
     esac
   done
 fi
@@ -140,6 +140,8 @@ if [ $opt_config -eq 1 ] ; then
     for patch in $patchfiles ; do
        patch -p1 < $W/$patch
     done
+
+    sed -i "/xf86xv.h/i #include <xorg-server.h>" vmwgfx/vmwgfx_overlay.c
 
     # if [ -f autogen.sh ] ; then
     #   sh ./autogen.sh
