@@ -3,20 +3,20 @@
 ######################################################################
 #url="https://www.kernel.org/pub/linux/kernel/v4.x/linux-4.11.7.tar.xz
 #    git://github.com/sfjro/aufs4-standalone.git"
-url="https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.12.10.tar.xz"
+url="https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.13.5.tar.xz"
 pkgbase=kernel_headers
 arch=`uname -m`
 build=P0m1
-src=linux-4.12.10
+src=linux-4.13.5
 patchfiles="vd_unicon-kernel-20170609-4.11.patch vd_unicon-kernel-fonts-20140614.patch overlayfs-allow_unprivileged_mounts.patch"
 #patchfiles=""
-configfile64="config-4.12-plamo64"
-configfile32="config-4.12-plamoSMP"
+configfile64="config-4.13-plamo64"
+configfile32="config-4.13-plamoSMP"
 if [ $arch = "x86_64" ]; then
-    vers=4.12.10_plamo64
+    vers=4.13.5_plamo64
     configfile=$configfile64
 else
-    vers=4.12.10_plamoSMP
+    vers=4.13.5_plamoSMP
     configfile=$configfile32
 fi
 aufs_vers=4.9
