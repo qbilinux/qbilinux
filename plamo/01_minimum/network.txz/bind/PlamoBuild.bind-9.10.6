@@ -2,12 +2,12 @@
 
 ######################################################################
 pkgbase=bind
-vers=9.11.1_P2
-url="http://ftp.isc.org/isc/bind/9.11.1-P2/bind-9.11.1-P2.tar.gz
+vers=9.10.6
+url="http://ftp.isc.org/isc/bind/${vers}/bind-${vers}.tar.gz
     http://www.internic.net/domain/named.root"
 arch=`uname -m`
 build=P0m1
-src=$pkgbase-9.11.1-P2
+src=$pkgbase-${vers}
 patchfiles=""
 OPT_CONFIG="--with-libxml2=no --with-libtool"
 DOCS="CHANGES COPYRIGHT FAQ HISTORY README"
@@ -178,7 +178,7 @@ if [ $opt_download -eq 1 ] ; then
       done
       if [ -f ${i##*/}.$sig ] ; then
         case $sig in
-        asc|sig|sign) gpg2 --verify ${i##*/}.$sig ;;
+        asc|sig|sign) gpg --verify ${i##*/}.$sig ;;
         sha256|sha1|md5) ${sig}sum -c ${i##*/}.$sig ;;
         *) $sig -c ${i##*/}.$sig ;;
         esac
@@ -313,7 +313,7 @@ if [ $opt_package -eq 1 ] ; then
 	    none;
 	  };
 	};
-	EOF
+EOF
   install -d $P/var/named
   cat <<- "EOF" | sed 's/^|//' > $P/var/named/master.localhost.new
 	|$TTL 86400 ; 24 hours could have been written as 24h
@@ -328,7 +328,7 @@ if [ $opt_package -eq 1 ] ; then
 	|			)
 	|@	1D	IN	NS	@
 	|	1D	IN	A	127.0.0.1
-	EOF
+EOF
   chmod 600 $P/var/named/master.localhost.new
   cat <<- "EOF" | sed 's/^|//' > $P/var/named/localhost.rev.new
 	|$TTL 86400
@@ -342,7 +342,7 @@ if [ $opt_package -eq 1 ] ; then
 	|		)
 	|	IN	NS	localhost.
 	|1	IN	PTR	localhost.
-	EOF
+EOF
   chmod 600 $P/var/named/localhost.rev.new
   cp -p $W/named.root $P/var/named/named.root.new
   chown root.root $P/var/named/named.root.new
@@ -408,7 +408,7 @@ if [ $opt_package -eq 1 ] ; then
 	  cp -p var/named/named.root var/named/named.root.internic
 	  echo "New root hint file has been installed."
 	fi
-	EOF
+EOF
   touch -t `date '+%m%d0000'` $P/install/doinst.sh
   cd $P
   /sbin/makepkg ../$pkg.$compress <<EOF
