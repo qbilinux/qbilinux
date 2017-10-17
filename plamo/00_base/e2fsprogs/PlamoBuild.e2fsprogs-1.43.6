@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=e2fsprogs
-vers=1.43.3
+vers=1.43.6
 url="http://jaist.dl.sourceforge.net/sourceforge/e2fsprogs/e2fsprogs-${vers}.tar.gz"
 arch=`uname -m`
 build=P0m1
@@ -169,9 +169,9 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
     esac
   done
 fi
