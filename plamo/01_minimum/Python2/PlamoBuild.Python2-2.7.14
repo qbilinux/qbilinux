@@ -2,10 +2,10 @@
 
 ######################################################################
 pkgbase=Python2
-vers=2.7.13
+vers=2.7.14
 url="https://www.python.org/ftp/python/${vers}/Python-${vers}.tar.xz"
 arch=`uname -m`
-build=P0m4
+build=P0m1
 src=Python-$vers
 OPT_CONFIG="--enable-shared --with-system-expat --with-system-ffi
     --with-dbmliborder=gdbm:bdb:ndbm"
@@ -178,7 +178,7 @@ if [ $opt_download -eq 1 ] ; then
       done
       if [ -f ${i##*/}.$sig ] ; then
         case $sig in
-        asc|sig|sign) gpg2 --verify ${i##*/}.$sig ;;
+        asc|sig|sign) gpg --verify ${i##*/}.$sig ;;
         sha256|sha1|md5) ${sig}sum -c ${i##*/}.$sig ;;
         *) $sig -c ${i##*/}.$sig ;;
         esac
