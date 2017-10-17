@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=openssh
-vers=7.5p1
+vers=7.6p1
 url="http://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-${vers}.tar.gz"
 arch=`uname -m`
 build=P0m1
@@ -13,6 +13,7 @@ OPT_CONFIG="--sysconfdir=/etc/ssh --with-pam --with-privsep-user=sshd
 DOCS="CREDITS INSTALL LICENCE OVERVIEW PROTOCOL PROTOCOL.agent
     `echo PROTOCOL.{certkeys,chacha20poly1305,key,krl,mux}`
     README `echo README.{dns,platform,privsep,tun}` TODO ChangeLog"
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -179,7 +180,7 @@ if [ $opt_download -eq 1 ] ; then
       done
       if [ -f ${i##*/}.$sig ] ; then
         case $sig in
-        asc|sig|sign) gpg2 --verify ${i##*/}.$sig ;;
+        asc|sig|sign) gpg --verify ${i##*/}.$sig ;;
         sha256|sha1|md5) ${sig}sum -c ${i##*/}.$sig ;;
         *) $sig -c ${i##*/}.$sig ;;
         esac
@@ -190,10 +191,10 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz|tgz) tar xvpzf ${i##*/} ;;
-    bz2|tbz) tar xvpjf ${i##*/} ;;
-    xz|txz) tar xvpJf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz|tgz) tar xpzf ${i##*/} ;;
+    bz2|tbz) tar xpjf ${i##*/} ;;
+    xz|txz) tar xpJf ${i##*/} ;;
     esac
   done
 fi
@@ -208,7 +209,7 @@ if [ $opt_config -eq 1 ] ; then
       gz) gunzip -c $W/$j | patch -Np1 -i - ;;
       bz2) bunzip2 -c $W/j | patch -Np1 -i - ;;
       xz) unxz -c $W/$j | patch -Np1 -i - ;;
-      *) patch -Np1 -i $W/$j ;;
+      *) patch -Np0 -i $W/$j ;;
       esac
     done
   done
@@ -307,17 +308,10 @@ if [ $opt_package -eq 1 ] ; then
 	for i in ssh sshd ; do ssh_config $i ; done
 	EOF
   touch -t `date '+%m%d0000'` $P/install/doinst.sh
-  tar cvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/sbin | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/libexec | tail -n+2`
-  tar rvpf $pkg.tar -C $P var/lib/sshd
-  tar rvpf $pkg.tar -C $P etc/ssh
-  tar rvpf $pkg.tar -C $P `cd $P ; find etc/pam.d | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man5 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man8 | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  tar rvpf $pkg.tar -C $P install/doinst.sh
-  touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi
