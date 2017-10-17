@@ -2,14 +2,14 @@
 
 ######################################################################
 pkgbase=reiserfsprogs
-vers=3.6.25
+vers=3.6.27
 url="https://www.kernel.org/pub/linux/kernel/people/jeffm/reiserfsprogs/v${vers}/reiserfsprogs-${vers}.tar.xz"
 arch=`uname -m`
 build=P0m1
 src=$pkgbase-$vers
 OPT_CONFIG=""
-compress=txz
 DOCS="NEWS README AUTHORS INSTALL ChangeLog COPYING CREDITS"
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
