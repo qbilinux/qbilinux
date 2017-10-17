@@ -2,17 +2,17 @@
 
 ######################################################################
 pkgbase=pcre2
-vers=10.23
-url="https://sourceforge.net/projects/pcre/files/pcre2/10.23/pcre2-${vers}.tar.gz"
+vers=10.30
+url="https://sourceforge.net/projects/pcre/files/pcre2/${vers}/pcre2-${vers}.tar.gz"
 arch=`uname -m`
-build=P0m2
+build=P0m1
 src=$pkgbase-$vers
-patchfiles=""
 OPT_CONFIG="--enable-pcre2-16 --enable-pcre2-32 --enable-unicode-properties
     --enable-pcre2grep-libz --enable-pcre2grep-libbz2
     --enable-pcre2test-libreadline"
 DOCS="LICENCE README COPYING INSTALL ChangeLog HACKING AUTHORS
     NON-AUTOTOOLS-BUILD NEWS NON-UNIX-USE"
+patchfiles=""
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -180,7 +180,7 @@ if [ $opt_download -eq 1 ] ; then
       done
       if [ -f ${i##*/}.$sig ] ; then
         case $sig in
-        asc|sig|sign) gpg2 --verify ${i##*/}.$sig ;;
+        asc|sig|sign) gpg --verify ${i##*/}.$sig ;;
         sha256|sha1|md5) ${sig}sum -c ${i##*/}.$sig ;;
         *) $sig -c ${i##*/}.$sig ;;
         esac
@@ -252,7 +252,6 @@ if [ $opt_package -eq 1 ] ; then
       make install DESTDIR=$P
     fi
   done
-  ln -s libpcre.so.1.2.7 $P/usr/$libdir/libpcre.so.0
   touch $W/i.et
   cd $W
   find $P ! -type l -newer i.st ! -newer i.et \
