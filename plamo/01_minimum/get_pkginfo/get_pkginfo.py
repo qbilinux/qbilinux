@@ -7,7 +7,7 @@ import urllib, time, ftplib
 PKG_PATH = "/var/log/packages/"
 
 def get_args():
-    parser = argparse.ArgumentParser(description="Plamo Linux update "
+    parser = argparse.ArgumentParser(description="Tsumiki Linux update "
             "packages check and download")
     parser.add_argument("-v", "--verbose", action="store_true",
             help="verbose messages (not implemented yet)")
@@ -55,18 +55,18 @@ def get_file_confs(conf_file):
 def url_completion(url):
     if not url.endswith("/"):
         url += "/"      # Ç°¤Î¤¿¤á
-    current = "6.x"
-    if os.path.isfile("/etc/plamo-release"):
+    current = "0.0"
+    if os.path.isfile("/etc/tsumiki-release"):
         # format: Plamo Linux release x.y
-        info = open("/etc/plamo-release", "r").readline()
-        version = info.split(" ")[-1].strip()
+        info = open("/etc/tsumiki-release", "r").readline()
+        version = info.split(" ")[4].strip()
     elif os.path.isdir("/usr/lib/setup"):
-        # format: /usr/lib/setup/Plamo-x.y
+        # format: /usr/lib/setup/Tsumiki-x.y
         info = sorted(os.listdir("/usr/lib/setup"))
         version = info[-1].split("-")[-1]
     else:
         print("Cannot find valid version tag.  "
-                "Suppose you use Plamo current({})".format(current))
+                "Suppose you use Tsumiki Linux current({})".format(current))
         version = current
     version = re.sub("\..*", ".x", version)
     arch = subprocess.check_output("uname -m".split()).strip()
@@ -79,7 +79,7 @@ def url_completion(url):
             urllib2.urlopen(url + arch + "/allpkgs.pickle").close()
             return url + arch + "/"
         except urllib2.URLError:
-            return url + "Plamo-" + version + "/" + arch + "/"
+            return url + "Tsumiki-" + version + "/" + arch + "/"
 
 def get_confs():
     param = get_args()

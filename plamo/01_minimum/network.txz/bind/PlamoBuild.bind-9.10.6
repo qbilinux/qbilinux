@@ -1,16 +1,16 @@
 #!/bin/sh
 
 ######################################################################
-pkgbase=heimdal
-vers=7.4.0
-url="https://github.com/heimdal/heimdal/releases/download/heimdal-${vers}/heimdal-${vers}.tar.gz"
+pkgbase=bind
+vers=9.10.6
+url="http://ftp.isc.org/isc/bind/${vers}/bind-${vers}.tar.gz
+    http://www.internic.net/domain/named.root"
 arch=`uname -m`
-build=P0m3
-src=$pkgbase-$vers
+build=P0m1
+src=$pkgbase-${vers}
 patchfiles=""
-OPT_CONFIG="--prefix=/usr --infodir=/usr/share/info
-    --mandir=/usr/share/man --with-sqlite3=/usr LIBS=-pthread"
-DOCS="ChangeLog* LICENSE NEWS README TODO"
+OPT_CONFIG="--with-libxml2=no --with-libtool"
+DOCS="CHANGES COPYRIGHT FAQ HISTORY README"
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -178,7 +178,7 @@ if [ $opt_download -eq 1 ] ; then
       done
       if [ -f ${i##*/}.$sig ] ; then
         case $sig in
-        asc|sig|sign) gpg2 --verify ${i##*/}.$sig ;;
+        asc|sig|sign) gpg --verify ${i##*/}.$sig ;;
         sha256|sha1|md5) ${sig}sum -c ${i##*/}.$sig ;;
         *) $sig -c ${i##*/}.$sig ;;
         esac
@@ -211,9 +211,6 @@ if [ $opt_config -eq 1 ] ; then
       esac
     done
   done
-  cd $B
-  cp -p krb5.conf{,.orig}
-  sed -i '/default_realm/s@^ *@\t@' krb5.conf
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
@@ -253,142 +250,107 @@ if [ $opt_package -eq 1 ] ; then
       make install DESTDIR=$P
     fi
   done
-  ln -sf mech.5 $mandir/man5/qop.5
-  install -d $P/etc
-  install -m 644 krb5.conf $P/etc
-  install -m 644 etc/services.append $P/etc/services.append-kerberos
-  install -d $P/etc/rc.d/init.d
-  cat <<- "EOF" > $P/etc/rc.d/init.d/heimdal
-	#!/bin/sh -f
-	#
-	# description: The Heimdal Kerberos5 KDC Master server and its administration
-	#              daemons.
-	# processname: heimdal
-	# chkconfig: 2345 11 89
-	#
-	# Creation:	1997-04-10
-	# Auther:	JuK
-	# HISTORY
-	# 2006-01-02	JuK	port to Heimdal on Plamo Linux
-	# 2001-10-01	JuK	port to RH7.1
-	#
-	KDC=/usr/libexec/kdc
-	kdcdaemon="heimdal (Kerberos 5 KDC)"
-	KADMIND=/usr/libexec/kadmind
-	kdmdaemon="kadmind (Kerberos DB admin. daemon)"
-	KPASSWDD=/usr/libexec/kpasswdd
-	kpwdaemon="kpasswdd (Kerberos password daemon)"
+  cat <<- "EOF" > $P/etc/named.conf.new
+	// CACHING NAME SERVER
+	options {
+	  directory "/var/named";
+	  // version statement - inhibited for security
+	  // (avoids hacking any known weaknesses)	
+	  version "not currently available";
+	  // disables all zone transfer requests
+	  allow-transfer {
+	    "none";
+	  };
+	  // Closed DNS - permits only local IPs to issue queries
+	  // remove if an Open DNS required to support all users
+	  // or add additional IP ranges
+	  // in this case either allow-query or allow-recursion can be used
+	  allow-query {
+	    192.168.1.0/24;
+	  };
+	};
 	
-	kdcpid=`ps ax | grep $KDC | grep -v grep | sed -e 's/^  *//' -e 's/ .*//'`
-	kdmpid=`ps ax | grep $KADMIND | grep -v grep | sed -e 's/^  *//' -e 's/ .*//'`
-	kpwpid=`ps ax | grep $KPASSWDD | grep -v grep | sed -e 's/^  *//' -e 's/ .*//'`
+	// log to /var/log/named.log events
+	// from info UP in severity (no debug)
+	// defaults to use 3 files in rotation
+	// BIND 8.x logging MUST COME FIRST in this file
+	// BIND 9.x parses the whole file before using the log
+	// failure messages up to this point are in (syslog)
+	// typically /var/log/messages
+	logging {
+	  channel example_log {
+	    file "/var/log/named.log" versions 3 size 2m;
+	    severity info;
+	    print-severity yes;
+	    print-time yes;
+	    print-category yes;
+	  };
+	  category default {
+	    example_log;
+	  };
+	};
 	
-	#
-	# start or stop kdc (KDC)
-	# start or stop kadmind (Kerberos DB admin. daemon)
-	# start or stop kpasswdd (Kerberos password daemon)
-	#
-	case $1 in
-	start)
-	  if [ -f $KDC ] ; then
-	    if [ -z "$kdcpid" ] ; then
-	      $KDC &
-	      echo "$0: $kdcdaemon started."
-	      kdcpid=`ps ax | grep $KDC | grep -v grep | sed -e 's/^  *//' -e 's/ .*//'`
-	      echo "$0: Proccess ID = $kdcpid"
-	    else
-	      echo "$0: $kdcdaemon is ALREADY running (PID = $kdcpid)."
-	    fi
-	  else
-	    echo "$0: $KDC does NOT exist."
-	    exit 1
-	  fi
-	  if [ -f $KADMIND ] ; then
-	    if [ -z "$kdmpid" ] ; then
-	      $KADMIND &
-	      echo "$0: $kdmdaemon started."
-	      kdmpid=`ps ax | grep $KADMIND | grep -v grep | sed -e 's/^  *//' -e 's/ .*//'`
-	      echo "$0: Proccess ID = $kdmpid"
-	    else
-	      echo "$0: $kdmdaemon is ALREADY running (PID = $kdmpid)."
-	    fi
-	  else
-	    echo "$0: $KADMIND does NOT exist."
-	    exit 1
-	  fi
-	  if [ -f $KPASSWDD ] ; then
-	    if [ -z "$kpwpid" ] ; then
-	      $KPASSWDD &
-	      echo "$0: $kpwdaemon started."
-	      kpwpid=`ps ax | grep $KPASSWDD | grep -v grep | sed -e 's/^  *//' -e 's/ .*//'`
-	      echo "$0: Proccess ID = $kpwpid"
-	    else
-	      echo "$0: $kpwdaemon is ALREADY running (PID = $kpwpid)."
-	    fi
-	  else
-	    echo "$0: $KPASSWDD does NOT exist."
-	    exit 1
-	  fi
-	  ;;
-	stop)
-	  if [ -f $KDC ] ; then
-	    if [ -n "$kdcpid" ] ; then
-	      kill $kdcpid
-	      echo "$0: $kdcdaemon has been killed."
-	    else
-	      echo "$0: $kdcdaemon is NOT running."
-	    fi
-	  fi
-	  if [ -f $KADMIND ] ; then
-	    if [ -n "$kdmpid" ] ; then
-	      kill $kdmpid
-	      echo "$0: $kdmdaemon has been killed."
-	    else
-	      echo "$0: $kdmdaemon is NOT running."
-	    fi
-	  fi
-	  if [ -f $KPASSWDD ] ; then
-	    if [ -n "$kpwpid" ] ; then
-	      kill $kpwpid
-	      echo "$0: $kpwdaemon has been killed."
-	    else
-	      echo "$0: $kpwdaemon is NOT running."
-	    fi
-	  fi
-	  ;;
-	*)
-	  echo "usage: $0 {start|stop}"
-	  # check kdc
-	  if [ -n "$kdcpid" ] ; then
-	    echo "$0: $kdcdaemon is ALREADY running (PID = $kdcpid)."
-	  else
-	    echo "$0: $kdcdaemon is NOT running."
-	  fi
-	  # check kadmind
-	  if [ -n "$kdmpid" ] ; then
-	    echo "$0: $kdmdaemon is ALREADY running (PID = $kdmpid)."
-	  else
-	    echo "$0: $kdmdaemon is NOT running."
-	  fi
-	  # check kpasswdd
-	  if [ -n "$kpwpid" ] ; then
-	    echo "$0: $kpwdaemon is ALREADY running (PID = $kpwpid)."
-	  else
-	    echo "$0: $kpwdaemon is NOT running."
-	  fi
-	  exit 1
-	  ;;
-	esac
-	exit 0
-	EOF
+	// required zone for recursive queries
+	zone "." {
+	  type hint;
+	  file "named.root";
+	};
+	
+	// required local host domain
+	zone "localhost" in {
+	  type master;
+	  file "master.localhost";
+	  allow-update {
+	    none;
+	  };
+	};
+	
+	// localhost reverse map
+	zone "0.0.127.in-addr.arpa" in {
+	  type master;
+	  file "localhost.rev";
+	  allow-update {
+	    none;
+	  };
+	};
+EOF
+  install -d $P/var/named
+  cat <<- "EOF" | sed 's/^|//' > $P/var/named/master.localhost.new
+	|$TTL 86400 ; 24 hours could have been written as 24h
+	|$ORIGIN localhost.
+	|; line below = localhost 1D IN SOA localhost root.localhost
+	|@	1D	IN	SOA	@	root (
+	|				2009073001	; serial
+	|				3h		; refresh
+	|				15		; retry
+	|				1w		; expire
+	|				3h		; minimum
+	|			)
+	|@	1D	IN	NS	@
+	|	1D	IN	A	127.0.0.1
+EOF
+  chmod 600 $P/var/named/master.localhost.new
+  cat <<- "EOF" | sed 's/^|//' > $P/var/named/localhost.rev.new
+	|$TTL 86400
+	|; could use $ORIGIN 0.0.127.IN-ADDR.ARPA.
+	|@	IN	SOA	localhost. root.localhost. (
+	|			1997022700	; serial
+	|			3h		; refresh
+	|			15		; retry
+	|			1w		; expire
+	|			3h		; minimum
+	|		)
+	|	IN	NS	localhost.
+	|1	IN	PTR	localhost.
+EOF
+  chmod 600 $P/var/named/localhost.rev.new
+  cp -p $W/named.root $P/var/named/named.root.new
+  chown root.root $P/var/named/named.root.new
   touch $W/i.et
   cd $W
+  find $P ! -type l -newer i.st ! -newer i.et \
+      -exec touch -t `date '+%m%d0000'` {} \;
   compress
-  strip_bindir $P/usr/bin
-  strip_bindir $P/usr/sbin
-  strip_bindir $P/usr/libexec/heimdal
-  strip_bindir $P/usr/libexec
-  strip_libdir $P/usr/$libdir
   for i in `seq 0 $((${#DOCS[@]} - 1))` ; do
     for j in ${DOCS[$i]} ; do
       for k in ${S[$i]}/$j ; do
@@ -399,14 +361,55 @@ if [ $opt_package -eq 1 ] ; then
     done
     if [ $i -eq 0 ] ; then
       install $myname $docdir/$src
+      touch -t `date '+%m%d0000'` $docdir/$src/$myname
       gzip_one $docdir/$src/$myname
     else
       ln $docdir/$src/$myname.gz $docdir/${src[$i]}
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
-  prune_symlink $P/usr
   convert
+  cat <<- "EOF" >> $P/install/doinst.sh
+	
+	named_config() {
+	  mv var/named/$1.new /tmp
+	  if [ -f var/named/$1 ] ; then
+	    mv /tmp/$1.new var/named/$1.dist
+	  else
+	    mv /tmp/$1.new var/named/$1
+	  fi
+	}
+	
+	mv etc/named.conf.new /tmp
+	if [ -f etc/named.conf ] ; then
+	  mv /tmp/named.conf.new etc/named.conf.dist
+	else
+	  mv /tmp/named.conf.new etc/named.conf
+	fi
+	for i in master.localhost localhost.rev ; do
+	  named_config $i
+	done
+	mv var/named/named.root.new /tmp
+	if [ -f var/named/named.root ] ; then
+	  if diff -q var/named/named.root.internic var/named/named.root \
+	      > /dev/null 2>&1 ; then
+	    mv var/named/named.root var/named/named.root.old
+	    mv /tmp/named.root.new var/named/named.root
+	    cp -p var/named/named.root var/named/named.root.internic
+	    echo "New root hint file has been installed."
+	    echo "Old one has been moved to /var/named/named.root.old."
+	  else
+	    mv /tmp/named.root.new var/named/named.root.internic
+	    echo "You might have to update your root hint file."
+	    echo "New one has been installed to /var/named/named.root.internic."
+	  fi
+	else
+	  mv /tmp/named.root.new var/named/named.root
+	  cp -p var/named/named.root var/named/named.root.internic
+	  echo "New root hint file has been installed."
+	fi
+EOF
+  touch -t `date '+%m%d0000'` $P/install/doinst.sh
   cd $P
   /sbin/makepkg ../$pkg.$compress <<EOF
 y

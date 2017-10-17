@@ -1,19 +1,19 @@
 #!/bin/sh
-
-######################################################################
-pkgbase=get_pkginfo
-vers=0.0
-url=""
-arch=noarch
+##############################################################
+pkgbase=rpm2targz
+vers=9.0.0.5g
+url="https://cgit.gentoo.org/proj/rpm2targz.git/snapshot/rpm2targz-${vers}.tar.bz2"
+arch=`uname -m`
 build=P0m1
-src=$pkgbase-$vers
-patchfiles="get_pkginfo.py"
-OPT_CONFIG=""
-DOCS=""
+src=rpm2targz-${vers}
+OPT_CONFIG=''
+DOCS='rpm2targz.README rpm2targz.README.Gentoo'
+addfile='rpm2cpio'
+patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
-######################################################################
+##############################################################
 
 install2() {
   install -d ${2%/*} ; install -m 644 $1 $2
@@ -27,7 +27,7 @@ strip_bindir() {
     for i in * ; do
       echo "$i"
       if [ -h $i ] ; then continue ; fi
-      if [ -n "`file $i | grep "not stripped"`" ] ; then
+      if [ -n "`file $i | grep "not stripped"`" ] ; then #`
          echo "stripping -p $i"
          strip -p $i
       fi
@@ -43,7 +43,7 @@ strip_libdir() {
     for i in *.so *.so.* *.a ; do
       echo "$i"
       if [ -h $i ] ; then continue ; fi
-      if [ -n "`nm -a $i | grep " a "`" ] ; then
+      if [ -n "`nm -a $i | grep " a "`" ] ; then #`
         if [ $i != ${i%.a} ] ; then
           echo -n "ranlib and "
           touch -r $i $i.mt ; ranlib $i ; touch -r $i.mt $i ; rm $i.mt
@@ -60,6 +60,7 @@ gzip_dir() {
   if [ -d $1 ] ; then (
     cd $1
     files=`ls -f --indicator-style=none | sed '/^\.\{1,2\}$/d'`
+    # files=`ls -a --indicator-style=none | tail -n+3`
     for i in $files ; do
       echo "$i"
       if [ ! -f $i -a ! -h $i -o $i != ${i%.gz} ] ; then continue ; fi
@@ -89,11 +90,13 @@ gzip_one() {
 }
 
 compress() {
-  for i in {$P,$P/usr}/{sbin,bin} ; do strip_bindir $i ; done
-  for i in {$P,$P/usr}/$libdir ; do strip_libdir $i ; done
+  for i in {$P,$P/usr,$P/usr/X11R7}/{sbin,bin} ; do strip_bindir $i ; done
+  for i in {$P,$P/usr,$P/usr/X11R7}/lib ; do strip_libdir $i ; done
+  for i in {$P,$P/usr,$P/usr/X11R7}/lib64 ; do strip_libdir $i ; done
   if [ -f $infodir/dir ] ; then rm -f $infodir/dir ; fi
   gzip_dir $infodir
   for i in `seq 9` n ; do gzip_dir $mandir/man$i ; done
+  for i in `seq 9` n ; do gzip_dir $xmandir/man$i ; done
 }
 
 prune_symlink() {
@@ -104,7 +107,8 @@ prune_symlink() {
     for i in `find ${1#$P/} -type l` ; do
       target=`readlink $i`
       echo "$i -> $target"
-      echo $i$'\n'$target >> /tmp/iNsT-a.$$
+      echo $i$'
+'$target >> /tmp/iNsT-a.$$
     done
     COUNT=1
     LINE=`sed -n "${COUNT}p" /tmp/iNsT-a.$$`
@@ -128,25 +132,37 @@ prune_symlink() {
 
 convert() {
   for i in {$P,$P/usr}/{sbin,bin} ; do prune_symlink $i ; done
-  for i in {$P,$P/usr}/$libdir ; do prune_symlink $i ; done
+  for i in {$P,$P/usr}/lib ; do prune_symlink $i ; done
+  for i in {$P,$P/usr}/lib64 ; do prune_symlink $i ; done
   prune_symlink $infodir
   for i in `seq 9` n ; do prune_symlink $mandir/man$i ; done
 }
 
-#fscheck
 W=`pwd`
 for i in `seq 0 $((${#src[@]} - 1))` ; do
-  S[$i]=$W/${src[$i]} ; B[$i]=$W/build`test ${#src[@]} -eq 1 || echo $i`
+  S[$i]=$W/${src[$i]} 
+  if [ $arch = "x86_64" ]; then
+      B[$i]=$W/build`test ${#src[@]} -eq 1 || echo $i`
+  else
+      B[$i]=$W/build32`test ${#src[@]} -eq 1 || echo $i`
+  fi      
 done
 P=$W/work ; C=$W/pivot
 infodir=$P/usr/share/info
 mandir=$P/usr/share/man
+xmandir=$P/usr/X11R7/share/man
 docdir=$P/usr/share/doc
 myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
-case $arch in x86_64) libdir=lib64 ;; *) libdir=lib ;; esac
+
+if [ $arch = "x86_64" ]; then
+    libdir="lib64"
+else
+    libdir="lib"
+fi
+
 if [ $# -eq 0 ] ; then
-  opt_download=1 ; opt_config=1 ; opt_build=1 ; opt_package=1
+  opt_download=0 ; opt_config=1 ; opt_build=1 ; opt_package=1
 else
   opt_download=0 ; opt_config=0 ; opt_build=0 ; opt_package=0
   for i in $@ ; do
@@ -160,56 +176,40 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
-    case ${i##*.} in
-    git) if [ ! -d `basename ${i##*/} .git` ] ; then git clone $i ; else
-        ( cd `basename ${i##*/} .git` ; git pull origin master ) ; fi ;;
-    *)
-      if [ ! -f ${i##*/} ] ; then
-        wget $i ; j=${i%.*}
-        for sig in asc sig{,n} {sha{256,1},md5}{,sum} ; do
-          if wget --spider $i.$sig ; then wget $i.$sig ; break ; fi
-          if wget --spider $j.$sig ; then
-            case ${i##*.} in
-            gz) gunzip -c ${i##*/} > ${j##*/} ;;
-            bz2) bunzip2 -c ${i##*/} > ${j##*/} ;;
-            xz) unxz -c ${i##*/} > ${j##*/} ;;
-            esac
-            touch -r ${i##*/} ${j##*/} ; i=$j ; wget $i.$sig ; break
-          fi
-        done
-        if [ -f ${i##*/}.$sig ] ; then
-          case $sig in
-          asc|sig|sign) gpg2 --verify ${i##*/}.$sig ;;
-          sha256|sha1|md5) ${sig}sum -c ${i##*/}.$sig ;;
-          *) $sig -c ${i##*/}.$sig ;;
-          esac
-          if [ $? -ne 0 ] ; then echo "archive verify failed" ; exit ; fi
-        fi
-      fi
-      ;;
-    esac
-    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
+    if [ ! -f ${i##*/} ] ; then wget $i ; fi
   done
-  if [ ! -x gitlog2changelog.py ] ; then
-    chmod 755 gitlog2changelog.py
-  fi
   for i in $url ; do
     case ${i##*.} in
     tar) tar xpf ${i##*/} ;;
-    gz|tgz) tar xpzf ${i##*/} ;;
-    bz2|tbz) tar xpjf ${i##*/} ;;
-    xz|txz) tar xpJf ${i##*/} ;;
-    git) ( cd `basename ${i##*/} .git`
-        git checkout origin/master ; git reset --hard facec2d
-        git set-file-times ; TZ=UTC ../gitlog2changelog.py) ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
     esac
   done
 fi
 if [ $opt_config -eq 1 ] ; then
-    echo 'nothin to do in config.'
+  for i in `seq 0 $((${#B[@]} - 1))` ; do
+    if [ -d ${B[$i]} ] ; then rm -rf ${B[$i]} ; fi ; cp -a ${S[$i]} ${B[$i]}
+  done
+######################################################################
+# * ./configure ¤ò¹Ô¤¦Á°¤ËÅ¬ÍÑ¤·¤¿¤¤ÀßÄê¤ä¥Ñ¥Ã¥Á¤Ê¤É¤¬¤¢¤ë¾ì¹ç¤Ï¤³¤³¤Ë
+#   µ­½Ò¤·¤Þ¤¹¡£
+######################################################################
+  for i in `seq 0 $((${#B[@]} - 1))` ; do
+    cd ${B[$i]}
+    for patch in $patchfiles ; do
+       patch -p1 < $W/$patch
+    done
+
+  done
 fi
 if [ $opt_build -eq 1 ] ; then
-    echo 'nothin to do in build.'
+  for i in `seq 0 $((${#B[@]} - 1))` ; do
+    cd ${B[$i]}
+    if [ -f Makefile ] ; then
+      export LDFLAGS='-Wl,--as-needed'
+      make
+    fi
+  done
 fi
 if [ $opt_package -eq 1 ] ; then
   if [ `id -u` -ne 0 ] ; then
@@ -221,48 +221,81 @@ if [ $opt_package -eq 1 ] ; then
   if [ -d $P ] ; then rm -rf $P ; fi ; mkdir -p $P
   if [ -d $C ] ; then rm -rf $C ; fi ; mkdir -p $C
   touch $W/i.st ; sleep 1
-  install -d $P/usr/bin
-  install $W/get_pkginfo.py $P/usr/bin/get_pkginfo
-  install -d $docdir/$src
-#  install -m 644 README $docdir/$src
+  for i in `seq 0 $((${#B[@]} - 1))` ; do
+    cd ${B[$i]}
+    for mk in `find . -name "[Mm]akefile" ` ; do
+        sed -i -e 's|GCONFTOOL = /usr/bin/gconftool-2|GCONFTOOL = echo|' $mk
+    done
+    if [ -f Makefile ] ; then
+      export LDFLAGS='-Wl,--as-needed'
+      make install DESTDIR=$P
+    fi
+  done
+######################################################################
+# * make install ¤Ç¥³¥Ô¡¼¤µ¤ì¤Ê¤¤¥Õ¥¡¥¤¥ë¤¬¤¢¤ë¾ì¹ç¤Ï¤³¤³¤Ëµ­½Ò¤·¤Þ¤¹¡£
+######################################################################
+  install -m755 $W/$addfile $P/usr/bin
+
+  mkdir -p $P/usr/share/doc/$pkgbase-$vers
+  cp $W/$addfile $P/usr/share/doc/$pkgbase-$vers
+
+# remove locales except ja
+# 
+  if [ -d $P/usr/share/locale ]; then
+    pushd $P/usr/share/locale  
+    for loc in * ; do
+        if [ "$loc" != "ja" ]; then
+            rm -rf $P/usr/share/locale/$loc
+        fi
+    done
+    popd
+  fi
+
   touch $W/i.et
   cd $W
-  find $P ! -type l -newer i.st ! -newer i.et \
-      -exec touch -t `date '+%m%d0000'` {} \;
+  find $P ! -type l -newer i.st ! -newer i.et       -exec touch -t `date '+%m%d0000'` {} \;
   compress
+######################################################################
+# * compress ÂÐ¾Ý°Ê³°¤Ç°µ½Ì¤·¤¿¤¤¥Ç¥£¥ì¥¯¥È¥ê¤ä¥Õ¥¡¥¤¥ë¤¬¤¢¤ë¾ì¹ç¤Ï¤³¤³
+#   ¤Ëµ­½Ò¤·¤Þ¤¹(strip_{bin,lib}dir ¤ä gzip_{dir,one} ¤ò»È¤¤¤Þ¤¹)¡£
+# * Â¾¤Î¥¢¡¼¥«¥¤¥Ö¤«¤éÄÉ²Ã¤·¤¿¤¤¥Õ¥¡¥¤¥ë¤¬¤¢¤ë¾ì¹ç¤Ï¤³¤³¤Ëµ­½Ò¤·¤Þ¤¹¡£
+######################################################################
   for i in `seq 0 $((${#DOCS[@]} - 1))` ; do
     for j in ${DOCS[$i]} ; do
       for k in ${S[$i]}/$j ; do
-        install2 $k $docdir/${src[$i]}/${k#${S[$i]}/}
-        touch -r $k $docdir/${src[$i]}/${k#${S[$i]}/}
-        gzip_one $docdir/${src[$i]}/${k#${S[$i]}/}
+        install2 $k $docdir/$pkgbase-$vers/${k#${S[$i]}/}
+        touch -r $k $docdir/$pkgbase-$vers/${k#${S[$i]}/}
+        gzip_one $docdir/$pkgbase-$vers/${k#${S[$i]}/}
       done
     done
     if [ $i -eq 0 ] ; then
-      install $myname $docdir/$src
-      touch -t `date '+%m%d0000'` $docdir/$src/$myname
-      gzip_one $docdir/$src/$myname
+      install $myname $docdir/$pkgbase-$vers
+      touch -t `date '+%m%d0000'` $docdir/$pkgbase-$vers/$myname
+      gzip_one $docdir/$pkgbase-$vers/$myname
     else
-      ln $docdir/$src/$myname.gz $docdir/${src[$i]}
+      ln $docdir/$pkgbase-$vers/$myname.gz $docdir/$Pkgbase-$vers
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
+
   for patch in $patchfiles ; do
-    cp $W/$patch $docdir/$src/$patch
-    gzip_one $docdir/$src/$patch
+      cp $W/$patch $docdir/$pkgbase-$vers/$patch
+      gzip_one $docdir/$pkgbase-$vers/$patch
   done
-  touch -t `date '+%m%d0000'` $docdir/$src
+######################################################################
+# * ¥É¥­¥å¥á¥ó¥È¥Ä¥ê¡¼¤ÎÄ´À°¤¬É¬Í×¤Ê¾ì¹ç¤Ï¤³¤³¤Ëµ­½Ò¤·¤Þ¤¹¡£
+######################################################################
   convert
 ######################################################################
-# * convert å¯¾è±¡ä»¥å¤–ã§åˆˆã‚Šå–ã‚ŠãŸã„ã‚·ãƒ³ãƒœãƒªãƒƒã‚¯ãƒªãƒ³ã‚¯ãŒã‚ã‚‹å ´åˆã¯ã“ã“ã«
-#   è¨˜è¿°ã—ã¾ã™(prune_symlink ã‚’ä½¿ã„ã¾ã™)ã€‚
-# * å®Œæˆã—ãŸä½œæ¥­ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‹ã‚‰ tar ã‚¤ãƒ¡ãƒ¼ã‚¸ã‚’ä½œæˆã™ã‚‹æ‰‹é †ã‚’ä»¥é™ã«è¨˜è¿°
-#   ã—ã¾ã™(ã“ã ã‚ã‚Šã‚’æ±‚ã‚ãªã„ãªã‚‰å˜ã« makepkg ã§ã‚‚è‰¯ã„ã§ã™)ã€‚
+# * convert ÂÐ¾Ý°Ê³°¤Ç´¢¤ê¼è¤ê¤¿¤¤¥·¥ó¥Ü¥ê¥Ã¥¯¥ê¥ó¥¯¤¬¤¢¤ë¾ì¹ç¤Ï¤³¤³¤Ë
+#   µ­½Ò¤·¤Þ¤¹(prune_symlink ¤ò»È¤¤¤Þ¤¹)¡£
+# * ´°À®¤·¤¿ºî¶È¥Ç¥£¥ì¥¯¥È¥ê¤«¤é tar ¥¤¥á¡¼¥¸¤òºîÀ®¤¹¤ë¼ê½ç¤ò°Ê¹ß¤Ëµ­½Ò
+#   ¤·¤Þ¤¹(¤³¤À¤ï¤ê¤òµá¤á¤Ê¤¤¤Ê¤éÃ±¤Ë makepkg ¤Ç¤âÎÉ¤¤¤Ç¤¹)¡£
 ######################################################################
 # tar cvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
 # tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man1 | tail -n+2`
 # tar rvpf $pkg.tar -C $P usr/share/doc/$src
-# touch -t `date '+%m%d0900'` $pkg.tar ; gzip $pkg.tar ; touch $pkg.tar.gz
+# touch -t `date '+%m%d0000'` $pkg.tar ; gzip $pkg.tar ; touch $pkg.tar.gz
 # mv $pkg.tar.gz $pkg.tgz
   cd $P
   /sbin/makepkg ../$pkg.$compress <<EOF

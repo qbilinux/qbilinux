@@ -1,16 +1,22 @@
 #!/bin/sh
 ##############################################################
-pkgbase=libevent
-vers=2.1.8
-url="https://github.com/libevent/libevent/releases/download/release-2.1.8-stable/libevent-2.1.8-stable.tar.gz"
+pkgbase=curl
+vers=7.56.0
+url="http://curl.haxx.se/download/curl-${vers}.tar.bz2"
 commitid=
 arch=`uname -m`
 build=P0m2
-src=libevent-2.1.8-stable
-# for libressl
-# OPT_CONFIG='--disable-libevent-regress --disable-samples'
-OPT_CONFIG=''
-DOCS='ChangeLog ChangeLog-1.4 ChangeLog-2.0 LICENSE whatsnew-2.0.txt whatsnew-2.1.txt'
+src=curl-${vers}
+OPT_CONFIG='--disable-ldap --disable-rtsp
+    --with-gssapi-includes=/usr/include --without-librtmp'
+DOCS='`echo docs/{VERSIONS,MAIL-ETIQUETTE,HTTP-COOKIES.md}`
+    `echo docs/{RELEASE-PROCEDURE,BUGS,SSL-PROBLEMS.md,CODE_STYLE.md}`
+    `echo docs/{KNOWN_BUGS,HTTP2.md,README.win32,INTERNALS.md}`
+    `echo docs/{LICENSE-MIXING.md,THANKS,README.netware,TheArtOfHttpScripting}`
+    `echo docs/{CHECKSRC.md,FAQ,INSTALL,ROADMAP.md,FEATURES}`
+    `echo docs/{MANUAL,CODE_OF_CONDUCT.md,RESOURCES,SECURITY.md,TODO}`
+    `echo docs/{CONTRIBUTE.md,HISTORY.md,SSLCERTS.md}`
+    COPYING README RELEASE-NOTES'
 patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
@@ -102,12 +108,13 @@ else
 fi
 
 if [ $# -eq 0 ] ; then
-  opt_download=0 ; opt_config=1 ; opt_build=1 ; opt_package=1
+  opt_download=0 ; opt_patch=1 ; opt_config=1 ; opt_build=1 ; opt_package=1
 else
-  opt_download=0 ; opt_config=0 ; opt_build=0 ; opt_package=0
+  opt_download=0 ; opt_patch=0 ; opt_config=0 ; opt_build=0 ; opt_package=0
   for i in $@ ; do
     case $i in
     download) opt_download=1 ;;
+    patch) opt_patch=1 ;;
     config) opt_config=1 ;;
     build) opt_build=1 ;;
     package) opt_package=1 ;;
@@ -160,7 +167,7 @@ if [ $opt_download -eq 1 ] ; then
   done
 fi
 
-if [ $opt_config -eq 1 ] ; then
+if [ $opt_patch -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     if [ -d ${B[$i]} ] ; then rm -rf ${B[$i]} ; fi ; cp -a ${S[$i]} ${B[$i]}
   done
@@ -173,6 +180,12 @@ if [ $opt_config -eq 1 ] ; then
     for patch in $patchfiles ; do
       patch -p1 < $W/$patch
     done
+  done
+fi
+
+if [ $opt_config -eq 1 ] ; then
+  for i in `seq 0 $((${#B[@]} - 1))` ; do
+    cd ${B[$i]}
 
     # if [ -f autogen.sh ] ; then
     #   sh ./autogen.sh
