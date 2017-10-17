@@ -2,16 +2,16 @@
 
 ######################################################################
 pkgbase=gdb
-vers=8.0
+vers=8.0.1
 url="ftp://ftp.gnu.org/gnu/gdb/gdb-${vers}.tar.xz"
 arch=`uname -m`
 build=P0m1
 src=$pkgbase-$vers
-patchfiles=""
-compress=txz
 OPT_CONFIG="--enable-host-shared --enable-shared --with-system-readline"
 DOCS="ChangeLog COPYING.LIB README MAINTAINERS COPYING COPYING3.LIB
     COPYING3 README-maintainer-mode"
+patchfiles=""
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -178,7 +178,7 @@ if [ $opt_download -eq 1 ] ; then
       done
       if [ -f ${i##*/}.$sig ] ; then
         case $sig in
-        asc|sig|sign) gpg2 --verify ${i##*/}.$sig ;;
+        asc|sig|sign) gpg --verify ${i##*/}.$sig ;;
         sha256|sha1|md5) ${sig}sum -c ${i##*/}.$sig ;;
         *) $sig -c ${i##*/}.$sig ;;
         esac
