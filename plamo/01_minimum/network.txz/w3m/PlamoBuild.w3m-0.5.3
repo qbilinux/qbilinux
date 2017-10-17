@@ -1,14 +1,12 @@
-#!/bin/sh
+n#!/bin/sh
 
 ######################################################################
 pkgbase=w3m
 vers=0.5.3
-url="http://downloads.sourceforge.net/w3m/w3m-${vers}.tar.gz
-    ftp://plamo.linet.gr.jp/pub/Plamo-src.new/plamo/01_minimum/network.txz/w3m/w3m-0.5.3-GC_fix.patch.gz"
+url="http://downloads.sourceforge.net/w3m/w3m-${vers}.tar.gz"
 arch=`uname -m`
-build=P4m1
+build=P4m2
 src=$pkgbase-$vers
-patchfiles=""
 OPT_CONFIG=""
 DOCS="`echo doc-jp/{FAQ.html,HISTORY,MANUAL.html,README}`
     `echo doc-jp/README.{SSL,cookie,cygwin,dict,func,img,keymap,m17n}`
@@ -18,6 +16,9 @@ DOCS="`echo doc-jp/{FAQ.html,HISTORY,MANUAL.html,README}`
     `echo doc/README.{cygwin,dict,func,img,m17n,mouse,pre_form,tab}`
     `echo doc/{STORY.html,keymap.{default,lynx},menu.{default,submenu}}`
     `echo doc/README.{cookie,passwd}` ABOUT-NLS ChangeLog NEWS README TODO"
+#patchfiles="w3m-0.5.3-GC_fix.patch libressl.patch"
+patchfiles="w3m-0.5.3-GC_fix.patch"
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -184,7 +185,7 @@ if [ $opt_download -eq 1 ] ; then
       done
       if [ -f ${i##*/}.$sig ] ; then
         case $sig in
-        asc|sig|sign) gpg2 --verify ${i##*/}.$sig ;;
+        asc|sig|sign) gpg --verify ${i##*/}.$sig ;;
         sha256|sha1|md5) ${sig}sum -c ${i##*/}.$sig ;;
         *) $sig -c ${i##*/}.$sig ;;
         esac
@@ -195,10 +196,10 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz|tgz) tar xvpzf ${i##*/} ;;
-    bz2|tbz) tar xvpjf ${i##*/} ;;
-    xz|txz) tar xvpJf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz|tgz) tar xpzf ${i##*/} ;;
+    bz2|tbz) tar xpjf ${i##*/} ;;
+    xz|txz) tar xpJf ${i##*/} ;;
     esac
   done
 fi
@@ -220,7 +221,6 @@ if [ $opt_config -eq 1 ] ; then
   cd $B
   sed -i '/w3mimgdisplay/s@$(LIBS)@& -lX11@g' Makefile.in
   sed -i 's@file_handle@w3m_&@g' istream.[ch]
-  gunzip -c $W/w3m-0.5.3-GC_fix.patch.gz | patch -Np1 -i -
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
@@ -285,14 +285,15 @@ if [ $opt_package -eq 1 ] ; then
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
+  for patch in $patchfiles ; do
+    cp $W/$patch $docdir/$src/$patch
+    gzip_one $docdir/$src/$patch
+  done
   convert
-  tar cvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/libexec/w3m
-  tar rvpf $pkg.tar -C $P usr/share/w3m
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/locale -name *.mo`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/ja_JP.eucJP/man1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi
