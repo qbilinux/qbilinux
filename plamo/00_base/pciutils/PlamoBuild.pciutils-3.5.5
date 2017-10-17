@@ -1,17 +1,16 @@
 #!/bin/sh
 
 ######################################################################
-pkgbase=dosfstools
-vers=3.0.26
-url="http://pkgs.fedoraproject.org/lookaside/pkgs/dosfstools/dosfstools-3.0.26.tar.xz/45012f5f56f2aae3afcd62120b9e5a08/dosfstools-3.0.26.tar.xz"
+pkgbase=pciutils
+vers=3.5.5
+url="http://www.kernel.org/pub/software/utils/pciutils/pciutils-${vers}.tar.xz
+    http://pciids.sourceforge.net/v2.2/pci.ids"
 arch=`uname -m`
-build=P2m1
+build=P0m1
 src=$pkgbase-$vers
 OPT_CONFIG=""
-DOCS="`echo doc/{TODO.dosfstools-2.x,README.dosfsck,ChangeLog.dosfstools-2.x}`
-    `echo doc/{ChangeLog.mkdosfs,ChangeLog.dosfsck,README.mkdosfs}`
-    `echo doc/{ANNOUNCE.mkdosfs,README.dosfstools-2.x}`
-    COPYING VERSION ChangeLog"
+DOCS="TODO README ChangeLog README.Windows COPYING"
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -171,7 +170,7 @@ if [ $opt_download -eq 1 ] ; then
     tar) tar xpf ${i##*/} ;;
     gz) tar xpzf ${i##*/} ;;
     bz2) tar xpjf ${i##*/} ;;
-    xz) tar xpJf ${i##*/} ;;
+    *) tar xpf ${i##*/} ;;
     esac
   done
 fi
@@ -179,6 +178,12 @@ if [ $opt_config -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     if [ -d ${B[$i]} ] ; then rm -rf ${B[$i]} ; fi ; cp -a ${S[$i]} ${B[$i]}
   done
+  cd $B
+  cp -p $W/pci.ids .
+  if [ $arch == x86_64 ] ; then
+    cp -p Makefile{,.orig}
+    sed -i '/^LIBDIR=/s@lib@lib64@g' Makefile
+  fi
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
@@ -198,7 +203,7 @@ if [ $opt_build -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
-      make
+      make ZLIB=no SHARED=yes PCI_COMPRESSED_IDS=0 PREFIX=/usr
     fi
   done
 fi
@@ -215,7 +220,8 @@ if [ $opt_package -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
-      make install DESTDIR=$P PREFIX=/usr
+      make install DESTDIR=$P ZLIB=no SHARED=yes PREFIX=/usr
+      make install-lib DESTDIR=$P ZLIB=no SHARED=yes PREFIX=/usr
     fi
   done
   touch $W/i.et
@@ -241,11 +247,10 @@ if [ $opt_package -eq 1 ] ; then
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
   convert
-  tar cvpf $pkg.tar -C $P `cd $P ; find usr/sbin | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man8 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/de/man8 | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  tar rvpf $pkg.tar -C $P install/doinst.sh
-  touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi
