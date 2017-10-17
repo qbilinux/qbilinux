@@ -1,16 +1,17 @@
 #!/bin/sh
 
 ######################################################################
-url="ftp://ftp.alsa-project.org/pub/plugins/alsa-plugins-1.1.1.tar.bz2"
 pkgbase=alsa_plugins
-vers=1.1.1
+vers=1.1.4
+url="ftp://ftp.alsa-project.org/pub/plugins/alsa-plugins-${vers}.tar.bz2"
 arch=`uname -m`
-build=P2m2
+build=P0m1
 src=alsa-plugins-$vers
 OPT_CONFIG=""
 DOCS="`echo doc/{{samplerate,a52}.txt,README-{pcm-oss,maemo,jack}}`
     `echo doc/{{speex{dsp,rate},lavcrate,vdownmix}.txt,README-pulse}`
     `echo doc/{upmix.txt,README-arcam-av}` COPYING COPYING.GPL"
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -177,7 +178,7 @@ if [ $opt_download -eq 1 ] ; then
       done
       if [ -f ${i##*/}.$sig ] ; then
         case $sig in
-        asc|sig|sign) gpg2 --verify ${i##*/}.$sig ;;
+        asc|sig|sign) gpg --verify ${i##*/}.$sig ;;
         sha256|sha1|md5) ${sig}sum -c ${i##*/}.$sig ;;
         *) $sig -c ${i##*/}.$sig ;;
         esac
@@ -262,11 +263,10 @@ if [ $opt_package -eq 1 ] ; then
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
   convert
-  touch -t `date '+%m%d0000'` $P/usr/$libdir/alsa-lib
-  tar cvpf $pkg.tar -C $P usr/$libdir/alsa-lib
-  tar rvpf $pkg.tar -C $P usr/share/alsa
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  tar rvpf $pkg.tar -C $P install/doinst.sh
-  touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi
