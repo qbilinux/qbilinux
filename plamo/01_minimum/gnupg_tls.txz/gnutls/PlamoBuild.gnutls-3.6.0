@@ -2,15 +2,16 @@
 
 ######################################################################
 pkgbase=gnutls
-vers=3.5.13
-url="http://mirrors.dotsrc.org/gnupg/gnutls/v3.5/gnutls-${vers}.tar.xz"
+vers=3.6.0
+url="https://www.gnupg.org/ftp/gcrypt/gnutls/v3.6/gnutls-${vers}.tar.xz"
 arch=`uname -m`
 build=P0m1
 src=$pkgbase-$vers
-patchfiles=""
 OPT_CONFIG="--without-p11-kit"
 DOCS="THANKS ChangeLog COPYING INSTALL AUTHORS TODO ABOUT-NLS NEWS
     README"
+patchfiles=""
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -177,7 +178,7 @@ if [ $opt_download -eq 1 ] ; then
       done
       if [ -f ${i##*/}.$sig ] ; then
         case $sig in
-        asc|sig|sign) gpg2 --verify ${i##*/}.$sig ;;
+        asc|sig|sign) gpg --verify ${i##*/}.$sig ;;
         sha256|sha1|md5) ${sig}sum -c ${i##*/}.$sig ;;
         *) $sig -c ${i##*/}.$sig ;;
         esac
@@ -272,16 +273,10 @@ if [ $opt_package -eq 1 ] ; then
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
   convert
-  tar cvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
-  tar rvpf $pkg.tar -C $P \
-      `cd $P ; find usr/$libdir ! -name pkgconfig | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/include/gnutls
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/locale -name *.mo`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/info | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man3 | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  tar rvpf $pkg.tar -C $P install/doinst.sh
-  touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi
