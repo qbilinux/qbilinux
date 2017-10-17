@@ -2,15 +2,16 @@
 
 ######################################################################
 pkgbase=postfix
-vers=3.2.2
+vers=3.2.3
 url="ftp://ftp.riken.jp/net/postfix/postfix-release/official/postfix-${vers}.tar.gz"
 arch=`uname -m`
 build=P0m1
 src=$pkgbase-$vers
-patchfiles=""
 OPT_CONFIG=""
 DOCS="AAAREADME COMPATIBILITY COPYRIGHT HISTORY INSTALL IPv6-ChangeLog
     LICENSE PORTING RELEASE_NOTES* TLS_* US_PATENT_6321267"
+patchfiles=""
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -177,7 +178,7 @@ if [ $opt_download -eq 1 ] ; then
       done
       if [ -f ${i##*/}.$sig ] ; then
         case $sig in
-        asc|sig|sign) gpg2 --verify ${i##*/}.$sig ;;
+        asc|sig|sign) gpg --verify ${i##*/}.$sig ;;
         sha256|sha1|md5) ${sig}sum -c ${i##*/}.$sig ;;
         *) $sig -c ${i##*/}.$sig ;;
         esac
@@ -188,10 +189,10 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz|tgz) tar xvpzf ${i##*/} ;;
-    bz2|tbz) tar xvpjf ${i##*/} ;;
-    xz|txz) tar xvpJf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz|tgz) tar xpzf ${i##*/} ;;
+    bz2|tbz) tar xpjf ${i##*/} ;;
+    xz|txz) tar xpJf ${i##*/} ;;
     esac
   done
 fi
@@ -230,7 +231,7 @@ if [ $opt_config -eq 1 ] ; then
 	$command_directory/smtp-sink:f:root:root:-:755
 	$command_directory/qmqp-source:f:root:root:-:755
 	$command_directory/qmqp-sink:f:root:root:-:755
-	EOF
+EOF
   make makefiles CCARGS="-DNO_NIS -DUSE_SASL_AUTH -DUSE_CYRUS_SASL \
       -DUSE_TLS -I/usr/include/sasl" AUXLIBS="-lsasl2 -lssl -lcrypto"
 fi
@@ -298,7 +299,7 @@ if [ $opt_package -eq 1 ] ; then
 	## for Dovecot SASL
 	#smtpd_sasl_type = dovecot
 	#data_directory = /var/lib/postfix
-	EOF
+EOF
   sed -i 's@^#\(submission\)@\1@' $P/etc/postfix/master.cf.new
   install -m 644 proto/aliases0 $P/etc/aliases.new
   install -d $P/etc/rc.d/init.d
@@ -363,7 +364,7 @@ if [ $opt_package -eq 1 ] ; then
 	else
 	  mv /tmp/aliases.new etc/aliases
 	fi
-	EOF
+EOF
   cat <<- EOF | sed 's/^|//' >> $P/install/doinst.sh
 	|#%% begin initialize $pkg
 	|if ! grep -q submission /etc/services ; then
@@ -379,21 +380,12 @@ if [ $opt_package -eq 1 ] ; then
 	|postfix set-permissions
 	|[ -f /etc/aliases.db ] || newaliases
 	|#%% end
-	EOF
+EOF
   touch -t `date '+%m%d0000'` $P/install/doinst.sh
-  tar cvpf $pkg.tar -C $P `cd $P ; find usr/sbin | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/lib/sendmail
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/libexec/postfix
-  tar rvpf $pkg.tar -C $P etc/postfix
-  tar rvpf $pkg.tar -C $P etc/aliases.new
-  tar rvpf $pkg.tar -C $P etc/rc.d/init.d/postfix
-  tar rvpf $pkg.tar -C $P var/{lib,spool}/postfix
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man5 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man8 | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  tar rvpf $pkg.tar -C $P install/doinst.sh
-  touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi
