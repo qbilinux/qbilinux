@@ -2,10 +2,10 @@
 
 ######################################################################
 pkgbase=nkf
-vers=2.1.2
-url="http://jaist.dl.sourceforge.jp/nkf/53171/nkf-${vers}.tar.gz"
+vers=2.1.4
+url="http://jaist.dl.sourceforge.jp/nkf/64158/nkf-${vers}.tar.gz"
 arch=`uname -m`
-build=P4m2
+build=P0m1
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="INSTALL INSTALL.j"
@@ -166,9 +166,9 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
     esac
   done
 fi
@@ -188,12 +188,6 @@ if [ $opt_config -eq 1 ] ; then
 	EOF
   cp -p nkf_test.pl{,.orig}
   sed -i 's@/local@@g' nkf_test.pl
-  cat <<- "EOF" | patch nkf_test.pl
-	902c902
-	<     &test("$nkf",$example{'test_data/q-encode-utf-8'},$example{'test_data/q-encode-utf-8.ans'});
-	---
-	>     &test("$nkf -w",$example{'test_data/q-encode-utf-8'},$example{'test_data/q-encode-utf-8.ans'});
-	EOF
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
@@ -233,7 +227,7 @@ if [ $opt_package -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
-      make install DESTDIR=$P
+      make install DESTDIR=$P MKDIR="mkdir -p"
     fi
   done
   install -d $mandir/ja_JP.eucJP/man1
