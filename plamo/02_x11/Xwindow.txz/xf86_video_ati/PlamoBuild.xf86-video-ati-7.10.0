@@ -1,13 +1,13 @@
 #!/bin/sh
 ##############################################################
-pkgbase=gobject_introspection
-vers=1.52.1
-url="http://ftp.gnome.org/pub/gnome/sources/gobject-introspection/1.52/gobject-introspection-${vers}.tar.xz"
+pkgbase=xf86_video_ati
+vers=7.10.0
+url="ftp://ftp.x.org/pub/individual/driver/xf86-video-ati-${vers}.tar.bz2"
 arch=`uname -m`
-build=P0m2
-src=gobject-introspection-${vers}
-OPT_CONFIG='--disable-tests --disable-static'
-DOCS='AUTHORS COPYING COPYING.GPL COPYING.LGPL ChangeLog NEWS README TODO'
+build=P1m1
+src=xf86-video-ati-${vers}
+OPT_CONFIG='--enable-glamor'
+DOCS='COPYING ChangeLog INSTALL README'
 patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
@@ -123,7 +123,6 @@ if [ $opt_download -eq 1 ] ; then
     tar) tar xpf ${i##*/} ;;
     gz) tar xpzf ${i##*/} ;;
     bz2) tar xpjf ${i##*/} ;;
-    *) tar xpf ${i##*/} ;;
     esac
   done
 fi
