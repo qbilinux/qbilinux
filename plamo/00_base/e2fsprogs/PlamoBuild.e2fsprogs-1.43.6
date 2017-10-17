@@ -1,14 +1,18 @@
 #!/bin/sh
 
 ######################################################################
-pkgbase=rsyslog
-vers=4.6.8
-url="http://download.rsyslog.com/rsyslog/rsyslog-${vers}.tar.gz"
+pkgbase=e2fsprogs
+vers=1.43.6
+url="http://jaist.dl.sourceforge.net/sourceforge/e2fsprogs/e2fsprogs-${vers}.tar.gz"
 arch=`uname -m`
-build=P4m1
+build=P0m1
 src=$pkgbase-$vers
-OPT_CONFIG="--sbindir=/sbin"
-DOCS="COPYING README AUTHORS INSTALL COPYING.LESSER NEWS ChangeLog"
+OPT_CONFIG="--enable-elf-shlibs --disable-libuuid --disable-libblkid
+    --disable-fsck --disable-uuidd --with-root-prefix=\"\""
+DOCS="RELEASE-NOTES SHLIBS SUBMITTING-PATCHES INSTALL INSTALL.elfbin
+    README COPYING ABOUT-NLS"
+patchfiles=''
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -175,6 +179,16 @@ if [ $opt_config -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     if [ -d ${B[$i]} ] ; then rm -rf ${B[$i]} ; fi ; cp -a ${S[$i]} ${B[$i]}
   done
+  cd $B
+  for patch in $patchfiles ; do
+      patch -p1 < $W/$patch
+  done
+  if [ $arch == x86_64 ] ; then
+    cp -p configure configure.orig
+    sed '/^    root_libdir=/s@$libdir@/lib64@g' configure.orig > configure
+  fi
+  cp -p misc/mke2fs.conf.in misc/mke2fs.conf.in.orig
+  sed 's@,dir_index@@g' misc/mke2fs.conf.in.orig > misc/mke2fs.conf.in
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
@@ -214,98 +228,12 @@ if [ $opt_package -eq 1 ] ; then
       make install DESTDIR=$P
     fi
   done
-  install -d $P/etc/rsyslog.d
-  cat <<- "EOF" | unexpand > $P/etc/rsyslog.conf
-	# Begin /etc/rsyslog.conf
-	# CLFS configuration of rsyslog. For more info use man rsyslog.conf
-	
-	#######################################################################
-	# Rsyslog Modules
-	
-	# Support for Local System Logging
-	$ModLoad imuxsock.so
-	
-	# Support for Kernel Logging
-	$ModLoad imklog.so
-	
-	#######################################################################
-	# Global Options
-	
-	# Use traditional timestamp format.
-	$ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat
-	
-	# Set the default permissions for all log files.
-	$FileOwner root
-	$FileGroup root
-	$FileCreateMode 0640
-	$DirCreateMode 0755
-	
-	# Provides UDP reception
-	$ModLoad imudp
-	$UDPServerRun 514
-	
-	# Disable Repeating of Entries
-	$RepeatedMsgReduction on
-	
-	#######################################################################
-	# Include Rsyslog Config Snippets
-	
-	$IncludeConfig /etc/rsyslog.d/*.conf
-	
-	#######################################################################
-	# Standard Log Files
-	
-	auth,authpriv.*			/var/log/auth.log
-	*.*;auth,authpriv.none		-/var/log/syslog
-	daemon.*			-/var/log/daemon
-	kern.*				-/var/log/kern.log
-	mail.*				-/var/log/mail.log
-	user.*				-/var/log/user.log
-	
-	# Catch All Logs
-	*.=debug;\
-	        auth,authpriv.none;\
-	        news.none;mail.none	-/var/log/debug
-	*.=info;*.=notice;*.=warn;\
-	        auth,authpriv.none;\
-	        cron,daemon.none;\
-	        mail,news.none		-/var/log/messages
-	
-	# Emergencies are shown to everyone
-	*.emerg				*
-	
-	# End /etc/rsyslog.conf
-	EOF
-  install -d $P/etc/logrotate.d
-  for i in auth.log syslog daemon {kern,mail,user}.log debug messages ; do
-    cat <<- EOF > $P/etc/logrotate.d/$i
-	/var/log/$i {
-	    compress
-	    weekly
-	    rotate 4
-	    missingok
-	    notifempty
-	    sharedscripts
-	    postrotate
-	        kill -HUP \`cat /var/run/rsyslogd.pid\` 2> /dev/null || true
-	    endscript
-	}
-	EOF
-  done
-  sed -i '/rotate/s@4@8@' $P/etc/logrotate.d/{auth.log,syslog}
-  cat <<- "EOF" | patch $P/etc/logrotate.d/mail.log
-	9c9
-	<         kill -HUP `cat /var/run/rsyslogd.pid` 2> /dev/null || true
-	---
-	>         /etc/rc.d/init.d/postfix reload 2> /dev/null || true
-	EOF
+  make install-libs DESTDIR=$P
   touch $W/i.et
   cd $W
   find $P ! -type l -newer i.st ! -newer i.et \
       -exec touch -t `date '+%m%d0000'` {} \;
   compress
-  strip_libdir $P/usr/$libdir/rsyslog
-  touch -t `date '+%m%d0000'` $P/usr/$libdir/rsyslog
   for i in `seq 0 $((${#DOCS[@]} - 1))` ; do
     for j in ${DOCS[$i]} ; do
       for k in ${S[$i]}/$j ; do
@@ -324,13 +252,10 @@ if [ $opt_package -eq 1 ] ; then
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
   convert
-  tar cvpf $pkg.tar -C $P `cd $P ; find sbin | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/$libdir/rsyslog
-  tar rvpf $pkg.tar -C $P etc/rsyslog.{d,conf}
-  tar rvpf $pkg.tar -C $P `cd $P ; find etc/logrotate.d | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man5 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man8 | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi

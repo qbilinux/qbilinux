@@ -2,14 +2,14 @@
 
 ######################################################################
 pkgbase=libtirpc
-vers=1.0.1
+vers=1.0.2
 url="http://downloads.sourceforge.net/project/libtirpc/libtirpc/${vers}/libtirpc-${vers}.tar.bz2"
 arch=`uname -m`
 build=P0m1
 src=$pkgbase-$vers
 OPT_CONFIG="--disable-static --disable-gssapi"
 DOCS="VERSION TODO THANKS README NEWS INSTALL ChangeLog COPYING AUTHORS"
-patchfiles="libtirpc_patch.txt"
+patchfiles=""
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -175,7 +175,7 @@ if [ $opt_download -eq 1 ] ; then
       done
       if [ -f ${i##*/}.$sig ] ; then
         case $sig in
-        asc|sig|sign) gpg2 --verify ${i##*/}.$sig ;;
+        asc|sig|sign) gpg --verify ${i##*/}.$sig ;;
         sha256|sha1|md5) ${sig}sum -c ${i##*/}.$sig ;;
         *) $sig -c ${i##*/}.$sig ;;
         esac

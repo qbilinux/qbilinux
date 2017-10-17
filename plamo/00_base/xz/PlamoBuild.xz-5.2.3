@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=xz
-vers=5.2.2
+vers=5.2.3
 url="http://tukaani.org/xz/xz-${vers}.tar.xz"
 arch=`uname -m`
 build=P2m1
@@ -11,6 +11,7 @@ OPT_CONFIG=""
 DOCS="PACKAGERS INSTALL.generic COPYING.LGPLv2.1 COPYING.GPLv3 INSTALL
     ChangeLog ABOUT-NLS TODO THANKS README NEWS COPYING.GPLv2 COPYING
     AUTHORS"
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -249,15 +250,10 @@ if [ $opt_package -eq 1 ] ; then
   mv $C/$myname.gz $docdir/$src
   touch -r $S $docdir/$src
   convert
-  tar cvpf $pkg.tar -C $P `cd $P ; find bin | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
-  tar rvpf $pkg.tar -C $P \
-      `cd $P ; find usr/$libdir ! -name pkgconfig | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/include | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/locale -name "*.mo"`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  tar rvpf $pkg.tar -C $P install/doinst.sh
-  touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi

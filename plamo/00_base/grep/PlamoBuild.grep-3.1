@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=grep
-vers=2.27
+vers=3.1
 url="http://ftp.gnu.org/gnu/grep/grep-${vers}.tar.xz"
 arch=`uname -m`
 build=P0m1
@@ -10,6 +10,7 @@ src=$pkgbase-$vers
 OPT_CONFIG="--disable-perl-regexp"
 DOCS="ABOUT-NLS AUTHORS COPYING ChangeLog ChangeLog-2009 INSTALL NEWS
     README README-alpha README-release THANKS THANKS.in TODO"
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -240,10 +241,10 @@ if [ $opt_package -eq 1 ] ; then
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
   convert
-  tar cvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/locale -name "*.mo"`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi

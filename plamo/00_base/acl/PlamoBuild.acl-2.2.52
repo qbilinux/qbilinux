@@ -1,14 +1,16 @@
 #!/bin/sh
 
 ######################################################################
-pkgbase=traceroute
-vers=2.0.18
-url="http://downloads.sourceforge.net/traceroute/traceroute-${vers}.tar.gz"
+pkgbase=acl
+vers=2.2.52
+url="http://download.savannah.gnu.org/releases/acl/acl-${vers}.src.tar.gz"
 arch=`uname -m`
-build=P2m1
+build=P0m1
 src=$pkgbase-$vers
 OPT_CONFIG=""
-DOCS="COPYING.LIB CREDITS ChangeLog COPYING VERSION TODO README"
+DOCS="README `echo doc/{{extensions,libacl}.txt,TODO,PORTING,CHANGES}`
+    `echo doc/{COPYING,COPYING.LGPL,INSTALL,old-acl.5}`"
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -194,7 +196,7 @@ if [ $opt_build -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
-      make prefix=/usr
+      make
     fi
   done
 fi
@@ -211,9 +213,10 @@ if [ $opt_package -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
-      make install DESTDIR=$P prefix=/usr
+      make install install-dev install-lib DIST_ROOT=$P
     fi
   done
+  chown -R root.root $P/usr
   touch $W/i.et
   cd $W
   find $P ! -type l -newer i.st ! -newer i.et \
@@ -236,10 +239,19 @@ if [ $opt_package -eq 1 ] ; then
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
+  cp -a $S/examples $docdir/$src
+  rm $docdir/$src/examples/Makefile
+  chmod -R o+r $docdir/$src/examples
+  chown -R root.root $docdir/$src/examples
+  mv $docdir/$src/{examples,$myname.gz} $C
+  mv $C/{examples,$myname.gz} $docdir/$src
+  touch -t `date '+%m%d0000'` $docdir/$src{,/doc,/examples}
   convert
-  tar cvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man8 | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+  prune_symlink $P/usr/libexec
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi

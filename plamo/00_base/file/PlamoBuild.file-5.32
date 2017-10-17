@@ -1,15 +1,15 @@
 #!/bin/sh
 
 ######################################################################
-pkgbase=sed
-vers=4.2.2
-url="http://ftp.gnu.org/gnu/sed/sed-${vers}.tar.gz"
+pkgbase=file
+vers=5.32
+url="ftp://ftp.astron.com/pub/file/file-${vers}.tar.gz"
 arch=`uname -m`
-build=P2m1
+build=P0m1
 src=$pkgbase-$vers
-OPT_CONFIG="--bindir=/bin"
-DOCS="COPYING.DOC INSTALL README README-alpha THANKS AUTHORS COPYING
-    ChangeLog ABOUT-NLS BUGS NEWS"
+OPT_CONFIG=""
+DOCS="AUTHORS COPYING ChangeLog INSTALL NEWS README TODO MAINT"
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -196,7 +196,6 @@ if [ $opt_build -eq 1 ] ; then
     cd ${B[$i]}
     if [ -f Makefile ] ; then
       make
-      make html
     fi
   done
 fi
@@ -214,11 +213,8 @@ if [ $opt_package -eq 1 ] ; then
     cd ${B[$i]}
     if [ -f Makefile ] ; then
       make install DESTDIR=$P
-      make -C doc install-html DESTDIR=$P
     fi
   done
-  install -d $P/usr/bin
-  ln -s /bin/sed $P/usr/bin
   touch $W/i.et
   cd $W
   find $P ! -type l -newer i.st ! -newer i.et \
@@ -241,20 +237,11 @@ if [ $opt_package -eq 1 ] ; then
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
-  mv $docdir/sed $docdir/$src/doc
-  mv $docdir/$src/{doc,{THANKS,AUTHORS,COPYING,ChangeLog,ABOUT-NLS}.gz} $C
-  mv $docdir/$src/{BUGS,NEWS,$myname}.gz $C
-  mv $C/{doc,{THANKS,AUTHORS,COPYING,ChangeLog,ABOUT-NLS}.gz} $docdir/$src
-  mv $C/{BUGS,NEWS,$myname}.gz $docdir/$src
-  touch -r $S $docdir/$src
   convert
-  tar cvpf $pkg.tar -C $P `cd $P ; find bin | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/locale -name "*.mo"`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/info | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  tar rvpf $pkg.tar -C $P install/doinst.sh
-  touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi

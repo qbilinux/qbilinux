@@ -1,17 +1,14 @@
 #!/bin/sh
 
 ######################################################################
-pkgbase=e2fsprogs
-vers=1.43.3
-url="http://jaist.dl.sourceforge.net/sourceforge/e2fsprogs/e2fsprogs-${vers}.tar.gz"
+pkgbase=nkf
+vers=2.1.4
+url="http://jaist.dl.sourceforge.jp/nkf/64158/nkf-${vers}.tar.gz"
 arch=`uname -m`
 build=P0m1
 src=$pkgbase-$vers
-OPT_CONFIG="--enable-elf-shlibs --disable-libuuid --disable-libblkid
-    --disable-fsck --disable-uuidd --with-root-prefix=\"\""
-DOCS="RELEASE-NOTES SHLIBS SUBMITTING-PATCHES INSTALL INSTALL.elfbin
-    README COPYING ABOUT-NLS"
-patchfiles=''
+OPT_CONFIG=""
+DOCS="INSTALL INSTALL.j"
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -180,15 +177,17 @@ if [ $opt_config -eq 1 ] ; then
     if [ -d ${B[$i]} ] ; then rm -rf ${B[$i]} ; fi ; cp -a ${S[$i]} ${B[$i]}
   done
   cd $B
-  for patch in $patchfiles ; do
-      patch -p1 < $W/$patch
-  done
-  if [ $arch == x86_64 ] ; then
-    cp -p configure configure.orig
-    sed '/^    root_libdir=/s@$libdir@/lib64@g' configure.orig > configure
-  fi
-  cp -p misc/mke2fs.conf.in misc/mke2fs.conf.in.orig
-  sed 's@,dir_index@@g' misc/mke2fs.conf.in.orig > misc/mke2fs.conf.in
+  cp -p Makefile{,.orig}
+  sed -i -e 's@/local@@g' -e 's@$(prefix)@$(DESTDIR)&@g' \
+      -e 's@/\<man\>@/share&@g' Makefile
+  cat <<- "EOF" | patch Makefile
+	36a37
+	> 	-$(MKDIR) $(DESTDIR)$(prefix)
+	37a39
+	> 	-$(MKDIR) $(DESTDIR)$(prefix)/share
+	EOF
+  cp -p nkf_test.pl{,.orig}
+  sed -i 's@/local@@g' nkf_test.pl
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
@@ -211,6 +210,9 @@ if [ $opt_build -eq 1 ] ; then
       make
     fi
   done
+  make perl
+  cp -p NKF.mod/Makefile{,.orig}
+  sed -i 's@/local@@g' NKF.mod/Makefile
 fi
 if [ $opt_package -eq 1 ] ; then
   if [ `id -u` -ne 0 ] ; then
@@ -225,15 +227,22 @@ if [ $opt_package -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
-      make install DESTDIR=$P
+      make install DESTDIR=$P MKDIR="mkdir -p"
     fi
   done
-  make install-libs DESTDIR=$P
+  install -d $mandir/ja_JP.eucJP/man1
+  ./nkf -e $mandir/ja/man1/nkf.1 > $mandir/ja_JP.eucJP/man1/nkf.1
+  ( cd NKF.mod ; make pure_install DESTDIR=$P )
   touch $W/i.et
   cd $W
   find $P ! -type l -newer i.st ! -newer i.et \
       -exec touch -t `date '+%m%d0000'` {} \;
   compress
+  strip_libdir \
+      $P/usr/$libdir/perl5/site_perl/*/$arch-linux-thread-multi/auto/NKF
+  touch -t `date '+%m%d0000'` \
+      $P/usr/$libdir/perl5/site_perl/*/$arch-linux-thread-multi/auto/NKF
+  gzip_dir $mandir/ja_JP.eucJP/man1
   for i in `seq 0 $((${#DOCS[@]} - 1))` ; do
     for j in ${DOCS[$i]} ; do
       for k in ${S[$i]}/$j ; do
