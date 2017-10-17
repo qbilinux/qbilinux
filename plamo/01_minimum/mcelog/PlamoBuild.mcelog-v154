@@ -2,15 +2,15 @@
 
 ######################################################################
 pkgbase=mcelog
-vers=git_20160907
-url="https://git.kernel.org/pub/scm/utils/cpu/mce/mcelog.git
-    ftp://plamo.linet.gr.jp/pub/Plamo-src.new/plamo/01_minimum/mcelog/gitlog2changelog.py"
+vers=154
+url="https://github.com/andikleen/mcelog/archive/v${vers}.tar.gz"
 arch=`uname -m`
-build=P1m1
+build=P0m1
 src=$pkgbase
-patchfiles=""
 OPT_CONFIG=""
 DOCS="CHANGES README.md README.releases TODO ChangeLog"
+patchfiles=""
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -181,7 +181,7 @@ if [ $opt_download -eq 1 ] ; then
         done
         if [ -f ${i##*/}.$sig ] ; then
           case $sig in
-          asc|sig|sign) gpg2 --verify ${i##*/}.$sig ;;
+          asc|sig|sign) gpg --verify ${i##*/}.$sig ;;
           sha256|sha1|md5) ${sig}sum -c ${i##*/}.$sig ;;
           *) $sig -c ${i##*/}.$sig ;;
           esac
@@ -198,9 +198,9 @@ if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
     case ${i##*.} in
     tar) tar xvpf ${i##*/} ;;
-    gz|tgz) tar xvpzf ${i##*/} ;;
-    bz2|tbz) tar xvpjf ${i##*/} ;;
-    xz|txz) tar xvpJf ${i##*/} ;;
+    gz|tgz) tar xpzf ${i##*/} ;;
+    bz2|tbz) tar xpjf ${i##*/} ;;
+    xz|txz) tar xpJf ${i##*/} ;;
     git) ( cd `basename ${i##*/} .git`
         git checkout origin/master ; git reset --hard e6386a0
         git set-file-times ; TZ=UTC ../gitlog2changelog.py) ;;
@@ -305,12 +305,10 @@ if [ $opt_package -eq 1 ] ; then
   done
   touch -t `date '+%m%d0000'` $docdir/$src
   convert
-  tar cvpf $pkg.tar -C $P `cd $P ; find usr/sbin | tail -n+2`
-  tar rvpf $pkg.tar -C $P etc/mcelog
-  tar rvpf $pkg.tar -C $P etc/rc.d/init.d/mcelog
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man5 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man8 | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi
