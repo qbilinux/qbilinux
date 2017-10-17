@@ -1,15 +1,16 @@
 #!/bin/sh
 
 ######################################################################
-pkgbase=get_pkginfo
-vers=0.0
-url=""
-arch=noarch
+pkgbase=nfs_utils
+vers=2.1.1
+url="https://www.kernel.org/pub/linux/utils/nfs-utils/${vers}/nfs-utils-${vers}.tar.xz
+    https://raw.githubusercontent.com/pld-linux/nfs-utils/master/nfs-utils-heimdal.patch"
+arch=`uname -m`
 build=P0m1
-src=$pkgbase-$vers
-patchfiles="get_pkginfo.py"
-OPT_CONFIG=""
-DOCS=""
+src=nfs-utils-$vers
+OPT_CONFIG="--disable-nfsv4 --disable-gss --with-krb5=/usr/heimdal"
+DOCS="README NEWS INSTALL COPYING"
+patchfiles="nfs-utils-heimdal.patch"
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -160,56 +161,86 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
-    case ${i##*.} in
-    git) if [ ! -d `basename ${i##*/} .git` ] ; then git clone $i ; else
-        ( cd `basename ${i##*/} .git` ; git pull origin master ) ; fi ;;
-    *)
-      if [ ! -f ${i##*/} ] ; then
-        wget $i ; j=${i%.*}
-        for sig in asc sig{,n} {sha{256,1},md5}{,sum} ; do
-          if wget --spider $i.$sig ; then wget $i.$sig ; break ; fi
-          if wget --spider $j.$sig ; then
-            case ${i##*.} in
-            gz) gunzip -c ${i##*/} > ${j##*/} ;;
-            bz2) bunzip2 -c ${i##*/} > ${j##*/} ;;
-            xz) unxz -c ${i##*/} > ${j##*/} ;;
-            esac
-            touch -r ${i##*/} ${j##*/} ; i=$j ; wget $i.$sig ; break
-          fi
-        done
-        if [ -f ${i##*/}.$sig ] ; then
-          case $sig in
-          asc|sig|sign) gpg2 --verify ${i##*/}.$sig ;;
-          sha256|sha1|md5) ${sig}sum -c ${i##*/}.$sig ;;
-          *) $sig -c ${i##*/}.$sig ;;
+    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
+    if [ ! -f ${i##*/} ] ; then
+      wget $i ; j=${i%.*}
+      for sig in asc sig{,n} {sha{256,1},md5}{,sum} ; do
+        if wget --spider $i.$sig ; then wget $i.$sig ; break ; fi
+        if wget --spider $j.$sig ; then
+          case ${i##*.} in
+          gz) gunzip -c ${i##*/} > ${j##*/} ;;
+          bz2) bunzip2 -c ${i##*/} > ${j##*/} ;;
+          xz) unxz -c ${i##*/} > ${j##*/} ;;
           esac
-          if [ $? -ne 0 ] ; then echo "archive verify failed" ; exit ; fi
+          touch -r ${i##*/} ${j##*/} ; i=$j ; wget $i.$sig ; break
         fi
+      done
+      if [ -f ${i##*/}.$sig ] ; then
+        case $sig in
+        asc|sig|sign) gpg --verify ${i##*/}.$sig ;;
+        sha256|sha1|md5) ${sig}sum -c ${i##*/}.$sig ;;
+        *) $sig -c ${i##*/}.$sig ;;
+        esac
+        if [ $? -ne 0 ] ; then echo "archive verify failed" ; exit ; fi
       fi
-      ;;
-    esac
+    fi
     if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
-  if [ ! -x gitlog2changelog.py ] ; then
-    chmod 755 gitlog2changelog.py
-  fi
   for i in $url ; do
     case ${i##*.} in
     tar) tar xpf ${i##*/} ;;
     gz|tgz) tar xpzf ${i##*/} ;;
     bz2|tbz) tar xpjf ${i##*/} ;;
     xz|txz) tar xpJf ${i##*/} ;;
-    git) ( cd `basename ${i##*/} .git`
-        git checkout origin/master ; git reset --hard facec2d
-        git set-file-times ; TZ=UTC ../gitlog2changelog.py) ;;
     esac
   done
 fi
 if [ $opt_config -eq 1 ] ; then
-    echo 'nothin to do in config.'
+  for i in `seq 0 $((${#B[@]} - 1))` ; do
+    if [ -d ${B[$i]} ] ; then rm -rf ${B[$i]} ; fi ; cp -a ${S[$i]} ${B[$i]}
+  done
+  for i in `seq 0 $((${#B[@]} - 1))` ; do
+    cd ${B[$i]}
+    for j in ${patchfiles[$i]} ; do
+      case ${j##*.} in
+      gz) gunzip -c $W/$j | patch -Np1 -i - ;;
+      bz2) bunzip2 -c $W/j | patch -Np1 -i - ;;
+      xz) unxz -c $W/$j | patch -Np1 -i - ;;
+      *) patch -Np1 -i $W/$j ;;
+      esac
+    done
+  done
+  cd $B
+  cp -p configure{,.orig}
+  cat <<- "EOF" | patch configure
+	18769c18769
+	<                 -f $dir/lib/libroken.a; then
+	---
+	>                 \( -f $dir/lib/libroken.so -o -f $dir/lib64/libroken.so \); then
+	EOF
+  for i in `seq 0 $((${#B[@]} - 1))` ; do
+    cd ${B[$i]}
+    if [ -f Makefile ] ; then
+      make clean
+    fi
+    if [ -f config.log ] ; then
+      rm -rf config.cache config.log
+    fi
+    if [ -x configure ] ; then
+      ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
+          --libdir='${exec_prefix}'/$libdir --infodir='${prefix}'/share/info \
+          --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
+    fi
+  done
 fi
 if [ $opt_build -eq 1 ] ; then
-    echo 'nothin to do in build.'
+  for i in `seq 0 $((${#B[@]} - 1))` ; do
+    cd ${B[$i]}
+    if [ -f Makefile ] ; then
+      make
+    fi
+  done
 fi
 if [ $opt_package -eq 1 ] ; then
   if [ `id -u` -ne 0 ] ; then
@@ -221,10 +252,45 @@ if [ $opt_package -eq 1 ] ; then
   if [ -d $P ] ; then rm -rf $P ; fi ; mkdir -p $P
   if [ -d $C ] ; then rm -rf $C ; fi ; mkdir -p $C
   touch $W/i.st ; sleep 1
-  install -d $P/usr/bin
-  install $W/get_pkginfo.py $P/usr/bin/get_pkginfo
-  install -d $docdir/$src
-#  install -m 644 README $docdir/$src
+  for i in `seq 0 $((${#B[@]} - 1))` ; do
+    cd ${B[$i]}
+    if [ -f Makefile ] ; then
+      make install DESTDIR=$P
+    fi
+  done
+  cat <<- "EOF" > $P/sbin/nfs4_setup.sh
+	#!/bin/sh
+	#
+	# Simple NFSv4 setup scripts for NFS mount by hands
+	# If you don't invoke rpc.idmapd, NFSv4's UID/username mapping
+	# function doesn't work and cannot chown files on NFS
+	
+	modprobe sunrpc
+	mount -t rpc_pipefs rpc_pipefs /var/lib/nfs/rpc_pipefs
+	/usr/bin/rpcbind
+	/usr/sbin/rpc.nfsd 4
+	/usr/sbin/rpc.mountd
+	/usr/sbin/rpc.idmapd
+	/usr/sbin/rpc.statd
+	EOF
+  chmod 755 $P/sbin/nfs4_setup.sh
+  mv $P/usr/sbin/{sm-notify,rpc.statd} $C
+  mv $C/{sm-notify,rpc.statd} $P/usr/sbin
+  ln -s /bin/ture $P/usr/sbin/rpc.gssd
+  mkdir -m 700 $P/var/lib/nfs/{rpc_pipefs,v4recovery}
+  chown nobody $P/var/lib/nfs/{rpc_pipefs,v4recovery}
+  mkdir $P/etc
+  cat <<- "EOF" > $P/etc/idmapd.conf
+	[General]
+	Verbosity = 1
+	Pipefs-Directory = /var/lib/nfs/rpc_pipefs
+	Domain = localdomain
+	
+	[Mapping]
+	
+	Nobody-User = nobody
+	Nobody-Group = nogroup
+	EOF
   touch $W/i.et
   cd $W
   find $P ! -type l -newer i.st ! -newer i.et \
@@ -247,23 +313,21 @@ if [ $opt_package -eq 1 ] ; then
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
-  for patch in $patchfiles ; do
-    cp $W/$patch $docdir/$src/$patch
-    gzip_one $docdir/$src/$patch
-  done
-  touch -t `date '+%m%d0000'` $docdir/$src
   convert
-######################################################################
-# * convert 対象以外で刈り取りたいシンボリックリンクがある場合はここに
-#   記述します(prune_symlink を使います)。
-# * 完成した作業ディレクトリから tar イメージを作成する手順を以降に記述
-#   します(こだわりを求めないなら単に makepkg でも良いです)。
-######################################################################
-# tar cvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
-# tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man1 | tail -n+2`
-# tar rvpf $pkg.tar -C $P usr/share/doc/$src
-# touch -t `date '+%m%d0900'` $pkg.tar ; gzip $pkg.tar ; touch $pkg.tar.gz
-# mv $pkg.tar.gz $pkg.tgz
+  cat <<- EOF >> $P/install/doinst.sh
+	#%% begin initialize $pkg
+	EOF
+  cat <<- "EOF" | unexpand >> $P/install/doinst.sh
+	if [ -z `grep "^nfs" etc/services` ] ; then
+	  echo "adding nfs service into /etc/services"
+	  cat <<- "EOF" >> etc/services
+	        nfs		2049/tcp
+	        nfs		2049/udp
+	        EOF
+	fi
+	#%% end
+	EOF
+  touch -t `date '+%m%d0000'` $P/install/doinst.sh
   cd $P
   /sbin/makepkg ../$pkg.$compress <<EOF
 y

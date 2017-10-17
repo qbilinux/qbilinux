@@ -1,16 +1,16 @@
 #!/bin/sh
 
 ######################################################################
-pkgbase=heimdal
-vers=7.4.0
-url="https://github.com/heimdal/heimdal/releases/download/heimdal-${vers}/heimdal-${vers}.tar.gz"
+pkgbase=postfix
+vers=3.2.3
+url="ftp://ftp.riken.jp/net/postfix/postfix-release/official/postfix-${vers}.tar.gz"
 arch=`uname -m`
-build=P0m3
+build=P0m1
 src=$pkgbase-$vers
+OPT_CONFIG=""
+DOCS="AAAREADME COMPATIBILITY COPYRIGHT HISTORY INSTALL IPv6-ChangeLog
+    LICENSE PORTING RELEASE_NOTES* TLS_* US_PATENT_6321267"
 patchfiles=""
-OPT_CONFIG="--prefix=/usr --infodir=/usr/share/info
-    --mandir=/usr/share/man --with-sqlite3=/usr LIBS=-pthread"
-DOCS="ChangeLog* LICENSE NEWS README TODO"
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -178,7 +178,7 @@ if [ $opt_download -eq 1 ] ; then
       done
       if [ -f ${i##*/}.$sig ] ; then
         case $sig in
-        asc|sig|sign) gpg2 --verify ${i##*/}.$sig ;;
+        asc|sig|sign) gpg --verify ${i##*/}.$sig ;;
         sha256|sha1|md5) ${sig}sum -c ${i##*/}.$sig ;;
         *) $sig -c ${i##*/}.$sig ;;
         esac
@@ -211,9 +211,6 @@ if [ $opt_config -eq 1 ] ; then
       esac
     done
   done
-  cd $B
-  cp -p krb5.conf{,.orig}
-  sed -i '/default_realm/s@^ *@\t@' krb5.conf
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
@@ -228,6 +225,15 @@ if [ $opt_config -eq 1 ] ; then
           --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
     fi
   done
+  cp -p conf/postfix-files{,.orig}
+  cat <<- "EOF" >> conf/postfix-files
+	$command_directory/smtp-source:f:root:root:-:755
+	$command_directory/smtp-sink:f:root:root:-:755
+	$command_directory/qmqp-source:f:root:root:-:755
+	$command_directory/qmqp-sink:f:root:root:-:755
+EOF
+  make makefiles CCARGS="-DNO_NIS -DUSE_SASL_AUTH -DUSE_CYRUS_SASL \
+      -DUSE_TLS -I/usr/include/sasl" AUXLIBS="-lsasl2 -lssl -lcrypto"
 fi
 if [ $opt_build -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
@@ -249,146 +255,67 @@ if [ $opt_package -eq 1 ] ; then
   touch $W/i.st ; sleep 1
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
-    if [ -f Makefile ] ; then
+    false && if [ -f Makefile ] ; then
       make install DESTDIR=$P
     fi
   done
-  ln -sf mech.5 $mandir/man5/qop.5
-  install -d $P/etc
-  install -m 644 krb5.conf $P/etc
-  install -m 644 etc/services.append $P/etc/services.append-kerberos
+  sh postfix-install -non-interactive -package install_root=$P \
+      html_directory=/usr/share/doc/postfix/html \
+      manpage_directory=/usr/share/man \
+      readme_directory=/usr/share/doc/postfix/README_FILES
+  install -d $P/usr/lib
+  ln -s /usr/sbin/sendmail $P/usr/lib
+  for i in access aliases canonical generic \
+      header_checks main.cf master.cf relocated transport virtual ; do
+    mv $P/etc/postfix/$i{,.new}
+  done
+  mv $P/etc/postfix/{{access,aliases}.new,bounce.cf.default,canonical.new} $C
+  mv $P/etc/postfix/{{generic,header_checks}.new,main.cf.default} $C
+  mv $P/etc/postfix/{main.cf.new,makedefs.out,{master.cf,relocated}.new} $C
+  mv $P/etc/postfix/{transport,virtual}.new $C
+  mv $C/{{access,aliases}.new,bounce.cf.default,canonical.new} $P/etc/postfix
+  mv $C/{{generic,header_checks}.new,main.cf.default} $P/etc/postfix
+  mv $C/{main.cf.new,makedefs.out,{master.cf,relocated}.new} $P/etc/postfix
+  mv $C/{transport,virtual}.new $P/etc/postfix
+  sed -i "/^\(html\|readme\)_directory/s@postfix@$src@" \
+      $P/etc/postfix/main.cf.new
+  cat <<- "EOF" >> $P/etc/postfix/main.cf.new
+	
+	# Plamo local configurations (for fml and SMTP auth with SASL2)
+	alias_maps = hash:/etc/aliases
+	allow_mail_to_commands = alias,forward,include
+	smtpd_recipient_limit = 5000
+	
+	#smtpd_sasl_auth_enable = yes
+	#smtpd_sasl_local_domain =
+	#smtpd_sasl_authenticated_header = yes
+	#smtpd_recipient_restrictions =
+	#	permit_mynetworks
+	#	permit_sasl_authenticated
+	#	reject_unauth_destination
+	## for Cyrus SASL
+	#smtpd_sasl_path = smtpd
+	#smtp_sasl_password_maps = hash:/etc/postfix/sasl_password
+	## for Dovecot SASL
+	#smtpd_sasl_type = dovecot
+	#data_directory = /var/lib/postfix
+EOF
+  sed -i 's@^#\(submission\)@\1@' $P/etc/postfix/master.cf.new
+  install -m 644 proto/aliases0 $P/etc/aliases.new
   install -d $P/etc/rc.d/init.d
-  cat <<- "EOF" > $P/etc/rc.d/init.d/heimdal
-	#!/bin/sh -f
-	#
-	# description: The Heimdal Kerberos5 KDC Master server and its administration
-	#              daemons.
-	# processname: heimdal
-	# chkconfig: 2345 11 89
-	#
-	# Creation:	1997-04-10
-	# Auther:	JuK
-	# HISTORY
-	# 2006-01-02	JuK	port to Heimdal on Plamo Linux
-	# 2001-10-01	JuK	port to RH7.1
-	#
-	KDC=/usr/libexec/kdc
-	kdcdaemon="heimdal (Kerberos 5 KDC)"
-	KADMIND=/usr/libexec/kadmind
-	kdmdaemon="kadmind (Kerberos DB admin. daemon)"
-	KPASSWDD=/usr/libexec/kpasswdd
-	kpwdaemon="kpasswdd (Kerberos password daemon)"
-	
-	kdcpid=`ps ax | grep $KDC | grep -v grep | sed -e 's/^  *//' -e 's/ .*//'`
-	kdmpid=`ps ax | grep $KADMIND | grep -v grep | sed -e 's/^  *//' -e 's/ .*//'`
-	kpwpid=`ps ax | grep $KPASSWDD | grep -v grep | sed -e 's/^  *//' -e 's/ .*//'`
-	
-	#
-	# start or stop kdc (KDC)
-	# start or stop kadmind (Kerberos DB admin. daemon)
-	# start or stop kpasswdd (Kerberos password daemon)
-	#
-	case $1 in
-	start)
-	  if [ -f $KDC ] ; then
-	    if [ -z "$kdcpid" ] ; then
-	      $KDC &
-	      echo "$0: $kdcdaemon started."
-	      kdcpid=`ps ax | grep $KDC | grep -v grep | sed -e 's/^  *//' -e 's/ .*//'`
-	      echo "$0: Proccess ID = $kdcpid"
-	    else
-	      echo "$0: $kdcdaemon is ALREADY running (PID = $kdcpid)."
-	    fi
-	  else
-	    echo "$0: $KDC does NOT exist."
-	    exit 1
-	  fi
-	  if [ -f $KADMIND ] ; then
-	    if [ -z "$kdmpid" ] ; then
-	      $KADMIND &
-	      echo "$0: $kdmdaemon started."
-	      kdmpid=`ps ax | grep $KADMIND | grep -v grep | sed -e 's/^  *//' -e 's/ .*//'`
-	      echo "$0: Proccess ID = $kdmpid"
-	    else
-	      echo "$0: $kdmdaemon is ALREADY running (PID = $kdmpid)."
-	    fi
-	  else
-	    echo "$0: $KADMIND does NOT exist."
-	    exit 1
-	  fi
-	  if [ -f $KPASSWDD ] ; then
-	    if [ -z "$kpwpid" ] ; then
-	      $KPASSWDD &
-	      echo "$0: $kpwdaemon started."
-	      kpwpid=`ps ax | grep $KPASSWDD | grep -v grep | sed -e 's/^  *//' -e 's/ .*//'`
-	      echo "$0: Proccess ID = $kpwpid"
-	    else
-	      echo "$0: $kpwdaemon is ALREADY running (PID = $kpwpid)."
-	    fi
-	  else
-	    echo "$0: $KPASSWDD does NOT exist."
-	    exit 1
-	  fi
-	  ;;
-	stop)
-	  if [ -f $KDC ] ; then
-	    if [ -n "$kdcpid" ] ; then
-	      kill $kdcpid
-	      echo "$0: $kdcdaemon has been killed."
-	    else
-	      echo "$0: $kdcdaemon is NOT running."
-	    fi
-	  fi
-	  if [ -f $KADMIND ] ; then
-	    if [ -n "$kdmpid" ] ; then
-	      kill $kdmpid
-	      echo "$0: $kdmdaemon has been killed."
-	    else
-	      echo "$0: $kdmdaemon is NOT running."
-	    fi
-	  fi
-	  if [ -f $KPASSWDD ] ; then
-	    if [ -n "$kpwpid" ] ; then
-	      kill $kpwpid
-	      echo "$0: $kpwdaemon has been killed."
-	    else
-	      echo "$0: $kpwdaemon is NOT running."
-	    fi
-	  fi
-	  ;;
-	*)
-	  echo "usage: $0 {start|stop}"
-	  # check kdc
-	  if [ -n "$kdcpid" ] ; then
-	    echo "$0: $kdcdaemon is ALREADY running (PID = $kdcpid)."
-	  else
-	    echo "$0: $kdcdaemon is NOT running."
-	  fi
-	  # check kadmind
-	  if [ -n "$kdmpid" ] ; then
-	    echo "$0: $kdmdaemon is ALREADY running (PID = $kdmpid)."
-	  else
-	    echo "$0: $kdmdaemon is NOT running."
-	  fi
-	  # check kpasswdd
-	  if [ -n "$kpwpid" ] ; then
-	    echo "$0: $kpwdaemon is ALREADY running (PID = $kpwpid)."
-	  else
-	    echo "$0: $kpwdaemon is NOT running."
-	  fi
-	  exit 1
-	  ;;
-	esac
-	exit 0
-	EOF
+  ln -s /usr/sbin/postfix $P/etc/rc.d/init.d
+  for i in active bounce corrupt defer deferred flush \
+      hold incoming private maildrop public saved trace ; do
+    chown postfix $P/var/spool/postfix/$i
+  done
+  chgrp postdrop $P/var/spool/postfix/{maildrop,public}
   touch $W/i.et
   cd $W
+  find $P ! -type l -newer i.st ! -newer i.et \
+      -exec touch -t `date '+%m%d0000'` {} \;
   compress
-  strip_bindir $P/usr/bin
-  strip_bindir $P/usr/sbin
-  strip_bindir $P/usr/libexec/heimdal
-  strip_bindir $P/usr/libexec
-  strip_libdir $P/usr/$libdir
+  strip_bindir $P/usr/libexec/postfix
+  touch -t `date '+%m%d0000'` $P/usr/libexec/postfix
   for i in `seq 0 $((${#DOCS[@]} - 1))` ; do
     for j in ${DOCS[$i]} ; do
       for k in ${S[$i]}/$j ; do
@@ -399,14 +326,62 @@ if [ $opt_package -eq 1 ] ; then
     done
     if [ $i -eq 0 ] ; then
       install $myname $docdir/$src
+      touch -t `date '+%m%d0000'` $docdir/$src/$myname
       gzip_one $docdir/$src/$myname
     else
       ln $docdir/$src/$myname.gz $docdir/${src[$i]}
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
-  prune_symlink $P/usr
+  mv $docdir/postfix/html $docdir/$src
+  mv $docdir/postfix/README_FILES $docdir/$src
+  mv $docdir/$src/{README_FILES,{RELEASE_NOTES*,TLS_*}.gz} $C
+  mv $docdir/$src/{US_PATENT_6321267.gz,html,$myname.gz} $C
+  mv $C/{README_FILES,{RELEASE_NOTES*,TLS_*}.gz} $docdir/$src
+  mv $C/{US_PATENT_6321267.gz,html,$myname.gz} $docdir/$src
+  touch -r $S $docdir/$src
   convert
+  prune_symlink $P/usr/lib
+  prune_symlink $P/etc/rc.d/init.d
+  cat <<- "EOF" >> $P/install/doinst.sh
+	
+	postfix_config() {
+	  mv etc/postfix/$1.new /tmp
+	  if [ -f etc/postfix/$1 ] ; then
+	    mv /tmp/$1.new etc/postfix/$1.dist
+	  else
+	    mv /tmp/$1.new etc/postfix/$1
+	  fi
+	}
+	
+	for i in access aliases canonical generic \
+	    header_checks main.cf master.cf relocated transport virtual ; do
+	  postfix_config $i
+	done
+	mv etc/aliases.new /tmp
+	if [ -f etc/aliases ] ; then
+	  mv /tmp/aliases.new etc/aliases.dist
+	else
+	  mv /tmp/aliases.new etc/aliases
+	fi
+EOF
+  cat <<- EOF | sed 's/^|//' >> $P/install/doinst.sh
+	|#%% begin initialize $pkg
+	|if ! grep -q submission /etc/services ; then
+	|  cat <<- "EOF" >> /etc/services
+	|	submission	587/tcp
+	|	submission	587/udp
+	|	EOF
+	|fi
+	|if ps ax | grep inetd | grep -vq grep ; then
+	|  killall -HUP inetd
+	|fi
+	|postfix upgrade-configuration
+	|postfix set-permissions
+	|[ -f /etc/aliases.db ] || newaliases
+	|#%% end
+EOF
+  touch -t `date '+%m%d0000'` $P/install/doinst.sh
   cd $P
   /sbin/makepkg ../$pkg.$compress <<EOF
 y
