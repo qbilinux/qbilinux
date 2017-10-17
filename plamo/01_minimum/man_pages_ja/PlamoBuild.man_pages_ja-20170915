@@ -2,14 +2,15 @@
 
 ######################################################################
 pkgbase=man_pages_ja
-vers=20170515
+vers=20170915
 url="https://linuxjm.osdn.jp/man-pages-ja-${vers}.tar.gz"
 arch=noarch
 build=P0m1
 src=man-pages-ja-$vers
-patchfiles="manpage_list"
 OPT_CONFIG=""
 DOCS="manual/LDP_man-pages/translation_list ChangeLog README INSTALL"
+patchfiles="manpage_list"
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -282,23 +283,10 @@ if [ $opt_package -eq 1 ] ; then
     gzip_one $docdir/$src/$patch
   done
   convert
-  tar cvpf $pkg.tar -C $P \
-      `cd $P ; find usr/share/man/ja_JP.UTF-8/man1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P \
-      `cd $P ; find usr/share/man/ja_JP.UTF-8/man2 | tail -n+2`
-  tar rvpf $pkg.tar -C $P \
-      `cd $P ; find usr/share/man/ja_JP.UTF-8/man3 | tail -n+2`
-  tar rvpf $pkg.tar -C $P \
-      `cd $P ; find usr/share/man/ja_JP.UTF-8/man4 | tail -n+2`
-  tar rvpf $pkg.tar -C $P \
-      `cd $P ; find usr/share/man/ja_JP.UTF-8/man5 | tail -n+2`
-  tar rvpf $pkg.tar -C $P \
-      `cd $P ; find usr/share/man/ja_JP.UTF-8/man6 | tail -n+2`
-  tar rvpf $pkg.tar -C $P \
-      `cd $P ; find usr/share/man/ja_JP.UTF-8/man7 | tail -n+2`
-  tar rvpf $pkg.tar -C $P \
-      `cd $P ; find usr/share/man/ja_JP.UTF-8/man8 | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi
