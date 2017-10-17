@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
 pkgbase=yaml
-vers=0.1.6
+vers=0.1.7
 url="http://pyyaml.org/download/libyaml/yaml-${vers}.tar.gz"
 arch=`uname -m`
-build=P2m1
+build=P0m1
 src=${pkgbase}-${vers}
 OPT_CONFIG=''
 DOCS='LICENSE README'
-patchfiles='CVE-2014-9130.patch'
+patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -155,10 +155,8 @@ myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
 
 if [ $arch = "x86_64" ]; then
-    target="-m64"
     libdir="lib64"
 else
-    target="-m32"
     libdir="lib"
 fi
 
@@ -184,9 +182,9 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
     esac
   done
 fi
@@ -211,8 +209,7 @@ if [ $opt_config -eq 1 ] ; then
     if [ -x configure ] ; then
        export PKG_CONFIG_PATH=/usr/X11R7/${libdir}/pkgconfig:/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
        export LDFLAGS='-Wl,--as-needed' 
-        CC="gcc -isystem /usr/include $target" CXX="g++ -isystem /usr/include $target " \
-          ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
+       ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
       if [ $? != 0 ]; then
 	  echo "configure error. $0 script stop"
 	  exit 255
@@ -225,7 +222,7 @@ if [ $opt_build -eq 1 ] ; then
     cd ${B[$i]}
     if [ -f Makefile ] ; then
       export LDFLAGS='-Wl,--as-needed'
-      make -j3
+      make
     fi
   done
 fi
