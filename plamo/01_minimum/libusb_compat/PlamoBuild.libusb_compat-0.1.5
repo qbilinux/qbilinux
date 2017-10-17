@@ -2,14 +2,15 @@
 
 ######################################################################
 pkgbase=libusb_compat
-vers=0.1.3
+vers=0.1.5
 url="http://downloads.sourceforge.net/libusb/libusb-compat-${vers}.tar.bz2"
 arch=`uname -m`
-build=P2m1
+build=P0m1
 src=libusb-compat-$vers
-patchfiles=""
 OPT_CONFIG=""
 DOCS="ChangeLog README NEWS INSTALL LICENSE AUTHORS COPYING"
+patchfiles=""
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -271,12 +272,10 @@ if [ $opt_package -eq 1 ] ; then
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
   convert
-  tar cvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
-  tar rvpf $pkg.tar -C $P \
-      `cd $P ; find usr/$libdir ! -name pkgconfig | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/include | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  tar rvpf $pkg.tar -C $P install/doinst.sh
-  touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi
