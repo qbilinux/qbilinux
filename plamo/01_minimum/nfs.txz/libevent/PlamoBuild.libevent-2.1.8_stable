@@ -5,8 +5,10 @@ vers=2.1.8
 url="https://github.com/libevent/libevent/releases/download/release-2.1.8-stable/libevent-2.1.8-stable.tar.gz"
 commitid=
 arch=`uname -m`
-build=P0m1
+build=P0m2
 src=libevent-2.1.8-stable
+# for libressl
+# OPT_CONFIG='--disable-libevent-regress --disable-samples'
 OPT_CONFIG=''
 DOCS='ChangeLog ChangeLog-1.4 ChangeLog-2.0 LICENSE whatsnew-2.0.txt whatsnew-2.1.txt'
 patchfiles=''
@@ -134,7 +136,7 @@ if [ $opt_download -eq 1 ] ; then
         done
         if [ -f ${i##*/}.$sig ] ; then
           case $sig in
-          asc|sig) gpg2 --verify ${i##*/}.$sig ;;
+          asc|sig) gpg --verify ${i##*/}.$sig ;;
           md5|sha1|sha256) ${sig}sum -c ${i##*/}.$sig ;;
           *) $sig -c ${i##*/}.$sig ;;
           esac
@@ -147,15 +149,15 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
     git) ( cd `basename ${i##*/} .git`
         git checkout master
         if [ -n "$commitid" ] ; then
           git reset --hard $commitid
         fi
         git set-file-times ) ;;
-    *) tar xvpf ${i##*/} ;;
+    *) tar xpf ${i##*/} ;;
     esac
   done
 fi
