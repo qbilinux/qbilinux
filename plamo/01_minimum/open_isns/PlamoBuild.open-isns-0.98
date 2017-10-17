@@ -1,8 +1,8 @@
 #!/bin/sh
 ##############################################################
 pkgbase=open_isns
-vers=0.97
-url="https://github.com/open-iscsi/open-isns/archive/v0.97.tar.gz"
+vers=0.98
+url="https://github.com/open-iscsi/open-isns/archive/v0.98.tar.gz"
 commitid=
 arch=`uname -m`
 build=P0m1
@@ -92,11 +92,9 @@ myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
 
 if [ $arch = "x86_64" ]; then
-  target="-m64"
   libdir="lib64"
   suffix="64"
 else
-  target="-m32"
   libdir="lib"
   suffix=""
 fi
@@ -134,7 +132,7 @@ if [ $opt_download -eq 1 ] ; then
         done
         if [ -f ${i##*/}.$sig ] ; then
           case $sig in
-          asc|sig) gpg2 --verify ${i##*/}.$sig ;;
+          asc|sig) gpg --verify ${i##*/}.$sig ;;
           md5|sha1|sha256) ${sig}sum -c ${i##*/}.$sig ;;
           *) $sig -c ${i##*/}.$sig ;;
           esac
@@ -147,15 +145,15 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
     git) ( cd `basename ${i##*/} .git`
         git checkout master
         if [ -n "$commitid" ] ; then
           git reset --hard $commitid
         fi
         git set-file-times ) ;;
-    *) tar xvpf ${i##*/} ;;
+    *) tar xpf ${i##*/} ;;
     esac
   done
 fi
@@ -181,8 +179,6 @@ if [ $opt_config -eq 1 ] ; then
     if [ -x configure ] ; then
       export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
       export LDFLAGS='-Wl,--as-needed' 
-      export CFLAGS="-isystem /usr/include $target" 
-      export CPPFLAGS="-isystem /usr/include $target "
       ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
     fi
     if [ $? != 0 ]; then
