@@ -2,17 +2,17 @@
 
 ######################################################################
 pkgbase=timezone
-vers=2016f
+vers=2017b
 url="http://www.iana.org/time-zones/repository/releases/tzcode${vers}.tar.gz
-    http://www.iana.org/time-zones/repository/releases/tzdata${vers}.tar.gz
-    ftp://plamo.linet.gr.jp/pub/Plamo-src.new/plamo/00_base/timezone/plamo_timeconfig.tar.gz"
+    http://www.iana.org/time-zones/repository/releases/tzdata${vers}.tar.gz"
 arch=`uname -m`
-build=P1m1
+build=P0m1
 src=$pkgbase-$vers
 patchfiles=""
 OPT_CONFIG=""
 DOCS="CONTRIBUTING LICENSE NEWS README Theory tz-art.htm
     tz-how-to.html tz-link.htm"
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -179,7 +179,7 @@ if [ $opt_download -eq 1 ] ; then
       done
       if [ -f ${i##*/}.$sig ] ; then
         case $sig in
-        asc|sig|sign) gpg2 --verify ${i##*/}.$sig ;;
+        asc|sig|sign) gpg --verify ${i##*/}.$sig ;;
         sha256|sha1|md5) ${sig}sum -c ${i##*/}.$sig ;;
         *) $sig -c ${i##*/}.$sig ;;
         esac
@@ -190,16 +190,15 @@ if [ $opt_download -eq 1 ] ; then
   done
   false && for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz|tgz) tar xvpzf ${i##*/} ;;
-    bz2|tbz) tar xvpjf ${i##*/} ;;
-    xz|txz) tar xvpJf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz|tgz) tar xpzf ${i##*/} ;;
+    bz2|tbz) tar xpjf ${i##*/} ;;
+    xz|txz) tar xpJf ${i##*/} ;;
     esac
   done
-  mkdir timezone-2016f
-  tar xvpzf tzcode2016f.tar.gz -C timezone-2016f
-  tar xvpzf tzdata2016f.tar.gz -C timezone-2016f
-  tar xvpzf plamo_timeconfig.tar.gz
+  mkdir timezone-${vers}
+  tar xpzf tzcode${vers}.tar.gz -C timezone-${vers}
+  tar xpzf tzdata${vers}.tar.gz -C timezone-${vers}
 fi
 if [ $opt_config -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
@@ -301,15 +300,10 @@ if [ $opt_package -eq 1 ] ; then
 	rmdir usr/share/zoneinfo.tmp
 	EOF
   touch -t `date '+%m%d0000'` $P/install/doinst.sh
-  tar cvpf $pkg.tar -C $P `cd $P ; find usr/sbin | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/$libdir | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/zoneinfo{.new,-posix,-leaps}
-  tar rvpf $pkg.tar -C $P var/log/setup
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man3 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man5 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man8 | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  tar rvpf $pkg.tar -C $P install/doinst.sh
-  touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi
