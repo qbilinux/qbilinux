@@ -2,10 +2,10 @@
 
 ######################################################################
 pkgbase=perl
-vers=5.24.1
+vers=5.26.1
 url="http://www.cpan.org/src/perl-${vers}.tar.bz2"
 arch=`uname -m`
-build=P0m3
+build=P0m2
 src=$pkgbase-$vers
 patchfiles="perl-5.12.1-Configure_multilib-1.patch file_patch_chmod_rade.diff exturils_file_path_compat.patch"
 OPT_CONFIG=""
@@ -177,7 +177,7 @@ if [ $opt_download -eq 1 ] ; then
       done
       if [ -f ${i##*/}.$sig ] ; then
         case $sig in
-        asc|sig|sign) gpg2 --verify ${i##*/}.$sig ;;
+        asc|sig|sign) gpg --verify ${i##*/}.$sig ;;
         sha256|sha1|md5) ${sig}sum -c ${i##*/}.$sig ;;
         *) $sig -c ${i##*/}.$sig ;;
         esac
@@ -249,7 +249,7 @@ if [ $opt_build -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
-      make -j4
+      make
     fi
   done
 fi
