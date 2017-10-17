@@ -2,13 +2,14 @@
 
 ######################################################################
 pkgbase=logrotate
-vers=3.8.1
-url="https://fedorahosted.org/releases/l/o/logrotate/logrotate-${vers}.tar.gz"
+vers=3.12.3
+url="https://github.com/logrotate/logrotate/releases/download/${vers}/logrotate-${vers}.tar.xz"
 arch=`uname -m`
-build=P4m1
+build=P0m1
 src=$pkgbase-$vers
 OPT_CONFIG=""
-DOCS="README.HPUX README.Solaris CHANGES COPYING"
+DOCS="COPYING ChangeLog.md INSTALL README.md"
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -175,7 +176,7 @@ if [ $opt_download -eq 1 ] ; then
       done
       if [ -f ${i##*/}.$sig ] ; then
         case $sig in
-        asc|sig|sign) gpg2 --verify ${i##*/}.$sig ;;
+        asc|sig|sign) gpg --verify ${i##*/}.$sig ;;
         sha256|sha1|md5) ${sig}sum -c ${i##*/}.$sig ;;
         *) $sig -c ${i##*/}.$sig ;;
         esac
@@ -186,10 +187,10 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz|tgz) tar xvpzf ${i##*/} ;;
-    bz2|tbz) tar xvpjf ${i##*/} ;;
-    xz|txz) tar xvpJf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz|tgz) tar xpzf ${i##*/} ;;
+    bz2|tbz) tar xpjf ${i##*/} ;;
+    xz|txz) tar xpJf ${i##*/} ;;
     esac
   done
 fi
@@ -233,7 +234,7 @@ if [ $opt_package -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
-      make install PREFIX=$P MANDIR=/usr/share/man
+      make install MANDIR=/usr/share/man DESTDIR=$P
     fi
   done
   install -d $P/etc/logrotate.d
@@ -315,12 +316,10 @@ if [ $opt_package -eq 1 ] ; then
 	fi
 	EOF
   touch -t `date '+%m%d0000'` $P/install/doinst.sh
-  tar cvpf $pkg.tar -C $P `cd $P ; find usr/sbin | tail -n+2`
-  tar rvpf $pkg.tar -C $P etc/logrotate.{d,conf.new}
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man5 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man8 | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  tar rvpf $pkg.tar -C $P install/doinst.sh
-  touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi
