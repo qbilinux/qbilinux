@@ -5,14 +5,15 @@ pkgbase=ntp
 vers=4.2.8p9
 url="http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/ntp-${vers}.tar.gz"
 arch=`uname -m`
-build=P0m1
+build=P0m3
 src=$pkgbase-$vers
-patchfiles=""
 OPT_CONFIG=""
 DOCS="README.hackers README.bk NEWS WHERE-TO-START README.leapsmear
     readme.y2kfixes CommitLog-4.1.0 README NOTES.y2kfixes CommitLog
     COPYRIGHT INSTALL README.refclocks TODO ChangeLog README.versions
     README.patches README.pullrequests"
+patchfiles="libssl_compat.c.09.patch libssl_compat.h.patch"
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -179,7 +180,7 @@ if [ $opt_download -eq 1 ] ; then
       done
       if [ -f ${i##*/}.$sig ] ; then
         case $sig in
-        asc|sig|sign) gpg2 --verify ${i##*/}.$sig ;;
+        asc|sig|sign) gpg --verify ${i##*/}.$sig ;;
         sha256|sha1|md5) ${sig}sum -c ${i##*/}.$sig ;;
         *) $sig -c ${i##*/}.$sig ;;
         esac
@@ -190,10 +191,10 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz|tgz) tar xvpzf ${i##*/} ;;
-    bz2|tbz) tar xvpjf ${i##*/} ;;
-    xz|txz) tar xvpJf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz|tgz) tar xpzf ${i##*/} ;;
+    bz2|tbz) tar xpjf ${i##*/} ;;
+    xz|txz) tar xpJf ${i##*/} ;;
     esac
   done
 fi
@@ -260,7 +261,7 @@ if [ $opt_package -eq 1 ] ; then
 	server ntp2.jst.mfeed.ad.jp
 	server ntp3.jst.mfeed.ad.jp
 	driftfile /etc/ntp.drift
-	EOF
+EOF
   install -d $P/etc/rc.d/init.d
   cat <<- "EOF" > $P/etc/rc.d/init.d/ntp
 	#!/bin/sh
@@ -298,7 +299,7 @@ if [ $opt_package -eq 1 ] ; then
 	  ;;
 	esac
 	exit 0
-	EOF
+EOF
   chmod 755 $P/etc/rc.d/init.d/ntp
   touch $W/i.et
   cd $W
@@ -342,16 +343,12 @@ if [ $opt_package -eq 1 ] ; then
 	else
 	  mv /tmp/ntp.conf.new etc/ntp.conf
 	fi
-	EOF
+EOF
   touch -t `date '+%m%d0000'` $P/install/doinst.sh
-  tar cvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/ntp
-  tar rvpf $pkg.tar -C $P `cd $P ; find etc -type f`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man5 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man8 | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  tar rvpf $pkg.tar -C $P install/doinst.sh
-  touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi
