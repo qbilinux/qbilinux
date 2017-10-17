@@ -2,14 +2,15 @@
 
 ######################################################################
 pkgbase=open_iscsi
-vers=2.0.874
-url="https://fossies.org/linux/misc/open-iscsi-${vers}.tar.gz"
+vers=2.0.875
+url="https://github.com/open-iscsi/open-iscsi/archive/${vers}.tar.gz"
 arch=`uname -m`
 build=P0m1
 src=open-iscsi-${vers}
-patchfiles="patch-aa"
 OPT_CONFIG=""
 DOCS="COPYING Changelog README THANKS TODO"
+patchfiles="patch-aa"
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -176,7 +177,7 @@ if [ $opt_download -eq 1 ] ; then
       done
       if [ -f ${i##*/}.$sig ] ; then
         case $sig in
-        asc|sig|sign) gpg2 --verify ${i##*/}.$sig ;;
+        asc|sig|sign) gpg --verify ${i##*/}.$sig ;;
         sha256|sha1|md5) ${sig}sum -c ${i##*/}.$sig ;;
         *) $sig -c ${i##*/}.$sig ;;
         esac
@@ -187,10 +188,10 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz|tgz) tar xvpzf ${i##*/} ;;
-    bz2|tbz) tar xvpjf ${i##*/} ;;
-    xz|txz) tar xvpJf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz|tgz) tar xpzf ${i##*/} ;;
+    bz2|tbz) tar xpjf ${i##*/} ;;
+    xz|txz) tar xpJf ${i##*/} ;;
     esac
   done
 fi
@@ -341,12 +342,10 @@ if [ $opt_package -eq 1 ] ; then
 	#%% end
 	EOF
   touch -t `date '+%m%d0000'` $P/install/doinst.sh
-  tar cvpf $pkg.tar -C $P `cd $P ; find sbin | tail -n+2`
-  tar rvpf $pkg.tar -C $P etc/iscsi
-  tar rvpf $pkg.tar -C $P etc/rc.d/init.d/open-iscsi
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man8 | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  tar rvpf $pkg.tar -C $P install/doinst.sh
-  touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi
