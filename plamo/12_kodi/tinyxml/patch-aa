@@ -1,0 +1,13 @@
+diff -Nrc tinyxml/tinyxml.h.orig tinyxml/tinyxml.h
+*** tinyxml/tinyxml.h.orig	2011-05-15 11:24:57.000000000 +0900
+--- tinyxml/tinyxml.h	2014-12-29 04:20:01.204715099 +0900
+***************
+*** 22,27 ****
+--- 22,28 ----
+  distribution.
+  */
+  
++ #define TIXML_USE_STL
+  
+  #ifndef TINYXML_INCLUDED
+  #define TINYXML_INCLUDED
