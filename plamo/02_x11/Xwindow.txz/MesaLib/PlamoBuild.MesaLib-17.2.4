@@ -1,10 +1,10 @@
 #!/bin/sh
 ##############################################################
 pkgbase=MesaLib
-vers=17.1.4
+vers=17.2.4
 url="ftp://ftp.freedesktop.org/pub/mesa/mesa-${vers}.tar.xz"
 arch=`uname -m`
-build=P0m2
+build=P0m1
 src=mesa-${vers}
 OPT_CONFIG='--enable-texture-float 
          --enable-llvm-shared-libs
@@ -17,7 +17,7 @@ OPT_CONFIG='--enable-texture-float
 DOCS='docs/*'
 
 # http://www.linuxfromscratch.org/patches/blfs/svn/MesaLib-9.1.6-add_xdemos-1.patch
-patchfiles='mesa-17.1.4-add_xdemos-1.patch clang.patch patch-aa'
+patchfiles='mesa-17.2.3-add_xdemos-1.patch'
 
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
