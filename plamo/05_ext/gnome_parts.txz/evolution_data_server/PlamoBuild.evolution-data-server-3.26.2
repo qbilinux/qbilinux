@@ -7,7 +7,7 @@ commitid=
 arch=`uname -m`
 build=P0m1
 src=evolution-data-server-${vers}
-OPT_CONFIG=''
+OPT_CONFIG='-DENABLE_GOOGLE_AUTH=OFF -DENABLE_GOA=OFF -DENABLE_UOA=OFF -DENABLE_WEATHER=OFF'
 DOCS='AUTHORS COPYING ChangeLog HACKING MAINTAINERS NEWS README TODO'
 patchfiles=''
 compress=txz
@@ -186,7 +186,7 @@ if [ $opt_config -eq 1 ] ; then
     if [ -f $S/CMakeLists.txt ]; then
       export PKG_CONFIG_PATH=/opt/kde/${libdir}/pkgconfig:/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
       export LDFLAGS='-Wl,--as-needed' 
-      cmake -DCMAKE_INSTALL_PREFIX:PATH=%s -DLIB_INSTALL_DIR:PATH=%s/${libdir} -DLIB_SUFFIX=$suffix ${OPT_CONFIG} .
+      cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DLIB_INSTALL_DIR:PATH=/usr/${libdir} -DLIB_SUFFIX=$suffix ${OPT_CONFIG} .
     fi
     if [ $? != 0 ]; then
       echo "configure error. $0 script stop"
