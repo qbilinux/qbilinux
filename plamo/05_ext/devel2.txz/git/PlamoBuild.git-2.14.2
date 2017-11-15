@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=git
-vers=2.13.0
+vers=2.14.2
 url="https://www.kernel.org/pub/software/scm/git/git-${vers}.tar.gz
     https://www.kernel.org/pub/software/scm/git/git-manpages-${vers}.tar.gz"
 arch=`uname -m`
@@ -170,13 +170,13 @@ if [ $opt_download -eq 1 ] ; then
       wget $i
       wget ${i%.*}.sign
       if [ ${archive##*.} == "gz" ] ; then
-        gzip -dc $archive | gpg2 --verify $sign -
+        gzip -dc $archive | gpg --verify $sign -
         if [ $? -ne 0 ] ; then
           echo "archive verify failed"
           exit 1
         fi
       elif [ ${i##*.} == "xz" ] ; then
-        xz -dc $archive | gpg2 --verify $sign -
+        xz -dc $archive | gpg --verify $sign -
         if [ $? -ne 0 ] ; then
           echo "archive verify failed"
           exit 1
