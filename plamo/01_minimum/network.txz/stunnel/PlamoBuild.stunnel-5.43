@@ -2,11 +2,11 @@
 
 ######################################################################
 pkgbase=stunnel
-vers=5.42
-url="https://www.stunnel.org/downloads/stunnel-${vers}.tar.gz"
+vers=5.43
+url="https://www.stunnel.org/downloads/beta/stunnel-${vers}.tar.gz"
 arch=`uname -m`
-build=P0m2
-src=$pkgbase-$vers
+build=P0m1
+src=$pkgbase-${vers%b*}
 OPT_CONFIG=""
 DOCS="README ChangeLog COPYING CREDITS INSTALL.FIPS COPYRIGHT.GPL
     AUTHORS TODO INSTALL.WCE NEWS INSTALL.W32 INSTALL BUGS PORTS"
