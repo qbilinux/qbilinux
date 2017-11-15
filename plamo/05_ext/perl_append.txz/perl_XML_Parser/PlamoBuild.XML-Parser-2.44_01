@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://search.cpan.org/CPAN/authors/id/T/TO/TODDR/XML-Parser-2.41.tar.gz'
 pkgbase=perl_XML_Parser
-vers=2.41
+vers=2.44_01
+url="http://search.cpan.org/CPAN/authors/id/T/TO/TODDR/XML-Parser-${vers}.tar.gz"
 arch=`uname -m`
-build=P2m2
-src=XML-Parser-2.41
+build=P0m1
+src=XML-Parser-${vers}
 OPT_CONFIG=''
 DOCS='README'
 patchfiles=''
@@ -184,9 +184,9 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
     esac
   done
 fi
