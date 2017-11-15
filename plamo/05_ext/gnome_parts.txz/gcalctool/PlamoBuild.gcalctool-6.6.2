@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://ftp.acc.umu.se/pub/GNOME/sources/gcalctool/5.30/gcalctool-5.30.2.tar.bz2'
 pkgbase=gcalctool
-vers=5.30.2
+vers=6.6.2
+url='http://ftp.gnome.org/pub/GNOME/sources/gcalctool/6.6/gcalctool-6.6.2.tar.xz'
 arch=`uname -m`
-build=P1m1
-src=gcalctool-5.30.2
+build=P0m1
+src=gcalctool-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README TODO'
 patchfiles=''
@@ -184,9 +184,10 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
+    xz) tar xpf ${i##*/} ;;
     esac
   done
 fi
