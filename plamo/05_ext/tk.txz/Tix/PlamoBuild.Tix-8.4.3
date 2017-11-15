@@ -2,17 +2,16 @@
 
 ######################################################################
 url="http://jaist.dl.sourceforge.net/sourceforge/tix/Tix8.4.3-src.tar.gz
-    http://slackware.osuosl.org/slackware_source/tcl/tix/tix.tcl8.5.patch.gz
-    http://slackware.osuosl.org/slackware_source/tcl/tix/tix.soname.patch.gz
-    http://jaist.dl.sourceforge.net/sourceforge/tcl/tcl8.5.10-src.tar.gz
-    http://jaist.dl.sourceforge.net/sourceforge/tcl/tk8.5.10-src.tar.gz"
+    http://jaist.dl.sourceforge.net/sourceforge/tcl/tcl8.6.7-src.tar.gz
+    http://jaist.dl.sourceforge.net/sourceforge/tcl/tk8.6.7-src.tar.gz"
 pkgbase=Tix
 vers=8.4.3
 arch=`uname -m`
-build=P1m1
+build=P1m2
 src=Tix$vers
 OPT_CONFIG=""
 DOCS="license.terms README.txt ChangeLog"
+patchfiles='tix.soname.patch tix.tcl8.5.patch'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -189,10 +188,11 @@ if [ $opt_config -eq 1 ] ; then
     if [ -d ${B[$i]} ] ; then rm -rf ${B[$i]} ; fi ; cp -a ${S[$i]} ${B[$i]}
   done
   cd $B
-  gunzip -c $W/tix.tcl8.5.patch.gz | patch -Np1 -i -
-  gunzip -c $W/tix.soname.patch.gz | patch -Np1 -i -
-  ( cd $W/tcl8.5.10/unix ; ./configure )
-  ( cd $W/tk8.5.10/unix ; ./configure )
+    for patch in $patchfiles ; do
+      patch -p1 < $W/$patch
+    done
+  ( cd $W/tcl8.6.7/unix ; ./configure )
+  ( cd $W/tk8.6.7/unix ; ./configure )
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
@@ -261,6 +261,10 @@ if [ $opt_package -eq 1 ] ; then
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
+  for patch in $patchfiles ; do
+    cp $W/$patch $docdir/$src/$patch
+    gzip_one $docdir/$src/$patch
+  done
   cp -a $S/docs $docdir/$src
   find $docdir/$src/docs -type d -exec chmod 755 {} \;
   find $docdir/$src/docs -type f -exec chmod 644 {} \;
@@ -274,9 +278,10 @@ if [ $opt_package -eq 1 ] ; then
   mv $C/{license.terms,README.txt,ChangeLog,$myname}.gz $docdir/$src
   touch -r $S $docdir/$src
   convert
-  tar cvpf $pkg.tar -C $P usr/${libdir}/Tix8.4.3
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/mann | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi
