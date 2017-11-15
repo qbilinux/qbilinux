@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='https://www.x.org/releases/individual/lib/libXfont-1.5.1.tar.bz2'
 pkgbase=libXfont
-vers=1.5.1
+vers=1.5.3
+url="https://www.x.org/releases/individual/lib/libXfont-${vers}.tar.bz2"
 arch=`uname -m`
-build=P1m1
-src=libXfont-1.5.1
+build=P0m1
+src=libXfont-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING ChangeLog INSTALL README'
 patchfiles=''
