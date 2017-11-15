@@ -1,16 +1,16 @@
 #!/bin/sh
 ##############################################################
 pkgbase=webkitgtk3
-vers=2.4.11
+vers=2.18.2
 url="http://webkitgtk.org/releases/webkitgtk-${vers}.tar.xz"
 verify=
 commitid=
 arch=`uname -m`
-build=P0m3
-src=webkitgtk-2.4.11
-OPT_CONFIG='--enable-geolocation --enable-introspection --with-gtk=3.0 --enable-webkit2'
+build=P0m1
+src=webkitgtk-${vers}
+OPT_CONFIG='-DPORT=GTK -DCMAKE_BUILD_TYPE=Release -DUSE_LIBHYPHEN=OFF -DENABLE_MINIBROWSER=ON'
 DOCS='ChangeLog INSTALL NEWS README'
-patchfiles='gcc6.patch'
+patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -198,12 +198,10 @@ if [ $opt_config -eq 1 ] ; then
 	# sh ./autogen.sh
 	# fi
 
-	if [ -x configure ] ; then
-	    export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
-	    export LDFLAGS='-Wl,--as-needed'
-	    export CFLAGS="-I /usr/include $target"
-	    export CPPFLAGS="-I /usr/include $target "
-	    ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
+	if [ -f $S/CMakeLists.txt ]; then
+	    export PKG_CONFIG_PATH=/opt/kde/${libdir}/pkgconfig:/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
+	    export LDFLAGS='-Wl,--as-needed' 
+	    cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DLIB_INSTALL_DIR:PATH=/usr/${libdir} -DLIB_SUFFIX=$suffix ${OPT_CONFIG} .
 	fi
 	if [ $? != 0 ]; then
 	    echo "configure error. $0 script stop"
@@ -214,7 +212,7 @@ fi
 if [ $opt_build -eq 1 ] ; then
     for i in `seq 0 $((${#B[@]} - 1))` ; do
 	cd ${B[$i]}
-	if [ -f GNUmakefile ] ; then
+	if [ -f Makefile ] ; then
 	    export LDFLAGS='-Wl,--as-needed'
 	    make Programs_DumpRenderTree_LDFLAGS="-no-fast-install -no-install -lfontconfig"
 	fi
