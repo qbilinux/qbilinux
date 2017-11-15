@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='https://www.x.org/releases/individual/lib/libXi-1.7.4.tar.bz2'
 pkgbase=libXi
-vers=1.7.4
+vers=1.7.9
+url="https://www.x.org/releases/individual/lib/libXi-${vers}.tar.bz2"
 arch=`uname -m`
-build=P1m1
-src=libXi-1.7.4
+build=P0m1
+src=libXi-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='COPYING ChangeLog INSTALL README'
 patchfiles=''
@@ -91,11 +91,9 @@ myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
 
 if [ $arch = "x86_64" ]; then
-    target="-m64"
     libdir="lib64"
     suffix="64"
 else
-    target="-m32"
     libdir="lib"
     suffix=""
 fi
@@ -122,9 +120,9 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
     esac
   done
 fi
@@ -150,8 +148,6 @@ if [ $opt_config -eq 1 ] ; then
       if [ -x configure ] ; then
          export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
          export LDFLAGS='-Wl,--as-needed' 
-         export CC="gcc -isystem /usr/include $target" 
-         export CXX="g++ -isystem /usr/include $target "
          ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
      fi
       if [ $? != 0 ]; then
@@ -165,7 +161,7 @@ if [ $opt_build -eq 1 ] ; then
     cd ${B[$i]}
     if [ -f Makefile ] ; then
       export LDFLAGS='-Wl,--as-needed'
-      make -j3
+      make
     fi
   done
 fi
