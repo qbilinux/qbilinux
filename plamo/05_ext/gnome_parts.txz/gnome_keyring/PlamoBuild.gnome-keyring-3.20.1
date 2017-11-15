@@ -1,18 +1,18 @@
 #!/bin/sh
 ##############################################################
-url='http://ftp.acc.umu.se/pub/gnome/sources/gnome-keyring/2.32/gnome-keyring-2.32.1.tar.bz2'
 pkgbase=gnome_keyring
-vers=2.32.1
+vers=3.20.1
+url="http://ftp.gnome.org/pub/GNOME/sources/gnome-keyring/3.20/gnome-keyring-${vers}.tar.xz"
 arch=`uname -m`
-build=P1m1
-src=gnome-keyring-2.32.1
+build=P0m1
+src=gnome-keyring-${vers}
 if [ $arch = "x86_64" ]; then
     OPT_CONFIG='--disable-static --with-pam-dir=/lib64/security'
 else
     OPT_CONFIG='--disable-static --with-pam-dir=/lib/security'
 fi
 DOCS='AUTHORS COPYING COPYING.LIB ChangeLog ChangeLog.old HACKING INSTALL NEWS README'
-patchfiles='egg-asn1x.patch'
+patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -188,9 +188,7 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    xz) tar xpf ${i##*/} ;;
     esac
   done
 fi
