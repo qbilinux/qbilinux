@@ -1,11 +1,11 @@
 #!/bin/sh
 
 ######################################################################
-url="http://ftp.x.org/pub/individual/app/xcalc-1.0.4.1.tar.bz2"
 pkgbase=xcalc
-vers=1.0.4.1
+vers=1.0.6
+url="http://ftp.x.org/pub/individual/app/xcalc-${vers}.tar.bz2"
 arch=`uname -m`
-build=P1m1
+build=P0m1
 src=$pkgbase-$vers
 OPT_CONFIG="--with-appdefaultdir=/usr/share/X11/app-defaults"
 DOCS="COPYING README INSTALL ChangeLog"
@@ -146,10 +146,8 @@ docdir=$P/usr/share/doc
 myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
 if [ $arch = "x86_64" ]; then
-    target="-m64"
     libdir="lib64"
 else
-    target="-m32"
     libdir="lib"
 fi
 if [ $# -eq 0 ] ; then
