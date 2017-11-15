@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://ftp.gnu.org/gnu/libcdio/libcdio-0.83.tar.bz2'
 pkgbase=libcdio
-vers=0.83
+vers=0.94
+url="http://ftp.gnu.org/gnu/libcdio/libcdio-${vers}.tar.gz"
 arch=`uname -m`
-build=P2m1
-src=libcdio-0.83
+build=P0m1
+src=libcdio-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README README.libcdio THANKS TODO'
 patchfiles=''
