@@ -3,7 +3,7 @@
 pkgbase=httpd
 vers=2.4.27
 url="http://www.apache.org/dist/httpd/httpd-${vers}.tar.gz"
-verify=$url.asc
+verify=
 arch=`uname -m`
 build=P0m1
 src=${pkgbase}-${vers}

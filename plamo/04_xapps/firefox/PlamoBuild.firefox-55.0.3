@@ -227,7 +227,6 @@ if [ -x /usr/bin/ccache ]; then
   GCC="ccache gcc"
   GPP="ccache g++"
 else
-  GCC="gcc"
   GPP="g++"
 fi
 
@@ -266,8 +265,6 @@ if [ $opt_config -eq 1 ] ; then
 ## Project
 . ${B[$i]}/browser/config/mozconfig
 export MOZILLA_OFFICIAL=0
-CC="gcc"
-CXX="g++"
 
 mk_add_options MOZ_MAKE_FLAGS="-j8"
 ac_add_options --enable-strip

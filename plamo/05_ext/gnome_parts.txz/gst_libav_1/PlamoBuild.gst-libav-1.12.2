@@ -167,7 +167,7 @@ if [ $opt_build -eq 1 ] ; then
         python setup.py build
     elif [ -f Makefile ] ; then
       export LDFLAGS='-Wl,--as-needed'
-      make -j3
+      make
     fi
   done
 fi

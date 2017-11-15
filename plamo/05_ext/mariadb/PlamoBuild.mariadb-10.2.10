@@ -183,7 +183,7 @@ if [ $opt_package -eq 1 ] ; then
     done
     if [ -f Makefile ] ; then
       export LDFLAGS='-Wl,--as-needed'
-      make -j6 install DESTDIR=$P
+      make install DESTDIR=$P
     fi
     for archive in $P/opt/mariadb/${libdir}/*.a ; do
 	echo "strip $archive with -g "

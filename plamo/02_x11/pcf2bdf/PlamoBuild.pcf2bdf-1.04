@@ -155,11 +155,9 @@ myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
 
 if [ $arch = "x86_64" ]; then
-    target="-m64"
     libdir="lib64"
     suffix="64"
 else
-    target="-m32"
     libdir="lib"
     suffix=""
 fi
@@ -187,10 +185,10 @@ if [ $opt_download -eq 1 ] ; then
   mkdir -p $src
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
-    tgz) tar xvf ${i##*/}  -C $src ;;
+    tar) tar xpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
+    tgz) tar xf ${i##*/}  -C $src ;;
     esac
   done
 fi
@@ -220,7 +218,7 @@ if [ $opt_build -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     export LDFLAGS='-Wl,--as-needed'
-    make -j3 -f Makefile.gcc
+    make -f Makefile.gcc
   done
 fi
 if [ $opt_package -eq 1 ] ; then
