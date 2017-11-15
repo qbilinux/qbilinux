@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
 pkgbase=npth
-vers=1.3
+vers=1.5
 url="ftp://ftp.gnupg.org/gcrypt/npth/npth-${vers}.tar.bz2"
 commitid=
 arch=`uname -m`
 build=P0m1
 src=npth-${vers}
 OPT_CONFIG=''
-DOCS='AUTHORS COPYING COPYING.LESSER ChangeLog HACKING INSTALL NEWS README'
+DOCS='AUTHORS COPYING.LIB ChangeLog HACKING INSTALL NEWS README VERSION'
 patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
@@ -134,7 +134,7 @@ if [ $opt_download -eq 1 ] ; then
         done
         if [ -f ${i##*/}.$sig ] ; then
           case $sig in
-          asc|sig) gpg2 --verify ${i##*/}.$sig ;;
+          asc|sig) gpg --verify ${i##*/}.$sig ;;
           md5|sha1|sha256) ${sig}sum -c ${i##*/}.$sig ;;
           *) $sig -c ${i##*/}.$sig ;;
           esac
