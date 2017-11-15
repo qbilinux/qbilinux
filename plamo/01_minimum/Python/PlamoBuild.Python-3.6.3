@@ -145,7 +145,11 @@ mandir=$P/usr/share/man
 docdir=$P/usr/share/doc
 myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
-case $arch in i686) libdir=lib ;; x86_64) libdir=lib64 ;; esac
+case $arch in
+    i686)   libdir=lib ;;
+    x86_64) libdir=lib64 ;;
+    armv7l) libdir=lib ;;
+esac
 if [ $# -eq 0 ] ; then
   opt_download=1 ; opt_config=1 ; opt_build=1 ; opt_package=1
 else
@@ -202,7 +206,7 @@ if [ $opt_config -eq 1 ] ; then
       rm -rf config.cache config.log
     fi
     if [ -x configure ] ; then
-      ./configure --prefix=/usr --libdir='${exec_prefix}'/$libdir \
+      ./configure --prefix=/usr --libdir='${prefix}'/$libdir \
           --infodir='${prefix}'/share/info \
           --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
     fi

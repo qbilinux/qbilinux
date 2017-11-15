@@ -106,11 +106,9 @@ myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
 
 if [ $arch = "x86_64" ]; then
-target="-m64"
 libdir="lib64"
 suffix="64"
 else
-target="-m32"
 libdir="lib"
 suffix=""
 fi
@@ -199,7 +197,7 @@ for i in `seq 0 $((${#B[@]} - 1))` ; do
 cd ${B[$i]}
 if [ -f Makefile ] ; then
 export LDFLAGS='-Wl,--as-needed'
-make -j3
+make
 fi
 done
 fi

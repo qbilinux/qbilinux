@@ -214,7 +214,7 @@ if [ $opt_build -eq 1 ] ; then
     cd ${B[$i]}
     if [ -f Makefile ] ; then
       export LDFLAGS='-Wl,--as-needed'
-      make -j3
+      make
     fi
     if [ $? != 0 ]; then
       echo "make error. $0 script stop"

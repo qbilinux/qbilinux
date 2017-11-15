@@ -6,12 +6,25 @@ url="http://ftp.tsukuba.wide.ad.jp/software/gcc/releases/gcc-${vers}/gcc-${vers}
 arch=`uname -m`
 build=P0m1
 src=gcc-${vers}
-OPT_CONFIG="--build=${arch}-pc-linux-gnu --host=${arch}-pc-linux-gnu
+if [ $arch = "armv7l" ]; then
+    build_arch=armv7l-pc-linux-gnueabi
+    libdir="lib"
+    ARCH_CONFIG=''
+elif [ $arch = "x86_64" ]; then
+    build_arch=${arch}-pc-linux-gnu
+    libdir="lib64"
+    ARCH_CONFIG='--enable-libmpx'
+else
+    build_arch=${arch}-pc-linux-gnu
+    libdir="lib"
+    ARCH_CONFIG='--enable-libmpx'
+fi
+OPT_CONFIG="--build=${build_arch} --host=${build_arch} --libexecdir=/usr/${libdir}
    --enable-languages=c,c++,fortran,go,lto 
-   --enable-shared --enable-threads=posix --enable-libmpx --with-system-zlib --with-isl --enable-__cxa_atexit 
+   --enable-shared --enable-threads=posix --with-system-zlib --with-isl --enable-__cxa_atexit 
    --disable-libunwind-exceptions  --disable-libstdcxx-pch --enable-clocale=gnu --enable-gnu-unique-object 
    --enable-linker-build-id --enable-lto --enable-plugin --enable-install-libiberty --with-linker-hash-style=gnu 
-   --enable-gnu-indirect-function --disable-multilib --disable-werror --enable-checking=release"
+   --enable-gnu-indirect-function --disable-multilib --disable-werror --enable-checking=release ${ARCH_CONFIG}"
 DOCS='ABOUT-NLS COPYING COPYING.LIB COPYING.RUNTIME COPYING3 COPYING3.LIB ChangeLog ChangeLog.tree-ssa INSTALL MAINTAINERS NEWS README'
 patchfiles=''
 compress=txz
@@ -160,11 +173,11 @@ docdir=$P/usr/share/doc
 myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
 
-if [ $arch = "x86_64" ]; then
-    target="-m64"
+if [ $arch = "armv7l" ]; then
+    libdir="lib"
+elif [ $arch = "x86_64" ]; then
     libdir="lib64"
 else
-    target="-m32"
     libdir="lib"
 fi
 
@@ -244,7 +257,7 @@ if [ $opt_build -eq 1 ] ; then
     cd ${B[$i]}
     if [ -f Makefile ] ; then
       export LDFLAGS='-Wl,--as-needed'
-      make -j7
+      make
     fi
   done
 fi
@@ -263,7 +276,7 @@ if [ $opt_package -eq 1 ] ; then
 
     if [ -f Makefile ] ; then
       export LDFLAGS='-Wl,--as-needed'
-      make install DESTDIR=$P
+      make install -k DESTDIR=$P
     fi
     mkdir -p $P/${libdir}
     ( cd $P/${libdir} ; ln -sf ../usr/bin/cpp . )
@@ -307,9 +320,9 @@ if [ $opt_package -eq 1 ] ; then
 # * 他のアーカイブから追加したいファイルがある場合はここに記述します。
 ######################################################################
   for i in cc1 cc1plus collect2 f951 lto1 go1 ; do
-      strip $P/usr/${libdir}/gcc/${arch}-pc-linux-gnu/$vers/$i
+      strip $P/usr/${libdir}/gcc/${build_arch}/$vers/$i
   done
-  strip -g $P/usr/${libdir}/gcc/${arch}-pc-linux-gnu/$vers/libgcc.a
+  strip -g $P/usr/${libdir}/gcc/${build_arch}/$vers/libgcc.a
   # strip -g $P/usr/${libdir}/gcc/x86_64-unknown-linux-gnu/$vers/32/libgcc.a
 
   for i in `seq 0 $((${#DOCS[@]} - 1))` ; do
@@ -347,14 +360,14 @@ if [ $opt_package -eq 1 ] ; then
   pkgbase=gcc
   pkg=$pkgbase-$vers-$arch-$build
   mkdir -p $P/usr/bin $P/usr/${libdir}
-  for i in cpp cc gcc gccbug gcov gcov-tool ${arch}-pc-linux-gnu-gcc ${arch}-pc-linux-gnu-gcc-$vers ; do
+  for i in cpp cc gcc gccbug gcov gcov-tool ${build_arch}-gcc ${build_arch}-gcc-$vers ; do
       mv $P2/usr/bin/$i $P/usr/bin
   done
   # wrappers for LTO. 
   # need --enable-plugins at binutils configuration
   for i in ar nm ranlib ; do
       mv $P2/usr/bin/gcc-$i $P/usr/bin
-      mv $P2/usr/bin/${arch}-pc-linux-gnu-gcc-$i $P/usr/bin
+      mv $P2/usr/bin/${build_arch}-gcc-$i $P/usr/bin
   done
 
   mkdir -p $P/lib
@@ -409,7 +422,7 @@ EOF
   pkg=$pkgbase-$vers-$arch-$build
   if [ -d $P ]; then rm -rf $P ; fi
   mkdir -p $P/usr/bin $P/usr/${libdir} $P/usr/include $P/usr/share
-  for i in c++ g++ ${arch}-pc-linux-gnu-c++ ${arch}-pc-linux-gnu-g++ ; do
+  for i in c++ g++ ${build_arch}-c++ ${build_arch}-g++ ; do
       mv $P2/usr/bin/$i $P/usr/bin
   done
   mkdir -p $P/usr/share/gdb/auto-load
@@ -435,7 +448,7 @@ EOF
   pkg=$pkgbase-$vers-$arch-$build
   if [ -d $P ]; then rm -rf $P ; fi
   mkdir -p $P/usr/bin $P/usr/${libdir} $P/usr/share/man/man1 $P/usr/share/info
-  mv $P2/usr/bin/{gfortran,${arch}-pc-linux-gnu-gfortran} $P/usr/bin
+  mv $P2/usr/bin/{gfortran,${build_arch}-gfortran} $P/usr/bin
   mv $P2/usr/${libdir}/libgfortran* $P/usr/${libdir}/
   mv $P2/usr/${libdir}/libquadmath* $P/usr/${libdir}/
   mv $P2/usr/share/info/gfortran.info.gz $P/usr/share/info/
@@ -456,7 +469,7 @@ EOF
   pkg=$pkgbase-$vers-$arch-$build
   if [ -d $P ]; then rm -rf $P ; fi
   mkdir -p $P/usr/bin $P/usr/${libdir} $P/usr/share/man/man1 $P/usr/share/info
-  mv $P2/usr/bin/{gccgo,${arch}-pc-linux-gnu-gccgo} $P/usr/bin
+  mv $P2/usr/bin/{gccgo,${build_arch}-gccgo} $P/usr/bin
   mv $P2/usr/bin/{go,gofmt} $P/usr/bin
   mv $P2/usr/${libdir}/libgo* $P/usr/${libdir}/
   mv $P2/usr/${libdir}/libnetgo* $P/usr/${libdir}/

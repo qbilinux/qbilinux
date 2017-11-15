@@ -1,8 +1,7 @@
 #!/bin/sh
 
 ######################################################################
-url="http://pkgs.fedoraproject.org/repo/pkgs/Xaw3d/Xaw3d-1.5E.tar.gz/29ecfdcd6bcf47f62ecfd672d31269a1/Xaw3d-1.5E.tar.gz
-    http://plamo.linet.gr.jp/~tamuki/src/Xaw3d-1.5E-MultiSrc.c.patch.gz"
+url="http://pkgs.fedoraproject.org/repo/pkgs/Xaw3d/Xaw3d-1.5E.tar.gz/29ecfdcd6bcf47f62ecfd672d31269a1/Xaw3d-1.5E.tar.gz"
 pkgbase=Xaw3d
 vers=1.5E
 arch=`uname -m`
@@ -10,6 +9,7 @@ build=P1m1
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="README.XAW3D"
+patchfiles="Xaw3d-1.5E-MultiSrc.c.patch.gz"
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -145,11 +145,9 @@ docdir=$P/usr/share/doc
 myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
 if [ $arch = "x86_64" ]; then
-    target="-m64"
     libdir="lib64"
     suffix=""
 else
-    target="-m32"
     libdir="lib"
     suffix=""
 fi
@@ -175,9 +173,9 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
     esac
   done
   mv xc/lib/Xaw3d $src

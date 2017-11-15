@@ -4,23 +4,27 @@ pkgbase=gcc
 vers=7.2.0
 url="http://ftp.tsukuba.wide.ad.jp/software/gcc/releases/gcc-${vers}/gcc-${vers}.tar.xz"
 arch=`uname -m`
-build=P0m1
+build=P0m2
 src=gcc-${vers}
-if [ "$arch" = "x86_64" ]; then
-    OPT_CONFIG='--build=x86_64-pc-linux-gnu --host=x86_64-pc-linux-gnu --libexecdir=/usr/lib64 
-   --enable-languages=c,c++,fortran,go,lto 
-   --enable-shared --enable-threads=posix --enable-libmpx --with-system-zlib --with-isl --enable-__cxa_atexit 
-   --disable-libunwind-exceptions  --disable-libstdcxx-pch --enable-clocale=gnu --enable-gnu-unique-object 
-   --enable-linker-build-id --enable-lto --enable-plugin --enable-install-libiberty --with-linker-hash-style=gnu 
-   --enable-gnu-indirect-function --disable-multilib --disable-werror  --enable-checking=release --disable-bootstrap'
+if [ $arch = "armv7l" ]; then
+    build_arch=armv7l-pc-linux-gnueabi
+    libdir="lib"
+    ARCH_CONFIG=''
+elif [ $arch = "x86_64" ]; then
+    build_arch=${arch}-pc-linux-gnu
+    libdir="lib64"
+    ARCH_CONFIG='--enable-libmpx'
 else
-    OPT_CONFIG='--build=i686-pc-linux-gnu --host=i686-pc-linux-gnu --libexecdir=/usr/lib
-   --enable-languages=c,c++,fortran,go,lto
-   --enable-shared --enable-threads=posix --enable-libmpx --with-system-zlib --with-isl --enable-__cxa_atexit 
+    build_arch=${arch}-pc-linux-gnu
+    libdir="lib"
+    ARCH_CONFIG='--enable-libmpx'
+fi
+OPT_CONFIG="--build=${build_arch} --host=${build_arch} --libexecdir=/usr/${libdir}
+   --enable-languages=c,c++,fortran,go,lto 
+   --enable-shared --enable-threads=posix --with-system-zlib --with-isl --enable-__cxa_atexit 
    --disable-libunwind-exceptions  --disable-libstdcxx-pch --enable-clocale=gnu --enable-gnu-unique-object 
    --enable-linker-build-id --enable-lto --enable-plugin --enable-install-libiberty --with-linker-hash-style=gnu 
-   --enable-gnu-indirect-function --disable-multilib --disable-werror  --enable-checking=release --disable-bootstrap'
-fi
+   --enable-gnu-indirect-function --disable-multilib --disable-werror --enable-checking=release ${ARCH_CONFIG}"
 DOCS='ABOUT-NLS COPYING COPYING.LIB COPYING.RUNTIME COPYING3 COPYING3.LIB ChangeLog ChangeLog.tree-ssa INSTALL MAINTAINERS NEWS README'
 patchfiles=''
 compress=txz
@@ -253,7 +257,7 @@ if [ $opt_build -eq 1 ] ; then
     cd ${B[$i]}
     if [ -f Makefile ] ; then
       export LDFLAGS='-Wl,--as-needed'
-      make -j7
+      make
     fi
   done
 fi

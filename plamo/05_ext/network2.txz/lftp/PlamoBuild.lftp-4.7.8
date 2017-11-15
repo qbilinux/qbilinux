@@ -7,8 +7,8 @@ verify=$url
 arch=`uname -m`
 build=P0m1
 src=${pkgbase}-${vers}
-OPT_CONFIG='--with-gnutls --without-openssl --disable-static'
-DOCS='ABOUT-NLS AUTHORS COPYING ChangeLog INSTALL NEWS README README.debug-levels README.dnssec README.modules THANKS TODO lftp.lsm'
+OPT_CONFIG='--with-gnutls --without-openssl --disable-static --with-readline=/usr'
+DOCS='ABOUT-NLS AUTHORS BUGS COPYING ChangeLog INSTALL MIRRORS NEWS README README.debug-levels README.dnssec README.modules THANKS TODO'
 patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
@@ -106,11 +106,9 @@ myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
 
 if [ $arch = "x86_64" ]; then
-    target="-m64"
     libdir="lib64"
     suffix="64"
 else
-    target="-m32"
     libdir="lib"
     suffix=""
 fi
@@ -155,9 +153,9 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
-    *) tar xvpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
+    *) tar xpf ${i##*/} ;;
     esac
   done
 fi

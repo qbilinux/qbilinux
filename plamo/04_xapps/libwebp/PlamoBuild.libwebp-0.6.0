@@ -3,7 +3,7 @@
 pkgbase=libwebp
 vers=0.6.0
 url="https://storage.googleapis.com/downloads.webmproject.org/releases/webp/libwebp-${vers}.tar.gz"
-verify=$url.asc
+verify=
 arch=`uname -m`
 build=P0m2
 src=${pkgbase}-${vers}
