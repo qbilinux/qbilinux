@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
 pkgbase=boost
-vers=1.63.0
-url="https://sourceforge.net/projects/boost/files/boost/1.63.0/boost_1_63_0.tar.bz2"
+vers=1.65.1
+url="https://sourceforge.net/projects/boost/files/boost/${vers}/boost_${vers//./_}.tar.bz2"
 arch=`uname -m`
 build=P0m1
-src=boost_1_63_0
+src=boost_${vers//./_}
 OPT_CONFIG=''
 DOCS='INSTALL LICENSE_1_0.txt'
-patchfiles='boost-1.54.0-glibc-1.patch'
+patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -184,9 +184,9 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
     esac
   done
 fi
@@ -207,7 +207,7 @@ fi
 if [ $opt_build -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
-    ./b2 stage threading=multi link=shared 
+    ./b2 stage $MAKEFLAGS threading=multi link=shared 
 
   done
 fi
