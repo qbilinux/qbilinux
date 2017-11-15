@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase=libdrm
-vers=2.4.81
+vers=2.4.88
 url="http://dri.freedesktop.org/libdrm/libdrm-${vers}.tar.bz2"
 arch=`uname -m`
 build=P0m1
