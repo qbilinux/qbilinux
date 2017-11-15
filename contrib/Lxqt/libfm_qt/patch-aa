@@ -1,0 +1,25 @@
+*** libfm-qt-0.12.0/src/CMakeLists.txt	2017-10-22 03:56:43.000000000 +0900
+--- build/src/CMakeLists.txt	2017-11-08 18:13:27.546884668 +0900
+***************
+*** 179,187 ****
+      DESTINATION "${LIBFM_QT_INTREE_INCLUDE_DIR}/libfm-qt"
+  )
+  
+! file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/
+!     DESTINATION "${LIBFM_QT_INTREE_INCLUDE_DIR}/libfm-qt"
+!     FILES_MATCHING PATTERN "*.h"
+  )
+  
+  configure_package_config_file(
+--- 179,189 ----
+      DESTINATION "${LIBFM_QT_INTREE_INCLUDE_DIR}/libfm-qt"
+  )
+  
+! file(GLOB libfm_HS "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
+! # install include header files (FIXME: can we make this cleaner? should dir name be versioned?)
+! install(FILES ${libfm_HS}
+!     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/libfm-qt"
+!     COMPONENT Devel
+  )
+  
+  configure_package_config_file(
