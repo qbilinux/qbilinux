@@ -1,10 +1,10 @@
 #!/bin/sh
 ##############################################################
 pkgbase=atril
-vers=1.18.0
+vers=1.18.1
 url="http://pub.mate-desktop.org/releases/1.18/atril-${vers}.tar.xz"
 arch=`uname -m`
-build=P0m2
+build=P0m1
 src=atril-${vers}
 OPT_CONFIG='--enable-pixbuf --enable-comics --enable-epub --enable-xps'
 #OPT_CONFIG='--enable-gtk-doc-html=no --enable-djvu=no --disable-epub'
@@ -159,11 +159,9 @@ myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
 
 if [ $arch = "x86_64" ]; then
-    target="-m64"
     libdir="lib64"
     suffix="64"
 else
-    target="-m32"
     libdir="lib"
     suffix=""
 fi
@@ -221,8 +219,6 @@ if [ $opt_config -eq 1 ] ; then
          export LDFLAGS='-Wl,--as-needed' 
          export CC="gcc -O2" 
          export CPPFLAGS="-I/usr/include/libxml2/libxml"
-         export CC="gcc -I /usr/include $target" 
-         export CXX="g++ -I /usr/include $target "
          ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
      fi
       if [ $? != 0 ]; then
