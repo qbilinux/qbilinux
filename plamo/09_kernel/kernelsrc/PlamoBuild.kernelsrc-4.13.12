@@ -3,7 +3,7 @@
 ######################################################################
 #url="https://www.kernel.org/pub/linux/kernel/v4.x/linux-4.9.30.tar.xz
 #    git://github.com/sfjro/aufs4-standalone.git"
-version=4.13.11
+version=4.13.12
 url="https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-${version}.tar.xz"
 pkgbase=kernelsrc
 arch=`uname -m`
