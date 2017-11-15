@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
 pkgbase=totem
-vers=3.0.1
-url="http://ftp.gnome.org/pub/gnome/sources/totem/${vers%.*}/totem-${vers}.tar.gz"
+vers=3.26.0
+url="http://ftp.gnome.org/pub/gnome/sources/totem/${vers%.*}/totem-${vers}.tar.xz"
 verify="http://ftp.gnome.org/pub/gnome/sources/totem/${vers%.*}/totem-${vers}.sha256sum"
 commitid=
 arch=`uname -m`
-build=P1m1
+build=P0m1
 src=totem-${vers}
-OPT_CONFIG='--disable-static'
+OPT_CONFIG='--default-library shared -D enable-vala=no'
 DOCS='AUTHORS COPYING ChangeLog ChangeLog.pre-gitlog INSTALL MAINTAINERS NEWS README TODO license_change'
 patchfiles=''
 compress=txz
@@ -107,11 +107,9 @@ myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
 
 if [ $arch = "x86_64" ]; then
-  target="-m64"
   libdir="lib64"
   suffix="64"
 else
-  target="-m32"
   libdir="lib"
   suffix=""
 fi
@@ -154,8 +152,8 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $verify ; do
     case ${i##*.} in
-    asc) gpg2 --verify ${i##*/} ;;
-    sig) gpg2 --verify ${i##*/} ;;
+    asc) gpg --verify ${i##*/} ;;
+    sig) gpg --verify ${i##*/} ;;
     sha256sum) verify_checksum "sha256sum" ;;
     esac
     if [ $? -ne 0 ]; then
@@ -167,22 +165,22 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
     git) ( cd `basename ${i##*/} .git`
         git checkout master
         if [ -n "$commitid" ] ; then
           git reset --hard $commitid
         fi
         git set-file-times ) ;;
-    *) tar xvpf ${i##*/} ;;
+    *) tar xpf ${i##*/} ;;
     esac
   done
 fi
 
 if [ $opt_config -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
-    if [ -d ${B[$i]} ] ; then rm -rf ${B[$i]} ; fi ; cp -a ${S[$i]} ${B[$i]}
+    if [ -d ${B[$i]} ] ; then rm -rf ${B[$i]} ; fi ; mkdir ${B[$i]}
   done
 ######################################################################
 # * ./configure を行う前に適用したい設定やパッチなどがある場合はここに
@@ -190,21 +188,18 @@ if [ $opt_config -eq 1 ] ; then
 ######################################################################
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
-    for patch in $patchfiles ; do
-      patch -p1 < $W/$patch
-    done
+    # for patch in $patchfiles ; do
+    #   patch -p1 < $W/$patch
+    # done
 
     # if [ -f autogen.sh ] ; then
     #   sh ./autogen.sh
     # fi
 
-    if [ -x configure ] ; then
-      export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
-      export LDFLAGS='-Wl,--as-needed' 
-      export CFLAGS="-isystem /usr/include $target" 
-      export CPPFLAGS="-isystem /usr/include $target "
-      ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
-    fi
+    export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
+    export LDFLAGS='-Wl,--as-needed' 
+    meson --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir=/usr/share/man ${OPT_CONFIG[$i]} ${S[$i]}
+
     if [ $? != 0 ]; then
       echo "configure error. $0 script stop"
       exit 255
@@ -214,10 +209,7 @@ fi
 if [ $opt_build -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
-    if [ -f Makefile ] ; then
-      export LDFLAGS='-Wl,--as-needed'
-      make -j3
-    fi
+    ninja
     if [ $? != 0 ]; then
       echo "make error. $0 script stop"
       exit 255
@@ -239,10 +231,7 @@ if [ $opt_package -eq 1 ] ; then
     for mk in `find . -name "[Mm]akefile" ` ; do
       sed -i -e 's|GCONFTOOL = /usr/bin/gconftool-2|GCONFTOOL = echo|' $mk
     done
-    if [ -f Makefile ] ; then
-      export LDFLAGS='-Wl,--as-needed'
-      make install DESTDIR=$P
-    fi
+    DESTDIR=$P ninja install
     if [ $? != 0 ]; then
       echo "make install error. $0 script stop"
       exit 255
