@@ -1,13 +1,13 @@
 #!/bin/sh
 ##############################################################
-url='https://pypi.python.org/packages/source/s/setuptools/setuptools-11.3.1.tar.gz'
+url='https://pypi.python.org/packages/a4/c8/9a7a47f683d54d83f648d37c3e180317f80dc126a304c45dc6663246233a/setuptools-36.5.0.zip'
 pkgbase=python2_setuptools
-vers=11.3.1
+vers=36.5.0
 arch=`uname -m`
-build=P1m1
-src=setuptools-11.3.1
+build=P0m1
+src=setuptools-36.5.0
 OPT_CONFIG=''
-DOCS='CHANGES.txt DEVGUIDE.txt README.txt'
+DOCS='CHANGES.rst LICENSE PKG-INFO README.rst'
 patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
@@ -124,7 +124,7 @@ if [ $opt_download -eq 1 ] ; then
     case ${i##*.} in
     gz) tar xvpzf ${i##*/} ;;
     bz2) tar xvpjf ${i##*/} ;;
-    *) tar xvpf ${i##*/} ;;
+    *) unzip -x ${i##*/} ;;
     esac
   done
 fi
