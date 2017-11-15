@@ -1,11 +1,11 @@
 #!/bin/sh
 
 ######################################################################
-url="http://ftp.x.org/pub/individual/app/xconsole-1.0.4.tar.bz2"
 pkgbase=xconsole
-vers=1.0.4
+vers=1.0.7
+url="http://ftp.x.org/pub/individual/app/xconsole-${vers}.tar.bz2"
 arch=`uname -m`
-build=P1m1
+build=P0m1
 src=$pkgbase-$vers
 OPT_CONFIG="--with-appdefaultdir=/usr/share/X11/app-defaults"
 DOCS="INSTALL README ChangeLog COPYING"
@@ -146,10 +146,8 @@ docdir=$P/usr/share/doc
 myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
 if [ $arch = "x86_64" ]; then
-    target="-m64"
     libdir="lib64"
 else
-    target="-m32"
     libdir="lib"
 fi
 if [ $# -eq 0 ] ; then
