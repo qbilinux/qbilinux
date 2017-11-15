@@ -4,7 +4,7 @@ pkgbase=liblastfm
 vers=1.0.9
 url="https://github.com/lastfm/liblastfm/archive/1.0.9.tar.gz"
 arch=`uname -m`
-build=P0m1
+build=P0m2
 src=liblastfm-1.0.9
 OPT_CONFIG=''
 DOCS='COPYING README.md'
@@ -148,7 +148,7 @@ if [ $opt_config -eq 1 ] ; then
        if [ -f $S/CMakeLists.txt ]; then
           export PKG_CONFIG_PATH=/opt/kde/${libdir}/pkgconfig:/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
           export LDFLAGS='-Wl,--as-needed' 
-          cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/kde -DLIB_INSTALL_DIR:PATH=/opt/kde/${libdir} -DLIB_SUFFIX=$suffix ${OPT_CONFIG} $S
+          cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DLIB_INSTALL_DIR:PATH=/usr/${libdir} -DLIB_SUFFIX=$suffix ${OPT_CONFIG} $S
        fi
       if [ $? != 0 ]; then
 	  echo "configure error. $0 script stop"

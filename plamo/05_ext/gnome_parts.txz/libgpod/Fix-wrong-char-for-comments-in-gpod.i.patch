@@ -1,0 +1,25 @@
+From: Chow Loong Jin <hyperair@debian.org>
+Date: Mon, 21 Dec 2015 01:04:25 +0800
+Subject: Fix wrong char for comments in gpod.i
+
+---
+ bindings/python/gpod.i.in | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/bindings/python/gpod.i.in b/bindings/python/gpod.i.in
+index a6628bb..6b569e9 100644
+--- a/bindings/python/gpod.i.in
++++ b/bindings/python/gpod.i.in
+@@ -298,9 +298,9 @@ PyObject* sw_get_photo(GList *list, gint index) {
+ %include "gpod_doc.i"
+ %include "@top_builddir@/config.h"
+ 
+-# be nicer to decode these utf8 strings into Unicode objects in the C
+-# layer. Here we are leaving it to the Python side, and just giving
+-# them utf8 encoded Strings.
++/* be nicer to decode these utf8 strings into Unicode objects in the C
++   layer. Here we are leaving it to the Python side, and just giving
++   them utf8 encoded Strings. */
+ typedef char gchar;
+ 
+ %typemap(in) time_t {

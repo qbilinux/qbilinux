@@ -2,7 +2,7 @@
 ##############################################################
 pkgbase=libcdio
 vers=0.94
-url="http://ftp.gnu.org/gnu/libcdio/libcdio-${vers}.tar.bz2"
+url="http://ftp.gnu.org/gnu/libcdio/libcdio-${vers}.tar.gz"
 arch=`uname -m`
 build=P0m1
 src=libcdio-${vers}
