@@ -4,9 +4,9 @@ pkgbase=gobject_introspection
 vers=1.54.1
 url="http://ftp.gnome.org/pub/gnome/sources/gobject-introspection/1.54/gobject-introspection-${vers}.tar.xz"
 arch=`uname -m`
-build=P0m1
+build=P0m2
 src=gobject-introspection-${vers}
-OPT_CONFIG='--disable-tests --disable-static'
+OPT_CONFIG='--disable-tests --disable-static --with-python=python3'
 DOCS='AUTHORS COPYING COPYING.GPL COPYING.LGPL ChangeLog NEWS README TODO'
 patchfiles=''
 compress=txz

@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='ftp://ftp.kddlabs.co.jp/pub/gnu/gnu/vcdimager/vcdimager-0.7.24.tar.gz'
 pkgbase=vcdimager
 vers=0.7.24
+url="ftp://ftp.kddlabs.co.jp/pub/gnu/gnu/vcdimager/vcdimager-${vers}.tar.gz"
 arch=`uname -m`
-build=P2m1
-src=vcdimager-0.7.24
+build=P2m2
+src=vcdimager-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING ChangeLog ChangeLog_pre0_5 ChangeLog_pre0_7_14 HACKING INSTALL NEWS README THANKS TODO'
 patchfiles=''
@@ -120,9 +120,9 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
     esac
   done
 fi

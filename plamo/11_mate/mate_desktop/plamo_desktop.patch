@@ -1,0 +1,29 @@
+*** mate-desktop-1.18.0/schemas/org.mate.background.gschema.xml.in	2017-10-14 07:49:03.893518705 +0900
+--- build/schemas/org.mate.background.gschema.xml	2017-10-14 07:49:30.684517911 +0900
+***************
+*** 29,40 ****
+        <description>If set to true, then MATE will change the desktop background with a fading effect.</description>
+      </key>
+      <key name="picture-options" enum="org.mate.background.picture-options-enum">
+!       <default>'zoom'</default>
+        <summary>Picture Options</summary>
+        <description>Determines how the image set by wallpaper_filename is rendered.  Possible values are "wallpaper", "centered", "scaled", "stretched", "zoom", "spanned".</description>
+      </key>
+      <key name="picture-filename" type="s">
+!       <default>'@datadir@/backgrounds/mate/desktop/Stripes.png'</default>
+        <summary>Picture Filename</summary>
+        <description>File to use for the background image.</description>
+      </key>
+--- 29,40 ----
+        <description>If set to true, then MATE will change the desktop background with a fading effect.</description>
+      </key>
+      <key name="picture-options" enum="org.mate.background.picture-options-enum">
+!       <default>'scaled'</default>
+        <summary>Picture Options</summary>
+        <description>Determines how the image set by wallpaper_filename is rendered.  Possible values are "wallpaper", "centered", "scaled", "stretched", "zoom", "spanned".</description>
+      </key>
+      <key name="picture-filename" type="s">
+!       <default>'/usr/share/pixmaps/backgrounds/Plamo/plamoback_c2.png'</default>
+        <summary>Picture Filename</summary>
+        <description>File to use for the background image.</description>
+      </key>
