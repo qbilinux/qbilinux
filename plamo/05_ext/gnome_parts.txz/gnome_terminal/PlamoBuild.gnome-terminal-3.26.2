@@ -208,8 +208,6 @@ if [ $opt_config -eq 1 ] ; then
        export PKG_CONFIG_PATH=/usr/X11R7/${libdir}/pkgconfig:/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
        export LDFLAGS='-Wl,--as-needed' 
        ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
-       ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
->>>>>>> origin/master:plamo/05_ext/gnome_parts.txz/gnome_terminal/PlamoBuild.gnome-terminal-3.26.2
       if [ $? != 0 ]; then
 	  echo "configure error. $0 script stop"
 	  exit 255
