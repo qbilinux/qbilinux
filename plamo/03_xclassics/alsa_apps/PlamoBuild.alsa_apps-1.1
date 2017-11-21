@@ -204,7 +204,7 @@ if [ $opt_config -eq 1 ] ; then
   gunzip -c $W/vkeybd-0.1.17-awe_voice_h.patch.gz | patch -Np1 -i -
   cp -p Makefile Makefile.orig
   sed 's@/usr/local@/usr@g' Makefile.orig \
-      | sed '/TCL_VERSION =/s@8\.4@8.5@g' > Makefile
+      | sed '/TCL_VERSION =/s@8\.4@8.6@g' > Makefile
   cd ${B[3]}/src
   gunzip -c $W/alsa-patch-bay-1.0.0-not_declared.patch.gz | patch -Np2 -i -
   cp -p Makefile.in Makefile.in.orig
