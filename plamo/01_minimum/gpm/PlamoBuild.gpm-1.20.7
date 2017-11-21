@@ -5,14 +5,15 @@ pkgbase=gpm
 vers=1.20.7
 url="http://www.nico.schottelius.org/software/gpm/archives/gpm-${vers}.tar.bz2"
 arch=`uname -m`
-build=P3m1
+build=P3m2
 src=$pkgbase-$vers
 patchfiles=""
-OPT_CONFIG=""
+OPT_CONFIG="--enable-shared --disable-static"
 DOCS="COPYING MANIFEST README* TODO
     doc/Announce doc/FAQ doc/HACK_GPM doc/README.* doc/changelog
     doc/specs/synaptics/www.synaptics.com/decaf/utilities/*
     doc/support/* doc/todo/*"
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -252,6 +253,7 @@ if [ $opt_package -eq 1 ] ; then
       make install DESTDIR=$P
     fi
   done
+  (cd $P/usr/$libdir ; ln -sfv libgpm.so.2.1.0 libgpm.so)
   install -m 644 conf/* $P/etc
   install -d $P/etc/rc.d/init.d
   cat <<- "EOF" > $P/etc/rc.d/init.d/gpm
@@ -343,18 +345,10 @@ if [ $opt_package -eq 1 ] ; then
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
   convert
-  tar cvpf $pkg.tar -C $P `cd $P ; find usr/sbin | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/$libdir | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/include | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/emacs/site-lisp | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find etc -type f`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/info | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man7 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man8 | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  tar rvpf $pkg.tar -C $P install/doinst.sh
-  touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi
