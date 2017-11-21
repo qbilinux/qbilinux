@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase=freetype
-vers=2.7.1
+vers=2.8.1
 url="http://downloads.sourceforge.net/freetype/freetype-${vers}.tar.bz2"
 verify=$url.sig
 arch=`uname -m`
@@ -9,7 +9,7 @@ build=P0m1
 src=${pkgbase}-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='ChangeLog ChangeLog.20 ChangeLog.21 ChangeLog.22 ChangeLog.23 README README.git'
-patchfiles='freetype-2.7.1-enable-spr.patch freetype-2.7.1-enable-valid.patch CVE-2017-8105.patch CVE-2017-8287.patch'
+patchfiles='freetype-2.7.1-enable-spr.patch freetype-2.7.1-enable-valid.patch'
 no_apply_patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
@@ -141,8 +141,8 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $verify ; do
     case ${i##*.} in
-    asc) gpg2 --verify ${i##*/} ;;
-    sig) gpg2 --verify ${i##*/} ;;
+    asc) gpg --verify ${i##*/} ;;
+    sig) gpg --verify ${i##*/} ;;
     sha256sum) verify_checksum "sha256sum" ;;
     esac
     if [ $? -ne 0 ]; then
