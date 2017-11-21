@@ -11,7 +11,7 @@ OPT_CONFIG="--enable-kernel=2.6.32 --enable-obsolete-rpc"
 DOCS="BUGS CONFORMANCE COPYING* ChangeLog* INSTALL LICENSES NEWS
     PROJECTS README"
 compress=txz
-patchfiles='glibc-2.19-fhs-1.patch'
+patchfiles='glibc-2.19-fhs-1.patch 0005-fix-binutils-2-29-build.patch'
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
