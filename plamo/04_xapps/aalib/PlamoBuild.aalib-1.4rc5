@@ -1,13 +1,13 @@
 #!/bin/sh
 
 ######################################################################
-url="http://jaist.dl.sourceforge.net/sourceforge/aa-project/aalib-1.4rc4.tar.gz"
 pkgbase=aalib
-vers=1.4rc4
+vers=1.4rc5
+url="http://jaist.dl.sourceforge.net/sourceforge/aa-project/aalib-${vers}.tar.gz"
 arch=`uname -m`
-build=P1m1
+build=P0m1
 src=$pkgbase-1.4.0
-OPT_CONFIG="--disable-static"
+OPT_CONFIG="--disable-static --enable-shared"
 DOCS="README AUTHORS COPYING ChangeLog INSTALL NEWS README.OS2 ANNOUNCE"
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
