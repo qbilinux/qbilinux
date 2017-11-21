@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=gnuplot
-vers=5.2rc1
-url="https://sourceforge.net/projects/gnuplot/files/gnuplot/5.2%20release%20candidates/gnuplot-5.2.rc1.tar.gz"
+vers=5.2.2
+url="https://sourceforge.net/projects/gnuplot/files/gnuplot/${vers}/gnuplot-${vers}.tar.gz"
 arch=`uname -m`
 build=P0m1
-src=gnuplot-5.2.rc1
+src=gnuplot-${vers}
 OPT_CONFIG="--enable-qt --enable-thin-splines --enable-backwards-compatibility
     --with-texdir=/opt/texlive/texmf-local/gnuplot --with-lasergnu
     --with-plot"
