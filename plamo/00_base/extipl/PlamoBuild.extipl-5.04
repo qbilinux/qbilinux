@@ -5,10 +5,9 @@ pkgbase=extipl
 vers=5.04
 url="http://jaist.dl.sourceforge.jp/extipl/2166/extipl-${vers}.tar.gz
     ftp://plamo.linet.gr.jp/pub/Plamo-src.new/plamo/00_base/extipl/extipl-5.04-syscall.patch.gz
-    ftp://plamo.linet.gr.jp/pub/Plamo-src.new/plamo/00_base/extipl/extipl-5.04-x86_64.patch.gz
-    http://jaist.dl.sourceforge.net/sourceforge/nasm/nasm-0.98.38.tar.bz2"
+    ftp://plamo.linet.gr.jp/pub/Plamo-src.new/plamo/00_base/extipl/extipl-5.04-x86_64.patch.gz"
 arch=`uname -m`
-build=P4m1
+build=P4m2
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="`echo doc/{English,Japanese}/{extipl,scorpius,techical}.txt`
@@ -185,11 +184,6 @@ if [ $opt_config -eq 1 ] ; then
   else
     gunzip -c $W/extipl-5.04-x86_64.patch.gz | patch -Np1 -i -
   fi
-  mkdir -p $W/nasm/{bin,man/man1}
-  cd $W/nasm-0.98.38
-  ./configure --prefix=$W/nasm
-  make install
-  PATH="$W/nasm/bin:$PATH"
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
