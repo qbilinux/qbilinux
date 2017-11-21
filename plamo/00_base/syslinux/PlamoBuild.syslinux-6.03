@@ -6,10 +6,9 @@ vers=6.03
 url="https://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-${vers}.tar.xz
     http://git.yoctoproject.org/cgit.cgi/poky/plain/meta/recipes-devtools/syslinux/syslinux/syslinux-fix-parallel-building-issue.patch
     http://git.yoctoproject.org/cgit.cgi/poky/plain/meta/recipes-devtools/syslinux/syslinux/syslinux-libupload-depend-lib.patch
-    http://git.yoctoproject.org/cgit.cgi/poky/plain/meta/recipes-devtools/syslinux/syslinux/syslinux-remove-clean-script.patch
-    http://www.nasm.us/pub/nasm/releasebuilds/2.11.08/nasm-2.11.08.tar.xz"
+    http://git.yoctoproject.org/cgit.cgi/poky/plain/meta/recipes-devtools/syslinux/syslinux/syslinux-remove-clean-script.patch"
 arch=`uname -m`
-build=P2m1
+build=P2m2
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="COPYING NEWS README"
@@ -180,10 +179,6 @@ if [ $opt_config -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     if [ -d ${B[$i]} ] ; then rm -rf ${B[$i]} ; fi ; cp -a ${S[$i]} ${B[$i]}
   done
-  cd $W/nasm-2.11.08
-  ./configure --prefix=$W/nasm
-  make install
-  PATH="$W/nasm/bin:$PATH"
   cd $B
   patch -Np1 -i $W/syslinux-fix-parallel-building-issue.patch
   patch -Np1 -i $W/syslinux-libupload-depend-lib.patch
