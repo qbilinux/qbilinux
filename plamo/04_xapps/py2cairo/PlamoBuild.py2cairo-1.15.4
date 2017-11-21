@@ -1,13 +1,13 @@
 #!/bin/sh
 ##############################################################
-url='http://cairographics.org/releases/py2cairo-1.10.0.tar.bz2'
 pkgbase=py2cairo
-vers=1.10.0
+vers=1.15.4
+url="https://github.com/pygobject/pycairo/releases/download/v1.15.4/pycairo-1.15.4.tar.gz"
 arch=`uname -m`
-build=P1m1
-src=py2cairo-1.10.0
+build=P0m1
+src=pycairo-${vers}
 OPT_CONFIG=''
-DOCS='AUTHORS COPYING COPYING-LGPL-2.1 COPYING-MPL-1.1 INSTALL NEWS README'
+DOCS='COPYING COPYING-LGPL-2.1 COPYING-MPL-1.1 NEWS PKG-INFO README.rst'
 patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
@@ -140,28 +140,12 @@ if [ $opt_config -eq 1 ] ; then
     for patch in $patchfiles ; do
        patch -p1 < $W/$patch
     done
-
-    # if [ -f autogen.sh ] ; then
-    #   sh ./autogen.sh
-    # fi
-
-     python_vers=`python --version |& grep " 2."`
-    if [ "$python_vers.x" == "x." ]; then
-	echo "You need python as python2"
-	echo "change link about python"
-	exit
-    fi
-
-    ./waf --prefix=/usr --libdir=/usr/${libdir} configure
-
-
   done
 fi
 if [ $opt_build -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
-    ./waf build
-    
+    python2 setup.py build
   done
 fi
 if [ $opt_package -eq 1 ] ; then
@@ -176,8 +160,7 @@ if [ $opt_package -eq 1 ] ; then
   touch $W/i.st ; sleep 1
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
-    ./waf --destdir=$P install
-    
+    python2 setup.py install --optimize=1 --root=$P
   done
 ######################################################################
 # * make install でコピーされないファイルがある場合はここに記述します。
