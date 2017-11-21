@@ -1,39 +1,14 @@
 #!/bin/sh
 ##############################################################
 pkgbase=tiff
-vers=4.0.7
+vers=4.0.8
 url="ftp://download.osgeo.org/libtiff/tiff-${vers}.tar.gz"
 arch=`uname -m`
 build=P0m1
 src=tiff-${vers}
 OPT_CONFIG='--disable-static --with-x  --enable-cxx'
 DOCS='ChangeLog HOWTO-RELEASE README README.vms RELEASE-DATE TODO'
-patchfiles="01-CVE.patch
-02-CVE.patch
-03-CVE.patch
-04-CVE.patch
-05-CVE.patch
-06-CVE.patch
-07-CVE.patch
-08-CVE.patch
-09-CVE.patch
-10-CVE.patch
-11-CVE.patch
-12-CVE.patch
-13-CVE.patch
-14-CVE.patch
-15-TIFFFaxTabEnt_bugfix.patch
-16-CVE-2016-10094.patch
-17-CVE-2017-5225.patch
-18-CVE-2017-7595.patch
-19-CVE-2017-7598.patch
-20-CVE-2017-7596_CVE-2017-7597_CVE-2017-7599_CVE-2017-7600.patch
-21-CVE-2017-7601.patch
-22-CVE-2017-7602.patch
-23-CVE-2017-7592.patch
-24-CVE-2017-7593.patch
-25-CVE-2017-7594_part1.patch
-26-CVE-2017-7594_part2.patch"
+patchfiles=""
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
