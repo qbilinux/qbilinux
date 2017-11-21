@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://ftp.gnome.org/pub/GNOME/sources/pygobject/3.14/pygobject-3.14.0.tar.xz'
 pkgbase=py2gobject3
-vers=3.14.0
+vers=3.26.1
+url="http://ftp.gnome.org/pub/GNOME/sources/pygobject/${vers%.*}/pygobject-${vers}.tar.xz"
 arch=`uname -m`
-build=P1m1
-src=pygobject-3.14.0
+build=P0m1
+src=pygobject-${vers}
 OPT_CONFIG='--with-python=python2 --disable-static'
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS PKG-INFO README'
 patchfiles=''
