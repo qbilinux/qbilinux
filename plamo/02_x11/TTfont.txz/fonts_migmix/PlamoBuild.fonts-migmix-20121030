@@ -123,7 +123,7 @@ if [ $opt_download -eq 1 ] ; then
   if [ -d $src ]; then rm -rf $src ; fi
   mkdir -p $src
   for i in $url ; do
-    unzip ${i##*/} -d $src
+    unzip -o ${i##*/} -d $src
   done
 fi
 
