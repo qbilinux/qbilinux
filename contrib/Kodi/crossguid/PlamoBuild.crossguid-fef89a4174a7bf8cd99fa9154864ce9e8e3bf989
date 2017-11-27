@@ -10,6 +10,7 @@ src=crossguid-${vers}
 OPT_CONFIG=''
 DOCS='LICENSE README.md'
 patchfiles=''
+files='Makefile'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -169,6 +170,7 @@ if [ $opt_patch -eq 1 ] ; then
 ######################################################################
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
+    cp $W/Makefile .
     for patch in $patchfiles ; do
       patch -p1 < $W/$patch
     done
@@ -303,7 +305,7 @@ EOF
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
 
-  for patch in $patchfiles ; do
+  for patch in $patchfiles $files ; do
     cp $W/$patch $docdir/$src/$patch
     gzip_one $docdir/$src/$patch
   done
