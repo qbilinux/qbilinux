@@ -1,15 +1,15 @@
 #!/bin/sh
 ##############################################################
 pkgbase=texlive
-vers=20150521
-url="ftp://tug.org/texlive/historic/2015/texlive-20150521-source.tar.xz"
+vers=20170524
+url="ftp://tug.org/texlive/historic/2017/texlive-20170524-source.tar.xz"
 verify=$url.sha256
 commitid=
 arch=`uname -m`
-build=P2m1
+build=P0m1
 src=texlive-${vers}-source
 #
-PREFIX=/opt/texlive/2015
+PREFIX=/opt/texlive/2017
 TEXARCH=$(uname -m | sed -e 's/i.86/i386/' -e 's/$/-linux/')
 #
 OPT_CONFIG="--prefix=${PREFIX} \
@@ -34,7 +34,7 @@ do
   OPT_CONFIG="$OPT_CONFIG --with-$p"
 done
 DOCS='ChangeLog README README.0overview README.1prerequisites README.2building README.3installing README.4layout README.5configure README.6cross README.7coding'
-patchfiles=''
+patchfiles='texlive-20170524-source-gcc7-1.patch texlive-20170524-source-upstream_fixes-2.patch'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -176,8 +176,8 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $verify ; do
     case ${i##*.} in
-    asc) gpg2 --verify ${i##*/} ;;
-    sig) gpg2 --verify ${i##*/} ;;
+    asc) gpg --verify ${i##*/} ;;
+    sig) gpg --verify ${i##*/} ;;
     sha256sum) verify_checksum "sha256sum" ;;
     esac
     if [ $? -ne 0 ]; then
@@ -212,10 +212,10 @@ if [ $opt_config -eq 1 ] ; then
 ######################################################################
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
-    mkdir texlive-build && cd texlive-build
     for patch in $patchfiles ; do
       patch -p1 < $W/$patch
     done
+    mkdir texlive-build && cd texlive-build
 
     # if [ -f autogen.sh ] ; then
     #   sh ./autogen.sh
