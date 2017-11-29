@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=texlive_texmf
-vers=20150523
+vers=20170524
 url="ftp://tug.org/historic/systems/texlive/${vers:0:4}/texlive-${vers}-texmf.tar.xz"
 arch=noarch
-build=P2m1
+build=P0m1
 src=texlive-${vers}-texmf
-prefix=/opt/texlive/2015
+prefix=/opt/texlive/2017
 OPT_CONFIG=''
 DOCS=''
 PKG1='README ls-R asymptote bibtex chktex context pbibtex psutils scripts source tex tex4ht texconfig texdoc texdoctk ttf2pk xdvi xindy'
@@ -20,6 +20,7 @@ doc/man doc/metapost doc/mex doc/omega doc/otherformats doc/pdftex doc/plain
 doc/pmxchords doc/ptex doc/sjisconv doc/support doc/tetex doc/texdoc doc/texlive
 doc/texworks doc/tpic2pdftex doc/ttf2pk doc/uptex doc/vlna doc/web2c doc/xetex
 doc/xindy'
+patchfiles='texlive-20170524-texmf-upstream_fixes-1.patch'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
