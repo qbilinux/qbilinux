@@ -1,0 +1,18 @@
+--- kservice-5.40.0/autotests/CMakeLists.txt	2017-11-05 17:38:27.000000000 +0900
++++ build/autotests/CMakeLists.txt	2017-11-28 00:50:42.066011904 +0900
+@@ -39,15 +39,6 @@
+ target_link_libraries(fakeplugin KF5::Service)
+ 
+ 
+-# generate new-style and old-style JSON from the .desktop file
+-file(COPY fakeplugin.desktop DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+-file(RENAME ${CMAKE_CURRENT_BINARY_DIR}/fakeplugin.desktop ${CMAKE_CURRENT_BINARY_DIR}/fakeplugin_json_old.desktop)
+-kcoreaddons_desktop_to_json(fakeplugin ${CMAKE_CURRENT_BINARY_DIR}/fakeplugin_json_old.desktop COMPAT_MODE)
+-
+-file(COPY fakeplugin.desktop DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+-file(RENAME ${CMAKE_CURRENT_BINARY_DIR}/fakeplugin.desktop ${CMAKE_CURRENT_BINARY_DIR}/fakeplugin_json_new.desktop)
+-kcoreaddons_desktop_to_json(fakeplugin ${CMAKE_CURRENT_BINARY_DIR}/fakeplugin_json_new.desktop)
+-
+ ######### kmimeassociationstest ########
+ 
+ set(kmimeassociationstest_SRCS kmimeassociationstest.cpp ../src/sycoca/kmimeassociations.cpp ../src/sycoca/sycocadebug.cpp)
