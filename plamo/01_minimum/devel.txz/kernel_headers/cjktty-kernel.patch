@@ -287,8 +287,8 @@ diff -Naur a/drivers/video/console/Makefile b/drivers/video/console/Makefile
  obj-$(CONFIG_SGI_NEWPORT_CONSOLE) += newport_con.o
  obj-$(CONFIG_STI_CONSOLE)         += sticon.o sticore.o
 diff -Naur a/drivers/video/console/bitblit.c b/drivers/video/console/bitblit.c
---- a/drivers/video/console/bitblit.c
-+++ b/drivers/video/console/bitblit.c
+--- a/drivers/video/fbdev/core/bitblit.c
++++ b/drivers/video/fbdev/core/bitblit.c
 @@ -10,6 +10,7 @@
   *  more details.
   */
@@ -405,8 +405,8 @@ diff -Naur a/drivers/video/console/bitblit.c b/drivers/video/console/bitblit.c
  	if (ops->cursor_state.image.data != src ||
  	    ops->cursor_reset) {
 diff -Naur a/drivers/video/console/fbcon.c b/drivers/video/console/fbcon.c
---- a/drivers/video/console/fbcon.c
-+++ b/drivers/video/console/fbcon.c
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
 @@ -102,7 +102,8 @@
     enums.  */
  static int logo_shown = FBCON_LOGO_CANSHOW;
@@ -609,8 +609,8 @@ diff -Naur a/drivers/video/console/fbcon.c b/drivers/video/console/fbcon.c
  				softback_in = softback_curr = p;
  				update_region(vc, vc->vc_origin,
 diff -Naur a/drivers/video/console/fbcon.h b/drivers/video/console/fbcon.h
---- a/drivers/video/console/fbcon.h
-+++ b/drivers/video/console/fbcon.h
+--- a/drivers/video/fbdev/core/fbcon.h
++++ b/drivers/video/fbdev/core/fbcon.h
 @@ -261,5 +261,8 @@
  #define fbcon_set_rotate(x) do {} while(0)
  #endif /* CONFIG_FRAMEBUFFER_CONSOLE_ROTATION */
@@ -621,8 +621,8 @@ diff -Naur a/drivers/video/console/fbcon.h b/drivers/video/console/fbcon.h
  #endif /* _VIDEO_FBCON_H */
  
 diff -Naur a/drivers/video/console/fbcon_ccw.c b/drivers/video/console/fbcon_ccw.c
---- a/drivers/video/console/fbcon_ccw.c
-+++ b/drivers/video/console/fbcon_ccw.c
+--- a/drivers/video/fbdev/core/fbcon_ccw.c
++++ b/drivers/video/fbdev/core/fbcon_ccw.c
 @@ -18,6 +18,8 @@
  #include "fbcon.h"
  #include "fbcon_rotate.h"
@@ -689,8 +689,8 @@ diff -Naur a/drivers/video/console/fbcon_ccw.c b/drivers/video/console/fbcon_ccw
  	if (ops->cursor_state.image.data != src ||
  	    ops->cursor_reset) {
 diff -Naur a/drivers/video/console/fbcon_cw.c b/drivers/video/console/fbcon_cw.c
---- a/drivers/video/console/fbcon_cw.c
-+++ b/drivers/video/console/fbcon_cw.c
+--- a/drivers/video/fbdev/core/fbcon_cw.c
++++ b/drivers/video/fbdev/core/fbcon_cw.c
 @@ -18,6 +18,8 @@
  #include "fbcon.h"
  #include "fbcon_rotate.h"
@@ -753,8 +753,8 @@ diff -Naur a/drivers/video/console/fbcon_cw.c b/drivers/video/console/fbcon_cw.c
  	if (ops->cursor_state.image.data != src ||
  	    ops->cursor_reset) {
 diff -Naur a/drivers/video/console/fbcon_ud.c b/drivers/video/console/fbcon_ud.c
---- a/drivers/video/console/fbcon_ud.c
-+++ b/drivers/video/console/fbcon_ud.c
+--- a/drivers/video/fbdev/core/fbcon_ud.c
++++ b/drivers/video/fbdev/core/fbcon_ud.c
 @@ -18,6 +18,8 @@
  #include "fbcon.h"
  #include "fbcon_rotate.h"
