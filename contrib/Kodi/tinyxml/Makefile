@@ -6,6 +6,7 @@ CXX = g++
 CXXFLAGS = -O3 -Wall -fPIC
 LDFLAGS = -shared
 LIBS = 
+LIBDIR = /usr/lib
 # INSTFLAGS = -s
 INSTFLAGS = 
 
@@ -14,9 +15,9 @@ all: $(OBJS)
 	@echo done.
 
 install: all
-	install -d $(DESTDIR)/usr/include $(DESTDIR)/usr/lib
+	install -d $(DESTDIR)/usr/include $(DESTDIR)$(LIBDIR)
 	install $(INSTFLAGS) $(INCS) $(DESTDIR)/usr/include
-	install $(INSTFLAGS) $(TARGET) $(DESTDIR)/usr/lib
+	install $(INSTFLAGS) $(TARGET) $(DESTDIR)$(LIBDIR)
 
 $(OBJS): $(SRCS) $(INCS)
 	$(CXX) $(CXXFLAGS) $(SRCS) -c

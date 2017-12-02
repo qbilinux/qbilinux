@@ -180,7 +180,7 @@ if [ $opt_package -eq 1 ] ; then
     done
     if [ -f Makefile ] ; then
       export LDFLAGS='-Wl,--as-needed'
-      make install DESTDIR=$P
+      make install DESTDIR=$P LIBDIR=/usr/${libdir}
     fi
   done
 ######################################################################
