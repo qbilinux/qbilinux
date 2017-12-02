@@ -47,11 +47,6 @@ seek_dir () {
 	if [ -f 00.package.log ] ; then
 	    mv 00.package.log 01.package.log
 	fi
-	
-	# rm work build directory
-	if [ $opt_notrm -eq 0 ] ; then
-	    sudo rm -rf build build32 work
-	fi
 
 	# move old package
 	if [ $opt_move -eq 1 ] ; then
@@ -61,16 +56,28 @@ seek_dir () {
 	    if [ ! -d old ] ; then
 		mkdir old
 	    fi
-	    mv -f ${BASE}-*-*-P*.txz old
+	    mv -f ${BASE}-*-*-*.txz old
 	fi
-	
-	# execute
-	if [ $opt_download -eq 1 ] ; then
-	    sh ./$SCN download patch config build |& tee 00.make.log
+	    
+	# only packagin
+	if [ $opt_package -eq 1 ] ; then
+	    touch 00.make.log
+	    sudo sh ./$SCN package |& tee 00.package.log
+
 	else
-	    sh ./$SCN patch config build |& tee 00.make.log
+	    # rm work build directory
+	    if [ $opt_notrm -eq 0 ] ; then
+		sudo rm -rf build build32 work*
+	    fi
+	    
+	    # execute
+	    if [ $opt_download -eq 1 ] ; then
+		sh ./$SCN download patch config build |& tee 00.make.log
+	    else
+		sh ./$SCN patch config build |& tee 00.make.log
+	    fi
+	    sudo sh ./$SCN package |& tee 00.package.log
 	fi
-	sudo sh ./$SCN package |& tee 00.package.log
 
 	# make diff file.
 	if [ -f 01.make.log ] ; then
@@ -87,17 +94,22 @@ seek_dir () {
 	fi
 
 	# install package
-	if [ $opt_install -eq 1 ] ; then
-	    # check error.
-	    # move package file
-	    if [ -f /var/log/packages/${BASE} ] ; then
-		sudo mv /var/log/packages/${BASE} /var/log/packages/${BASE}_pre
-	    fi
-	    # install
-	    sudo installpkg ${BASE}-*-*-P*.txz
-	elif [ $opt_update -eq 1 ] ; then
-	    # install
-	    sudo updatepkg -f ${BASE}-*-*-P*.txz
+	if [ $opt_install -eq 1 ] || [ $opt_update -eq 1 ] ; then
+	    pkg=`ls -1 *.desc`
+	    for i in $pkg ; do
+		pkgname=${pkg%.desc}
+		if [ $opt_install -eq 1 ] ; then
+		    # move package file
+		    if [ -f /var/log/packages/${pkgname} ] ; then
+			sudo mv /var/log/packages/${pkgname} /var/log/packages/${pkgname}_pre
+		    fi
+		    # install
+		    sudo installpkg ${pkgname}-*-*-*.txz
+		elif [ $opt_update -eq 1 ] ; then
+		    # update
+		    sudo updatepkg -f ${pkgname}-*-*-*.txz
+		fi
+	    done
 	fi
 
     else
@@ -108,12 +120,13 @@ seek_dir () {
 }
 
 usage_exit() {
-    echo "usage: $0 [-f] [-c] [-i] [-u] [-d] [-m] [-n] buildscript"
+    echo "usage: $0 [-f] [-c] [-i] [-u] [-d] [-m] [-n] [-p] buildscript"
     echo "\t-d : download."
     echo "\t-f : force build."
     echo "\t-c : error check."
     echo "\t-i : install."
     echo "\t-u : update."
+    echo "\t-p : package only."
     echo "\t-m : move old pkg file to old directory."
     echo "\t-n : not delete work/build dir before build."
     exit 1
@@ -126,7 +139,8 @@ opt_install=0
 opt_update=0
 opt_notrm=0
 opt_move=0
-while getopts fcid OPT
+opt_package=0
+while getopts fcidunmhp OPT
 do
     case $OPT in
 	"d" ) opt_download=1 ;;
@@ -136,6 +150,7 @@ do
 	"u" ) opt_update=1 ;;
 	"n" ) opt_notrm=1 ;;
 	"m" ) opt_move=1 ;;
+	"p" ) opt_package=1 ;;
 	"h" ) usage_exit ;;
     esac
 done
