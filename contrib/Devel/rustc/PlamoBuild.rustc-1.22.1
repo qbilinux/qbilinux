@@ -1,15 +1,16 @@
 #!/bin/sh
 ##############################################################
-pkgbase=cargo
-vers=0.18.0
-url="https://github.com/rust-lang/cargo.git"
-git_tag=${vers}
+pkgbase=rustc
+vers=1.22.1
+url="https://static.rust-lang.org/dist/rustc-${vers}-src.tar.gz"
 commitid=
 arch=`uname -m`
 build=P0m1
-src=cargo
+src=rustc-${vers}-src
 OPT_CONFIG=''
-DOCS='LICENSE-APACHE LICENSE-MIT LICENSE-THIRD-PARTY README.md'
+#OPT_CONFIG='--llvm-root=/usr --enable-llvm-link-shared'
+DOCS='LICENSE-APACHE LICENSE-MIT README.md RELEASES.md'
+#patchfiles='llvm.patch'
 patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
@@ -93,11 +94,9 @@ myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
 
 if [ $arch = "x86_64" ]; then
-  target="-m64"
   libdir="lib64"
   suffix="64"
 else
-  target="-m32"
   libdir="lib"
   suffix=""
 fi
@@ -120,11 +119,10 @@ if [ $opt_download -eq 1 ] ; then
     case ${i##*.} in
     git)
       if [ ! -d `basename ${i##*/} .git` ] ; then
-        git clone --recursive $i
+        git clone $i
       else
         ( cd `basename ${i##*/} .git` ; git pull origin master )
       fi
-      ( cd `basename ${i##*/} .git` ; git checkout ${git_tag} )
       ;;
     *)
       if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
@@ -136,7 +134,7 @@ if [ $opt_download -eq 1 ] ; then
         done
         if [ -f ${i##*/}.$sig ] ; then
           case $sig in
-          asc|sig) gpg2 --verify ${i##*/}.$sig ;;
+          asc|sig) gpg --verify ${i##*/}.$sig ;;
           md5|sha1|sha256) ${sig}sum -c ${i##*/}.$sig ;;
           *) $sig -c ${i##*/}.$sig ;;
           esac
@@ -180,13 +178,17 @@ if [ $opt_config -eq 1 ] ; then
     #   sh ./autogen.sh
     # fi
 
-    if [ -x configure ] ; then
-      export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
-      export LDFLAGS='-Wl,--as-needed' 
-      export CFLAGS="-I /usr/include $target" 
-      export CPPFLAGS="-I /usr/include $target "
-      ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
-    fi
+cat <<EOF > config.toml
+[build]
+# install cargo as well as rust
+extended = true
+
+[install]
+prefix = "/usr"
+libdir = "${libdir}"
+docdir = "share/doc/rustc-1.21.0"
+EOF
+
     if [ $? != 0 ]; then
       echo "configure error. $0 script stop"
       exit 255
@@ -196,10 +198,7 @@ fi
 if [ $opt_build -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
-    if [ -f Makefile ] ; then
-      export LDFLAGS='-Wl,--as-needed'
-      make -j3
-    fi
+    python3 ./x.py build -j 10
     if [ $? != 0 ]; then
       echo "make error. $0 script stop"
       exit 255
@@ -221,10 +220,7 @@ if [ $opt_package -eq 1 ] ; then
     for mk in `find . -name "[Mm]akefile" ` ; do
       sed -i -e 's|GCONFTOOL = /usr/bin/gconftool-2|GCONFTOOL = echo|' $mk
     done
-    if [ -f Makefile ] ; then
-      export LDFLAGS='-Wl,--as-needed'
-      make install DESTDIR=$P
-    fi
+    env DESTDIR=$P python3 ./x.py install
     if [ $? != 0 ]; then
       echo "make install error. $0 script stop"
       exit 255
