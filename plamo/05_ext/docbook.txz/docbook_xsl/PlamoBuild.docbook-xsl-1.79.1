@@ -8,7 +8,7 @@ arch=noarch
 build=P0m1
 src=docbook-xsl-1.79.1
 OPT_CONFIG=''
-DOCS='AUTHORS COPYING INSTALL NEWS NEWS.html NEWS.xml README RELEASE-NOTES.html RELEASE-NOTES.pdf RELEASE-NOTES.txt RELEASE-NOTES.xml TODO'
+DOCS='AUTHORS BUGS COPYING INSTALL NEWS NEWS.html NEWS.xml README RELEASE-NOTES.html RELEASE-NOTES.txt RELEASE-NOTES.xml TODO'
 patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
@@ -236,15 +236,21 @@ if [ $opt_package -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
 
-    install -v -m755 -d $P/usr/share/xml/docbook/xsl-stylesheets-1.79.1 
-    cp -v -R VERSION common eclipse epub extensions fo highlighting html \
-        htmlhelp images javahelp lib manpages params profiling \
-        roundtrip slides template tests tools webhelp website \
-        xhtml xhtml-1_1 \
-	$P/usr/share/xml/docbook/xsl-stylesheets-1.79.1 
+    install -v -m755 -d $P/usr/share/xml/docbook/xsl-stylesheets-1.79.1
 
-    install -v -m644 -D README  $P/usr/share/doc/docbook-xsl-1.79.1/README.XSL 
-    install -v -m755    RELEASE-NOTES* NEWS*  $P/usr/share/doc/docbook-xsl-1.79.1
+    cp -v -R VERSION assembly common eclipse epub epub3 extensions fo        \
+       highlighting html htmlhelp images javahelp lib manpages params  \
+       profiling roundtrip slides template tests tools webhelp website \
+       xhtml xhtml-1_1 xhtml5                                          \
+       $P/usr/share/xml/docbook/xsl-stylesheets-1.79.1
+
+    install -v -m644 VERSION $P/usr/share/xml/docbook/xsl-stylesheets-1.79.1/VERSION.xsl
+
+    install -v -m644 -D README \
+            $P/usr/share/doc/docbook-xsl-1.79.1/README.txt
+    install -v -m644    RELEASE-NOTES* NEWS* \
+            $P/usr/share/doc/docbook-xsl-1.79.1
+    
     cp -v -R doc/* $P/usr/share/doc/docbook-xsl-1.79.1
 
     chk_me=`whoami | grep root`
