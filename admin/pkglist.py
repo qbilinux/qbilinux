@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python2
 # -*- coding: euc-jp -*-
 
 import os, pickle
@@ -8,16 +8,16 @@ args=sys.argv
 argc=len(args)
 
 if (argc != 2):
-    print "Script to create allpkgs.pickle for get_pkginfo.py"
-    print ""
-    print "Usage: "+args[0]+" topdir"
-    print ""
-    print "   ex) "+args[0]+" Plamo-6.x/"
-    print ""
+    print("Script to create allpkgs.pickle for get_pkginfo.py")
+    print("")
+    print("Usage: "+args[0]+" topdir")
+    print("")
+    print("   ex) "+args[0]+" Plamo-6.x/")
+    print("")
     quit()
 
 basedir = args[1] + '/'
-archdir = ('x86/', 'x86_64/')
+archdir = ('x86/', 'x86_64/', 'arm/')
 channel = ('plamo', 'contrib')
 
 '''
