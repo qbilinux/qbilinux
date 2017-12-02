@@ -1,0 +1,22 @@
+--- xbmc-17.6-Krypton/tools/depends/native/TexturePacker/Makefile	2017-11-15 01:55:01.000000000 +0900
++++ build/tools/depends/native/TexturePacker/Makefile	2017-12-03 00:48:13.914501683 +0900
+@@ -9,16 +9,16 @@
+ 
+ ifeq ($(NATIVEPLATFORM),)
+   PLATFORM = native
+-  EXTRA_CONFIGURE = --enable-static
++  EXTRA_CONFIGURE =
+ else
+   PLATFORM = $(NATIVEPLATFORM)
+ endif
+ 
+ ifeq ($(NATIVE_OS), linux)
+-  EXTRA_CONFIGURE = --enable-static
++  EXTRA_CONFIGURE =
+ endif
+ ifeq ($(NATIVE_OS), android)
+-  EXTRA_CONFIGURE = --enable-static
++  EXTRA_CONFIGURE =
+ endif
+ 
+ ifeq ($(CORE_SOURCE_DIR),)

@@ -1,15 +1,15 @@
 #!/bin/sh
 ##############################################################
 pkgbase=kodi
-vers=17.5
-url='https://github.com/xbmc/xbmc/archive/17.5-Krypton.tar.gz'
+vers=17.6
+url="https://github.com/xbmc/xbmc/archive/${vers}-Krypton.tar.gz"
 commitid=
 arch=`uname -m`
 build=P0m1
 src=xbmc-${vers}-Krypton
 OPT_CONFIG='--disable-mysql'
 DOCS='LICENSE.GPL README.md copying.txt privacy-policy.txt version.txt'
-patchfiles=''
+patchfiles='patch-aa'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
