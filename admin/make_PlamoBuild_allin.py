@@ -4,26 +4,28 @@
 import getopt, sys, os, tarfile
 
 def usage():
-    print "Usage:"
-    print sys.argv[0],": make PlamoBuild script for archive file or source tree(directory","\n"
-    print sys.argv[0],"[-hv] [-t type] <archive_file | directory>"
-    print "          -h, --help : help(show this message)"
-    print "          -v, --verbose : verbose(not implemented yet)"
-    print "          -u, --url= : source code url(need citation)"
-    print "          -t, --type= : select script type. Script types are follows:"
-    print "                KDE : for KDE package(set --prefix to /opt/kde)"
-    print "                  otherwise --prefix is /usr"
-    print "  archive_file is a source archive in tar.gz or tar.bz2 format"
-    print "  directory is a source code directory"
-
-    print " example: ", sys.argv[0], "myprogs.tar.bz2"
-    print "          ", sys.argv[0], "mycode_directory"
+    print("Usage:")
+    print(sys.argv[0],": make PlamoBuild script for archive file or source tree (directory)")
+    print(sys.argv[0],"[-hv] [-t type] <archive_file | directory>")
+    print("")
+    print("          -h, --help : help (show this message)")
+    print("          -v, --verbose : verbose (not implemented yet)")
+    print("          -u, --url= : source code url (need citation)")
+    print("          -p, --prefix= : set prefix directorey. (default is /usr)")
+    print("          -t, --type= : select script type. Script types are follows:")
+    print("                cmake : using cmake")
+    print("                  otherwise using configure")
+    print("  archive_file is a source archive in tar.gz or tar.bz2 format")
+    print("  directory is a source code directory")
+    print("")
+    print(" example: ", sys.argv[0], "myprogs.tar.bz2")
+    print("          ", sys.argv[0], "mycode_directory")
 
     sys.exit(2)
 
 def get_parms():
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "hvt:u:", ["help", "verbose", "type=", "url="])
+        opts, args = getopt.getopt(sys.argv[1:], "hvt:u:p:", ["help", "verbose", "type=", "url=", "prefix="])
     except getopt.GetoptError:
         usage()
         sys.exit(2)
@@ -39,7 +41,7 @@ def tar_expand(archive):
 def tar_top(archive):
     tar = tarfile.open(archive, 'r')
     (dirname, trash) = archive.split('.tar')
-    print "in tar_top, dirname = ", dirname
+    print("in tar_top, dirname = ", dirname)
     tarlist = []
     for i in tar:
         tarlist.append(i.name)
@@ -186,22 +188,21 @@ myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
 
 if [ $arch = "x86_64" ]; then
-  target="-m64"
   libdir="lib64"
   suffix="64"
 else
-  target="-m32"
   libdir="lib"
   suffix=""
 fi
 
 if [ $# -eq 0 ] ; then
-  opt_download=0 ; opt_config=1 ; opt_build=1 ; opt_package=1
+  opt_download=0 ; opt_patch=1 ; opt_config=1 ; opt_build=1 ; opt_package=1
 else
-  opt_download=0 ; opt_config=0 ; opt_build=0 ; opt_package=0
+  opt_download=0 ; opt_patch=0 ; opt_config=0 ; opt_build=0 ; opt_package=0
   for i in $@ ; do
     case $i in
     download) opt_download=1 ;;
+    patch) opt_patch=1 ;;
     config) opt_config=1 ;;
     build) opt_build=1 ;;
     package) opt_package=1 ;;
@@ -228,7 +229,7 @@ if [ $opt_download -eq 1 ] ; then
         done
         if [ -f ${i##*/}.$sig ] ; then
           case $sig in
-          asc|sig) gpg2 --verify ${i##*/}.$sig ;;
+          asc|sig) gpg --verify ${i##*/}.$sig ;;
           md5|sha1|sha256) ${sig}sum -c ${i##*/}.$sig ;;
           *) $sig -c ${i##*/}.$sig ;;
           esac
@@ -253,13 +254,8 @@ if [ $opt_download -eq 1 ] ; then
     esac
   done
 fi
-'''
-    return body
 
-def make_config(type):
-    if type == "usr":
-        config = '''
-if [ $opt_config -eq 1 ] ; then
+if [ $opt_patch -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     if [ -d ${B[$i]} ] ; then rm -rf ${B[$i]} ; fi ; cp -a ${S[$i]} ${B[$i]}
   done
@@ -272,6 +268,17 @@ if [ $opt_config -eq 1 ] ; then
     for patch in $patchfiles ; do
       patch -p1 < $W/$patch
     done
+  done
+fi
+'''
+    return body
+
+def make_config(type, instdir):
+    if type == "config":
+        config = '''
+if [ $opt_config -eq 1 ] ; then
+  for i in `seq 0 $((${#B[@]} - 1))` ; do
+    cd ${B[$i]}
 
     # if [ -f autogen.sh ] ; then
     #   sh ./autogen.sh
@@ -280,37 +287,18 @@ if [ $opt_config -eq 1 ] ; then
     if [ -x configure ] ; then
       export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
       export LDFLAGS='-Wl,--as-needed' 
-      export CFLAGS="-I /usr/include $target" 
-      export CPPFLAGS="-I /usr/include $target "
-      ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
-    fi'''
-    elif type == "KDE":
+      ./configure --prefix=%s --libdir=%s/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
+    fi''' % (instdir, instdir)
+    elif type == "cmake":
         config = '''
 if [ $opt_config -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
-    if [ -d ${B[$i]} ] ; then rm -rf ${B[$i]} ; fi ; mkdir -p ${B[$i]}
-  done
-######################################################################
-# * ./configure を行う前に適用したい設定やパッチなどがある場合はここに
-#   記述します。
-######################################################################
-  for i in `seq 0 $((${#S[@]} - 1))` ; do
-    cd $S
-    for patch in $patchfiles ; do
-      if [ ! -f ".$patch" ]; then
-        patch -p1 < $W/$patch
-        touch ".$patch"
-      fi
-    done
-
-    cd $B
+    cd ${B[$i]}
     if [ -f $S/CMakeLists.txt ]; then
       export PKG_CONFIG_PATH=/opt/kde/${libdir}/pkgconfig:/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
       export LDFLAGS='-Wl,--as-needed' 
-      export CC="gcc -I /usr/include $target" 
-      export CXX="g++ -I /usr/include $target"
-      cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/kde -DLIB_INSTALL_DIR:PATH=/opt/kde/${libdir} -DLIB_SUFFIX=$suffix ${OPT_CONFIG} $S
-    fi'''
+      cmake -DCMAKE_INSTALL_PREFIX:PATH=%s -DLIB_INSTALL_DIR:PATH=%s/${libdir} -DLIB_SUFFIX=$suffix ${OPT_CONFIG} .
+    fi''' % (instdir, instdir)
 
     return config
 
@@ -327,7 +315,7 @@ if [ $opt_build -eq 1 ] ; then
     cd ${B[$i]}
     if [ -f Makefile ] ; then
       export LDFLAGS='-Wl,--as-needed'
-      make -j3
+      make
     fi
     if [ $? != 0 ]; then
       echo "make error. $0 script stop"
@@ -344,7 +332,6 @@ if [ $opt_package -eq 1 ] ; then
   fi
   if [ -d $P ] ; then rm -rf $P ; fi ; mkdir -p $P
   if [ -d $C ] ; then rm -rf $C ; fi ; mkdir -p $C
-  touch $W/i.st ; sleep 1
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     for mk in `find . -name "[Mm]akefile" ` ; do
@@ -467,13 +454,25 @@ fi
 '''
     return body
 
+def make_desc(pkgname):
+    header = '''%s & y & y & y & y
+&
+%s
+&
+&
+%s
+&
+''' % (pkgname, pkgname, pkgname)
+    return header
+
 ###########
 
 def main():
     opts, filelist = get_parms()
 
     verbose = False
-    type = "usr"
+    type = "config"
+    instdir = "/usr"
     url = "'input sourcecode url here'"
     for o, a in opts:
         if o == "-v":
@@ -482,6 +481,8 @@ def main():
             usage()
         elif o in ("-t", "--type"):
             type = a
+        elif o in ("-p", "--prefix"):
+            instdir = a
         elif o in ("-u", "--url"):
             url = "'" + a + "'"
 
@@ -490,12 +491,12 @@ def main():
     if file.find('.tar') >= 0:
         archive = os.path.basename(file)
         if verbose == True:
-            print "unpacking :", archive
+            print("unpacking :", archive)
         tar_expand(archive)
 
 # tmpname = tar_top(archive)
         (dirname, trash) = archive.split('.tar')
-        print "dirname = ", dirname
+        print("dirname = ", dirname)
     elif os.path.isdir(file) == True:
         dirname = file
     elif len(sys.argv) == 1:
@@ -507,7 +508,7 @@ def main():
             tar_expand(archive)
             (dirname, trash) = archive.split('.tar')
             if verbose == True:
-                print "dirname = ", dirname
+                print("dirname = ", dirname)
         else:
             usage()
 
@@ -515,30 +516,30 @@ def main():
     vers = listparts[-1]
 
     if verbose == True:
-        print "version:", vers
+        print("version:", vers)
 
     fileparts = listparts[0:len(listparts)-1]
     filename = '-'.join(fileparts)
     pkgname = filename.replace('-', '_')
 
     if verbose == True:
-        print "filename, pkgname:", filename, pkgname
+        print("filename, pkgname:", filename, pkgname)
 
 # newfiles = os.listdir(dirname)
     READMEs = get_readmes(os.listdir(dirname))
     patches = get_patchfiles(os.listdir(os.getcwd()))
     if verbose == True:
-        print "patches:", patches
+        print("patches:", patches)
 
    # url = 'ftp://ftp.kddlabs.co.jp/pub/GNOME/desktop/2.26/2.26.2/sources/'+filename+'-'+vers+'.tar.bz2'
     header = make_headers(url, filename, vers, READMEs, patches)
     body1 = make_body1()
-    config = make_config(type)
+    config = make_config(type, instdir)
     body2 = make_body2()
     body = body1 + config + body2
 
     scriptname = 'PlamoBuild.' + dirname
-    print "making %s ..." % scriptname
+    print("making %s ..." % scriptname)
 
     out = open(scriptname, 'w')
     out.write(header)
@@ -547,6 +548,16 @@ def main():
 
     os.chmod(scriptname, 0o755)
 
+    # making desc file
+    
+    scriptname = pkgname + '.desc'
+    print("making %s ..." % scriptname)
+
+    out = open(scriptname, 'w')
+    out.write(make_desc(pkgname))
+    out.close()
+
+    
 #for i in dt.splitlines():
 #    print i
 
