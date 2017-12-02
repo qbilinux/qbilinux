@@ -3,16 +3,15 @@
 ######################################################################
 #url="https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.12.2.tar.xz
 #    git://github.com/sfjro/aufs4-standalone.git"
-version=4.13.12
+version=4.14.2
 url="https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-${version}.tar.xz 
 	git://github.com/sfjro/aufs4-standalone.git"
 pkgbase=kernel
 arch=`uname -m`
 build=P0m1
 src=linux-${version}
-#patchfiles="vd_unicon-kernel-20170609-4.11.patch vd_unicon-kernel-fonts-20140614.patch overlayfs-allow_unprivileged_mounts.patch"
 patchfiles="cjktty-kernel.patch cjktty-kernel-font-JP.patch overlayfs-allow_unprivileged_mounts.patch"
-#patchfiles=""
+patchfiles_not_used="vd_unicon-kernel-20170609-4.11.patch vd_unicon-kernel-fonts-20140614.patch cjktty-kernel-font.patch"
 configfile64="config-${version%.*}-plamo64"
 configfile32="config-${version%.*}-plamoSMP"
 if [ $arch = "x86_64" ]; then
@@ -22,8 +21,8 @@ else
     vers=${version}_plamoSMP
     configfile=$configfile32
 fi
-aufs_vers=4.13
-aufs_git_vers=28589f8
+aufs_vers=4.14
+aufs_git_vers=bf518fb574cee10c6112f0e9ca5c67b277426630
 OPT_CONFIG=""
 DOCS=""
 compress=txz
@@ -176,7 +175,12 @@ fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
     case ${i##*.} in
-    git) if [ ! -d `basename ${i##*/} .git` ] ; then git clone $i ; fi ;;
+	git) if [ ! -d `basename ${i##*/} .git` ] ; then
+		 git clone $i
+	     else
+		 (cd `basename ${i##*/} .git`; git pull)
+	     fi
+	     ;;
     *)
       if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
       if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
@@ -320,7 +324,7 @@ if [ $opt_package -eq 1 ] ; then
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
-  for patch in $patchfiles ; do
+  for patch in $patchfiles $patchfiles_not_used ; do
       cp $W/$patch $docdir/$src/$patch
       gzip_one $docdir/$src/$patch
   done
