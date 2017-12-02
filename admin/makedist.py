@@ -97,6 +97,7 @@ for file in fild_all_files(args[1]):
         out.write('\n')
         f.close()
         for i in desclist:
+            print(i)
             f = codecs.open(i, 'r', 'euc-jp')
             out.write(f.read())
             out.write('\n')
