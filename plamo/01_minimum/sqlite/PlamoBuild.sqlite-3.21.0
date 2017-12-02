@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
 pkgbase=sqlite
-vers=3.20.1
-url="http://sqlite.org/2017/sqlite-autoconf-3200100.tar.gz"
+vers=3.21.0
+url="http://sqlite.org/2017/sqlite-autoconf-3210000.tar.gz"
 arch=`uname -m`
 build=P0m1
-src=sqlite-autoconf-3200100
+src=sqlite-autoconf-3210000
 # SQLITE_SECURE_DELETE を定義する必要あり (firefox/thunderbird)．
 # --enable-threadsafe で有効になるのかな?
-OPT_CONFIG='--disable-static --enable-threadsafe --enable-readline --enable-dynamic-extensions'
+OPT_CONFIG='--disable-static --enable-threadsafe --enable-readline --enable-dynamic-extensions --enable-fts5'
 DOCS='INSTALL README.txt'
 patchfiles=''
 compress=txz
@@ -211,7 +211,7 @@ if [ $opt_config -eq 1 ] ; then
     if [ -x configure ] ; then
        export PKG_CONFIG_PATH=/usr/X11R7/${libdir}/pkgconfig:/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
        export LDFLAGS='-Wl,--as-needed' 
-       export CFLAGS="-g -O2 -DSQLITE_ENABLE_FTS3=1 -DSQLITE_SECURE_DELETE=1 -DSQLITE_ENABLE_UNLOCK_NOTIFY=1 -DSQLITE_ENABLE_COLUMN_METADATA=1 -DSQLITE_ENABLE_DBSTAT_VTAB=1"
+       export CFLAGS="-g -O2 -DSQLITE_ENABLE_FTS4=1 -DSQLITE_ENABLE_UNLOCK_NOTIFY=1 -DSQLITE_ENABLE_COLUMN_METADATA=1 -DSQLITE_ENABLE_DBSTAT_VTAB=1 -DSQLITE_SECURE_DELETE=1"
        ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
       if [ $? != 0 ]; then
 	  echo "configure error. $0 script stop"
@@ -225,7 +225,7 @@ if [ $opt_build -eq 1 ] ; then
     cd ${B[$i]}
     if [ -f Makefile ] ; then
       export LDFLAGS='-Wl,--as-needed'
-      CFLAGS="-g -O2 -DSQLITE_ENABLE_FTS3=1 -DSQLITE_SECURE_DELETE=1 -DSQLITE_ENABLE_UNLOCK_NOTIFY=1 -DSQLITE_ENABLE_COLUMN_METADATA=1" make
+      CFLAGS="-g -O2 -DSQLITE_ENABLE_FTS4=1 -DSQLITE_ENABLE_UNLOCK_NOTIFY=1 -DSQLITE_ENABLE_COLUMN_METADATA=1 -DSQLITE_ENABLE_DBSTAT_VTAB=1 -DSQLITE_SECURE_DELETE=1" make
     fi
   done
 fi
