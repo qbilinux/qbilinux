@@ -36,11 +36,11 @@ def init_db(dbname):
 def insert_db(dbname, t):
     conn = sqlite3.connect(dbname)
     try:
-        print "inserting ", t
+        print("inserting ", t)
         conn.execute('insert into depends values(?, ?, ?, ?)', t)
         conn.commit()
     except sqlite3.Error, e:
-        print "An error occurred:", e.args[0]
+        print("An error occurred:", e.args[0])
         conn.rollback()
 
 def get_elfs(path):
