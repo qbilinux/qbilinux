@@ -6,9 +6,9 @@ vers=2.1.3_rc5
 arch=`uname -m`
 build=P1m1
 src=ftgl-2.1.3~rc5
-OPT_CONFIG='--disable-static'
+OPT_CONFIG='--disable-static --disable-doc'
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README TODO'
-patchfiles='fix_link_error_in_demo.patch'
+patchfiles='fix_link_error_in_demo.patch no-broken-pdflatex.patch'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -141,9 +141,9 @@ if [ $opt_config -eq 1 ] ; then
        patch -p1 < $W/$patch
     done
 
-    # if [ -f autogen.sh ] ; then
-    #   sh ./autogen.sh
-    # fi
+    if [ -f autogen.sh ] ; then
+      sh ./autogen.sh
+    fi
 
       if [ -x configure ] ; then
          export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
