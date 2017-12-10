@@ -250,7 +250,7 @@ if [ $opt_package -eq 1 ] ; then
       make install DESTDIR=$P
     fi
   done
-  ln -s gpg2 $P/usr/bin/gpg
+  ln -s gpg $P/usr/bin/gpg
   touch $W/i.et
   cd $W
   find $P ! -type l -newer i.st ! -newer i.et \
