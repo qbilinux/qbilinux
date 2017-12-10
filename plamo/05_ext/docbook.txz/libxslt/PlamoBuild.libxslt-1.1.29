@@ -184,7 +184,7 @@ if [ $opt_download -eq 1 ] ; then
       done
       if [ -f ${i##*/}.$sig ] ; then
         case $sig in
-        asc|sig) gpg2 --verify ${i##*/}.$sig ;;
+        asc|sig) gpg --verify ${i##*/}.$sig ;;
         md5|sha1|sha256) ${sig}sum -c ${i##*/}.$sig ;;
         *) $sig -c ${i##*/}.$sig ;;
         esac
