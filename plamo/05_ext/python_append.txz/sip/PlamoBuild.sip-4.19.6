@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://downloads.sourceforge.net/project/pyqt/sip/sip-4.16.1/sip-4.16.1.tar.gz'
 pkgbase=sip
-vers=4.16.1
+vers=4.19.6
+url="http://downloads.sourceforge.net/project/pyqt/sip/sip-${vers}/sip-${vers}.tar.gz"
 arch=`uname -m`
-build=P1m1
-src=sip-4.16.1
+build=P0m1
+src=sip-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='LICENSE LICENSE-GPL2 LICENSE-GPL3 NEWS README'
 patchfiles=''
@@ -209,7 +209,7 @@ if [ $opt_config -eq 1 ] ; then
     export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
     export CC="/usr/bin/gcc"
     export CXX="/usr/bin/g++"
-    python ./configure.py
+    python3 ./configure.py
 
     if [ $? != 0 ]; then
 	echo "configure error. $0 script stop"
