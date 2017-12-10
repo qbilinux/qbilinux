@@ -175,7 +175,7 @@ if [ $opt_download -eq 1 ] ; then
     case ${i##*/} in
     mf2tsrc.zip) (
       mkdir $S ; cd $S
-      unzip $W/${i##*/}
+      unzip -o $W/${i##*/}
       touch -t 199604042125.35 $S
       ) ;;
     esac
