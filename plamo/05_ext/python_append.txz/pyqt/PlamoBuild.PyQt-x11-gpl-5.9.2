@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='https://sourceforge.net/projects/pyqt/files/PyQt4/PyQt-4.11.2/PyQt-x11-gpl-4.11.2.tar.gz'
 pkgbase=pyqt
-vers=4.11.2
+vers=5.9.2
+url="https://sourceforge.net/projects/pyqt/files/PyQt5/PyQt-${vers}/PyQt5_gpl-${vers}.tar.gz"
 arch=`uname -m`
-build=P1m1
-src=PyQt-x11-gpl-4.11.2
+build=P0m1
+src=PyQt5_gpl-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='GPL_EXCEPTION.TXT GPL_EXCEPTION_ADDENDUM.TXT LICENSE.GPL2 LICENSE.GPL3 NEWS OPENSOURCE-NOTICE.TXT README THANKS'
 patchfiles=''
