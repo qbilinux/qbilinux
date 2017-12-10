@@ -10,6 +10,7 @@ build=P1m1
 src=youtube-dl
 OPT_CONFIG=""
 DOCS="LICENSE"
+patchfiles='makefile.diff'
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -187,6 +188,9 @@ if [ $opt_config -eq 1 ] ; then
   done
   cd $B
   gunzip -c $W/youtube-dl-unsafe2safe.patch.gz | patch -Np1 -i -
+  for patch in $patchfiles ; do
+      patch -p1 < $W/$patch
+  done
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
@@ -247,6 +251,10 @@ if [ $opt_package -eq 1 ] ; then
       ln $docdir/$src/$myname.gz $docdir/${src[$i]}
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
+  done
+  for patch in $patchfiles ; do
+    cp $W/$patch $docdir/$src/$patch
+    gzip_one $docdir/$src/$patch
   done
   install -m 644 $B/README.txt $docdir/$src
   touch -t `date '+%m%d0000'` $docdir/$src/README.txt
