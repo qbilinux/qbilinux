@@ -1,8 +1,8 @@
 #!/bin/sh
 ##############################################################
 pkgbase=perl_Module_Build
-vers=0.4220
-url="http://search.cpan.org/CPAN/authors/id/L/LE/LEONT/Module-Build-0.4220.tar.gz"
+vers=0.4224
+url="http://search.cpan.org/CPAN/authors/id/L/LE/LEONT/Module-Build-${vers}.tar.gz"
 arch=`uname -m`
 build=P0m1
 src=Module-Build-${vers}
@@ -182,9 +182,9 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
     esac
   done
 fi
