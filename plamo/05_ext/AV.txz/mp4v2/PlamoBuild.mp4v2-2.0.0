@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
-url='https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/mp4v2/mp4v2-2.0.0.tar.bz2'
 pkgbase=mp4v2
 vers=2.0.0
+url='https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/mp4v2/mp4v2-2.0.0.tar.bz2'
 arch=`uname -m`
-build=P1m1
+build=P1m2
 src=mp4v2-2.0.0
 OPT_CONFIG='--disable-static'
 DOCS='COPYING INSTALL README'
-patchfiles=''
+patchfiles='0004-Pointer_comparison.patch'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
