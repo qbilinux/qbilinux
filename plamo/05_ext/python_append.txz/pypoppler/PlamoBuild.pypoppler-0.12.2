@@ -146,7 +146,7 @@ if [ $opt_config -eq 1 ] ; then
     # fi
 
     if [ -f setup.py ]; then
-        python ./setup.py config        
+        python3 ./setup.py config        
     elif [ -f Makefile.PL ]; then
         perl ./Makefile.PL
     elif [ -x configure ] ; then
