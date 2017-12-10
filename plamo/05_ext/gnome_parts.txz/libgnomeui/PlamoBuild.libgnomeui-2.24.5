@@ -1,14 +1,15 @@
 #!/bin/sh
 
 ######################################################################
-url="http://ftp.gnome.org/pub/GNOME/sources/libgnomeui/2.24/libgnomeui-2.24.5.tar.bz2"
 pkgbase=libgnomeui
 vers=2.24.5
+url="http://ftp.gnome.org/pub/GNOME/sources/libgnomeui/2.24/libgnomeui-2.24.5.tar.bz2"
 arch=`uname -m`
 build=P1m1
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="INSTALL AUTHORS ChangeLog NEWS COPYING.LIB MAINTAINERS README"
+patchfiles='03_glib-2.54-ftbfs.patch'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -184,6 +185,9 @@ if [ $opt_config -eq 1 ] ; then
   done
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
+    for patch in $patchfiles ; do
+      patch -p1 < $W/$patch
+    done
     if [ -f Makefile ] ; then
       make clean
     fi
@@ -242,6 +246,10 @@ if [ $opt_package -eq 1 ] ; then
       ln $docdir/$src/$myname.gz $docdir/${src[$i]}
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
+  done
+  for patch in $patchfiles ; do
+    cp $W/$patch $docdir/$src/$patch
+    gzip_one $docdir/$src/$patch
   done
   cd $P
   /sbin/makepkg ../$pkg.$compress <<EOF
