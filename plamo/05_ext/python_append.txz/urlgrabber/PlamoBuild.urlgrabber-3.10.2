@@ -1,11 +1,11 @@
 #!/bin/sh
 
 ######################################################################
-url="http://urlgrabber.baseurl.org/download/urlgrabber-3.9.1.tar.gz"
 pkgbase=urlgrabber
-vers=3.9.1
+vers=3.10.2
+url="http://urlgrabber.baseurl.org/download/urlgrabber-${vers}.tar.gz"
 arch=`uname -m`
-build=P2m1
+build=P0m1
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="TODO LICENSE README ChangeLog"
@@ -204,7 +204,7 @@ if [ $opt_build -eq 1 ] ; then
       make
     fi
   done
-  python setup.py build
+  python3 setup.py build
 fi
 if [ $opt_package -eq 1 ] ; then
   if [ `id -u` -ne 0 ] ; then
@@ -222,7 +222,7 @@ if [ $opt_package -eq 1 ] ; then
       make install DESTDIR=$P
     fi
   done
-  python setup.py install -O2 --root=$P
+  python3 setup.py install -O2 --root=$P
   touch $P/usr/bin/urlgrabber
   touch $W/i.et
   cd $W
