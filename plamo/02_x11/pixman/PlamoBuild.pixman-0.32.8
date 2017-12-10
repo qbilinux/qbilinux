@@ -152,8 +152,8 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $verify ; do
     case ${i##*.} in
-    asc) gpg2 --verify ${i##*/} ;;
-    sig) gpg2 --verify ${i##*/} ;;
+    asc) gpg --verify ${i##*/} ;;
+    sig) gpg --verify ${i##*/} ;;
     sha1) verify_checksum "sha1sum" ;;
     sha256sum) verify_checksum "sha256sum" ;;
     *) /bin/false ;;
