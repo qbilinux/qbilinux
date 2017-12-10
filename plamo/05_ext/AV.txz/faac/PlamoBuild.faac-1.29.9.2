@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
-url='http://downloads.sourceforge.net/faac/faac-1.28.tar.bz2'
 pkgbase=faac
-vers=1.28
+vers=1.29.9.2
+url="https://sourceforge.net/projects/faac/files/faac-src/faac-1.29/faac-1.29.9.2.tar.gz"
 arch=`uname -m`
-build=P1m1
-src=faac-1.28
+build=P0m1
+src=faac-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README TODO'
-patchfiles='faac-1.28-mpeg4ip.h-patch'
+patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -202,7 +202,6 @@ if [ $opt_config -eq 1 ] ; then
        patch -p1 < $W/$patch
     done
 
-    sed -i -e "s|char *strcasestr(|// char $strcasestr(|" common/mp4v2/mpeg4ip.h
     # if [ -f autogen.sh ] ; then
     #   sh ./autogen.sh
     # fi
