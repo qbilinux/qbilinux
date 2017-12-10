@@ -1,10 +1,10 @@
 #!/bin/sh
 ##############################################################
 pkgbase=pycairo
-vers=1.10.0
-url="http://cairographics.org/releases/pycairo-${vers}.tar.bz2 http://www.linuxfromscratch.org/patches/blfs/8.0/pycairo-1.10.0-waf_unpack-1.patch http://www.linuxfromscratch.org/patches/blfs/8.0/pycairo-1.10.0-waf_python_3_4-1.patch"
+vers=1.15.4
+url="https://github.com/pygobject/pycairo/releases/download/v1.15.4/pycairo-1.15.4.tar.gz"
 arch=`uname -m`
-build=P1m2
+build=P0m1
 src=pycairo-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING COPYING.LESSER INSTALL NEWS README'
@@ -202,21 +202,12 @@ if [ $opt_config -eq 1 ] ; then
     for patch in $patchfiles ; do
        patch -p1 < $W/$patch
     done
-    patch -Np1 -i $W/pycairo-1.10.0-waf_unpack-1.patch
-    wafdir=$(./waf unpack)
-    pushd $wafdir
-    patch -Np1 -i $W/pycairo-1.10.0-waf_python_3_4-1.patch
-    popd
-    unset wafdir
-    PYTHON=/usr/bin/python3 ./waf configure --prefix=/usr --libdir=/usr/${libdir}
-    
   done
 fi
 if [ $opt_build -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
-    ./waf build
-    
+    python3 ./setup.py build
   done
 fi
 if [ $opt_package -eq 1 ] ; then
@@ -234,7 +225,7 @@ if [ $opt_package -eq 1 ] ; then
     for mk in `find . -name "[Mm]akefile" ` ; do
         sed -i -e 's|GCONFTOOL = /usr/bin/gconftool-2|GCONFTOOL = echo|' $mk
     done
-    ./waf --destdir=$P install 
+    python3 ./setup.py install --root $P
     
   done
 ######################################################################
