@@ -1,0 +1,44 @@
+Description: Disable PDF manual as it fails to build with new pdflatex.
+Author: William Grant <wgrant@ubuntu.com>
+Bug-Debian: http://bugs.debian.org/718100
+
+Index: ftgl-2.1.3~rc5/Makefile.am
+===================================================================
+--- ftgl-2.1.3~rc5.orig/Makefile.am	2013-10-16 19:55:34.794798644 +1100
++++ ftgl-2.1.3~rc5/Makefile.am	2013-10-16 19:55:34.786798759 +1100
+@@ -26,16 +26,16 @@
+ 
+ # Print out an informative summary.
+ all-local:
+-	@$(ECHO) "Done."
+-	@$(ECHO)
++	@echo "Done."
++	@echo
+ 	@if test "x$(MAKECMDGOALS)" = "xall-am" -o "x$(.TARGETS)" = "xall-am" -o "x$(MAKECMDGOALS)" = "x" -o "x$(.TARGETS)" = "x" ; then \
+-	  $(ECHO) "---" ;\
+-	  $(ECHO) "Run 'make install' to begin installation into $(prefix)" ;\
++	  echo "---" ;\
++	  echo "Run 'make install' to begin installation into $(prefix)" ;\
+ 	fi
+-	@$(ECHO)
++	@echo
+ 
+ # Upload documentation
+-DOC = docs/html docs/latex/ftgl.pdf
++DOC = docs/html
+ HOST = ftgl.sf.net
+ DIR = /home/groups/f/ft/ftgl/htdocs/
+ upload-doc:
+Index: ftgl-2.1.3~rc5/docs/Makefile.am
+===================================================================
+--- ftgl-2.1.3~rc5.orig/docs/Makefile.am	2013-10-16 19:55:34.794798644 +1100
++++ ftgl-2.1.3~rc5/docs/Makefile.am	2013-10-16 19:55:39.698728147 +1100
+@@ -5,7 +5,7 @@
+ if HAVE_DOXYGEN
+ htmldocdir = $(documentationdir)/html
+ htmldoc_DATA = html/doxygen.css
+-if HAVE_LATEX
++if FALSE
+ pdfdocdir = $(documentationdir)
+ pdfdoc_DATA = latex/ftgl.pdf
+ endif
