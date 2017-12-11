@@ -1,0 +1,10 @@
+--- scim-bridge-0.4.16/agent/scim-bridge-agent-application.cpp.orig	2009-01-18 02:04:20.000000000 +0900
++++ scim-bridge-0.4.16/agent/scim-bridge-agent-application.cpp	2011-08-12 19:30:19.000000000 +0900
+@@ -22,6 +22,7 @@
+ #include <stdlib.h>
+ #include <string.h>
+ #include <unistd.h>
++#include <stdio.h>
+ 
+ #include <iostream>
+ 
