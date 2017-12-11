@@ -1,0 +1,11 @@
+--- lxqt-session-0.12.0/CMakeLists.txt	2017-10-22 04:39:00.000000000 +0900
++++ build32/CMakeLists.txt	2017-11-23 13:08:39.692402122 +0900
+@@ -27,7 +27,7 @@
+ find_package(lxqt REQUIRED)
+ 
+ # Please don't move, must be after lxqt
+-find_package(XdgUserDirs REQUIRED)
++#find_package(XdgUserDirs REQUIRED)
+ 
+ if(NOT CMAKE_BUILD_TYPE)
+     set(CMAKE_BUILD_TYPE Release)
