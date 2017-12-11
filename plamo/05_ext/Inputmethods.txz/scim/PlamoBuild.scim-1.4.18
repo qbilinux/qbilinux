@@ -2,8 +2,8 @@
 
 ######################################################################
 pkgbase=scim
-vers=1.4.17
-url="http://jaist.dl.sourceforge.net/sourceforge/scim/scim-${vers}.tar.gz"
+vers=1.4.18
+url="https://github.com/scim-im/scim/archive/1.4.18.tar.gz"
 arch=`uname -m`
 build=P0m1
 src=$pkgbase-$vers
