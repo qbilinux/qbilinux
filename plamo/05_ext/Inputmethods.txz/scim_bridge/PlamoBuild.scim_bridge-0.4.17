@@ -1,16 +1,15 @@
 #!/bin/sh
 
 ######################################################################
-url="http://jaist.dl.sourceforge.net/sourceforge/scim/scim-bridge-0.4.16.tar.gz
-    http://plamo.linet.gr.jp/~tamuki/src/scim-bridge-0.4.16-not_declared.patch.gz"
 pkgbase=scim_bridge
 vers=0.4.16
+url="https://github.com/scim-im/scim-bridge/archive/v0.4.17.tar.gz"
 arch=`uname -m`
 build=P2m1
 src=scim-bridge-$vers
 OPT_CONFIG="--disable-static"
 DOCS="AUTHORS README COPYING ChangeLog NEWS INSTALL"
-patchfiles='patch-aa patch-ab'
+patchfiles='scim-bridge-0.4.16-not_declared.patch patch-aa patch-ab'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -183,7 +182,6 @@ if [ $opt_config -eq 1 ] ; then
     if [ -d ${B[$i]} ] ; then rm -rf ${B[$i]} ; fi ; cp -a ${S[$i]} ${B[$i]}
   done
   cd $B
-  gunzip -c $W/scim-bridge-0.4.16-not_declared.patch.gz | patch -Np1 -i -
   for patch in $patchfiles ; do
       patch -p1 < $W/$patch
   done
