@@ -1,0 +1,11 @@
+--- aspell-0.60.6.1/prog/check_funs.cpp	2011-07-04 18:17:27.000000000 +0900
++++ build/prog/check_funs.cpp	2017-10-24 14:54:46.119929074 +0900
+@@ -647,7 +647,7 @@
+     }
+   }
+   if (i == width-1) {
+-    if (word == '\0')
++    if (*word == '\0')
+       put(out,' ');
+     else if (word[len] == '\0')
+       put(out, word, len);
