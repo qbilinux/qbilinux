@@ -1,0 +1,11 @@
+--- aspell-0.60.6.1/modules/filter/tex.cpp	2011-07-03 06:09:09.000000000 +0900
++++ build/modules/filter/tex.cpp	2017-10-24 14:54:38.979929077 +0900
+@@ -174,7 +174,7 @@
+ 
+     if (c == '{') {
+ 
+-      if (top.in_what == Parm || top.in_what == Opt || top.do_check == '\0')
++      if (top.in_what == Parm || top.in_what == Opt || *top.do_check == '\0')
+ 	push_command(Parm);
+ 
+       top.in_what = Parm;
