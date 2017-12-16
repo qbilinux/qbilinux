@@ -1,5 +1,5 @@
 #!/bin/bash
-export LANG=C
+export LANG=en_US.UTF-8
 
 seek_dir () {
 #    dfas dfa/fdafsd/fdafd/afkdjsakf/PlamoBuild*
@@ -56,7 +56,13 @@ seek_dir () {
 	    if [ ! -d old ] ; then
 		mkdir old
 	    fi
-	    mv -f ${BASE}-*-*-*.txz old
+
+	    pkg=`ls -1 *.desc`
+	    for i in $pkg ; do
+		pkgname=${pkg%.desc}
+		mv -f ${pkgname}-*-*-*.txz old
+	    done
+	    #mv -f ${BASE}-*-*-*.txz old
 	fi
 	    
 	# only packagin
