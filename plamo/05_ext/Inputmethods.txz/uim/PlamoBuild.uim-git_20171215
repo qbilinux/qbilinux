@@ -1,12 +1,13 @@
 #!/bin/sh
 ##############################################################
 pkgbase=uim
-vers=1.8.6
-url="https://github.com/uim/uim/releases/download/uim-${vers}/uim-${vers}.tar.bz2"
+vers=git_20171215
+url="https://github.com/uim/uim.git"
+commitid=e8e41fd5a3fc36dd8af5f3525696807d7adea605
 arch=`uname -m`
-build=P2m2
-src=uim-${vers}
-OPT_CONFIG='--disable-static --enable-kde4-applet --with-canna --with-wnn  --with-wnn-includes=/usr/include/wnn --with-sj3 --with-sqlite3 --with-x --with-expat=/usr --with-qt4 --with-qt4-immodule'
+build=P0m1
+src=uim
+OPT_CONFIG='--disable-static --enable-kde4-applet --with-canna --with-wnn  --with-wnn-includes=/usr/include/wnn --with-sj3 --with-sqlite3 --with-x --with-expat=/usr --with-qt5 --with-qt5-immodule --with-anthy-utf8 --with-eb --with-curl --with-ffi --enable-openssl'
 if [ "$arch" = "x86_64" ]; then
    OPT_CONFIG=$OPT_CONFIG' --with-expat=/usr/lib64 --with-wnn-libraries=/usr/lib64/wnn'
 else
@@ -118,16 +119,33 @@ else
 fi
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
-    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
-    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
-    if [ ! -f ${i##*/} ] ; then wget $i ; fi
-    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
+    case ${i##*.} in
+    git)
+	if [ ! -d `basename ${i##*/} .git` ] ; then
+            git clone --recurse-submodules $i
+	else
+            ( cd `basename ${i##*/} .git` ; git pull origin master)
+	fi
+	;;
+    *)
+	if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
+	if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
+	if [ ! -f ${i##*/} ] ; then wget $i ; fi
+	if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
+	;;
+    esac
   done
   for i in $url ; do
     case ${i##*.} in
     tar) tar xvpf ${i##*/} ;;
     gz) tar xvpzf ${i##*/} ;;
     bz2) tar xvpjf ${i##*/} ;;
+    git) ( cd `basename ${i##*/} .git`
+        git checkout master
+        if [ -n "$commitid" ] ; then
+          git reset --hard $commitid
+        fi
+        git set-file-times ) ;;
     esac
   done
 fi
@@ -146,20 +164,15 @@ if [ $opt_config -eq 1 ] ; then
        patch -p1 < $W/$patch
     done
 
-    # if [ -f autogen.sh ] ; then
-    #   sh ./autogen.sh
-    # fi
-
-    export PATH=$PATH:/opt/kde/bin
-      if [ -x configure ] ; then
-         export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
-         export LDFLAGS='-Wl,--as-needed' 
-         ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
-     fi
-      if [ $? != 0 ]; then
-	  echo "configure error. $0 script stop"
-	  exit 255
-      fi
+    if [ -x make-wc.sh ] ; then
+        export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
+        export LDFLAGS='-Wl,--as-needed' 
+        ./make-wc.sh --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
+    fi
+    if [ $? != 0 ]; then
+	echo "configure error. $0 script stop"
+	exit 255
+    fi
   done
 fi
 if [ $opt_build -eq 1 ] ; then
