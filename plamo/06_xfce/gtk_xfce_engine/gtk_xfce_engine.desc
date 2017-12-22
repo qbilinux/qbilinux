@@ -1,10 +1,10 @@
 gtk_xfce_engine & y & y & y & y
 &
-GTK Xfce ¥¨¥ó¥¸¥ó
+GTK Xfce ã‚¨ãƒ³ã‚¸ãƒ³
 &
 GTK Xfce engines
 &
-Gtk+-2.0¤ÈGTK+-3.0¤ÎÁĞÊı¤ËÂĞ±ş¤·¤¿XfceÍÑ¤ÎÉÁ²è¥¨¥ó¥¸¥ó
+Gtk+-2.0ã¨GTK+-3.0ã®åŒæ–¹ã«å¯¾å¿œã—ãŸXfceç”¨ã®æç”»ã‚¨ãƒ³ã‚¸ãƒ³
 &
 This package provides the Xfce Gtk+-2.0 and Gtk+-3.0 engines, which allows
 for homogeneity in applications for both business and personal desktops.

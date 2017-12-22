@@ -2,7 +2,7 @@ xf86vidmodeproto & y & y & y & y
 &
 xf86vidmodeproto
 &
-�ӥǥ������ɤλ��Ĥ����Ĥ��Υ⡼�ɤ�ưŪ���ѹ���ǽ�ˤ���
-XF86Vidmode��ĥ��ǽ�ѥץ��ȥ��������
+ビデオカードの持ついくつかのモードを動的に変更可能にする
+XF86Vidmode拡張機能用プロトタイプ定義
 &
 &

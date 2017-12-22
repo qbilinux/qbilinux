@@ -1,9 +1,9 @@
 ntp & y & y & y & y
 &
-����Ʊ�����ޥ�� ntp
+時間同期コマンド ntp
 &
-ntp �ϡ�NTP(Network Time Protocol)���Ѥ��ƹ����٤λ���Ʊ����Ԥ�������/
-���饤����ȥѥå������Ǥ���
+ntp は，NTP(Network Time Protocol)を用いて高精度の時間同期を行うサーバ/
+クライアントパッケージです。
 &
 ntp
 &

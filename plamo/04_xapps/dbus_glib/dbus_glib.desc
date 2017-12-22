@@ -2,8 +2,8 @@ dbus_glib & y & y & y & y
 &
 D-Bus glib binding
 &
-���ץ�֤Ǽ��յ���ξ������Ȥꤹ��D-Bus��glib����Ȥ������
-�Х���ǥ��󥰤Ǥ���
+アプリ間で周辺機器の情報をやりとりするD-Busをglibから使うための
+バインディングです．
 &
 D-Bus glib binding
 &

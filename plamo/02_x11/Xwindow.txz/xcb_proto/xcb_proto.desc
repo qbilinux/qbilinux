@@ -2,6 +2,6 @@ xcb_proto & y & y & y & y
 &
 xcb_proto
 &
-libxcb�����Ѥ���XCB�ץ��ȥ���Υץ��ȥ��������
+libxcbが利用するXCBプロトコルのプロトタイプ定義
 &
 &

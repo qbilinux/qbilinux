@@ -1,8 +1,8 @@
 dri3proto & y & y & y & y
 &
-DRI3�ѥץ��ȥ��������
+DRI3用プロトタイプ宣言
 &
-���ץꥱ�������X�����Ф�𤵤�ľ�ܥӥǥ������ɤ�
-���뤿���Direct Rendering Infrastructure v3�Ѥ������
+アプリケーションがXサーバを介さず直接ビデオカードを
+操作するためのDirect Rendering Infrastructure v3用の定義集
 &
 &

@@ -1,10 +1,10 @@
 tcp_wrappers & y & y & y & y
 &
-TCP ��åѡ��ġ���
+TCP ラッパーツール
 &
-tcp_wrappers �ϡ����饤����Ȥ� IP ���ɥ쥹�򸵤���³�β��ݤ�
-���椹��ġ���Ǥ������Υѥå������ˤ� Debian ���̤ǳ�ȯ���줿
-CIDR�ѥå���Ŭ�Ѥ��Ƥ��ޤ���
+tcp_wrappers は，クライアントの IP アドレスを元に接続の可否を
+制御するツールです．このパッケージには Debian 方面で開発された
+CIDRパッチを適用しています．
 &
 TCP wrapper tools
 &

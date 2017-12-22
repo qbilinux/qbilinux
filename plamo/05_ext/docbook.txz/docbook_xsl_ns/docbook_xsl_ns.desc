@@ -1,8 +1,8 @@
 docbook_xsl_ns & y & y & y & y
 &
-DocBook-XSL�ѥ͡��ॹ�ڡ���
+DocBook-XSL用ネームスペース
 &
-DocBook-XSL�����Ѥ���XML�ե�������Ѵ�����ݤ�
-���Ѥ����̾������ե�����
+DocBook-XSLを利用してXMLファイルを変換する際に
+利用される名義定義ファイル
 &
 &

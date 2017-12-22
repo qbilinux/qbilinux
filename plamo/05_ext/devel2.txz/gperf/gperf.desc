@@ -1,7 +1,7 @@
 gperf & y & y & y & y
 &
-GNU perfect hash �����ͥ졼��
+GNU perfect hash ジェネレータ
 &
-Ϳ����줿ʸ����򸵤˴����ϥå���ؿ�����������ġ���
+与えられた文字列を元に完全ハッシュ関数を生成するツール
 &
 &

@@ -1,9 +1,9 @@
 dosfstools & y & y & y & y
 &
-DOS�����ե����ޥåȥġ���
+DOS形式フォーマットツール
 &
-dosfstools �ϥե��åԡ��ǥ������� MS-DOS �η����˥ե����ޥå�
-���뤿��Υġ���Ǥ���
+dosfstools はフロッピーディスクを MS-DOS の形式にフォーマット
+するためのツールです．
 &
 dosfstools
 &

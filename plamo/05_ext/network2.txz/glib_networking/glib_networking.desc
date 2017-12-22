@@ -1,8 +1,8 @@
 glib_networking & y & y & y & y
 &
-Glib�ѥͥåȥ����Ϣ�⥸�塼��
+Glib用ネットワーク関連モジュール
 &
-Glib�˥ͥåȥ����Ϣ�ε�ǽ���ɲä��뤿���
-giomodule��
+Glibにネットワーク関連の機能を追加するための
+giomodule群
 &
 &

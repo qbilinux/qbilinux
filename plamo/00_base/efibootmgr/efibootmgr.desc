@@ -2,8 +2,8 @@ efibootmgr & y & y & y & y
 &
 EFI boot manager
 &
-UEFI�Ķ����鵯ư���뤿��ˡ�
-EFI�ѡ��ƥ������˥��󥹥ȡ��뤷���֡��ȥ������˴ؤ�������
-UEFI BIOS����Ͽ���뤿��Υġ���
+UEFI環境から起動するために、
+EFIパーティションにインストールしたブートローダに関する情報を
+UEFI BIOSに登録するためのツール
 &
 &

@@ -1,8 +1,8 @@
 system_tools_backends & y & y & y & y
 &
-�����ƥ�ġ����ѥХå������
+システムツール用バックエンド
 &
-DBus��ͳ�ǥ����ƥ�����������뤿��Υġ���
+DBus経由でシステム情報を管理するためのツール
 &
 system tools backends
 &

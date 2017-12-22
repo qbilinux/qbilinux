@@ -1,9 +1,9 @@
 devel & n & y & y & y
 &
-C/C++ ¸À¸ìÍÑ³«È¯´Ä¶­
+C/C++ è¨€èªç”¨é–‹ç™ºç’°å¢ƒ
 &
-gcc/g++ ¤ä gmake, bison, flex, binutils  ¤Ê¤É¡¤
-¼ç¤Ë C/C++ ¸À¸ìÍÑ¤Î³«È¯´Ä¶­¤Ç¤¹
+gcc/g++ ã‚„ gmake, bison, flex, binutils  ãªã©ï¼Œ
+ä¸»ã« C/C++ è¨€èªç”¨ã®é–‹ç™ºç’°å¢ƒã§ã™
 &
 C/C++ language development tools
 &

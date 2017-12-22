@@ -1,10 +1,10 @@
 docbook & n & y & y & y
 &
-DocBook���������ġ��뷲
+DocBook形式処理ツール群
 &
-DocBook������SGML/XML���������ƥ�Ǥ�. SGML�ѡ���openjade��,
-ʸ�������ɬ�פʳƼ凉�����륷����(DSSSL��XSLT��GNOME)��DTD
-(SGML3.0��4.2��XML4.1.2��4.2)��ޤߤޤ�. �ޤ�, ʸ���������
-�פˤ��뤿��γƼ�إ�ѥ�����ץȤ��Ͽ���Ƥ��ޤ�.
+DocBook形式のSGML/XML処理システムです. SGMLパーサopenjadeや,
+文書処理に必要な各種スタイルシート(DSSSL・XSLT・GNOME)とDTD
+(SGML3.0〜4.2・XML4.1.2〜4.2)を含みます. また, 文書処理を容
+易にするための各種ヘルパスクリプトも収録しています.
 &
 &

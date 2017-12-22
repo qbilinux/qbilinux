@@ -2,7 +2,7 @@ bigreqsproto & y & y & y & y
 &
 bigreqsproto
 &
-������X�ץ��ȥ�������¤��ä�262140�Х��Ȱʾ�Υǡ�����
-���Ȥꤹ�뤿���BIG-REQUESTS��ĥ��ǽ�Υץ��ȥ��������
+元々のXプロトコルの制限だった262140バイト以上のデータを
+やりとりするためのBIG-REQUESTS拡張機能のプロトタイプ定義
 &
 &

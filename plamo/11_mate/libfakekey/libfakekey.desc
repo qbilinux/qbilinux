@@ -1,9 +1,9 @@
 libfakekey & y & y & y & y
 &
-X¥­¡¼²¡²¼ÊÑ´¹¥é¥¤¥Ö¥é¥ê
+Xã‚­ãƒ¼æŠ¼ä¸‹å¤‰æ›ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
 &
-libfakekey¤ÏUTF-8¤ÊÊ¸»ú¥³¡¼¥É¤ò²¾ÁÛÅª¤ÊX¥­¡¼²¡²¼¤ËÊÑ´¹¤¹¤ë¤¿¤á¤Î
-¥é¥¤¥Ö¥é¥ê¤Ç¤¹¡¥
+libfakekeyã¯UTF-8ãªæ–‡å­—ã‚³ãƒ¼ãƒ‰ã‚’ä»®æƒ³çš„ãªXã‚­ãƒ¼æŠ¼ä¸‹ã«å¤‰æ›ã™ã‚‹ãŸã‚ã®
+ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã§ã™ï¼Ž
 &
 library for converting characters to X key
 &

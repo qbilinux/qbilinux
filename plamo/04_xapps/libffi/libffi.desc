@@ -1,9 +1,9 @@
 libffi & y & y & y & y
 &
-Foreign Function Interface�饤�֥��
+Foreign Function Interfaceライブラリ
 &
-libffi��Python��Java�Ȥ��ä�����Υ饤�֥���
-C���줫��Ȥ��褦�ʡ��ۤʤ����֤δؿ��ƽФ�
-��ǽ�ˤ���饤�֥��Ǥ�
+libffiはPythonやJavaといった言語のライブラリを
+C言語から使うような，異なる言語間の関数呼出を
+可能にするライブラリです
 &
 &

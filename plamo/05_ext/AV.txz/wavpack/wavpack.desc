@@ -1,9 +1,9 @@
 wavpack & y & y & y & y
 &
-�ĵհ��̥ե����ޥå� wavpack
+可逆圧縮フォーマット wavpack
 &
-wavpack �ϲĵ�(�����쥹)�����ǥ����ǥ����ե������
-���̤���ġ���Ǥ���
+wavpack は可逆(ロスレス)形式でオーディオファイルを
+圧縮するツールです。
 &
 loss-less compressed format wavpack
 &

@@ -1,8 +1,8 @@
 xf86_input_libinput & y & y & y & y
 &
-xf86ÍÑlibinput¥¤¥ó¥×¥Ã¥È¥É¥é¥¤¥Ğ
+xf86ç”¨libinputã‚¤ãƒ³ãƒ—ãƒƒãƒˆãƒ‰ãƒ©ã‚¤ãƒ
 &
-X.Org¤«¤élibinput¤òÁàºî¤¹¤ë¤¿¤á¤Î¥É¥é¥¤¥Ğ
+X.Orgã‹ã‚‰libinputã‚’æ“ä½œã™ã‚‹ãŸã‚ã®ãƒ‰ãƒ©ã‚¤ãƒ
 &
 libinput driver for X.org
 &

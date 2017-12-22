@@ -1,9 +1,9 @@
 babl & y & y & y & y
 &
-�ԥ�����ե����ޥå��Ѵ��饤�֥��
+ピクセルフォーマット変換ライブラリ
 &
-babl�ϡ����ޤ��ޤʷ�����¸�ߤ���ԥ�����ǡ�����
-��®������Ѵ����뤿��Υ饤�֥��Ǥ�
+bablは，さまざまな形式が存在するピクセルデータを，
+高速に相互変換するためのライブラリです
 &
 &
 babl is a dynamic, any to any, pixel format translation library.

@@ -1,8 +1,8 @@
 gcc & y & y & y & y
 &
-GCC/C����ѥ���
+GCC/Cコンパイラ
 &
-GCC(GNU Compiler Collection)�Υ١����Ȥʤ�C����ѥ�����
-c++��gcj���ˤϤ��Υѥå�������ɬ��
+GCC(GNU Compiler Collection)のベースとなるCコンパイラ部
+c++やgcj等にはこのパッケージが必要
 &
 &

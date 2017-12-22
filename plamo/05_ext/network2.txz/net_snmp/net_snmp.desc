@@ -1,8 +1,8 @@
 net_snmp & y & y & y & y
 &
-OSS��SNMP
+OSS版SNMP
 &
-SNMP(Simple Network Management Protocol)�ϡ��ͥåȥ������³���줿
-���ޤ��ޤʵ���ξ����Ĵ�٤뤿��Υץ��ȥ���Ǥ�
+SNMP(Simple Network Management Protocol)は，ネットワークに接続された
+さまざまな機器の情報を調べるためのプロトコルです
 &
 &

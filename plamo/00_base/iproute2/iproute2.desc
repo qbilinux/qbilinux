@@ -1,9 +1,9 @@
 iproute2 & y & y & y & y
 &
-�������ͥåȥ������ġ��� iproute2
+新しいネットワーク設定ツール iproute2
 &
-iproute2 ��Linux�ο������ͥåȥ����ǽ��Ȥ����������ġ���
-�Ǥ���
+iproute2 はLinuxの新しいネットワーク機能を使うための設定ツール
+です．
 &
 Advanced Networking Tools iproute2
 &

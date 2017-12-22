@@ -1,9 +1,9 @@
 mplayer & y & y & y & y
 &
-��ǥ����ץ쥤�䡼�󥳥�С��� MPlayer
+メディアプレイヤー兼コンバータ MPlayer
 &
-MPlayer�Ϲⵡǽ�ʥ�ǥ����ץ쥤�䡼���Ѵ��ġ���Ǥ���
-��°��GUI(gmplayer)�Ǥ����ܸ�Υե�����̾����������ɽ������ޤ��󤬡�
-smplayer���Υե���ȥ���ɤ�Ȥ������Ѳ�ǽ�Ǥ���
+MPlayerは高機能なメディアプレイヤー兼変換ツールです．
+付属のGUI(gmplayer)では日本語のファイル名等が正しく表示されませんが，
+smplayer等のフロントエンドを使えば利用可能です．
 &
 &

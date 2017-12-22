@@ -1,14 +1,14 @@
 e2fsprogs & y & y & y & y
 &
-ext2/ext3 fs ÍÑ³Æ¼ï¥æ¡¼¥Æ¥£¥ê¥Æ¥£
+ext2/ext3 fs ç”¨å„ç¨®ãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£
 &
-ext2/ext3 ¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤òÁàºî¤¹¤ë¤¿¤á¤Î³Æ¼ï¥æ¡¼¥Æ¥£¥ê¥Æ¥£
-¤Ç¤¹¡£¤³¤Î¥Ñ¥Ã¥±¡¼¥¸¤Ë¤Ï°Ê²¼¤Î¤è¤¦¤Ê¥³¥Ş¥ó¥É¤¬Æş¤Ã¤Æ¤¤¤Ş
-¤¹¡§chattr, lsattr, mke2fs, mklost+found, tune2fs, fsck,
-e2fsck, debugfs, dumpe2fs,flushb, badblocks¡£
+ext2/ext3 ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã‚’æ“ä½œã™ã‚‹ãŸã‚ã®å„ç¨®ãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£
+ã§ã™ã€‚ã“ã®ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã«ã¯ä»¥ä¸‹ã®ã‚ˆã†ãªã‚³ãƒãƒ³ãƒ‰ãŒå…¥ã£ã¦ã„ã¾
+ã™ï¼šchattr, lsattr, mke2fs, mklost+found, tune2fs, fsck,
+e2fsck, debugfs, dumpe2fs,flushb, badblocksã€‚
 \n
-¤³¤ì¤é¤Î¥æ¡¼¥Æ¥£¥ê¥Æ¥£¤Ï Remy Card(ext2fs ¤Î³«È¯¼Ô·ó´ÉÍı¼Ô)¤È
-Thedore T'so ¤¬ºîÀ®¤·¤Ş¤·¤¿¡£
+ã“ã‚Œã‚‰ã®ãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£ã¯ Remy Card(ext2fs ã®é–‹ç™ºè€…å…¼ç®¡ç†è€…)ã¨
+Thedore T'so ãŒä½œæˆã—ã¾ã—ãŸã€‚
 &
 ext2/ext3 fs utiles
 &

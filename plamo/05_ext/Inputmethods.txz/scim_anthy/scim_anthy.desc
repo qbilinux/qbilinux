@@ -1,7 +1,7 @@
 scim_anthy & y & y & y & y
 &
-���ʴ����Ѵ������ƥ�Anthy��SCIM�⥸�塼��
+かな漢字変換システムAnthy用SCIMモジュール
 &
-SCIM��ͳ�Ǥ��ʴ����Ѵ������ƥ�Anthy�����Ѥ��뤿��Υ⥸�塼��
+SCIM経由でかな漢字変換システムAnthyを利用するためのモジュール
 &
 &

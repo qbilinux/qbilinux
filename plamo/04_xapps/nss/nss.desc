@@ -1,9 +1,9 @@
 nss & y & y & y & y
 &
-NSS(Network Security Service)�饤�֥��
+NSS(Network Security Service)ライブラリ
 &
-Network Security Service�饤�֥��ϡ��ץ�åȥե��������¸��
-SSL��S/MIME���б������Ź沽��ǽ���󶡤��뤿��Υ饤�֥�꽸�Ǥ�
+Network Security Serviceライブラリは，プラットフォーム非依存で
+SSLやS/MIMEに対応した暗号化機能を提供するためのライブラリ集です
 &
 NSS(Network Security Service)library
 &

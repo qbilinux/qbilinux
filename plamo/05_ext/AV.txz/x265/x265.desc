@@ -1,8 +1,8 @@
 x265 & y & y & y & y
 &
-HEVC ���󥳡���
+HEVC エンコーダ
 &
-x265��HEVC���󥳡��ɤ��뤿��Υ饤�֥��Ǥ�
+x265はHEVCエンコードするためのライブラリです
 &
 HEVC encoder
 &

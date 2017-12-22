@@ -2,7 +2,7 @@ rdflib & y & y & y & y
 &
 Python-RDF
 &
-Python�ˡ�RDF(Resource Description Framework)��
-���뵡ǽ���ɲä��뤿��Υ⥸�塼��
+Pythonに，RDF(Resource Description Framework)を
+操作する機能を追加するためのモジュール
 &
 &

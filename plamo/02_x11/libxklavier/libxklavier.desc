@@ -1,8 +1,8 @@
 libxklavier & y & y & y & y
 &
-XKB »Ù±ç¥é¥¤¥Ö¥é¥ê
+XKB æ”¯æ´ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
 &
-libklavier ¤Ï XKB ¤ò»È¤¤¤ä¤¹¤¯¤¹¤ë¤¿¤á¤Î¥é¥¤¥Ö¥é¥ê¤Ç¤¹¡¥
+libklavier ã¯ XKB ã‚’ä½¿ã„ã‚„ã™ãã™ã‚‹ãŸã‚ã®ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã§ã™ï¼
 &
 libxklavier - utility library to make XKB stuff easier
 &

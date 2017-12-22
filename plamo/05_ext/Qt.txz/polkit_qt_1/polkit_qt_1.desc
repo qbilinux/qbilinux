@@ -2,6 +2,6 @@ polkit_qt_1 & y & y & y & y
 &
 Policy-Kit Qt
 &
-Qt������API��ͳ��Policy-Kit�����뤿��Υ饤�֥��
+Qt形式のAPI経由でPolicy-Kitを操作するためのライブラリ
 &
 &

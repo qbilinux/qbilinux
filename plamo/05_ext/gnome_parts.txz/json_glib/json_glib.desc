@@ -1,7 +1,7 @@
 json_glib & y & y & y & y
 &
-JSON-Glib�Х���ǥ���
+JSON-Glibバインディング
 &
-JSON�ε�ǽ��Glib��ͳ�����Ѥ��뤿��ΥХ���ǥ���
+JSONの機能をGlib経由で利用するためのバインディン
 &
 &

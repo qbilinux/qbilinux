@@ -1,8 +1,8 @@
 libusbmuxd & y & y & y & y
 &
-USB multi-plexer �ǡ����
+USB multi-plexer デーモン
 &
-USB�ۤ���iPod��iPhone������ݡ�
-����������Ĵ������Τ�ɬ�פʥǡ����
+USB越しにiPodやiPhoneを操作する際，
+アクセスを調整するのに必要なデーモン
 &
 &

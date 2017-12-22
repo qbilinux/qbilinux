@@ -1,11 +1,11 @@
 gtksourceview2 & y & y & y & y
 &
-GTK+���󥿥å�����Ĵ�ѥ��������å�
+GTK+シンタックス強調用ウィジェット
 &
-GtkSourceView�ϡ�Gtk+��ɸ��Υޥ���饤�󥨥ǥ������ĥ���ơ�
-�Ƹ���Υ��󥿥å�����Ĵ��̵���¤�undo/redo��
-UTF-8�ߴ���ʸ�������������Ȥ��ä���ǽ���󶡤��뤿���
-�饤�֥��Ǥ���
+GtkSourceViewは，Gtk+の標準のマルチラインエディタを拡張して，
+各言語のシンタックス強調や無制限のundo/redo，
+UTF-8互換の文字検索，印刷といった機能を提供するための
+ライブラリです．
 &
 GTK+ syntax highlighting widget
 &

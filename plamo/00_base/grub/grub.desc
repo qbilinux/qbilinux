@@ -2,10 +2,10 @@ grub & y & y & y & y
 &
 GRand Unified Boot loader
 &
-GRUB �ϸ��� GNU HURD �Ѥ˳�ȯ���줿�֡��ȥ�����
-�Ǥ�����Linux FreeBSD, NetBSD �ʤɤ�֡��Ȳ�ǽ
-�Ǥ���Linux98 �Ǥϥǥե���ȤΥ֡��ȥ�������
-GRUB �ˤʤäƤ��ޤ���
+GRUB は元々 GNU HURD 用に開発されたブートローダ
+ですが、Linux FreeBSD, NetBSD などもブート可能
+です。Linux98 ではデフォルトのブートローダが
+GRUB になっています．
 &
 GRUB : GRand Unified Boot loader
 &

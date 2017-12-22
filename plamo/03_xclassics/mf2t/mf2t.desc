@@ -1,15 +1,15 @@
 mf2t & y & y & y & y
 &
-ɸ�� MIDI �ե�����ȥƥ����Ȥ���ߤ��Ѵ�
+標準 MIDI ファイルとテキストを相互に変換
 &
-mf2t��t2mf �ϡ�ɸ�� MIDI �ե�����(SMF)�����Υե�����򡤴�ñ��
-��§�ˤΤäȤ�ƥ����Ȥ��Ѵ������ꡤ�դˤ��Υƥ����Ȥ� SMF ��
-�ᤷ���ꤷ�Ƥ����ġ���Ǥ�������ˤ�ä��������줿�ƥ����Ȥϡ�
-�ɤ�Ф������褦�ʽ񼰤ˤʤäƤ���Τǡ����ǥ����ʤɤ��Խ�����
-���Ȥ�����ޤ�����sed �ʤɤΥƥ����ȼ�ư�Խ��ġ���˿��碌�뤳�Ȥǡ�
-SMF �򿧡����ڤ���Ǽ�ư�Խ����뤳�Ȥ��ưפˤʤäƤ��ޤ���
+mf2t，t2mf は，標準 MIDI ファイル(SMF)形式のファイルを，簡単な
+規則にのっとりテキストに変換したり，逆にそのテキストを SMF に
+戻したりしてくれるツールです。これによって生成されたテキストは，
+読めばすぐ解るような書式になっているので，エディタなどで編集する
+ことが出来ますし，sed などのテキスト自動編集ツールに食わせることで，
+SMF を色々な切り口で自動編集することが容易になっています。
 \n
-Netherland �� Piet van Oostrum ����ˤ�äƺ�������ޤ�����
+Netherland の Piet van Oostrum さんによって作成されました。
 &
 Converter between standard MIDI file and ASCII text format
 &

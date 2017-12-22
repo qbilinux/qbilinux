@@ -2,8 +2,8 @@ gfortran & y & y & y & y
 &
 GCC FORTRAN
 &
-GCC �Τ��� FORTRAN �ץ������򥳥�ѥ��뤹��Τ�ɬ�פ�
-��ʬ��ޤȤ�ޤ��������Υѥå�������Ȥ��ˤ� gcc �ѥå�������
-ɬ�פǤ���
+GCC のうち FORTRAN プログラムをコンパイルするのに必要な
+部分をまとめました．このパッケージを使うには gcc パッケージが
+必要です．
 &
 &

@@ -1,10 +1,10 @@
 linux_pam & y & y & y & y
 &
-ǧ�ڵ�ǽ���������ƥ�
+認証機能管理システム
 &
-PAM(Pluggable Authentification Modules)�ϡ����줾���ǧ�ڵ�ǽ��
-�⥸�塼�벽����/etc/pam.d/ �ʲ��λ���ˤ��ưŪ���ѹ����뤳�Ȥ�
-��ǽ�ˤ��ޤ���
+PAM(Pluggable Authentification Modules)は，それぞれの認証機能を
+モジュール化し，/etc/pam.d/ 以下の指定により動的に変更することを
+可能にします．
 &
 Linux PAM
 &

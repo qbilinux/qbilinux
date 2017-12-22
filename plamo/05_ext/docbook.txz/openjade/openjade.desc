@@ -1,9 +1,9 @@
 openjade & y & y & y & y
 &
-DSSSL�ץ����å��μ���
+DSSSLプロセッサの実装
 &
-SGML/XML�Ȥ����������Ƥ���DSSSL(Document Style 
-Semantics and Specification Language)����ǵ��Ҥ��줿
-ʸ��ե�����򡤻��ꤵ�줿���Ϸ������Ѵ�����ץ����å��Ǥ�
+SGML/XMLとして定義されているDSSSL(Document Style 
+Semantics and Specification Language)言語で記述された
+文書ファイルを，指定された出力形式に変換するプロセッサです
 &
 &

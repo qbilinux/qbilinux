@@ -1,8 +1,8 @@
 mariadb & y & y & y & y
 &
-MariaDB�ǡ����١���������
+MariaDBデータベースサーバ
 &
-MariaDB�ϡ�Oracle��������줿MySQL�򸫸¤ä������γ�ȯ�Ԥ�����
-��������ꤢ������MySQL�ȸߴ�������ä��ǡ����١��������ФǤ���
+MariaDBは，Oracleに買収されたMySQLを見限った元々の開発者たちが
+新しく作りあげた，MySQLと互換性を持ったデータベースサーバです．
 &
 &

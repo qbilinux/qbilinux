@@ -1,9 +1,9 @@
 ntfs_3g_ntfsprogs & y & y & y & y
 &
-NTFS-3g : �񤭹��߲�ǽ�� NTFS �μ���
+NTFS-3g : 書き込み可能な NTFS の実装
 &
-NTFS-3g��Tuxera�Ҥ��������Ƥ���ե꡼��NTFS�μ����ǡ�
-Linux�����fuse��Ȥä�NTFS�ν񤭹��ߤ��ǽ�ˤʤäƤ��ޤ���
+NTFS-3gはTuxera社が公開しているフリーなNTFSの実装で、
+Linuxからはfuseを使ってNTFSの書き込みも可能になっています。
 &
 NTTFS-3g: Tuxera's NTFS implementation
 &

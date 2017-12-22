@@ -1,11 +1,11 @@
 cryptsetup & y & y & y & y
 &
-�Ź沽�֥��å��ǥХ���������
+暗号化ブロックデバイスの設定
 &
-cryptsetup �ϡ��Ź沽�ǥХ����������ѥ��ޥ�ɥ饤�󥤥󥿥ե���������
-���ޤ���Linux �����ͥ�ΥǥХ����ޥåѡ��������å� dm-crypt ��Ȥ��Ź�
-������ޤ������ΥС������� cryptsetup �� LUKS �Υ��ݡ��Ȥ����礵���
-���ޤ���
+cryptsetup は，暗号化デバイスの設定用コマンドラインインタフェースを提供
+します。Linux カーネルのデバイスマッパーターゲット dm-crypt を使い暗号
+化されます。このバージョンの cryptsetup は LUKS のサポートが統合されて
+います。
 &
 configures encrypted block devices
 &

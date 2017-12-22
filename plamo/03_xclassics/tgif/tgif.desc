@@ -1,10 +1,10 @@
 tgif & y & y & y & y
 &
-�٥��ȥ������ޥġ���
+ベクトル形式作図ツール
 &
-X Window System ���ư���ɥ������󥰥��ե�
-tgif �����ܸ��б��ǤǤ���EPS, PostScript,
-X11 bitmap �����ǽ��ϤǤ��ޤ���
+X Window System 上で動くドローイングソフト
+tgif の日本語対応版です。EPS, PostScript,
+X11 bitmap 形式で出力できます。
 &
 tgif
 &

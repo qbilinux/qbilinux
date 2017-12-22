@@ -1,9 +1,9 @@
 nspr & y & y & y & y
 &
-NSPR(NetScape Portable Runtime)¥é¥¤¥Ö¥é¥ê
+NSPR(NetScape Portable Runtime)ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
 &
-NSPR¤ÏNetscape¼Ò¤¬¸ø³«¤·¤¿¥¹¥ì¥Ã¥É¤äI/O½èÍı¤òÃê¾İ²½¤¹¤ë¤¿¤á¤Î
-¥é¥¤¥Ö¥é¥ê¤Ç¤¹
+NSPRã¯Netscapeç¤¾ãŒå…¬é–‹ã—ãŸã‚¹ãƒ¬ãƒƒãƒ‰ã‚„I/Oå‡¦ç†ã‚’æŠ½è±¡åŒ–ã™ã‚‹ãŸã‚ã®
+ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã§ã™
 &
 NSPR(NetScape Portable Runtime)library
 &

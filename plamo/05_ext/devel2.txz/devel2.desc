@@ -1,9 +1,9 @@
 devel2 & y & y & y & y
 &
-��ȯ�Ķ�����2
+開発環境その2
 &
-gfortran��gcj�Ȥ��ä����Ū�Ȥ�����ξ��ʤ�GCC�Υե���ȥ���ɤȡ�
-boost��fftw,fribidi�Ȥ��ä����Ӥ�����Ū�ʥ饤�֥�����򽸤��
-���ޤ�
+gfortranやgcjといった比較的使う機会の少ないGCCのフロントエンドと，
+boostやfftw,fribidiといった用途が限定的なライブラリ等を集めて
+います
 &
 &

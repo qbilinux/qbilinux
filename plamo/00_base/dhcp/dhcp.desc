@@ -1,10 +1,10 @@
 dhcp & y & y & y & y
 &
-DHCP Áàºî¥Ä¡¼¥ë
+DHCP æ“ä½œãƒ„ãƒ¼ãƒ«
 &
-ISC ¤¬ÇÛÉÛ¤·¤Æ¤¤¤ë DHCP server/client ¥Ñ¥Ã¥±¡¼¥¸¤Ç¤¹¡£
-Plamo-3.x ¤Þ¤Ç¤Î Plamo ¤Ï dhcpcd ¤òºÎÍÑ¤·¤Æ¤¤¤Þ¤·¤¿¤¬¡¢
-4.0 ¤Ç¤Ï ISC DHCP ¤ËÊÑ¹¹¤·¤Þ¤·¤¿¡£
+ISC ãŒé…å¸ƒã—ã¦ã„ã‚‹ DHCP server/client ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã§ã™ã€‚
+Plamo-3.x ã¾ã§ã® Plamo ã¯ dhcpcd ã‚’æŽ¡ç”¨ã—ã¦ã„ã¾ã—ãŸãŒã€
+4.0 ã§ã¯ ISC DHCP ã«å¤‰æ›´ã—ã¾ã—ãŸã€‚
 &
 ISC DHCP
 &

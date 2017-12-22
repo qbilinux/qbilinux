@@ -1,8 +1,8 @@
 xfce4_cpugraph_plugin & y & y & y & y
 &
-Xfce4 CPU����եץ饰����
+Xfce4 CPUグラフプラグイン
 &
-Xfce4�Υѥͥ���Ȥ߹���ǻȤ�CPU���ȿ�����ղ��ġ���
+Xfce4のパネルに組み込んで使うCPU周波数グラフ化ツール
 &
 xfce4 cpugraph plugin
 &

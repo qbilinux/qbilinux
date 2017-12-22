@@ -1,7 +1,7 @@
 lua_alt_getopt & y & y & y & y
 &
-Lua��getop�⥸�塼��
+Lua用getopモジュール
 &
-Lua��getopt --long��Ʊ���Υ��ץ���������ǽ�ˤ���⥸�塼��
+Luaにgetopt --longと同等のオプションを指定可能にするモジュール
 &
 &

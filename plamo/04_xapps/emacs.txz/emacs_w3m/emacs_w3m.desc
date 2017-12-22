@@ -1,9 +1,9 @@
 emacs_w3m & y & y & y & y
 &
-Emacs �� WWW �ӥ塼��(w3m)
+Emacs 用 WWW ビューワ(w3m)
 &
-�ƥ����ȥ١����Υ����֥֥饦�� w3m ��Ȥäơ�Emacs ��ͳ�� Web �ڡ�����
-������ǽ�ˤ��ޤ���
+テキストベースのウェブブラウザ w3m を使って，Emacs 経由で Web ページを
+閲覧可能にします。
 &
 WWW viewer for Emacs
 &

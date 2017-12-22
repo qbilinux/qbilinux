@@ -1,9 +1,9 @@
 iw & y & y & y & y
 &
-Linux ̵���ǥХ���������ġ���
+Linux 無線デバイスの設定ツール
 &
-���Υѥå������ˤϡ�̵���ͥåȥ���󥰤����ꤷ���ꡤ�����ɽ���Ǥ���
-�ġ��� `iw' ���ޤޤ�ޤ���
+このパッケージには，無線ネットワーキングを設定したり，情報を表示できる
+ツール `iw' が含まれます。
 &
 tool for configuring Linux wireless devices
 &

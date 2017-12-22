@@ -1,8 +1,8 @@
 rpcbind & y & y & y & y 
 &
-RPC�ݡ��ȴ����ѥǡ���� rpcbind
+RPCポート管理用デーモン rpcbind
 &
-RPC��ͳ���󶡤����Ƽ掠���ӥ������ɤ�RPC�ݡ��Ⱦ��ư���Ƥ��뤫��
-��������ǡ����
+RPC経由で提供される各種サービスが，どのRPCポート上で動いているかを
+管理するデーモン
 &
 &

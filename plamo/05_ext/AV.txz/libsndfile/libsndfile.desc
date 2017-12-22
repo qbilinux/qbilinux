@@ -1,9 +1,9 @@
 libsndfile & y & y & y & y
 &
-������ɥե���������ѥ饤�֥��
+サウンドファイル操作用ライブラリ
 &
-wav �� aiff��au �ʤɡ��͡��ʷ����Υ���ץ�󥰥ǡ��������줷������
-����� API ���󶡤���饤�֥��Ǥ���
+wav や aiff，au など，様々な形式のサンプリングデータを統一して操作する
+ための API を提供するライブラリです。
 &
 libsndfile
 &

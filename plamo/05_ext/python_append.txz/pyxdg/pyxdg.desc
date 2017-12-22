@@ -2,7 +2,7 @@ pyxdg & y & y & y & y
 &
 Python-XDG
 &
-Python�ˡ�FreeDesktop.org�ǳ�ȯ����Ƥ���XDG�ǥ����ȥå�
-����桼�ƥ���ƥ������뵡ǽ���ɲä��뤿��Υ⥸�塼��
+Pythonに，FreeDesktop.orgで開発されているXDGデスクトップ
+統合ユーティリティを操作する機能を追加するためのモジュール
 &
 &

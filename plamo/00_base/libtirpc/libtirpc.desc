@@ -1,8 +1,8 @@
 libtirpc & y & y & y & y
 &
-TI-RPC�ѥ饤�֥�� libtirpc
+TI-RPC用ライブラリ libtirpc
 &
-SUN����ȯ�����ȥ�󥹥ݡ����ؤ˰�¸���ʤ�RPC��ǽ��
-Linux�Ѥ˼��������饤�֥��
+SUNが開発したトランスポート層に依存しないRPC機能を
+Linux用に実装したライブラリ
 &
 &

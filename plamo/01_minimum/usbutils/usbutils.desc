@@ -1,9 +1,9 @@
 usbutils & y & y & y & y
 &
-USB¾ðÊóÉ½¼¨¥Ä¡¼¥ë
+USBæƒ…å ±è¡¨ç¤ºãƒ„ãƒ¼ãƒ«
 &
-usbutils(lsusb)¤Ï lspci ¤ÈÆ±ÍÍ¡¤¥«¡¼¥Í¥ë¤ËÇ§¼±¤µ¤ì¤Æ¤¤¤ëUSB ¤Î
-¥Ù¥ó¥À¡¼ ID Åù¤òÉ½¼¨¤¹¤ë¥Ä¡¼¥ë¤Ç¤¹
+usbutils(lsusb)ã¯ lspci ã¨åŒæ§˜ï¼Œã‚«ãƒ¼ãƒãƒ«ã«èªè­˜ã•ã‚Œã¦ã„ã‚‹USB ã®
+ãƒ™ãƒ³ãƒ€ãƒ¼ ID ç­‰ã‚’è¡¨ç¤ºã™ã‚‹ãƒ„ãƒ¼ãƒ«ã§ã™
 &
 usbutils
 &

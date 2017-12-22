@@ -1,9 +1,9 @@
 jre & y & y & y & y
 &
-Java Runtime �Ķ�
+Java Runtime 環境
 &
-Java�ǽ񤫤줿���ץ��ư���������Runtime�Ķ���
-Java�ѤΥ��ץ��ȯ���뤿��ˤϡ�����
-SDK(JDK)�Ķ���ɬ�פǤ���
+Javaで書かれたアプリを動かすためのRuntime環境．
+Java用のアプリを開発するためには，別途
+SDK(JDK)環境が必要です．
 &
 &

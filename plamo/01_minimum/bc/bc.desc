@@ -1,10 +1,10 @@
 bc & n & y & y & y
 &
-Gnu bc - Ǥ�����ٱ黻����
+Gnu bc - 任意精度演算言語
 &
-bc �ϥ��ޥ�ɤ��༡�¹Ԥ��ʤ�������Ū�˷׻�����Ǥ�����٤α黻
-����Ǥ���ʸˡ��¿���ʤ�Ȥ� C ����˻��Ƥ��ޤ���
-���� bc �� GNU readline �饤�֥����󥯤��Ƥ��ޤ���
+bc はコマンドを逐次実行しながら対話的に計算する任意精度の演算
+言語です。文法は多少なりとも C 言語に似ています。
+この bc は GNU readline ライブラリをリンクしています。
 &
 Gnu bc - arbitrary calculator language
 &

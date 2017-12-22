@@ -1,11 +1,11 @@
 man_pages & y & y & y & y
 &
-����饤��ɥ�����Ƚ�
+オンラインドキュメント集
 &
-online ��ɽ������ޥ˥奢��ڡ������Ǥ���Plamo �Ǥϡ��ǥե���Ȥ�
-���ܸ�� man �ڡ�����ɽ������Τǡ��Ѹ��ǤΥڡ�����ɽ��������
-���� LANG �Ķ��ѿ��� C ���ѹ����Ƥ��������������� man �ڡ���
-�� http://www.tldp.org/docs.html#man �ǽ��Ѥ���Ƥ��ޤ���
+online で表示するマニュアルページ集です．Plamo では，デフォルトで
+日本語の man ページを表示するので，英語版のページを表示したい
+場合は LANG 環境変数を C に変更してください．これらの man ページ
+は http://www.tldp.org/docs.html#man で集積されています．
 &
 Man-pages(on line man pages)
 &

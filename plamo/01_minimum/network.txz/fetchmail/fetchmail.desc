@@ -1,9 +1,9 @@
 fetchmail & y & y & y & y
 &
-�᡼������ߥ��ޥ�� fetchmail
+メール取り込みコマンド fetchmail
 &
-fetchmail �ϥ᡼�륵���Ф����������ޥ���إ᡼������
-����ݤ������ʥץ������Ǥ���
+fetchmail はメールサーバからローカルマシンへメールを落して
+くる際に便利なプログラムです．
 &
 fetchmail
 &

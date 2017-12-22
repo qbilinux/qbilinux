@@ -1,9 +1,9 @@
 libical & y & y & y & y
 &
-libical: �������塼������ѥ饤�֥��
+libical: スケジュール管理用ライブラリ
 &
-libical�ϥͥåȥ����ͳ�ǥ������塼��Ĵ�����뤿���
-icalendar�����Υǡ�����������뤿��Υ饤�֥��Ǥ�
+libicalはネットワーク経由でスケジュール調整するための
+icalendar形式のデータを処理するためのライブラリです
 &
 libical: schedule management library
 &

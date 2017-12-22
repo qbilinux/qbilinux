@@ -1,8 +1,8 @@
 libmms & y & y & y & y
 &
-MMS�ѥ饤�֥��
+MMS用ライブラリ
 &
-Windows Media�����Ѥ��Ƥ���mms:// �� mmsh://
-�����Υ��ȥ꡼�ߥ󥰥ǡ�����������뤿��Υ饤�֥��
+Windows Mediaが利用しているmms:// や mmsh://
+形式のストリーミングデータを処理するためのライブラリ
 &
 &

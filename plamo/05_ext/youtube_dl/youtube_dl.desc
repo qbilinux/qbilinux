@@ -1,10 +1,10 @@
 youtube_dl & y & y & y & y
 &
-YouTube.com ����ư������������ɤ���ץ������
+YouTube.com から動画をダウンロードするプログラム
 &
-youtube-dl �ϡ�YouTube.com�䤽��¾�����Υ����Ȥ��顤ư�������������
-���뾮�������ޥ�ɥ饤��ץ������Ǥ���Python ���󥿥ץ꥿(2.6��2.7��
-�ޤ��� 3.3+)��ɬ�פǤ���
+youtube-dl は，YouTube.comやその他少々のサイトから，動画をダウンロード
+する小さいコマンドラインプログラムです。Python インタプリタ(2.6，2.7，
+または 3.3+)が必要です。
 &
 Download videos from YouTube.com
 &

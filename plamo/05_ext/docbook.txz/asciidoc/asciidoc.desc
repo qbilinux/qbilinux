@@ -1,8 +1,8 @@
 asciidoc & y & y & y & y
 &
-AsciiDoc�ƥ����ȥե����ޥå���
+AsciiDocテキストフォーマッター
 &
-HTML��PDF��EPUB��man�ڡ����ʤɡ����ޤ��ޤʷ�������ϲ�ǽ��
-markdown���Υƥ����ȥե����ޥå�����
+HTMLやPDF，EPUB，manページなど，さまざまな形式を出力可能な
+markdown風のテキストフォーマッター．
 &
 &

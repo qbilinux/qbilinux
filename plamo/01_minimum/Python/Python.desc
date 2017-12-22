@@ -2,7 +2,7 @@ Python & y & y & y & y
 &
 Python
 &
-���ͤ��������뤿��˸����ߴ�����ΤƤƿʲ�����Python�ο��С������
-Python2�ȶ�¸���뤿��˥��ޥ��̾�� python3 �ˤʤäƤ��ޤ���
+仕様を洗練するために後方互換性を捨てて進化したPythonの新バージョン．
+Python2と共存するためにコマンド名は python3 になっています．
 &
 &

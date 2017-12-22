@@ -1,9 +1,9 @@
 pcre & y & y & y & y
 &
-PERL¸ß´¹Àµµ¬É½¸½ÍÑ¥é¥¤¥Ö¥é¥ê
+PERLäº’æ›æ­£è¦è¡¨ç¾ç”¨ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
 &
-PCRE(Perl-compatible regular expression library)¤Ï
-Perl ¸ß´¹¤ÎÀµµ¬É½¸½µ¡Ç½¤òÄó¶¡¤¹¤ë¤¿¤á¤Î¥é¥¤¥Ö¥é¥ê¤Ç¤¹¡¥
+PCRE(Perl-compatible regular expression library)ã¯
+Perl äº’æ›ã®æ­£è¦è¡¨ç¾æ©Ÿèƒ½ã‚’æä¾›ã™ã‚‹ãŸã‚ã®ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã§ã™ï¼
 &
 pcre
 &

@@ -1,9 +1,9 @@
 openexr & y & y & y & y
 &
-OpenEXR: ������ʥߥå�����(HDRI)�ѥ饤�֥��
+OpenEXR: 高ダイナミック画像(HDRI)用ライブラリ
 &
-OpenEXR��ILM�Ҥˤ�äƺ������������줿
-������ʥߥå�����(HDRI)�����뤿��Υ饤�֥��Ǥ�
+OpenEXRはILM社によって作成，公開された
+高ダイナミック画像(HDRI)を操作するためのライブラリです
 &
 OpenEXR: HDRI library
 &

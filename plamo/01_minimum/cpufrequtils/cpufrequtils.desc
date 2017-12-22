@@ -1,8 +1,8 @@
 cpufrequtils & y & y & y & y
 &
-CPU���ȿ����ġ���
+CPU周波数操作ツール
 &
-CPU��ư����ȿ���ưŪ���ѹ����뤿��Υġ���ȥ饤�֥��
+CPUの動作周波数を動的に変更するためのツールとライブラリ
 &
 cpufrequtils
 &

@@ -2,7 +2,7 @@ openslp & y & y & y & y
 &
 OpenSLP
 &
-openslp�ϡ��ͥåȥ����γƼ掠���ӥ��򸡽Ф���
-SLP(Service Location Protocol)����������饤�֥��Ǥ���
+openslpは、ネットワーク上の各種サービスを検出する
+SLP(Service Location Protocol)を実装したライブラリです。
 &
 &

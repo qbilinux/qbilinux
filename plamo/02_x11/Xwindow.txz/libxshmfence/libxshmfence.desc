@@ -2,7 +2,7 @@ libxshmfence & y & y & y & y
 &
 libxshmfence
 &
-Linux¤Îfutexes(Fast User-space mutexes)¾å¤Ë
-X¤Î¥¤¥Ù¥ó¥ÈÍÑAPI¤òÄó¶¡¤¹¤ë¤¿¤á¤Î¥é¥¤¥Ö¥é¥ê
+Linuxã®futexes(Fast User-space mutexes)ä¸Šã«
+Xã®ã‚¤ãƒ™ãƒ³ãƒˆç”¨APIã‚’æä¾›ã™ã‚‹ãŸã‚ã®ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
 &
 &

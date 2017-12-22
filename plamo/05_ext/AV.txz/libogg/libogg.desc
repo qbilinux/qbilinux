@@ -1,10 +1,10 @@
 libogg & y & y & y & y
 &
-Ogg ����ƥ�����ѥ饤�֥��
+Ogg コンテナ操作用ライブラリ
 &
-Ogg �� Xiph.org ����ȯ�����ޥ����ǥ����ǡ����γ�Ǽ��(����ƥ�)�ե���
-�ޥåȤǤ������Υ饤�֥��� Ogg �����Υ���ƥʤ����뵡ǽ���󶡤���
-����
+Ogg は Xiph.org が開発したマルチメディアデータの格納用(コンテナ)フォー
+マットです。このライブラリは Ogg 形式のコンテナを操作する機能を提供しま
+す。
 &
 Ogg library for Ogg Vorbis
 &

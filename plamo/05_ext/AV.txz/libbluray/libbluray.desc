@@ -1,9 +1,9 @@
 libbluray & y & y & y & y
 &
-Bluray disc ����ѥ饤�֥��
+Bluray disc 操作用ライブラリ
 &
-Bluray disc�����뤿��Υ饤�֥��Ǥ�����
-���Ѥ�Bluray disc�Ϥ����Ƥ��Ź沽����Ƥ��ꡤ
-���Υ饤�֥������ǤϺ����Ǥ��ޤ���
+Bluray discを操作するためのライブラリですが，
+商用のBluray discはたいてい暗号化されており，
+このライブラリだけでは再生できません
 &
 &

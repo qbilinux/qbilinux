@@ -1,9 +1,9 @@
 bridge_utils & y & y & y & y
 &
-�������ͥåȥ֥�å�����ġ���
+イーサネットブリッジ設定ツール
 &
-bridge-utils �� Linux �򥤡����ͥåȥ֥�å��Ȥ�������
-����ݤ�ɬ�פȤʤ�ġ���Ǥ���
+bridge-utils は Linux をイーサネットブリッジとして利用
+する際に必要となるツールです．
 &
 ethernet bridge configuration tool
 &
