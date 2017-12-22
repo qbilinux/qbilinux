@@ -1,0 +1,96 @@
+#!/bin/sh
+
+PROBE=/sbin/fdisk
+crunch () { # remove extra whitespace
+    read STRING;
+    echo $STRING
+}
+
+# インストール直後なら必要な情報は/tmpから取れる
+if [ -f /tmp/SeTT_PX -a -f /tmp/SeTrootdev ] ; then  
+    MTPT=`cat /tmp/SeTT_PX`
+    ROOT_DEVICE=`cat /tmp/SeTrootdev`
+else
+    CURRENT_ROOT_DEVICE=`grep " / " /etc/fstab | cut -f1 -d' '`
+
+    /bin/dialog --title "grubをインストールするディレクトリの選択(1)" --yesno \
+	"grubは指定したディスクパーティションの/boot/grub/に \
+必要なファイルをインストールします． \
+現在のルートパーティション($CURRENT_ROOT_DEVICE)に \
+grubをインストールしますか？" 10 70
+
+    if [ $? = 0 ]; then
+	MTPT="/"
+	ROOT_DEVICE=$CURRENT_ROOT_DEVICE
+    else
+        # 現在の root partition とは違うところにgrubをインストール
+	/bin/dialog --title "grubをインストールするディレクトリの選択(2)" --yesno \
+	    "grubを現在のルートパーティション以外にインストールする場合， \
+インストールしたいパーティションを事前に適切なディレクトリ(例えば/mnt) \
+にマウントしておく必要があります．\n\
+/bootを別パーティションにしている場合はそのパーティションも適切な位置 \
+(例えば/mnt/boot)にマウントしておいてください． \n\n\
+準備ができていない場合は，いったん終了して，環境を整えてから再実行してください．\n\n\
+grubのインストールを続けますか？" 18 74
+
+	if [ $? -ne 0 ] ;then
+	    exit
+	fi
+
+	/bin/dialog --title "grubをインストールするディレクトリの選択(3)" --inputbox \
+	    "grubをインストールしたいパーティションをマウントしている位置を \
+指定してください．" 10 74 2> /tmp/return
+	if [ $? = 255 -o $? = 1 ]; then   # user break
+	    exit 1
+	fi
+	MTPT=`cat /tmp/return`
+	rm /tmp/return
+        # check $MTPT
+	if [ "$MTPT.x" = ".x" ] ; then
+	    /bin/dialog --title "Error: no mountpoint" --msgbox \
+		"マウントポイントが指定されませんでしたので終了します" 6 70
+            exit 1
+	elif [ ! -d $MTPT/boot ]; then
+	    /bin/dialog --title "Error: no /boot found" --msgbox \
+		"$MTPT/bootディレクトリが見つかりませんでしたので終了します" 6 70
+            exit 1
+	elif [ ! -e $MTPT/boot/vmlinuz ] ; then
+	    /bin/dialog --title "Error: no /boot/vmlinuz found" --msgbox \
+		"$MTPT/boot/vmlinuz ファイルが見つかりませんでしたので終了します" 6 70
+	    exit 1
+	fi
+
+	ROOT_DEVICE=`mount -v | grep "$MTPT " | cut -f1 -d' '`
+    fi
+fi
+
+echo "$ROOT_DEVICE" > $MTPT/tmp/grub_ROOT_DEVICE
+
+/bin/dialog --title "grub-installの実行" --yesno \
+    "$MTPTにchrootして，grubを$ROOT_DEVICEにインストールします． \
+インストールの際には接続されているデバイスをチェックするので，環境によっては \
+多少時間がかかるかも知れません．また，起動用の設定ファイルも生成しますが \
+この段階ではMBR等は変更されません．処理を続けますか？" 10 70
+
+if [ $? -ne 0 ]; then
+	/bin/dialog --title "User exit" --msgbox \
+	    "処理を中断しました" 6 70
+	exit 1
+fi
+
+ROOT_DISK=`echo $ROOT_DEVICE | sed "s/[0-9]//g"`
+gpt_test=`LANG=C ; fdisk -l $ROOT_DISK | grep Disklabel | grep gpt`
+
+if [ "$gpt_test.x" != ".x" ]; then   # GPT partition
+    efivars_chk=`cat /proc/mounts | grep efivarfs`
+    if [ "$efivars_chk.x" = ".x" ]; then
+	mount -t efivarfs efivarfs /sys/firmware/efi/efivars
+    fi
+    echo $ROOT_DISK > $MTPT/tmp/grub_ROOT_DISK
+    if [ -f /tmp/ESP_partintion ]; then
+        cat /tmp/ESP_partition > $MTPT/tmp/ESP_partition
+    fi
+    chroot $MTPT /sbin/grubconfig_efi
+else    
+    chroot $MTPT /sbin/grubconfig_mbr
+fi    
