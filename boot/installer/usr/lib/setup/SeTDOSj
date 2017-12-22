@@ -37,14 +37,14 @@ if [ ! "$DOSLIST" = "" ]; then # there are DOS or WinNT partitions:
     else
       DOSLISTOK=`echo $DOSLIST|sed $USED_SEDLIST`
     fi
-    dialog --title "DOS/Windows/Windows NT¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤ÎÀßÄê" --menu "\
-¤³¤ì¤é¤Î¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Î¤¦¤Á¡¢Linux ¤«¤é¸«¤¨¤ë¤è¤¦¤Ë¤·¤¿¤¤¥Ñ¡¼¥Æ¥£\n\
-¥·¥ç¥ó¤¬¤¢¤ì¤ĞÁªÂò¤·¤Æ¤¯¤À¤µ¤¤¡£\n\
-ÀèÆ¬¤Ë *DONE* ¤È¤¢¤ë¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Ï¡¢¤¹¤Ç¤Ë¥Ö¡¼¥È»ş¤Ë¥Ş¥¦¥ó¥È¤¹¤ë\n\
-¥Ç¥Ğ¥¤¥¹¤Î¥ê¥¹¥È¤Ë´Ş¤Ş¤ì¤Æ¤¤¤Ş¤¹(³ç¸Ì¤ÎÃæ¤Ï¥Ş¥¦¥ó¥È¥İ¥¤¥ó¥È¤Ç¤¹)¡£\n\
+    dialog --title "DOS/Windows/Windows NTãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã®è¨­å®š" --menu "\
+ã“ã‚Œã‚‰ã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã®ã†ã¡ã€Linux ã‹ã‚‰è¦‹ãˆã‚‹ã‚ˆã†ã«ã—ãŸã„ãƒ‘ãƒ¼ãƒ†ã‚£\n\
+ã‚·ãƒ§ãƒ³ãŒã‚ã‚Œã°é¸æŠã—ã¦ãã ã•ã„ã€‚\n\
+å…ˆé ­ã« *DONE* ã¨ã‚ã‚‹ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã¯ã€ã™ã§ã«ãƒ–ãƒ¼ãƒˆæ™‚ã«ãƒã‚¦ãƒ³ãƒˆã™ã‚‹\n\
+ãƒ‡ãƒã‚¤ã‚¹ã®ãƒªã‚¹ãƒˆã«å«ã¾ã‚Œã¦ã„ã¾ã™(æ‹¬å¼§ã®ä¸­ã¯ãƒã‚¦ãƒ³ãƒˆãƒã‚¤ãƒ³ãƒˆã§ã™)ã€‚\n\
 " 22 72 12 \
 $DOSLISTOK \
-"Quit" "¤³¤ÎÀßÄê¤ò½ªÎ»¤¹¤ë" 2> $TMP/reply$$
+"Quit" "ã“ã®è¨­å®šã‚’çµ‚äº†ã™ã‚‹" 2> $TMP/reply$$
     if [ $? = 1 -o $? = 255 ]; then
       rm -f $TMP/reply$$
       exit
@@ -58,23 +58,23 @@ $DOSLISTOK \
       NEXT_PARTITION="`echo $REPLY|sed -e 's/\*DONE\*//' -e 's/,.*//'`"
       if echo $REPLY | grep "DONE" 1> /dev/null 2> /dev/null ; then
       # We have already added this partition.
-        dialog --title "¥¨¥é¡¼¡§$NEXT_PARTITION¤Ï¤¹¤Ç¤Ë»È¤ï¤ì¤Æ¤¤¤Ş¤¹" --msgbox "\n\
-¶²¤ìÆş¤ê¤Ş¤¹¤¬¡¢$NEXT_PARTITION¤Ï¤¹¤Ç¤Ë¥Ö¡¼¥È»ş¤Ë¥Ş¥¦¥ó¥È¤¹¤ë\n\
-¥Ç¥Ğ¥¤¥¹¤Î¥ê¥¹¥È¤Ë´Ş¤Ş¤ì¤Æ¤¤¤Ş¤¹¡£¤Ş¤À»ØÄê¤·¤Æ¤¤¤Ê¤¤¥Ñ¡¼¥Æ¥£\n\
-¥·¥ç¥ó¤òÁªÂò¤¹¤ë¤«¡¢Quit¤òÁªÂò¤·¤Æ¤¯¤À¤µ¤¤¡£\n\
+        dialog --title "ã‚¨ãƒ©ãƒ¼ï¼š$NEXT_PARTITIONã¯ã™ã§ã«ä½¿ã‚ã‚Œã¦ã„ã¾ã™" --msgbox "\n\
+æã‚Œå…¥ã‚Šã¾ã™ãŒã€$NEXT_PARTITIONã¯ã™ã§ã«ãƒ–ãƒ¼ãƒˆæ™‚ã«ãƒã‚¦ãƒ³ãƒˆã™ã‚‹\n\
+ãƒ‡ãƒã‚¤ã‚¹ã®ãƒªã‚¹ãƒˆã«å«ã¾ã‚Œã¦ã„ã¾ã™ã€‚ã¾ã æŒ‡å®šã—ã¦ã„ãªã„ãƒ‘ãƒ¼ãƒ†ã‚£\n\
+ã‚·ãƒ§ãƒ³ã‚’é¸æŠã™ã‚‹ã‹ã€Quitã‚’é¸æŠã—ã¦ãã ã•ã„ã€‚\n\
 " 9 70
         continue;
       fi
       NEXT_FS="`echo $REPLY|sed -e 's/.*,//'`"
-      dialog --title "¥Ş¥¦¥ó¥È¥İ¥¤¥ó¥È¤ÎÁªÂò" --inputbox "\
-¤µ¤Æ¡¢¤³¤Î¿·¤·¤¤¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤ò¡¢¥Ç¥£¥ì¥¯¥È¥ê¥Ä¥ê¡¼¤Î¤É¤³¤«\n\
-¤Ë¥Ş¥¦¥ó¥È¤·¤Ê¤±¤ì¤Ğ¤Ê¤ê¤Ş¤»¤ó¡£¥Ş¥¦¥ó¥È¤·¤¿¤¤¥Ç¥£¥ì¥¯¥È¥êÌ¾\n\
-¤òÆşÎÏ¤·¤Æ¤¯¤À¤µ¤¤¡£ Îã¤¨¤Ğ¡¢/win_c ¤ä /win_d ¤Ê¤É¤Ê¤ó¤Ç¤â¹½\n\
-¤¤¤Ş¤»¤ó¡£\n\
-Ãí¡§¤³¤Î¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Ï¡¢¼Âºİ¤Ë¤Ï¥ê¥Ö¡¼¥È¤·Ä¾¤¹¤Ş¤Ç¥Ş¥¦¥ó¥È\n\
-¤µ¤ì¤Ş¤»¤ó¡£\n\
+      dialog --title "ãƒã‚¦ãƒ³ãƒˆãƒã‚¤ãƒ³ãƒˆã®é¸æŠ" --inputbox "\
+ã•ã¦ã€ã“ã®æ–°ã—ã„ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã‚’ã€ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãƒ„ãƒªãƒ¼ã®ã©ã“ã‹\n\
+ã«ãƒã‚¦ãƒ³ãƒˆã—ãªã‘ã‚Œã°ãªã‚Šã¾ã›ã‚“ã€‚ãƒã‚¦ãƒ³ãƒˆã—ãŸã„ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªå\n\
+ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚ ä¾‹ãˆã°ã€/win_c ã‚„ /win_d ãªã©ãªã‚“ã§ã‚‚æ§‹\n\
+ã„ã¾ã›ã‚“ã€‚\n\
+æ³¨ï¼šã“ã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã¯ã€å®Ÿéš›ã«ã¯ãƒªãƒ–ãƒ¼ãƒˆã—ç›´ã™ã¾ã§ãƒã‚¦ãƒ³ãƒˆ\n\
+ã•ã‚Œã¾ã›ã‚“ã€‚\n\
 \n\
-$NEXT_PARTITION($NEXT_FS)¤ò¤É¤³¤Ë¥Ş¥¦¥ó¥È¤·¤Ş¤¹¤«¡©\n\
+$NEXT_PARTITION($NEXT_FS)ã‚’ã©ã“ã«ãƒã‚¦ãƒ³ãƒˆã—ã¾ã™ã‹ï¼Ÿ\n\
 " 15 66 2> /tmp/newdir$$
       if [ $? = 1 ]; then
         rm -f /tmp/newdir$$ /tmp/SeTDOS
@@ -89,22 +89,22 @@ $NEXT_PARTITION($NEXT_FS)¤ò¤É¤³¤Ë¥Ş¥¦¥ó¥È¤·¤Ş¤¹¤«¡©\n\
       chmod 755 /mnt$NEW_DIR
       echo > /tmp/tmpmsg$$
       if [ ! -z "`echo $NEXT_FS | grep FAT`" ] ; then
-         echo "Windows ¤Ş¤¿¤Ï DOS¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤¬ /etc/fstab ¤ËÄÉ²Ã¤µ¤ì¤Ş¤·¤¿¡§" >> /tmp/tmpmsg$$
+         echo "Windows ã¾ãŸã¯ DOSãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãŒ /etc/fstab ã«è¿½åŠ ã•ã‚Œã¾ã—ãŸï¼š" >> /tmp/tmpmsg$$
          echo >> /tmp/tmpmsg$$
          echo "$NEXT_PARTITION        $NEW_DIR        vfat        iocharset=euc-jp,codepage=932  0   0" >> /tmp/tmpmsg$$
          echo "$NEXT_PARTITION        $NEW_DIR        vfat        iocharset=euc-jp,codepage=932  0   0" >> /tmp/SeTDOS
       elif [ ! -z "`echo $NEXT_FS | grep NTFS`" ] ; then
-         echo "NTFS¥Ñ¡¼¥Æ¥£¥·¥ç¥ó(ÆÉ¤ß¹ş¤ßÀìÍÑ)¤¬ /etc/fstab ¤ËÄÉ²Ã¤µ¤ì¤Ş¤·¤¿¡§" >> /tmp/tmpmsg$$
+         echo "NTFSãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³(èª­ã¿è¾¼ã¿å°‚ç”¨)ãŒ /etc/fstab ã«è¿½åŠ ã•ã‚Œã¾ã—ãŸï¼š" >> /tmp/tmpmsg$$
          echo >> /tmp/tmpmsg$$
          echo "$NEXT_PARTITION        $NEW_DIR        ntfs         ro   0   0" >> /tmp/tmpmsg$$
          echo "$NEXT_PARTITION        $NEW_DIR        ntfs         ro   0   0" >> /tmp/SeTDOS
       elif [ ! -z "`echo $NEXT_FS | grep SFS`" ] ; then
-         echo "SFS¥Ñ¡¼¥Æ¥£¥·¥ç¥ó(ÆÉ¤ß¹ş¤ßÀìÍÑ)¤¬ /etc/fstab ¤ËÄÉ²Ã¤µ¤ì¤Ş¤·¤¿¡§" >> /tmp/tmpmsg$$
+         echo "SFSãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³(èª­ã¿è¾¼ã¿å°‚ç”¨)ãŒ /etc/fstab ã«è¿½åŠ ã•ã‚Œã¾ã—ãŸï¼š" >> /tmp/tmpmsg$$
          echo >> /tmp/tmpmsg$$
          echo "$NEXT_PARTITION        $NEW_DIR        ntfs         ro   0   0" >> /tmp/tmpmsg$$
          echo "$NEXT_PARTITION        $NEW_DIR        ntfs         ro   0   0" >> /tmp/SeTDOS
       fi
-      dialog --title "/etc/fstab ¤ËÄÉµ­¤µ¤ì¤ëÆâÍÆ¤Î³ÎÇ§" \
+      dialog --title "/etc/fstab ã«è¿½è¨˜ã•ã‚Œã‚‹å†…å®¹ã®ç¢ºèª" \
              --msgbox "`cat /tmp/tmpmsg$$`" 9 75
       rm -f /tmp/tmpmsg$$
       ########

@@ -5,16 +5,16 @@ rm -f /tmp/SeTDS /tmp/SeTmount
 
  cat << EOF > /tmp/tmpmsg
 
-SMB��Ȥäơ�Windows�ζ�ͭ�ǥ��������饤�󥹥ȡ���
-������ˡ�Ϥޤ��ޤ���ȯ�Ӿ�ǡ����ˤ�äƤ���������ǽ��
-�ʤ���礬����ޤ���SBM��ͳ�ǥ��󥹥ȡ��뤹�뤿��ˤϡ�
-�����ФȤʤ�ޥ����ɬ�פʥǥ�������CD-ROM�򤢤餫����
-��ͭ����褦�����ꤷ�����Υޥ����IP���ɥ쥹��NetBIOS̾��
-��ͭ�����ӥ�̾���ѥ���ɤ�����å����Ƥ����Ƥ���������
+SMBを使って、Windowsの共有ディスクからインストール
+する方法はまだまだ開発途上で、条件によっては正しく機能し
+ない場合があります。SBM経由でインストールするためには、
+サーバとなるマシンで必要なディスクやCD-ROMをあらかじめ
+共有するように設定し、そのマシンのIPアドレス、NetBIOS名、
+共有サービス名、パスワードをチェックしておいてください。
 
-������SMB��ͳ�Υ��󥹥ȡ����Ԥ��ޤ�����
+本当にSMB経由のインストールを行いますか？
 EOF
- dialog --title "SMB��ͳ�Υ��󥹥ȡ���" --yesno "`cat /tmp/tmpmsg`" 16 68
+ dialog --title "SMB経由のインストール" --yesno "`cat /tmp/tmpmsg`" 16 68
  if [ $? = 1 -o $? = 255 ]; then
   rm -f /tmp/tmpmsg
   exit
@@ -25,25 +25,25 @@ EOF
  if [ "$T_PX" = "/" ]; then
   cat << EOF > /tmp/tmpmsg
 
-�����ϡ��ɥǥ������Υե����륷���ƥफ��¹Ԥ��Ƥ��ޤ�������
-�ޥ���ϸ��ߥ��󥹥ȡ��븵�Ȥʤ륵���Фȥͥåȥ������³��
-��Ƥ��ޤ������⤷�����ʤ顢�������ͥåȥ����ɤΥꥳ��ե���
-�ϹԤ��ޤ���
+今、ハードディスクのファイルシステムから実行しています。この
+マシンは現在インストール元となるサーバとネットワークで接続さ
+れていますか？もしそうなら、イーサネットカードのリコンフィグ
+は行いません。
 
-�ͥåȥ������³���Ƥ��ޤ�����
+ネットワークに接続していますか？
 EOF
-  dialog --title "SMB���󥹥ȡ���" --yesno "`cat /tmp/tmpmsg`" 11 68
+  dialog --title "SMBインストール" --yesno "`cat /tmp/tmpmsg`" 11 68
   UPNRUN=$?
  fi
  if [ $UPNRUN = 1 ]; then
   cat << EOF > /tmp/tmpmsg
 
-���Υޥ���˳�����Ƥ�IP���ɥ쥹�����Ϥ��Ƥ���������
-�㤨�С�111.112.113.114
+このマシンに割り当てるIPアドレスを入力してください。
+例えば：111.112.113.114
 
-IP���ɥ쥹�ϲ��Ǥ�����
+IPアドレスは何ですか？
 EOF
-  dialog --title "IP���ɥ쥹������" --inputbox "`cat /tmp/tmpmsg`" 13 65 2> /tmp/local
+  dialog --title "IPアドレスの設定" --inputbox "`cat /tmp/tmpmsg`" 13 65 2> /tmp/local
   if [ $? = 1 -o $? = 255 ]; then
    rm -f /tmp/tmpmsg /tmp/local
    exit
@@ -52,14 +52,14 @@ EOF
   rm -f /tmp/local
   cat << EOF > /tmp/tmpmsg
 
-�ͥåȥޥ��������ꤹ��ɬ�פ�����ޤ���
-ŵ��Ū�ˤ�255.255.255.0�Ǥ�����
-����ϥ������������ˤ�äơ��ۤʤ�
-��ǽ��������ޤ���
+ネットマスクを設定する必要があります。
+典型的には255.255.255.0ですが、
+これはローカルの設定によって、異なる
+可能性があります。
 
-�ͥåȥޥ����ϲ��Ǥ�����
+ネットマスクは何ですか？
 EOF
-  dialog --title "�ͥåȥޥ���������" --inputbox "`cat /tmp/tmpmsg`" 15 65 2> /tmp/mask
+  dialog --title "ネットマスクの設定" --inputbox "`cat /tmp/tmpmsg`" 15 65 2> /tmp/mask
   if [ $? = 1 -o $? = 255 ]; then
    rm -f /tmp/tmpmsg /tmp/mask
    exit
@@ -105,19 +105,19 @@ LOCAL_NETWORK=`ipmask $LOCAL_NETMASK $LOCAL_IPADDR | cut -f 2 -d ' '`
 
  cat << EOF > /tmp/tmpmsg
 
-���Υޥ��������Ͻ���ޤ��������˥����ФȤʤ�ޥ����
-�������Ͽ���ޤ����ޤ���Plamo Linux�Υѥå�������ͭ��
-�󶡤��Ƥ���Windows�ޥ����IP���ɥ쥹�����ꤷ�ޤ���
+このマシンの設定は終りました。次にサーバとなるマシンの
+情報を登録します。まず、Plamo Linuxのパッケージを共有で
+提供しているWindowsマシンのIPアドレスを設定します。
 
 EOF
  if [ "$UPNRUN" = "0" ]; then
   cat << EOF >> /tmp/tmpmsg
-�⤦�ͥåȥ������³����Ƥޤ����顢ɬ�פʤ�IP���ɥ쥹��
-�����˥ۥ���̾�����ѤǤ���Ϥ��Ǥ���
+もうネットワークに接続されてますから、必要ならIPアドレスの
+かわりにホスト名が使用できるはずです。
 
 EOF
  fi
- echo "�����С���IP���ɥ쥹�ϲ��Ǥ����� " >> /tmp/tmpmsg
+ echo "サーバーのIPアドレスは何ですか？ " >> /tmp/tmpmsg
  dialog --title "ENTER IP ADDRESS OF SMB SERVER" --inputbox \
  "`cat /tmp/tmpmsg`" 17 70 2> /tmp/remote
  if [ $? = 1 -o $? = 255 ]; then
@@ -132,10 +132,10 @@ EOF
 
  cat << EOF > /tmp/tmpmsg
 
- ���ˡ��ѥå��������󶡤��Ƥ���Windows�ޥ����
-NetBIOS̾(Windows�ͥåȥ���Ǥ�̾��)����ꤷ�Ƥ���������
+ 次に、パッケージを提供しているWindowsマシンの
+NetBIOS名(Windowsネットワークでの名前)を指定してください。
 EOF
- dialog --title "�����Ф�NetBIOS̾" --inputbox "`cat /tmp/tmpmsg`" 17 70 2> /tmp/netbios
+ dialog --title "サーバのNetBIOS名" --inputbox "`cat /tmp/tmpmsg`" 17 70 2> /tmp/netbios
  if [ $? = 1 -o $? = 255 ]; then
   rm -f /tmp/tmpmsg /tmp/netbios
   exit
@@ -144,10 +144,10 @@ EOF
 # rm /tmp/netbios
  cat << EOF > /tmp/tmpmsg
 
- ���ˡ��ѥå��������󶡤��Ƥ���Windows�ޥ���ζ�ͭ̾
-(���Υե�����˥����������뤿��Υ����ӥ�̾)����ꤷ�Ƥ���������
+ 次に、パッケージを提供しているWindowsマシンの共有名
+(そのフォルダにアクセスするためのサービス名)を指定してください。
 EOF
- dialog --title "��ͭ�����ӥ�̾�λ���" --inputbox "`cat /tmp/tmpmsg`" 17 70 2> /tmp/resource
+ dialog --title "共有サービス名の指定" --inputbox "`cat /tmp/tmpmsg`" 17 70 2> /tmp/resource
  if [ $? = 1 -o $? = 255 ]; then
   rm -f /tmp/tmpmsg /tmp/resource
   exit
@@ -157,32 +157,32 @@ EOF
 
  echo 
  echo
- echo "���顼���ǧ���뤿�ᡢ�ƥ����ȥ⡼�ɤ����ؤ��ޤ���"
+ echo "エラーを確認するため、テキストモードに切替えます。"
  echo
  if [ ! "$UPNRUN" = "0" ]; then
   echo
-  echo "���顼���ǧ���뤿�ᡢ�ƥ����ȥ⡼�ɤ����ؤ��ޤ���"
+  echo "エラーを確認するため、テキストモードに切替えます。"
   echo
-  echo "�������ͥåȥ�����������..."
+  echo "イーサネットカード設定中..."
   ifconfig $ENET_DEVICE $LOCAL_IPADDR netmask $LOCAL_NETMASK broadcast $LOCAL_BROADCAST
   route add -net $LOCAL_NETWORK
   if [ "$HAVE_GATEWAY" != "0" ]; then
-   echo "�����ȥ�������������..."
+   echo "ゲートウェイの設定中..."
    route add default gw $LOCAL_GATEWAY metric 1
   fi
  fi
- echo "smbmount �ǥޥ������..."
- echo "�ѥ���ɤ�Ҥͤޤ��Τǡ��ѥ���ɤ����ꤷ�Ƥ������"
- echo "���Ϥ��Ƥ������������ꤷ�Ƥ��ʤ����Enter�ǿʤ�ޤ�"
+ echo "smbmount でマウント中..."
+ echo "パスワードを尋ねますので、パスワードを設定している場合は"
+ echo "入力してください。設定していなければEnterで進めます"
  echo 
  smbmount //$REMOTE_NETBIOS/$REMOTE_SERVICE /var/adm/mount -I $REMOTE_IPADDR 
  echo "/var/adm/mount" > /tmp/SeTDS
  echo "-source_mounted" > /tmp/SeTmount
  echo "/dev/null" > /tmp/SeTsource
  echo
- echo "���ߤΥޥ���ȥơ��֥롧"
+ echo "現在のマウントテーブル："
  mount
- echo -n "smbmount����ľ��ɬ�פ�����ޤ��� ([y]es, [n]o)? "
+ echo -n "smbmountをやり直す必要がありますか ([y]es, [n]o)? "
  read TRY_AGAIN;
  if [ "$TRY_AGAIN" = "n" -o "$TRY_AGAIN" = "N" ]; then
   exit

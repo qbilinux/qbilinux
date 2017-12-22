@@ -7,18 +7,18 @@ rm -f /tmp/SeTDS /tmp/SeTmount
 
  cat << EOF > /tmp/tmpmsg
 
-�ٹ� NFS��ͳ�Υ��󥹥ȡ���ϡ����ʤ���TCP��IP�˴���Ƥ����
-�����˻��֤�����Ǥ��ޤ������鿴�Ԥ����ˤȤäƤϤ��ʤ�ʣ����
-���󥹥ȡ���ˡ�Ǥ���NFS��ͳ�Υ��󥹥ȡ���ǹԤ�ʤ���Фʤ��
-�����ܤˤϡ��ʲ��Τ褦�ʤ�Τ�����ޤ���
+警告！ NFS経由のインストールは、あなたがTCP／IPに慣れていれば
+本当に時間を節約できますが、初心者の方にとってはかなり複雑な
+インストール法です。NFS経由のインストールで行わなければならな
+い項目には、以下のようなものがあります：
 
--- �֡��ȥǥ�������bootdisk�ˤ�/etc/networks������
--- ɬ�ܡ�NFS�����С��ˡ����󥹥ȡ��븵�ǥ��쥯�ȥ��
-   export������
+-- ブートディスク（bootdisk）の/etc/networksの設定
+-- 必須：NFSサーバーに、インストール元ディレクトリを
+   exportさせる
 
-������NFS��ͳ�Υ��󥹥ȡ����Ԥ��ޤ�����
+本当にNFS経由のインストールを行いますか？
 EOF
- dialog --title "NFS��ͳ�Υ��󥹥ȡ���" --yesno "`cat /tmp/tmpmsg`" 16 68
+ dialog --title "NFS経由のインストール" --yesno "`cat /tmp/tmpmsg`" 16 68
  if [ $? = 1 -o $? = 255 ]; then
   rm -f /tmp/tmpmsg
   exit
@@ -29,22 +29,22 @@ EOF
  if [ "$T_PX" = "/" ]; then
   cat << EOF > /tmp/tmpmsg
 
-�����ϡ��ɥǥ������Υե����륷���ƥफ��¹Ԥ��Ƥ��ޤ�������
-�ޥ���ϸ��ߥ��󥹥ȡ��븵�Ȥʤ륵���Фȥͥåȥ������³��
-��Ƥ��ޤ������⤷�����ʤ顢�������ͥåȥ����ɤΥꥳ��ե���
-�ϹԤ��ޤ���
+今、ハードディスクのファイルシステムから実行しています。この
+マシンは現在インストール元となるサーバとネットワークで接続さ
+れていますか？もしそうなら、イーサネットカードのリコンフィグ
+は行いません。
 
-�ͥåȥ������³���Ƥ��ޤ�����
+ネットワークに接続していますか？
 EOF
 
-  dialog --title "NFS���󥹥ȡ���" --yesno "`cat /tmp/tmpmsg`" 11 68
+  dialog --title "NFSインストール" --yesno "`cat /tmp/tmpmsg`" 11 68
   UPNRUN=$?
  fi
  if [ $UPNRUN = 1 ]; then
 
-  dialog --title "DHCP�����ѡ�" --yesno "���Υ��󥹥ȡ����DHCP��IP���ɥ쥹��\n\
-�����ǽ�Ǥ���DHCP�����Ѥ��ޤ�����\n\
-(�ͥåȥ�����DHCP�����Ф�ɬ��)" 7 62
+  dialog --title "DHCPを利用？" --yesno "このインストーラはDHCPでIPアドレスを\n\
+設定可能です．DHCPを利用しますか？\n\
+(ネットワーク上にDHCPサーバが必要)" 7 62
   if [ $? = 0 ]; then
       DHCP=1
   fi
@@ -52,12 +52,12 @@ EOF
 if [ ! $DHCP ]; then
   cat << EOF > /tmp/tmpmsg
 
-���Υޥ���˳�����Ƥ�IP���ɥ쥹�����Ϥ��Ƥ���������
-�㤨�С�111.112.113.114
+このマシンに割り当てるIPアドレスを入力してください。
+例えば：111.112.113.114
 
-IP���ɥ쥹�ϲ��Ǥ�����
+IPアドレスは何ですか？
 EOF
-  dialog --title "IP���ɥ쥹������" --inputbox "`cat /tmp/tmpmsg`" 13 65 2> /tmp/local
+  dialog --title "IPアドレスの設定" --inputbox "`cat /tmp/tmpmsg`" 13 65 2> /tmp/local
   if [ $? = 1 -o $? = 255 ]; then
    rm -f /tmp/tmpmsg /tmp/local
    exit
@@ -66,14 +66,14 @@ EOF
   rm -f /tmp/local
   cat << EOF > /tmp/tmpmsg
 
-�ͥåȥޥ��������ꤹ��ɬ�פ�����ޤ���
-ŵ��Ū�ˤ�255.255.255.0�Ǥ�����
-����ϥ������������ˤ�äơ��ۤʤ�
-��ǽ��������ޤ���
+ネットマスクを設定する必要があります。
+典型的には255.255.255.0ですが、
+これはローカルの設定によって、異なる
+可能性があります。
 
-�ͥåȥޥ����ϲ��Ǥ�����
+ネットマスクは何ですか？
 EOF
-  dialog --title "�ͥåȥޥ���������" --inputbox "`cat /tmp/tmpmsg`" 15 65 2> /tmp/mask
+  dialog --title "ネットマスクの設定" --inputbox "`cat /tmp/tmpmsg`" 15 65 2> /tmp/mask
   if [ $? = 1 -o $? = 255 ]; then
    rm -f /tmp/tmpmsg /tmp/mask
    exit
@@ -114,9 +114,9 @@ EOF
 #  rm /tmp/netw
 LOCAL_BROADCAST=`ipmask $LOCAL_NETMASK $LOCAL_IPADDR | cut -f 1 -d ' '`
 LOCAL_NETWORK=`ipmask $LOCAL_NETMASK $LOCAL_IPADDR | cut -f 2 -d ' '`
- dialog --title "�����ȥ��������ɥ쥹������" \
---inputbox "\n�����ȥ��������ɥ쥹�ϲ��Ǥ����� \
-�����ȥ�������̵������ Enter �򲡤��ƿʤ�Ƥ�������" 15 72 2> /tmp/gw
+ dialog --title "ゲートウェイアドレスの設定" \
+--inputbox "\nゲートウェイアドレスは何ですか？ \
+ゲートウェイが無い場合は Enter を押して進めてください" 15 72 2> /tmp/gw
    if [ $? = 1 -o $? = 255 ]; then
     rm -f /tmp/tmpmsg /tmp/gw
     exit
@@ -133,19 +133,19 @@ LOCAL_NETWORK=`ipmask $LOCAL_NETMASK $LOCAL_IPADDR | cut -f 2 -d ' '`
 
  cat << EOF > /tmp/tmpmsg
 
-���ơ�������¦������Ͻ���ޤ����������Ϥɤ��˥��󥹥ȡ��뤹��
-���եȥ������ѥå����������뤫����ꤹ��ɬ�פ�����ޤ����ޤ���
-Plamo Linux�Υ��󥹥ȡ��븵�Ȥʤ�ޥ����IP���ɥ쥹�����ꤷ�ޤ���
+さて、こちら側の設定は終りましたが、次はどこにインストールする
+ソフトウェアパッケージがあるかを指定する必要があります。まず、
+Plamo Linuxのインストール元となるマシンのIPアドレスを設定します。
 
 EOF
  if [ "$UPNRUN" = "0" ]; then
   cat << EOF >> /tmp/tmpmsg
-�⤦�ͥåȥ������³����Ƥޤ����顢ɬ�פʤ�IP���ɥ쥹��
-�����˥ۥ���̾�����ѤǤ���Ϥ��Ǥ���
+もうネットワークに接続されてますから、必要ならIPアドレスの
+かわりにホスト名が使用できるはずです。
 
 EOF
  fi
- echo "NFS�����С���IP���ɥ쥹�ϲ��Ǥ����� " >> /tmp/tmpmsg
+ echo "NFSサーバーのIPアドレスは何ですか？ " >> /tmp/tmpmsg
  dialog --title "ENTER IP ADDRESS OF NFS SERVER" --inputbox \
  "`cat /tmp/tmpmsg`" 17 70 2> /tmp/remote
  if [ $? = 1 -o $? = 255 ]; then
@@ -160,17 +160,17 @@ EOF
 
  cat << EOF > /tmp/tmpmsg
 
- �����С���Plamo Linux�����äƤ���ǥ��쥯�ȥ�β��ˤϡ�
-�ġ��Υǥ��������б��������֥ǥ��쥯�ȥ꤬�ʤ����
-�ʤ�ޤ���
-���Υ��󥹥ȡ��륹����ץȤ�¹Ԥ��뤿��ˡ����줾���
-�ǥ��������б��������֥ǥ��쥯�ȥ����äƤ��륵���С�
-�Υǥ��쥯�ȥ�̾��ɬ�פǤ����㤨�С��ǥ��������å� a 
-�� /plamo/a �ˤ���Τʤ顢/plamo �Ȥ���������������
+ サーバーのPlamo Linuxの入っているディレクトリの下には、
+個々のディスクに対応したサブディレクトリがなければ
+なりません。
+このインストールスクリプトを実行するために、それぞれの
+ディスクに対応したサブディレクトリを持っているサーバー
+のディレクトリ名が必要です。例えば、ディスクセット a 
+が /plamo/a にあるのなら、/plamo とお答えください。
 
-Plamo�Υ��󥹥ȡ��븵�Υǥ��쥯�ȥ�����Ϥ��Ƥ���������
+Plamoのインストール元のディレクトリを入力してください。
 EOF
- dialog --title "�������ǥ��쥯�ȥ������" --inputbox "`cat /tmp/tmpmsg`" 17 65 2> /tmp/slacksrc
+ dialog --title "ソースディレクトリの選択" --inputbox "`cat /tmp/tmpmsg`" 17 65 2> /tmp/slacksrc
  if [ $? = 1 -o $? = 255 ]; then
   rm -f /tmp/tmpmsg /tmp/slacksrc
   exit
@@ -180,33 +180,33 @@ EOF
  echo
  echo 
  echo
- echo "���顼���ǧ���뤿�ᡢ�ƥ����ȥ⡼�ɤ����ؤ��ޤ���"
+ echo "エラーを確認するため、テキストモードに切替えます。"
  echo
  if [ ! "$UPNRUN" = "0" ]; then
   echo
-  echo "���顼���ǧ���뤿�ᡢ�ƥ����ȥ⡼�ɤ����ؤ��ޤ���"
+  echo "エラーを確認するため、テキストモードに切替えます。"
   echo
-  echo "�������ͥåȥ�����������..."
+  echo "イーサネットカード設定中..."
   if [ ! $DHCP  ]; then
     ifconfig $ENET_DEVICE $LOCAL_IPADDR netmask $LOCAL_NETMASK broadcast $LOCAL_BROADCAST
     route add -net $LOCAL_NETWORK
     if [ "$HAVE_GATEWAY" != "0" ]; then
-     echo "�����ȥ�������������..."
+     echo "ゲートウェイの設定中..."
      route add default gw $LOCAL_GATEWAY metric 1
     fi
   else
     udhcpc -q $ENET_DEVICE
   fi
  fi
- echo "NFS�ޥ������..."
+ echo "NFSマウント中..."
  mount -t nfs $REMOTE_IPADDR:$REMOTE_PATH /var/adm/mount -o nolock,rsize=8192,wsize=8192
  echo "/var/adm/mount" > /tmp/SeTDS
  echo "-source_mounted" > /tmp/SeTmount
  echo "/dev/null" > /tmp/SeTsource
  echo
- echo "���ߤΥޥ���ȥơ��֥롧"
+ echo "現在のマウントテーブル："
  mount
- echo -n "NFS�ޥ���Ȥ���ľ��ɬ�פ�����ޤ��� ([y]es, [n]o)? "
+ echo -n "NFSマウントをやり直す必要がありますか ([y]es, [n]o)? "
  read TRY_AGAIN;
  if [ "$TRY_AGAIN" = "n" -o "$TRY_AGAIN" = "N" ]; then
   exit

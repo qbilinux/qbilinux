@@ -1,22 +1,22 @@
 #! /bin/sh
 
 setterm -blank 0
-export LANG=ja_JP.eucJP
+export LANG=ja_JP.TUTF-8
 
 while [ 0 ]; do
- dialog --title "Plamo Linux ¤Î¥»¥Ã¥È¥¢¥Ã¥×¥á¥Ë¥å¡¼¤Ø¤è¤¦¤³¤½" --menu \
-"¤ª»È¤¤¤Î¥Ï¡¼¥É¥¦¥§¥¢¤¬¥Ö¡¼¥È¥Ç¥£¥¹¥¯¤Î¥«¡¼¥Í¥ë¤ËÇ§¼±¤µ¤ì¤Æ¤¤¤Ê¤¤ \n\
-¾ì¹ç¡¢¤¤¤Ã¤¿¤ó¤³¤Î¥á¥Ë¥å¡¼¤ò½ªÎ»¤·¤Æ¡¢modules ¥³¥Þ¥ó¥É¤ÇÉ¬Í×¤Ê¥â  \n\
-¥¸¥å¡¼¥ë¤òÁÈ¤ß¤³¤ó¤Ç¤«¤é¡¢ºÆÅÙ install ¥³¥Þ¥ó¥É¤ò¼Â¹Ô¤¹¤ë¤«¡¢KON ¤ò \n\
-¤òµ¯Æ°¤·¤Æ setup ¼Â¹Ô¤·¤Æ¤¯¤À¤µ¤¤¡£¤Þ¤¿¡¢Linux ¤ò¥¤¥ó¥¹¥È¡¼¥ë¤¹¤ë \n\
-¤Ë¤Ï¡¢¤¢¤é¤«¤¸¤áHDD ¾å¤ËLinux ÍÑ¤Î¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤¬ºÇÄã 1 ¤Ä¤ÏÉ¬Í× \n\
-¤Ç¤¹¡£Linux ÍÑ¤Î¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤¬Ìµ¤¤¾ì¹ç¤Ï¡¢fdisk ¤òÁª¤ó¤Ç¡¢¥Ñ¡¼¥Æ¥£\n\
-¥·¥ç¥ó¤òÍÑ°Õ¤·¤Æ¤¯¤À¤µ¤¤¡£¤µ¤Æ¡¢¤É¤¦¤·¤Þ¤·¤ç¤¦¡© " 16 74 4 \
-"KEYMAP" "¥­¡¼¥Ü¡¼¥É¤Î¥­¡¼ÇÛÎó¤òÊÑ¹¹" \
-"fdisk" "fdisk ¤Ç Linux ÍÑ¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤òºîÀ®" \
-"cfdisk" "cfdisk ¤ÇLinux ÍÑ¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤òºîÀ®" \
-"install" "Plamo Linux ¤Î¥¤¥ó¥¹¥È¡¼¥ë¤ò³«»Ï" \
-"exit" "¤¤¤Ã¤¿¤ó½ªÎ»" 2> /tmp/preset
+ dialog --title "Plamo Linux ã®ã‚»ãƒƒãƒˆã‚¢ãƒƒãƒ—ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã¸ã‚ˆã†ã“ã" --menu \
+"ãŠä½¿ã„ã®ãƒãƒ¼ãƒ‰ã‚¦ã‚§ã‚¢ãŒãƒ–ãƒ¼ãƒˆãƒ‡ã‚£ã‚¹ã‚¯ã®ã‚«ãƒ¼ãƒãƒ«ã«èªè­˜ã•ã‚Œã¦ã„ãªã„ \n\
+å ´åˆã€ã„ã£ãŸã‚“ã“ã®ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’çµ‚äº†ã—ã¦ã€modules ã‚³ãƒžãƒ³ãƒ‰ã§å¿…è¦ãªãƒ¢  \n\
+ã‚¸ãƒ¥ãƒ¼ãƒ«ã‚’çµ„ã¿ã“ã‚“ã§ã‹ã‚‰ã€å†åº¦ install ã‚³ãƒžãƒ³ãƒ‰ã‚’å®Ÿè¡Œã™ã‚‹ã‹ã€KON ã‚’ \n\
+ã‚’èµ·å‹•ã—ã¦ setup å®Ÿè¡Œã—ã¦ãã ã•ã„ã€‚ã¾ãŸã€Linux ã‚’ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã™ã‚‹ \n\
+ã«ã¯ã€ã‚ã‚‰ã‹ã˜ã‚HDD ä¸Šã«Linux ç”¨ã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãŒæœ€ä½Ž 1 ã¤ã¯å¿…è¦ \n\
+ã§ã™ã€‚Linux ç”¨ã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãŒç„¡ã„å ´åˆã¯ã€fdisk ã‚’é¸ã‚“ã§ã€ãƒ‘ãƒ¼ãƒ†ã‚£\n\
+ã‚·ãƒ§ãƒ³ã‚’ç”¨æ„ã—ã¦ãã ã•ã„ã€‚ã•ã¦ã€ã©ã†ã—ã¾ã—ã‚‡ã†ï¼Ÿ " 16 74 4 \
+"KEYMAP" "ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã®ã‚­ãƒ¼é…åˆ—ã‚’å¤‰æ›´" \
+"fdisk" "fdisk ã§ Linux ç”¨ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã‚’ä½œæˆ" \
+"cfdisk" "cfdisk ã§Linux ç”¨ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã‚’ä½œæˆ" \
+"install" "Plamo Linux ã®ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã‚’é–‹å§‹" \
+"exit" "ã„ã£ãŸã‚“çµ‚äº†" 2> /tmp/preset
 
 if [ $? = 1 -o $? = 255 ]; then
   exit
@@ -34,7 +34,7 @@ elif [ "$PRESELECT" = "fdisk" ]; then
 
 echo "#! /bin/sh" > /tmp/fdiskset
 echo "dialog --title \"HDD selection\" --menu \\" >> /tmp/fdiskset
-echo "\"¤É¤Î¥Ç¥£¥¹¥¯¤ò fdisk ¤·¤Þ¤¹¤«¡©\" 10 60 5 \\" >> /tmp/fdiskset
+echo "\"ã©ã®ãƒ‡ã‚£ã‚¹ã‚¯ã‚’ fdisk ã—ã¾ã™ã‹ï¼Ÿ\" 10 60 5 \\" >> /tmp/fdiskset
 
   ( export LANG=C && fdisk -l | grep "^Disk"| grep -v "identifier" |  cut -d ' ' -f 2-4 | \
        sed -f /usr/lib/setup/conv.sed  1>> /tmp/fdiskset 2> /dev/null )
@@ -59,7 +59,7 @@ elif [ "$PRESELECT" = "cfdisk" ]; then
 
 echo "#! /bin/sh" > /tmp/fdiskset
 echo "dialog --title \"HDD selection\" --menu \\" >> /tmp/fdiskset
-echo "\"¤É¤Î¥Ç¥£¥¹¥¯¤ò cfdisk ¤·¤Þ¤¹¤«¡©\" 10 60 5 \\" >> /tmp/fdiskset
+echo "\"ã©ã®ãƒ‡ã‚£ã‚¹ã‚¯ã‚’ cfdisk ã—ã¾ã™ã‹ï¼Ÿ\" 10 60 5 \\" >> /tmp/fdiskset
 
   ( export LANG=C && fdisk -l | grep "^Disk"| grep -v "identifier" | cut -d ' ' -f 2-4 | \
        sed -f /usr/lib/setup/conv.sed  1>> /tmp/fdiskset 2> /dev/null )

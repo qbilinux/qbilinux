@@ -1,2 +1,2 @@
 #!/bin/sh
-dialog --title "╔╗╔И║╪: Linuxмя╔я║╪╔ф╔ё╔╥╔Г╔С╓╛╓╒╓Й╓ч╓╩╓С" --textbox "/usr/lib/setup/nopartHELPj" 22 74
+dialog --title "Ц┌╗Ц┐╘Ц┐╪: LinuxГ■╗Ц┐▒Ц┐╪Ц┐├Ц┌ёЦ┌╥Ц┐╖Ц┐ЁЦ│▄Ц│┌Ц┌┼Ц│╬Ц│⌡Ц┌⌠" --textbox "/usr/lib/setup/nopartHELPj" 22 74

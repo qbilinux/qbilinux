@@ -1,7 +1,7 @@
 
-���󥹥ȡ���ˡ�β���Ǥ���
+インストール法の解説です：
 
-Plamo Linux �Ǥ� live CD �Τ褦�ʥ��󥹥ȡ���ϥ��ݡ��Ȥ��Ƥ��ʤ��Τ�
-HDD �����ѤΥѡ��ƥ��������ڤäƥ��󥹥ȡ��뤷�Ƥ���������
+Plamo Linux では live CD のようなインストールはサポートしていないので
+HDD に専用のパーティションを切ってインストールしてください。
 
 -- end of installation method help.
