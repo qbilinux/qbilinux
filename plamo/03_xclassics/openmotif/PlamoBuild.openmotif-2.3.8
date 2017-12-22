@@ -1,15 +1,16 @@
 #!/bin/sh
 
 ######################################################################
-url="ftp://ftp.ics.com/openmotif/2.3/2.3.3/openmotif-2.3.3.tar.gz"
 pkgbase=openmotif
-vers=2.3.3
+vers=2.3.8
+url="https://sourceforge.net/projects/motif/files/Motif%20${vers}%20Source%20Code/motif-${vers}.tar.gz"
 arch=`uname -m`
-build=P3m1
-src=$pkgbase-$vers
+build=P0m1
+src=motif-$vers
 OPT_CONFIG="--disable-static"
 DOCS="README RELEASE BUGREPORT LICENSE RELNOTES INSTALL.configure
     COPYRIGHT.MOTIF TODO ChangeLog"
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -243,19 +244,10 @@ if [ $opt_package -eq 1 ] ; then
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
   convert
-  tar cvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/$libdir/X11 -maxdepth 1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/$libdir -maxdepth 1 | tail -n+3`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/include/X11/bitmaps | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/include -maxdepth 1 | tail -n+3`
-  tar rvpf $pkg.tar -C $P usr/share/Xm
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man3 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man4 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man5 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/manm | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  tar rvpf $pkg.tar -C $P install/doinst.sh
-  touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi
