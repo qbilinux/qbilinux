@@ -1,9 +1,9 @@
 libcap & y & y & y & y
 &
-capability´ÉÍı¥Ä¡¼¥ë
+capabilityç®¡ç†ãƒ„ãƒ¼ãƒ«
 &
-ºÇ¶á¤Î¥«¡¼¥Í¥ë¤Ç²ÄÇ½¤Ë¤Ê¤Ã¤¿POSIX 1e¸ß´¹¤Îcapabilityµ¡Ç½¤ò
-Áàºî¤¹¤ë¤¿¤á¤Î¥Ä¡¼¥ë¤È¥é¥¤¥Ö¥é¥ê
+æœ€è¿‘ã®ã‚«ãƒ¼ãƒãƒ«ã§å¯èƒ½ã«ãªã£ãŸPOSIX 1eäº’æ›ã®capabilityæ©Ÿèƒ½ã‚’
+æ“ä½œã™ã‚‹ãŸã‚ã®ãƒ„ãƒ¼ãƒ«ã¨ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
 &
 Libcap - Library to allow POSIX 1e capabilities
 &

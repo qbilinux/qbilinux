@@ -1,10 +1,10 @@
 xz & y & y & y & y
 &
-XZ���̥ġ���
+XZ圧縮ツール
 &
-XZ��LZMA(Lempel-Ziv-Markov chain algorithm)���̤�
-���Ѥ����ե����밵�̥ġ���Ǥ���
-���̤ˤϤ����֤�������ޤ�����Ÿ���Ϲ�®�ǡ�
-bzip2����⤤����Ψ��ؤ�ޤ���
+XZはLZMA(Lempel-Ziv-Markov chain algorithm)圧縮を
+採用したファイル圧縮ツールです．
+圧縮にはやや時間がかかりますが，展開は高速で，
+bzip2よりも高い圧縮率を誇ります．
 &
 &

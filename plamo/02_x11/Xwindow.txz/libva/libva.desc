@@ -2,7 +2,7 @@ libva & y & y & y & y
 &
 libva
 &
-�ӥǥ������ɤ�����ư�������ǽ�����뤿���
-��ȯ���줿VA(Video Acceleration) API�ѥ饤�֥��
+ビデオカードが持つ動画処理機能を操作するために
+開発されたVA(Video Acceleration) API用ライブラリ
 &
 &

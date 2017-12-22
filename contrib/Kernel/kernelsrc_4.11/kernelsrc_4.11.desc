@@ -1,9 +1,9 @@
 kernelsrc_4.11 & y & y & y & y
 &
-Linux kernel ������������
+Linux kernel ソースコード
 &
-Linux �����ͥ�Υ����������ɤǤ��������Υ����ͥ륽������ unicon �ѥå���
-aufs �ѥå���tuxonice �ѥå��ʤɤ����Ƥơ��ѥå����������Ƥ��ޤ���
+Linux カーネルのソースコードです。元々のカーネルソースに unicon パッチ，
+aufs パッチ，tuxonice パッチなどを当てて，パッケージ化しています。
 &
 Linux kernel source code
 &

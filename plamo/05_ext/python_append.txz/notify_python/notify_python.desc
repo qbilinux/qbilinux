@@ -1,8 +1,8 @@
 notify_python & y & y & y & y
 &
-libnotify��Python�Х���ǥ���
+libnotify用Pythonバインディング
 &
-Python����ǥ����ȥå����ε�ǽ
-(libnotify)��Ȥ�����ΥХ���ǥ���
+Pythonからデスクトップ通知機能
+(libnotify)を使うためのバインディング
 &
 &

@@ -1,11 +1,11 @@
 findutils & y & y & y & y
 &
-�ե����븡���桼�ƥ���ƥ�
+ファイル検索ユーティリティ
 &
-GNU �Ǥ� find, xargs, locate �ʤɤΥץ�����ླྀ�Ǥ���
-find �� xargs �ϡ�����Τ�¤� POSIX 1003.2 �ߴ��Ǥ�����
-���ơ������Ĥ��� Unix ͳ����ɲõ�ǽ�� GNU �ȼ����ɲõ�
-ǽ�����äƤ��ޤ���
+GNU 版の find, xargs, locate などのプログラム集です。
+find と xargs は、私の知る限り POSIX 1003.2 互換です。加
+えて、いくつかの Unix 由来の追加機能や GNU 独自の追加機
+能が入っています。
 &
 GNU find utility
 &

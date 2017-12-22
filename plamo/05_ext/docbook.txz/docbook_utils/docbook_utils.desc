@@ -1,9 +1,9 @@
 docbook_utils & y & y & y & y
 &
-Docbook�桼�ƥ���ƥ�
+Docbookユーティリティ
 &
-SGML�����ǽ񤫤줿�ե������HTML��RTF��Postscript,PDF����
-�������Ѵ����뤿��� jw ��SGML�ե�����֤κ�ʬ���뤿���
-sgmldiff ����᤿�ѥå�����
+SGML形式で書かれたファイルをHTMLやRTF，Postscript,PDF等の
+形式に変換するための jw とSGMLファイル間の差分を取るための
+sgmldiff を収めたパッケージ
 &
 &

@@ -1,8 +1,8 @@
 doxygen & y & y & y & y
 &
-�ɥ�����������ġ��� doxygen
+ドキュメント生成ツール doxygen
 &
-doxygen �ϥ����������ɤ������ޤ줿���󤫤�Ƽ�ɥ�����Ȥ��������뤿��Υġ���Ǥ���
+doxygen はソースコードに埋め込まれた情報から各種ドキュメントを生成するためのツールです．
 &
 source code documentation generating tool
 &

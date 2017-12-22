@@ -2,7 +2,7 @@ bdftopcf & y & y & y & y
 &
 bdftopcf
 &
-X�ǻȤ��Ƥ���ӥåȥޥåץե���Ȥ���¸�����Ǥ���
-BDF��PCF������Ѵ����륳�ޥ��
+Xで使われているビットマップフォントの保存形式である
+BDFとPCFを相互変換するコマンド
 &
 &

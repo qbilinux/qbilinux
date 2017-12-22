@@ -1,8 +1,8 @@
 mutagen & y & y & y & y
 &
-Audio�᥿�ǡ�����Python�⥸�塼��
+Audioメタデータ用Pythonモジュール
 &
-�����ե�����˼�Ͽ����Ƥ���ǡ����˴ؤ���
-audio metadata�����뤿��Υ⥸�塼��
+音声ファイルに収録されているデータに関する
+audio metadataを操作するためのモジュール
 &
 &

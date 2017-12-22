@@ -1,9 +1,9 @@
 openssh & y & y & y & y
 &
-�Ź沽�̿����ޥ��
+暗号化通信コマンド
 &
-OpenSSH �� rlogin/rcp/telnet �����ץ�������
-���Ȥꤹ��ǡ�����Ź沽���������ƥ�����ޤ�
+OpenSSH は rlogin/rcp/telnet に代るプログラムで
+やりとりするデータを暗号化しセキュリティを高めます
 &
 OpenSSH
 &

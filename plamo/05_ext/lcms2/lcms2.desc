@@ -2,7 +2,7 @@ lcms2 & y & y & y & y
 &
 littleCMS version2
 &
-C�ǽ񤫤줿������(CMM)���󥸥��version2�Ǥ���
-API��version1�ȤϰۤʤäƤ���褦�ʤΤǡ�ξ�ԤȤ��Ͽ���Ƥ��ޤ���
+Cで書かれた色管理(CMM)エンジンのversion2です．
+APIがversion1とは異なっているようなので，両者とも収録しています．
 &
 &

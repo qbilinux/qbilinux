@@ -1,8 +1,8 @@
 perl_XML_Twig & & & &
 &
-XML����ѥ⥸�塼��
+XML操作用モジュール
 &
-XML::Parser�⥸�塼���Ȥä�
-XML�����뤿��Υ⥸�塼��
+XML::Parserモジュールを使って
+XMLを操作するためのモジュール
 &
 &

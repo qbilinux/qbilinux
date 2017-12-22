@@ -1,10 +1,10 @@
 skkfep & y & y & y & y
 &
-SKK ���δ������ϥե���ȥ���� skkfep
+SKK 風の漢字入力フロントエンド skkfep
 &
-skkfep �ϡ�NEmacs/Mule �Ѥδ������ϥ����ƥ�Ǥ��� SKK �Ȼ�����UNIX�Ѥ�
-�������ϥե���ȥ���ɤǤ���skkfep ��Ȥ��С�NEmacs/Mule ��ȤäƤ��ʤ�
-�Ȥ��ˤ� SKK �������ܸ����Ϥ��¸��Ǥ��ޤ���
+skkfep は，NEmacs/Mule 用の漢字入力システムである SKK と似た，UNIX用の
+漢字入力フロントエンドです。skkfep を使えば，NEmacs/Mule を使っていない
+ときにも SKK 風の日本語入力が実現できます。
 &
 SKK-like Kana-to-Kanji Front End Processor skkfep
 &

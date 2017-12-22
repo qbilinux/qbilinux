@@ -1,10 +1,10 @@
 kernel_4.11 & y & y & y & y
 &
-Linux 4.x �����ͥ�
+Linux 4.x カーネル
 &
-Plamo-6.x �ѤΥǥե���ȥ����ͥ�Ǥ������ۻ�������� /boot/config �ˤ�
-��ޤ������Υ����ͥ�� Generic x86_64 CPU �ѤˤʤäƤ���Τǡ����Ȥ���
-�ޥ���˹�碌�ƺƹ��ۤ��뤳�Ȥ򤪴��ᤷ�ޤ���
+Plamo-6.x 用のデフォルトカーネルです。構築時の設定は /boot/config にあ
+ります．このカーネルは Generic x86_64 CPU 用になっているので，お使いの
+マシンに合わせて再構築することをお勧めします。
 &
 Linux kernel 4.x
 &

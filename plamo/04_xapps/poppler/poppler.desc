@@ -1,8 +1,8 @@
 poppler & y & y & y & y
 &
-PDF�ѥ饤�֥�� poppler
+PDF用ライブラリ poppler
 &
-poppler��xpdf�򸵤ˤ���PDF�����ѥ饤�֥��Ǥ���
+popplerはxpdfを元にしたPDF処理用ライブラリです．
 &
 popler: shared library for PDF
 &

@@ -2,12 +2,12 @@ ghostscript & y & y & y & y
 &
 GPL ghostsciprt
 &
-ESP��ghostcript�ε�ǽ���ޡ������줿GPL��Ghostscript �ѥå������Ǥ���
-¿���Υץ�󥿥ɥ饤�Ф� static ���Ȥ߹��ޤ�Ƥ��ꡢɸ��Ǥ�
-x11 �ɥ饤�Ф����Ѥ���ޤ����ǥե���ȤǤ����ܸ�ե���Ȥ�IPA
-��ī��IPA�����å���Ȥ�����ˤʤäƤ��ޤ����ɥ�����Ȥ�
-/usr/doc/gs-XXX/ �ˤ���ޤ���
-���Υѥå������� CMPS ���åȤ�ޤ�Ǥ��ޤ���
+ESP版ghostcriptの機能がマージされたGPL版Ghostscript パッケージです。
+多くのプリンタドライバが static に組み込まれており、標準では
+x11 ドライバが使用されます。デフォルトでは日本語フォントはIPA
+明朝，IPAゴシックを使う設定になっています．ドキュメントは
+/usr/doc/gs-XXX/ にあります。
+このパッケージは CMPS キットを含んでいます．
 &
 ESP Ghostsciprt
 &

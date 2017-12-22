@@ -1,7 +1,7 @@
 ibus_anthy & y & y & y & y
 &
-���ʴ����Ѵ������ƥ�Anthy��iBus�⥸�塼��
+かな漢字変換システムAnthy用iBusモジュール
 &
-iBus��ͳ�Ǥ��ʴ����Ѵ������ƥ�Anthy�����Ѥ��뤿��Υ⥸�塼��
+iBus経由でかな漢字変換システムAnthyを利用するためのモジュール
 &
 &

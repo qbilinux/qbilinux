@@ -1,9 +1,9 @@
 libtasn1 & y & y & y & y 
 &
-ANS.1�ѥ饤�֥�� libtasn1
+ANS.1用ライブラリ libtasn1
 &
-�ޥ����ͭ�ε�ˡ�ʤɤ˰�¸������
-ۣ�椵�Τʤ��ǡ�����¤����ã��§�ε��Ҥ��ǽ�Ȥ��������§
-Abstract Syntax Notation One��ASN.1���ѤΥ饤�֥��
+マシン固有の技法などに依存せず、
+曖昧さのないデータ構造や伝達規則の記述を可能とする形式規則
+Abstract Syntax Notation One（ASN.1）用のライブラリ
 &
 &

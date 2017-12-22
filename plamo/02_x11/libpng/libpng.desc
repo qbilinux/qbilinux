@@ -1,9 +1,9 @@
 libpng & y & y & y & y
 &
-PNG�ե����ޥå����饤�֥��
+PNGフォーマット操作ライブラリ
 &
-libpng �� PNG(Portable Network Graphics)�������������
-�ݤ�ɬ�פȤʤ�饤�֥��Ǥ���
+libpng は PNG(Portable Network Graphics)画像を処理する
+際に必要となるライブラリです．
 &
 PNG library
 &

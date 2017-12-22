@@ -2,7 +2,7 @@ autoconf213 & y & y & y & y
 &
 GNU Autoconf-2.13
 &
-���ޤ��ޤ�Unix�ϴĶ��ΰ㤤��ۼ�����Ŭ�ڤ�Makefile����������
-configure������ץȤ��������뤿��Υġ���
+さまざまなUnix系環境の違いを吸収して適切なMakefileを生成する
+configureスクリプトを生成するためのツール
 &
 &

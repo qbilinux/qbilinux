@@ -2,7 +2,7 @@ automake & y & y & y & y
 &
 GNU Automake
 &
-GNU Autoconf¤ÈÏ¢·È¤·¤¿,Makefile¤Î¥Æ¥ó¥×¥ì¡¼¥È¥Õ¥¡¥¤¥ë
-(Makefile.in)¤òÀ¸À®¤¹¤ë¤¿¤á¤Î¥Ä¡¼¥ë
+GNU Autoconfã¨é€£æºã—ãŸ,Makefileã®ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆãƒ•ã‚¡ã‚¤ãƒ«
+(Makefile.in)ã‚’ç”Ÿæˆã™ã‚‹ãŸã‚ã®ãƒ„ãƒ¼ãƒ«
 &
 &

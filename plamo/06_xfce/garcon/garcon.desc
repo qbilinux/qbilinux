@@ -1,8 +1,8 @@
 garcon & y & y & y & y
 &
-garcon��˥塼�饤�֥��
+garconメニューライブラリ
 &
-garcon�ϡ�Glib/GIO��˼������줿��˥塼��ǽ�����뤿��Υ饤�֥��Ǥ�
+garconは，Glib/GIO上に実装されたメニュー機能を操作するためのライブラリです
 &
 garcon menu library
 &

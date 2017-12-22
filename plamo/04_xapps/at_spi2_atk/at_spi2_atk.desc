@@ -2,6 +2,6 @@ at_spi2_atk & y & y & y & y
 &
 AT SPI2 ATK
 &
-ATK��At-Spi2��D-Bus�����ӥ����ӤĤ��뤿��Υ饤�֥��
+ATKとAt-Spi2のD-Busサービスを結びつけるためのライブラリ
 &
 &

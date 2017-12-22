@@ -2,7 +2,7 @@ xfontsel & y & y & y & y
 &
 xfontsel
 &
-GUI�����򤷤�XLFD(X Logical Font Description)���б�����
-�ե���Ȥ�ɽ�����륳�ޥ��
+GUIで選択したXLFD(X Logical Font Description)に対応する
+フォントを表示するコマンド
 &
 &

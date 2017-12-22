@@ -1,9 +1,9 @@
 open_iscsi & y & y & y & y
 &
-Open-iSCSI ���˥�������
+Open-iSCSI イニシエータ
 &
-Open-iSCSI ���˥�����������Ѥ���ȡ�������ץ���ץȤ� 2,3 �Υ��ޥ��
-�����Ϥ�������ǡ�iSCSI �ܥ�塼�����³���뤳�Ȥ��Ǥ��ޤ���
+Open-iSCSI イニシエータを使用すると，シェルプロンプトで 2,3 のコマンド
+を入力するだけで，iSCSI ボリュームに接続することができます。
 &
 High performance, transport independent iSCSI implementation
 &

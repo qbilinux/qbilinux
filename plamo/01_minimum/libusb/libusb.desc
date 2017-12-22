@@ -1,9 +1,9 @@
 libusb & y & y & y & y
 &
-USB �ǥХ������饤�֥��
+USB デバイス操作ライブラリ
 &
-libusb �ϥ桼�������ڡ������� USB �ǥХ��������Ѥ���ݤ�ɬ�פȤʤ�饤
-�֥��Ǥ���
+libusb はユーザースペースから USB デバイスを利用する際に必要となるライ
+ブラリです。
 &
 Userspace application to USB devices
 &

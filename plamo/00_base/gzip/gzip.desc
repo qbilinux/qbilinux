@@ -1,10 +1,10 @@
 gzip & y & y & y & y
 &
-gzip ���̷������ޥ��
+gzip 圧縮形式操作コマンド
 &
-gzip �ϥե�����򰵽̡�Ÿ�����뤿��Υץ������
-�Ǥ������ΥС������� gzip �� over 2G �ʥե������
-���б����Ƥ��ޤ���
+gzip はファイルを圧縮・展開するためのプログラム
+です。このバージョンの gzip は over 2G なファイルに
+も対応しています。
 &
 GNU zip compression utilities.
 &

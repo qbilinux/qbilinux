@@ -1,11 +1,11 @@
 lm_sensors & y & y & y & y
 &
-���󥵡������ġ��� lmsensors
+センサー管理ツール lmsensors
 &
-CPU�β��٤�ե���β�ž���ʤɡ��ޥ����ܡ��ɤ���������Ƽ����
-���������ġ���Ǥ���
-IBM Thinkpad �Υ��꡼���Ǥϥ����ƥ����»�����ǽ��������Τ�
-���Ѥ��ʤ��Ǥ���������
+CPUの温度やファンの回転数など，マザーボードから得られる各種情報
+を管理するツールです．
+IBM Thinkpad のシリーズではシステムを破損する可能性があるので
+使用しないでください．
 &
 lm_sensors: sensoring motherboard information
 &

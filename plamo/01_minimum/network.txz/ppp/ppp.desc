@@ -1,12 +1,12 @@
 ppp & y & y & y & y
 &
-PPP��³�ġ���
+PPP接続ツール
 &
-PPP(Point to Point Protocol)��³��¸����뤿��Υġ���Ǥ���
-�������륢�å�PPP��PPPoE���б����Ƥ��ޤ���PPP��³��Ԥʤ���
-�ϡ������ͥ��PPP��ǽ���Ȥ߹���Ǥ���ɬ�פ�����ޤ���
+PPP(Point to Point Protocol)接続を実現するためのツールです。
+ダイアルアップPPPとPPPoEに対応しています。PPP接続を行なうに
+は、カーネルにPPP機能を組み込んでおく必要があります。
 \n
-PPP�����ѥ�����ץȤ�pppsetup����°���Ƥ��ޤ���
+PPP設定用スクリプトのpppsetupも付属しています。
 &
 PPP for Linux
 &

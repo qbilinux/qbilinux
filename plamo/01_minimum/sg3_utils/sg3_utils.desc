@@ -2,7 +2,7 @@ sg3_utils & y & y & y & y
 &
 SG(SCSI Generic) utils ver3
 &
-SCSI�ǥХ�����ľ�ܤ��륳�ޥ�ɤ�ȯ�Ԥ���桼�ƥ���ƥ�
+SCSIデバイスを直接するコマンドを発行するユーテイリテイ
 &
 SG(SCSI Generic) utils ver3
 &

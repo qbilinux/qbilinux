@@ -1,11 +1,11 @@
 libgcc & y & y & y & y
 &
-GCC�ѥ饤�֥��
+GCC用ライブラリ
 &
-GCC�����Ѥ��� /usr/lib/libgcc_s.so.1 �� /usr/lib/libstdc++.so.6.0.3 �Τߤ�
-��Ф����饤�֥��Ǥ���d �ǥ��쥯�ȥ��gcc�ѥå������򥤥󥹥ȡ��뤹���
-��񤭤���ޤ�������ȯ�Ķ��򥤥󥹥ȡ��뤷�Ƥ��ʤ��Ķ��Ǥ⤳���Υ饤��
-�������Ѥ��뤿������ӥѥå����������ޤ�����
+GCCが利用する /usr/lib/libgcc_s.so.1 と /usr/lib/libstdc++.so.6.0.3 のみを
+抽出したライブラリです．d ディレクトリのgccパッケージをインストールすると
+上書きされますが，開発環境をインストールしていない環境でもこれらのライブ
+ラリを利用するために別途パッケージ化しました．
 &
 GCC basic libraries
 &

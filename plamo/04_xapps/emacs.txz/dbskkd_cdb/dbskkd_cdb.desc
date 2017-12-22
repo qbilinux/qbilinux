@@ -2,9 +2,9 @@ dbskkd_cdb & y & y & y & y
 &
 dbskkd_cdb
 &
-dbskkd-cdb �ϡ�skkserv ��Ʊ�ͤε�ǽ���󶡤��� SKK �Ѥζ��̼��񥵡��С�
-�ǡ������ D.J.Bernstein �� cdb ��Ȥäƥǡ����١����������������®��
-���Ƥ��ޤ���
+dbskkd-cdb は，skkserv と同様の機能を提供する SKK 用の共通辞書サーバー
+で，辞書は D.J.Bernstein の cdb を使ってデータベース化し，検索を高速化
+しています。
 &
 dbskkd_cdb
 &

@@ -1,7 +1,7 @@
 pam_krb5 & y & y & y & y
 &
-Kerberos5��PAM
+Kerberos5用PAM
 &
-PAM��ͳ��Kerberos5ǧ�ڤ����Ѥ��뤿��Υ⥸�塼��
+PAM経由でKerberos5認証を利用するためのモジュール
 &
 &

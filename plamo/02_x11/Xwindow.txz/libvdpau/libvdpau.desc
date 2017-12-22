@@ -2,9 +2,9 @@ libvdpau & y & y & y & y
 &
 libvdpau
 &
-�ӥǥ������ɤλ��ĥϡ��ɥ��������󥳡���/�ǥ����ɵ�ǽ��
-���뤿��˳�ȯ���줿
-VDPAU(Video Decode and Presentation API for Unix)��
-�饤�֥��
+ビデオカードの持つハードウェアエンコード/デコード機能を
+操作するために開発された
+VDPAU(Video Decode and Presentation API for Unix)用
+ライブラリ
 &
 &

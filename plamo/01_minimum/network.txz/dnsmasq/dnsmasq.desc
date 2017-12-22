@@ -1,12 +1,12 @@
 dnsmasq & y & y & y & y
 &
-dnsmasq (�ʰ� DNS/DHCP ������)
+dnsmasq (簡易 DNS/DHCP サーバ)
 &
-dnsmasq �Ϸ��̤ǡ�DNS �ե������ DHCP �����Ф򤪼�ڤ˹��ۤǤ��ޤ���
-�����ϥͥåȥ�������ˡ�DNS(�⤷���� DHCP)���󶡤���褦���߷פ��졤
-�������Х�� DNS �ˤ��ݻ�����ʤ���������ޥ����̾������Ǥ��ޤ���
+dnsmasq は軽量で，DNS フォワーダや DHCP サーバをお手軽に構築できます。
+小規模ネットワーク向けに，DNS(もしくは DHCP)を提供するように設計され，
+グローバルな DNS には保持されないローカルマシンの名前を解決できます。
 \n
-dnsmasq �ϡ�Simon Kelley �ˤ�äƽ񤫤�ޤ�����
+dnsmasq は，Simon Kelley によって書かれました。
 &
 dnsmasq (small DNS and DHCP server)
 &

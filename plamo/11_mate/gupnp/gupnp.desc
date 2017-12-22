@@ -1,8 +1,8 @@
 gupnp & y & y & y & y
 &
-GOject¥Ù¡¼¥¹¤ÎUPnP¥µ¡¼¥Ó¥¹ÍÑ¥Õ¥ì¡¼¥à¥ï¡¼¥¯
+GOjectãƒ™ãƒ¼ã‚¹ã®UPnPã‚µãƒ¼ãƒ“ã‚¹ç”¨ãƒ•ãƒ¬ãƒ¼ãƒ ãƒ¯ãƒ¼ã‚¯
 &
-GObject¤Èlibsoup¤Ç¼ÂÁõ¤µ¤ì¤¿UPnP(Universal Plug and Play)ÍÑ¥Õ¥ì¡¼¥à¥ï¡¼¥¯
+GObjectã¨libsoupã§å®Ÿè£…ã•ã‚ŒãŸUPnP(Universal Plug and Play)ç”¨ãƒ•ãƒ¬ãƒ¼ãƒ ãƒ¯ãƒ¼ã‚¯
 &
 GUPnP is an elegant, object-oriented open source framework for creating UPnP devices and control points, written in C using GObject and libsoup. 
 &

@@ -1,7 +1,7 @@
 py2gobject3 & y & y & y & y
 &
-Gtk+ v3��PyGObject
+Gtk+ v3用PyGObject
 &
-Gtk+-3.x�ε�ǽ��Python�������뤿��Υ⥸�塼�뽸
+Gtk+-3.xの機能をPythonから操作するためのモジュール集
 &
 &

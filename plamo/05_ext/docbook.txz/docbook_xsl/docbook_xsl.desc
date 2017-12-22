@@ -2,9 +2,9 @@ docbook_xsl & y & y & y & y
 &
 DocBook XSL
 &
-DocBook XSL(eXtensible Stylesheet Language)��
-XML�����ǽ񤫤줿DocBook�ե������
-HTML��PDF�Ȥ��ä��Ƽ���Ϸ������Ѵ����뤿���
-����ե����뽸�Ǥ�
+DocBook XSL(eXtensible Stylesheet Language)は
+XML形式で書かれたDocBookファイルを
+HTMLやPDFといった各種出力形式に変換するための
+定義ファイル集です
 &
 &

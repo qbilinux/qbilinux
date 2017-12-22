@@ -1,9 +1,9 @@
 gdbm & y & y & y & y
 &
-GNU�ǡ����١����ġ���
+GNUデータベースツール
 &
-gdbm �ϥС����졼 DB ��Ʊ���ε�ǽ����� GNU �ǤΥǡ����١���
-�ġ���Ǥ���
+gdbm はバークレー DB と同等の機能を持つ GNU 版のデータベース
+ツールです．
 &
 GNU Database Management tool
 &

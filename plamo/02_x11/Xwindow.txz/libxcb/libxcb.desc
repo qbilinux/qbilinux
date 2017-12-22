@@ -2,7 +2,7 @@ libxcb & y & y & y & y
 &
 libxcb
 &
-Xlib���֤��ؤ����ܻؤ�����X�ץ��ȥ����
-���뤿��ο������饤�֥��(X C Binding)
+Xlibの置き替えを目指した，Xプロトコルを
+操作するための新しいライブラリ(X C Binding)
 &
 &

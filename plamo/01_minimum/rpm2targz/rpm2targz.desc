@@ -1,8 +1,8 @@
 rpm2targz & y & y & y & y
 &
-RPM�ѥå������Ѵ��ġ���
+RPMパッケージ変換ツール
 &
-rpm�ѥå�������tar.gz������ cpio�������Ѵ����뤿��Υ��ޥ�ɤǤ���
+rpmパッケージをtar.gz形式や cpio形式に変換するためのコマンドです。
 &
 rpm2targz
 &

@@ -1,8 +1,8 @@
 ifuse & y & y & y & y
 &
-iPhone/iPod��FUSE�⥸�塼��
+iPhone/iPod用FUSEモジュール
 &
-FUSE(Filesystem in USEr space)��ͳ��
-iPhone/iPod touch����ޥ���Ȥ��뤿��Υ⥸�塼��
+FUSE(Filesystem in USEr space)経由で
+iPhone/iPod touch等をマウントするためのモジュール
 &
 &

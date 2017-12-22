@@ -1,11 +1,11 @@
 hdsetup & y & y & y & y
 &
-Plamo Linux ���åȥ��å�/�ѥå��������������ƥ�
+Plamo Linux セットアップ/パッケージ管理システム
 &
-Slackware ͳ��Υ��åȥ��å�/�ѥå����������ġ���Ǥ���
-���餫�����Ѱդ��줿 *.tgz �ե�����򥤥󥹥ȡ��뤷����
-���󥹥ȡ��뤷���ѥå���������������ꡤ������뤿���
-���ޥ�ɤ��Ѱդ���Ƥ��ޤ���
+Slackware 由来のセットアップ/パッケージ管理ツールです．
+あらかじめ用意された *.tgz ファイルをインストールしたり
+インストールしたパッケージを閲覧したり，削除するための
+コマンドが用意されています．
 &
 Slackware setup/management packages
 &

@@ -1,8 +1,8 @@
 a52dec & y & y & y & y
 &
-AC-3 codec�ǥ������饤�֥�� a52dec
+AC-3 codecデコーダライブラリ a52dec
 &
-�ǥ�������TV��DVD�������Ѥ���Ƥ���ATSC A/52(AC-3)���ȥ꡼���
-�ǥ����ɤ��뤿��Υ饤�֥��
+ディジタルTVやDVD等で利用されているATSC A/52(AC-3)ストリームを
+デコードするためのライブラリ
 &
 &

@@ -1,10 +1,10 @@
 liboobs & y & y & y & y
 &
-system-tools-backends �ؤ� GObject �١����Υ��󥿥ե�����
+system-tools-backends への GObject ベースのインタフェース
 &
-liboobs �� system-tools-backends �ؤ� GObject �١����Υ��󥿥ե�������
-�󶡤�����̤ʥ饤�֥��Ǥ����̿���ǧ�ڤξܺ٤����˼���ꡤ���ץ�
-���������򥷥��ƥ�ξܺ٤����礷�䤹�����ޤ���
+liboobs は system-tools-backends への GObject ベースのインタフェースを
+提供する軽量なライブラリです。通信と認証の詳細を完全に取り去り，アプリ
+ケーションをシステムの詳細と統合しやすくします。
 &
 GObject based interface to system-tools-backends
 &

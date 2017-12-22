@@ -1,9 +1,9 @@
 TTfont & y & y & y & y
 &
-TrueType�ե���Ƚ�
+TrueTypeフォント集
 &
-IPA���ܸ�ե���Ȥ�VL�����å�,Bitstream Vera�ե���Ȥʤɡ�
-�ɲ��Ǥ�TrueType�ե���Ȥȡ���������뤿���
-freetype, fontconfig �Ȥ��ä����եȥ��������ޤޤ�Ƥ��ޤ���
+IPA日本語フォントやVLゴシック,Bitstream Veraフォントなど，
+追加版のTrueTypeフォントと，それを操作するための
+freetype, fontconfig といったソフトウェアが含まれています．
 &
 &

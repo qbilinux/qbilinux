@@ -1,9 +1,9 @@
 libreplaygain & y & y & y & y
 &
-replaygain�ѥ饤�֥��
+replaygain用ライブラリ
 &
-�����ǥ����ǡ����˵�Ͽ���줿���̤򤷤�٤ơ�
-ReplayGain standard������줿Ŭ�ڤʲ��̤�
-Ĵ�����뤿��Υ饤�֥��
+オーディオデータに記録された音量をしらべて，
+ReplayGain standardに定められた適切な音量に
+調整するためのライブラリ
 &
 &

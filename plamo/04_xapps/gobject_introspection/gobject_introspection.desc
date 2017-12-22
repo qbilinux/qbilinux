@@ -1,9 +1,9 @@
 gobject_introspection & y & y & y & y
 &
-GObject��API��������ġ���
+GObject用API情報収集ツール
 &
-Python��Vala�Ȥ��ä����줫��GObject�����뤵�ޤ��ޤʥ饤�֥�����
-���Ѥ��뤿��ˡ������饤�֥���API������������
-XML�������󶡤��뤿��Υġ��롥
+PythonやValaといった言語からGObjectを操作するさまざまなライブラリ類を
+利用するために，それらライブラリのAPI情報を収集し，
+XML形式で提供するためのツール．
 &
 &

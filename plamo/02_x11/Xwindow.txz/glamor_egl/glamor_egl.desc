@@ -2,6 +2,6 @@ glamor_egl & y & y & y & y
 &
 Glamor EGL
 &
-OpenGL�ε�ǽ��Ȥä�2D������®�����뤿��Υ饤�֥��
+OpenGLの機能を使って2D描画を高速化するためのライブラリ
 &
 &

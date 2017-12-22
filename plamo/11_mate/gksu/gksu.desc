@@ -1,8 +1,8 @@
 gksu & y & y & y & y
 &
-su/sudo¤ÎGUIÍÑ¥Õ¥í¥ó¥È¥¨¥ó¥É
+su/sudoã®GUIç”¨ãƒ•ãƒ­ãƒ³ãƒˆã‚¨ãƒ³ãƒ‰
 &
-Gtk¥Ù¡¼¥¹¤Î¥¦¥£¥ó¥É¥¦µ¡Ç½¤òÍÑ¤¤¤Æsu¤äsudo¤Î½èÍı¤ò¼Â¸½¤¹¤ë¥Ä¡¼¥ë
+Gtkãƒ™ãƒ¼ã‚¹ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦æ©Ÿèƒ½ã‚’ç”¨ã„ã¦suã‚„sudoã®å‡¦ç†ã‚’å®Ÿç¾ã™ã‚‹ãƒ„ãƒ¼ãƒ«
 &
 GKSu is a library that provides a Gtk+ frontend to su and sudo.
 &

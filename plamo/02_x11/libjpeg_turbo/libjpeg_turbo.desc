@@ -1,8 +1,8 @@
 libjpeg_turbo & y & y & y & y
 &
-JPEG����ѥ饤�֥��
+JPEG操作用ライブラリ
 &
-jpeg-turbo�ϥ�����֥��SIMD̿���Ȥä�jpeg������
-��®�����饤�֥��Ǥ���
+jpeg-turboはアセンブラやSIMD命令を使ってjpeg処理を
+高速化しライブラリです．
 &
 &

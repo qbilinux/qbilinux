@@ -1,9 +1,9 @@
 libspectre & y & y & y & y
 &
-libspectre: PostScript ¥ì¥ó¥À¥ê¥ó¥°¥é¥¤¥Ö¥é¥ê
+libspectre: PostScript ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
 &
-libspectre ¤Ïlibgs¤ò»È¤Ã¤ÆPostscript ¥Õ¥¡¥¤¥ë¤ò½èÍı¤¹¤ë¤¿¤á¤Î
-API¤òÄó¶¡¤¹¤ë¥é¥¤¥Ö¥é¥ê¤Ç¤¹
+libspectre ã¯libgsã‚’ä½¿ã£ã¦Postscript ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å‡¦ç†ã™ã‚‹ãŸã‚ã®
+APIã‚’æä¾›ã™ã‚‹ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã§ã™
 &
 libsprectre: Postscript rendering library
 &

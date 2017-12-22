@@ -1,10 +1,10 @@
 glew & y & y & y & y
 &
-OpenGL��ĥ��ǽ�Ȥ߹��ߥ饤�֥��
+OpenGL拡張機能組み込みライブラリ
 &
-GLEW(OpenGL Extension Wrangler library)�ϡ�
-OpenGL�γ�ĥ�饤�֥�굡ǽ��ưŪ�Ȥ߹��ि���
-�饤�֥��Ǥ�
+GLEW(OpenGL Extension Wrangler library)は，
+OpenGLの拡張ライブラリ機能を動的組み込むための
+ライブラリです
 &
 GLEW : OpenGL Extension Wrangler
 &

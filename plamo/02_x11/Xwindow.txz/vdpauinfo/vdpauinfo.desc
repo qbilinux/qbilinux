@@ -1,8 +1,8 @@
 vdpauinfo & y & y & y & y
 &
-VDPAU ����ġ���
+VDPAU 情報ツール
 &
-glxinfo �� NVIDIA VDPAU �����ѥӥ�ƥ����䤤��碌��ɽ������ġ���
+glxinfo 風 NVIDIA VDPAU ケーパビリティを問い合わせて表示するツール
 &
 VDPAU info tool
 &

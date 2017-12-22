@@ -1,10 +1,10 @@
 wget & y & y & y & y
 &
-�ե��������������ɥ��ޥ�� wget
+ファイルダウンロードコマンド wget
 &
-wget �ϡ�ncftp ���� FTP ���饤����ȤȤϰۤʤꡤ������Ū�� FTP/HTTP ��
-���Ф���³���뤿��Υץ������Ǥ���FTP �����ǤϤʤ� HTTP �ץ��ȥ����
-���򤹤�Τ� Web �����Ф���ǡ��������������ɤ���ݤˤ����ѤǤ��ޤ���
+wget は，ncftp 等の FTP クライアントとは異なり，非対話的に FTP/HTTP サ
+ーバに接続するためのプログラムです。FTP だけではなく HTTP プロトコルも
+理解するので Web サーバからデータをダウンロードする際にも利用できます。
 &
 wget
 &

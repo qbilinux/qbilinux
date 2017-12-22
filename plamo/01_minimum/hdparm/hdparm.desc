@@ -1,8 +1,8 @@
 hdparm & y & y & y & y
 &
-ATA(IDE) HD�ѥ�᡼�����ޥ��
+ATA(IDE) HDパラメータ操作コマンド
 &
-hdparm �� ATA �ǥ������γƼ�ѥ�᡼�������뤿��Υ��ޥ�ɤǤ�
+hdparm は ATA ディスクの各種パラメータを操作するためのコマンドです
 &
 hdparm
 &

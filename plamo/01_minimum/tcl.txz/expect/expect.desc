@@ -1,8 +1,8 @@
 expect & y & y & y & y
 &
-Tcl �Ѽ�ư�����ץ������ Expect
+Tcl 用自動応答プログラム Expect
 &
-Expect �ϡ�����Ū������ưŪ�˿ʤ�뤿��� Tcl �ѳ�ĥ�饤�֥��Ǥ���
+Expect は，対話的処理を自動的に進めるための Tcl 用拡張ライブラリです。
 &
 auto answer program Expect
 &

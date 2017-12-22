@@ -1,12 +1,12 @@
 curl & y & y & y & y
 &
-�ե����륢�åץ�����/����������ɥץ������ curl
+ファイルアップロード/ダウンロードプログラム curl
 &
-curl ���͡��ʥץ��ȥ���(HTTP, HTTPS, FTP, FTPS, GOPHER, DICT,
-TELNET, LDAP �ʤ�)���б����������ޥ�ɥ饤��ǤΥǡ�����
-���åץ�������������������Ǥ���
-wget �ˤϤʤ���ǽ����Ķ��Ϥʥץ������ǡ�curl �� Mac OS X
-�ˤ�ɸ��Ǵޤޤ�Ƥ��ޤ���
+curl は様々なプロトコル(HTTP, HTTPS, FTP, FTPS, GOPHER, DICT,
+TELNET, LDAP など)に対応した，コマンドラインでのデータの
+アップローダ・ダウンローダです．
+wget にはない機能も持つ強力なプログラムで，curl は Mac OS X
+にも標準で含まれています．
 &
 curl
 &

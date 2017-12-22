@@ -1,8 +1,8 @@
 libatasmart & y & y & y & y
 &
-ATA S.M.A.R.T. �饤�֥��
+ATA S.M.A.R.T. ライブラリ
 &
-�Ƕ��ATA HDD������S.M.A.R.T��ǽ�����Ѥ���
-�ǥ������˴ؤ�������������뤿��Υ饤�֥��
+最近のATA HDDが持つS.M.A.R.T機能を利用して
+ディスクに関する情報を収集するためのライブラリ
 &
 &

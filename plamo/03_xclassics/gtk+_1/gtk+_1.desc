@@ -1,11 +1,11 @@
 gtk+_1 & y & y & y & y
 &
-GTK+ �ġ��륭�åȥ饤�֥�� v1.2.10
+GTK+ ツールキットライブラリ v1.2.10
 &
-GTK+ �ϸ������������ġ��� GIMP �Ѥ˳�ȯ���줿 Tool Kit �饤�֥��Ǥ���
-���������ٻ��򽸤�Ƹ��ߤǤ� GNOME ��ϤᡤX Window �Ķ���ɸ��Ū�� Tool
-Kit �Ȥ������Ѥ���Ƥ��ޤ���
-���Υѥå������ϡ��Ť����ץ��Ѥ� GTK+ version 1 �κǽ���(1.2.10)�Ǥ���
+GTK+ は元々画像処理ツール GIMP 用に開発された Tool Kit ライブラリでした
+が，広く支持を集めて現在では GNOME を始め，X Window 環境の標準的な Tool
+Kit として利用されています。
+このパッケージは，古いアプリ用の GTK+ version 1 の最終版(1.2.10)です。
 &
 GTK+ Toolkit Library 1.2.10
 &

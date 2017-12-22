@@ -1,9 +1,9 @@
 logrotate & y & y & y & y
 &
-¥í¥°¥Õ¥¡¥¤¥ëÀ°Íý¥Ä¡¼¥ë
+ãƒ­ã‚°ãƒ•ã‚¡ã‚¤ãƒ«æ•´ç†ãƒ„ãƒ¼ãƒ«
 &
-logrotate ¤ÏÁý¤¨Â³¤±¤ë¤À¤±¤Î¥í¥°¥Õ¥¡¥¤¥ë¤òÄê´üÅª¤Ë°µ½Ì¡¦ÊÝÂ¸¤¹¤ë¤¿¤á¤Î
-¥³¥Þ¥ó¥É¤Ç¤¹¡¥
+logrotate ã¯å¢—ãˆç¶šã‘ã‚‹ã ã‘ã®ãƒ­ã‚°ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å®šæœŸçš„ã«åœ§ç¸®ãƒ»ä¿å­˜ã™ã‚‹ãŸã‚ã®
+ã‚³ãƒžãƒ³ãƒ‰ã§ã™ï¼Ž
 &
 logroate
 &

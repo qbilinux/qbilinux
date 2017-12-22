@@ -1,9 +1,9 @@
 shadow & y & y & y & y
 &
-¥·¥ã¥É¥¦¥Ñ¥¹¥ï¡¼¥ÉÍÑ¥³¥Ş¥ó¥É
+ã‚·ãƒ£ãƒ‰ã‚¦ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ç”¨ã‚³ãƒãƒ³ãƒ‰
 &
-Linux PAM ¤ËÂĞ±ş¤·¤¿ shadow password ´ØÏ¢¤Î¥×¥í¥°¥é¥à¤Ç¤¹¡¥
-login, passwd, chsh, adduser Åù¤Î¥³¥Ş¥ó¥É¤ò´Ş¤ß¤Ş¤¹¡¥
+Linux PAM ã«å¯¾å¿œã—ãŸ shadow password é–¢é€£ã®ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã§ã™ï¼
+login, passwd, chsh, adduser ç­‰ã®ã‚³ãƒãƒ³ãƒ‰ã‚’å«ã¿ã¾ã™ï¼
 &
 Shadow password program
 &

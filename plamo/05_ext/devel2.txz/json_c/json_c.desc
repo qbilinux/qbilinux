@@ -1,9 +1,9 @@
 json_c & y & y & y & y
 &
-C��JSON
+C版JSON
 &
-JavaScript�򸵤˳�ȯ���줿��
-���̤Υǡ������Ѹ���JSON(JavaScript Object Notaion)
-��������뤿���C�饤�֥��
+JavaScriptを元に開発された，
+軽量のデータ交換用言語JSON(JavaScript Object Notaion)
+を処理するためのCライブラリ
 &
 &

@@ -1,10 +1,10 @@
 xplanet & y & y & y & y
 &
-�ǥ����ȥåס��ץ�ͥ��ꥦ�� xplanet
+デスクトップ・プラネタリウム xplanet
 &
-xplanet �ϡ��ǥ����ȥå׾�����������褹�륽�եȥ������Ǥ���xearth �˻�
-�Ƥ��ޤ������ϵ�β����� X �롼�ȥ�����ɥ�������褵��ޤ����Ƽ�ɽ����
-��ƥ����ƥ�����ѤǤ��ޤ������פ�����������򤹤٤�ɽ����ǽ�Ǥ���
+xplanet は，デスクトップ上に星空を描画するソフトウェアです。xearth に似
+ていますが，地球の画像は X ルートウィンドウ上に描画されます。各種表示用
+投影システムを利用できます。主要な惑星や衛星をすべて表示可能です。
 &
 Planetary Body Renderer xplanet
 &

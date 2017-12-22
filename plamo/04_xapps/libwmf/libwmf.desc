@@ -1,9 +1,9 @@
 libwmf & y & y & y & y
 &
-Windows Meta File�ѥ饤�֥��
+Windows Meta File用ライブラリ
 &
-libwmf��Windows���ȤäƤ���WMF�����β����ǡ�����
-�������뤿��Υ饤�֥��Ǥ�
+libwmfはWindowsが使っているWMF形式の画像データを
+処理するためのライブラリです
 &
 Library for Windows Meta File
 &

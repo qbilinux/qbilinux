@@ -1,9 +1,9 @@
 cpufreqd & y & y & y & y
 &
-CPU���ȿ������ǡ����
+CPU周波数管理デーモン
 &
-cpufreqd �ϲ��٤����ӻ��̤򸵤ˡ�CPU�μ��ȿ���ưŪ�˴�������
-�ǡ����Ǥ�
+cpufreqd は温度や電池残量を元に，CPUの周波数を動的に管理する
+デーモンです
 &
 CPU frequency control daemon
 &

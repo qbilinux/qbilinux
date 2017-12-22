@@ -2,20 +2,20 @@ bash & y & y & y & y
 &
 GNU bash
 &
-GNU Bourne-Again SHell ¤Ç¤¹¡£Bash ¤Ï sh ¤È¸ß´¹¤Î¥³¥Ş¥ó¥É
-¥¤¥ó¥¿¡¼¥×¥ê¥¿¤Ç¡¢É¸½àÆşÎÏ¤ä¥Õ¥¡¥¤¥ë¤«¤é¥³¥Ş¥ó¥É¤òÆÉ¤ß¤³
-¤ó¤Ç¼Â¹Ô¤·¤Ş¤¹¡£Bash ¤Ï sh ¤È¸ß´¹µ¡Ç½¤À¤±¤Ç¤Ï¤Ê¤¯¡¢Korn
-¥·¥§¥ë(ksh)¤ä C ¥·¥§¥ë(csh)¤«¤é¤ÎÍ­±×¤Êµ¡Ç½¤òÂ¿¿ô¼è¤ê¤³
-¤ó¤Ç¤¤¤Ş¤¹¡£Bash ¤ÎºÇ½ªÌÜÉ¸¤Ï IEEE Posix Shell and Tools
-specification(IEEE WG 1003.2) ¤Ë½àµò¤¹¤ë¤³¤È¤Ç¤¹¡£µ¯Æ°¥¹
-¥¯¥ê¥×¥È¤ÎÂ¿¤¯¤¬ bash ¤ò»È¤Ã¤Æ¤¤¤ë¤¿¤á¡¢¥·¥¹¥Æ¥à¤Îµ¯Æ°¤Ë
-¤Ïbash ¤¬É¬¿Ü¤Ç¤¹¡£
+GNU Bourne-Again SHell ã§ã™ã€‚Bash ã¯ sh ã¨äº’æ›ã®ã‚³ãƒãƒ³ãƒ‰
+ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ—ãƒªã‚¿ã§ã€æ¨™æº–å…¥åŠ›ã‚„ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ã‚³ãƒãƒ³ãƒ‰ã‚’èª­ã¿ã“
+ã‚“ã§å®Ÿè¡Œã—ã¾ã™ã€‚Bash ã¯ sh ã¨äº’æ›æ©Ÿèƒ½ã ã‘ã§ã¯ãªãã€Korn
+ã‚·ã‚§ãƒ«(ksh)ã‚„ C ã‚·ã‚§ãƒ«(csh)ã‹ã‚‰ã®æœ‰ç›Šãªæ©Ÿèƒ½ã‚’å¤šæ•°å–ã‚Šã“
+ã‚“ã§ã„ã¾ã™ã€‚Bash ã®æœ€çµ‚ç›®æ¨™ã¯ IEEE Posix Shell and Tools
+specification(IEEE WG 1003.2) ã«æº–æ‹ ã™ã‚‹ã“ã¨ã§ã™ã€‚èµ·å‹•ã‚¹
+ã‚¯ãƒªãƒ—ãƒˆã®å¤šããŒ bash ã‚’ä½¿ã£ã¦ã„ã‚‹ãŸã‚ã€ã‚·ã‚¹ãƒ†ãƒ ã®èµ·å‹•ã«
+ã¯bash ãŒå¿…é ˆã§ã™ã€‚
 &
 GNU bash
 &
 GNU Bourne-Again SHell. Bash is a sh compatible command
 interpreter, and read command from file or stdio and
-execute these command¡£Bash is not only sh compatible,
+execute these commandã€‚Bash is not only sh compatible,
 but also include some useful functions from Korn shell
 (ksh) or  C shell(csh). Bash will attempt to certify
 IEEE Posix Shell and Tools specification(IEEE WG 1003.2)

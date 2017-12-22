@@ -1,9 +1,9 @@
 libev & y & y & y & y
 &
-��®�ʥ��٥�ȥ롼�ץ饤�֥��
+高速なイベントループライブラリ
 &
-I/O�����Τ褦����Ʊ�������Ψ�褯�Ԥ������
-���٥�ȥ롼�ץ饤�֥��
+I/O処理のような非同期操作を効率よく行うための
+イベントループライブラリ
 &
 libev: high-performance event loop library
 &

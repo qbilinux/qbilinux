@@ -1,7 +1,7 @@
 system_config_printer & y & y & y & y
 &
-CUPS�ץ��ȥ����ƥ�����ġ���
+CUPSプリントシステム設定ツール
 &
-Python�ǽ񤫤줿CUPS�ץ��ȥ����ƥ��Ѥ�����ġ���
+Pythonで書かれたCUPSプリントシステム用の設定ツール
 &
 &

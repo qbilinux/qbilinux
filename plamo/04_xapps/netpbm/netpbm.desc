@@ -1,8 +1,8 @@
 netpbm & y & y & y & y
 &
-�����ե����ޥå��Ѵ��ġ���
+画像フォーマット変換ツール
 &
-ppm/pbm/pnm/pgm �������濴�ˡ�xpm �� bmp��gif �Ȥ��ä��Ƽ�
-�β����ե����ޥåȤ���ߤ��Ѵ����뤿��Υġ���Ǥ���
+ppm/pbm/pnm/pgm 形式を中心に、xpm や bmp、gif といった各種
+の画像フォーマットを相互に変換するためのツールです。
 &
 &

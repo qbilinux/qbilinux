@@ -1,8 +1,8 @@
 pango & n & y & y & y
 &
-GTK+��ݲ�ʸ������饤�֥��
+GTK+国際化文字描画ライブラリ
 &
-GTK+��UNICODE�١�����ʸ������򥵥ݡ��Ȥ���饤�֥��Ǥ���
+GTK+でUNICODEベースの文字描画をサポートするライブラリです。
 &
 GTK+ I18N Text Rendering Library
 &

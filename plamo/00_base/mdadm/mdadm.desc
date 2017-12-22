@@ -1,8 +1,8 @@
 mdadm & y & y & y & y
 &
-RAID ���ۥġ���
+RAID 構築ツール
 &
-mdadm �� RAID ���ۤ���ݤ˻Ȥ����ޥ�ɤǤ�
+mdadm は RAID を構築する際に使うコマンドです
 &
 mdadm
 &

@@ -2,7 +2,7 @@ emacs_mini & y & y & y & y
 &
 emacs without X
 &
-Xlib����GUI�ѤΥ饤�֥����󥯤��ʤ�
-���󥽡����Ѥ�Emacs
+Xlib等，GUI用のライブラリをリンクしない
+コンソール用のEmacs
 &
 &

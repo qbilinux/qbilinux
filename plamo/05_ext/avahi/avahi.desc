@@ -1,12 +1,12 @@
 avahi & n & y & y & y
 &
-mDNS/DNS-SD ������ avahi
+mDNS/DNS-SD サーバ avahi
 &
-Apple Rendezvous�ߴ���mDNS�ǥ������Хꥵ���ӥ���IP�����굡ǽ
-���󶡤��ޤ���
+Apple Rendezvous互換のmDNSディスカバリサービスとIP自設定機能
+を提供します。
 \n
-GNOME�ϡ�mDNS�ǥ������Х���Ѥ��������Х֥饦���󥰤��󶡤�
-�Ƥ��ޤ����ޤ���iTunes���������ι��ۻ��ˤ�ɬ�ܤΥ����ӥ��Ǥ���
+GNOMEは、mDNSディスカバリを用いたサーバブラウジングを提供し
+ています。また、iTunesサーバ等の構築時にも必須のサービスです。
 &
 avahi, A mDNS/DNS-SD Server
 &
