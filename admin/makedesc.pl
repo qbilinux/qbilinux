@@ -2,25 +2,25 @@
 
 # initial version : ca 05/02
 # modified for GNOME
-# Time-stamp: <2006-04-13 14:34:55 kojima>
+# Time-stamp: <2017-12-22 22:55:26 toshi>
 
-# makedesc.pl �� Plamo Linux �Υѥå���������ե�����(desc �ե�����)����
-# ���󥹥ȡ������ɬ�פʳƼ�����ե������������륳�ޥ�ɤǤ���
+# makedesc.pl は Plamo Linux のパッケージ解説ファイル(desc ファイル)から
+# インストール時に必要な各種設定ファイルを作成するコマンドである
 #
-# ���줾��Υǥ��쥯�ȥ�ˤ������ desc �ե�����(ap.desc ��)�Υե����ޥ�
-# �Ȥ϶��Ԥ��쥳���ɥ��ѥ졼����& �������ƥॻ�ѥ졼����
+# それぞれのディレクトリにおかれる desc ファイル(ap.desc 等)のフォーマッ
+# トは空行がレコードセパレータ，& がアイテムセパレータで
 # 
 # ------------------------------------
 # a & Plamo Base system                      (0)
 #
 # aaa_base & y & y & y & y                   (1)
 # &
-# Linux �δ���Ū�ʥե����륷���ƥ�ѥå����� (2)
+# Linux の基本的なファイルシステムパッケージ (2)
 # &
-# ����Ū�ʥǥ��쥯�ȥ깽¤��������ơ�root �Υ᡼��ܥå���
-# �� Linux ���ޥ᡼����ɲä��ޤ���:-) ���Υѥå������ϡ�
-# ���ֺǽ�˥��󥹥ȡ��뤵�졢�褷�ƥ��󥤥󥹥ȡ��뤷�Ƥ�
-# �����ޤ���                               (3)
+# 基本的なディレクトリ構造を作成して、root のメールボックス
+# に Linux 歓迎メールを追加します。:-) このパッケージは、
+# 一番最初にインストールされ、決してアンインストールしては
+# いけません。                               (3)
 # &
 # Basic Linux file system package            (4)
 # &
@@ -30,45 +30,45 @@
 # uninstalled.                                (5)
 #
 # --------------------------------------------------
-# �Ȥ�����¤�Ȥʤ롥�嵭�Τ��� (0) �� desc �ե��������Ƭ���֤��졤
-# ���� desc �ե�����Τ���ǥ��쥯�ȥ�Ȥ��β���򵭽Ҥ���
+# という構造となる．上記のうち (0) は desc ファイルの先頭に置かれ，
+# この desc ファイルのあるディレクトリとその解説を記述する
 #
-# (1) �� �ѥå�����̾�ȡ֤�����ץ��󥹥ȡ���ǥ��󥹥ȡ��뤹�뤫�ݤ���
-# ���������줾��֤�����פ� s(X ���饤����ȥ�٥�)��m(ɸ��Ū), k(m + KDE)��
-# g(m + GNOME) �򼨤�
+# (1) は パッケージ名と「お勧め」インストールでインストールするか否かを
+# 示し，それぞれ「お勧め」の s(X クライアントレベル)，m(標準的), k(m + KDE)，
+# g(m + GNOME) を示す
 
-# �ѥå�����̾�� longname(aaa_base-4.0-i386-P1.tgz) �Ǥ� shortname(aaa_base)
-# �����������Ѳ�ǽ������longname �ξ��ϥѥå�����̾�ȥС���������ޤǰ��פ�����
-# ɬ�פ����뤿�ᡤ�̾�� shortname �ǵ��Ҥ���longname �� (2)(4)�Υѥå���������
-# ���˽񤯤��Ȥ�˾�ޤ���
+# パッケージ名は longname(aaa_base-4.0-i386-P1.tgz) でも shortname(aaa_base)
+# の双方が利用可能だが，longname の場合はパッケージ名とバージョン等まで一致させる
+# 必要があるため，通常は shortname で記述し，longname は (2)(4)のパッケージ概要
+# 部に書くことが望ましい
 #
-# (2) �ϥѥå����������ܸ쳵�ס�(3) �Ϥ��ܺ٤����ܸ����
-# (4) �ϥѥå������αѸ쳵�ס�(5) �ϱѸ����Ȥʤ롥
+# (2) はパッケージの日本語概要，(3) はより詳細な日本語解説
+# (4) はパッケージの英語概要，(5) は英語解説となる．
 
-# ���Υ�����ץ�(makedesc.pl)�Ǥ� desc �ե����뤫���ɤ߹�����ǡ����򸵤�
-# @filelist �˥ѥå�����̾�Υꥹ�Ȥ���¸����Ϣ������
+# このスクリプト(makedesc.pl)では desc ファイルから読み込んだデータを元に
+# @filelist にパッケージ名のリストを保存し，連想配列
 #
-#    $tag_s{$i} : ������ s �ǥ��󥹥ȡ��뤹�뤫�ɤ��� [y/n]
-#    $tag_m{$i} : ������ m �ǥ��󥹥ȡ��뤹�뤫�ɤ��� [y/n]
-#    $tag_k{$i} : ������ k �ǥ��󥹥ȡ��뤹�뤫�ɤ��� [y/n]
-#    $tag_g{$i} : ������ d �ǥ��󥹥ȡ��뤹�뤫�ɤ��� [y/n]
-#    $jtitle{$i}: ���ܸ쳵��
-#    $jdesc{$i} : ���ܸ����
-#    $etitle{$i}: �Ѹ쳵��
-#    $edesc{$i} : �Ѹ����
+#    $tag_s{$i} : お勧め s でインストールするかどうか [y/n]
+#    $tag_m{$i} : お勧め m でインストールするかどうか [y/n]
+#    $tag_k{$i} : お勧め k でインストールするかどうか [y/n]
+#    $tag_g{$i} : お勧め d でインストールするかどうか [y/n]
+#    $jtitle{$i}: 日本語概要
+#    $jdesc{$i} : 日本語解説
+#    $etitle{$i}: 英語概要
+#    $edesc{$i} : 英語解説
 #
-# �ˤ��줾��Υǡ������Ǽ���Ƥ��롥�ޤ���(0) �Υǥ��쥯�ȥ�̾�� $set��
-# �ǥ��쥯�ȥ�β���� $kind  �Ȥ����ѿ��˳�Ǽ���롥
+# にそれぞれのデータを格納している．また，(0) のディレクトリ名は $set，
+# ディレクトリの解説は $kind  という変数に格納する．
 #
-# makedesc �Υ��ץ����ϰʲ����̤�
-# -m : (e)maketag �� (e)maketag.ez ���������
-# -t : 5��(tagfile, tagfile.s, tagfile.m, tagfile.k, tagfile.g)���������
-# -d : (e)diskXXX �ե�������������
-# -a : �嵭 3 ���ޤȤ�Ƽ¹Ԥ���
-# -c : desc �ե�����ε��Ҥȥǥ��쥯�ȥ���Υѥå����������פ��Ƥ��뤫�Υƥ���
-# -v : �ʹԾ������Ĺɽ������
-# -s : desc �ե������ alphabet ����¤��Ѥ���ɸ����Ϥ˽��Ϥ���
-# -h : �إ�ץ�å�����
+# makedesc のオプションは以下の通り
+# -m : (e)maketag と (e)maketag.ez を作成する
+# -t : 5種(tagfile, tagfile.s, tagfile.m, tagfile.k, tagfile.g)を作成する
+# -d : (e)diskXXX ファイルを作成する
+# -a : 上記 3 種をまとめて実行する
+# -c : desc ファイルの記述とディレクトリ中のパッケージが一致しているかのテスト
+# -v : 進行状況を冗長表示する
+# -s : desc ファイルを alphabet 順に並べ変えて標準出力に出力する
+# -h : ヘルプメッセージ
 
 &print_usage if ($#ARGV < 1);
 
@@ -265,11 +265,11 @@ sub maketag {
     open (OUT, ">maketag");
     print OUT "#!/bin/sh\n";
     print OUT "cat /dev/null > /tmp/SeTnewtag\n";
-    print OUT "dialog --title \"$set($kind)���꡼��������\" \\\n";
-    print OUT "  --checklist \"$set ���꡼�����椫�饤�󥹥ȡ��뤷�����ѥå������� \\\n";
-    print OUT "����Ǥ�����������������ξ岼������ \\\n";
-    print OUT "�оݤ����򤷡�space �����ǥޡ���(X)���ޤ��� \\\n";
-    print OUT "Enter �����ǥ��󥹥ȡ���򳫻Ϥ��ޤ���\" 24 72 15 \\\n";
+    print OUT "dialog --title \"$set($kind)シリーズの選択\" \\\n";
+    print OUT "  --checklist \"$set シリーズの中からインストールしたいパッケージを \\\n";
+    print OUT "選んでください．カーソルの上下キーで \\\n";
+    print OUT "対象を選択し，space キーでマーク(X)します． \\\n";
+    print OUT "Enter キーでインストールを開始します．\" 24 72 15 \\\n";
     for $i (@filelist) {
 	printf(OUT "\"%s\" \"%s\" \"%s\" \\\n", $i, $jtitle{$i}, $tag_s{$i} =~ /[Yy]/ ? "on" : "off");
     }
@@ -354,13 +354,13 @@ sub maketag_ez {
 
     if ( $count_s > 0) {
 	print OUT "cat /dev/null > /tmp/SeTnewtag\n";
-	print OUT "dialog --title \"$set($kind)���꡼��������\" \\\n";
-	print OUT "  --checklist \"$set ���꡼�����椫�饤�󥹥ȡ��뤷�����ѥå������� \\\n";
-	print OUT "����Ǥ��������������ƥ��ɬ�ܤΥѥå������� \\\n";
-	print OUT "��ưŪ�˥��󥹥ȡ��뤵���Τ�ɽ������ޤ��� \\\n";
-	print OUT "��������ξ岼�������оݤ����򤷡� \\\n";
-	print OUT "space �����ǥޡ���(X)���ޤ��� \\\n";
-	print OUT "Enter �����ǥ��󥹥ȡ���򳫻Ϥ��ޤ���\" 24 72 12 \\\n";
+	print OUT "dialog --title \"$set($kind)シリーズの選択\" \\\n";
+	print OUT "  --checklist \"$set シリーズの中からインストールしたいパッケージを \\\n";
+	print OUT "選んでください．システムに必須のパッケージは \\\n";
+	print OUT "自動的にインストールされるので表示されません． \\\n";
+	print OUT "カーソルの上下キーで対象を選択し， \\\n";
+	print OUT "space キーでマーク(X)します． \\\n";
+	print OUT "Enter キーでインストールを開始します．\" 24 72 12 \\\n";
 	for $i (@filelist) {
 	    if ($tag_s{$i} !~ /[Yy]/ ) {
 		printf(OUT "\"%s\" \"%s\" \"%s\" \\\n", $i, $jtitle{$i}, $tag_m{$i} =~ /[Yy]/ ? "on" : "off");
@@ -530,7 +530,7 @@ sub checkfiles {
 	    }
 	}
 
-	# desc file �� short name �ǡ�tgz �� long name �ξ��
+	# desc file は short name で，tgz は long name の場合
 	if ($match != 1) {
 	    for $j ( @tgzs ) {
 		if ( $i eq &check_name($j) ) {
@@ -539,7 +539,7 @@ sub checkfiles {
 		}
 	    }
 	}	    
-	# desc file �� long name �ǡ�tgz �� short name �ξ��
+	# desc file は long name で，tgz は short name の場合
 	if ($match != 1) {
 	    for $j ( @tgzs ) {
 		if ( &check_name($i) eq $j ) {
@@ -563,7 +563,7 @@ sub checkfiles {
 	    }
 	}
 
-	# tgz �� short name �� desc file �� long name �ξ��
+	# tgz は short name で desc file は long name の場合
 	if ( $match != 1 ) {
 	    for $j ( @filenamelist ) {
 		if ( $i eq &check_name($j) ) {
@@ -573,7 +573,7 @@ sub checkfiles {
 	    }
 	}
 
-	# tgz �� long name �� desc file �� short name �ξ��
+	# tgz は long name で desc file は short name の場合
 	if ( $match != 1 ) {
 	    for $j ( @filenamelist ) {
 		if ( &check_name($i) eq $j ) {
