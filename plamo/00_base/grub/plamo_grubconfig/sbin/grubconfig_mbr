@@ -1,0 +1,125 @@
+#!/bin/sh
+
+# $MTPT に chroot してから実行される部分
+
+PROBE=/sbin/fdisk
+crunch () { # remove extra whitespace
+    read STRING;
+    echo $STRING
+}
+
+ROOT_DEVICE=`cat /tmp/grub_ROOT_DEVICE`
+
+/bin/dialog --title "grubのインストール(1)" --infobox \
+    "grubを$ROOT_DEVICEの/boot/grubにインストールしています．" 6 70
+
+grub-install --target=i386-pc --no-floppy --grub-setup=/bin/true $ROOT_DEVICE
+sleep 3
+LANG=C
+grub-mkconfig -o /boot/grub/grub.cfg
+sleep 3
+LANG=ja_JP.eucJP
+if [ ! -f /boot/grub/grub.cfg ]; then
+    /bin/dialog --title "grub.cfg build error" --msgbox \
+	"/boot/grub/grub.cfgの生成に失敗しました． \
+何か問題があるようなので処理を中断します" 6 70
+    exit 1
+fi
+    
+cat <<'EOF' > /tmp/grub.cfg.tmp
+生成された grub.cfg は以下の通りです 
+
+-----------------------------------------------------------------
+EOF
+cat $MTPT/boot/grub/grub.cfg >> /tmp/grub.cfg.tmp
+cat <<'EOF' >> /tmp/grub.cfg.tmp
+-----------------------------------------------------------------
+内容に何か問題がありそうならば，インストールを中止してください．
+EOF
+
+/bin/dialog --title "grub.cfgの内容" --textbox /tmp/grub.cfg.tmp  38 74
+
+/bin/dialog --title "continue?" --yesno \
+    "この内容でgrubをインストールしますか？"  6 60
+if [ $? != 0 ]; then
+    rm -f /tmp/grub.cfg.tmp
+    /bin/dialog --title "User exit" --msgbox \
+	"処理を中断しました" 6 70
+    exit 1
+fi
+
+cat <<EOF > /tmp/tmpscript
+/bin/dialog --title "grubのインストール先指定" --menu \
+"現在のgrubでは，パーティションの先頭部分にインストールする \
+ことができず,HDDの先頭にインストールする必要があります． \
+grub.cfgが正しく生成できていればWindows環境とdual bootする \
+ことが可能なので，最初のHDDの先頭部分(MBR)に書き込んでも大丈夫でしょう． \n\
+BIOSからブートデバイスを選択できる場合，\
+(Windowsをブートするための最初のHDDのMBRは変更せず)2番目以降のHDDの \
+MBRにインストールしておいて，Linuxを起動する際にはそのHDDを選択する， \
+ということも可能です． \n\
+grubをインストールするHDDを選択してください" 20 74 4 \\
+EOF
+
+# これをしないとfdiskの出力が日本語になる
+export LANG=C
+$PROBE -l | grep -v ram | grep "^Disk " | grep -v "identifier" > /tmp/SeTdlist
+cat /tmp/SeTdlist | while [ 0 ]; do
+    read DISK;
+    if [ "$DISK" = "" ]; then
+	break;
+    fi
+    NAME=`echo $DISK | crunch | cut -f2 -d' ' | sed "s/://"`
+    SIZE=`echo $DISK | crunch | cut -f3 -d' ' `
+    UNIT=`echo $DISK | crunch | cut -f4 -d' ' | sed "s/,//"`
+    echo "\"$NAME\" \"$SIZE $UNIT\" \\" >> /tmp/tmpscript
+done
+echo "2> /tmp/return" >> /tmp/tmpscript
+
+. /tmp/tmpscript
+if [ $? = 1 -o $? = 255 ]; then
+    rm /tmp/tmpscript
+    exit 255 # user abort
+fi
+grub_HDD=`cat /tmp/return`
+
+dialog --title "grubをMBRにインストール" --yesno \
+"$grub_HDDが選択されました．このディスクの先頭部分(MBR)にgrubを \
+インストールして大丈夫ですか？" 10 70
+if [ $? = 0 ]; then
+    dialog --title "grubのインストール中" --infobox \
+	"grubを$grub_HDDのMBRにインストールしています" 10 70
+    grub-install --target=i386-pc $grub_HDD
+    sleep 3
+    if [ $? = 0 ]; then
+	dialog --title "インストール完了" --msgbox \
+	    "grubを$grub_HDDのMBRにインストールしました" 10 70
+	exit 0
+    else
+	dialog --title "インストール失敗" --msgbox \
+	    "grubを$grub_HDDのMBRにインストールできませんでした" 10 70
+	exit 1
+    fi
+
+else
+    dialog --title "grubのインストール中断" --infobox \
+	"grubをMBRにインストールせずに終了しました． \
+他のブートローダがインストールされていないと，HDDから起動できなく \
+なりますので，rescueCD等で適宜修正してください．" 10 70
+    exit 1
+fi
+
+if [ -x /sbin/grub_partuuid.sh ]; then
+    dialog --title "convert root device name?" --yesno \
+	   "grub.confのroot device名をパーティションのUUIDに変換しますか？ \
+パーティションのUUIDはHDDの認識順に影響されないので， \
+USBメモリを挿したまま起動したりHDDを増設しても大丈夫です． \
+なお，この処理は再起動後に /sbin/grub_partuuid.sh を起動しても実行できます．" 10 70
+    if [ $? -eq 0 ]; then
+	/sbin/grub_partuuid.sh
+	if [ $? -eq 0 ]; then
+	    dialog --title "grub.conf converted" --msgbox \
+		   "パーティションのUUIDを使うよう，grub.cfgを修正しました．" 10 70
+	fi
+    fi
+fi

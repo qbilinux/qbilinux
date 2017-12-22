@@ -1,0 +1,116 @@
+#!/bin/sh
+
+# $MTPT に chroot してから実行される部分
+
+PROBE=/sbin/fdisk
+crunch () { # remove extra whitespace
+    read STRING;
+    echo $STRING
+}
+
+ROOT_DEVICE=`cat /tmp/grub_ROOT_DEVICE`
+ROOT_DISK=`cat /tmp/grub_ROOT_DISK`
+EFI_PART=`LANG=C ; fdisk -l $ROOT_DISK | grep EFI | cut -f1 -d' '`
+
+if [ "$EFI_PART.x" = ".x" ]; then
+    if [ -f /tmp/ESP_partition ]; then
+	EFI_PART=`cat /tmp/ESP_partition`
+    fi
+    if [ "$EFI_PART.x" = ".x" ]; then
+	/bin/dialog --title "cannot find EFI partition" --msgbox \
+		"${ROOT_DISK}にはEFI用のパーティションが見つかりませんでした．\
+                 正しくEFIパーティションを作っているかチェックしてください" 8 70
+	exit 1
+    else
+	/bin/dialog --title "use other HDDs EFI partition" --yesno \
+		    "${ROOT_DISK}ではなく，${EFI_PART}をEFI System Partitionとして利用します．大丈夫ですか？" 8 70
+	if [ $? -ne 0 ]; then
+	    /bin/dialog --title "grub install abondoned" --msgbox \
+		"GRUB2のインストールを中止しました．このままではシステムを起動できないので，Plamoのインストーラで再起動し，設定等を修正してください" 8 70
+	    exit 1
+	fi
+    fi
+fi
+
+if [ ! -d /boot/efi/EFI ]; then
+    if [ ! -d /boot/efi ]; then
+	mkdir /boot/efi
+    fi
+    mount $EFI_PART /boot/efi
+    if [ $? -ne 0 ]; then
+	/bin/dialog --title "cannot mount EFI partition" --msgbox \
+		    "EFIシステム用パーティション($EFI_PART)がマウントできませんでした．このままではシステムを起動できないので，Plamoのインストーラで再起動し，設定等を修正してください" 6 70
+	exit 1
+    fi
+fi
+    
+/bin/dialog --title "grubのインストール(1)" --infobox \
+    "grubを${EFI_PART}にインストールしています．" 6 70
+
+arch=`uname -m`
+if [ "$arch" = "x86_64" ]; then
+    grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=grub --boot-directory=/boot/efi --recheck
+else
+    grub-install --target=i386-efi --efi-directory=/boot/efi --bootloader-id=grub --boot-directory=/boot/efi --recheck
+fi
+
+if [ $? -ne 0 ]; then
+    /bin/dialog --title "grub install error" --msgbox \
+	"${EFI_PART}にgrubをinstallできませんでした． \
+何か問題があるようなので処理を中断します．このままではシステムを起動できないので，Plamoのインストーラで再起動し，設定等を修正してください" 6 70
+    exit 1
+fi
+sleep 3
+
+/bin/dialog --title "grubのインストール(2)" --infobox \
+    "grub.cfgを${EFI_PART}/grubに作成しています．" 6 70
+
+LANG=C
+grub-mkconfig -o /boot/efi/grub/grub.cfg
+LANG=ja_JP.eucJP
+if [ $? -ne 0 ]; then
+    /bin/dialog --title "grub.cfg install error" --msgbox \
+	"/boot/efi/grub/grub.cfg を生成できませんでした． \
+         何か問題があるようなので処理を中断します．このままではシステムを起動できないので，Plamoのインストーラで再起動し，設定等を修正してください" 6 70
+    exit 1
+fi
+
+sleep 3
+# BIOSによっては /EFI/BOOT/bootx64.efi 決め打ちになってるのもある
+# (ex: VirtualBox)
+
+
+if [ "$arch" = "x86_64" ]; then
+    if [ ! -d /boot/efi/EFI/BOOT ]; then
+        mkdir /boot/efi/EFI/BOOT
+        cp /boot/efi/EFI/grub/grubx64.efi /boot/efi/EFI/BOOT/bootx64.efi
+    fi
+else
+    if [ ! -d /boot/efi/EFI/BOOT ]; then
+        mkdir /boot/efi/EFI/BOOT
+        cp /boot/efi/EFI/grub/grub.efi /boot/efi/EFI/BOOT/boot.efi
+    fi
+fi
+
+
+if [ $? != 0 ]; then
+    dialog --title "install failed" --msgbox \
+	   "grubを${EFI_PART}にインストールできませんでした．\
+このままではシステムを起動できないので，Plamoのインストーラで再起動し，設定等を確認，修正してください．" 10 70
+    exit 1
+fi
+
+if [ -x /sbin/grub_partuuid.sh ]; then
+    dialog --title "convert root device name?" --yesno \
+	   "grub.confのroot device名をパーティションのUUIDに変換しますか？ \
+パーティションのUUIDはHDDの認識順に影響されないので， \
+USBメモリを挿したまま起動したりHDDを増設しても大丈夫です． \
+なお，この処理は再起動後に /sbin/grub_partuuid.sh を起動しても実行できます．" 10 70
+    if [ $? -eq 0 ]; then
+	/sbin/grub_partuuid.sh
+	if [ $? -eq 0 ]; then
+	    dialog --title "grub.conf converted" --msgbox \
+		   "パーティションのUUIDを使うよう，grub.cfgを修正しました．" 10 70
+	fi
+    fi
+fi

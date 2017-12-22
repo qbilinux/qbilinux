@@ -4,10 +4,9 @@
 pkgbase=grub
 vers=2.02~beta2
 url="http://http.debian.net/debian/pool/main/g/grub2/grub2_2.02~beta2.orig.tar.xz
-    http://http.debian.net/debian/pool/main/g/grub2/grub2_2.02~beta2-36.debian.tar.xz
-    ftp://plamo.linet.gr.jp/pub/Plamo-src.new/plamo/00_base/grub/plamo_grubconfig.tar.gz"
+    http://http.debian.net/debian/pool/main/g/grub2/grub2_2.02~beta2-36.debian.tar.xz"
 arch=`uname -m`
-build=P13m1
+build=P13m2
 src[0]=$pkgbase-$vers
 src[1]=${src[0]}
 patchfiles[0]=""
