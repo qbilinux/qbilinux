@@ -1,0 +1,14 @@
+diff --git a/usbredirparser/usbredirparser.c b/usbredirparser/usbredirparser.c
+index 5dfeb9e..8f239cc 100644
+--- a/usbredirparser/usbredirparser.c
++++ b/usbredirparser/usbredirparser.c
+@@ -267,7 +267,8 @@  static void usbredirparser_handle_hello(struct usbredirparser *parser_pub,
+
+     /* In case hello->version is not 0 terminated (which would be a protocol
+        violation)_ */
+-    snprintf(buf, sizeof(buf), "%s", hello->version);
++    strncpy(buf, hello->version, sizeof(buf));
++    buf[sizeof(buf)-1] = '\0';
+
+     memset(parser->peer_caps, 0, sizeof(parser->peer_caps));
+     if (data_len > sizeof(parser->peer_caps)) {

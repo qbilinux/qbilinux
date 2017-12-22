@@ -1,0 +1,27 @@
+diff --git a/usbredirhost/usbredirhost.c b/usbredirhost/usbredirhost.c
+index adf9c5f..83baa3b 100644
+--- a/usbredirhost/usbredirhost.c
++++ b/usbredirhost/usbredirhost.c
+@@ -1020,12 +1020,12 @@  static int usbredirhost_can_write_iso_package(struct usbredirhost *host)
+     size = host->buffered_output_size_func(host->func_priv);
+     if (size >= host->iso_threshold.higher) {
+         if (!host->iso_threshold.dropping)
+-            DEBUG("START dropping isoc packets %lu buffer > %lu hi threshold",
++            DEBUG("START dropping isoc packets %" PRIu64 " buffer > %" PRIu64 " hi threshold",
+                   size, host->iso_threshold.higher);
+         host->iso_threshold.dropping = true;
+     } else if (size < host->iso_threshold.lower) {
+         if (host->iso_threshold.dropping)
+-            DEBUG("STOP dropping isoc packets %lu buffer < %lu low threshold",
++            DEBUG("STOP dropping isoc packets %" PRIu64 " buffer < %" PRIu64 " low threshold",
+                   size, host->iso_threshold.lower);
+
+         host->iso_threshold.dropping = false;
+@@ -1159,7 +1159,7 @@  static void usbredirhost_set_iso_threshold(struct usbredirhost *host,
+     uint64_t reference = pkts_per_transfer * transfer_count * max_packetsize;
+     host->iso_threshold.lower = reference / 2;
+     host->iso_threshold.higher = reference * 3;
+-    DEBUG("higher threshold is %lu bytes | lower threshold is %lu bytes",
++    DEBUG("higher threshold is %" PRIu64 " bytes | lower threshold is %" PRIu64 " bytes",
+            host->iso_threshold.higher, host->iso_threshold.lower);
+ }
