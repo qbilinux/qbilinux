@@ -23,8 +23,8 @@
 # As always, bug reports, suggestions, etc: volkerdi@mhd1.moorhead.msus.edu
 # or bf703@cleveland.freenet.edu, or (if you absolutely must) (218) 233-4349.
 #
-# ���ܸ��ǤˤĤ��Ƥϡ�JF project�Υ��ݡ��Ȥβ���
-# ���������simazaki@yu-gate.yamanashi.ac.jp�ˤ��������ޤ�����
+# 日本語版については、JF projectのサポートの下、
+# 嶋崎＠梨大（simazaki@yu-gate.yamanashi.ac.jp）が翻訳しました。
 #
 
 rm -f /tmp/SeT*
@@ -58,21 +58,21 @@ while [ 0 ]; do
 
 # Reset menu flag:
 rm -f /tmp/SeTQUICK
- dialog --title "Plamo Linux���󥹥ȡ����˥塼(version 2.0)" \
+ dialog --title "Plamo Linuxインストールメニュー(version 2.0)" \
 --menu \
-"Plamo Linux���󥹥ȡ����˥塼�ؤ褦����.\n\
-�岼�������륭������ӥ��ڡ������뤤��ENTER�����ǰʲ��Υ��ץ�����\n\
-���򤷤Ƥ���������'+', '-'��TAB��������ѤǤ��ޤ���KEYMAP�����\n\
-���ꤷ�Ƥ�����������פǤ���" 19 76 10 \
-"HELP" "Plamo Linux ���åȥ��åפ�HELP��ɽ��" \
-"KEYMAP" "�����ܡ��ɤΥ���������ѹ�" \
-"ADDSWAP" "����åץѡ��ƥ�����������" \
-"TARGET" "���󥹥ȡ�����ѡ��ƥ�����������" \
-"SOURCE" "���󥹥ȡ��븵������" \
-"DISK SETS" "���󥹥ȡ��뤹��ǥ��������åȤ�����" \
-"INSTALL" "���򤷤��ǥ��������åȤΥ��󥹥ȡ���" \
-"CONFIGURE" "���󥹥ȡ��뤷��Linux�����ƥ������" \
-"EXIT" "Plamo Linux���åȥ��åפ�λ" 2> /tmp/hdset
+"Plamo Linuxインストールメニューへようこそ.\n\
+上下カーソルキーおよびスペースあるいはENTERキーで以下のオプションを\n\
+選択してください。'+', '-'とTABキーも使用できます。KEYMAPは先に\n\
+設定していれば設定不要です。" 19 76 10 \
+"HELP" "Plamo Linux セットアップのHELPを表示" \
+"KEYMAP" "キーボードのキー配列を変更" \
+"ADDSWAP" "スワップパーティションの設定" \
+"TARGET" "インストール先パーティションの設定" \
+"SOURCE" "インストール元の選択" \
+"DISK SETS" "インストールするディスクセットの選択" \
+"INSTALL" "選択したディスクセットのインストール" \
+"CONFIGURE" "インストールしたLinuxシステムの設定" \
+"EXIT" "Plamo Linuxセットアップを終了" 2> /tmp/hdset
  if [ $? = 1 -o $? = 255 ]; then
   rm -f /tmp/hdset /tmp/SeT*
   exit
@@ -91,8 +91,8 @@ rm -f /tmp/SeTQUICK
  if [ "$MAINSELECT" = "KEYMAP" ]; then
   SeTkeymapj
   if [ -r /tmp/SeTkeymap ]; then
-   dialog --yesno "����������ѹ�����λ���ޤ����������˥���å��ΰ�������\
-�Ԥ��ޤ�����" 9 76
+   dialog --yesno "キー配列の変更が終了しましたが、次にスワップ領域の設定を\
+行いますか？" 9 76
    if [ $? = 0 ]; then
     MAINSELECT="ADDSWAP" 
    fi
@@ -106,9 +106,9 @@ rm -f /tmp/SeTQUICK
  if [ "$MAINSELECT" = "ADDSWAP" ]; then
   SeTswapj
   if [ -r /tmp/SeTswap ]; then
-   dialog --title "���󥹥ȡ����³�Ԥ��ޤ�����" --yesno "����å��ΰ�����꤬�Ѥߤޤ����������Τޤޥ��󥹥ȡ����³����\n\
-���Ȥ�Ǥ��ޤ������ᥤ���˥塼����뤳�Ȥ�Ǥ��ޤ������󥹥�\n\
-�����³�Ԥ������󥹥ȡ�����ɥ饤�֤������Ԥ��ޤ�����" 9 70
+   dialog --title "インストールを続行しますか？" --yesno "スワップ領域の設定が済みましたが、このままインストールを続ける\n\
+こともできますし、メインメニューに戻ることもできます。インスト\n\
+ールを続行し、インストール先ドライブの設定を行いますか？" 9 70
    if [ $? = 0 ]; then
     MAINSELECT="TARGET"
    fi
@@ -119,8 +119,8 @@ rm -f /tmp/SeTQUICK
   SeTpartitionsj
   SeTDOSj
   if [ -r /tmp/SeTnative ]; then
-   dialog --title "³�Ԥ��ޤ�����" --yesno "���󥹥ȡ�����ɥ饤�֤����꤬��λ���ޤ�����\n\
-���󥹥ȡ��븵������ؿʤߤޤ�����" 7 62
+   dialog --title "続行しますか？" --yesno "インストール先ドライブの設定が終了しました。\n\
+インストール元の選択へ進みますか？" 7 62
    if [ $? = 0 ]; then
     MAINSELECT="SOURCE"
    fi
@@ -130,8 +130,8 @@ rm -f /tmp/SeTQUICK
  if [ "$MAINSELECT" = "SOURCE" ]; then
   SeTmediaj 
   if [ -r /tmp/SeTsource ]; then
-   dialog --title "³�Ԥ��ޤ�����" --yesno "DISK SETS�ؿʤߡ��ɤΥ��եȥ������򥤥󥹥ȡ��뤹�뤫\n\
-���򤷤ޤ�����" 7 60
+   dialog --title "続行しますか？" --yesno "DISK SETSへ進み、どのソフトウェアをインストールするか\n\
+選択しますか？" 7 60
    if [ $? = 0 ]; then
     MAINSELECT="DISK SETS"
    fi
@@ -141,11 +141,11 @@ rm -f /tmp/SeTQUICK
  if [ "$MAINSELECT" = "DISK SETS" ]; then
   SeTPKGj
   if [ -r /tmp/SeTSERIES ]; then
-   dialog --title "��³���ޤ�����" --yesno \
-"���󥹥ȡ��뤹��ǥ��������åȤλ��꤬��λ���ޤ�����\n\
-INSTALL�����򤹤뤳�Ȥǥ��󥹥ȡ���򳫻Ϥ��ޤ������󥹥ȡ����\n\
-ɬ�פ����꤬���äƤʤ��ȡ���å��������Фƥᥤ���˥塼��\n\
-���ޤ��������դ��Ƥ���������INSTALL�ؿʤߤޤ�����" 11 70
+   dialog --title "継続しますか？" --yesno \
+"インストールするディスクセットの指定が終了しました。\n\
+INSTALLを選択することでインストールを開始します。インストールに\n\
+必要な設定が終ってないと、メッセージが出てメインメニューに\n\
+戻りますから注意してください。INSTALLへ進みますか？" 11 70
    if [ $? = 0 ]; then
     MAINSELECT="INSTALL"
    fi
@@ -154,18 +154,18 @@ INSTALL�����򤹤뤳�Ȥǥ��󥹥ȡ���򳫻Ϥ��ޤ������󥹥ȡ����\n\
 
  if [ "$MAINSELECT" = "INSTALL" ]; then
   if [ ! -r /tmp/SeTSERIES -o ! -r /tmp/SeTsource -o ! /tmp/SeTnative ]; then
-   dialog --title "�ޤ����󥹥ȡ���ϤǤ��ޤ���" --msgbox "\
+   dialog --title "まだインストールはできません" --msgbox "\
 \n\
-���եȥ������򥤥󥹥ȡ��뤹�����ˡ��ʲ��ι��ܤ�¹Ԥ��Ƥ�������\n\
+ソフトウェアをインストールする前に、以下の項目を実行してください\n\
 \n\
-1. ���󥹥ȡ��븵������\n\
-2. ���󥹥ȡ�����Linux�ѡ��ƥ�����������\n\
-3. ���󥹥ȡ��뤹��ǥ��������åȤ�����\n\
+1. インストール元の選択\n\
+2. インストール先Linuxパーティションの設定\n\
+3. インストールするディスクセットの選択\n\
 \n\
-�����ܡ���������ѹ������ꡢ����åץѡ��ƥ������������\n\
-�Ǥ��ޤ���\n\
+キーボード配列を変更したり、スワップパーティションの設定も\n\
+できます。\n\
 \n\
-�ᥤ���˥塼�����ޤ���ENTER�����򲡤��Ƥ���������" 16 70
+メインメニューに戻ります。ENTERキーを押してください。" 16 70
    continue
   fi
   SERIES="`cat /tmp/SeTSERIES`"
@@ -173,15 +173,15 @@ INSTALL�����򤹤뤳�Ȥǥ��󥹥ȡ���򳫻Ϥ��ޤ������󥹥ȡ����\n\
   IGNORE_TAGFILES=""
 
   while [ 0 ]; do
-   dialog --title "�ץ���ץȥ⡼�ɤ�����" --menu "\
+   dialog --title "プロンプトモードの選択" --menu "\
 \n\
-���󥹥ȡ���κݤΥե���������ɤ����뤫�������򤷤�\n\
-�����������褯�狼��ʤ����ϥإ�פ��ɤ�Ǥ���������\n\n\
-�ɤΥץ���ץȥ⡼�ɤ���Ѥ��ޤ�����\
+インストールの際のファイル指定をどうするか、を選択して\n\
+ください。よくわからない場合はヘルプを読んでください。\n\n\
+どのプロンプトモードを使用しますか？\
 " 19 70 7 \
-"RECOM" "���ƥ��꡼ñ�̤����Ƥ򥤥󥹥ȡ���(������)" \
-"EXPERT" "�ġ��Υѥå�����������(�ܤ����͸���)" \
-"HELP" "�ץ���ץȥ⡼�ɤΥإ�פ��ɤ�" 2> /tmp/SeTpmode
+"RECOM" "カテゴリー単位で全てをインストール(お勧め)" \
+"EXPERT" "個々のパッケージを選択(詳しい人向け)" \
+"HELP" "プロンプトモードのヘルプを読む" 2> /tmp/SeTpmode
    if [ $? = 1 -o $? = 255 ]; then
     rm -f /tmp/SeTpmode
     exit
@@ -190,21 +190,21 @@ INSTALL�����򤹤뤳�Ȥǥ��󥹥ȡ���򳫻Ϥ��ޤ������󥹥ȡ����\n\
    rm -f /tmp/SeTtagext
 
    if [ "$MODE" = "HELP" ]; then
-    dialog --title "�ץ���ץȥ⡼�ɤΥإ��" --textbox "/usr/lib/setup/PROMPThelpj" 19 65
+    dialog --title "プロンプトモードのヘルプ" --textbox "/usr/lib/setup/PROMPThelpj" 19 65
    fi
 
    if [ "$MODE" = "RECOM" ]; then
     touch /tmp/recom
-    dialog --infobox "������⡼�ɡ����ƥ��꡼ñ�̤����ƤΥѥå������� \n\
-���󥹥ȡ��뤷�ޤ���" 4 70
+    dialog --infobox "お勧めモード。カテゴリー単位で全てのパッケージを \n\
+インストールします。" 4 70
     break;
    fi
 
    if [ "$MODE" = "EXPERT" ]; then
     touch /tmp/SeTQUICK
     MAKETAG="maketag"
-    dialog --infobox "��˥塼�ץ���ץȥ⡼�ɡ���˥塼����Ѥ��� \n\
-�ġ��Υѥå����������򤷤ޤ���" 4 70
+    dialog --infobox "メニュープロンプトモード。メニューを使用して \n\
+個々のパッケージを選択します。" 4 70
     break;
    fi 
   done
@@ -225,12 +225,12 @@ INSTALL�����򤹤뤳�Ȥǥ��󥹥ȡ���򳫻Ϥ��ޤ������󥹥ȡ����\n\
  if [ "$MAINSELECT" = "CONFIGURE" ]; then
   if [ -r /tmp/SeTnative ]; then
    if [ -r /mnt/etc/fstab ]; then
-    dialog --title "/etc/fstab�򹹿����ޤ�����" --yesno "
-���󥹥ȡ�����ѡ��ƥ������ˤ��Ǥ�/etc/fstab������ޤ���ñ\n\
-�˥��եȥ��������ɲä�������ʤ顢/etc/fstab�Ϥ��Τޤޤˤ���\n\
-�����������褤�Ǥ��礦���ѡ��ƥ�����������ѹ����Ƥ����顢\n\
-/etc/fstab��ȿ�Ǥ����ʤ���Фʤ�ޤ��󡣸Ť�/etc/fstab�򹹿�\n\
-���ޤ�����" 10 70
+    dialog --title "/etc/fstabを更新しますか？" --yesno "
+インストール先パーティションにすでに/etc/fstabがあります。単\n\
+にソフトウェアを追加するだけなら、/etc/fstabはそのままにして\n\
+おいた方がよいでしょう。パーティション構成を変更していたら、\n\
+/etc/fstabに反映させなければなりません。古い/etc/fstabを更新\n\
+しますか？" 10 70
     if [ $? = 0 ]; then
      cat /dev/null > /mnt/etc/fstab
      if [ -r /tmp/SeTswap ]; then
@@ -278,8 +278,8 @@ INSTALL�����򤹤뤳�Ȥǥ��󥹥ȡ���򳫻Ϥ��ޤ������󥹥ȡ����\n\
    fi
   fi
   SeTconfigj
-   dialog --title "���åȥ��å״�λ" --msgbox "�����ƥ����꤬��λ���ޤ��������åȥ��åפ�λ����\n\
-CTRL-ALT-DEL�򲡤��ƥޥ�����֡��Ȥ��Ƥ��������� \
+   dialog --title "セットアップ完了" --msgbox "システム設定が終了しました。セットアップを終了し、\n\
+CTRL-ALT-DELを押してマシンをリブートしてください。 \
 " 6 60
  fi
 

@@ -6,52 +6,52 @@ BTRFS_MOUNT_POINT="`cat /tmp/btrfs_mount_point`"
 #BTRFS_DEVICE="/dev/sdb2"
 #BTRFS_MOUNT_POINT="/"
 
-# btrfs¤Îsubvolume¤Ï¥Ş¥¦¥ó¥È¤·¤Æ¤«¤éºî¤ë¤Î¤Ç¡¢°ìÅÙ /tmp/btrfs_tmp ¤Ë²¾
-# ¥Ş¥¦¥ó¥È¤·¤Æ¤ª¤¯
+# btrfsã®subvolumeã¯ãƒã‚¦ãƒ³ãƒˆã—ã¦ã‹ã‚‰ä½œã‚‹ã®ã§ã€ä¸€åº¦ /tmp/btrfs_tmp ã«ä»®
+# ãƒã‚¦ãƒ³ãƒˆã—ã¦ãŠã
 
 mkdir -p /tmp/btrfs_tmp
 mount -t btrfs $BTRFS_DEVICE /tmp/btrfs_tmp
 
-# ´ûÂ¸¤Îsubvolume¤òÃµ¤¹¡£°ì±ş¡¢/ Ä¾²¼¤Îsubvolume¤Î¤ß¤òÉ½¼¨¤¹¤ë¤è¤¦¤Ë
-# ¤·¤Æ¤¤¤ë¤Ä¤â¤ê
+# æ—¢å­˜ã®subvolumeã‚’æ¢ã™ã€‚ä¸€å¿œã€/ ç›´ä¸‹ã®subvolumeã®ã¿ã‚’è¡¨ç¤ºã™ã‚‹ã‚ˆã†ã«
+# ã—ã¦ã„ã‚‹ã¤ã‚‚ã‚Š
 
 btrfs subvolume list /tmp/btrfs_tmp  | cut -f7 -d' ' | cut -f1 -d'/' |sort | uniq > /tmp/volume_list
 if [ ! -s /tmp/volume_list ]; then
     echo "(None)" > /tmp/volume_list
 fi
 
-# rootÍÑsubvolumeÆşÎÏÍÑdialog(/tmp/BtrfsCreateSubvolume.sh)ºîÀ®½èÍı¡£
-# BtrfsCreateSubvolume.sh¤Ïroot_subvolume_name¤¬ÆşÎÏ¤µ¤ì¤ë¤Ş¤Ç¥ë¡¼¥×¤¹¤ë
+# rootç”¨subvolumeå…¥åŠ›ç”¨dialog(/tmp/BtrfsCreateSubvolume.sh)ä½œæˆå‡¦ç†ã€‚
+# BtrfsCreateSubvolume.shã¯root_subvolume_nameãŒå…¥åŠ›ã•ã‚Œã‚‹ã¾ã§ãƒ«ãƒ¼ãƒ—ã™ã‚‹
 
 echo > /tmp/root_subvolume_name
 cat <<'EOF' > /tmp/BtrfsCreateSubvolume.sh
 #!/bin/sh
 root_subvolume_name=`cat /tmp/root_subvolume_name | sed "s|^/||"`
 while [ "$root_subvolume_name.x" = ".x" ]; do
-    dialog --title "rootfsÍÑ¤Îsubvolume¤òºîÀ®" --inputbox \
-"Btrfs¤Ï¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥àÆâ¤ËÊ£¿ô¤Îsubvolume¤òºî¤ê¡¤¤½¤ì¤¾¤ì¤Î \n\
-subvolume¤òÆÈÎ©¤·¤¿¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Î¤è¤¦¤Ë°·¤Ã¤Æ¡¤\n\
-°Û¤Ê¤ë´Ä¶­¤ò¥¤¥ó¥¹¥È¡¼¥ë¥¤¥ó¥¹¥È¡¼¥ë¤¹¤ë¤³¤È¤¬²ÄÇ½¤Ç¤¹¡¥\n\
-¸½ºß¡¢°Ê²¼¤Îsubvolume¤¬ÀßÄê¤µ¤ì¤Æ¤¤¤Ş¤¹¡¥ \n\n\
+    dialog --title "rootfsç”¨ã®subvolumeã‚’ä½œæˆ" --inputbox \
+"Btrfsã¯ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ å†…ã«è¤‡æ•°ã®subvolumeã‚’ä½œã‚Šï¼Œãã‚Œãã‚Œã® \n\
+subvolumeã‚’ç‹¬ç«‹ã—ãŸãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã®ã‚ˆã†ã«æ‰±ã£ã¦ï¼Œ\n\
+ç•°ãªã‚‹ç’°å¢ƒã‚’ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã™ã‚‹ã“ã¨ãŒå¯èƒ½ã§ã™ï¼\n\
+ç¾åœ¨ã€ä»¥ä¸‹ã®subvolumeãŒè¨­å®šã•ã‚Œã¦ã„ã¾ã™ï¼ \n\n\
 EOF
 cat /tmp/volume_list >> /tmp/BtrfsCreateSubvolume.sh
 cat <<'EOF' >> /tmp/BtrfsCreateSubvolume.sh
 \n\n\
-´ûÂ¸¤Îsubvolume¾å¤Ë¥¤¥ó¥¹¥È¡¼¥ë¤¹¤ë¤È¥¨¥é¡¼¤Ë¤Ê¤ë²ÄÇ½À­¤¬¤¢¤ë¤Î¤Ç¡¤ \n\
-º£²ó¥·¥¹¥Æ¥à¤ò¥¤¥ó¥¹¥È¡¼¥ë¤¹¤ësubvolume¤ÎÌ¾¾Î¤Ï¡¢¾åµ­¤È°Û¤Ê¤ëÌ¾¾Î¤ò \n\
-»ØÄê¤·¤Æ¤¯¤À¤µ¤¤¡£ \n\
-(ÉÔÍ×¤Êsubvolume¤ÏºÆµ¯Æ°¸å btrfs subvol del ¥³¥Ş¥ó¥É¤Çºï½ü¤Ç¤­¤Ş¤¹) \n\n\
-subvolume¤ÎÌ¾¾Î¤Ï¡©" 22 74 2> /tmp/root_subvolume_name
+æ—¢å­˜ã®subvolumeä¸Šã«ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã™ã‚‹ã¨ã‚¨ãƒ©ãƒ¼ã«ãªã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹ã®ã§ï¼Œ \n\
+ä»Šå›ã‚·ã‚¹ãƒ†ãƒ ã‚’ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã™ã‚‹subvolumeã®åç§°ã¯ã€ä¸Šè¨˜ã¨ç•°ãªã‚‹åç§°ã‚’ \n\
+æŒ‡å®šã—ã¦ãã ã•ã„ã€‚ \n\
+(ä¸è¦ãªsubvolumeã¯å†èµ·å‹•å¾Œ btrfs subvol del ã‚³ãƒãƒ³ãƒ‰ã§å‰Šé™¤ã§ãã¾ã™) \n\n\
+subvolumeã®åç§°ã¯ï¼Ÿ" 22 74 2> /tmp/root_subvolume_name
     root_subvolume_name=`cat /tmp/root_subvolume_name | sed "s|^/||"`
 done
 EOF
 chmod +x /tmp/BtrfsCreateSubvolume.sh
 /tmp/BtrfsCreateSubvolume.sh
 if [ $? = 255 -o $? = 1 ]; then 
-        # ¤É¤³¤Ø½èÍı¤òÊÖ¤¹¤«Í×¸¡Æ¤
+        # ã©ã“ã¸å‡¦ç†ã‚’è¿”ã™ã‹è¦æ¤œè¨
     exit 1
 fi
-# ²¾¥Ş¥¦¥ó¥È¤·¤Æ¤¤¤ëbtrfs¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Ë¿·¤·¤¤rootÍÑ¤Îsubvolume¤òºî¤ë
+# ä»®ãƒã‚¦ãƒ³ãƒˆã—ã¦ã„ã‚‹btrfsãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã«æ–°ã—ã„rootç”¨ã®subvolumeã‚’ä½œã‚‹
 root_subvolume_name=`cat /tmp/root_subvolume_name | sed "s|^/||"`
 echo "btrfs subvolume create /tmp/btrfs_tmp/$root_subvolume_name"
 btrfs subvolume create /tmp/btrfs_tmp/$root_subvolume_name
@@ -61,15 +61,15 @@ mount -t btrfs $BTRFS_DEVICE /tmp/btrfs_tmp -o subvol=$root_subvolume_name
 sleep 5
 
 dialog --yesno \
-"btrfs¤Ç¤ÏsubvolumeÆâ¤ËÇ¤°Õ¤Îsubvolume¤òºî¤ë¤³¤È¤¬¤Ç¤­¤Ş¤¹¡¥ \n\
-subvolume¤Ï¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¾å¤Ç¤Ï¥Ç¥£¥ì¥¯¥È¥ê¤Î¤è¤¦¤Ë¸«¤¨¤Ş¤¹¤¬¡¤\n\
-btrfs¤ÎCOWµ¡Ç½¤ò»È¤Ã¤Æ¡¤´ÊÃ±¤Ësnapshot¤òºî¤ë¤³¤È¤¬²ÄÇ½¤Ç¤¹¡¥\n\
-(Îã¤¨¤Ğ /home ¤òsubvolume¤Ë¤·¤Æ¤ª¤±¤Ğ¡¤°ìÈÌ¥æ¡¼¥¶¤Î¥Ç¡¼¥¿¤Î¥Ğ¥Ã¥¯¥¢¥Ã¥× \n\
-¤¬¥³¥Ş¥ó¥É°ì¤Ä¤Ç²ÄÇ½¤Ë¤Ê¤ê¤Ş¤¹) \n\n\
-Plamo Linux¤Ç¤Ï¡¤btrfs¤Î¥Ñ¡¼¥Æ¥£¥·¥ç¥óÆâ¤Ë / ÍÑ¤Îsubvolume¤ò \n\
-ºî¤Ã¤Æ¥¤¥ó¥¹¥È¡¼¥ë¤¹¤ë¤è¤¦¤Ë¤·¤Æ¤ª¤ê¡¢¤½¤ÎÆâÉô¤Ë¤Ï¿·¤¿¤Ësubvolume¤òºî¤Ã¤Æ \n\
-¥Ç¥£¥ì¥¯¥È¥ê¤´¤È¤Ësubvolume¤òÊ¬¤±¤ë¤³¤È¤¬²ÄÇ½¤Ç¤¹¡¥ \n\n\
-$BTRFS_DEVICE¾å¤Ë¿·¤·¤¤subvolume¤òºî¤ê¤Ş¤¹¤«¡©" 18 76
+"btrfsã§ã¯subvolumeå†…ã«ä»»æ„ã®subvolumeã‚’ä½œã‚‹ã“ã¨ãŒã§ãã¾ã™ï¼ \n\
+subvolumeã¯ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ä¸Šã§ã¯ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®ã‚ˆã†ã«è¦‹ãˆã¾ã™ãŒï¼Œ\n\
+btrfsã®COWæ©Ÿèƒ½ã‚’ä½¿ã£ã¦ï¼Œç°¡å˜ã«snapshotã‚’ä½œã‚‹ã“ã¨ãŒå¯èƒ½ã§ã™ï¼\n\
+(ä¾‹ãˆã° /home ã‚’subvolumeã«ã—ã¦ãŠã‘ã°ï¼Œä¸€èˆ¬ãƒ¦ãƒ¼ã‚¶ã®ãƒ‡ãƒ¼ã‚¿ã®ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ— \n\
+ãŒã‚³ãƒãƒ³ãƒ‰ä¸€ã¤ã§å¯èƒ½ã«ãªã‚Šã¾ã™) \n\n\
+Plamo Linuxã§ã¯ï¼Œbtrfsã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³å†…ã« / ç”¨ã®subvolumeã‚’ \n\
+ä½œã£ã¦ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã™ã‚‹ã‚ˆã†ã«ã—ã¦ãŠã‚Šã€ãã®å†…éƒ¨ã«ã¯æ–°ãŸã«subvolumeã‚’ä½œã£ã¦ \n\
+ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã”ã¨ã«subvolumeã‚’åˆ†ã‘ã‚‹ã“ã¨ãŒå¯èƒ½ã§ã™ï¼ \n\n\
+$BTRFS_DEVICEä¸Šã«æ–°ã—ã„subvolumeã‚’ä½œã‚Šã¾ã™ã‹ï¼Ÿ" 18 76
 if [ $? = 0 ]; then
     SUBVOLUME=1
 else
@@ -81,37 +81,37 @@ if [ "$SUBVOLUME" = "0" ]; then
    exit
 fi
 
-# $subvolume_list¤òÆâÉô¤Ë´Ş¤à¥¹¥¯¥ê¥×¥È(BtrfsSubVolume.sh)¤ò
-# À¸À®¤¹¤ë¡¥ÊÖ¤µ¤ì¤ë¤Î¤Ï /tmp/subvolume ¤Ëµ­ºÜ¤µ¤ì¤¿subvolume¤Î
-# ¥Ş¥¦¥ó¥ÈÀè¥Ç¥£¥ì¥¯¥È¥ê
+# $subvolume_listã‚’å†…éƒ¨ã«å«ã‚€ã‚¹ã‚¯ãƒªãƒ—ãƒˆ(BtrfsSubVolume.sh)ã‚’
+# ç”Ÿæˆã™ã‚‹ï¼è¿”ã•ã‚Œã‚‹ã®ã¯ /tmp/subvolume ã«è¨˜è¼‰ã•ã‚ŒãŸsubvolumeã®
+# ãƒã‚¦ãƒ³ãƒˆå…ˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
 
 echo > /tmp/subvolume
 subvolume=`cat /tmp/subvolume`
 while [ "$subvolume.x" = ".x" ]; do
-    dialog --title "Btrfs¤Ësubvolume¤òÄÉ²Ã" --inputbox \
-"Btrfs¤Ï¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥àÆâ¤ËÊ£¿ô¤Îsubvolume¤òºî¤ê¡¤ \n\
-¤½¤ì¤¾¤ì¤Îsubvolume¤ò¥Ç¥£¥ì¥¯¥È¥ê¤Î¤è¤¦¤Ë°·¤¦¤³¤È¤¬²ÄÇ½¤Ç¤¹¡¥ \n\
-(/var¤ä/opt/htdocs¤òsubvolume¤Ë¤·¤Æ¤ª¤±¤Ğ¡¤ \n\
-¤½¤ì¤¾¤ì¤Î¥Ç¥£¥ì¥¯¥È¥ê¤´¤È¤Ësnapshot¤ò¼è¤ë¤³¤È¤¬²ÄÇ½¤Ë¤Ê¤ê¤Ş¤¹) \n\n\
-¤É¤Î¤è¤¦¤Êsubvolume¤òºî¤ê¤Ş¤¹¤«¡©" 15 74 2> /tmp/subvolume
+    dialog --title "Btrfsã«subvolumeã‚’è¿½åŠ " --inputbox \
+"Btrfsã¯ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ å†…ã«è¤‡æ•°ã®subvolumeã‚’ä½œã‚Šï¼Œ \n\
+ãã‚Œãã‚Œã®subvolumeã‚’ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®ã‚ˆã†ã«æ‰±ã†ã“ã¨ãŒå¯èƒ½ã§ã™ï¼ \n\
+(/varã‚„/opt/htdocsã‚’subvolumeã«ã—ã¦ãŠã‘ã°ï¼Œ \n\
+ãã‚Œãã‚Œã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã”ã¨ã«snapshotã‚’å–ã‚‹ã“ã¨ãŒå¯èƒ½ã«ãªã‚Šã¾ã™) \n\n\
+ã©ã®ã‚ˆã†ãªsubvolumeã‚’ä½œã‚Šã¾ã™ã‹ï¼Ÿ" 15 74 2> /tmp/subvolume
 if [ $? = 255 -o $? = 1 ]; then 
-        # ¤É¤³¤Ø½èÍı¤òÊÖ¤¹¤«Í×¸¡Æ¤
+        # ã©ã“ã¸å‡¦ç†ã‚’è¿”ã™ã‹è¦æ¤œè¨
     exit 1
 fi
     subvolume=`cat /tmp/subvolume`
 done
 
 echo "subvolume:$subvolume"
-# ²¾¥Ş¥¦¥ó¥È¤·¤Æ¤¤¤ëbtrfs¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Ë¿·¤·¤¤subvolume($subvolume)¤òºî¤ë
+# ä»®ãƒã‚¦ãƒ³ãƒˆã—ã¦ã„ã‚‹btrfsãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã«æ–°ã—ã„subvolume($subvolume)ã‚’ä½œã‚‹
 echo "btrfs subvolume create /tmp/btrfs_tmp/$subvolume"
 btrfs subvolume create /tmp/btrfs_tmp/$subvolume
 sleep 5
 
-# subvolume¤Î¥ê¥¹¥È¤òºî¤ë
+# subvolumeã®ãƒªã‚¹ãƒˆã‚’ä½œã‚‹
 echo "$subvolume\n" > /tmp/subvolume_list
 
 SUBVOLUME=0
-dialog --yesno "¤â¤¦°ì¤Äbtrfs¤Îsubvolume¤òºî¤ê¤Ş¤¹¤«¡©" 10 70
+dialog --yesno "ã‚‚ã†ä¸€ã¤btrfsã®subvolumeã‚’ä½œã‚Šã¾ã™ã‹ï¼Ÿ" 10 70
 if [ $? = 0 ]; then
     SUBVOLUME=1
 fi
@@ -124,44 +124,44 @@ while [ $SUBVOLUME -eq 1 ]  ; do
 subvolume=`cat /tmp/subvolume`
 while [ "$subvolume.x" = ".x" ]; do
 
-    dialog --title "Btrfs¤Ësubvolume¤òÄÉ²Ã" --inputbox \
-"Btrfs¤Ï¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥àÆâ¤ËÊ£¿ô¤Îsubvolume¤òºî¤ê¡¤ \
-¤½¤ì¤¾¤ì¤Îsubvolume¤ò¥Ç¥£¥ì¥¯¥È¥ê¤Î¤è¤¦¤Ë°·¤¦¤³¤È¤¬²ÄÇ½¤Ç¤¹¡¥ \
-¸½ºß¡¤¤³¤Î¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤Ë¤Ï°Ê²¼¤Îsubvolume¤¬ÀßÄê¤µ¤ì¤Æ¤¤¤Ş¤¹ \
+    dialog --title "Btrfsã«subvolumeã‚’è¿½åŠ " --inputbox \
+"Btrfsã¯ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ å†…ã«è¤‡æ•°ã®subvolumeã‚’ä½œã‚Šï¼Œ \
+ãã‚Œãã‚Œã®subvolumeã‚’ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®ã‚ˆã†ã«æ‰±ã†ã“ã¨ãŒå¯èƒ½ã§ã™ï¼ \
+ç¾åœ¨ï¼Œã“ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã«ã¯ä»¥ä¸‹ã®subvolumeãŒè¨­å®šã•ã‚Œã¦ã„ã¾ã™ \
 \n\n
 __EOF
     cat /tmp/subvolume_list >> /tmp/BtrfsSubVolume.sh
     cat <<'__EOF' >> /tmp/BtrfsSubVolume.sh
 \n
-¤É¤Î¤è¤¦¤Êsubvolume¤òºî¤ê¤Ş¤¹¤«¡©" 15 74 2> /tmp/subvolume
+ã©ã®ã‚ˆã†ãªsubvolumeã‚’ä½œã‚Šã¾ã™ã‹ï¼Ÿ" 15 74 2> /tmp/subvolume
 subvolume=`cat /tmp/subvolume`
 done 
 __EOF
     chmod +x /tmp/BtrfsSubVolume.sh
     sh /tmp/BtrfsSubVolume.sh
     if [ $? = 255 -o $? = 1 ]; then 
-        # ¤É¤³¤Ø½èÍı¤òÊÖ¤¹¤«Í×¸¡Æ¤
+        # ã©ã“ã¸å‡¦ç†ã‚’è¿”ã™ã‹è¦æ¤œè¨
 	exit 1
     fi
     subvolume=`cat /tmp/subvolume`
 
-# ²¾¥Ş¥¦¥ó¥È¤·¤Æ¤¤¤ëbtrfs¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Ë¿·¤·¤¤subvolume¤òºî¤ë
+# ä»®ãƒã‚¦ãƒ³ãƒˆã—ã¦ã„ã‚‹btrfsãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã«æ–°ã—ã„subvolumeã‚’ä½œã‚‹
     echo "subvolume:$subvolume"
     echo "btrfs subvolume create /tmp/btrfs_tmp/$subvolume"
     btrfs subvolume create /tmp/btrfs_tmp/$subvolume
     sleep 5
-# subvolume¤Î¥ê¥¹¥È¤òºî¤ë
+# subvolumeã®ãƒªã‚¹ãƒˆã‚’ä½œã‚‹
     echo "$subvolume\n" >> /tmp/subvolume_list
     SUBVOLUME=0
     echo > /tmp/subvolume
-    dialog --yesno "¤â¤¦°ì¤Äbtrfs¤Îsubvolume¤òºî¤ê¤Ş¤¹¤«¡©" 10 70
+    dialog --yesno "ã‚‚ã†ä¸€ã¤btrfsã®subvolumeã‚’ä½œã‚Šã¾ã™ã‹ï¼Ÿ" 10 70
     if [ $? = 0 ]; then
 	SUBVOLUME=1
     fi
 done
 
-# ½ªÎ»»ş¤Ë¤Ï²¾¥Ş¥¦¥ó¥È¤ò²ò½ü¤¹¤ë
-# ¼Âºİ¤Î¥Ş¥¦¥ó¥È¥İ¥¤¥ó¥È¤Ø¤Ï SeTpartitionj ¤Ç¥Ş¥¦¥ó¥È¤·¡¤
-# /etc/fstab ¤Î¸¶·¿(/tmp/SeTnative)¤òºî¤ë
+# çµ‚äº†æ™‚ã«ã¯ä»®ãƒã‚¦ãƒ³ãƒˆã‚’è§£é™¤ã™ã‚‹
+# å®Ÿéš›ã®ãƒã‚¦ãƒ³ãƒˆãƒã‚¤ãƒ³ãƒˆã¸ã¯ SeTpartitionj ã§ãƒã‚¦ãƒ³ãƒˆã—ï¼Œ
+# /etc/fstab ã®åŸå‹(/tmp/SeTnative)ã‚’ä½œã‚‹
 
 umount /tmp/btrfs_tmp

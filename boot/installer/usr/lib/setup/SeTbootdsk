@@ -8,15 +8,15 @@ copy_bootparms() {
     fi
 }
 
-dialog --title "�쥹���塼�ǥ���������" --menu \
-    "�����Ǥ� FD ���饷���ƥ��ư���뤿��Υ쥹���塼�ǥ������� \n\
-�������ޤ����쥹���塼�ǥ������κ�����ϡ��ޥ����ܡ��ɤ�ľ���� \n\
-³����뽾��� FD �ɥ饤��(/dev/fd0)�� USB ����³����� FD �ɥ� \n\
-��(/dev/sda)�Ǥ�¿���ۤʤ�ޤ��� \n\
-���Ȥ��� FD �Ϥɤ���Υ����פǤ�����" 20 72 6 \
-"FD" "���跿�� FD �ɥ饤��"  \
-"USB" "USB �����פ� FD �ɥ饤��" \
-"EXIT" "�쥹���塼�ǥ������κ�����λ" 2> /tmp/return
+dialog --title "レスキューディスク作成" --menu \
+    "ここでは FD からシステムを起動するためのレスキューディスクを \n\
+作成します．レスキューデイスクの作り方は，マザーボードに直接接 \n\
+続される従来の FD ドライブ(/dev/fd0)と USB で接続される FD ドラ \n\
+ブ(/dev/sda)では多少異なります． \n\
+お使いの FD はどちらのタイプですか？" 20 72 6 \
+"FD" "従来型の FD ドライブ"  \
+"USB" "USB タイプの FD ドライブ" \
+"EXIT" "レスキューデイスクの作成を終了" 2> /tmp/return
 if [ ! $? = 0 ]; then
     break;
 fi
@@ -27,46 +27,46 @@ if [ "$FDTYPE" =  "EXIT" ]; then
     break
 elif [ "$FDTYPE" = "FD" ]; then  
     while [ 0 ]; do # the bootdisk menu loop
-	dialog --title "FDD �γ�ǧ" --menu \
-	    "�쥹���塼�ǥ������������������FDD �ˤ��� FD ���ǧ���� \n\
-�����������쥹���塼�ǥ������� FD �ϴ����˾�񤭤��졤 \n\
-FD ��Υǡ����������õ��ޤ���\n\
-�쥹���塼�ǥ������ϻ��Ѥ���֡��ȥ������˱����� \n\
-grub �Ǥ� syslinux �Ǥ� 2 �郎����ޤ��� \n\
-�֡��ȥǥ������ˤ���FD���ե����ޥåȤ���Ƥ��ʤ���硤\n\
-�ޤ��ե����ޥåȤ��Ƥ���ɬ�פ�����ޤ���" 22 78 6 \
-	    "format" "/dev/fd0(a:)�ǥե��åԡ���ե����ޥåȤ���" \
-	    "grub" "grub�Υ֡��ȥǥ��������������" \
-	    "syslinux" "syslinux�Υ֡��ȥǥ��������������" \
-	    "continue" "�֡��ȥǥ�����������λ����" 2> /tmp/return
+	dialog --title "FDD の確認" --menu \
+	    "レスキューディスクを作成する前にFDD にある FD を確認して \n\
+ください。レスキューディスク用 FD は完全に上書きされ， \n\
+FD 上のデータは全部消去されます．\n\
+レスキューディスクは使用するブートローダに応じて \n\
+grub 版と syslinux 版の 2 種があります． \n\
+ブートディスクにするFDがフォーマットされていない場合，\n\
+まずフォーマットしておく必要があります．" 22 78 6 \
+	    "format" "/dev/fd0(a:)でフロッピーをフォーマットする" \
+	    "grub" "grubのブートディスクを作成する" \
+	    "syslinux" "syslinuxのブートディスクを作成する" \
+	    "continue" "ブートディスク作成を終了する" 2> /tmp/return
 	if [ ! $? = 0 ]; then
 	    break;
 	fi
 	REPLY=`cat /tmp/return`
 	rm -f /tmp/return
 	if [ "$REPLY" = "format" ]; then
-	    dialog --title "�ե��åԡ��γ�ǧ" --msgbox \
-		"/dev/fd0 �Υǥ������򥤥󥹥ȡ���ε�ư�ǥ��������������ؤ��� \n\
-���뤳�Ȥ��ǧ���Ƥ���������" 6 72
+	    dialog --title "フロッピーの確認" --msgbox \
+		"/dev/fd0 のディスクをインストーラの起動ディスクから入れ替えて \n\
+いることを確認してください。" 6 72
 	    if [ $? = 0 ]; then
-		dialog --title "/dev/fd0�Υե����ޥå���" --infobox "/dev/fd0��1.44�ᥬ\
-�Х��Ȥǥե����ޥåȤ��Ƥ��ޤ���" 3 70 
+		dialog --title "/dev/fd0のフォーマット中" --infobox "/dev/fd0を1.44メガ\
+バイトでフォーマットしています。" 3 70 
 		fdformat /dev/fd0u1440
-		dialog --title "formatting.." --infobox "/dev/fd0 �˥ե����륷���ƥ�������" 3 70 
+		dialog --title "formatting.." --infobox "/dev/fd0 にファイルシステムを作成中" 3 70 
 		mkdosfs /dev/fd0u1440
 	    fi
 	    rm -f /tmp/return
 	elif [ "$REPLY" = "grub" ]; then # make grub bootdisk
-	    dialog --title "grub �֡��ȥǥ���������" --yesno \
+	    dialog --title "grub ブートディスク作成" --yesno \
 		"\n\
-�֡��Ȳ�ǽ��FD�ɥ饤�֤˥ե����ޥåȺѤߤΥե��åԡ��� \n\
-����Ƥ������������Υǥ������� Plamo Linux �Υ֡��ȥǥ� \n\
-�����ˤ��ޤ����ϡ��ɥǥ���������֡��ȤǤ���褦�ˤʤ� \n\
-�ޤǤϡ����Υե��åԡ������Ѥ��������� \n\n\
-���Υե��åԡ��ǥ����������Ƥϴ����˾�񤭤���ޤ���\n\n\
-YES�ǥǥ��������������NO����ߤ��ޤ���\n" 14 74
+ブート可能なFDドライブにフォーマット済みのフロッピーを \n\
+入れてください。このディスクを Plamo Linux のブートディ \n\
+スクにします．ハードディスクからブートできるようになる \n\
+までは、このフロッピーをご利用ください。 \n\n\
+このフロッピーディスクの内容は完全に上書きされます。\n\n\
+YESでディスクを作成し、NOで中止します。\n" 14 74
 	    if [ "$?" = "0" ]; then
-		dialog --title "�ǥ���������" --infobox "'vmlinuz'�򥳥ԡ����Ƥ��ޤ�..." 5 70
+		dialog --title "ディスク作成" --infobox "'vmlinuz'をコピーしています..." 5 70
 		if [ ! -d /fd ]; then
 		    mkdir /fd
 		fi
@@ -88,7 +88,7 @@ fallback 1
 title Plamo Linux
 kernel (fd0)/vmlinuz root=$ROOT_DEVICE ro
 EOF
-		    dialog --infobox "\nGRUB�򥤥󥹥ȡ�����..." 5 40
+		    dialog --infobox "\nGRUBをインストール中..." 5 40
 		    $T_PX/usr/sbin/grub --batch <<EOF
 root (fd0)
 install (fd0)/stage1 d (fd0) (fd0)/stage2 0x8000 p (fd0)/grub.cfg
@@ -99,19 +99,19 @@ EOF
 		    sync
 		    umount /fd
 		else
-		    dialog --title "FD�ޥ�����Բ�" --msgbox "FD ������˥ޥ���ȤǤ��ʤ����� \n\
-FD �� grub �򥤥󥹥ȡ���Ǥ��ޤ���Ǥ���" 5 70
+		    dialog --title "FDマウント不可" --msgbox "FD が正常にマウントできないため \n\
+FD に grub をインストールできませんでした" 5 70
 		fi
 	    fi
 	elif [ "$REPLY" = "syslinux" ]; then # make syslinux bootdisk
-	    dialog --title "/dev/fd0��syslinux�Υ֡��ȥǥ���������" --yesno \
-		"�֡��Ȳ�ǽ��FD�ɥ饤�֤˥ե����ޥåȺѤߤΥե��åԡ�������Ƥ���������\n\
-���줬 Plamo Linux�����ƥ��ư����֡��ȥǥ������Ȥʤ�ޤ���\n\
-�ե��åԡ������Ƥϴ����˾�񤭤���ޤ���YES�ǥǥ�������������� \n\
-NO����ߤ��ޤ���" 10 74
+	    dialog --title "/dev/fd0でsyslinuxのブートディスク作成" --yesno \
+		"ブート可能なFDドライブにフォーマット済みのフロッピーを入れてください。\n\
+これが Plamo Linuxシステムを起動するブートディスクとなります。\n\
+フロッピーの内容は完全に上書きされます。YESでディスクを作成し、 \n\
+NOで中止します。" 10 74
 	    if [ $? = 0 ]; then # make the disk
 		DEV=/dev/fd0
-		dialog --infobox "$ROOT_DEVICE�Τ����syslinux�֡��ȥǥ������������..." 3 70
+		dialog --infobox "$ROOT_DEVICEのためのsyslinuxブートディスクを作成中..." 3 70
 		$T_PX/sbin/syslinux -s  $DEV 1> /dev/null 2> /dev/null
 		mount -t vfat /dev/fd0 /fd 1> /dev/null 2> /dev/null
 		if [ $? = 0 ]; then
@@ -134,8 +134,8 @@ EOF
 		    sync
 		    umount /fd
   	        else
-		    dialog --title "FD�ޥ�����Բ�" --msgbox "FD ������˥ޥ���ȤǤ��ʤ����� \n\
-FD �� grub �򥤥󥹥ȡ���Ǥ��ޤ���Ǥ���" 5 70
+		    dialog --title "FDマウント不可" --msgbox "FD が正常にマウントできないため \n\
+FD に grub をインストールできませんでした" 5 70
 	        fi
 	    fi
        elif [ "$REPLY" = "continue" ] ; then
@@ -143,27 +143,27 @@ FD �� grub �򥤥󥹥ȡ���Ǥ��ޤ���Ǥ���" 5 70
        fi
     done
 else   # FDTYPE=USB
-    dialog --title "USB FDD ������" --yesno \
-	"���Ȥ��Υޥ���� USB FDD �ʳ��� USB �����ǥХ���(���դ�USB HDD \n\
-�� USB ������)����³����Ƥ����硤USB FDD �ȸ��򤵤�����Ƥ� \n\
-�õ����ǽ��������ޤ������Ȥ��Υޥ���� USB FDD �ʳ��� USB \n\
-�����ǥХ���(USB CD-ROM ����³����Ƥ��Ƥ⹽���ޤ���)����³����� \n\
-�����硤�ʲ��κ�Ȥϼ»ܤǤ��ޤ���Τ� NO �ǽ�λ���Ƥ���������\n\
-���Τޤ޺�Ȥ�ʤ�ƹ����ޤ��󤫡� \n" 12 72
+    dialog --title "USB FDD の注意" --yesno \
+	"お使いのマシンに USB FDD 以外の USB 記憶デバイス(外付けUSB HDD \n\
+や USB メモリ等)が接続されている場合，USB FDD と誤解されて内容が \n\
+消去される可能性があります．お使いのマシンに USB FDD 以外の USB \n\
+記憶デバイス(USB CD-ROM は接続されていても構いません)が接続されて \n\
+いる場合，以下の作業は実施できませんので NO で終了してください．\n\
+このまま作業を進めて構いませんか？ \n" 12 72
     if [ $? != 0 ]; then
 	exit
     fi
-    dialog --title "FDD �γ�ǧ" --msgbox \
-	"�쥹���塼�ǥ������������������FDD �ˤ��� FD ���ǧ���Ƥ��������� \n\
-�쥹���塼�ǥ������� FD �ϴ����˾�񤭤��졤FD ��Υǡ����������õ� \n\
-����ޤ����ޤ���USB FDD ��ʪ���ե����ޥåȤ��뤳�Ȥ��Ǥ��ʤ����ᡤ \n\
-�쥹���塼�ǥ������� ������ʪ���ե����ޥåȤ��Ƥ����Ƥ���������" 10 74
+    dialog --title "FDD の確認" --msgbox \
+	"レスキューディスクを作成する前にFDD にある FD を確認してください。 \n\
+レスキューディスク用 FD は完全に上書きされ，FD 上のデータは全部消去 \n\
+されます．また，USB FDD で物理フォーマットすることができないため， \n\
+レスキューディスクは 事前に物理フォーマットしておいてください．" 10 74
 
-    dialog --title "USB �ѤΥ֡��ȥǥ���������" --yesno \
-        "USB �� FD�ɥ饤�֤˥ե����ޥåȺѤߤΥե��åԡ�������Ƥ���������\n\
-���줬 Plamo Linux�����ƥ��ư����֡��ȥǥ������Ȥʤ�ޤ���\n\
-�ե��åԡ������Ƥϴ����˾�񤭤���ޤ���YES�ǥǥ�������������� \n\
-NO����ߤ��ޤ���" 9 72 
+    dialog --title "USB 用のブートディスク作成" --yesno \
+        "USB な FDドライブにフォーマット済みのフロッピーを入れてください。\n\
+これが Plamo Linuxシステムを起動するブートディスクとなります。\n\
+フロッピーの内容は完全に上書きされます。YESでディスクを作成し、 \n\
+NOで中止します。" 9 72 
     if [ $? = 0 ]; then # make FD
 	DEV=`fdisk -l | grep "1 MB" | cut -d" " -f2 | tr -d ":"`
 	if [ -f /var/adm/mount/boot/syslinux.img ]; then
@@ -171,12 +171,12 @@ NO����ߤ��ޤ���" 9 72
 	elif [ -f /var/adm/mount/plamo/boot/syslinux.img ]; then
 	    FDIMG=/var/adm/mount/plamo/boot/syslinux.img
 	else
-	    dialog --msgbox "USB�֡��ȥǥ������ѤΥ��᡼�������դ���ޤ���. \n\
-��ư��USB�֡��ȥǥ�����������ϡ�plamo/boot �ǥ��쥯�ȥ�ˤ��� \n\
-mkbootdsk.sh ���ޥ�ɤ�¹Ԥ��Ƥ���������" 10 72
+	    dialog --msgbox "USBブートディスク用のイメージが見付かりません. \n\
+手動でUSBブートディスクを作る場合は，plamo/boot ディレクトリにある \n\
+mkbootdsk.sh コマンドを実行してください．" 10 72
 	    exit
 	fi
-	dialog --infobox "$ROOT_DEVICE�Τ���� USB �֡��ȥǥ������������..." 3 70
+	dialog --infobox "$ROOT_DEVICEのための USB ブートディスクを作成中..." 3 70
 	cat $FDIMG > $DEV
 	$T_PX/sbin/syslinux  $DEV 1> /dev/null 2> /dev/null
 	mount -t vfat $DEV /fd 1> /dev/null 2> /dev/null
@@ -195,8 +195,8 @@ EOF
 	    sync
 	    umount /fd
 	else
-	    dialog --title "FD�ޥ�����Բ�" --msgbox "FD ������˥ޥ���ȤǤ��ʤ����� \n\
-FD �� grub �򥤥󥹥ȡ���Ǥ��ޤ���Ǥ���" 5 70
+	    dialog --title "FDマウント不可" --msgbox "FD が正常にマウントできないため \n\
+FD に grub をインストールできませんでした" 5 70
 	fi
    fi  # end of make FD
 fi  # FDTYPE=USB end

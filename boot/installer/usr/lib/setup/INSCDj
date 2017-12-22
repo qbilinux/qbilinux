@@ -8,16 +8,16 @@ modprobe sr_mod
 
 dialog --title "Install from the Plamo Linux CD-ROM" \
 --menu \
-"Plamo Linux�Ǥϡ�ATAPI��SCSI�ʳ����ȼ�����CD-ROM�ϥ��ݡ��� \n\
-���Ƥ���ޤ���ʥƥ��ȴĶ��������¸�ߤ��ʤ��Τǡ����� \n\
-������CD-ROM�ξ�硢���餫����CD-ROM�����Ƥ�ϡ��ɥǥ����� \n\
-�˥��ԡ����Ƥ����ơ�HDD���饤�󥹥ȡ��뤹����ˡ������ޤ��� \n\
-PD�ɥ饤�֤�CD-ROM�Ȥ���ǧ������ʤ����� \n\
-LUN��������Ѥ��ƤߤƤ���������DOS/V�Ѥ���Mac�Ѥˤ���ʤɡ� \n\
-���Ȥ���CD�ɥ饤�֤μ���ϡ�" 18 74 4 \
-"scan" "CD�ɥ饤�֤Υ����פ�ưǧ�����Ƥߤޤ�" \
-"1" "�ۤȤ�ɤ�ATAPI/IDE CD�ɥ饤�� (/dev/hd*)" \
-"2" "SCSI (/dev/scd0 ���뤤�� /dev/scd1)" \
+"Plamo Linuxでは、ATAPIとSCSI以外の独自仕様CD-ROMはサポート \n\
+しておりません（テスト環境が周りに存在しないので、、） \n\
+それらのCD-ROMの場合、あらかじめCD-ROMの内容をハードディスク \n\
+にコピーしておいて、HDDからインストールする方法があります。 \n\
+PDドライブがCD-ROMとして認識されない場合は \n\
+LUNの設定を変えてみてください（DOS/V用からMac用にするなど） \n\
+お使いのCDドライブの種類は？" 18 74 4 \
+"scan" "CDドライブのタイプを自動認識してみます" \
+"1" "ほとんどのATAPI/IDE CDドライブ (/dev/hd*)" \
+"2" "SCSI (/dev/scd0 あるいは /dev/scd1)" \
 2> /tmp/cdtype
 if [ $? = 1 -o $? = 255 ]; then
  rm -f /tmp/tmpmsg /tmp/cdtype
@@ -27,7 +27,7 @@ CD_ROM_TYPE="`cat /tmp/cdtype`"
 rm -f /tmp/tmpmsg /tmp/cdtype
 if [ "$CD_ROM_TYPE" = "scan" ]; then
   for device in /dev/sr0 /dev/sr1 /dev/sr2 /dev/scd0 /dev/scd1 /dev/scd2 /dev/scd3 /dev/scd4 /dev/scd5 /dev/scd6 ; do
-   dialog --infobox "$device�򥹥������..." 3 60
+   dialog --infobox "$deviceをスキャン中..." 3 60
    mount -o ro -t iso9660 $device /var/adm/mount 1> /dev/null 2> /dev/null
    if [ $? = 0 ]; then
     DRIVE_FOUND=$device
@@ -36,20 +36,20 @@ if [ "$CD_ROM_TYPE" = "scan" ]; then
   done
   umount /var/adm/mount 1> /dev/null 2> /dev/null
   if [ "$DRIVE_FOUND" = "" ]; then
-   dialog --title "�ɥ饤�֤����Ĥ���ޤ���" --msgbox "Ĵ�٤��ǥХ����Τɤ��ˤ�CD-ROM�ɥ饤�֤����Ĥ���ޤ���Ǥ�����\n\
-��ʬ��CD�ɥ饤�֤򥵥ݡ��Ȥ��Ƥ���֡��ȥǥ���������Ѥ��Ƥ��뤫��\n\
-��ǧ���ƤߤƤ����������ɥ饤�֤�ǧ�����뤿���ɬ�פʡ����ܤ���\n\
-����ˤĤ��Ƥϡ��ե�����BOOTING�򻲾Ȥ��Ƥ������������줫�� \n\
-���󥹥ȡ���˺�ĩ�路�ƤߤƤ����������ɤ����Ƥ����ʾ��ϡ�\n\
-FAQ.TXT��CD�����Ƥ�DOS�ѡ��ƥ������˥��ԡ����ƥ��󥹥ȡ���\n\
-��ˡ���񤫤�Ƥ��ޤ��Τǡ�����򻲾Ȥ��Ƥ���������" 14 70
+   dialog --title "ドライブが見つかりません" --msgbox "調べたデバイスのどこにもCD-ROMドライブが見つかりませんでした。\n\
+自分のCDドライブをサポートしているブートディスクを使用しているか、\n\
+確認してみてください。ドライブを認識するために必要な、より詳しい\n\
+情報については、ファイルBOOTINGを参照してください。それから \n\
+インストールに再挑戦してみてください。どうしてもだめな場合は、\n\
+FAQ.TXTにCDの内容をDOSパーティションにコピーしてインストール\n\
+方法が書かれていますので、それを参照してください。" 14 70
   else
-   dialog --title "CD-ROM�ɥ饤�֤����Ĥ���ޤ���" --msgbox "CD-ROM���ǥХ���$DRIVE_FOUND�ˤ���ޤ�����" 5 65
+   dialog --title "CD-ROMドライブが見つかりました" --msgbox "CD-ROMがデバイス$DRIVE_FOUNDにありました。" 5 65
    CD_DEVICE="$DRIVE_FOUND"
   fi
 elif [ "$CD_ROM_TYPE" = "2" ]; then
- dialog --title "SCSI�ǥХ���������" --menu "�ɤ�SCSI CD-ROM����Ѥ��ޤ������ʤ狼��ʤ����ϡ�\n\
-/dev/scd0 ������Ǥ���������" 10 60 3 \
+ dialog --title "SCSIデバイスの選択" --menu "どのSCSI CD-ROMを使用しますか？（わからない場合は、\n\
+/dev/scd0 を選んでください）" 10 60 3 \
 "/dev/scd0" "SCSI CD 0" \
 "/dev/scd1" "SCSI CD 1" \
 "/dev/scd2" "SCSI CD 2" \
@@ -84,24 +84,24 @@ elif [ "$CD_ROM_TYPE" = "11" ]; then
 elif [ "$CD_ROM_TYPE" = "12" ]; then
  CD_DEVICE="/dev/sjcd"
 elif [ "$CD_ROM_TYPE" = "1" ]; then
- dialog --title "IDE�ǥХ���������" --menu "CD-ROM�ɥ饤�֤Ϥɤ�IDE�ǥХ�������³����Ƥ��ޤ����� \n\
-�ɤ�ʬ����ʤ���С���ư���Ф����Ƥߤ뤳�Ȥ�Ǥ��ޤ���" 17 70 9 \
-"scan" "�ɥ饤�֤�ư���Ф��Ƥߤޤ�" \
-"/dev/hda" "�ץ饤�ޥ�IDE���󥿡��ե�����, �ɥ饤��1" \
-"/dev/hdb" "�ץ饤�ޥ�IDE���󥿡��ե�����, �ɥ饤��2" \
-"/dev/hdc" "���������IDE���󥿡��ե�����, �ɥ饤��1" \
-"/dev/hdd" "���������IDE���󥿡��ե�����, �ɥ饤��2" \
-"/dev/hde" "������IDE���󥿡��ե�����, �ɥ饤��1" \
-"/dev/hdf" "������IDE���󥿡��ե�����, �ɥ饤��2" \
-"/dev/hdg" "�ե�����IDE���󥿡��ե�����, �ɥ饤��1" \
-"/dev/hdh" "�ե�����IDE���󥿡��ե�����, �ɥ饤��2" \
+ dialog --title "IDEデバイスの選択" --menu "CD-ROMドライブはどのIDEデバイスに接続されていますか？ \n\
+良く分からなければ、自動検出させてみることもできます。" 17 70 9 \
+"scan" "ドライブを自動検出してみます" \
+"/dev/hda" "プライマリIDEインターフェース, ドライブ1" \
+"/dev/hdb" "プライマリIDEインターフェース, ドライブ2" \
+"/dev/hdc" "セカンダリIDEインターフェース, ドライブ1" \
+"/dev/hdd" "セカンダリIDEインターフェース, ドライブ2" \
+"/dev/hde" "サードIDEインターフェース, ドライブ1" \
+"/dev/hdf" "サードIDEインターフェース, ドライブ2" \
+"/dev/hdg" "フォースIDEインターフェース, ドライブ1" \
+"/dev/hdh" "フォースIDEインターフェース, ドライブ2" \
 2> /tmp/idecd
  if [ ! "`cat /tmp/idecd`" = "scan" ]; then
   CD_DEVICE="`cat /tmp/idecd`"
  else
   for device in /dev/hdd /dev/hdc /dev/hdb /dev/hda \
 /dev/hde /dev/hdf /dev/hdg /dev/hdh ; do
-   dialog --infobox "$device���������..." 3 30
+   dialog --infobox "$deviceスキャン中..." 3 30
    mount -o ro -t iso9660 $device /var/adm/mount 1> /dev/null 2> /dev/null
    if [ $? = 0 ]; then
     DRIVE_FOUND=$device
@@ -110,15 +110,15 @@ elif [ "$CD_ROM_TYPE" = "1" ]; then
   done
   umount /var/adm/mount 1> /dev/null 2> /dev/null
   if [ "$DRIVE_FOUND" = "" ]; then
-   dialog --title "�ɥ饤�֤����Ĥ���ޤ���" --msgbox "Ĵ�٤��ɤΥǥХ����ˤ�IDE(ATAPI) CD-ROM�ɥ饤�֤ϸ��Ĥ���\n\
-�ޤ���Ǥ������ɥ饤�֤�ǧ�����뤿���ɬ�פʡ����ܤ��� \n\
-������դ��Ƥϡ��ե�����BOOTING�򻲾Ȥ��Ƥ������������줫��\n\
-���󥹥ȡ���˺�ĩ�路�ƤߤƤ����������ɤ����Ƥ����ʾ��ϡ�\n\
-FAQ.TXT��CD�����Ƥ�DOS�ѡ��ƥ������˥��ԡ����ƥ��󥹥�\n\
-������ˡ���񤫤�Ƥ��ޤ��Τǡ�����򻲾Ȥ��Ƥ���������" \
+   dialog --title "ドライブが見つかりません" --msgbox "調べたどのデバイスにもIDE(ATAPI) CD-ROMドライブは見つかり\n\
+ませんでした。ドライブを認識するために必要な、より詳しい \n\
+情報に付いては、ファイルBOOTINGを参照してください。それから\n\
+インストールに再挑戦してみてください。どうしてもだめな場合は、\n\
+FAQ.TXTにCDの内容をDOSパーティションにコピーしてインスト\n\
+ール方法が書かれていますので、それを参照してください。" \
 12 70
   else
-   dialog --title "IDE(ATAPI) CD-ROM�ɥ饤�֤����Ĥ���ޤ���" --msgbox "IDE(ATAPI) CD-ROM�ɥ饤�֤��ǥХ���$DRIVE_FOUND�Ǹ��Ĥ���ޤ�����" 5 70
+   dialog --title "IDE(ATAPI) CD-ROMドライブが見つかりました" --msgbox "IDE(ATAPI) CD-ROMドライブがデバイス$DRIVE_FOUNDで見つかりました。" 5 70
    CD_DEVICE="$DRIVE_FOUND"
   fi
  fi
@@ -130,20 +130,20 @@ if [ "$DRIVE_FOUND" != "" ]; then
 fi
 
 while [ 0 ] ; do
- dialog --title "���󥹥ȡ�����ˡ������" \
---menu "Plamo Linux ������ CD-R ����Υ��󥹥ȡ���ξ��� plamo �� \n\
-����Ǥ�������(/cdrom/plamo ����ɬ�פʥե����뤬���󥹥ȡ��뤵��ޤ�) \n\
-����CD-R�ʳ���CD-ROM���饤�󥹥ȡ��뤹����ϡ�custom ������� \n\
-plamo Linux�Υѥå������Τ���ǥ��쥯�ȥ����ꤷ�Ƥ���������" 15 74 4 \
- "plamo" "�ϡ��ɥǥ������ؤ��̾�Υ��󥹥ȡ���" \
- "custom" "�̾�Ȥϰۤʤ�ǥ��쥯�ȥ꤫��Υ��󥹥ȡ���" \
+ dialog --title "インストール方法の選択" \
+--menu "Plamo Linux の配布 CD-R からのインストールの場合は plamo を \n\
+選んでください(/cdrom/plamo から必要なファイルがインストールされます) \n\
+配布CD-R以外のCD-ROMからインストールする場合は、custom を選んで \n\
+plamo Linuxのパッケージのあるディレクトリを指定してください。" 15 74 4 \
+ "plamo" "ハードディスクへの通常のインストール" \
+ "custom" "通常とは異なるディレクトリからのインストール" \
  2> /tmp/SeTreturn
  if [ $? = 1 -o $? = 255 ]; then
   rm -f /tmp/cdtype /tmp/SeTreturn
   exit
  fi
  if [ "`cat /tmp/SeTreturn`" = "help" ]; then
-  dialog --title "���󥹥ȡ���ˡ�Υإ��" --textbox /usr/lib/setup/IMhelpj \
+  dialog --title "インストール法のヘルプ" --textbox /usr/lib/setup/IMhelpj \
   20 74
   continue
  fi
@@ -153,11 +153,11 @@ done
 SLACK_SOURCE_LOCATION="`cat /tmp/SeTreturn`"
 
 if [ "$SLACK_SOURCE_LOCATION" = "custom" ]; then
- dialog --title "���󥹥ȡ��븵�ǥ��쥯�ȥ������" --inputbox "Plamo Linux�� \
- �����������äƤ���CD�Υǥ��쥯�ȥ������\n\
- ���Ƥ��������������CD�μ���ˤ�äưۤʤäƤ����ǽ��������\n\
- �ޤ�����Ƭ��'/'�Ͼʤ��Ƥ��ޤäƤ⤫�ޤ��ޤ��� \n\
- �ɤΥǥ��쥯�ȥ��Plamo Linux�Υ�����������ޤ�����" 11 67 \
+ dialog --title "インストール元ディレクトリの選択" --inputbox "Plamo Linuxの \
+ ソースが入っているCDのディレクトリを入力\n\
+ してください。これはCDの種類によって異なっている可能性があり\n\
+ ます。先頭の'/'は省いてしまってもかまいません。 \n\
+ どのディレクトリにPlamo Linuxのソースがありますか？" 11 67 \
  2> /tmp/slacksource
  if [ $? = 1 -o $? = 255 ]; then
   rm -f /tmp/cdtype /tmp/slacksource
@@ -171,10 +171,10 @@ fi
 while [ 0 ]; do
  mount -o ro -t iso9660 $CD_DEVICE /var/adm/mount 1> /dev/null 2> /dev/null
  if [ ! $? = 0 ]; then
-  dialog --title "MOUNT ERROR" --menu "CD-ROM�Υޥ������˥��顼��ȯ�����ޤ�����" 11 60 3 \
-"1" "CD����Υ��󥹥ȡ�������" \
-"2" "CD-ROM����٥ޥ���Ȥ��Ƥߤ�" \
-"3" "���顼��̵�뤷����³" 2> /tmp/errordo
+  dialog --title "MOUNT ERROR" --menu "CD-ROMのマウント中にエラーが発生しました。" 11 60 3 \
+"1" "CDからのインストールを中止" \
+"2" "CD-ROMを再度マウントしてみる" \
+"3" "エラーを無視し，継続" 2> /tmp/errordo
   if [ $? = 1 -o $? = 255 ]; then
    rm -f /tmp/SeTDS /tmp/SeTmount /tmp/SeTCDdev /tmp/errordo
    exit;
@@ -189,8 +189,8 @@ while [ 0 ]; do
   fi
  else
   if [ ! -d /var/adm/mount/$SLACK_SOURCE_LOCATION ]; then
-   dialog --title "���顼���ǥ��쥯�ȥ꤬���Ĥ���ޤ���" --msgbox "Plamo Linux�Υ������ǥ��쥯�ȥ꤬���Ĥ���ޤ���Ǥ�����\n\
-���󥹥ȡ��뤹��ˤϡ��������ǥ��쥯�ȥ�����ꤷľ���Ƥ���������" 8 70
+   dialog --title "エラー：ディレクトリが見つかりません" --msgbox "Plamo Linuxのソースディレクトリが見つかりませんでした。\n\
+インストールするには，ソースディレクトリを設定し直してください。" 8 70
     rm -f /tmp/SeTmount /tmp/SeTDS /tmp/SeTCDdev   
    exit
   fi

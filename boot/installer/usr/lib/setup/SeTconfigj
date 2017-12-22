@@ -51,32 +51,32 @@ mount --bind /tmp $T_PX/tmp
 # Install the bootdisk's Linux kernel:
 # . /usr/lib/setup/SeTkernelj
 
-dialog --title "�����ƥ�����" --yesno \
-"������Linux�����ƥ�γƼ������Ԥ��ޤ������������󥹥ȡ��뤷�� \n\
-�����ƥ�Ǥϡ��֥����ƥ�����פ�Ԥʤ�ʤ��ȡ�����˥֡��ȤǤ��ʤ� \n\
-�ʤ�ޤ��ΤǤ����դ��������� \n\
-�����ƥ������Ԥ��ޤ�����" 14 74 
+dialog --title "システム設定" --yesno \
+"ここでLinuxシステムの各種設定を行います。新しくインストールした \n\
+システムでは、「システム設定」を行なわないと、正常にブートできなく \n\
+なりますのでご注意ください． \n\
+システム設定を行いますか？" 14 74 
 if [ $? = 1 -o $? = 255 ]; then
  exit
 fi
 
-# �⤦ /dev/modem �� obsolete ���Ȼפ��Τǡ֥�ǥ������פ�
-# ��� -- kojima 2005/08/08
+# もう /dev/modem は obsolete だと思うので「モデムの設定」は
+# 削除 -- kojima 2005/08/08
 #
-#dialog --title "��ǥ������" --yesno \
+#dialog --title "モデムの設定" --yesno \
 #"\n\
-#�����Ǥ�ȯ�ƥǥХ���(ttyS0��ttyS1��ttyS2��ttyS3)����/dev/modem�ؤ�\n\
-#��󥯤�ĥ���ޤ�����ǥ����³��Υݡ��Ȥ��ѹ��������ϡ�����\n\
-#��󥯤����ѹ����뤳�Ȥ�Ǥ��ޤ���ʣ���Υ�ǥ��Ȥ����ϡ�\n\n\
-#/etc/rc.d/rc.serial �������Ƥ���������\n\
-#��ǥ�����ꤷ�ޤ�����\n" 14 73
+#ここでは発呼デバイス(ttyS0、ttyS1、ttyS2、ttyS3)から/dev/modemへの\n\
+#リンクが張られます。モデムの接続先のポートを変更した場合は、この\n\
+#リンクを後で変更することもできます。複数のモデムを使う場合は、\n\n\
+#/etc/rc.d/rc.serial を修正してください。\n\
+#モデムを設定しますか？\n" 14 73
 #if [ $? = 0 ]; then
-# dialog --title "ȯ�ƥǥХ���������" \
-#--menu "��ǥ����³����ȯ�ƥǥХ�������ꤷ�Ƥ���������" 12 60 4 \
-#"ttyS0" "DOS�Ǥ�com1:" \
-#"ttyS1" "DOS�Ǥ�com2:" \
-#"ttyS2" "DOS�Ǥ�com3:" \
-#"ttyS3" "DOS�Ǥ�com4:" 2> /tmp/callout
+# dialog --title "発呼デバイスの選択" \
+#--menu "モデムを接続する発呼デバイスを指定してください：" 12 60 4 \
+#"ttyS0" "DOSではcom1:" \
+#"ttyS1" "DOSではcom2:" \
+#"ttyS2" "DOSではcom3:" \
+#"ttyS3" "DOSではcom4:" 2> /tmp/callout
 # if [ $? = 1 ]; then
 #  rm -f /tmp/callout
 # else
@@ -133,11 +133,11 @@ if [ -r /tmp/keyset ]; then
 	chmod 755 $MAP
 fi
 
-dialog --title "�����ƥ�κǽ�����" --msgbox \
-"���󥹥ȡ��뤷�������ƥ�κǽ�Ĵ����Ԥ��ޤ��� \n\
-�ܡ�����ΤΥե���Ȥ���������ꤹ�뤿�ᡤ�Ķ��ˤ�äƤ� \n\
-¿�����֤��פ����礬����ޤ�������� root �ѥ���ɤ� \n\
-���Ϥ���ޤ��Τǡ�Ŭ�ڤʥѥ���ɤ����Ϥ��Ƥ���������" 8 74 
+dialog --title "システムの最終設定" --msgbox \
+"インストールしたシステムの最終調整を行います． \n\
+ボールド体のフォントを作成したりするため，環境によっては \n\
+多少時間を要する場合があります．途中で root パスワードの \n\
+入力を求めますので，適切なパスワードを入力してください．" 8 74 
 
 if [ -f $T_PX/etc/rc.d/rc.once ]; then
   chroot $T_PX /etc/rc.d/rc.once

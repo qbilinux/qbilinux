@@ -9,7 +9,7 @@ if [ ! -r /tmp/SeTplist ]; then
  # Give warning?
   exit
 fi
-  dialog --title "¥Ï¡¼¥É¥Ç¥£¥¹¥¯¤Î¥¹¥­¥ã¥óÃæ" --infobox \
-"Plamo ¥»¥Ã¥È¥¢¥Ã¥×¤ÏLinux¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤òÃµ¤¹¤¿¤á¤Ë \n\
-¥Ï¡¼¥É¥Ç¥£¥¹¥¯¤ò¥¹¥­¥ã¥óÃæ¤Ç¤¹¡£¾¯¡¹¤ªÂÔ¤Á¤¯¤À¤µ¤¤¡£" 6 60
+  dialog --title "ãƒãƒ¼ãƒ‰ãƒ‡ã‚£ã‚¹ã‚¯ã®ã‚¹ã‚­ãƒ£ãƒ³ä¸­" --infobox \
+"Plamo ã‚»ãƒƒãƒˆã‚¢ãƒƒãƒ—ã¯Linuxãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã‚’æŽ¢ã™ãŸã‚ã« \n\
+ãƒãƒ¼ãƒ‰ãƒ‡ã‚£ã‚¹ã‚¯ã‚’ã‚¹ã‚­ãƒ£ãƒ³ä¸­ã§ã™ã€‚å°‘ã€…ãŠå¾…ã¡ãã ã•ã„ã€‚" 6 60
 

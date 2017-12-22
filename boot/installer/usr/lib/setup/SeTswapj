@@ -6,42 +6,42 @@ crunch() {
 rm -f /tmp/SeTswap
 SWAPLIST="`probe -l | grep "Linux swap" 2> /dev/null`"
 if [ "$SWAPLIST" = "" ]; then
- dialog --title "¥¹¥ï¥Ã¥×ÎÎ°è¤¬¤¢¤ê¤Ş¤»¤ó" --yesno "Linux¤Îfdisk¤Ç¥¹¥ï¥Ã¥×¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤¬\n\
-ºî¤é¤ì¤Æ¤¤¤Ş¤»¤ó¡£¥¹¥ï¥Ã¥×¥Õ¥¡¥¤¥ë¤Ê¤·¤Ç\n\
-¤³¤Î¤Ş¤Ş¥¤¥ó¥¹¥È¡¼¥ë¤ò¿Ê¤á¤Ş¤¹¤«¡©" 8 60
+ dialog --title "ã‚¹ãƒ¯ãƒƒãƒ—é ˜åŸŸãŒã‚ã‚Šã¾ã›ã‚“" --yesno "Linuxã®fdiskã§ã‚¹ãƒ¯ãƒƒãƒ—ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãŒ\n\
+ä½œã‚‰ã‚Œã¦ã„ã¾ã›ã‚“ã€‚ã‚¹ãƒ¯ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«ãªã—ã§\n\
+ã“ã®ã¾ã¾ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã‚’é€²ã‚ã¾ã™ã‹ï¼Ÿ" 8 60
  if [ "$?" = "1" ]; then
-  dialog --title "¥¤¥ó¥¹¥È¡¼¥ëÃæ»ß" --msgbox "Linux¤Îfdisk¤Ç¥¹¥ï¥Ã¥×¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤òºîÀ®¤·¡¢\n\
-ºÆÅÙ¥¤¥ó¥¹¥È¡¼¥ë¤·¤Æ¤¯¤À¤µ¤¤¡£" \
+  dialog --title "ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ä¸­æ­¢" --msgbox "Linuxã®fdiskã§ã‚¹ãƒ¯ãƒƒãƒ—ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã‚’ä½œæˆã—ã€\n\
+å†åº¦ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã—ã¦ãã ã•ã„ã€‚" \
 6 60
   exit
  fi
 else
  echo > /tmp/swapmsg 
  if [ "`echo "$SWAPLIST" | sed -n '2 p'`" = "" ]; then
-  echo "¥¹¥ï¥Ã¥×¤È¤·¤ÆÍøÍÑ¤Ç¤­¤ë¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤¬¸«¤Ä¤«¤ê¤Ş¤·¤¿¡§" >> /tmp/swapmsg
+  echo "ã‚¹ãƒ¯ãƒƒãƒ—ã¨ã—ã¦åˆ©ç”¨ã§ãã‚‹ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãŒè¦‹ã¤ã‹ã‚Šã¾ã—ãŸï¼š" >> /tmp/swapmsg
   echo >> /tmp/swapmsg
   echo "   Device Boot   Begin    Start      End   Blocks   Id  System" >> /tmp/swapmsg
   echo "`echo "$SWAPLIST" | sed -n '1 p'`" >> /tmp/swapmsg
   echo >> /tmp/swapmsg
-  echo "¤³¤ì¤ò¥¹¥ï¥Ã¥×¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤È¤·¤Æ¥¤¥ó¥¹¥È¡¼¥ë¤·¤Ş¤¹¤«¡©" >> /tmp/swapmsg
-  dialog --title "¥¹¥ï¥Ã¥×ÎÎ°è¤¬¸«¤Ä¤«¤ê¤Ş¤·¤¿" --yesno "`cat /tmp/swapmsg`" 12 70
+  echo "ã“ã‚Œã‚’ã‚¹ãƒ¯ãƒƒãƒ—ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã¨ã—ã¦ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã—ã¾ã™ã‹ï¼Ÿ" >> /tmp/swapmsg
+  dialog --title "ã‚¹ãƒ¯ãƒƒãƒ—é ˜åŸŸãŒè¦‹ã¤ã‹ã‚Šã¾ã—ãŸ" --yesno "`cat /tmp/swapmsg`" 12 70
   REPLY=$?
  else
-  echo "°Ê²¼¤Î¥¹¥ï¥Ã¥×¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤¬¸«¤Ä¤«¤ê¤Ş¤·¤¿¡§" >> /tmp/swapmsg
+  echo "ä»¥ä¸‹ã®ã‚¹ãƒ¯ãƒƒãƒ—ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãŒè¦‹ã¤ã‹ã‚Šã¾ã—ãŸï¼š" >> /tmp/swapmsg
   echo >> /tmp/swapmsg
   echo "   Device Boot   Begin    Start      End   Blocks   Id  System" >> /tmp/swapmsg
   echo "$SWAPLIST" >> /tmp/swapmsg
   echo >> /tmp/swapmsg
-  echo "¤³¤ì¤é¤ò¥¹¥ï¥Ã¥×¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤È¤·¤Æ¥¤¥ó¥¹¥È¡¼¥ë¤·¤Ş¤¹¤«¡©" >> /tmp/swapmsg
-  dialog --title "¥¹¥ï¥Ã¥×ÎÎ°è¤¬¸«¤Ä¤«¤ê¤Ş¤·¤¿" --yesno "`cat /tmp/swapmsg`" 15 70
+  echo "ã“ã‚Œã‚‰ã‚’ã‚¹ãƒ¯ãƒƒãƒ—ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã¨ã—ã¦ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã—ã¾ã™ã‹ï¼Ÿ" >> /tmp/swapmsg
+  dialog --title "ã‚¹ãƒ¯ãƒƒãƒ—é ˜åŸŸãŒè¦‹ã¤ã‹ã‚Šã¾ã—ãŸ" --yesno "`cat /tmp/swapmsg`" 15 70
   REPLY=$?
  fi
  rm -f /tmp/swapmsg
  if [ $REPLY = 0 ]; then # yes
-   dialog --title "MKSWAP¤ò»È¤¤¤Ş¤¹¤«¡©" --yesno \
-"mkswap ¤ò»È¤Ã¤Æ¥¹¥ï¥Ã¥×¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤ò½é´ü²½¤·¤Ş¤¹¤«¡© \n\
-½é¤á¤Æ¤³¤Î¥¹¥ï¥Ã¥×¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤ò»È¤¦¤È¤­¤ÏYes¤òÁª¤ó¤Ç¤¯¤À¤µ¤¤¡£ \n\
-´ûÂ¸¤Î¥¹¥ï¥Ã¥×¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤òÎ®ÍÑ¤¹¤ëºİ¤ÏNo¤Ç¤â¹½¤¤¤Ş¤»¤ó" \
+   dialog --title "MKSWAPã‚’ä½¿ã„ã¾ã™ã‹ï¼Ÿ" --yesno \
+"mkswap ã‚’ä½¿ã£ã¦ã‚¹ãƒ¯ãƒƒãƒ—ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã‚’åˆæœŸåŒ–ã—ã¾ã™ã‹ï¼Ÿ \n\
+åˆã‚ã¦ã“ã®ã‚¹ãƒ¯ãƒƒãƒ—ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã‚’ä½¿ã†ã¨ãã¯Yesã‚’é¸ã‚“ã§ãã ã•ã„ã€‚ \n\
+æ—¢å­˜ã®ã‚¹ãƒ¯ãƒƒãƒ—ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã‚’æµç”¨ã™ã‚‹éš›ã¯Noã§ã‚‚æ§‹ã„ã¾ã›ã‚“" \
   10 74
   USE_SWAP=$?
   CURRENT_SWAP="1" 
@@ -50,18 +50,18 @@ else
    SWAP_PART=`probe -l | grep "Linux swap" | sed -n "$CURRENT_SWAP p" | crunch | cut -f 1 -d ' '`
    if [ $USE_SWAP = 0 ]; then 
     mkswap -c $SWAP_PART 1> /dev/null 2> /dev/null
-    dialog --msgbox "¥¹¥ï¥Ã¥×¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Î½é´ü²½¤¬½ªÎ»¤·¤Ş¤·¤¿¡£" 5 70
+    dialog --msgbox "ã‚¹ãƒ¯ãƒƒãƒ—ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã®åˆæœŸåŒ–ãŒçµ‚äº†ã—ã¾ã—ãŸã€‚" 5 70
    fi
    swapon $SWAP_PART
    SWAP_IN_USE="`echo "$SWAP_PART       swap        swap        defaults   0   0"`"
    echo "$SWAP_IN_USE" >> /tmp/SeTswap
    CURRENT_SWAP="`expr $CURRENT_SWAP + 1`"
   done
-  echo "¥¹¥ï¥Ã¥×ÎÎ°è¤¬ÀßÄê¤µ¤ì¤Ş¤·¤¿¡£¤³¤Î¾ğÊó¤Ï" > /tmp/swapmsg
-  echo "/etc/fstab¤ËÄÉ²Ã¤µ¤ì¤Ş¤¹¡§" >> /tmp/swapmsg
+  echo "ã‚¹ãƒ¯ãƒƒãƒ—é ˜åŸŸãŒè¨­å®šã•ã‚Œã¾ã—ãŸã€‚ã“ã®æƒ…å ±ã¯" > /tmp/swapmsg
+  echo "/etc/fstabã«è¿½åŠ ã•ã‚Œã¾ã™ï¼š" >> /tmp/swapmsg
   echo >> /tmp/swapmsg
   echo "$SWAP_IN_USE" >> /tmp/swapmsg 
-  dialog --title "¥¹¥ï¥Ã¥×ÎÎ°è¤ÎÀßÄê´°Î»" --msgbox "`cat /tmp/swapmsg`" 13 72
+  dialog --title "ã‚¹ãƒ¯ãƒƒãƒ—é ˜åŸŸã®è¨­å®šå®Œäº†" --msgbox "`cat /tmp/swapmsg`" 13 72
   rm /tmp/swapmsg
  fi
 fi  

@@ -2,9 +2,9 @@
 rm -f /tmp/SeTDS /tmp/SeTmount
 cat << EOF > /tmp/tmpmsg
 
-����ʬ������ޤ��󤬡�Plamo Linux �� FD ���󥹥ȡ��뤬�Ǥ��ޤ���
-CD-ROM ���饤�󥹥ȡ���Ǥ��ʤ����ϡ�HDD �� MO �ʤɤ�������
-��ǥ����˥��ԡ����뤫��NFS ���󥹥ȡ�����Ƥ���������
+申し分けありませんが、Plamo Linux は FD インストールができません。
+CD-ROM からインストールできない場合は、HDD や MO などの大容量
+メディアにコピーするか、NFS インストールを試してください。
 EOF
 
 exit
