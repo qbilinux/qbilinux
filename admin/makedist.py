@@ -91,14 +91,14 @@ for file in fild_all_files(args[1]):
         of = os.path.join(dstpath, tmp2)
         if os.path.exists(of):
             os.remove(of)
-        out = codecs.open(of, 'a', 'euc-jp')
+        out = codecs.open(of, 'a', 'UTF-8')
         for l in lines:
             out.write(l)
         out.write('\n')
         f.close()
         for i in desclist:
             print(i)
-            f = codecs.open(i, 'r', 'euc-jp')
+            f = codecs.open(i, 'r', 'UTF-8')
             out.write(f.read())
             out.write('\n')
             f.close()
