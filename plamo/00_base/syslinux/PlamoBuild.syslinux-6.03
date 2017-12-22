@@ -8,10 +8,11 @@ url="https://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-${vers}.tar.x
     http://git.yoctoproject.org/cgit.cgi/poky/plain/meta/recipes-devtools/syslinux/syslinux/syslinux-libupload-depend-lib.patch
     http://git.yoctoproject.org/cgit.cgi/poky/plain/meta/recipes-devtools/syslinux/syslinux/syslinux-remove-clean-script.patch"
 arch=`uname -m`
-build=P2m2
+build=P2m3
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="COPYING NEWS README"
+patchfiles='0014_fix_ftbfs_no_dynamic_linker.patch'
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -183,6 +184,9 @@ if [ $opt_config -eq 1 ] ; then
   patch -Np1 -i $W/syslinux-fix-parallel-building-issue.patch
   patch -Np1 -i $W/syslinux-libupload-depend-lib.patch
   patch -Np1 -i $W/syslinux-remove-clean-script.patch
+    for patch in $patchfiles ; do
+      patch -p1 < $W/$patch
+    done
   if [ $arch == i686 ] ; then
     cp -p Makefile{,.orig}
     sed -i '/^all_firmware/s@ efi64@@' Makefile
@@ -247,6 +251,10 @@ if [ $opt_package -eq 1 ] ; then
       ln $docdir/$src/$myname.gz $docdir/${src[$i]}
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
+  done
+  for patch in $patchfiles ; do
+    cp $W/$patch $docdir/$src/$patch
+    gzip_one $docdir/$src/$patch
   done
   cp -a $S/doc $docdir/$src
   chmod -R g-w $docdir/$src/doc
