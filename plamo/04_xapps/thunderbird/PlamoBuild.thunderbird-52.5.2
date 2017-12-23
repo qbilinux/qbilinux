@@ -3,7 +3,7 @@ unset LS_BLOCK_SIZE
 export LANG=C
 ##############################################################
 pkgbase=thunderbird
-vers=52.4.0
+vers=52.5.2
 url="http://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/${vers}/source/${pkgbase}-${vers}.source.tar.xz"
 #verify=$url.asc
 arch=`uname -m`
@@ -188,7 +188,7 @@ if [ $opt_download -eq 1 ] ; then
   for i in $verify ; do
     wget $i
     case ${i##*.} in
-    asc) gpg2 --verify ${i##*/} ;;
+    asc) gpg --verify ${i##*/} ;;
     esac
     if [ $? -ne 0 ]; then
       echo "archive verify was failed."
@@ -287,7 +287,7 @@ ac_add_options --with-l10n-base=../../l10n
 ac_add_options --enable-ui-locale=ja
 
 # Building
-mk_add_options MOZ_MAKE_FLAGS="-j10"
+#mk_add_options MOZ_MAKE_FLAGS="-j3"
 ac_add_options --enable-strip
 ac_add_options --disable-install-strip
 
@@ -296,6 +296,11 @@ EOF
     if [ $arch = "x86_64" ]; then
       cat >> mozconfig << EOF
 export USE_ARCH=64
+EOF
+    elif [ $arch = "armv7l" ]; then
+ac_add_options --host=armv7l-pc-linux-gnueabi
+mk_add_options CONFIG_GUESS=armv7l-pc-linux-gnueabi
+export USE_ARCH=32
 EOF
     else
       cat >> mozconfig << EOF
@@ -310,8 +315,6 @@ fi
 if [ $opt_build -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
-    export CFLAGS="-I /usr/include $target"
-    export CPPFLAGS="-I /usr/include $target"
     export LDFLAGS='-Wl,--as-needed'
     make -f client.mk build
   done
