@@ -1,5 +1,5 @@
 #!/bin/sh
-##                            Time-stamp: <2017-08-16 12:43:35 toshi>
+##                            Time-stamp: <2017-12-23 09:35:56 toshi>
 
 # 2004-08-07 added support of "AlwaysCore" mouse setting for laptop.
 # 2004-08-04 added support for Plamo-4.01.
@@ -15,93 +15,93 @@
 # 2004-06-18 improvements on laptop.
 # 2004-06-11 could be run without "bc" command.
 
-# ������ϡ�
-#   XFree86-4.4.0 �� getconfig �����Ѥ��ơ�KNOPPIX �饤���� X �μ�ư�����Ԥ�
-#   CDplamo �ѤΥ�����ץȤǤ���
+# ■これは…
+#   XFree86-4.4.0 の getconfig を利用して，KNOPPIX ライクな X の自動設定を行う
+#   CDplamo 用のスクリプトです．
 #
-# ��������ˡ
-#   /sbin �ʲ��˼¹�°����Ĥ��� xfplamoconfig.sh �ȡ����Υ���ܥ�å����
-#   gpmplamoconfig.sh �Ȥ��������rc.S ������ǰʲ��Τ褦��ư����Ƥ���������
-#  ��������������������������������������������������������������������
-#  ��XFPLAMO_OPTIONS="`cat /proc/cmdline`"                           ��
-#  ��/sbin/gpmplamoconfig.sh $XFPLAMO_OPTIONS > /etc/rc.d/rc.gpm     ��
-#  ��chmod 755 /etc/rc.d/rc.gpm                                      ��
-#  ��/sbin/xfplamoconfig.sh $XFPLAMO_OPTIONS > /etc/X11/XF86Config   ��
-#  ��������������������������������������������������������������������
-#   `cat /proc/cmdline` �ǡ�syslinux ���� boot: �ץ���ץȤǤΥ��ץ����ʸ����
-#   �����ޤ����ϡ��ɥǥ������� rc.S �˻Ź���ʤ顤���������Ǥ�(�㤨��
-#   XFPLAMO_OPTIONS="xscreen=1400x1050")�ˤ����⤢��ޤ���
+# ■設置方法
+#   /sbin 以下に実行属性をつけた xfplamoconfig.sh と，そのシンボリックリンク
+#   gpmplamoconfig.sh とを作成し，rc.S あたりで以下のように動作させてください．
+#  ┌────────────────────────────────┐
+#  │XFPLAMO_OPTIONS="`cat /proc/cmdline`"                           │
+#  │/sbin/gpmplamoconfig.sh $XFPLAMO_OPTIONS > /etc/rc.d/rc.gpm     │
+#  │chmod 755 /etc/rc.d/rc.gpm                                      │
+#  │/sbin/xfplamoconfig.sh $XFPLAMO_OPTIONS > /etc/X11/XF86Config   │
+#  └────────────────────────────────┘
+#   `cat /proc/cmdline` で，syslinux 等の boot: プロンプトでのオプション文字列
+#   を得ます．ハードディスクの rc.S に仕込むなら，ここを決め打ち(例えば
+#   XFPLAMO_OPTIONS="xscreen=1400x1050")にする手もあります．
 #
-# �����ץ����λ���
-#   ��xscreen=��
-#     �ǥ����ץ쥤�β����٤���ꤷ�ޤ���CDplamo �� Plamo 4.0 �Ǥϰʲ��β����٤�
-#     �����ǽ�Ǥ���
-#      - 4:3,5:4�⡼�� 800x600,1024x768,1152x864,1280x960,1280x1024,1400x1050,
+# ■オプションの指定
+#   ・xscreen=…
+#     ディスプレイの解像度を指定します．CDplamo と Plamo 4.0 では以下の解像度が
+#     指定可能です．
+#      - 4:3,5:4モード 800x600,1024x768,1152x864,1280x960,1280x1024,1400x1050,
 #                      1600x1200,1792x1344,1856x1392,1920x1440
-#      - �磻�ɥ⡼��  1024x600,1280x600,1280x768,1280x800,1680x1050,1920x1200
-#     �ǥ����ȥåץޥ���䡤�ǥ����ץ쥤���磻�ɥ⡼�ɤ˳���������ϡ�ɬ��
-#     xscreen �ǲ����٤���ꤷ�ޤ����ǥ����ȥåץޥ����̵����ξ��� 1024x768
-#     �β����٤Ȥʤ�ޤ�����åץȥåפξ�硤�ǥ����ץ쥤�β����٤θ��Ф� X ��
-#     Ǥ���Ƥ��ꡤX �ϸ��Ф��������٤˹�碌�Ƽ�ưŪ�� Modes �����򤷤ޤ����⤷
-#     X �������٤θ��Ф˼��Ԥ���ȡ��ޤ����ޤ�ɽ���Ǥ��ʤ��Ǥ��礦�����ξ���
-#     �Ϥ�ꡤxscreen �ǲ����٤���ꤹ��ɬ�פ�����ޤ���
-#   ��xdepth=��
-#     bpp�ͤǤ�������Ū�� 16 ���ǥե���ȤǤ��Τǡ�ɬ�פ˱����� xdepth=24 ���
-#     �ꤷ�Ƥ���������
-#   ��xvrefresh=��
-#     ��ľƱ�����ȿ�����ꤷ�ޤ���4:3,5:4�⡼�ɤǤ� 60,70,72,75 �����٤ޤ�����
-#     ���ɥ⡼�ɤǤ� 60 �����������ǽ�Ǥ���
-#   ��xmodule=��
-#     �ɥ饤�Х⥸�塼�����ꤷ�ޤ����ɥ饤�Х⥸�塼��� pci �ξ��󤫤�
-#     getconfig �Ǽ�ư���򤷤ޤ������ȥ�֥뤬��������� xmodule=vesa �Τ褦
-#     �˻��ꤷ�ޤ���
-#   ��maxhsync=��
-#     �ǥ����ץ쥤�ο�ʿƱ���κ�����ȿ�(kHz)����ꤷ�ޤ���
-#   ��xkbmodel=��
-#     �����ܡ��ɤμ�������ꤷ�ޤ���jp �� us �����Ǥ��ޤ���̵����ξ��ϡ�
-#     rc.keymap �����꤫�鼫ư���ꤷ�ޤ���
-#   ��xmouse=��
-#     �ޥ���������򤷤ޤ���xmouse=wheel �ǥ���ƥ�ޥ����Υۥ����뤬�Ȥ���褦
-#     �ˤʤ�ޤ���xmouse=gpm �� gpm ��ͳ�� PS/2 �ޥ����� USB �ޥ�����ξ���� X
-#     ��ǻȤ���褦�ˤʤ�ޤ�(�������ۥ�����ϻȤ��ޤ���)��
+#      - ワイドモード  1024x600,1280x600,1280x768,1280x800,1680x1050,1920x1200
+#     デスクトップマシンや，ディスプレイがワイドモードに該当する場合は，必ず
+#     xscreen で解像度を指定します．デスクトップマシンで無指定の場合は 1024x768
+#     の解像度となります．ラップトップの場合，ディスプレイの解像度の検出を X に
+#     任せており，X は検出した解像度に合わせて自動的に Modes を選択します．もし
+#     X が解像度の検出に失敗すると，まずうまく表示できないでしょう．この場合も
+#     はやり，xscreen で解像度を指定する必要があります．
+#   ・xdepth=…
+#     bpp値です．基本的に 16 がデフォルトですので，必要に応じて xdepth=24 を指
+#     定してください．
+#   ・xvrefresh=…
+#     垂直同期周波数を指定します．4:3,5:4モードでは 60,70,72,75 が選べます．ワ
+#     イドモードでは 60 だけが指定可能です．
+#   ・xmodule=…
+#     ドライバモジュールを指定します．ドライバモジュールは pci の情報から
+#     getconfig で自動選択しますが，トラブルが生じる場合は xmodule=vesa のよう
+#     に指定します．
+#   ・maxhsync=…
+#     ディスプレイの水平同期の最大周波数(kHz)を指定します．
+#   ・xkbmodel=…
+#     キーボードの種類を設定します．jp か us を指定できます．無指定の場合は，
+#     rc.keymap の設定から自動設定します．
+#   ・xmouse=…
+#     マウスの設定をします．xmouse=wheel でインテリマウスのホイールが使えるよう
+#     になります．xmouse=gpm で gpm 経由で PS/2 マウスと USB マウスの両方が X
+#     上で使えるようになります(ただしホイールは使えません)．
 #
-# ��X����ư���ʤ������뤤���Զ�礬��������
-#   �ۤȤ�ɤξ�硤xscreen=�� ����ꤹ��Ȳ�褹��Ȼפ��ޤ���
-#   ����åץȥåץޥ���ξ��
-#     ��åץȥåפǡֲ��̤����ðšפȤ������ϡ������餯 X ���ǥ����ץ쥤�β�
-#     ���٤򤦤ޤ����ФǤ��Ƥ��ޤ���xscreen=�� �ǲ����٤���ꤷ�ޤ��礦��
-#   ���ǥ����ץ쥤�� out of range �ˤʤ�
-#     xscreen�ǲ����٤򲼤��뤫��xvrefresh�ǿ�ľƱ���򲼤��ޤ��礦��
-#   ���ɤ��ˤ�Ǥ�ʤ�! �䤿�� X ���԰���!!
-#     xmodule=vesa �Ȥ��ޤ��礦���Ǥ����������ϰʲ����̤�Ǥ��Τǡ��ɤ����褦
-#     ��ʤ����ˤϻ�Ƥߤޤ��礦��
-#    ����������������������������������������������
-#    ��xscreen=1024x768 xmodule=vesa xvrefresh=60��
-#    ����������������������������������������������
+# ■Xが起動しない，あるいは不具合が生じる場合
+#   ほとんどの場合，xscreen=… を指定すると解決すると思われます．
+#   ・ラップトップマシンの場合
+#     ラップトップで「画面が真っ暗」という場合は，おそらく X がディスプレイの解
+#     像度をうまく検出できていません．xscreen=… で解像度を指定しましょう．
+#   ・ディスプレイが out of range になる
+#     xscreenで解像度を下げるか，xvrefreshで垂直同期を下げましょう．
+#   ・どうにも映らない! やたら X が不安定!!
+#     xmodule=vesa としましょう．最も安全な設定は以下の通りですので，どうしよう
+#     もない場合には試してみましょう．
+#    ┌─────────────────────┐
+#    │xscreen=1024x768 xmodule=vesa xvrefresh=60│
+#    └─────────────────────┘
 #
-# �������������
-#   ������ xfplamoconfig.sh ����������� XF86Config �ǡ�
+# ■いろいろメモ
+#   ・この xfplamoconfig.sh で生成される XF86Config で，
 #        Option     "NoDoublescan" "True"
 #        Option     "NoInterlace" "True"
-#     �Ȥ������ץ��������ޤ�����������Ǥ� XFree86 �� Xorg �Ǥϸ����ʤ����
-#     �ǡ�Plamo �ȼ��Τ�ΤǤ�(�ѥå��� Plamo-src �ʲ��� XFree86 �Υ�����������
-#     ���֤ˤ���ޤ�)�����Υ��ץ���󤬻��ꤵ���� XFree86 �����Ф� ���֥륹
-#     �����⡼�ɤȥ��󥿥졼���⡼�ɤ�̵�뤹��褦�ˤʤ�ޤ�������ˤ�äơ�
-#     �ۤܿ�ʿƱ�����ȿ� �� ������ �ˤʤ�Τǡ��ǥ����ץ쥤����out of range�פ�
-#     ���˲����٤򲼤���гμ¤˿�ʿ���ȿ�������Ȳ�����Ȥ����櫓�Ǥ���
-#   ��XFree86 �����Ф� VESA �� ModeLine �ΤۤȤ�ɤ���äƤ��ޤ��������������
-#     �Ϥ���Խ�ʬ�ʤΤǡ�������ȼ��˥ѥå����Ƥ����Ĥ��� ModeLine ���ɲä���
-#     ���ޤ����磻�ɥ⡼�ɤ� ModeLine �� xfplamoconfig.sh �����äƤ��ơ������
-#     �� XFree86 �����Фˤ��ɲä��Ƥ��ޤ���
-#   ����ľ���ȿ��� xvrefresh ��̵����ξ�硤�ǥ����ȥå׵��ξ��� 75Hz �ˡ���
-#     �åץȥå׵��ξ��� 60Hz �˥��åȤ����褦�ˤʤäƤ��ޤ����ǥ����ȥå�/
-#     ��åץȥåפ�Ƚ��ϡ�PCMCIA�����åȤ�̵ͭ�����Ѥ��Ƥ��ޤ���
-#   ��USB �ޥ�����¸�ߥ����å��� /proc/bus/usb/devices ��ߤƤ��ơ�USB �ޥ�����
-#     ��³����Ƥ������ USB �ޥ��������Ѥ�������� XF86Config ���������ޤ���
-#   ��gpmplamoconfig.sh �Ȥ��Ƽ¹Ԥ����ȡ�rc.gpm ��ư�������ޤ���xmouse=��
-#     �ˤ��б����Ƥ��ơ�xmouse=gpm �Ȥ������� PS/2 �� USB ��ξ���Υޥ�����
-#     �Ȥ���褦�ˤ��ޤ���USB �ޥ�����¸�ߤ��ʤ����� xmouse=gpm �Ȥ��Ƥ� PS/2
-#     only ������ˤʤ�ޤ���
+#     というオプションが入りますが，これは素の XFree86 や Xorg では効かないもの
+#     で，Plamo 独自のものです(パッチは Plamo-src 以下の XFree86 のソースアーカ
+#     イブにあります)．このオプションが指定されると XFree86 サーバは ダブルス
+#     キャンモードとインタレースモードを無視するようになります．これによって，
+#     ほぼ水平同期周波数 ∝ 解像度 になるので，ディスプレイが「out of range」の
+#     場合に解像度を下げれば確実に水平周波数もちゃんと下がるというわけです．
+#   ・XFree86 サーバは VESA な ModeLine のほとんどを持っていますが，それだけで
+#     はやや不十分なので，これも独自にパッチしていくつかの ModeLine を追加して
+#     います．ワイドモードの ModeLine は xfplamoconfig.sh が持っていて，それら
+#     は XFree86 サーバには追加していません．
+#   ・垂直周波数は xvrefresh が無指定の場合，デスクトップ機の場合は 75Hz に，ラ
+#     ップトップ機の場合は 60Hz にセットされるようになっています．デスクトップ/
+#     ラップトップの判定は，PCMCIAソケットの有無を利用しています．
+#   ・USB マウスの存在チェックは /proc/bus/usb/devices をみていて，USB マウスが
+#     接続されている場合は USB マウスを利用する設定で XF86Config を生成します．
+#   ・gpmplamoconfig.sh として実行されると，rc.gpm を自動生成します．xmouse=…
+#     にも対応していて，xmouse=gpm とした場合は PS/2 と USB と両方のマウスを
+#     使えるようにします．USB マウスが存在しない場合は xmouse=gpm としても PS/2
+#     only な設定になります．
 #
 
 set_vendor_and_device() {
@@ -177,8 +177,8 @@ TMPFILE=`mktemp /tmp/tmp_xfplamoconfig_$$.XXXXXX`
 
 #LINE_BEGIN=`/usr/X11R7/bin/scanpci -v|nl -b a|grep '	  CLASS     0x03 0x'|awk 'NR==1{print $1}'`
 # 
-# �Ƕ�� xserver �ϼ����ǥϡ��ɥ�������ǧ������scanpci �����פˤʤäƤ���Τǡ�
-# �ɥ饤�и��н����� xserver �ˤ�餻�뤳�Ȥˤ���
+# 最近の xserver は自前でハードウェアを認識し、scanpci は不要になっているので、
+# ドライバ検出処理は xserver にやらせることにした
 
 LINE_BEGIN=''
 if [ "$LINE_BEGIN" = "" ] ; then
@@ -375,7 +375,7 @@ if [ $moved_flag = "1" ]; then
 fi
 
 
-# 855GM �ʥޥ���� VBIOS �������������٤��֤��ʤ���åץȥåץޥ����Ѥ��к�
+# 855GM なマシンで VBIOS が正しい解像度を返さないラップトップマシン用の対策
 # See http://wiki.0-24.jp/?Linux%2FY2%A4%C7SXGA%2B
 if [ "$CDPLAMO_CHK" != "" -a "$LCD_CHK" != "" -a "$NO855TEST" = "" ]; then
   # Intel Corp. 82852/855GM Integrated Graphics Device
