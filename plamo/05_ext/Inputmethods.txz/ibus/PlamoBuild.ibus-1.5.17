@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url="https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/ibus/ibus-1.5.5.tar.gz"
 pkgbase=ibus
-vers=1.5.5
+vers=1.5.17
+url="https://github.com/ibus/ibus/releases/download/${vers}/ibus-${vers}.tar.gz"
 arch=`uname -m`
 build=P0m1
-src=ibus-1.5.5
-OPT_CONFIG=''
+src=ibus-${vers}
+OPT_CONFIG='--disable-emoji-dict'
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README'
 patchfiles=''
 compress=txz
