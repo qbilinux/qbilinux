@@ -24,19 +24,19 @@ check_vers() {
 
 	if [ ! -z $t1 ]; then
 	    if [ ! -z $t2 ]; then
-		if [ $t2 -gt $t1 ]; then    # ���󥹥ȡ��뤷�褦�Ȥ�������������(�礭��)
-		    return 2                #     2 = ���󥹥ȡ��뤹��
-		elif [ $t2 -lt $t1 ]; then  # ���󥹥ȡ���Ѥ�����������(�礭��)
-		    return 0                #     0 = ���󥹥ȡ��뤷�ʤ�
+		if [ $t2 -gt $t1 ]; then    # インストールしようとする方が新しい(大きい)
+		    return 2                #     2 = インストールする
+		elif [ $t2 -lt $t1 ]; then  # インストール済の方が新しい(大きい)
+		    return 0                #     0 = インストールしない
 		fi
 	    else
-	    	return 0   # ���󥹥ȡ��뤷�褦�Ȥ������Υ���ब̵���ʤä�
+	    	return 0   # インストールしようとする方のコラムが無くなった
             fi
 	else
-	    if [ -z $t2 ]; then # ξ���Ȥ⥳��ब̵���ʤä�
-		return 1          #    1  = �С�������Ʊ���ʤΤǥӥ���ֹ��ƥ���
-	    else                  # ���󥹥ȡ��뤷�褦�Ȥ������Υ����ϻĤ�
-		return 2          #    2 = ���󥹥ȡ��뤹��
+	    if [ -z $t2 ]; then # 両方ともコラムが無くなった
+		return 1          #    1  = バージョンは同じなのでビルド番号をテスト
+	    else                  # インストールしようとする方のコラムは残る
+		return 2          #    2 = インストールする
 	    fi
 	fi
     done
