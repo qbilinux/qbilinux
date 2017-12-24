@@ -53,8 +53,8 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-# hdsetup �� removepkg ���褦�Ȥ���ȡ�/sbin/installer/ ��������줿������ "[ ��̵��"
-# �Ȥ������顼�ˤʤ�Τǡ�/usr/bin ��ѥ�������Ƥ�����
+# hdsetup を removepkg しようとすると、/sbin/installer/ が削除された時点で "[ が無い"
+# というエラーになるので、/usr/bin もパスに入れておく、
 export PATH=/sbin/installer:/usr/bin
 
 TARGET_DIR=/
