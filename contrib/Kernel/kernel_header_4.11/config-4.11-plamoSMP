@@ -1,6 +1,6 @@
 #
 # Automatically generated file; DO NOT EDIT.
-# Linux/x86 4.11.7 Kernel Configuration
+# Linux/x86 4.11.11 Kernel Configuration
 #
 # CONFIG_64BIT is not set
 CONFIG_X86_32=y
@@ -3964,6 +3964,14 @@ CONFIG_FB_TILEBLITTING=y
 #
 # Frame buffer hardware drivers
 #
+CONFIG_UNICON=y
+# CONFIG_UNICON_GB is not set
+# CONFIG_UNICON_GBK is not set
+# CONFIG_UNICON_BIG5 is not set
+CONFIG_UNICON_EUCJP=m
+CONFIG_UNICON_JIS=m
+CONFIG_UNICON_SJIS=m
+# CONFIG_UNICON_KSCM is not set
 # CONFIG_FB_CIRRUS is not set
 # CONFIG_FB_PM2 is not set
 # CONFIG_FB_CYBER2000 is not set
