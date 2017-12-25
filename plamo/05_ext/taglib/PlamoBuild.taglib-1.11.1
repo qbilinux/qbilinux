@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='http://taglib.github.io/releases/taglib-1.9.1.tar.gz'
 pkgbase=taglib
-vers=1.9.1
+vers=1.11.1
+url="http://taglib.github.io/releases/taglib-${vers}.tar.gz"
 arch=`uname -m`
-build=P1m1
-src=taglib-1.9.1
-OPT_CONFIG='-DWITH_ASF=On -DWITH_MP4=On'
+build=P0m1
+src=taglib-${vers}
+OPT_CONFIG='-DWITH_ASF=On -DWITH_MP4=On -DBUILD_SHARED_LIBS:BOOL=ON'
 DOCS='AUTHORS COPYING.LGPL COPYING.MPL INSTALL NEWS'
 patchfiles=''
 compress=txz
