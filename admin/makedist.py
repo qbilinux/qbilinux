@@ -14,9 +14,14 @@ argc=len(args)
 
 def fild_all_files(directory):
     for root, dirs, files in os.walk(directory):
-        yield root
         for file in files:
             yield os.path.join(root, file)
+        if 'build' in dirs:
+            dirs.remove('build')
+        if 'work' in dirs:
+            dirs.remove('work')
+        if 'old' in dirs:
+            dirs.remove('old')
 
 if (argc != 3):
     print("")
