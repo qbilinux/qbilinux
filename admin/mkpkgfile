@@ -59,7 +59,7 @@ seek_dir () {
 
 	    pkg=`ls -1 *.desc`
 	    for i in $pkg ; do
-		pkgname=${pkg%.desc}
+		pkgname=${i%.desc}
 		mv -f ${pkgname}-*-*-*.txz old
 	    done
 	    #mv -f ${BASE}-*-*-*.txz old
@@ -103,7 +103,7 @@ seek_dir () {
 	if [ $opt_install -eq 1 ] || [ $opt_update -eq 1 ] ; then
 	    pkg=`ls -1 *.desc`
 	    for i in $pkg ; do
-		pkgname=${pkg%.desc}
+		pkgname=${i%.desc}
 		if [ $opt_install -eq 1 ] ; then
 		    # move package file
 		    if [ -f /var/log/packages/${pkgname} ] ; then
