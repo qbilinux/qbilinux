@@ -2,12 +2,12 @@
 
 ######################################################################
 pkgbase=libxml2
-vers=2.9.6
+vers=2.9.7
 url="http://xmlsoft.org/sources/libxml2-${vers}.tar.gz"
 arch=`uname -m`
 build=P0m1
 src=$pkgbase-$vers
-OPT_CONFIG="--with-history"
+OPT_CONFIG="--with-history --disable-static"
 DOCS="AUTHORS COPYING ChangeLog INSTALL NEWS README TODO Copyright
     TODO_SCHEMAS README.tests"
 patchfiles=""
@@ -165,7 +165,7 @@ if [ $opt_download -eq 1 ] ; then
     if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then
       wget $i ; j=${i%.*}
-      for sig in asc sig{,n} {sha{256,1},md5}{,sum} ; do
+      for sig in asc ; do
         if wget --spider $i.$sig ; then wget $i.$sig ; break ; fi
         if wget --spider $j.$sig ; then
           case ${i##*.} in
