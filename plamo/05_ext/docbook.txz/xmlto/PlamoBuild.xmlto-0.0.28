@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='https://fedorahosted.org/releases/x/m/xmlto/xmlto-0.0.23.tar.bz2'
 pkgbase=xmlto
-vers=0.0.23
+vers=0.0.28
+url="https://releases.pagure.org/xmlto/xmlto-${vers}.tar.bz2"
 arch=`uname -m`
-build=P1m1
-src=xmlto-0.0.23
-OPT_CONFIG='--disable-static'
+build=P0m1
+src=xmlto-${vers}
+OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README THANKS'
 patchfiles=''
 compress=txz
