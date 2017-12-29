@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
 pkgbase=libxslt
-vers=1.1.29
+vers=1.1.32
 url="ftp://xmlsoft.org/XSLT/libxslt-${vers}.tar.gz"
 arch=`uname -m`
-build=P1m2
+build=P0m1
 src=libxslt-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README TODO'
-patchfiles='CVE-2017-5029.patch'
+patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -179,7 +179,7 @@ if [ $opt_download -eq 1 ] ; then
     if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then
       wget $i
-      for sig in asc sig{,n} {md5,sha{1,256}}{,sum} ; do
+      for sig in asc ; do
         if wget --spider $i.$sig ; then wget $i.$sig ; break ; fi
       done
       if [ -f ${i##*/}.$sig ] ; then
