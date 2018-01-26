@@ -2,16 +2,16 @@
 
 ######################################################################
 pkgbase=glibc
-vers=2.25
+vers=2.26
 url="http://ftp.gnu.org/gnu/glibc/glibc-${vers}.tar.xz"
 arch=`uname -m`
-build=P0m3
+build=P0m1
 src=$pkgbase-$vers
-OPT_CONFIG="--enable-kernel=2.6.32 --enable-obsolete-rpc"
+OPT_CONFIG="--enable-kernel=3.2 --enable-obsolete-rpc"
 DOCS="BUGS CONFORMANCE COPYING* ChangeLog* INSTALL LICENSES NEWS
     PROJECTS README"
 compress=txz
-patchfiles='glibc-2.19-fhs-1.patch 0005-fix-binutils-2-29-build.patch'
+patchfiles='glibc-2.26-fhs-1.patch git-updates.diff'
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
