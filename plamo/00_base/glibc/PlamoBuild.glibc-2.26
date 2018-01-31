@@ -1,17 +1,17 @@
 #!/bin/sh
 
 ######################################################################
-pkgbase=libc
-vers=2.25
+pkgbase=glibc
+vers=2.26
 url="http://ftp.gnu.org/gnu/glibc/glibc-${vers}.tar.xz"
 arch=`uname -m`
-build=P0m2
-src=glibc-$vers
-OPT_CONFIG="--enable-kernel=2.6.32 --enable-obsolete-rpc"
+build=P0m1
+src=$pkgbase-$vers
+OPT_CONFIG="--enable-kernel=3.2 --enable-obsolete-rpc"
 DOCS="BUGS CONFORMANCE COPYING* ChangeLog* INSTALL LICENSES NEWS
     PROJECTS README"
 compress=txz
-patchfiles='glibc-2.19-fhs-1.patch 0005-fix-binutils-2-29-build.patch'
+patchfiles='glibc-2.26-fhs-1.patch git-updates.diff'
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -261,13 +261,67 @@ if [ $opt_package -eq 1 ] ; then
     cd ${B[$i]}
     if [ -f Makefile ] ; then
       make install DESTDIR=$P
+      ln -s $P/usr/share/locale $P/usr/$libdir
+      make localedata/install-locales DESTDIR=$P
     fi
   done
+  find $P/usr/$libdir -maxdepth 1 ! -type d -exec rm {} \;
+  mv $P/usr/$libdir/{gconv,glibc,audit} $C
+  mv $C/{gconv,glibc,audit} $P/usr/$libdir
+  ln -sf /usr/share/locale $P/usr/$libdir
+  ln -s ja_JP.eucJP $P/usr/share/locale/ja_JP
+  mv $P/usr/share/locale/{ja,ja_JP.eucJP}
+  ln -s ja_JP.eucJP $P/usr/share/locale/ja
+  gunzip $P/usr/share/i18n/charmaps/EUC-JP.gz
+  localedef -f $P/usr/share/i18n/charmaps/EUC-JP \
+      -i $P/usr/share/i18n/locales/ja_JP \
+      $P/usr/share/locale/ja_JP.eucJP
+  gzip $P/usr/share/i18n/charmaps/EUC-JP
+  install -d $P/usr/share/locale/ja_JP.UTF-8
+  gunzip $P/usr/share/i18n/charmaps/UTF-8.gz
+  localedef -f $P/usr/share/i18n/charmaps/UTF-8 \
+      -i $P/usr/share/i18n/locales/ja_JP \
+      $P/usr/share/locale/ja_JP.UTF-8
+  gzip $P/usr/share/i18n/charmaps/UTF-8
+  cat <<- EOF > $P/etc/ld.so.conf.new
+	/usr/local/$libdir
+	/opt/kde/$libdir
+	/usr/$libdir/sasl2
+	/usr/$libdir/pstoedit
+	/usr/heimdal/$libdir
+	/usr/$libdir/xulrunner
+	/opt/mariadb/$libdir
+	/opt/mysql/$libdir
+	/opt/pgsql/$libdir
+	EOF
+  cat <<- "EOF" > $P/etc/nsswitch.conf.new
+	# /etc/nsswitch.conf
+	#
+	# Name Service Switch configuration file.
+	#
+	
+	passwd:		files db nis
+	shadow:		files
+	group:		files db nis
+	
+	hosts:		files nisplus nis dns
+	networks:	files nisplus
+	
+	ethers:		files db nisplus
+	protocols:	files db nisplus
+	rpc:		files db nisplus
+	services:	files db nisplus
+	autofs:		files
+	EOF
   touch $W/i.et
   cd $W
   find $P ! -type l -newer i.st ! -newer i.et \
       -exec touch -t `date '+%m%d0000'` {} \;
   compress
+  strip_libdir $P/usr/$libdir/gconv
+  strip_bindir $P/usr/$libdir/glibc/getconf
+  strip_libdir $P/usr/$libdir/audit
+  touch -t `date '+%m%d0000'` $P/usr/$libdir/{gconv,glibc/getconf,audit}
   for i in `seq 0 $((${#DOCS[@]} - 1))` ; do
     for j in ${DOCS[$i]} ; do
       for k in ${S[$i]}/$j ; do
@@ -285,12 +339,49 @@ if [ $opt_package -eq 1 ] ; then
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
-
   for patch in $patchfiles ; do
       cp $W/$patch $docdir/$src/$patch
       gzip_one $docdir/$src/$patch
   done
   convert
+  prune_symlink $P/usr/share/locale
+  touch -t `date '+%m%d0000'` $P/usr/share/locale
+  cat <<- EOF >> $P/install/doinst.sh
+	#%% begin initialize $pkg
+	EOF
+  cat <<- "EOF" >> $P/install/doinst.sh
+	glibc_config() {
+	  mv /etc/$1.conf.new /tmp
+	  if [ -f /etc/$1.conf ] ; then
+	    mv /tmp/$1.conf.new /etc/$1.conf.dist
+	  else
+	    mv /tmp/$1.conf.new /etc/$1.conf
+	  fi
+	}
+	
+	echo "glibc パッケージの初期化中"
+	# 既存の ld.so.conf が無ければ，新しく ld.so.conf.new を
+	# ld.so.conf とするが，あればそのままにしておく．
+	glibc_config ld.so
+	ldconfig
+	
+	# 既存の nsswitch.conf が無ければ，新しく nsswitch.conf.new を
+	# nsswitch.conf とするが，あればそのままにしておく．
+	glibc_config nsswitch
+	
+	echo "glibc タイムゾーン設定中"
+	# 既存の localtime があればそのまま，無ければ JST で作る．
+	if [ ! -f /etc/localtime ] ; then
+	  TIMEZONE="Japan"
+	  ln -sf posix/$TIMEZONE /usr/share/zoneinfo/localtime
+	  cp -p /usr/share/zoneinfo/localtime /etc/localtime
+	fi
+	
+	echo "glibc パッケージの初期化完了"
+	#%% end
+	EOF
+  touch -t `date '+%m%d0000'` $P/install/doinst.sh
+
   cd $P
   /sbin/makepkg ../$pkg.$compress <<EOF
 y
