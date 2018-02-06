@@ -190,22 +190,32 @@ if [ $opt_download -eq 1 ] ; then
   done
 fi
 
-CFLAGS+=" -O3 -fomit-frame-pointer -malign-double -fstrict-aliasing -ffast-math"
+if [ $arch = "armv7l" ]; then
+    CFLAGS+=" -O3 -fomit-frame-pointer -fstrict-aliasing -ffast-math"
+else
+    CFLAGS+=" -O3 -fomit-frame-pointer -malign-double -fstrict-aliasing -ffast-math"
+fi
 CONFIGURE="./configure F77=gfortran --prefix=/usr --libdir=/usr/${libdir} --enable-shared --enable-threads --disable-fortran"
 
 if [ -d ${B} ] ; then rm -rf ${B} ; fi ; cp -a ${S} ${B}
 if [ -d ${P} ] ; then rm -rf ${P} ; fi ; mkdir -p ${P}
 
 export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
-export CFLAGS=" -O3 -fomit-frame-pointer -malign-double -fstrict-aliasing -ffast-math"
+if [ $arch = "armv7l" ]; then
+    export CFLAGS=" -O3 -fomit-frame-pointer -fstrict-aliasing -ffast-math"
+else
+    export CFLAGS=" -O3 -fomit-frame-pointer -malign-double -fstrict-aliasing -ffast-math"
+fi
 export LDFLAGS='-Wl,--as-needed' 
 
 cd ${B}
-# build & install double precision
-$CONFIGURE --enable-sse2
-make
-make DESTDIR=${P} install
-make clean 
+if [ $arch != "armv7l" ]; then
+    # build & install double precision
+    $CONFIGURE --enable-sse2
+    make
+    make DESTDIR=${P} install
+    make clean 
+fi
 
 # build & install long double precission
 $CONFIGURE --enable-long-double
@@ -213,10 +223,12 @@ make
 make DESTDIR=${P} install
 make clean
 
-# build & install single precision
-$CONFIGURE --enable-float --enable-sse
-make
-make DESTDIR=${P} install
+if [ $arch != "armv7l" ]; then
+    # build & install single precision
+    $CONFIGURE --enable-float --enable-sse
+    make
+    make DESTDIR=${P} install
+fi
 
 ##### packageing
 
