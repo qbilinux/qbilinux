@@ -4,7 +4,7 @@ pkgbase=mysql
 vers=5.7.20
 url="http://ftp.jaist.ac.jp/pub/mysql/Downloads/MySQL-5.7/mysql-5.7.20.tar.gz"
 arch=`uname -m`
-build=P0m1
+build=T1
 src=mysql-${vers}
 OPT_CONFIG="-DWITH_EMBEDDED_SERVER:BOOL=ON -DDOWNLOAD_BOOST=1 -DWITH_BOOST=/tmp/boost"
 DOCS='COPYING INSTALL README VERSION'

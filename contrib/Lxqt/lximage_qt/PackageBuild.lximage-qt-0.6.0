@@ -5,7 +5,7 @@ vers=0.6.0
 url='https://downloads.lxqt.org/downloads/lximage-qt/0.6.0/lximage-qt-0.6.0.tar.xz'
 commitid=
 arch=`uname -m`
-build=P0m1
+build=T1
 src=lximage-qt-${vers}
 OPT_CONFIG='-DPULL_TRANSLATIONS=no -DCMAKE_BUILD_TYPE=Release'
 DOCS='AUTHORS CHANGELOG COPYING README.md release.sh'

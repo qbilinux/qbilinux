@@ -5,7 +5,7 @@ vers=0.8.0
 url='https://downloads.lxqt.org/downloads/qterminal/0.8.0/qterminal-0.8.0.tar.xz'
 commitid=
 arch=`uname -m`
-build=P0m1
+build=T1
 src=qterminal-${vers}
 OPT_CONFIG='-DPULL_TRANSLATIONS=no -DCMAKE_BUILD_TYPE=Release'
 DOCS='AUTHORS CHANGELOG LICENSE README.md'
