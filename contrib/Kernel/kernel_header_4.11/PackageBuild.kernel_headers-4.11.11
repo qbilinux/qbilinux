@@ -6,7 +6,7 @@
 url="https://www.kernel.org/pub/linux/kernel/v4.x/linux-4.11.11.tar.xz"
 pkgbase=kernel_headers_4.11
 arch=`uname -m`
-build=P0m1
+build=T1
 src=linux-4.11.11
 patchfiles="vd_unicon-kernel-20170609-4.11.patch vd_unicon-kernel-fonts-20140614.patch overlayfs-allow_unprivileged_mounts.patch"
 #patchfiles=""

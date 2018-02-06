@@ -5,7 +5,7 @@ vers=0.3.0
 url='https://downloads.lxqt.org/downloads/pavucontrol-qt/0.3.0/pavucontrol-qt-0.3.0.tar.xz'
 commitid=
 arch=`uname -m`
-build=P0m1
+build=T1
 src=pavucontrol-qt-${vers}
 OPT_CONFIG='-DPULL_TRANSLATIONS=no -DCMAKE_BUILD_TYPE=Release'
 DOCS='AUTHORS CHANGELOG LICENSE README.md'

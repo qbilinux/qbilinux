@@ -5,7 +5,7 @@ vers=0.12.0
 url='https://downloads.lxqt.org/downloads/lxqt-openssh-askpass/0.12.0/lxqt-openssh-askpass-0.12.0.tar.xz'
 commitid=
 arch=`uname -m`
-build=P0m1
+build=T1
 src=lxqt-openssh-askpass-${vers}
 OPT_CONFIG='-DPULL_TRANSLATIONS=no -DCMAKE_BUILD_TYPE=Release'
 DOCS='AUTHORS CHANGELOG LICENSE README.md'
