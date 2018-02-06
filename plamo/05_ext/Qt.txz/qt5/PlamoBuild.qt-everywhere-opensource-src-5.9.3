@@ -6,6 +6,22 @@ url="http://download.qt.io/archive/qt/5.9/${vers}/single/qt-everywhere-opensourc
 arch=`uname -m`
 build=P0m1
 src=qt-everywhere-opensource-src-${vers}
+if [ $arch = "armv7l" ]; then
+OPT_CONFIG="-sysconfdir     /etc/xdg   \
+            -no-opengl                 \
+            -confirm-license           \
+            -opensource                \
+            -dbus-linked               \
+            -openssl-linked            \
+            -system-harfbuzz           \
+            -system-sqlite             \
+            -nomake examples           \
+            -no-rpath                  \
+	    -headerdir /usr/include/qt5 \
+	    -docdir /usr/share/doc/${src} \
+	    -ssl -icu -release -qpa xcb -pulseaudio \
+            -skip qtwebengine"
+else
 OPT_CONFIG="-sysconfdir     /etc/xdg   \
             -confirm-license           \
             -opensource                \
@@ -19,6 +35,7 @@ OPT_CONFIG="-sysconfdir     /etc/xdg   \
 	    -docdir /usr/share/doc/${src} \
 	    -ssl -icu -release -qpa xcb -pulseaudio \
             -skip qtwebengine"
+fi
 #OPT_CONFIG="-no-webkit -confirm-license -opensource -sysconfdir /etc/xdg -headerdir /usr/include/qt5 -docdir /usr/share/doc/${src} -system-libpng -system-libjpeg -system-zlib -system-sqlite -system-pcre -plugin-sql-sqlite -icu -openssl -verbose -optimized-qmake -dbus-linked -qpa xcb -xcb -glib -accessibility -no-separate-debug-info -no-pch -no-rpath -no-strip -release -no-use-gold-linker -reduce-relocations -pulseaudio -nomake examples"
 DOCS='LGPL_EXCEPTION.txt LICENSE.FDL LICENSE.GPLv2 LICENSE.GPLv3 LICENSE.LGPLv21 LICENSE.LGPLv3 LICENSE.PREVIEW.COMMERCIAL README'
 patchfiles=''
