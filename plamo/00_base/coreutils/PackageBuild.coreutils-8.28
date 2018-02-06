@@ -5,7 +5,7 @@ pkgbase=coreutils
 vers=8.28
 url="http://ftp.gnu.org/gnu/coreutils/coreutils-${vers}.tar.xz"
 arch=`uname -m`
-build=P0m1
+build=T1
 src=$pkgbase-$vers
 patchfiles=""
 OPT_CONFIG="--enable-install-program=arch

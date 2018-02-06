@@ -5,7 +5,7 @@ pkgbase=libc
 vers=2.26
 url="http://ftp.gnu.org/gnu/glibc/glibc-${vers}.tar.xz"
 arch=`uname -m`
-build=P0m2
+build=T1
 src=glibc-$vers
 OPT_CONFIG="--enable-kernel=3.2 --enable-obsolete-rpc --enable-obsolete-nsl"
 DOCS="BUGS CONFORMANCE COPYING* ChangeLog* INSTALL LICENSES NEWS

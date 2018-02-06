@@ -4,7 +4,7 @@ url='http://pkgs.fedoraproject.org/repo/pkgs/usbutils/usbutils-0.86.tar.gz/34979
 pkgbase=usbutils
 vers=0.86
 arch=`uname -m`
-build=P1m1
+build=T1
 src=usbutils-0.86
 if [ $arch = "x86_64" ]; then
     OPT_CONFIG='--datarootdir=/usr/lib64'

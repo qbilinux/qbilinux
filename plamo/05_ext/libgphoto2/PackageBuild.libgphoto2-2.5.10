@@ -5,7 +5,7 @@ vers=2.5.10
 url="http://sourceforge.net/projects/gphoto/files/libgphoto/${vers}/libgphoto2-${vers}.tar.bz2
      https://github.com/gphoto/libgphoto2/commit/0df14db.patch"
 arch=`uname -m`
-build=P0m2
+build=T1
 src=libgphoto2-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='ABOUT-NLS AUTHORS COPYING ChangeLog HACKING INSTALL MAINTAINERS NEWS README README.packaging installcheck.mk'

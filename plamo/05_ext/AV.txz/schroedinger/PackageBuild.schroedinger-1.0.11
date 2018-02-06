@@ -4,7 +4,7 @@ pkgbase=schroedinger
 vers=1.0.11
 url='https://download.videolan.org/contrib/schroedinger/schroedinger-1.0.11.tar.gz'
 arch=`uname -m`
-build=P1m1
+build=T1
 src=schroedinger-1.0.11
 OPT_CONFIG='--disable-static --with-opengl=/usr/${libdir}'
 DOCS='AUTHORS COPYING COPYING.GPL COPYING.LGPL COPYING.MIT COPYING.MPL NEWS README TODO'

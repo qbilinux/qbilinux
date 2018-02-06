@@ -7,7 +7,7 @@ url="http://www.ring.gr.jp/archives/net/mail/procmail/procmail-${vers}.tar.gz
     ftp://plamo.linet.gr.jp/pub/Plamo-src.new/plamo/01_minimum/network.txz/procmail/procmail-3.22-glibc-2.10.patch.gz
     ftp://plamo.linet.gr.jp/pub/Plamo-src.new/plamo/01_minimum/network.txz/procmail/CVE-2014-3618.patch.gz"
 arch=`uname -m`
-build=P3m1
+build=T1
 src=$pkgbase-$vers
 patchfiles="procmail-3.22-glibc-2.10.patch.gz CVE-2014-3618.patch.gz"
 OPT_CONFIG=""

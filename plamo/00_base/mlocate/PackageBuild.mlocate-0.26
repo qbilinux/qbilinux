@@ -5,7 +5,7 @@ pkgbase=mlocate
 vers=0.26
 url="https://releases.pagure.org/mlocate/mlocate-${vers}.tar.xz"
 arch=`uname -m`
-build=P0m1
+build=T1
 src=$pkgbase-$vers
 OPT_CONFIG="--localstatedir=/var"
 DOCS="README ChangeLog NEWS INSTALL AUTHORS ABOUT-NLS COPYING"

@@ -4,7 +4,7 @@ pkgbase=NetworkManager
 vers=1.0.12
 url="https://download.gnome.org/sources/NetworkManager/1.0/NetworkManager-${vers}.tar.xz"
 arch=`uname -m`
-build=P0m2
+build=T1
 src=NetworkManager-${vers}
 OPT_CONFIG='--with-distro=slackware'
 DOCS='ABOUT-NLS AUTHORS COPYING ChangeLog INSTALL NEWS README TODO'

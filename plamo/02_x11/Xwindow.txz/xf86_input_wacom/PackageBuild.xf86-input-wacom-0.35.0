@@ -4,7 +4,7 @@ pkgbase=xf86_input_wacom
 vers=0.35.0
 url="http://downloads.sourceforge.net/linuxwacom/xf86-input-wacom-${vers}.tar.bz2"
 arch=`uname -m`
-build=P0m1
+build=T1
 src=xf86-input-wacom-${vers}
 OPT_CONFIG='--with-systemd-unit-dir=no'
 DOCS='AUTHORS ChangeLog INSTALL README'

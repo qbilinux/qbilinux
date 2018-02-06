@@ -5,7 +5,7 @@ url="https://storage.googleapis.com/google-code-archive-downloads/v2/code.google
 pkgbase=sj3
 vers=2.0.1.23
 arch=`uname -m`
-build=P1m1
+build=T1
 src=$pkgbase-$vers
 OPT_CONFIG="--sysconfdir=/usr/share --localstatedir=/var/lib/sj3
     --docdir=/usr/share/sj3/doc --with-user=bin --with-group=bin"

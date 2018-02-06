@@ -4,7 +4,7 @@ pkgbase=ghostscript
 vers=9.21
 url="https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs921/ghostscript-9.21.tar.xz"
 arch=`uname -m`
-build=P0m1
+build=T1
 src=ghostscript-${vers}
 OPT_CONFIG="--x-includes=/usr/include/X11 --x-libraries=/usr/lib64 --disable-compile-inits --with-system-libtiff --with-ijs --with-jbig2dec --with-jasper --with-x --with-drivers=ALL --enable-contrib"
 DOCS='LICENSE'

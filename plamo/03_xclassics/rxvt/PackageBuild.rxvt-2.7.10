@@ -6,7 +6,7 @@ url="http://jaist.dl.sourceforge.net/sourceforge/rxvt/rxvt-2.7.10.tar.gz
 pkgbase=rxvt
 vers=2.7.10
 arch=`uname -m`
-build=P1m1
+build=T1
 src=$pkgbase-$vers
 OPT_CONFIG="--enable-languages --enable-utmp --enable-wtmp
     --enable-xpm-background --enable-transparency --enable-menubar

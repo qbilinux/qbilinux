@@ -5,7 +5,7 @@ pkgbase=scim
 vers=1.4.18
 url="https://github.com/scim-im/scim/archive/1.4.18.tar.gz"
 arch=`uname -m`
-build=P0m1
+build=T1
 src=$pkgbase-$vers
 OPT_CONFIG="--sysconfdir=/etc --disable-static"
 DOCS="AUTHORS THANKS README TODO COPYING ChangeLog NEWS ABOUT-NLS

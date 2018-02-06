@@ -5,7 +5,7 @@ vers=2.4.0
 url='https://tls.mbed.org/download/mbedtls-2.4.0-gpl.tgz'
 commitid=
 arch=`uname -m`
-build=P0m1
+build=T1
 src=mbedtls-${vers}
 OPT_CONFIG='-DUSE_SHARED_MBEDTLS_LIBRARY=On'
 DOCS='ChangeLog LICENSE README.md gpl-2.0.txt'

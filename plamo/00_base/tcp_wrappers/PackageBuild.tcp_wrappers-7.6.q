@@ -6,7 +6,7 @@ vers=7.6.q
 url="http://archive.debian.org/debian/pool/main/t/tcp-wrappers/tcp-wrappers_7.6.q.orig.tar.gz
     http://archive.debian.org/debian/pool/main/t/tcp-wrappers/tcp-wrappers_7.6.q-16.diff.gz"
 arch=`uname -m`
-build=P5m2
+build=T1
 src=tcp_wrappers_7.6
 OPT_CONFIG=""
 DOCS="README BLURB DISCLAIMER CHANGES README.IRIX README.NIS"

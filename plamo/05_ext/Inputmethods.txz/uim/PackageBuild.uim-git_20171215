@@ -5,7 +5,7 @@ vers=git_20171215
 url="https://github.com/uim/uim.git"
 commitid=e8e41fd5a3fc36dd8af5f3525696807d7adea605
 arch=`uname -m`
-build=P0m2
+build=T1
 src=uim
 OPT_CONFIG='--disable-static --enable-kde4-applet --with-wnn --with-wnn-includes=/usr/include/wnn --with-sj3 --with-sqlite3 --with-x --with-expat=/usr --with-qt5 --with-qt5-immodule --with-anthy-utf8 --with-curl --with-ffi --enable-openssl'
 if [ "$arch" = "x86_64" ]; then

@@ -5,7 +5,7 @@ pkgbase=pcre2
 vers=10.30
 url="https://sourceforge.net/projects/pcre/files/pcre2/${vers}/pcre2-${vers}.tar.gz"
 arch=`uname -m`
-build=P0m1
+build=T1
 src=$pkgbase-$vers
 OPT_CONFIG="--enable-pcre2-16 --enable-pcre2-32 --enable-unicode-properties
     --enable-pcre2grep-libz --enable-pcre2grep-libbz2

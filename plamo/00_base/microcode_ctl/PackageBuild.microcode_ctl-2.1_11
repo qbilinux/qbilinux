@@ -6,7 +6,7 @@ vers=2.1_11
 url="https://fedorahosted.org/released/microcode_ctl/microcode_ctl-2.1-11.tar.xz
     https://downloadmirror.intel.com/26400/eng/microcode-20161104.tgz"
 arch=`uname -m`
-build=P0m1
+build=T1
 src=$pkgbase-2.1-11
 OPT_CONFIG=""
 DOCS="README Changelog"

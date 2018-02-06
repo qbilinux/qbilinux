@@ -4,7 +4,7 @@ url='http://core.ring.gr.jp/archives/net/mail/qpopper/qpopper4.1.0.tar.gz'
 pkgbase=qpopper
 vers=4.1.0
 arch=`uname -m`
-build=P1m1
+build=T1
 src=qpopper4.1.0
 OPT_CONFIG=''
 OPT_CONFIG="--enable-apop=/etc/pop.auth  --with-popuid=pop --with-pam=pop3"

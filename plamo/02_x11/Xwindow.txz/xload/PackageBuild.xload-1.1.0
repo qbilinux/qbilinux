@@ -5,7 +5,7 @@ url="http://ftp.x.org/pub/individual/app/xload-1.1.0.tar.bz2"
 pkgbase=xload
 vers=1.1.0
 arch=`uname -m`
-build=P1m1
+build=T1
 src=$pkgbase-$vers
 OPT_CONFIG="--with-appdefaultdir=/usr/share/X11/app-defaults"
 DOCS="COPYING ChangeLog INSTALL README"

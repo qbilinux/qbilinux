@@ -4,7 +4,7 @@ url='http://ftp.x.org/pub/individual/app/xdm-1.1.11.tar.bz2'
 pkgbase=xdm
 vers=1.1.11
 arch=`uname -m`
-build=P4m1
+build=T1
 src=xdm-1.1.11
 OPT_CONFIG='--with-appdefaultdir=/usr/share/X11/app-defaults/ --with-consolekit'
 DOCS='AUTHORS COPYING ChangeLog INSTALL README'
