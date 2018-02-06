@@ -6,7 +6,7 @@ url="http://jaist.dl.sourceforge.net/project/libmtp/libmtp/${vers}/libmtp-${vers
 verify=
 commitid=
 arch=`uname -m`
-build=P1m1
+build=T1
 src=libmtp-${vers}
 OPT_CONFIG='--with-udev=/lib/udev'
 DOCS='AUTHORS COPYING ChangeLog INSTALL README README.windows.txt TODO'

@@ -10,7 +10,7 @@ url="http://www.ibiblio.org/pub/linux/games/bsd-games-${vers}.tar.gz
     http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/games-misc/bsd-games/files/bsd-games-2.17-64bit.patch
     ftp://plamo.linet.gr.jp/pub/Plamo-src.new/plamo/01_minimum/bsd_games/hangman-words.gz"
 arch=`uname -m`
-build=P5m1
+build=T1
 src=bsd-games-$vers
 patchfiles=""
 OPT_CONFIG=""

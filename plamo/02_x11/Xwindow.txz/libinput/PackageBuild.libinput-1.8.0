@@ -4,7 +4,7 @@ pkgbase=libinput
 vers=1.8.0
 url="http://www.freedesktop.org/software/libinput/libinput-${vers}.tar.xz"
 arch=`uname -m`
-build=P0m1
+build=T1
 src=libinput-${vers}
 OPT_CONFIG='--disable-static --with-udev-dir=/lib/udev --disable-documentation'
 DOCS='COPYING README.txt'

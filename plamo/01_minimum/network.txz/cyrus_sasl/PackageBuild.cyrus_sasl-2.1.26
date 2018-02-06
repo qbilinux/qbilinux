@@ -5,7 +5,7 @@ pkgbase=cyrus_sasl
 vers=2.1.26
 url="ftp://ftp.cyrusimap.org/cyrus-sasl/cyrus-sasl-${vers}.tar.gz"
 arch=`uname -m`
-build=P0m2
+build=T1
 src=cyrus-sasl-$vers
 patchfiles="cyrus-sasl-blfs.patch.gz cyrus-sasl-64bit-plugindir.patch.gz"
 OPT_CONFIG="--with-dbpath=/var/lib/sasl/sasldb2

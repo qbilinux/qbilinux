@@ -6,7 +6,7 @@ vers=1.11.23
 url="http://ftp.gnu.org/non-gnu/cvs/source/stable/${vers}/cvs-${vers}.tar.bz2
     ftp://plamo.linet.gr.jp/pub/Plamo-src.new/plamo/01_minimum/devel.txz/cvs/cvs-1.11.23-getline.patch.gz"
 arch=`uname -m`
-build=P2m2
+build=T1
 src=$pkgbase-$vers
 patchfiles="cvs-1.11.23-getline.patch.gz"
 OPT_CONFIG=""

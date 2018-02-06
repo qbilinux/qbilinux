@@ -9,7 +9,7 @@ http://www.unicode.org/Public/emoji/11.0/emoji-test.txt
 http://www.unicode.org/Public/emoji/11.0/emoji-variation-sequences.txt
 http://www.unicode.org/Public/emoji/11.0/emoji-zwj-sequences.txt'
 arch=`uname -m`
-build=P0m1
+build=T1
 src=$pkgbase-$vers
 OPT_CONFIG=''
 DOCS=''

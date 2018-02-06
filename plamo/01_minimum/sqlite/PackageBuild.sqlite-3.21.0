@@ -4,7 +4,7 @@ pkgbase=sqlite
 vers=3.21.0
 url="http://sqlite.org/2017/sqlite-autoconf-3210000.tar.gz"
 arch=`uname -m`
-build=P0m1
+build=T1
 src=sqlite-autoconf-3210000
 # SQLITE_SECURE_DELETE を定義する必要あり (firefox/thunderbird)．
 # --enable-threadsafe で有効になるのかな?

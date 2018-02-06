@@ -5,7 +5,7 @@ pkgbase=procps_ng
 vers=3.3.12
 url="http://downloads.sourceforge.net/procps-ng/procps-ng-${vers}.tar.xz"
 arch=`uname -m`
-build=P0m1
+build=T1
 src=procps-ng-$vers
 OPT_CONFIG="--exec-prefix= --disable-kill --enable-skill"
 DOCS="AUTHORS NEWS COPYING ABOUT-NLS ChangeLog COPYING.LIB

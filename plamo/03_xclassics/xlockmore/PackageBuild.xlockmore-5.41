@@ -5,7 +5,7 @@ url="http://www.tux.org/~bagleyd/xlock/xlockmore-5.41/xlockmore-5.41.tar.bz2"
 pkgbase=xlockmore
 vers=5.41
 arch=`uname -m`
-build=P1m2
+build=T1
 src=$pkgbase-$vers
 OPT_CONFIG="--enable-pam --enable-use-mb --with-esound --with-lang=ja --without-magick"
 DOCS="`echo docs/{3d.howto,cell_automata,HACKERS.GUIDE{,.fr}}`

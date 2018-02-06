@@ -4,7 +4,7 @@ url='ftp://ftp.x.org/pub/individual/data/xkeyboard-config/xkeyboard-config-2.15.
 pkgbase=xkeyboard_config
 vers=2.15
 arch=`uname -m`
-build=P1m1
+build=T1
 src=xkeyboard-config-2.15
 OPT_CONFIG='--with-xkb-rules-symlink=xorg'
 DOCS='ABOUT-NLS AUTHORS COPYING ChangeLog NEWS README TODO'

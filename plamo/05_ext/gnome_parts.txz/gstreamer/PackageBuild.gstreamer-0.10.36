@@ -4,7 +4,7 @@ url='http://ftp.gnome.org/pub/gnome/sources/gstreamer/0.10/gstreamer-0.10.36.tar
 pkgbase=gstreamer
 vers=0.10.36
 arch=`uname -m`
-build=P1m1
+build=T1
 src=gstreamer-0.10.36
 OPT_CONFIG='--disable-static --enable-introspection=yes'
 DOCS='ABOUT-NLS AUTHORS COPYING ChangeLog INSTALL MAINTAINERS NEWS README RELEASE TODO'

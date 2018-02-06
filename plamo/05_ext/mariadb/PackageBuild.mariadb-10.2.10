@@ -4,7 +4,7 @@ pkgbase=mariadb
 vers=10.2.10
 url="https://downloads.mariadb.org/interstitial/mariadb-${vers}/source/mariadb-${vers}.tar.gz"
 arch=`uname -m`
-build=P0m1
+build=T1
 src=mariadb-${vers}
 OPT_CONFIG="-DWITH_EMBEDDED_SERVER:BOOL=ON -DPLUGIN_TOKUDB:STRING=NO -DPLUGIN_AUTH_GSSAPI:STRING=NO"
 DOCS='COPYING COPYING.LESSER COPYING.thirdparty CREDITS EXCEPTIONS-CLIENT INSTALL-SOURCE INSTALL-WIN-SOURCE KNOWN_BUGS.txt README'

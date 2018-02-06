@@ -4,7 +4,7 @@ pkgbase=vinagre
 vers=3.22.0
 url='http://ftp.gnome.org/pub/GNOME/sources/vinagre/3.22/vinagre-3.22.0.tar.xz'
 arch=`uname -m`
-build=P0m1
+build=T1
 src=vinagre-${vers}
 OPT_CONFIG='--disable-applet --enable-compile-warnings=minimum'
 DOCS='AUTHORS COPYING ChangeLog ChangeLog.pre-git INSTALL NEWS README'

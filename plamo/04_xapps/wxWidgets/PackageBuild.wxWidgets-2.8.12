@@ -4,7 +4,7 @@ url='https://sourceforge.net/projects/wxwindows/files/2.8.12/wxWidgets-2.8.12.ta
 pkgbase=wxWidgets
 vers=2.8.12
 arch=`uname -m`
-build=P2m1
+build=T1
 src=wxWidgets-2.8.12
 OPT_CONFIG="--enable-unicode --enable-gui --with-sdl --enable-shared --enable-intl \
  --enable-config --enable-protocols --enable-ftp --enable-http --enable-fileproto \

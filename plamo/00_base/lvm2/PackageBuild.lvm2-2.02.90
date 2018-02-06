@@ -5,7 +5,7 @@ pkgbase=lvm2
 vers=2.02.90
 url="ftp://sources.redhat.com/pub/lvm2/releases/LVM2.${vers}.tgz"
 arch=`uname -m`
-build=P3m2
+build=T1
 src=LVM2.$vers
 OPT_CONFIG="--exec-prefix= --enable-static_link --enable-applib
     --enable-cmdlib --enable-pkgconfig --enable-dmeventd

@@ -4,7 +4,7 @@ pkgbase=avahi
 vers=0.6.32
 url="https://github.com/lathiat/avahi/releases/download/v${vers}/avahi-${vers}.tar.gz"
 arch=`uname -m`
-build=P0m1
+build=T1
 src=avahi-${vers}
 OPT_CONFIG='--disable-static --disable-qt3 --disable-qt4 --disable-mono --with-distro=slackware --disable-python'
 DOCS='ABOUT-NLS ChangeLog LICENSE README'

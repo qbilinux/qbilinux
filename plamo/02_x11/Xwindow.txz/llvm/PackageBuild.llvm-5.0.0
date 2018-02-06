@@ -6,7 +6,7 @@ url="http://llvm.org/releases/${vers}/llvm-${vers}.src.tar.xz
  http://llvm.org/releases/${vers}/cfe-${vers}.src.tar.xz
  http://llvm.org/releases/${vers}/compiler-rt-${vers}.src.tar.xz"
 arch=`uname -m`
-build=P0m1
+build=T1
 src=llvm-${vers}
 # these configs translated into cmake style
 # OPT_CONFIG='--enable-libffi  

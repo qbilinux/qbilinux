@@ -6,7 +6,7 @@ url="ftp://tug.org/texlive/historic/2017/texlive-20170524-source.tar.xz"
 verify=$url.sha256
 commitid=
 arch=`uname -m`
-build=P0m1
+build=T1
 src=texlive-${vers}-source
 #
 PREFIX=/opt/texlive/2017

@@ -12,7 +12,7 @@ url="https://ftp.gnu.org/pub/gnu/less/less-${vers}.tar.gz
     http://ryo-on.users.sourceforge.net/distrib/ja-less/less-382-iso262.ext03.patch.gz
     ftp://plamo.linet.gr.jp/pub/Plamo-src.new/plamo/00_base/less/less-382-def_priority.patch.gz"
 arch=`uname -m`
-build=P4m2
+build=T1
 src=less-$vers
 OPT_CONFIG=""
 DOCS="COPYING INSTALL LICENSE NEWS README"

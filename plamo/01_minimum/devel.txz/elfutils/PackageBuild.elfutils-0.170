@@ -5,7 +5,7 @@ pkgbase=elfutils
 vers=0.170
 url="https://fedorahosted.org/releases/e/l/elfutils/${vers}/elfutils-${vers}.tar.bz2"
 arch=`uname -m`
-build=P0m1
+build=T1
 src=$pkgbase-$vers
 OPT_CONFIG="--program-prefix=eu-"
 DOCS="COPYING THANKS NOTES AUTHORS ABOUT-NLS COPYING-GPLV2 NEWS

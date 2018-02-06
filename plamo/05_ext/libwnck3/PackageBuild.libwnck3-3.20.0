@@ -5,7 +5,7 @@ vers=3.20.0
 url="http://ftp.gnome.org/pub/GNOME/sources/libwnck/3.20/libwnck-${vers}.tar.xz"
 commitid=
 arch=`uname -m`
-build=P0m1
+build=T1
 src=libwnck-${vers}
 OPT_CONFIG='--program-suffix=-3'
 DOCS='AUTHORS COPYING ChangeLog HACKING INSTALL MAINTAINERS NEWS README'

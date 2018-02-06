@@ -8,7 +8,7 @@ url="http://pkgs.fedoraproject.org/repo/pkgs/nvi-m17n/nvi-1.79.tar.gz/765e2153f5
     ftp://plamo.linet.gr.jp/pub/Plamo-src.new/plamo/00_base/nvi/nvi-1.79-64bit_breakage.patch.gz
     ftp://plamo.linet.gr.jp/pub/Plamo-src.new/plamo/00_base/nvi/nvi-1.79-DESTDIR.patch.gz"
 arch=`uname -m`
-build=P8m1
+build=T1
 src=$pkgbase-$vers
 patchfiles=""
 OPT_CONFIG="--enable-multibyte=euc-jp"

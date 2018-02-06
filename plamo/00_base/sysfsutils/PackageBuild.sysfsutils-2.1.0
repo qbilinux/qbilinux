@@ -6,7 +6,7 @@ vers=2.1.0
 url="http://downloads.sourceforge.net/linux-diag/sysfsutils-${vers}.tar.gz
     ftp://plamo.linet.gr.jp/pub/Plamo-src.new/plamo/00_base/sysfsutils/sysfs_get_link.patch"
 arch=`uname -m`
-build=P4m1
+build=T1
 src=$pkgbase-$vers
 patchfiles="sysfs_get_link.patch"
 OPT_CONFIG=""

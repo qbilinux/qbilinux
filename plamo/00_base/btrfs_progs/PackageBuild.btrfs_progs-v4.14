@@ -5,7 +5,7 @@ pkgbase=btrfs_progs
 vers=v4.14
 url="https://www.kernel.org/pub/linux/kernel/people/kdave/btrfs-progs/btrfs-progs-${vers}.tar.gz"
 arch=`uname -m`
-build=P0m1
+build=T1
 src=btrfs-progs-$vers
 OPT_CONFIG="--bindir=/sbin --disable-documentation"
 DOCS="COPYING INSTALL README.md"

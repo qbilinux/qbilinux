@@ -5,7 +5,7 @@ pkgbase=gpgme
 vers=1.9.0
 url="https://www.gnupg.org/ftp/gcrypt/gpgme/gpgme-${vers}.tar.bz2"
 arch=`uname -m`
-build=P0m2
+build=T1
 src=$pkgbase-$vers
 patchfiles=""
 OPT_CONFIG="--disable-fd-passing --with-gpg=/usr/bin/gpg"

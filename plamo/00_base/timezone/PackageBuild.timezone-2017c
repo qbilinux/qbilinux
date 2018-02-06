@@ -6,7 +6,7 @@ vers=2017c
 url="http://www.iana.org/time-zones/repository/releases/tzcode${vers}.tar.gz
     http://www.iana.org/time-zones/repository/releases/tzdata${vers}.tar.gz"
 arch=`uname -m`
-build=P0m1
+build=T1
 src=$pkgbase-$vers
 patchfiles=""
 OPT_CONFIG=""

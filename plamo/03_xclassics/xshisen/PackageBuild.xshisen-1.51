@@ -5,7 +5,7 @@ url="http://ftp.nsysu.edu.tw/FreeBSD/ports/local-distfiles/hrs/xshisen-1.51.tar.
 pkgbase=xshisen
 vers=1.51
 arch=`uname -m`
-build=P1m1
+build=T1
 src=$pkgbase-$vers
 if [ $arch = "x86_64" ]; then
     OPT_CONFIG="--sharedstatedir=/var/games

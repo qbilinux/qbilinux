@@ -4,7 +4,7 @@ pkgbase=xterm
 vers=330
 url="ftp://invisible-island.net/xterm/xterm-${vers}.tgz"
 arch=`uname -m`
-build=P0m1
+build=T1
 src=xterm-${vers}
 OPT_CONFIG='--with-app-defaults=/etc/X11/app-defaults'
 DOCS='AAA_README_VMS.txt INSTALL README README.i18n README.os390 THANKS ctlseqs.txt'
