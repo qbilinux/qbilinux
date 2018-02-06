@@ -10,6 +10,7 @@ src=libunwind-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README TODO'
 patchfiles=''
+arm_patchfiles='remove_atomic_config.patch'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -172,9 +173,12 @@ if [ $opt_config -eq 1 ] ; then
       patch -p1 < $W/$patch
     done
 
-    # if [ -f autogen.sh ] ; then
-    #   sh ./autogen.sh
-    # fi
+    if [ $arch = 'armv7l' ] ; then
+	for patch in $arm_patchfiles ; do
+	    patch -p1 < $W/$patch
+	done
+	autoreconf -i
+    fi
 
     if [ -x configure ] ; then
 	export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
@@ -296,7 +300,7 @@ EOF
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
 
-  for patch in $patchfiles ; do
+  for patch in $patchfiles $arm_patchfiles ; do
     cp $W/$patch $docdir/$src/$patch
     gzip_one $docdir/$src/$patch
   done
