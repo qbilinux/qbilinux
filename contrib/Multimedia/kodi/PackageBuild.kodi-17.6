@@ -8,6 +8,9 @@ arch=`uname -m`
 build=P0m1
 src=xbmc-${vers}-Krypton
 OPT_CONFIG='--disable-mysql'
+if [ $arch = 'armv7l' ] ; then
+    OPT_CONFIG="$OPT_CONFIG --disable-gl"
+fi
 DOCS='LICENSE.GPL README.md copying.txt privacy-policy.txt version.txt'
 patchfiles='patch-aa'
 compress=txz

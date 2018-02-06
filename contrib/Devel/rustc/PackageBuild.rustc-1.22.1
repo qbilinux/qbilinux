@@ -198,7 +198,7 @@ fi
 if [ $opt_build -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
-    python3 ./x.py build -j 10
+    python3 ./x.py build -j 4
     if [ $? != 0 ]; then
       echo "make error. $0 script stop"
       exit 255
