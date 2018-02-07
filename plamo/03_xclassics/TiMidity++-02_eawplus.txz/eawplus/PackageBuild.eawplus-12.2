@@ -176,7 +176,7 @@ if [ $opt_download -eq 1 ] ; then
       ;;
     88pros.zip) (
       mkdir 88proS-6.4.1 ; cd 88proS-6.4.1
-      unzip $W/${i##*/}
+      unzip -o $W/${i##*/}
       touch -t 200302040900 $W/88proS-6.4.1
       ) ;;
     eawpats12_full.tar.gz)

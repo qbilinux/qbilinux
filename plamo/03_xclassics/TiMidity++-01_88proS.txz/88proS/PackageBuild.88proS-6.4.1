@@ -168,7 +168,7 @@ if [ $opt_download -eq 1 ] ; then
     case ${i##*/} in
     88pros.zip) (
       mkdir $S ; cd $S
-      unzip $W/${i##*/}
+      unzip -o $W/${i##*/}
       touch -t 200302040900 $S
       ) ;;
     guspat-20000706-required.tar.gz)
