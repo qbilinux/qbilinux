@@ -1,0 +1,116 @@
+--- sysfsutils-2.1.0/lib/sysfs_utils.c	2008-11-05 18:23:41.000000000 +0000
++++ build-tree/sysfsutils-2.1.0/lib/sysfs_utils.c	2008-11-05 18:22:59.000000000 +0000
+@@ -23,5 +23,10 @@
+ #include "libsysfs.h"
+ #include "sysfs.h"
++#include <mntent.h>
++#include <sys/stat.h>
++#include <limits.h>
++#include <stdlib.h>
++#include <string.h>
+ 
+ /**
+  * sysfs_remove_trailing_slash: Removes any trailing '/' in the given path
+@@ -138,87 +142,31 @@
+  */
+ int sysfs_get_link(const char *path, char *target, size_t len)
+ {
+-	char devdir[SYSFS_PATH_MAX];
+-	char linkpath[SYSFS_PATH_MAX];
+-	char temp_path[SYSFS_PATH_MAX];
+-	char *d = NULL, *s = NULL;
+-	int slashes = 0, count = 0;
++	struct stat path_stat;
++	char *resolved_path;
+ 
+ 	if (!path || !target || len == 0) {
+ 		errno = EINVAL;
+ 		return -1;
+ 	}
+ 
+-	memset(devdir, 0, SYSFS_PATH_MAX);
+-	memset(linkpath, 0, SYSFS_PATH_MAX);
+-	memset(temp_path, 0, SYSFS_PATH_MAX);
+-	safestrcpy(devdir, path);
++	/* If path is not a symlink, fail */
++        if (stat(path, &path_stat) != 0 || (path_stat.st_mode & S_IFLNK))
++		return -1;
+ 
+-	if ((readlink(path, linkpath, SYSFS_PATH_MAX)) < 0) {
++	/* Canonicalize the path */
++	resolved_path = canonicalize_file_name(path);
++        
++	/* We fail if we cannot find the canonical path, or it is too long to copy */
++	if (resolved_path == NULL || strlen(resolved_path) >= SYSFS_PATH_MAX) {
++                free(resolved_path);
+ 		return -1;
+ 	}
+-	d = linkpath;
+-	/*
+-	 * Three cases here:
+-	 * 1. relative path => format ../..
+-	 * 2. absolute path => format /abcd/efgh
+-	 * 3. relative path _from_ this dir => format abcd/efgh
+-	 */
+-	switch (*d) {
+-		case '.':
+-			/*
+-			 * handle the case where link is of type ./abcd/xxx
+-			 */
+-			safestrcpy(temp_path, devdir);
+-			if (*(d+1) == '/')
+-				d += 2;
+-			else if (*(d+1) == '.')
+-				goto parse_path;
+-			s = strrchr(temp_path, '/');
+-			if (s != NULL) {
+-				*(s+1) = '\0';
+-				safestrcat(temp_path, d);
+-			} else {
+-				safestrcpy(temp_path, d);
+-			}
+-			safestrcpymax(target, temp_path, len);
+-			break;
+-			/*
+-			 * relative path, getting rid of leading "../.."
+-			 */
+-parse_path:
+-			while (*d == '/' || *d == '.') {
+-				if (*d == '/')
+-					slashes++;
+-				d++;
+-			}
+-			d--;
+-			s = &devdir[strlen(devdir)-1];
+-			while (s != NULL && count != (slashes+1)) {
+-				s--;
+-				if (*s == '/')
+-					count++;
+-			}
+-			safestrcpymax(s, d, (SYSFS_PATH_MAX-strlen(devdir)));
+-			safestrcpymax(target, devdir, len);
+-			break;
+-		case '/':
+-			/* absolute path - copy as is */
+-			safestrcpymax(target, linkpath, len);
+-			break;
+-		default:
+-			/* relative path from this directory */
+-			safestrcpy(temp_path, devdir);
+-			s = strrchr(temp_path, '/');
+-			if (s != NULL) {
+-				*(s+1) = '\0';
+-				safestrcat(temp_path, linkpath);
+-			} else {
+-				safestrcpy(temp_path, linkpath);
+-			}
+-			safestrcpymax(target, temp_path, len);
++	else {
++		strncpy(target, resolved_path, SYSFS_PATH_MAX);
++                free(resolved_path);
++		return 0;
+ 	}
+-	return 0;
+ }
+ 
+ /**
