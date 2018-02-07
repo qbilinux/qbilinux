@@ -5,7 +5,7 @@
  */
  
 -#include <wand/magick_wand.h>
-+#include <MagickWand/MagickWand.h>
++#include <wand/MagickWand.h>
  #ifdef PACKAGE_NAME
  #undef PACKAGE_BUGREPORT
  #undef PACKAGE_NAME

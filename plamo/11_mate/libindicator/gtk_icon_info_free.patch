@@ -1,0 +1,11 @@
+--- libindicator-12.10.1/libindicator/indicator-image-helper.c	2012-09-20 00:38:05.105915564 +0900
++++ build/libindicator/indicator-image-helper.c	2017-05-10 09:46:12.282095368 +0900
+@@ -69,7 +69,7 @@
+ 	GdkPixbuf * pixbuf = gdk_pixbuf_new_from_file(icon_filename, &error);
+ 
+ 	if (icon_info != NULL) {
+-		gtk_icon_info_free(icon_info);
++		g_object_unref(icon_info);
+ 	}
+ 
+ 	if (pixbuf == NULL) {

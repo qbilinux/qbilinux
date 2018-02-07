@@ -1,0 +1,101 @@
+Submitted By: Randy McMurchy
+Date: 2010-11-21
+Initial Package Version: 3.6
+Origin: Fedora and Debian use the same fixes
+Upstream Status: Unknown, perhaps already in recode-3.7-beta2
+Description: Fixes conversion correctness issues and namespace collisions
+For details, see the following Debian bug reports:
+
+http://bugs.debian.org/114850
+http://bugs.debian.org/131080
+http://bugs.debian.org/134899
+http://bugs.debian.org/156635
+
+Also fixes GCC compatibility, see:
+http://www.mail-archive.com/pld-cvs-commit@lists.pld-linux.org/msg178241.html
+
+
+diff -Naur recode-3.6-orig/src/hash.h recode-3.6/src/hash.h
+--- recode-3.6-orig/src/hash.h	2000-08-03 01:21:15.000000000 +0000
++++ recode-3.6/src/hash.h	2010-11-21 20:40:57.000000000 +0000
+@@ -21,6 +21,11 @@
+ /* Make sure USE_OBSTACK is defined to 1 if you want the allocator to use
+    obstacks instead of malloc, and recompile `hash.c' with same setting.  */
+ 
++#define hash_lookup recode_hash_lookup
++#define hash_delete recode_hash_delete
++#define hash_free   recode_hash_free
++#define hash_insert recode_hash_insert
++
+ #ifndef PARAMS
+ # if PROTOTYPES || __STDC__
+ #  define PARAMS(Args) Args
+diff -Naur recode-3.6-orig/src/libiconv.c recode-3.6/src/libiconv.c
+--- recode-3.6-orig/src/libiconv.c	2000-07-01 17:13:25.000000000 +0000
++++ recode-3.6/src/libiconv.c	2010-11-21 20:40:57.000000000 +0000
+@@ -1,5 +1,5 @@
+ /* Conversion of files between different charsets and surfaces.
+-   Copyright © 1999, 2000 Free Software Foundation, Inc.
++   Copyright © 1999, 2000, 2001 Free Software Foundation, Inc.
+    Contributed by François Pinard <pinard@iro.umontreal.ca>, 1999,
+    and Bruno Haible <haible@clisp.cons.org>, 2000.
+ 
+@@ -195,12 +195,17 @@
+ 	 memcpy() doesn't do here, because the regions might overlap.
+ 	 memmove() isn't worth it, because we rarely have to move more
+ 	 than 12 bytes.  */
+-      if (input > input_buffer && input_left > 0)
++      cursor = input_buffer;
++      if (input_left > 0)
+ 	{
+-	  cursor = input_buffer;
+-	  do
+-	    *cursor++ = *input++;
+-	  while (--input_left > 0);
++	  if (input > input_buffer)
++	    {
++	      do
++		*cursor++ = *input++;
++	      while (--input_left > 0);
++	    }
++	  else
++	    cursor += input_left;
+ 	}
+     }
+ 
+diff -Naur recode-3.6-orig/src/recodext.h recode-3.6/src/recodext.h
+--- recode-3.6-orig/src/recodext.h	2001-01-04 14:36:54.000000000 +0000
++++ recode-3.6/src/recodext.h	2010-11-21 20:41:10.000000000 +0000
+@@ -218,7 +218,7 @@
+     enum recode_symbol_type type : 3;
+ 
+     /* Non zero if this one should be ignored.  */
+-    bool ignore : 2;
++    bool ignore : 1;
+   };
+ 
+ struct recode_surface_list
+diff -Naur recode-3.6-orig/src/request.c recode-3.6/src/request.c
+--- recode-3.6-orig/src/request.c	2000-06-28 18:40:21.000000000 +0000
++++ recode-3.6/src/request.c	2010-11-21 20:40:57.000000000 +0000
+@@ -1073,7 +1073,7 @@
+   if (task->output.cursor + 4 >= task->output.limit)
+     {
+       RECODE_OUTER outer = task->request->outer;
+-      size_t old_size = task->output.limit - task->output.buffer;
++      size_t old_size = task->output.cursor - task->output.buffer;
+       size_t new_size = task->output.cursor + 4 - task->output.buffer;
+ 
+       /* FIXME: Rethink about how the error should be reported.  */
+diff -Naur recode-3.6-orig/src/task.c recode-3.6/src/task.c
+--- recode-3.6-orig/src/task.c	2000-07-01 17:50:43.000000000 +0000
++++ recode-3.6/src/task.c	2010-11-21 20:40:57.000000000 +0000
+@@ -1198,6 +1198,8 @@
+       else
+ 	success = transform_mere_copy (subtask);
+ 
++      task->output = subtask->output;
++       
+       if (subtask->input.name && *subtask->input.name)
+ 	fclose (subtask->input.file);
+       if (subtask->output.name && *subtask->output.name)
