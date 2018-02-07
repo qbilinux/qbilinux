@@ -1,0 +1,19 @@
+*** dvdauthor/src/subgen-image.c	2014-01-21 08:12:37.000000000 +0900
+--- build/src/subgen-image.c	2017-03-28 05:24:03.825835943 +0900
+***************
+*** 30,36 ****
+  
+  #if defined(HAVE_MAGICK) || defined(HAVE_GMAGICK)
+  #include <stdarg.h>
+! #include <magick/api.h>
+  #else
+  #include <png.h>
+  #endif
+--- 30,36 ----
+  
+  #if defined(HAVE_MAGICK) || defined(HAVE_GMAGICK)
+  #include <stdarg.h>
+! #include <MagickCore/MagickCore.h>
+  #else
+  #include <png.h>
+  #endif
