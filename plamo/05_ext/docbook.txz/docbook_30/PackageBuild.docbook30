@@ -185,7 +185,7 @@ if [ $opt_download -eq 1 ] ; then
     tar) tar xvpf ${i##*/} ;;
     gz) tar xvpzf ${i##*/} ;;
     bz2) tar xvpjf ${i##*/} ;;
-    zip) mkdir $src ; cd $src ; unzip ../${i##*/} ;;
+    zip) mkdir $src ; cd $src ; unzip -o ../${i##*/} ;;
     esac
   done
 fi
