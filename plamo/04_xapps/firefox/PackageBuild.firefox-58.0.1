@@ -349,7 +349,7 @@ if [ $opt_package -eq 1 ] ; then
     export LDFLAGS='-Wl,--as-needed'
     #export MOZ_OBJDIR=$W/obj
     #make -f client.mk install DESTDIR=$P
-    ./mach install
+    DESTDIR=$P ./mach install
     #make install DESTDIR=$P
     install -v -m755 -d $P/usr/${libdir}/mozilla/plugins
   done
