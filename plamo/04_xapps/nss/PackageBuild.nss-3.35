@@ -2,7 +2,7 @@
 export LANG=C
 ##############################################################
 pkgbase=nss
-vers=3.34.1
+vers=3.35
 url="http://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_${vers//./_}_RTM/src/nss-${vers}.tar.gz"
 arch=`uname -m`
 build=T1
@@ -10,7 +10,7 @@ src=${pkgbase}-${vers}
 OPT_CONFIG=''
 DOCS=''
 # http://www.linuxfromscratch.org/patches/blfs/svn/nss-3.26-standalone-1.patch
-patchfiles='nss-3.34.1-standalone-1.patch'
+patchfiles='nss-3.35-standalone-1.patch'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -231,7 +231,7 @@ if [ $opt_build -eq 1 ] ; then
     if [ $arch = "x86_64" ]; then
       export USE_64=1
     fi
-    cd nss && make
+    cd nss && make -j1
   done
 fi
 if [ $opt_package -eq 1 ] ; then
