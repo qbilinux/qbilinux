@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase=doxygen
-vers=1.8.13
+vers=1.8.14
 url="ftp://ftp.stack.nl/pub/users/dimitri/doxygen-${vers}.src.tar.gz"
 arch=`uname -m`
 build=T1
