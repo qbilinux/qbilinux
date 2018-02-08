@@ -1,0 +1,68 @@
+Author: Andreas Beckmann <anbe@debian.org>
+Description: prevent egrep from reporting "Binary file ... matches"
+Bug-Debian: https://bugs.debian.org/797242
+Last-Update: 2016-11-19
+
+--- a/PubdicPlus/Makefile.in
++++ b/PubdicPlus/Makefile.in
+@@ -49,7 +49,7 @@ top_builddir = ..
+ ### 	rm -f *.fzk *.dic *.more
+ ### 
+ ### std.fzk: $(FZK_SRC)
+-### 	/lib/cpp $(FZK_FLAG) fzk.master | egrep -v '^(# |$$)' | $(ATOF) $@
++### 	/lib/cpp $(FZK_FLAG) fzk.master | egrep -a -v '^(# |$$)' | $(ATOF) $@
+ ### 
+ ### full.fzk: $(FZK_SRC)
+ ### 	make FZK_FLAG=-DKANSAI std.fzk
+--- a/Wnn/pubdicplus/Makefile.in
++++ b/Wnn/pubdicplus/Makefile.in
+@@ -353,7 +353,7 @@ $(WNNDICS): pod $(PUBDICPLUSSRC)/pubdic.
+ 	$(ATOD) -h $(HINSI) $@ < $<
+ 
+ .fsrc.fzk:
+-	egrep -v '^(# |#line |#pragma |$$)' $< | $(ATOF) -h $(HINSI) $@
++	egrep -a -v '^(# |#line |#pragma |$$)' $< | $(ATOF) -h $(HINSI) $@
+ 
+ $(DIC): $(HINSI)
+ 
+--- a/cWnn/cdic/Makefile.in
++++ b/cWnn/cdic/Makefile.in
+@@ -64,10 +64,10 @@ all:: $(ALLTGT)
+ $(DICS): $(HINSI)
+ 
+ $(FULL):: $(FZK_SRCS) con.master-.c
+-	$(FZK_PP) -I$(srcdir) $(FZK_FLAG) con.master-.c | egrep -v '^(# |#line |#pragma |$$)' | $(ATOF) -h $(HINSI) $@
++	$(FZK_PP) -I$(srcdir) $(FZK_FLAG) con.master-.c | egrep -a -v '^(# |#line |#pragma |$$)' | $(ATOF) -h $(HINSI) $@
+ 
+ $(FULLR):: $(FZK_SRCS) con.masterR-.c
+-	$(FZK_PP) -I$(srcdir) $(FZK_FLAG) con.masterR-.c | egrep -v '^(# |#line |#pragma |$$)' | $(ATOF) -h $(HINSI) $@
++	$(FZK_PP) -I$(srcdir) $(FZK_FLAG) con.masterR-.c | egrep -a -v '^(# |#line |#pragma |$$)' | $(ATOF) -h $(HINSI) $@
+ 
+ # To avoid circular dependency, we don't use 'con.master?.c'
+ con.master-.c: con.master
+--- a/cWnn/tdic/Makefile.in
++++ b/cWnn/tdic/Makefile.in
+@@ -64,10 +64,10 @@ all:: $(ALLTGT)
+ $(DICS): $(HINSI)
+ 
+ $(FULL):: $(FZK_SRCS) con.master-.c
+-	$(FZK_PP) -I$(srcdir) $(FZK_FLAG) con.master-.c | egrep -v '^(# |#line |#pragma |$$)' | $(ATOF) -h $(HINSI) $@
++	$(FZK_PP) -I$(srcdir) $(FZK_FLAG) con.master-.c | egrep -a -v '^(# |#line |#pragma |$$)' | $(ATOF) -h $(HINSI) $@
+ 
+ $(FULLR):: $(FZK_SRCS) con.masterR-.c
+-	$(FZK_PP) -I$(srcdir) $(FZK_FLAG) con.masterR-.c | egrep -v '^(# |#line |#pragma |$$)' | $(ATOF) -h $(HINSI) $@
++	$(FZK_PP) -I$(srcdir) $(FZK_FLAG) con.masterR-.c | egrep -a -v '^(# |#line |#pragma |$$)' | $(ATOF) -h $(HINSI) $@
+ 
+ # To avoid circular dependency, we don't use 'con.master?.c'
+ con.master-.c: con.master
+--- a/kWnn/kdic/Makefile.in
++++ b/kWnn/kdic/Makefile.in
+@@ -62,7 +62,7 @@ all:: $(ALLTGT)
+ $(DICS): $(HINSI)
+ 
+ $(FULL):: $(FZK_SRCS) fzk.master-.c
+-	$(FZK_PP) -I$(srcdir) $(FZK_FLAG) fzk.master-.c | egrep -v '^(# |#line |#pragma |$$)' | $(ATOF) -h $(HINSI) $@
++	$(FZK_PP) -I$(srcdir) $(FZK_FLAG) fzk.master-.c | egrep -a -v '^(# |#line |#pragma |$$)' | $(ATOF) -h $(HINSI) $@
+ 
+ # To avoid circular dependency, we don't use 'fzk.master.c'
+ fzk.master-.c: fzk.master
