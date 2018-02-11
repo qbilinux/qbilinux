@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
-url='http://downloads.xiph.org/releases/flac/flac-1.2.1.tar.gz'
 pkgbase=flac
-vers=1.2.1
+vers=1.3.2
+url="https://ftp.osuosl.org/pub/xiph/releases/flac/flac-${vers}.tar.xz"
 arch=`uname -m`
 build=T1
-src=flac-1.2.1
+src=flac-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING.FDL COPYING.GPL COPYING.LGPL COPYING.Xiph README'
-patchfiles='flac-1.2.1-encode_main.cpp.patch'
+patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -185,6 +185,7 @@ if [ $opt_download -eq 1 ] ; then
     tar) tar xvpf ${i##*/} ;;
     gz) tar xvpzf ${i##*/} ;;
     bz2) tar xvpjf ${i##*/} ;;
+    *) tar xpf ${i##*/} ;;
     esac
   done
 fi
