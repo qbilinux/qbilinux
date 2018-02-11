@@ -5,12 +5,13 @@ pkgbase=FreeWnn
 vers=1.1.1_a023
 url="https://ja.osdn.net/projects/freewnn/downloads/63271/FreeWnn-1.1.1-a023.tar.bz2"
 arch=`uname -m`
-build=T1
+build=T2
 src=$pkgbase-1.1.1-a023
 OPT_CONFIG=""
 DOCS="CONTRIBUTORS COPYING.LIB COPYRIGHT COPYRIGHT-j ChangeLog ChangeLog.en
     ChangeLog.old INSTALL INSTALL.en
     `echo olddoc/{00README,README{,.sun},Wnn-{FAQ,READ.ME{,.j}}}`"
+patchfiles='egrep-a.patch'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -186,11 +187,14 @@ if [ $opt_config -eq 1 ] ; then
     if [ -d ${B[$i]} ] ; then rm -rf ${B[$i]} ; fi ; cp -a ${S[$i]} ${B[$i]}
   done
   cd $B
-if [ $arch = "x86_64" ]; then
-  cp -p makerule.mk.in makerule.mk.in.orig
-  sed '/^ *WNNWNNDIR =/s@lib@lib64@g' makerule.mk.in.orig > makerule.mk.in
-fi
-for i in `seq 0 $((${#B[@]} - 1))` ; do
+  for patch in $patchfiles ; do
+      patch -p1 < $W/$patch
+  done
+  if [ $arch = "x86_64" ]; then
+      cp -p makerule.mk.in makerule.mk.in.orig
+      sed '/^ *WNNWNNDIR =/s@lib@lib64@g' makerule.mk.in.orig > makerule.mk.in
+  fi
+  for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
       make clean
@@ -289,6 +293,10 @@ if [ $opt_package -eq 1 ] ; then
       ln $docdir/$src/$myname.gz $docdir/${src[$i]}
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
+  done
+  for patch in $patchfiles ; do
+    cp $W/$patch $docdir/$src/$patch
+    gzip_one $docdir/$src/$patch
   done
   convert
 if [ $arch = "x86_64" ]; then

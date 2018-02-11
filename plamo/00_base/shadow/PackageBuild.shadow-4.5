@@ -6,9 +6,9 @@ vers=4.5
 url="https://github.com/shadow-maint/shadow/releases/download/4.5/shadow-4.5.tar.xz
     ftp://plamo.linet.gr.jp/pub/Plamo-src.new/plamo/00_base/shadow/shadow-adduser-20160122"
 arch=`uname -m`
-build=T1
+build=T2
 src=$pkgbase-$vers
-OPT_CONFIG="--sysconfdir=/etc --enable-man --without-selinux
+OPT_CONFIG="--sysconfdir=/etc --enable-man --without-selinux --without-xml-catalog
     --with-libcrack"
 DOCS="COPYING ChangeLog NEWS README TODO"
 SRC_URL="http://circle2.org/pub/source/"
