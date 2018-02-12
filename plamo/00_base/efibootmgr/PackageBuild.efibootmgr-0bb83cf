@@ -5,11 +5,11 @@ vers=0bb83cf
 #url="https://github.com/vathpela/efibootmgr-devel/archive/efibootmgr-0.12.tar.gz"
 url="https://github.com/vathpela/efibootmgr-devel"
 arch=`uname -m`
-build=T1
+build=T2
 src=efibootmgr-devel
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING INSTALL README TODO'
-patchfiles=''
+patchfiles='fix_const.patch'
 compress=txz
 ##############################################################
 
