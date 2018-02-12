@@ -1,0 +1,23 @@
+*** gpm-1.20.7/src/prog/gpm-root.y	2012-10-27 06:21:38.000000000 +0900
+--- build/src/prog/gpm-root.y	2018-02-12 12:28:41.706295575 +0900
+***************
+*** 1196,1206 ****
+                                                          LOG_DAEMON : LOG_USER);
+     /* reap your zombies */
+     childaction.sa_handler=reap_children;
+! #if defined(__GLIBC__)
+!    __sigemptyset(&childaction.sa_mask);
+! #else /* __GLIBC__ */
+!    childaction.sa_mask=0;
+! #endif /* __GLIBC__ */
+     childaction.sa_flags=SA_INTERRUPT; /* need to break the select() call */
+     sigaction(SIGCHLD,&childaction,NULL);
+  
+--- 1196,1202 ----
+                                                          LOG_DAEMON : LOG_USER);
+     /* reap your zombies */
+     childaction.sa_handler=reap_children;
+! 	sigemptyset(&childaction.sa_mask);
+     childaction.sa_flags=SA_INTERRUPT; /* need to break the select() call */
+     sigaction(SIGCHLD,&childaction,NULL);
+  

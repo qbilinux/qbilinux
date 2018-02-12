@@ -1,0 +1,15 @@
+*** gpm-1.20.7/src/daemon/open_console.c	2012-10-27 06:21:38.000000000 +0900
+--- build/src/daemon/open_console.c	2018-02-12 12:24:19.510288918 +0900
+***************
+*** 23,28 ****
+--- 23,32 ----
+  #include <sys/stat.h>               /* stat()            */
+  #include <sys/ioctl.h>              /* ioctl             */
+  
++ #ifdef HAVE_SYS_SYSMACROS_H
++ #include <sys/sysmacros.h>          /* major() w/newer glibc */
++ #endif
++ 
+  /* Linux specific (to be outsourced in gpm2 */
+  #include <linux/serial.h>           /* for serial console check */
+  #include <asm/ioctls.h>            /* for serial console check */
