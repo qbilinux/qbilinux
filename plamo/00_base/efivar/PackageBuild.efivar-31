@@ -1,8 +1,8 @@
 #!/bin/sh
 ##############################################################
 pkgbase=efivar
-vers=30
-url="https://github.com/rhinstaller/efivar/releases/download/30/efivar-30.tar.bz2"
+vers=31
+url="https://github.com/rhboot/efivar/releases/download/${vers}/efivar-${vers}.tar.bz2"
 arch=`uname -m`
 build=T1
 src=efivar-${vers}
