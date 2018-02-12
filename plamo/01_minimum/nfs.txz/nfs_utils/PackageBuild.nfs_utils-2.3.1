@@ -2,14 +2,14 @@
 
 ######################################################################
 pkgbase=nfs_utils
-vers=2.1.1
-url="https://www.kernel.org/pub/linux/utils/nfs-utils/${vers}/nfs-utils-${vers}.tar.xz
-    https://raw.githubusercontent.com/pld-linux/nfs-utils/master/nfs-utils-heimdal.patch"
+vers=2.3.1
+url="https://www.kernel.org/pub/linux/utils/nfs-utils/${vers}/nfs-utils-${vers}.tar.xz"
 arch=`uname -m`
 build=T1
 src=nfs-utils-$vers
 OPT_CONFIG="--disable-nfsv4 --disable-gss --with-krb5=/usr/heimdal"
 DOCS="README NEWS INSTALL COPYING"
+#https://raw.githubusercontent.com/pld-linux/nfs-utils/master/nfs-utils-heimdal.patch
 patchfiles="nfs-utils-heimdal.patch"
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
