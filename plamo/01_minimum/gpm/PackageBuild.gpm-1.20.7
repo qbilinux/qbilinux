@@ -5,9 +5,9 @@ pkgbase=gpm
 vers=1.20.7
 url="http://www.nico.schottelius.org/software/gpm/archives/gpm-${vers}.tar.bz2"
 arch=`uname -m`
-build=T1
+build=T2
 src=$pkgbase-$vers
-patchfiles=""
+patchfiles="gpm-1.20.7-sysmacros.patch gpm-1.20.7-sigemptyset.patch"
 OPT_CONFIG="--enable-shared --disable-static"
 DOCS="COPYING MANIFEST README* TODO
     doc/Announce doc/FAQ doc/HACK_GPM doc/README.* doc/changelog
