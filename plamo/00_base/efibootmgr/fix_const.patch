@@ -1,0 +1,57 @@
+diff -Nrc efibootmgr-devel/src/efibootdump.c build/src/efibootdump.c
+*** efibootmgr-devel/src/efibootdump.c	2018-02-12 10:11:06.593085965 +0900
+--- build/src/efibootdump.c	2018-02-12 10:13:40.627089876 +0900
+***************
+*** 39,45 ****
+  	uint8_t *optional_data = NULL;
+  	size_t optional_data_len = 0;
+  	uint16_t pathlen;
+! 	const unsigned char const *desc;
+  	char *raw;
+  	size_t raw_len;
+  
+--- 39,45 ----
+  	uint8_t *optional_data = NULL;
+  	size_t optional_data_len = 0;
+  	uint16_t pathlen;
+! 	const unsigned char *desc;
+  	char *raw;
+  	size_t raw_len;
+  
+diff -Nrc efibootmgr-devel/src/efibootmgr.c build/src/efibootmgr.c
+*** efibootmgr-devel/src/efibootmgr.c	2018-02-12 10:11:06.593085965 +0900
+--- build/src/efibootmgr.c	2018-02-12 10:14:05.310090503 +0900
+***************
+*** 221,227 ****
+  	list_t *pos;
+  	var_entry_t *entry;
+  	efi_load_option *load_option;
+! 	const unsigned char const *desc;
+  
+  	list_for_each(pos, var_list) {
+  		entry = list_entry(pos, var_entry_t, list);
+--- 221,227 ----
+  	list_t *pos;
+  	var_entry_t *entry;
+  	efi_load_option *load_option;
+! 	const unsigned char *desc;
+  
+  	list_for_each(pos, var_list) {
+  		entry = list_entry(pos, var_entry_t, list);
+***************
+*** 873,879 ****
+  {
+  	list_t *pos;
+  	var_entry_t *boot;
+! 	const unsigned char const *description;
+  	efi_load_option *load_option;
+  	efidp dp = NULL;
+  	unsigned char *optional_data = NULL;
+--- 873,879 ----
+  {
+  	list_t *pos;
+  	var_entry_t *boot;
+! 	const unsigned char *description;
+  	efi_load_option *load_option;
+  	efidp dp = NULL;
+  	unsigned char *optional_data = NULL;
