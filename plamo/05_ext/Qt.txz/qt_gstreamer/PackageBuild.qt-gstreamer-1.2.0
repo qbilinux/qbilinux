@@ -6,7 +6,11 @@ vers=1.2.0
 arch=`uname -m`
 build=T1
 src=qt-gstreamer-1.2.0
-OPT_CONFIG=''
+OPT_CONFIG='-DQT_VERSION=5 \
+               -DQTGSTREAMER_STATIC=OFF \
+               -DQTGSTREAMER_TESTS=OFF \
+               -DQTGSTREAMER_EXAMPLES=OFF \
+               -DUSE_QT_PLUGIN_DIR=OFF'
 DOCS='COPYING HACKING NEWS README'
 patchfiles='find_gstconfig_properly.patch upstream_workaroud_boost_ftbfs.patch Furter-workarounds-for-build-failures-now-boost-1.61-and-.patch'
 compress=txz
