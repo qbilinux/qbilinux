@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase=qt5
-vers=5.9.3
+vers=5.9.4
 url="http://download.qt.io/archive/qt/5.9/${vers}/single/qt-everywhere-opensource-src-${vers}.tar.xz"
 arch=`uname -m`
 build=T1
@@ -160,26 +160,27 @@ fi
 
 if [ $opt_config -eq 1 ] ; then
    for i in `seq 0 $((${#B[@]} - 1))` ; do
-     if [ -d ${B[$i]} ] ; then rm -rf ${B[$i]} ; fi ; cp -a ${S[$i]} ${B[$i]}
+     if [ -d ${B[$i]} ] ; then rm -rf ${B[$i]} ; fi ; mkdir ${B[$i]}
    done
 ######################################################################
 # * ./configure を行う前に適用したい設定やパッチなどがある場合はここに
 #   記述します。
 ######################################################################
   for i in `seq 0 $((${#B[@]} - 1))` ; do
-    cd ${B[$i]}
+    cd ${S[$i]}
     for patch in $patchfiles ; do
        patch -p1 < $W/$patch
     done
 
+    cd ${B[$i]}
     # if [ -f autogen.sh ] ; then
     #   sh ./autogen.sh
     # fi
 
-      if [ -x configure ] ; then
+      if [ -x ${S[$i]}/configure ] ; then
          export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
          export LDFLAGS='-Wl,--as-needed' 
-         ./configure -prefix /usr/${libdir}/qt5 -libdir /usr/${libdir} -L /opt/mariadb/${libdir} $OPT_CONFIG
+         ${S[$i]}/configure -prefix /usr/${libdir}/qt5 -libdir /usr/${libdir} -L /opt/mariadb/${libdir} -plugindir /usr/${libdir}/qt5/plugins -importdir /usr/${libdir}/qt5/imports $OPT_CONFIG
      fi
       if [ $? != 0 ]; then
 	  echo "configure error. $0 script stop"
