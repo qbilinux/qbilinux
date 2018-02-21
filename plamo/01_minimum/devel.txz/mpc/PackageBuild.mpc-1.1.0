@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=mpc
-vers=1.0.3
+vers=1.1.0
 url="http://ftp.gnu.org/gnu/mpc/mpc-${vers}.tar.gz"
 arch=`uname -m`
 build=T1
