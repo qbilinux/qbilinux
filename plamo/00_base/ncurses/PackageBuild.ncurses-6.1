@@ -2,9 +2,8 @@
 
 ######################################################################
 pkgbase=ncurses
-vers=6.0
-url="http://ftp.gnu.org/gnu/ncurses/ncurses-${vers}.tar.gz
-    ftp://plamo.linet.gr.jp/pub/Plamo-src.new/plamo/00_base/ncurses/ncurses-6.0-Charable.patch.gz"
+vers=6.1
+url="http://ftp.gnu.org/gnu/ncurses/ncurses-${vers}.tar.gz"
 arch=`uname -m`
 build=T1
 src=$pkgbase-$vers
@@ -12,6 +11,8 @@ OPT_CONFIG="--with-shared --without-debug --enable-widec
     --with-manpage-format=normal --disable-ext-colors"
 DOCS="README.MinGW README README.emx NEWS ANNOUNCE COPYING INSTALL
     TO-DO AUTHORS"
+patchfiles='ncurses-6.0-Charable.patch'
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -194,7 +195,9 @@ if [ $opt_config -eq 1 ] ; then
     if [ -d ${B[$i]} ] ; then rm -rf ${B[$i]} ; fi ; cp -a ${S[$i]} ${B[$i]}
   done
   cd $B
-  gunzip -c $W/ncurses-6.0-Charable.patch.gz | patch -Np1 -i -
+    for patch in $patchfiles ; do
+      patch -p1 < $W/$patch
+    done
   if [ $arch == x86_64 ] ; then
     cp -p misc/run_tic.in{,.orig}
     sed -i 's@\<lib\>@lib64@g' misc/run_tic.in
@@ -271,18 +274,15 @@ if [ $opt_package -eq 1 ] ; then
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
+  for patch in $patchfiles ; do
+    cp $W/$patch $docdir/$src/$patch
+    gzip_one $docdir/$src/$patch
+  done
   convert
-  tar cvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find $libdir | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/$libdir | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/include | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/{tabset,terminfo}
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man3 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man5 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man7 | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  tar rvpf $pkg.tar -C $P install/doinst.sh
-  touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi
