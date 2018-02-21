@@ -1,0 +1,17 @@
+--- ncurses-6.0/ncurses/curses.priv.h.orig	2015-06-27 10:22:16.000000000 +0900
++++ ncurses-6.0/ncurses/curses.priv.h	2016-04-28 16:30:09.102261100 +0900
+@@ -1467,11 +1467,11 @@
+ 				AttrOf(dst) |= (attr_t) (ext + 1)
+ 
+ #define if_WIDEC(code)  code
+-#define Charable(ch)	(((SP_PARM->_legacy_coding)			\
++#define Charable(ch)	((SP_PARM->_legacy_coding)			\
+ 			 || (AttrOf(ch) & A_ALTCHARSET)			\
+-			 || (!isWidecExt(ch))) &&			\
++			 || (!isWidecExt(ch) &&				\
+ 			     (ch).chars[1] == L'\0' &&			\
+-			     _nc_is_charable(CharOf(ch)))
++			     _nc_is_charable(CharOf(ch))))
+ 
+ #define L(ch)		L ## ch
+ #else /* }{ */
