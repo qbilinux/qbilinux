@@ -1,0 +1,394 @@
+#!/bin/sh -x
+
+######################################################################
+url="https://www.busybox.net/downloads/busybox-1.25.1.tar.bz2
+    ftp://plamo.linet.gr.jp/pub/Plamo-src/plamo/99_test/installer/busybox-1.25.1-config
+    https://invisible-mirror.net/archives/dialog/dialog-1.3-20160828.tgz
+    http://ftp.gnu.org/gnu/coreutils/coreutils-8.25.tar.xz
+    http://ftp.gnu.org/gnu/gzip/gzip-1.8.tar.gz
+    http://www.bzip.org/1.0.6/bzip2-1.0.6.tar.gz
+    http://tukaani.org/xz/xz-5.2.2.tar.xz
+    http://ftp.gnu.org/gnu/tar/tar-1.26.tar.xz
+    ftp://plamo.linet.gr.jp/pub/Plamo-src/plamo/00_base/tar/tar-1.23-tartime.patch.gz
+    ftp://plamo.linet.gr.jp/pub/Plamo-src/plamo/00_base/tar/tar-1.23-txz.patch.gz
+    ftp://plamo.linet.gr.jp/pub/Plamo-src/plamo/00_base/tar/tar-1.26-no-gets.patch.gz
+    http://vdlinux.sourceforge.jp/dists/UNICON/unicon-tools-0.0.0.20050707.tar.gz
+    https://www.kernel.org/pub/linux/utils/kbd/kbd-1.15.5.tar.xz
+    ftp://plamo.linet.gr.jp/pub/Plamo-src/plamo/00_base/kbd/kbd-1.15-backspace-1.patch.gz
+    ftp://plamo.linet.gr.jp/pub/Plamo-src/plamo/00_base/kbd/kbd-1.15-plamo-compat.patch.gz
+    ftp://plamo.linet.gr.jp/pub/Plamo-src/plamo/00_base/kbd/kbd-1.15.5-revert_loadkeys_analize.patch.gz
+    https://www.kernel.org/pub/linux/utils/kernel/hotplug/udev-175.tar.xz
+    ftp://plamo.linet.gr.jp/pub/Plamo-src/plamo/00_base/udev/udev-175-input-event-codes.patch.gz
+    ftp://plamo.linet.gr.jp/pub/Plamo-src/plamo/00_base/udev/udev-175-mtd_probe_stdint.patch.gz
+    http://ftp.gnu.org/gnu/ncurses/ncurses-6.0.tar.gz
+    ftp://plamo.linet.gr.jp/pub/Plamo-src/plamo/00_base/ncurses/ncurses-6.0-Charable.patch.gz
+    http://www.kernel.org/pub/linux/utils/util-linux/v2.28/util-linux-2.28.tar.xz
+    http://downloads.sourceforge.net/e2fsprogs/e2fsprogs-1.43.3.tar.gz
+    https://www.kernel.org/pub/linux/kernel/people/kdave/btrfs-progs/btrfs-progs-v4.8.3.tar.gz
+    http://mirror.opencompute.org/onie/dosfstools-3.0.26.tar.xz
+    https://tuxera.com/opensource/ntfs-3g_ntfsprogs-2016.2.22.tgz
+    https://github.com/PhantomX/slackbuilds/raw/master/ntfs-3g/patches/ntfs-3g_ntfsprogs-2011.10.9-RC-ntfsck-unsupported-return-0.patch
+    ftp://plamo.linet.gr.jp/pub/Plamo-src/plamo/99_test/installer/ntfs-3g_ntfsprogs-2016.2.22-libtool.patch
+    http://www.kernel.org/pub/linux/utils/raid/mdadm/mdadm-3.2.3.tar.bz2
+    ftp://sources.redhat.com/pub/lvm2/releases/LVM2.2.02.90.tgz
+    ftp://plamo.linet.gr.jp/pub/Plamo-src/plamo/99_test/installer/LVM2.2.02.90-static.patch
+    ftp://plamo.linet.gr.jp/pub/Plamo-src/plamo/99_test/installer/installer-plamoinitrd.targz
+    ftp://plamo.linet.gr.jp/pub/Plamo-src/plamo/99_test/installer/plamo_isolinux.tar.gz
+    ftp://plamo.linet.gr.jp/pub/Plamo-src/plamo/99_test/installer/rpi_firmware.tar.gz"
+verify=
+digest=
+branch=
+commitid=
+pkgbase=installer
+vers=6.2
+arch=`uname -m`
+build=P1
+src[0]=busybox-1.25.1
+src[1]=dialog-1.3-20160828
+src[2]=coreutils-8.25
+src[3]=gzip-1.8
+src[4]=bzip2-1.0.6
+src[5]=xz-5.2.2
+src[6]=tar-1.26
+src[7]=unicon-tools-0.0.0.20050707
+src[8]=kbd-1.15.5
+src[9]=udev-175
+src[10]=ncurses-6.0
+src[11]=util-linux-2.28
+src[12]=e2fsprogs-1.43.3
+src[13]=btrfs-progs-v4.8.3
+src[14]=dosfstools-3.0.26
+src[15]=ntfs-3g_ntfsprogs-2016.2.22
+src[16]=mdadm-3.2.3
+src[17]=LVM2.2.02.90
+patchfiles[6]="`echo tar-1.2{3-{tartime,txz},6-no-gets}.patch.gz`"
+patchfiles[8]="`echo kbd-1.15-{backspace-1,plamo-compat}.patch.gz`
+    kbd-1.15.5-revert_loadkeys_analize.patch.gz"
+patchfiles[9]="udev-175-input-event-codes.patch.gz
+    udev-175-mtd_probe_stdint.patch.gz"
+patchfiles[10]="ncurses-6.0-Charable.patch.gz"
+patchfiles[15]="ntfs-3g_ntfsprogs-2011.10.9-RC-ntfsck-unsupported-return-0.patch
+    ntfs-3g_ntfsprogs-2016.2.22-libtool.patch"
+patchfiles[17]="LVM2.2.02.90-static.patch"
+OPT_CONFIG[1]="--enable-nls --with-ncursesw --enable-widec"
+OPT_CONFIG[2]="--enable-no-install-program=chroot,hostid,nice,who,users"
+OPT_CONFIG[2]+=",pinky,uptime,stty,df,stdbuf,[,base64,base32,basename,cat"
+OPT_CONFIG[2]+=",chcon,chgrp,chmod,chown,cksum,comm,cp,csplit,cut,date,dd"
+OPT_CONFIG[2]+=",dir,dircolors,dirname,du,echo,env,expand,expr,factor"
+OPT_CONFIG[2]+=",false,fmt,fold,groups,head,id,join,kill,link,ln,logname"
+OPT_CONFIG[2]+=",md5sum,mkdir,mkfifo,mknod,mktemp,mv,nl,nproc,nohup,numfmt"
+OPT_CONFIG[2]+=",od,pathchk,pr,printenv,printf,ptx,pwd,readlink,realpath"
+OPT_CONFIG[2]+=",rm,rmdir,runcon,seq,sha1sum,sha224sum,sha256sum,sha384sum"
+OPT_CONFIG[2]+=",sha512sum,shred,shuf,sleep,sort,split,stat,sum,sync,tac"
+OPT_CONFIG[2]+=",tail,tee,test,timeout,touch,tr,true,truncate,tsort,tty"
+OPT_CONFIG[2]+=",uname,unexpand,uniq,unlink,vdir,wc,whoami,yes --without-gmp"
+OPT_CONFIG[9]="--libexecdir=/lib/udev --enable-static
+    --disable-introspection --enable-rule_generator"
+OPT_CONFIG[10]="--without-debug --enable-widec --with-manpage-format=normal
+    --disable-ext-colors"
+OPT_CONFIG[11]="--disable-mount --disable-losetup --disable-mountpoint
+    --disable-unshare --disable-nsenter --disable-setpriv --disable-eject
+    --disable-cramfs --disable-bfs --disable-minix --disable-fdformat
+    --disable-hwclock --disable-cal --disable-logger --disable-switch_root
+    --disable-pivot_root --disable-kill --disable-last --disable-mesg
+    --disable-login --disable-sulogin --disable-su --disable-more
+    --disable-schedutils --disable-wall --enable-write --disable-pylibmount
+    --without-user --without-python"
+OPT_CONFIG[12]="--enable-symlink-install --disable-libuuid --disable-libblkid
+    --disable-fsck --disable-e2initrd-helper --disable-uuidd"
+OPT_CONFIG[13]="--bindir=/sbin"
+OPT_CONFIG[15]="--enable-really-static"
+OPT_CONFIG[17]="--enable-static_link --enable-applib --enable-cmdlib
+    --enable-pkgconfig --enable-dmeventd --with-thin=internal"
+DOCS=""
+template=20170713
+tmplurl=ftp://plamo.linet.gr.jp/pub/Plamo-src/admin
+######################################################################
+
+if [ -f functions ] ; then
+  source ./functions
+elif [ ! -f /usr/share/plamo/functions ] ; then
+  wget ftp://plamo.linet.gr.jp/pub/Plamo-src/admin/functions
+  source ./functions
+else
+  source /usr/share/plamo/functions
+fi
+
+#fscheck
+prepare "$@"
+infodir=$P/share/info
+mandir=$P/share/man
+docdir=.
+if [ $opt_download -eq 1 ] ; then
+  download_sources
+fi
+if [ $opt_config -eq 1 ] ; then
+  for i in `seq 0 $((${#B[@]} - 1))` ; do
+    if [ -d ${B[$i]} ] ; then rm -rf ${B[$i]} ; fi ; cp -a ${S[$i]} ${B[$i]}
+  done
+  apply_patches
+  cd ${B[0]}
+  cp -p $W/busybox-1.25.1-config .config
+  cd ${B[2]}
+  cp -p po/Makevars{,.orig}
+  sed -i 's@EXTRA_LOCALE_CATEGORIES@#&@g' po/Makevars
+  cp -p gnulib-tests/Makefile.in{,.orig}
+  sed -i -e 's@$(bin_PROGRAMS)@@g' \
+      -e 's@$(man1_MANS)@@g' gnulib-tests/Makefile.in
+  cd ${B[3]}
+  cp -p Makefile.in{,.orig}
+  cat <<- "EOF" | patch Makefile.in
+	2201c2201
+	< 	       ln "$$source" "$$dest" || $(LN_S) "$$source" "$$dest";; \
+	---
+	> 	       $(LN_S) "$$source" "$$dest";; \
+	EOF
+  cd ${B[4]}
+  cp -p Makefile{,.orig}
+  sed -i -e 's@\<lib\>@$(LIBDIR)@g' -e 's@\<man\>@share/&@g' \
+      -e '/ln/s@$(PREFIX)/bin/@@' Makefile
+  cd ${B[10]}
+  if [ $arch == x86_64 ] ; then
+    cp -p misc/run_tic.in{,.orig}
+    sed -i 's@\<lib\>@lib64@g' misc/run_tic.in
+  fi
+  cd ${B[11]}
+  cp -p configure{,.orig}
+  cat <<- "EOF" | patch configure
+	21751a21752
+	> build_blkid=no
+	21794a21796
+	> build_findfs=no
+	23202a23205
+	> build_fstrim=no
+	23266a23270
+	> build_swapon=no
+	23887a23892
+	> build_mkswap=no
+	24073a24079
+	> build_getopt=no
+	24097a24104
+	> build_blockdev=no
+	24627a24635
+	> build_flock=no
+	24890a24899
+	> build_renice=no
+	24913a24923
+	> build_setsid=no
+	24936a24947
+	> build_readprofile=no
+	24979a24991
+	> build_dmesg=no
+	25135a25148
+	> build_blkdiscard=no
+	25221a25235
+	> build_rtcwake=no
+	25264a25279
+	> build_setarch=no
+	25307a25323
+	> build_script=no
+	25357a25374
+	> build_scriptreplay=no
+	25472a25490
+	> build_hexdump=no
+	25495a25514
+	> build_rev=no
+	EOF
+  cd ${B[12]}
+  if [ $arch == x86_64 ] ; then
+    cp -p configure{,.orig}
+    sed -i '/^    root_libdir=/s@$libdir@/lib64@g' configure
+  fi
+  cp -p misc/mke2fs.conf.in{,.orig}
+  sed -i 's@,dir_index@@g' misc/mke2fs.conf.in
+  cd ${B[15]}
+  cp -p ntfsprogs/Makefile.in{,.orig}
+  sed -i '/LN_S/s@$(sbindir)/@@g' ntfsprogs/Makefile.in
+  cp -p src/Makefile.in{,.orig}
+  sed -i '/LN_S/s@$(rootbindir)@../bin@g' src/Makefile.in
+  cd ${B[17]}
+  cp -p daemons/dmeventd/Makefile.in{,.orig}
+  sed -i 's@$(ELDFLAGS) @@' daemons/dmeventd/Makefile.in
+  for i in `seq 0 $((${#B[@]} - 1))` ; do
+    cd ${B[$i]}
+    if [ -x configure ] ; then
+      ./configure --prefix= --sysconfdir=/etc --localstatedir=/var \
+          --libdir='${exec_prefix}'/$libdir --infodir='${prefix}'/share/info \
+          --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]} \
+          `[ $i -eq 9 ] && echo --with-rootdir=/$libdir` \
+          `[ $i -eq 17 ] && echo --with-usrlibdir=/$libdir`
+    fi
+  done
+fi
+if [ $opt_build -eq 1 ] ; then
+  for i in `seq 0 $((${#B[@]} - 1))` ; do
+    cd ${B[$i]}
+    if [ -f [Mm]akefile ] ; then
+      case $i in
+      0|15|17) make ;;
+      1) make LIBS="-lncursesw -lm -ldl -static" ;;
+      4|10|13|14|16) make LDFLAGS="-ldl -static" ;;
+      5) make LIBS="-ldl -all-static" ;;
+      9) make LDFLAGS="-ldl -all-static" ;;
+      11) make LDFLAGS="-lncursesw -ldl -all-static" \
+          REALTIME_LIBS="-lrt -lpthread" ;;
+      12) make LDFLAGS="-ldl -static" LIBFUSE="-lfuse -lpthread -ldl" ;;
+      *) make LIBS="-ldl -static" ;;
+      esac
+    fi
+  done
+fi
+if [ $opt_package -eq 1 ] ; then
+  root_priv
+  if [ -d $P ] ; then rm -rf $P ; fi ; mkdir -p $P
+  if [ -d $C ] ; then rm -rf $C ; fi ; mkdir -p $C
+  touch $W/i.st ; sleep 1
+  for i in `seq 0 $((${#B[@]} - 1))` ; do
+    cd ${B[$i]}
+    if [ -f [Mm]akefile ] ; then
+      case $i in
+      0) make install CONFIG_PREFIX=$P ;;
+      2) make install DESTDIR=$P bin_PROGRAMS="src/ls src/paste" \
+          man1_MANS="man/ls.1 man/paste.1" ;;
+      4) make install PREFIX=$P LIBDIR=$libdir ;;
+      7) make install DESTDIR=$P libdir=$P/share ;;
+      11) make -i install DESTDIR=$P ;;
+      14) make install DESTDIR=$P PREFIX= ;;
+      16) make install DESTDIR=$P MANDIR=/share/man ;;
+      *) make install DESTDIR=$P ;;
+      esac
+    fi
+  done
+  rm $P/linuxrc
+  ln -s bin/busybox $P/init
+  touch $P/$libdir/*.a
+  touch $P/$libdir/pkgconfig/*.pc
+  touch $P/etc/lvm/lvm.conf
+  touch $mandir/man[58]/*
+  touch $W/i.et
+  cd $W
+  find $P -newer i.st ! -newer i.et -exec touch -ht `date '+%m%d0900'` {} \;
+  compress
+  find $mandir -type l -exec touch -ht `date '+%m%d0900'` {} \;
+  strip_bindir $P/libexec
+  strip_bindir $P/lib/udev
+  strip_libdir $P/$libdir/device-mapper
+  gzip_dir $mandir/de/man8
+  touch -t `date '+%m%d0900'` $P/{bin,sbin,libexec,lib/udev} \
+      $P/$libdir/device-mapper $infodir $mandir/{man[134578],de/man8}
+  tar xvpzf installer-plamoinitrd.targz -C $P
+  case $arch in i686) a=x86 ;; armv7l) a=arm ;; *) a=$arch ;; esac
+  if [ -f ../kernel-*/kernel-*.txz ] ; then
+    cp -p ../kernel-*/kernel-*.txz .
+  else
+    wget ftp://plamo.linet.gr.jp/pub/Plamo-6.x/$a/plamo/00_base/kernel-*.txz
+  fi
+  if [ $arch == i686 -o $arch == x86_64 ] ; then
+    media=DVD
+    K=$media/isolinux
+  else
+    media=SD
+    K=$media
+  fi
+  mkdir -p $K
+  if [ $media == DVD ] ; then
+    cp -p /usr/share/syslinux/isolinux.bin $K
+    cp -p /usr/share/syslinux/{ldlinux,menu,vesamenu,lib{util,com32}}.c32 $K
+    cp -p plamo_isolinux/{isolinux.cfg,sample.msg,plamo61.lss} $K
+    chown root.root $K/{isolinux.cfg,sample.msg,plamo61.lss}
+    mkdir -p $media/EFI/BOOT
+    if [ $arch == i686 ] ; then
+      grub-mkimage -p '' -o $media/EFI/BOOT/BOOTIA32.EFI -O i386-efi fat \
+          part_msdos iso9660 gzio all_video gfxterm font terminal normal \
+          linux echo test search configfile cpuid minicmd
+      wget -P $media/EFI/BOOT \
+          ftp://plamo.linet.gr.jp/pub/Plamo-src/plamo/99_test/installer/BOOTX64.EFI
+    else
+      wget -P $media/EFI/BOOT \
+          ftp://plamo.linet.gr.jp/pub/Plamo-src/plamo/99_test/installer/BOOTIA32.EFI
+      grub-mkimage -p '' -o $media/EFI/BOOT/BOOTX64.EFI -O x86_64-efi fat \
+          part_msdos iso9660 gzio all_video gfxterm font terminal normal \
+          linux echo test search configfile cpuid minicmd
+    fi
+    cat <<- "EOF" > $media/EFI/BOOT/GRUB.CFG
+	menuentry "UEFI Plamo Linux install from DVD" {
+	  linux (cd0)/isolinux/vmlinuz root=/dev/ram0 rw nomodeset vga16 unicon=eucjp vt.default_utf8=0 kbd=usbkbd
+	  initrd (cd0)/isolinux/initrd.gz
+	}
+	menuentry "UEFI Plamo Linux install from USB DVD" {
+	  linux (hd0)/isolinux/vmlinuz root=/dev/ram0 rw nomodeset vga16 unicon=eucjp vt.default_utf8=0 kbd=usbkbd
+	  initrd (hd0)/isolinux/initrd.gz
+	}
+	menuentry "UEFI Plamo Linux install from USB memory" {
+	  linux (hd0,msdos1)/isolinux/vmlinuz root=/dev/ram0 rw nomodeset vga16 unicon=eucjp vt.default_utf8=0 kbd=usbkbd
+	  initrd (hd0,msdos1)/isolinux/initrd.gz
+	}
+	menuentry "UEFI Plamo Linux install on VirtualBox" {
+	  linux (hd1)/isolinux/vmlinuz root=/dev/ram0 rw nomodeset vga16 unicon=eucjp vt.default_utf8=0 kbd=usbkbd
+	  initrd (hd1)/isolinux/initrd.gz
+	}
+	EOF
+    find $media/EFI -exec touch -t `date '+%m%d0900'` {} \;
+    mkdir efiboot
+    fallocate -l 1440K $K/efiboot.img
+    /sbin/mkfs -t vfat $K/efiboot.img
+    mount -o loop $K/efiboot.img efiboot
+    mkdir -p efiboot/EFI/BOOT
+    cp -p $media/EFI/BOOT/BOOT{IA32,X64}.EFI efiboot/EFI/BOOT
+    cat <<- "EOF" > efiboot/EFI/BOOT/GRUB.CFG
+	menuentry "Plamo Linux install from DVD" {
+	  linux (cd0)/isolinux/vmlinuz root=/dev/ram0 rw unicon=eucjp vt.default_utf8=0
+	  initrd (cd0)/isolinux/initrd.gz
+	}
+	EOF
+    find efiboot/EFI -exec touch -t `date '+%m%d0900'` {} \;
+    umount efiboot
+    touch -t `date '+%m%d0900'` $K/efiboot.img
+  else
+    img=plamo-${vers}_${a}_`date '+%y%m%d'`_sd.img
+    size=896 ; fallocate -l ${size}M $img
+    cat <<- EOF | sfdisk $img
+	8192,$(((size - 4) * 2048)),c,*
+	EOF
+    loop=`losetup -f`
+    losetup -P $loop $img
+    /sbin/mkfs -t vfat ${loop}p1
+    mount ${loop}p1 $media
+    cp -R --preserve=timestamps rpi_firmware/. $K
+  fi
+  ln -sfn $W/$K $P/boot
+  tar xvpJf kernel-*.txz -C $P
+  ln -sfn /mnt/boot $P/boot
+  touch -hr $P/{cdrom,boot}
+  touch -t `date '+%m%d0900'` $P/lib{,/modules}
+  rm -rf $P/{usr,install}
+  if [ $media == DVD ] ; then
+    ln -f $K/config{-*,}
+    ln -f $K/vmlinuz{-*,}
+    ln -f $K/System.map{-*,}
+  fi
+  ( cd $P ; find . | tail -n+2 | cpio -o -H newc | gzip -n ) > $K/initrd.gz
+  touch -t `date '+%m%d0900'` $K{,/initrd.gz}
+  for i in plamo contrib Change.Log{,-2011} \
+      README.{1ST,EUC,SJIS,GPT} README_GPT.pdf allpkgs.pickle ; do
+    if [ $media == DVD ] ; then
+      ln -s /mnt/work/Plamo-6.x/$a/$i $media
+    else
+      cp -R --preserve=timestamps /mnt/work/Plamo-6.x/$a/$i $media
+    fi
+  done
+  src=$media ; setup_docdir
+  touch -t `date '+%m%d0900'` $media
+  false && convert_links
+  if [ $media == DVD ] ; then
+    mkisofs -v -f -J -r -b isolinux/isolinux.bin -c isolinux/boot.cat \
+        -no-emul-boot -boot-load-size 4 -boot-info-table -eltorito-alt-boot \
+        -eltorito-platform efi -eltorito-boot isolinux/efiboot.img \
+        -m old -m texlive_texmf[34]-*.txz \
+        -V plamo-$vers-$a -o plamo-${vers}_${a}_`date '+%y%m%d'`_dvd.iso $media
+  else
+    umount $media
+    losetup -d $loop
+  fi
+  cleanup
+fi
