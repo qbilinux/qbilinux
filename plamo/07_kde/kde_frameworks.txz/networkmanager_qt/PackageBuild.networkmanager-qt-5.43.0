@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
-pkgbase=qtwebkit
-vers=5.9.1
-url="https://download.qt.io/official_releases/qt/5.9/${vers}/submodules/qtwebkit-opensource-src-${vers}.tar.xz"
+pkgbase=networkmanager_qt
+vers=5.43.0
+url='http://download.kde.org/stable/frameworks/5.43/networkmanager-qt-5.43.0.tar.xz'
 commitid=
 arch=`uname -m`
-build=T2
-src=qtwebkit-opensource-src-${vers}
+build=T1
+src=networkmanager-qt-${vers}
 OPT_CONFIG=''
-DOCS='ChangeLog-2012-05-22 LICENSE.GPLv2 LICENSE.GPLv3 LICENSE.LGPLv21 LICENSE.LGPLv3'
+DOCS='COPYING.LIB README.md TODO'
 patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
@@ -164,8 +164,8 @@ if [ $opt_patch -eq 1 ] ; then
     if [ -d ${B[$i]} ] ; then rm -rf ${B[$i]} ; fi ; cp -a ${S[$i]} ${B[$i]}
   done
 ######################################################################
-# * ./configure ã‚’è¡Œã†å‰ã«é©ç”¨ã—ãŸã„è¨­å®šã‚„ãƒ‘ãƒƒãƒãªã©ãŒã‚ã‚‹å ´åˆã¯ã“ã“ã«
-#   è¨˜è¿°ã—ã¾ã™ã€‚
+# * ./configure ¤ò¹Ô¤¦Á°¤ËÅ¬ÍÑ¤·¤¿¤¤ÀßÄê¤ä¥Ñ¥Ã¥Á¤Ê¤É¤¬¤¢¤ë¾ì¹ç¤Ï¤³¤³¤Ë
+#   µ­½Ò¤·¤Ş¤¹¡£
 ######################################################################
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
@@ -178,15 +178,11 @@ fi
 if [ $opt_config -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
-    sed -e '/CONFIG/a QMAKE_CXXFLAGS += -Wno-expansion-to-defined' -i Tools/qmake/mkspecs/features/unix/default_pre.prf
-    # if [ -f autogen.sh ] ; then
-    #   sh ./autogen.sh
-    # fi
-
-    mkdir build-package
-    cd build-package
-    qmake-qt5 ../WebKit.pro
-    
+    if [ -f $S/CMakeLists.txt ]; then
+      export PKG_CONFIG_PATH=/opt/kde/${libdir}/pkgconfig:/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
+      export LDFLAGS='-Wl,--as-needed' 
+      cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DLIB_INSTALL_DIR:PATH=/usr/${libdir} -DLIB_SUFFIX=$suffix ${OPT_CONFIG} .
+    fi
     if [ $? != 0 ]; then
       echo "configure error. $0 script stop"
       exit 255
@@ -196,7 +192,6 @@ fi
 if [ $opt_build -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
-    cd build-package
     if [ -f Makefile ] ; then
       export LDFLAGS='-Wl,--as-needed'
       make
@@ -216,16 +211,14 @@ if [ $opt_package -eq 1 ] ; then
   fi
   if [ -d $P ] ; then rm -rf $P ; fi ; mkdir -p $P
   if [ -d $C ] ; then rm -rf $C ; fi ; mkdir -p $C
-  touch $W/i.st ; sleep 1
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
-    cd build-package
     for mk in `find . -name "[Mm]akefile" ` ; do
       sed -i -e 's|GCONFTOOL = /usr/bin/gconftool-2|GCONFTOOL = echo|' $mk
     done
     if [ -f Makefile ] ; then
       export LDFLAGS='-Wl,--as-needed'
-      make install INSTALL_ROOT=$P
+      make install DESTDIR=$P
     fi
     if [ $? != 0 ]; then
       echo "make install error. $0 script stop"
@@ -233,23 +226,8 @@ if [ $opt_package -eq 1 ] ; then
     fi
   done
 ######################################################################
-# * make install ã§ã‚³ãƒ”ãƒ¼ã•ã‚Œãªã„ãƒ•ã‚¡ã‚¤ãƒ«ãŒã‚ã‚‹å ´åˆã¯ã“ã“ã«è¨˜è¿°ã—ã¾ã™ã€‚
+# * make install ¤Ç¥³¥Ô¡¼¤µ¤ì¤Ê¤¤¥Õ¥¡¥¤¥ë¤¬¤¢¤ë¾ì¹ç¤Ï¤³¤³¤Ëµ­½Ò¤·¤Ş¤¹¡£
 ######################################################################
-
-  # Fix internal linking for Qt5WebEngineCore.pc.
-  sed -i 's|-Wl,--start-group.*-Wl,--end-group||' $P/usr/lib${suffix}/pkgconfig/Qt5WebEngineCore.pc
-
-  #./usr/lib64/pkgconfig/Qt5WebEngineCore.pc
-  sed -i 's|-L$W[^ ]* ||g' $P/usr/lib${suffix}/pkgconfig/Qt5WebEngineCore.pc
-
-  # While we are at it, there isn't any reason to keep references to $PKG in the *.prl files.
-  for PRL in $(find $P -name "*\.prl"); do
-      sed -i '/^QMAKE_PRL_BUILD_DIR/d' $PRL
-  done
-
-  # Remove executable bits from files.
-  find $P \( -name "*.qml" -o -name "*.app" \) -perm 755 -exec chmod 644 '{}' \;
-  
   mkdir -p $docdir/$src
   if [ -d $P/usr/share/omf ]; then
     mkdir -p $P/install
@@ -287,7 +265,7 @@ EOF
   done      
 
 ######################################################################
-# path ã« lib ãŒã‚ã‚‹ãƒã‚¤ãƒŠãƒªã¯ strip -g, ãªã„ãƒã‚¤ãƒŠãƒªã¯ strip ã™ã‚‹
+# path ¤Ë lib ¤¬¤¢¤ë¥Ğ¥¤¥Ê¥ê¤Ï strip -g, ¤Ê¤¤¥Ğ¥¤¥Ê¥ê¤Ï strip ¤¹¤ë
 ######################################################################
   cd $P
   compress_all
@@ -297,9 +275,9 @@ EOF
     done
   fi
 ######################################################################
-# * compress å¯¾è±¡ä»¥å¤–ã§åœ§ç¸®ã—ãŸã„ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚„ãƒ•ã‚¡ã‚¤ãƒ«ãŒã‚ã‚‹å ´åˆã¯ã“ã“
-#   ã«è¨˜è¿°ã—ã¾ã™(strip_{bin,lib}dir ã‚„ gzip_{dir,one} ã‚’ä½¿ã„ã¾ã™)ã€‚
-# * ä»–ã®ã‚¢ãƒ¼ã‚«ã‚¤ãƒ–ã‹ã‚‰è¿½åŠ ã—ãŸã„ãƒ•ã‚¡ã‚¤ãƒ«ãŒã‚ã‚‹å ´åˆã¯ã“ã“ã«è¨˜è¿°ã—ã¾ã™ã€‚
+# * compress ÂĞ¾İ°Ê³°¤Ç°µ½Ì¤·¤¿¤¤¥Ç¥£¥ì¥¯¥È¥ê¤ä¥Õ¥¡¥¤¥ë¤¬¤¢¤ë¾ì¹ç¤Ï¤³¤³
+#   ¤Ëµ­½Ò¤·¤Ş¤¹(strip_{bin,lib}dir ¤ä gzip_{dir,one} ¤ò»È¤¤¤Ş¤¹)¡£
+# * Â¾¤Î¥¢¡¼¥«¥¤¥Ö¤«¤éÄÉ²Ã¤·¤¿¤¤¥Õ¥¡¥¤¥ë¤¬¤¢¤ë¾ì¹ç¤Ï¤³¤³¤Ëµ­½Ò¤·¤Ş¤¹¡£
 ######################################################################
   cd $W
   for i in `seq 0 $((${#DOCS[@]} - 1))` ; do
@@ -325,8 +303,8 @@ EOF
   done
 
 ############################################################
-#   /usr/share/doc ä»¥ä¸‹ã«ã¯ä¸€èˆ¬ãƒ¦ãƒ¼ã‚¶ã®IDã®ã¾ã¾ã®ãƒ•ã‚¡ã‚¤ãƒ«ãŒ
-#   ç´›ã‚Œã“ã¿ãŒã¡ãªã®ã§
+#   /usr/share/doc °Ê²¼¤Ë¤Ï°ìÈÌ¥æ¡¼¥¶¤ÎID¤Î¤Ş¤Ş¤Î¥Õ¥¡¥¤¥ë¤¬
+#   Ê¶¤ì¤³¤ß¤¬¤Á¤Ê¤Î¤Ç
 ############################################################
 
   chk_me=`whoami | grep root`
@@ -335,10 +313,10 @@ EOF
   fi
 
 ######################################################################
-# * convert å¯¾è±¡ä»¥å¤–ã§åˆˆã‚Šå–ã‚ŠãŸã„ã‚·ãƒ³ãƒœãƒªãƒƒã‚¯ãƒªãƒ³ã‚¯ãŒã‚ã‚‹å ´åˆã¯ã“ã“ã«
-#   è¨˜è¿°ã—ã¾ã™(prune_symlink ã‚’ä½¿ã„ã¾ã™)ã€‚
-# * å®Œæˆã—ãŸä½œæ¥­ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‹ã‚‰ tar ã‚¤ãƒ¡ãƒ¼ã‚¸ã‚’ä½œæˆã™ã‚‹æ‰‹é †ã‚’ä»¥é™ã«è¨˜è¿°
-#   ã—ã¾ã™(ã“ã ã‚ã‚Šã‚’æ±‚ã‚ãªã„ãªã‚‰å˜ã« makepkg ã§ã‚‚è‰¯ã„ã§ã™)ã€‚
+# * convert ÂĞ¾İ°Ê³°¤Ç´¢¤ê¼è¤ê¤¿¤¤¥·¥ó¥Ü¥ê¥Ã¥¯¥ê¥ó¥¯¤¬¤¢¤ë¾ì¹ç¤Ï¤³¤³¤Ë
+#   µ­½Ò¤·¤Ş¤¹(prune_symlink ¤ò»È¤¤¤Ş¤¹)¡£
+# * ´°À®¤·¤¿ºî¶È¥Ç¥£¥ì¥¯¥È¥ê¤«¤é tar ¥¤¥á¡¼¥¸¤òºîÀ®¤¹¤ë¼ê½ç¤ò°Ê¹ß¤Ëµ­½Ò
+#   ¤·¤Ş¤¹(¤³¤À¤ï¤ê¤òµá¤á¤Ê¤¤¤Ê¤éÃ±¤Ë makepkg ¤Ç¤âÎÉ¤¤¤Ç¤¹)¡£
 ######################################################################
 # tar cvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
 # tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man1 | tail -n+2`
