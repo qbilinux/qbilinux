@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=qtwebengine
-vers=5.9.2
-url="https://download.qt.io/archive/qt/5.9/${vers}/submodules/qtwebengine-opensource-src-${vers}.tar.xz"
+vers=5.10.1
+url="https://download.qt.io/archive/qt/${vers%.*}/${vers}/submodules/qtwebengine-everywhere-src-${vers}.tar.xz"
 commitid=
 arch=`uname -m`
 build=T1
-src=qtwebengine-opensource-src-${vers}
+src=qtwebengine-everywhere-src-${vers}
 OPT_CONFIG=''
 DOCS='LICENSE.GPL2 LICENSE.GPL3 LICENSE.GPL3-EXCEPT LICENSE.GPLv3 LICENSE.LGPL3'
 patchfiles=''
@@ -161,14 +161,14 @@ fi
 
 if [ $opt_patch -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
-    if [ -d ${B[$i]} ] ; then rm -rf ${B[$i]} ; fi ; cp -a ${S[$i]} ${B[$i]}
+    if [ -d ${B[$i]} ] ; then rm -rf ${B[$i]} ; fi ; mkdir ${B[$i]}
   done
 ######################################################################
 # * ./configure を行う前に適用したい設定やパッチなどがある場合はここに
 #   記述します。
 ######################################################################
   for i in `seq 0 $((${#B[@]} - 1))` ; do
-    cd ${B[$i]}
+    cd ${S[$i]}
     for patch in $patchfiles ; do
       patch -p1 < $W/$patch
     done
@@ -183,9 +183,7 @@ if [ $opt_config -eq 1 ] ; then
     #   sh ./autogen.sh
     # fi
 
-    mkdir build-package
-    cd build-package
-    qmake-qt5 ..
+    qmake-qt5 ${S[$i]}
     
     if [ $? != 0 ]; then
       echo "configure error. $0 script stop"
@@ -196,7 +194,6 @@ fi
 if [ $opt_build -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
-    cd build-package
     if [ -f Makefile ] ; then
       export LDFLAGS='-Wl,--as-needed'
       make
@@ -219,7 +216,6 @@ if [ $opt_package -eq 1 ] ; then
   touch $W/i.st ; sleep 1
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
-    cd build-package
     for mk in `find . -name "[Mm]akefile" ` ; do
       sed -i -e 's|GCONFTOOL = /usr/bin/gconftool-2|GCONFTOOL = echo|' $mk
     done
