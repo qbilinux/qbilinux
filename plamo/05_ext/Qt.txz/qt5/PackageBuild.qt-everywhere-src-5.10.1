@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=qt5
-vers=5.9.3
-url="http://download.qt.io/archive/qt/5.9/${vers}/single/qt-everywhere-opensource-src-${vers}.tar.xz"
+vers=5.10.1
+url="http://download.qt.io/archive/qt/${vers%.*}/${vers}/single/qt-everywhere-src-${vers}.tar.xz"
 arch=`uname -m`
 build=T1
-src=qt-everywhere-opensource-src-${vers}
+src=qt-everywhere-src-${vers}
 if [ $arch = "armv7l" ]; then
 OPT_CONFIG="-sysconfdir     /etc/xdg   \
             -no-opengl                 \
@@ -286,6 +286,17 @@ find $P \( -name "*.qml" -o -name "*.app" \) -perm 755 -exec chmod 644 '{}' \;
 
   # application configurations from BLFS
   install -dm755 $P/usr/share/applications
+
+  # for kxmlgui
+  (cd $P/usr/include/qt5/QtCore ; ln -sf $vers/QtCore/private . )
+  # for kwayland
+  (cd $P/usr/include/qt5/QtGui ; ln -sf $vers/QtGui/qpa . )
+  # for kwin
+  (cd $P/usr/include/qt5/QtGui ; ln -sf $vers/QtGui/private . )
+  # for 
+  (cd $P/usr/include/qt5/QtPrintSupport ; ln -sf $vers/QtPrintSupport/private . )
+  # for 
+  (cd $P/usr/include/qt5/QtWidgets ; ln -sf $vers/QtWidgets/private . )
 
   mkdir -p $docdir/$src
 # remove locales except ja
