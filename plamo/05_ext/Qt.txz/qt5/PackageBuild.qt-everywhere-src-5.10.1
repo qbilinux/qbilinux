@@ -4,7 +4,7 @@ pkgbase=qt5
 vers=5.10.1
 url="http://download.qt.io/archive/qt/${vers%.*}/${vers}/single/qt-everywhere-src-${vers}.tar.xz"
 arch=`uname -m`
-build=T1
+build=T2
 src=qt-everywhere-src-${vers}
 if [ $arch = "armv7l" ]; then
 OPT_CONFIG="-sysconfdir     /etc/xdg   \
@@ -171,7 +171,9 @@ if [ $opt_config -eq 1 ] ; then
     for patch in $patchfiles ; do
        patch -p1 < $W/$patch
     done
-
+    # Fix missing private includes https://bugreports.qt.io/browse/QTBUG-37417
+    sed -e '/CMAKE_NO_PRIVATE_INCLUDES\ \=\ true/d' -i qtbase/mkspecs/features/create_cmake.prf
+    
     cd ${B[$i]}
     # if [ -f autogen.sh ] ; then
     #   sh ./autogen.sh
@@ -288,15 +290,15 @@ find $P \( -name "*.qml" -o -name "*.app" \) -perm 755 -exec chmod 644 '{}' \;
   install -dm755 $P/usr/share/applications
 
   # for kxmlgui
-  (cd $P/usr/include/qt5/QtCore ; ln -sf $vers/QtCore/private . )
+  #(cd $P/usr/include/qt5/QtCore ; ln -sf $vers/QtCore/private . )
   # for kwayland
-  (cd $P/usr/include/qt5/QtGui ; ln -sf $vers/QtGui/qpa . )
+  #(cd $P/usr/include/qt5/QtGui ; ln -sf $vers/QtGui/qpa . )
   # for kwin
-  (cd $P/usr/include/qt5/QtGui ; ln -sf $vers/QtGui/private . )
+  #(cd $P/usr/include/qt5/QtGui ; ln -sf $vers/QtGui/private . )
   # for 
-  (cd $P/usr/include/qt5/QtPrintSupport ; ln -sf $vers/QtPrintSupport/private . )
+  #(cd $P/usr/include/qt5/QtPrintSupport ; ln -sf $vers/QtPrintSupport/private . )
   # for 
-  (cd $P/usr/include/qt5/QtWidgets ; ln -sf $vers/QtWidgets/private . )
+  #(cd $P/usr/include/qt5/QtWidgets ; ln -sf $vers/QtWidgets/private . )
 
   mkdir -p $docdir/$src
 # remove locales except ja
