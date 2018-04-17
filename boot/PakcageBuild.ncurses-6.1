@@ -1,14 +1,14 @@
 #!/bin/sh -x
 
 ######################################################################
-url="http://ftp.gnu.org/gnu/ncurses/ncurses-6.1.tar.gz
+vers=6.1
+url="http://ftp.gnu.org/gnu/ncurses/ncurses-${vers}.tar.gz
     ftp://plamo.linet.gr.jp/pub/Plamo-src/plamo/00_base/ncurses/ncurses-6.0-Charable.patch.gz"
 verify=
 digest=
 branch=
 commitid=
 pkgbase=installer
-vers=6.2
 arch=`uname -m`
 build=P1
 src=ncurses-6.1
@@ -72,7 +72,6 @@ if [ $opt_build -eq 1 ] ; then
 fi
 if [ $opt_package -eq 1 ] ; then
   root_priv
-  if [ -d $P ] ; then rm -rf $P ; fi ; mkdir -p $P
   if [ -d $C ] ; then rm -rf $C ; fi ; mkdir -p $C
   touch $W/i.st ; sleep 1
   for i in `seq 0 $((${#B[@]} - 1))` ; do

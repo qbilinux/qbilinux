@@ -1,7 +1,8 @@
 #!/bin/sh -x
 
 ######################################################################
-url="https://tuxera.com/opensource/ntfs-3g_ntfsprogs-2016.2.22.tgz
+vers=2016.2.22
+url="https://tuxera.com/opensource/ntfs-3g_ntfsprogs-${vers}.tgz
     https://github.com/PhantomX/slackbuilds/raw/master/ntfs-3g/patches/ntfs-3g_ntfsprogs-2011.10.9-RC-ntfsck-unsupported-return-0.patch
     ftp://plamo.linet.gr.jp/pub/Plamo-src/plamo/99_test/installer/ntfs-3g_ntfsprogs-2016.2.22-libtool.patch"
 verify=
@@ -9,10 +10,9 @@ digest=
 branch=
 commitid=
 pkgbase=installer
-vers=6.2
 arch=`uname -m`
 build=P1
-src=ntfs-3g_ntfsprogs-2016.2.22
+src=ntfs-3g_ntfsprogs-${vers}
 patchfiles="ntfs-3g_ntfsprogs-2011.10.9-RC-ntfsck-unsupported-return-0.patch
     ntfs-3g_ntfsprogs-2016.2.22-libtool.patch"
 OPT_CONFIG="--enable-really-static"
@@ -73,7 +73,6 @@ if [ $opt_build -eq 1 ] ; then
 fi
 if [ $opt_package -eq 1 ] ; then
   root_priv
-  if [ -d $P ] ; then rm -rf $P ; fi ; mkdir -p $P
   if [ -d $C ] ; then rm -rf $C ; fi ; mkdir -p $C
   touch $W/i.st ; sleep 1
   for i in `seq 0 $((${#B[@]} - 1))` ; do

@@ -1,15 +1,33 @@
 #!/bin/sh -x
 
 ######################################################################
+vers=6.2
 url="ftp://plamo.linet.gr.jp/pub/Plamo-src/plamo/99_test/installer/installer-plamoinitrd.targz
     ftp://plamo.linet.gr.jp/pub/Plamo-src/plamo/99_test/installer/plamo_isolinux.tar.gz
     ftp://plamo.linet.gr.jp/pub/Plamo-src/plamo/99_test/installer/rpi_firmware.tar.gz"
+pkglist="busybox-1.25.1
+	dialog-1.3-20171209
+	coreutils-8.28
+	gzip-1.8
+	bzip2-1.0.6
+	xz-5.2.3
+	tar-1.26
+	unicon-tools-0.0.0.20050707
+	kbd-2.0.4
+	udev-175
+	ncurses-6.1
+	util-linux-2.28
+	e2fsprogs-1.43.6
+	btrfs-progs-v4.14
+	dosfstools-3.0.26
+	ntfs-3g_ntfsprogs-2016.2.22
+	mdadm-3.2.3
+	LVM2.2.02.90"
 verify=
 digest=
 branch=
 commitid=
 pkgbase=installer
-vers=6.2
 arch=`uname -m`
 build=P1
 src=""
@@ -35,18 +53,16 @@ infodir=$P/share/info
 mandir=$P/share/man
 docdir=.
 if [ $opt_download -eq 1 ] ; then
-  download_sources
-fi
-if [ $opt_config -eq 1 ] ; then
-    echo "nothing configure"
-fi
-if [ $opt_build -eq 1 ] ; then
-    echo "nothing build"
+    download_sources
 fi
 if [ $opt_package -eq 1 ] ; then
   root_priv
   if [ -d $P ] ; then rm -rf $P ; fi ; mkdir -p $P
   if [ -d $C ] ; then rm -rf $C ; fi ; mkdir -p $C
+  for i in $pkglist ; do
+      sh PakcageBuild.${i} download config build
+      sudo sh PakcageBuild.${i} package
+  done
   touch $W/i.st ; sleep 1
   rm $P/linuxrc
   ln -s bin/busybox $P/init
@@ -170,11 +186,24 @@ if [ $opt_package -eq 1 ] ; then
   touch -t `date '+%m%d0900'` $media
   false && convert_links
   if [ $media == DVD ] ; then
-    mkisofs -v -f -J -r -b isolinux/isolinux.bin -c isolinux/boot.cat \
-        -no-emul-boot -boot-load-size 4 -boot-info-table -eltorito-alt-boot \
-        -eltorito-platform efi -eltorito-boot isolinux/efiboot.img \
-        -m old -m texlive_texmf[34]-*.txz \
-        -V plamo-$vers-$a -o plamo-${vers}_${a}_`date '+%y%m%d'`_dvd.iso $media
+      xorrisofs -o plamo-nora-${vers}_${a}_`date '+%y%m%d'`_dvd.iso \
+		-isohybrid-mbr /usr/share/syslinux/isohdpfx.bin \
+		-c isolinux/boot.cat \
+		-b isolinux/isolinux.bin \
+		-no-emul-boot \
+		-boot-load-size 4 \
+		-boot-info-table \
+		-eltorito-alt-boot \
+		-e isolinux/efiboot.img \
+		-no-emul-boot \
+		-isohybrid-gpt-basdat \
+		-append_partition 2 0xef $media/isolinux/efiboot.img \
+		$media
+    # mkisofs -v -f -J -r -b isolinux/isolinux.bin -c isolinux/boot.cat \
+    #     -no-emul-boot -boot-load-size 4 -boot-info-table -eltorito-alt-boot \
+    #     -eltorito-platform efi -eltorito-boot isolinux/efiboot.img \
+    #     -m old -m texlive_texmf[34]-*.txz \
+    #     -V plamo-$vers-$a -o plamo-${vers}_${a}_`date '+%y%m%d'`_dvd.iso $media
   else
     umount $media
     losetup -d $loop
