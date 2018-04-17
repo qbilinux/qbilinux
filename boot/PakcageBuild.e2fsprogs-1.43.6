@@ -1,16 +1,16 @@
 #!/bin/sh -x
 
 ######################################################################
-url="http://downloads.sourceforge.net/e2fsprogs/e2fsprogs-1.43.6.tar.gz"
+vers=1.43.6
+url="http://downloads.sourceforge.net/e2fsprogs/e2fsprogs-${vers}.tar.gz"
 verify=
 digest=
 branch=
 commitid=
 pkgbase=installer
-vers=6.2
 arch=`uname -m`
 build=P1
-src=e2fsprogs-1.43.6
+src=e2fsprogs-${vers}
 patchfiles=""
 OPT_CONFIG="--enable-symlink-install --disable-libuuid --disable-libblkid
     --disable-fsck --disable-e2initrd-helper --disable-uuidd"
@@ -73,7 +73,6 @@ if [ $opt_build -eq 1 ] ; then
 fi
 if [ $opt_package -eq 1 ] ; then
   root_priv
-  if [ -d $P ] ; then rm -rf $P ; fi ; mkdir -p $P
   if [ -d $C ] ; then rm -rf $C ; fi ; mkdir -p $C
   touch $W/i.st ; sleep 1
   for i in `seq 0 $((${#B[@]} - 1))` ; do

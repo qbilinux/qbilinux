@@ -1,16 +1,16 @@
 #!/bin/sh -x
 
 ######################################################################
-url="http://ftp.gnu.org/gnu/gzip/gzip-1.8.tar.gz"
+vers=1.8
+url="http://ftp.gnu.org/gnu/gzip/gzip-${vers}.tar.gz"
 verify=
 digest=
 branch=
 commitid=
 pkgbase=installer
-vers=6.2
 arch=`uname -m`
 build=P1
-src=gzip-1.8
+src=gzip-${vers}
 patchfiles=""
 OPT_CONFIG=""
 DOCS=""
@@ -73,7 +73,6 @@ if [ $opt_build -eq 1 ] ; then
 fi
 if [ $opt_package -eq 1 ] ; then
   root_priv
-  if [ -d $P ] ; then rm -rf $P ; fi ; mkdir -p $P
   if [ -d $C ] ; then rm -rf $C ; fi ; mkdir -p $C
   touch $W/i.st ; sleep 1
   for i in `seq 0 $((${#B[@]} - 1))` ; do
