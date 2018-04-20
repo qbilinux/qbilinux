@@ -12,7 +12,7 @@ arch=`uname -m`
 build=P1
 src=btrfs-progs-${vers}
 patchfiles=""
-OPT_CONFIG="--bindir=/sbin"
+OPT_CONFIG="--bindir=/sbin --disable-documentation"
 DOCS=""
 template=20170713
 tmplurl=ftp://plamo.linet.gr.jp/pub/Plamo-src/admin
