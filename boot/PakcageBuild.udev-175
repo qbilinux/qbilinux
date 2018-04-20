@@ -14,7 +14,7 @@ arch=`uname -m`
 build=P1
 src=udev-${vers}
 patchfiles="udev-175-input-event-codes.patch.gz
-    udev-175-mtd_probe_stdint.patch.gz"
+    udev-175-mtd_probe_stdint.patch.gz fix_uint_error.patch"
 OPT_CONFIG="--libexecdir=/lib/udev --enable-static
     --disable-introspection --enable-rule_generator"
 DOCS=""
