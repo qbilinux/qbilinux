@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
-url="https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/pidgin-musictracker/pidgin-musictracker-0.4.22.tar.bz2"
 pkgbase=pidgin_musictracker
 vers=0.4.22
+url="https://launchpad.net/pidgin-musictracker/trunk/${vers}/+download/pidgin-musictracker-${vers}.tar.bz2"
 arch=`uname -m`
-build=T1
-src=pidgin-musictracker-0.4.22
+build=T2
+src=pidgin-musictracker-${vers}
 OPT_CONFIG=''
 DOCS='ABOUT-NLS AUTHORS COPYING ChangeLog INSTALL NEWS README THANKS installer'
-patchfiles='patch-aa'
+patchfiles='patch-aa patch-ab'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
