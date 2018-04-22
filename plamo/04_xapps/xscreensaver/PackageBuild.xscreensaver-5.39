@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase=xscreensaver
-vers=5.36
+vers=5.39
 url="http://www.jwz.org/xscreensaver/xscreensaver-${vers}.tar.gz"
 arch=`uname -m`
 build=T1
