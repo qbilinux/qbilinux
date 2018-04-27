@@ -1,14 +1,16 @@
 #!/bin/sh
 ##############################################################
-pkgbase=harfbuzz
-vers=1.6.3
-url="http://www.freedesktop.org/software/harfbuzz/release/harfbuzz-${vers}.tar.bz2"
+pkgbase=freetype
+vers=2.9
+url="http://downloads.sourceforge.net/freetype/freetype-${vers}.tar.bz2"
+verify=$url.sig
 arch=`uname -m`
 build=T1
-src=harfbuzz-${vers}
+src=${pkgbase}-${vers}
 OPT_CONFIG='--disable-static'
-DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README THANKS TODO'
-patchfiles=''
+DOCS='ChangeLog ChangeLog.20 ChangeLog.21 ChangeLog.22 ChangeLog.23 README README.git'
+patchfiles='freetype-2.7.1-enable-spr.patch freetype-2.7.1-enable-valid.patch'
+no_apply_patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -73,6 +75,20 @@ compress_all() {
   strip_all
 }  
 
+verify_checksum() {
+  echo "Verify Checksum..."
+  checksum_command=$1
+  verify_file=${verify##*/}
+  for s in $url ; do
+    srcsum=`$checksum_command ${s##*/}`
+    verifysum=`grep ${s##*/} $verify_file`
+    if [ x"$srcsum" != x"$verifysum" ]; then
+      exit 1
+    fi
+  done
+  exit 0
+}
+
 W=`pwd`
 for i in `seq 0 $((${#src[@]} - 1))` ; do
   S[$i]=$W/${src[$i]} 
@@ -91,11 +107,11 @@ myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
 
 if [ $arch = "x86_64" ]; then
-    libdir="lib64"
-    suffix="64"
+  libdir="lib64"
+  suffix="64"
 else
-    libdir="lib"
-    suffix=""
+  libdir="lib"
+  suffix=""
 fi
 
 if [ $# -eq 0 ] ; then
@@ -117,6 +133,24 @@ if [ $opt_download -eq 1 ] ; then
     if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
     if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
+  done
+  for i in $verify ; do
+    if [ ! -f ${i##*/} ] ; then
+      wget $i
+    fi
+  done
+  for i in $verify ; do
+    case ${i##*.} in
+    asc) gpg --verify ${i##*/} ;;
+    sig) gpg --verify ${i##*/} ;;
+    sha256sum) verify_checksum "sha256sum" ;;
+    esac
+    if [ $? -ne 0 ]; then
+      echo "archive verify was failed."
+      exit 1
+    else
+      echo "archive verify was successed."
+    fi
   done
   for i in $url ; do
     case ${i##*.} in
@@ -145,15 +179,15 @@ if [ $opt_config -eq 1 ] ; then
     #   sh ./autogen.sh
     # fi
 
-      if [ -x configure ] ; then
-         export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
-         export LDFLAGS='-Wl,--as-needed' 
-         ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
-     fi
-      if [ $? != 0 ]; then
-	  echo "configure error. $0 script stop"
-	  exit 255
-      fi
+    if [ -x configure ] ; then
+      export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
+      export LDFLAGS='-Wl,--as-needed' 
+      ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
+    fi
+    if [ $? != 0 ]; then
+      echo "configure error. $0 script stop"
+      exit 255
+    fi
   done
 fi
 if [ $opt_build -eq 1 ] ; then
@@ -190,39 +224,39 @@ if [ $opt_package -eq 1 ] ; then
 ######################################################################
   mkdir -p $docdir/$src
   if [ -d $P/usr/share/omf ]; then
-      mkdir -p $P/install
-      for omf in $P/usr/share/omf/* ; do
-	omf_name=`basename $omf`
-	cat << EOF >> $P/install/initpkg
+    mkdir -p $P/install
+    for omf in $P/usr/share/omf/* ; do
+      omf_name=`basename $omf`
+      cat << EOF >> $P/install/initpkg
 if [ -x /usr/bin/scrollkeeper-update ]; then
-    scrollkeeper-update -p /var/lib/rarian -o /usr/share/omf/$omf_name
+  scrollkeeper-update -p /var/lib/rarian -o /usr/share/omf/$omf_name
 fi
 EOF
-      done
+    done
   fi
 
   if [ -d $P/etc/gconf/schemas ]; then
-      mkdir -p $P/install
-      for schema in $P/etc/gconf/schemas/* ; do
-          cat << EOF >> $P/install/initpkg
+    mkdir -p $P/install
+    for schema in $P/etc/gconf/schemas/* ; do
+      cat << EOF >> $P/install/initpkg
 if [ -x /usr/bin/gconftool-2 ]; then
     ( cd /etc/gconf/schemas ; GCONF_CONFIG_SOURCE=xml:merged:/etc/gconf/gconf.xml.defaults /usr/bin/gconftool-2 --makefile-install-rule `basename $schema` )
 fi
 EOF
-      done
+    done
   fi
 
 # remove locales except ja
 # 
   for loc_dir in `find $P -name locale` ; do
-      pushd $loc_dir
-      for loc in * ; do
-          if [ "$loc" != "ja" ]; then
-              rm -rf $loc
-          fi
-      done
-      popd
-   done      
+    pushd $loc_dir
+    for loc in * ; do
+      if [ "$loc" != "ja" ]; then
+        rm -rf $loc
+      fi
+    done
+    popd
+  done      
 
 ######################################################################
 # path に lib があるバイナリは strip -g, ないバイナリは strip する
@@ -230,9 +264,9 @@ EOF
   cd $P
   compress_all
   if [ -d $P/usr/share/man ]; then
-      for mdir in `find $P/usr/share/man -name man[0-9mno] -type d`; do
-          gzip_dir $mdir
-      done
+    for mdir in `find $P/usr/share/man -name man[0-9mno] -type d`; do
+      gzip_dir $mdir
+    done
   fi
 ######################################################################
 # * compress 対象以外で圧縮したいディレクトリやファイルがある場合はここ
@@ -257,9 +291,9 @@ EOF
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
 
-  for patch in $patchfiles ; do
-      cp $W/$patch $docdir/$src/$patch
-      gzip_one $docdir/$src/$patch
+  for patch in $patchfiles $no_apply_patchfiles ; do
+    cp $W/$patch $docdir/$src/$patch
+    gzip_one $docdir/$src/$patch
   done
 
 ############################################################

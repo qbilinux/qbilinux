@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=bash
-vers=4.4.12
+vers=4.4.19
 url="http://ftp.gnu.org/gnu/bash/bash-${vers%.*}.tar.gz
 	http://ftp.gnu.org/gnu/bash/bash-4.4-patches/bash44-001
 	http://ftp.gnu.org/gnu/bash/bash-4.4-patches/bash44-002
@@ -15,7 +15,14 @@ url="http://ftp.gnu.org/gnu/bash/bash-${vers%.*}.tar.gz
 	http://ftp.gnu.org/gnu/bash/bash-4.4-patches/bash44-009
 	http://ftp.gnu.org/gnu/bash/bash-4.4-patches/bash44-010
 	http://ftp.gnu.org/gnu/bash/bash-4.4-patches/bash44-011
-	http://ftp.gnu.org/gnu/bash/bash-4.4-patches/bash44-012"
+	http://ftp.gnu.org/gnu/bash/bash-4.4-patches/bash44-012
+	http://ftp.gnu.org/gnu/bash/bash-4.4-patches/bash44-013
+	http://ftp.gnu.org/gnu/bash/bash-4.4-patches/bash44-014
+	http://ftp.gnu.org/gnu/bash/bash-4.4-patches/bash44-015
+	http://ftp.gnu.org/gnu/bash/bash-4.4-patches/bash44-016
+	http://ftp.gnu.org/gnu/bash/bash-4.4-patches/bash44-017
+	http://ftp.gnu.org/gnu/bash/bash-4.4-patches/bash44-018
+	http://ftp.gnu.org/gnu/bash/bash-4.4-patches/bash44-019"
 arch=`uname -m`
 build=T1
 src[0]=$pkgbase-${vers%.*}
@@ -206,6 +213,13 @@ if [ $opt_config -eq 1 ] ; then
     patch -p2 -i $W/bash44-010
     patch -p2 -i $W/bash44-011
     patch -p2 -i $W/bash44-012
+    patch -p2 -i $W/bash44-013
+    patch -p2 -i $W/bash44-014
+    patch -p2 -i $W/bash44-015
+    patch -p2 -i $W/bash44-016
+    patch -p2 -i $W/bash44-017
+    patch -p2 -i $W/bash44-018
+    patch -p2 -i $W/bash44-019
     if [ -f Makefile ] ; then
       make clean
     fi
