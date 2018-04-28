@@ -5,7 +5,7 @@ pkgbase=binutils
 vers=2.29.1
 url="http://ftp.gnu.org/gnu/binutils/binutils-${vers}.tar.bz2"
 arch=`uname -m`
-build=T1
+build=T2
 src=$pkgbase-$vers
 patchfiles=""
 OPT_CONFIG="--enable-shared"
@@ -222,8 +222,8 @@ if [ $opt_config -eq 1 ] ; then
       ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
           --libdir='${exec_prefix}'/$libdir --infodir='${prefix}'/share/info \
           --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]} \
-          --build=$arch-pc-linux-gnu`[ $arch == armv7l ] && echo eabi` \
-          --host=$arch-pc-linux-gnu`[ $arch == armv7l ] && echo eabi`
+          --build=$arch-pc-linux-gnu`[ $arch == armv7l ] && echo eabihf` \
+          --host=$arch-pc-linux-gnu`[ $arch == armv7l ] && echo eabihf`
     fi
   done
 fi
