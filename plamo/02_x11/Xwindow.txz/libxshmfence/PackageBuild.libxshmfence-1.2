@@ -4,11 +4,11 @@ url='https://www.x.org/releases/individual/lib/libxshmfence-1.2.tar.bz2'
 pkgbase=libxshmfence
 vers=1.2
 arch=`uname -m`
-build=T1
+build=T2
 src=libxshmfence-1.2
 OPT_CONFIG='--disable-static'
 DOCS='COPYING ChangeLog README'
-patchfiles=''
+patchfiles='memfd_create.patch'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -144,6 +144,7 @@ if [ $opt_config -eq 1 ] ; then
     # if [ -f autogen.sh ] ; then
     #   sh ./autogen.sh
     # fi
+    autoreconf -vif .
 
       if [ -x configure ] ; then
          export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
