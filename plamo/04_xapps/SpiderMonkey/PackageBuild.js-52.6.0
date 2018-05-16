@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=SpiderMonkey
-vers=52.3.2
-url='http://ftp.debian.org/debian/pool/main///m/mozjs52/mozjs52_52.3.1.orig.tar.bz2'
+vers=52.6.0
+url="http://ftp.gnome.org/pub/gnome/teams/releng/tarballs-needing-help/mozjs/mozjs-${vers}gnome1.tar.xz"
 arch=`uname -m`
 build=T1
-src=mozjs-52.3.1
+src=mozjs-${vers}
 OPT_CONFIG=''
 DOCS='README'
 patchfiles=''
@@ -118,12 +118,14 @@ if [ $opt_download -eq 1 ] ; then
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
     if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
+  mkdir ${src}
+  cd ${src}
   for i in $url ; do
     case ${i##*.} in
     tar) tar xpf ${i##*/} ;;
     gz) tar xpzf ${i##*/} ;;
     bz2) tar xpjf ${i##*/} ;;
-    *) tar xpf ${i##*/} ;;
+    *) tar xpf $W/${i##*/} ;;
     esac
   done
 fi
