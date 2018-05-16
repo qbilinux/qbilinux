@@ -1,0 +1,14 @@
+diff -Naur Tix8.4.3.old/generic/tixGrSort.c Tix8.4.3/generic/tixGrSort.c
+--- Tix8.4.3.old/generic/tixGrSort.c	2008-02-28 05:05:29.000000000 +0100
++++ Tix8.4.3/generic/tixGrSort.c	2016-02-22 15:17:13.000000000 +0100
+@@ -447,8 +447,8 @@
+ 	 * Parse the result of the command.
+ 	 */
+ 
+-	order = strtol(sortInterp->result, &end, 0);
+-	if ((end == sortInterp->result) || (*end != 0)) {
++	order = strtol(sortInterp->resultDontUse, &end, 0);
++	if ((end == sortInterp->resultDontUse) || (*end != 0)) {
+ 	    Tcl_ResetResult(sortInterp);
+ 	    Tcl_AppendResult(sortInterp,
+ 		    "comparison command returned non-numeric result",
