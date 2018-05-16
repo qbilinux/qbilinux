@@ -1,15 +1,16 @@
 #!/bin/sh
 ##############################################################
 pkgbase=texlive
-vers=20170524
-url="ftp://tug.org/texlive/historic/2017/texlive-20170524-source.tar.xz"
+vers=20180414
+#url="ftp://tug.org/texlive/historic/2018/texlive-${vers}-source.tar.xz"
+url="http://ftp.math.utah.edu/pub/tex/historic/systems/texlive/${vers:0:4}/texlive-${vers}-source.tar.xz"
 verify=$url.sha256
 commitid=
 arch=`uname -m`
 build=T1
 src=texlive-${vers}-source
 #
-PREFIX=/opt/texlive/2017
+PREFIX=/opt/texlive/2018
 TEXARCH=$(uname -m | sed -e 's/i.86/i386/' -e 's/$/-linux/')
 #
 OPT_CONFIG="--prefix=${PREFIX} \
@@ -34,7 +35,7 @@ do
   OPT_CONFIG="$OPT_CONFIG --with-$p"
 done
 DOCS='ChangeLog README README.0overview README.1prerequisites README.2building README.3installing README.4layout README.5configure README.6cross README.7coding'
-patchfiles='texlive-20170524-source-gcc7-1.patch texlive-20170524-source-upstream_fixes-2.patch'
+patchfiles='texlive-20180414-source-upstream_fixes-1.patch dvipdfmx.patch'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
