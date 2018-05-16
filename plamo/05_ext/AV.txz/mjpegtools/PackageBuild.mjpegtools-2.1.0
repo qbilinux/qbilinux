@@ -11,6 +11,7 @@ OPT_CONFIG=""
 DOCS="README.avilib TODO INSTALL AUTHORS INSTALL.real README.lavpipe
     CHANGES README.transist COPYING PLANS BUGS HINTS mjpeg_howto.txt
     README.glav README README.AltiVec README.DV ChangeLog NEWS"
+patchfiles='03_disable_optimization.patch'
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -185,6 +186,10 @@ if [ $opt_config -eq 1 ] ; then
   done
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
+    for patch in $patchfiles ; do
+      patch -p1 < $W/$patch
+    done
+    ./autogen.sh
     if [ -f Makefile ] ; then
       make clean
     fi
@@ -243,6 +248,10 @@ if [ $opt_package -eq 1 ] ; then
       ln $docdir/$src/$myname.gz $docdir/${src[$i]}
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
+  done
+  for patch in $patchfiles ; do
+    cp $W/$patch $docdir/$src/$patch
+    gzip_one $docdir/$src/$patch
   done
   convert
   tar cvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
