@@ -1,8 +1,8 @@
 #!/bin/sh
 ##############################################################
 pkgbase=wayland
-vers=1.14.0
-url='https://wayland.freedesktop.org/releases/wayland-1.14.0.tar.xz'
+vers=1.15.0
+url="https://wayland.freedesktop.org/releases/wayland-${vers}.tar.xz"
 commitid=
 arch=`uname -m`
 build=T1
