@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://ftp.gnome.org/pub/gnome/sources/libcroco/0.6/libcroco-0.6.5.tar.xz'
 pkgbase=libcroco
-vers=0.6.5
+vers=0.6.12
+url="http://ftp.gnome.org/pub/gnome/sources/libcroco/0.6/libcroco-${vers}.tar.xz"
 arch=`uname -m`
 build=T1
-src=libcroco-0.6.5
+src=libcroco-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='ABOUT-NLS AUTHORS COPYING COPYING.LIB ChangeLog HACKING INSTALL NEWS README TODO'
 patchfiles=''
