@@ -1,12 +1,13 @@
 #!/bin/sh
 ##############################################################
 pkgbase=texlive_texmf
-vers=20170524
-url="ftp://tug.org/historic/systems/texlive/${vers:0:4}/texlive-${vers}-texmf.tar.xz"
+vers=20180414
+#url="ftp://tug.org/historic/systems/texlive/${vers:0:4}/texlive-${vers}-texmf.tar.xz"
+url="http://ftp.math.utah.edu/pub/tex/historic/systems/texlive/${vers:0:4}/texlive-${vers}-texmf.tar.xz"
 arch=noarch
 build=T1
 src=texlive-${vers}-texmf
-prefix=/opt/texlive/2017
+prefix=/opt/texlive/2018
 OPT_CONFIG=''
 DOCS=''
 PKG1='README ls-R asymptote bibtex chktex context pbibtex psutils scripts source tex tex4ht texconfig texdoc texdoctk ttf2pk xdvi xindy'
@@ -20,7 +21,7 @@ PKG2='dvips fonts hbf2gf makeindex metafont metapost mft omega'
 #doc/pmxchords doc/ptex doc/sjisconv doc/support doc/tetex doc/texdoc doc/texlive
 #doc/texworks doc/tpic2pdftex doc/ttf2pk doc/uptex doc/vlna doc/web2c doc/xetex
 #doc/xindy'
-patchfiles='texlive-20170524-texmf-upstream_fixes-1.patch'
+patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
