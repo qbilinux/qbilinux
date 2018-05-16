@@ -1,15 +1,15 @@
 #!/bin/sh
 ##############################################################
-pkgbase=yelp
-vers=3.26.0
-url="http://ftp.acc.umu.se/pub/gnome/sources/yelp/${vers%.*}/yelp-${vers}.tar.xz"
+pkgbase=webkitgtk3
+vers=2.18.6
+url="http://webkitgtk.org/releases/webkitgtk-${vers}.tar.xz"
 verify=
 commitid=
 arch=`uname -m`
 build=T2
-src=yelp-${vers}
-OPT_CONFIG='--enable-gtk-doc --enable-gtk-doc-html'
-DOCS='AUTHORS COPYING ChangeLog INSTALL MAINTAINERS NEWS README TODO'
+src=webkitgtk-${vers}
+OPT_CONFIG='-DPORT=GTK -DCMAKE_BUILD_TYPE=Release -DUSE_LIBHYPHEN=OFF -DENABLE_MINIBROWSER=ON'
+DOCS='NEWS'
 patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
@@ -152,8 +152,8 @@ if [ $opt_download -eq 1 ] ; then
     done
     for i in $verify ; do
 	case ${i##*.} in
-	    asc) gpg --verify ${i##*/} ;;
-	    sig) gpg --verify ${i##*/} ;;
+	    asc) gpg2 --verify ${i##*/} ;;
+	    sig) gpg2 --verify ${i##*/} ;;
 	    sha256sum) verify_checksum "sha256sum" ;;
 	esac
 	if [ $? -ne 0 ]; then
@@ -196,10 +196,10 @@ if [ $opt_config -eq 1 ] ; then
 	# sh ./autogen.sh
 	# fi
 
-	if [ -x configure ] ; then
-	    export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
-	    export LDFLAGS='-Wl,--as-needed'
-	    ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
+	if [ -f $S/CMakeLists.txt ]; then
+	    export PKG_CONFIG_PATH=/opt/kde/${libdir}/pkgconfig:/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
+	    export LDFLAGS='-Wl,--as-needed' 
+	    cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DLIB_INSTALL_DIR:PATH=/usr/${libdir} -DLIB_SUFFIX=$suffix ${OPT_CONFIG} .
 	fi
 	if [ $? != 0 ]; then
 	    echo "configure error. $0 script stop"
@@ -212,7 +212,7 @@ if [ $opt_build -eq 1 ] ; then
 	cd ${B[$i]}
 	if [ -f Makefile ] ; then
 	    export LDFLAGS='-Wl,--as-needed'
-	    make
+	    make Programs_DumpRenderTree_LDFLAGS="-no-fast-install -no-install -lfontconfig"
 	fi
     done
 fi
@@ -228,7 +228,7 @@ if [ $opt_package -eq 1 ] ; then
     touch $W/i.st ; sleep 1
     for i in `seq 0 $((${#B[@]} - 1))` ; do
 	cd ${B[$i]}
-	for mk in `find . -name "[Mm]akefile" ` ; do
+	for mk in `find . -name GNUmakefile ` ; do
 	    sed -i -e 's|GCONFTOOL = /usr/bin/gconftool-2|GCONFTOOL = echo|' $mk
 	done
 	if [ -f Makefile ] ; then
@@ -262,21 +262,6 @@ fi
 EOF
 	done
     fi
-
-
-    #%% begin initialize $pkg
-    mkdir -p $P/install
-    cat << EOF >> $P/install/initpkg
-glib-compile-schemas /usr/share/glib-2.0/schemas > /dev/null 2>&1
-touch /usr/share/glib-2.0/schemas/gschemas.compiled
-update-mime-database /usr/share/mime > /dev/null 2>&1
-touch /usr/share/mime/mime.cache
-update-desktop-database /usr/share/applications > /dev/null 2>&1
-touch /usr/share/applications/mimeinfo.cache
-gtk-update-icon-cache -f /usr/share/icons/hicolor > /dev/null 2>&1
-touch /usr/share/icons/hicolor/icon-theme.cache
-EOF
-    #%% end
 
     # remove locales except ja
     #
