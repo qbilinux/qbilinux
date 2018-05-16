@@ -1,8 +1,8 @@
 #!/bin/sh
 ##############################################################
-url='http://upower.freedesktop.org/releases/upower-0.9.23.tar.xz'
 pkgbase=upower
-vers=0.9.23
+vers=0.99.7
+url="http://upower.freedesktop.org/releases/upower-${vers}.tar.xz"
 arch=`uname -m | sed -e 's/i.86/i586/'`
 build=T1
 src=${pkgbase}-${vers}
