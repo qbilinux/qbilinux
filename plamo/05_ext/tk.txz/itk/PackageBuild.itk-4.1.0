@@ -2,17 +2,17 @@
 
 ######################################################################
 pkgbase=itk
-vers=3.4.2
-url="https://sourceforge.net/projects/incrtcl/files/%5BIncr%20Tcl_Tk%5D-source/Itk%203.4.2/itk3.4.2.tar.gz
+vers=4.1.0
+url="https://sourceforge.net/projects/incrtcl/files/%5Bincr%20Tcl_Tk%5D-4-source/itk%204.1.0/itk4.1.0.tar.gz
     http://jaist.dl.sourceforge.net/sourceforge/tcl/tcl8.6.7-src.tar.gz
     http://jaist.dl.sourceforge.net/sourceforge/tcl/tk8.6.7-src.tar.gz"
 arch=`uname -m`
 build=T1
-src=itk3.4
+src=itk${vers}
 if [ $arch = "x86_64" ]; then
-    OPT_CONFIG="--with-itcl=/usr/lib64/itcl4.0.4"
+    OPT_CONFIG="--with-itcl=/usr/lib64/itcl4.1.0"
 else
-    OPT_CONFIG="--with-itcl=/usr/lib/itcl4.0.4"
+    OPT_CONFIG="--with-itcl=/usr/lib/itcl4.1.0"
 fi
 DOCS="license.terms"
 compress=txz
@@ -180,9 +180,9 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
     esac
   done
 fi
@@ -237,8 +237,6 @@ if [ $opt_package -eq 1 ] ; then
   find $P ! -type l -newer i.st ! -newer i.et \
       -exec touch -t `date '+%m%d0000'` {} \;
   compress
-  strip_libdir $P/usr/${libdir}/itk3.4
-  touch -t `date '+%m%d0000'` $P/usr/${libdir}/itk3.4
   for i in `seq 0 $((${#DOCS[@]} - 1))` ; do
     for j in ${DOCS[$i]} ; do
       for k in ${S[$i]}/$j ; do
