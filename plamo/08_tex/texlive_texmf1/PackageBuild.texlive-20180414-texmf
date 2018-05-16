@@ -1,21 +1,34 @@
 #!/bin/sh
 ##############################################################
-url='http://downloads.sourceforge.net/openjade/openjade-1.3.2.tar.gz'
-pkgbase=openjade
-vers=1.3.2
-arch=`uname -m`
-build=T3
-src=openjade-1.3.2
-OPT_CONFIG='--enable-http --disable-static  --enable-default-catalog=/etc/sgml/catalog  --enable-default-search-path=/usr/share/sgml  --datadir=/usr/share/sgml/openjade-1.3.2'
-DOCS='COPYING ChangeLog NEWS README releasenotes.html releasenotes.pdf releasenotes.ps'
-patchfiles='openjade-1.3.2-upstream-1.patch msggen.pl.patch'
-#patchfiles='msggen.pl.patch openjade-1.3.2-upstream-1.patch'
+pkgbase=texlive_texmf
+vers=20180414
+#url="ftp://tug.org/historic/systems/texlive/${vers:0:4}/texlive-${vers}-texmf.tar.xz"
+url="http://ftp.math.utah.edu/pub/tex/historic/systems/texlive/${vers:0:4}/texlive-${vers}-texmf.tar.xz"
+arch=noarch
+build=T1
+src=texlive-${vers}-texmf
+prefix=/opt/texlive/2018
+OPT_CONFIG=''
+DOCS=''
+PKG1='README ls-R asymptote bibtex chktex context pbibtex psutils scripts source tex tex4ht texconfig texdoc texdoctk ttf2pk xdvi xindy'
+PKG2='dvips fonts hbf2gf makeindex metafont metapost mft omega'
+#PKG3='doc/latex'
+#PKG4='doc/aleph doc/amstex doc/asymptote doc/bg5conv doc/bibtex doc/bibtex8
+#doc/bibtexu doc/cef5conv doc/cefconv doc/cefsconv doc/chktex doc/context
+#doc/cstex doc/dvipdfm doc/dvipdfmx doc/dvipng doc/dvips doc/eplain doc/etex
+#doc/extconv doc/fonts doc/generic doc/hbf2gf doc/info doc/kpathsea doc/luatex
+#doc/man doc/metapost doc/mex doc/omega doc/otherformats doc/pdftex doc/plain
+#doc/pmxchords doc/ptex doc/sjisconv doc/support doc/tetex doc/texdoc doc/texlive
+#doc/texworks doc/tpic2pdftex doc/ttf2pk doc/uptex doc/vlna doc/web2c doc/xetex
+#doc/xindy'
+patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ##############################################################
 
 install2() {
+  echo "=== install2 (${2%/*}) ==="
   install -d ${2%/*} ; install -m 644 $1 $2
 }
 
@@ -148,12 +161,11 @@ for i in `seq 0 $((${#src[@]} - 1))` ; do
   fi      
 done
 P=$W/work ; C=$W/pivot
-infodir=$P/usr/share/info
-mandir=$P/usr/share/man
-xmandir=$P/usr/X11R7/share/man
-docdir=$P/usr/share/doc
+
 myname=`basename $0`
-pkg=$pkgbase-$vers-$arch-$build
+
+archive=${url##*/}
+extdir=${archive%%.*}
 
 if [ $arch = "x86_64" ]; then
     libdir="lib64"
@@ -175,58 +187,26 @@ else
   done
 fi
 if [ $opt_download -eq 1 ] ; then
-  for i in $url ; do
-    if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
-    if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
-    if [ ! -f ${i##*/} ] ; then wget $i ; fi
-    if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
-  done
-  for i in $url ; do
-    case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
-    esac
-  done
+  if [ ! -f ${archive} ] ; then cp ${SRC_DIR}/${archive} . ; fi
+  if [ ! -f ${archive} ] ; then wget ${SRC_URL}/${archive} ; fi
+  if [ ! -f ${archive} ] ; then wget $url ; fi
+  if [ ! -f ${SRC_DIR}/${archive} ] ; then cp -p ${archive} ${SRC_DIR} ; fi
+  if [ ! -d $extdir ]; then
+      tar xpf ${archive}
+  fi
 fi
 if [ $opt_config -eq 1 ] ; then
-  for i in `seq 0 $((${#B[@]} - 1))` ; do
-    if [ -d ${B[$i]} ] ; then rm -rf ${B[$i]} ; fi ; cp -a ${S[$i]} ${B[$i]}
-  done
 ######################################################################
 # * ./configure を行う前に適用したい設定やパッチなどがある場合はここに
 #   記述します。
 ######################################################################
-  for i in `seq 0 $((${#B[@]} - 1))` ; do
-    cd ${B[$i]}
-    for patch in $patchfiles ; do
-       patch -p1 < $W/$patch
-    done
-
-    # if [ -f autogen.sh ] ; then
-    #   sh ./autogen.sh
-    # fi
-
-    if [ -x configure ] ; then
-       export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
-       export LDFLAGS='-Wl,--as-needed'
-       export CXXFLAGS="$CXXFLAGS -fno-lifetime-dse"
-       ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man --enable-splibdir=/usr/${libdir} ${OPT_CONFIG[$i]}
-      if [ $? != 0 ]; then
-	  echo "configure error. $0 script stop"
-	  exit 255
-      fi
-    fi
+  cd $extdir
+  for patch in $patchfiles ; do
+    patch -p1 < $W/$patch
   done
 fi
 if [ $opt_build -eq 1 ] ; then
-  for i in `seq 0 $((${#B[@]} - 1))` ; do
-    cd ${B[$i]}
-    if [ -f Makefile ] ; then
-      export LDFLAGS='-Wl,--as-needed'
-      make
-    fi
-  done
+  echo "ビルドするものはありません"
 fi
 if [ $opt_package -eq 1 ] ; then
   if [ `id -u` -ne 0 ] ; then
@@ -238,103 +218,71 @@ if [ $opt_package -eq 1 ] ; then
   if [ -d $P ] ; then rm -rf $P ; fi ; mkdir -p $P
   if [ -d $C ] ; then rm -rf $C ; fi ; mkdir -p $C
   touch $W/i.st ; sleep 1
-  for i in `seq 0 $((${#B[@]} - 1))` ; do
-    cd ${B[$i]}
-    for mk in `find . -name "[Mm]akefile" ` ; do
-        sed -i -e 's|GCONFTOOL = /usr/bin/gconftool-2|GCONFTOOL = echo|' $mk
-    done
-    if [ -f Makefile ] ; then
-      export LDFLAGS='-Wl,--as-needed'
-      make install DESTDIR=$P
-      make install-man DESTDIR=$P
-      ( cd $P/usr/bin ; ln -v -sf openjade jade )
-      ( cd $P/usr/${libdir}
-	  ln -v -sf libogrove.so libgrove.so
-	  ln -v -sf libospgrove.so libspgrove.so
-	  ln -v -sf libostyle.so libstyle.so )
+  mkdir -p $P/{1,2,3,4}/$prefix
 
-      install -v -m644 dsssl/catalog $P/usr/share/sgml/openjade-1.3.2/
-      install -v -m644 dsssl/*.{dtd,dsl,sgm} $P/usr/share/sgml/openjade-1.3.2
-      chk_me=`whoami | grep root`
-      if [ "$chk_me.x" != ".x" ]; then
-	  chown -R root.root $P/usr/share/sgml/openjade-1.3.2
-      fi
-    fi
+  # Part.1
+  echo "Part.1"
+  for d in $PKG1 ; do
+    ( cd $W/$extdir && tar cf - texmf-dist/$d ) \
+        | ( cd $P/1/$prefix && tar xf - )
   done
-######################################################################
-# * make install でコピーされないファイルがある場合はここに記述します。
-######################################################################
-  mkdir -p $P/install
-  cat <<"EOF" > $P/install/initpkg
-install-catalog --add /etc/sgml/openjade-1.3.2.cat /usr/share/sgml/openjade-1.3.2/catalog
-install-catalog --add /etc/sgml/sgml-docbook.cat /etc/sgml/openjade-1.3.2.cat
 
-echo "SYSTEM \"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd\" \
-    \"/usr/share/xml/docbook/xml-dtd-4.5/docbookx.dtd\"" >> \
-    /usr/share/sgml/openjade-1.3.2/catalog
-EOF
+  # Part.2
+  echo "Part.2"
+  for d in $PKG2 ; do
+    ( cd $W/$extdir && tar cf - texmf-dist/$d ) \
+        | ( cd $P/2/$prefix && tar xf - )
+  done
 
-  if [ -d $P/usr/share/omf ]; then
-      mkdir -p $P/install
-      for omf in $P/usr/share/omf/* ; do
-	omf_name=`basename $omf`
-	cat << EOF >> $P/install/initpkg
-if [ -x /usr/bin/scrollkeeper-update ]; then
-    scrollkeeper-update -p /var/lib/rarian -o /usr/share/omf/$omf_name
+  # Part.3
+#  echo "Part.3"
+#  for d in $PKG3 ; do
+#    ( cd $W/$extdir && tar cf - texmf-dist/$d ) \
+#        | ( cd $P/3/$prefix && tar xf - )
+#  done
+
+  # Part.4
+#  echo "Part.4"
+#  for d in $PKG4 ; do
+#    ( cd $W/$extdir && tar cf - texmf-dist/$d ) \
+#        | ( cd $P/4/$prefix && tar xf - )
+#  done
+
+  chown -R root:root $P/*
+
+  # exec texinit.sh after installation
+  mkdir -p $P/2/install
+  mkdir -p $P/1/install
+  cat <<EOF >> $P/1/install/initpkg
+if [ -f /var/log/packages/texlive_texmf1 -a -f /var/log/packages/texlive ]; then
+  sh $prefix/texinit.sh
+else
+  echo "必要なパッケージが揃っていません．texlive_texmf[123],ptexlive をインストールした後に $prefix/texinit.sh を実行してください．"
 fi
 EOF
-      done
-  fi
 
-  if [ -d $P/etc/gconf/schemas ]; then
-      mkdir -p $P/install
-      for schema in $P/etc/gconf/schemas/* ; do
-          cat << EOF >> $P/install/initpkg
-if [ -x /usr/bin/gconftool-2 ]; then
-    ( cd /etc/gconf/schemas ; GCONF_CONFIG_SOURCE=xml:merged:/etc/gconf/gconf.xml.defaults /usr/bin/gconftool-2 --makefile-install-rule `basename $schema` )
+  cat <<EOF >> $P/2/install/initpkg
+if [ -f /var/log/packages/texlive_texmf1 -a -f /var/log/packages/texlive ]; then
+  sh $prefix/texinit.sh
+else
+  echo "必要なパッケージが揃っていません．texlive_texmf[123],ptexlive をインストールした後に $prefix/texinit.sh を実行してください．"
 fi
 EOF
-      done
-  fi
-
-# remove locales except ja
-# 
-  if [ -d $P/usr/share/locale ]; then
-    pushd $P/usr/share/locale  
-    for loc in * ; do
-        if [ "$loc" != "ja" ]; then
-            rm -rf $P/usr/share/locale/$loc
-        fi
-    done
-    popd
-  fi
 
   touch $W/i.et
   cd $W
   find $P ! -type l -newer i.st ! -newer i.et       -exec touch -t `date '+%m%d0000'` {} \;
-  compress
+
 ######################################################################
 # * compress 対象以外で圧縮したいディレクトリやファイルがある場合はここ
 #   に記述します(strip_{bin,lib}dir や gzip_{dir,one} を使います)。
 # * 他のアーカイブから追加したいファイルがある場合はここに記述します。
 ######################################################################
-  for i in `seq 0 $((${#DOCS[@]} - 1))` ; do
-    for j in ${DOCS[$i]} ; do
-      for k in ${S[$i]}/$j ; do
-        install2 $k $docdir/${src[$i]}/${k#${S[$i]}/}
-        touch -r $k $docdir/${src[$i]}/${k#${S[$i]}/}
-        gzip_one $docdir/${src[$i]}/${k#${S[$i]}/}
-      done
-    done
-    if [ $i -eq 0 ] ; then
-      install $myname $docdir/$src
-      touch -t `date '+%m%d0000'` $docdir/$src/$myname
-      gzip_one $docdir/$src/$myname
-    else
-      ln $docdir/$src/$myname.gz $docdir/${src[$i]}
-    fi
-    ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
-  done
+  docdir=$P/1/usr/share/doc
+  mkdir -p $docdir/$src/
+  install $myname $docdir/$src
+  touch -t `date '+%m%d0000'` $docdir/$src/$myname
+  gzip_one $docdir/$src/$myname
 
   for patch in $patchfiles ; do
       cp $W/$patch $docdir/$src/$patch
@@ -343,7 +291,6 @@ EOF
 ######################################################################
 # * ドキュメントツリーの調整が必要な場合はここに記述します。
 ######################################################################
-  convert
 ######################################################################
 # * convert 対象以外で刈り取りたいシンボリックリンクがある場合はここに
 #   記述します(prune_symlink を使います)。
@@ -355,10 +302,15 @@ EOF
 # tar rvpf $pkg.tar -C $P usr/share/doc/$src
 # touch -t `date '+%m%d0000'` $pkg.tar ; gzip $pkg.tar ; touch $pkg.tar.gz
 # mv $pkg.tar.gz $pkg.tgz
-  cd $P
-  /sbin/makepkg ../$pkg.$compress <<EOF
+#for i in 1 2 3 4
+for i in 1 2
+do
+  cd $P/$i
+  pkg=$pkgbase$i-$vers-$arch-$build
+  /sbin/makepkg $W/$pkg.$compress <<EOF
 y
 1
 EOF
+done
 
 fi

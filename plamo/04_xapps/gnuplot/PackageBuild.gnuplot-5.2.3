@@ -1,13 +1,15 @@
 #!/bin/sh
 ##############################################################
-url='http://archive.xfce.org/xfce/4.12/src/xfce4-power-manager-1.4.3.tar.bz2'
-pkgbase=xfce4_power_manager
-vers=1.4.3
+pkgbase=gnuplot
+vers=5.2.3
+url="https://sourceforge.net/projects/gnuplot/files/gnuplot/${vers}/gnuplot-${vers}.tar.gz"
 arch=`uname -m`
-build=T2
-src=xfce4-power-manager-1.4.3
-OPT_CONFIG=''
-DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README TODO'
+build=T1
+src=gnuplot-${vers}
+OPT_CONFIG="--enable-qt --enable-thin-splines --enable-backwards-compatibility
+    --with-texdir=/opt/texlive/texmf-local/gnuplot --with-lasergnu
+    --with-plot"
+DOCS='BUGS ChangeLog Copyright INSTALL INSTALL.gnu NEWS README RELEASE_NOTES TODO'
 patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"

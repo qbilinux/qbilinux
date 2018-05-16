@@ -7,11 +7,11 @@ url="http://jaist.dl.sourceforge.net/sourceforge/tix/Tix8.4.3-src.tar.gz
 pkgbase=Tix
 vers=8.4.3
 arch=`uname -m`
-build=T1
+build=T2
 src=Tix$vers
 OPT_CONFIG=""
 DOCS="license.terms README.txt ChangeLog"
-patchfiles='tix.soname.patch tix.tcl8.5.patch'
+patchfiles='tix.soname.patch tix.tcl8.5.patch result.patch'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -175,9 +175,9 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xvpf ${i##*/} ;;
-    gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    tar) tar xpf ${i##*/} ;;
+    gz) tar xpzf ${i##*/} ;;
+    bz2) tar xpjf ${i##*/} ;;
     esac
   done
 fi
@@ -193,6 +193,7 @@ if [ $opt_config -eq 1 ] ; then
   ( cd $W/tk8.6.7/unix ; ./configure )
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
+    autoreconf -vif .
     if [ -f Makefile ] ; then
       make clean
     fi
