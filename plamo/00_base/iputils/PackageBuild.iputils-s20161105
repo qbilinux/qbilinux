@@ -5,10 +5,11 @@ pkgbase=iputils
 vers=s20161105
 url="https://github.com/iputils/iputils/archive/s20161105.tar.gz"
 arch=`uname -m`
-build=T1
+build=T2
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="INSTALL.md README.md RELNOTES"
+patchfiles='doc.diff'
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -176,6 +177,9 @@ if [ $opt_config -eq 1 ] ; then
     if [ -d ${B[$i]} ] ; then rm -rf ${B[$i]} ; fi ; cp -a ${S[$i]} ${B[$i]}
   done
   cd $B
+    for patch in $patchfiles ; do
+      patch -p1 < $W/$patch
+    done
   cp -p Makefile{,.orig}
   sed -i "s|@LIBDIR@|/usr/$libdir|" Makefile
   for i in `seq 0 $((${#B[@]} - 1))` ; do
@@ -221,7 +225,7 @@ if [ $opt_package -eq 1 ] ; then
   install -d $P/{bin,usr/{sbin,bin}}
   install ping $P/bin
   chmod +s $P/bin/ping
-  install arping clockdiff tracepath{,6} $P/usr/sbin
+  install arping clockdiff tracepath $P/usr/sbin
   install traceroute6 $P/usr/bin
   chmod +s $P/usr/bin/traceroute6
   install -d $P/usr/share/man/man8
@@ -247,6 +251,10 @@ if [ $opt_package -eq 1 ] ; then
       ln $docdir/$src/$myname.gz $docdir/${src[$i]}
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
+  done
+  for patch in $patchfiles ; do
+    cp $W/$patch $docdir/$src/$patch
+    gzip_one $docdir/$src/$patch
   done
   convert
   tar cvpf $pkg.tar -C $P `cd $P ; find bin | tail -n+2`
