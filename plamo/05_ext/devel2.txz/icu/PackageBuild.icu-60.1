@@ -4,11 +4,15 @@ pkgbase=icu
 vers=60.1
 url='http://download.icu-project.org/files/icu4c/60.1/icu4c-60_1-src.tgz'
 arch=`uname -m`
-build=T1
+build=T2
 src=icu
 OPT_CONFIG=''
 DOCS='license.html readme.html unicode-license.txt'
-patchfiles=''
+if [ $arch = "armv7l" ]; then
+    patchfiles='arm.patch'
+else
+    patchfiles=''
+fi
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
