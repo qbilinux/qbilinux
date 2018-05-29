@@ -4,7 +4,7 @@ url="http://search.cpan.org/CPAN/authors/id/R/RA/RAAB/SGMLSpm-1.1.tar.gz"
 pkgbase=perl_SGMLSpm
 vers=1.1
 arch=`uname -m`
-build=T1
+build=T2
 src=SGMLSpm-${vers}
 OPT_CONFIG=''
 DOCS='COPYING ChangeLog README TODO'
@@ -140,8 +140,8 @@ if [ $opt_config -eq 1 ] ; then
     for patch in $patchfiles ; do
        patch -p1 < $W/$patch
     done
-    sed -i -e "s|mkdir|mkdir -p|" Makefile
-    echo "no need to configure. proceed to build"
+    chmod +w MYMETA.yml
+    perl Makefile.PL
   done
 fi
 if [ $opt_build -eq 1 ] ; then
@@ -165,13 +165,14 @@ if [ $opt_package -eq 1 ] ; then
     perl_version=`perl -v | grep "^This is perl 5," | gawk '{print $9}' | tr -d '(v)' `
     if [ -f Makefile ] ; then
       mkdir -p $P/usr/bin
-      make install BINDIR=$P/usr/bin PERL5DIR=$P/usr/$libdir/perl5/site_perl/ MODULEDIR=$P/usr/$libdir/perl5/site_perl/SGMLS
+      make install DESTDIR=$P
     fi
   done
 ######################################################################
 # * make install でコピーされないファイルがある場合はここに記述します。
 ######################################################################
   mkdir -p $docdir/$src
+  (cd $P/usr/bin; ln -sf sgmlspl.pl sgmlspl)
 
   cp -Lrv DOC/HTML $docdir/$src
 # remove locales except ja
