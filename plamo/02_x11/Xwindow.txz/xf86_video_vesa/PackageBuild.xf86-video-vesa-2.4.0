@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='https://www.x.org/releases/individual/driver/xf86-video-vesa-2.3.4.tar.bz2'
 pkgbase=xf86_video_vesa
-vers=2.3.4
+vers=2.4.0
+url="https://www.x.org/releases/individual/driver/xf86-video-vesa-${vers}.tar.bz2"
 arch=`uname -m`
 build=T1
-src=xf86-video-vesa-2.3.4
+src=xf86-video-vesa-${vers}
 OPT_CONFIG=''
 DOCS='COPYING ChangeLog INSTALL README'
 patchfiles=''
