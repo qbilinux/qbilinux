@@ -5,10 +5,11 @@ pkgbase=pulseaudio
 vers=9.0
 url="http://freedesktop.org/software/pulseaudio/releases/pulseaudio-${vers}.tar.xz"
 arch=`uname -m`
-build=T1
+build=T2
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="LICENSE README NEWS PROTOCOL ABOUT-NLS LGPL GPL todo"
+patchfiles='0001-memfd-wrappers-only-define-memfd_create-if-not-alrea.patch'
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -229,6 +230,9 @@ if [ $opt_config -eq 1 ] ; then
   done
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
+    for patch in $patchfiles ; do
+      patch -p1 < $W/$patch
+    done
     if [ -f Makefile ] ; then
       make clean
     fi
@@ -310,6 +314,10 @@ if [ $opt_package -eq 1 ] ; then
       ln $docdir/$src/$myname.gz $docdir/${src[$i]}
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
+  done
+  for patch in $patchfiles ; do
+    cp $W/$patch $docdir/$src/$patch
+    gzip_one $docdir/$src/$patch
   done
   convert
   touch -t `date '+%m%d0000'` $P/usr/share/bash-completion/completions

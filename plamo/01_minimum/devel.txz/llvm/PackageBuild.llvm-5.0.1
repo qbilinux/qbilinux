@@ -6,7 +6,7 @@ url="http://llvm.org/releases/${vers}/llvm-${vers}.src.tar.xz
  http://llvm.org/releases/${vers}/cfe-${vers}.src.tar.xz
  http://llvm.org/releases/${vers}/compiler-rt-${vers}.src.tar.xz"
 arch=`uname -m`
-build=T1
+build=T2
 src=llvm-${vers}
 # these configs translated into cmake style
 # OPT_CONFIG='--enable-libffi  
@@ -182,7 +182,7 @@ if [ $opt_config -eq 1 ] ; then
           TARGET_BUILD=all
 	  CMAKE_FLAGS="-DLLVM_ENABLE_CXX1Y=ON -DLLVM_ENABLE_LIBCXX=ON -DCLANG_RESOURCE_DIR=../${libdir}/clang/${vers} -DBUILD_SHARED_LIBS=ON -DLLVM_LIBDIR_SUFFIX=${suffix} -DLLVM_REQUIRES_RTTI=ON -DLLVM_ENABLE_TIMESTAMPS=OFF -DLLVM_ENABLE_ASSERTIONS=OFF -DLLVM_ENABLE_PIC=ON -DLLVM_BINUTILS_INCDIR=/usr/include"
     else
-          HOST_TRIPLE='armv7l-pc-linux-gnueabi'
+          HOST_TRIPLE='armv7l-pc-linux-gnueabihf'
           TARGET_BUILD="ARM;AArch64"
 	  CMAKE_FLAGS='-DLLVM_BUILD_LLVM_DYLIB=ON -Wno-dev'
     fi 
