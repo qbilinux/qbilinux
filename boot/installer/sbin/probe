@@ -253,5 +253,5 @@ else # old format and no RAID:
   fi
   fdisk -l >> $TMP/SeTfdisk
 fi
-export LANG=ja_JP.eucJP
+export LANG=ja_JP.UTF-8
 cat $TMP/SeTfdisk
