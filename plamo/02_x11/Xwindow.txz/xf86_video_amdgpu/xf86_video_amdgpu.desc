@@ -1,0 +1,7 @@
+xf86_video_amdgpu & y & y & y & y
+&
+xf86_video_amdgpu
+&
+AMDGPU ビデオチップ用ドライバ
+&
+&
