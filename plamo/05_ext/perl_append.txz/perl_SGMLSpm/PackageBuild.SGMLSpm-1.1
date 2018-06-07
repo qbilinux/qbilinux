@@ -4,7 +4,7 @@ url="http://search.cpan.org/CPAN/authors/id/R/RA/RAAB/SGMLSpm-1.1.tar.gz"
 pkgbase=perl_SGMLSpm
 vers=1.1
 arch=`uname -m`
-build=T1
+build=T2
 src=SGMLSpm-${vers}
 OPT_CONFIG=''
 DOCS='COPYING ChangeLog README TODO'
@@ -140,14 +140,13 @@ if [ $opt_config -eq 1 ] ; then
     for patch in $patchfiles ; do
        patch -p1 < $W/$patch
     done
-    sed -i -e "s|mkdir|mkdir -p|" Makefile
-    echo "no need to configure. proceed to build"
+    perl Makefile.PL
   done
 fi
 if [ $opt_build -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
-    echo "no need to build. proceed to package"
+    make
   done
 fi
 if [ $opt_package -eq 1 ] ; then
@@ -162,10 +161,9 @@ if [ $opt_package -eq 1 ] ; then
   touch $W/i.st ; sleep 1
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
-    perl_version=`perl -v | grep "^This is perl 5," | gawk '{print $9}' | tr -d '(v)' `
     if [ -f Makefile ] ; then
-      mkdir -p $P/usr/bin
-      make install BINDIR=$P/usr/bin PERL5DIR=$P/usr/$libdir/perl5/site_perl/ MODULEDIR=$P/usr/$libdir/perl5/site_perl/SGMLS
+      export LDFLAGS='-Wl,--as-needed'
+      make pure_install DESTDIR=$P
     fi
   done
 ######################################################################
