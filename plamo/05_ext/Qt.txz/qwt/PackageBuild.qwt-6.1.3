@@ -204,7 +204,11 @@ if [ $opt_config -eq 1 ] ; then
     for patch in $patchfiles ; do
        patch -p1 < $W/$patch
     done
-    cp $W/qwtconfig-plamo.pri ./qwtconfig.pri
+    if [ $arch = "armv7l" ]; then
+	cp $W/qwtconfig-arm.pri ./qwtconfig.pri
+    else
+	cp $W/qwtconfig-plamo.pri ./qwtconfig.pri
+    fi
     if [ "$arch" = "x86_64" ]; then
 	sed -i -e "s@/lib@/lib64@" qwtconfig.pri
     fi

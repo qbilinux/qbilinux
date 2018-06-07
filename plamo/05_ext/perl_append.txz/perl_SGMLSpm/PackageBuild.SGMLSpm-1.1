@@ -140,6 +140,7 @@ if [ $opt_config -eq 1 ] ; then
     for patch in $patchfiles ; do
        patch -p1 < $W/$patch
     done
+    chmod +w MYMETA.yml
     perl Makefile.PL
   done
 fi
@@ -170,6 +171,7 @@ if [ $opt_package -eq 1 ] ; then
 # * make install でコピーされないファイルがある場合はここに記述します。
 ######################################################################
   mkdir -p $docdir/$src
+  (cd $P/usr/bin; ln -sf sgmlspl.pl sgmlspl)
 
   cp -Lrv DOC/HTML $docdir/$src
 # remove locales except ja

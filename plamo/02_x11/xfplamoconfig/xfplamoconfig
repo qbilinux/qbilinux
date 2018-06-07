@@ -1,5 +1,5 @@
 #!/bin/sh
-##                            Time-stamp: <2017-12-23 09:35:52 toshi>
+##                            Time-stamp: <2018-05-04 03:13:17 plamo>
 
 ################################
 select_main() {
@@ -240,6 +240,7 @@ dialog --title "ドライバ・モジュールの選択" \
 "nv"    "NVidiaのビデオチップ用ドライバ" \
 "nouveau"    "NVidiaのビデオチップ用ドライバ" \
 "i740"  "Intelの古いi740ビデオチップ用ドライバ" \
+"fbdev"  "フレームバッファ用ドライバ" \
 "vmware" "VMware環境用ドライバ" 2> $TMP_REPLY
 
 if [ $? = 0 ] ; then
