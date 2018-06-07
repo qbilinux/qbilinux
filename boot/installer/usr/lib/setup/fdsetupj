@@ -32,7 +32,7 @@ echo "on" > /tmp/SeTcolor # turn on color menus
 PATH="$PATH:/usr/lib/setup"
 export PATH;
 /sbin/probe -r 1> /dev/null 2> /dev/null
-PARTLIST="`probe -l | grep "83  Linux" 2> /dev/null`"
+PARTLIST="`probe -l | grep " Linux filesystem" 2> /dev/null`"
 if [ "$PARTLIST" = "" ]; then
  SeTnopartj
  exit
