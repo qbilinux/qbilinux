@@ -2,7 +2,7 @@
 export LANG=en_US.UTF-8
 
 seek_dir () {
-#    dfas dfa/fdafsd/fdafd/afkdjsakf/PlamoBuild*
+#    dfas dfa/fdafsd/fdafd/afkdjsakf/PackageBuild*
 
     DIR=${1%/*}
     SCN=${1##*/}
@@ -119,7 +119,7 @@ seek_dir () {
 	fi
 
     else
-	echo "*** skip: make.log newer than PlamoBuild. If you want to build, use -f option."
+	echo "*** skip: make.log newer than PackageBuild. If you want to build, use -f option."
     fi
 
     popd
