@@ -17,7 +17,7 @@ if (argc != 2):
     quit()
 
 basedir = args[1] + '/'
-archdir = ('x86/', 'x86_64/', 'arm/')
+archdir = ('x86/', 'x86_64/', 'arm/', 'armv7_hf/')
 channel = ('plamo', 'contrib')
 
 '''
