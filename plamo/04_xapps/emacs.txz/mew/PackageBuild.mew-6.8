@@ -1,13 +1,13 @@
 #!/bin/sh
 ##############################################################
-url='http://www.mew.org/Release/mew-6.7.tar.gz'
 pkgbase=mew
-vers=6.7
+vers=6.8
+url="http://www.mew.org/Release/mew-${vers}.tar.gz"
 arch=`uname -m`
 build=T1
 src=mew-${vers}
 OPT_CONFIG='--disable-static'
-DOCS='00readme 00changes.6.7 00copyright 00copyright.ja 00diff README.md dot.emacs dot.mew dot.theme'
+DOCS="00readme 00changes* 00copyright 00copyright.ja 00diff README.md dot.emacs dot.mew dot.theme"
 patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
