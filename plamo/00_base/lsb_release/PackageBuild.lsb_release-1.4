@@ -220,8 +220,8 @@ if [ $opt_package -eq 1 ] ; then
     fi
   done
   install -d $P/etc
-  cat <<- "EOF" > $P/etc/plamo-release
-	Plamo Linux release 6.1
+  cat <<- "EOF" > $P/etc/plamo-nora-release
+	Plamo nora Linux release 0.1
 	EOF
   touch $W/i.et
   cd $W
@@ -247,7 +247,7 @@ if [ $opt_package -eq 1 ] ; then
   done
   convert
   tar cvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
-  tar rvpf $pkg.tar -C $P etc/plamo-release
+  tar rvpf $pkg.tar -C $P etc/plamo-nora-release
   tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man1 | tail -n+2`
   tar rvpf $pkg.tar -C $P usr/share/doc/$src
   touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz

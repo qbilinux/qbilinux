@@ -1,27 +1,99 @@
 #!/bin/sh
 ##############################################################
-pkgbase=curl
-vers=7.56.0
-url="http://curl.haxx.se/download/curl-${vers}.tar.bz2"
+pkgbase="grabber"
+vers=0.1.0
+url='https://files.pythonhosted.org/packages/cf/61/d3b2aab34ed230eeb363e833e2cccfbb57b8fce0953ce29c97d66d68a514/grabber-0.1.0.tar.gz'
 commitid=
+apply_arch="x86_64 i686 armv7l"
 arch=`uname -m`
 build=T1
-src=curl-${vers}
-OPT_CONFIG='--disable-ldap --disable-rtsp
-    --with-gssapi-includes=/usr/include --without-librtmp'
-DOCS='`echo docs/{VERSIONS,MAIL-ETIQUETTE,HTTP-COOKIES.md}`
-    `echo docs/{RELEASE-PROCEDURE,BUGS,SSL-PROBLEMS.md,CODE_STYLE.md}`
-    `echo docs/{KNOWN_BUGS,HTTP2.md,README.win32,INTERNALS.md}`
-    `echo docs/{LICENSE-MIXING.md,THANKS,README.netware,TheArtOfHttpScripting}`
-    `echo docs/{CHECKSRC.md,FAQ,INSTALL,ROADMAP.md,FEATURES}`
-    `echo docs/{MANUAL,CODE_OF_CONDUCT.md,RESOURCES,SECURITY.md,TODO}`
-    `echo docs/{CONTRIBUTE.md,HISTORY.md,SSLCERTS.md}`
-    COPYING README RELEASE-NOTES'
+src=grabber-${vers}
+OPT_CONFIG=''
+DOCS='LICENSE README.md'
 patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ##############################################################
+
+
+W=`pwd`
+for i in `seq 0 $((${#src[@]} - 1))` ; do
+  S[$i]=$W/source/${src[$i]}
+  B[$i]=$W/build/$arch/build`test ${#src[@]} -eq 1 || echo $i`
+done
+P=$W/work/$arch/${pkgbase[0]} ; C=$W/pivot
+infodir=$P/usr/share/info
+mandir=$P/usr/share/man
+xmandir=$P/usr/X11R7/share/man
+docdir=$P/usr/share/doc
+myname=`basename $0`
+pkg=$pkgbase-$vers-$arch-$build
+
+case $arch in
+  x86_64)  libdir="lib64"; suffix="64" ;;
+  *)       libdir="lib";   suffix="" ;;
+esac
+
+############# begin user function
+
+do_config() {
+    if [ -d ${B[$1]} ] ; then rm -rf ${B[$1]} ; fi
+
+    # cd ${S[$1]}
+    # if [ -f autogen.sh ] ; then
+    #   sh ./autogen.sh
+    # fi
+
+    cp -a ${S[$1]} ${B[$1]}
+    # mkdir ${B[$1]}
+    cd ${B[$1]}
+    if [ -x ${S[$1]}/configure ] ; then
+      export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
+      export LDFLAGS='-Wl,--as-needed' 
+      ${S[$1]}/configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$1]}
+    fi
+}
+do_extradef() {
+    echo "**"
+}
+
+do_build() {
+    cd ${B[$1]}
+    if [ -f setup.py ] ; then
+      export LDFLAGS='-Wl,--as-needed'
+      python3 setup.py build
+    fi
+}
+
+do_install() {
+    cd ${B[$1]}
+    for mk in `find . -name "[Mm]akefile" ` ; do
+      sed -i -e 's|GCONFTOOL = /usr/bin/gconftool-2|GCONFTOOL = echo|' $mk
+    done
+    if [ -f setup.py ] ; then
+      export LDFLAGS='-Wl,--as-needed'
+      python3 setup.py install --root $P
+    fi
+}
+
+do_extrafunc() {
+    # mkdir -p $P2/hoge
+    # cp hoge.txt $P2
+    echo "**"
+}
+
+do_package() {
+    for i in $pkgbase ; do
+        cd $P
+        /sbin/makepkg $W/$pkg.$compress <<EOF
+y
+1
+EOF
+    done
+}
+
+############# end user function
 
 install2() {
   install -d ${2%/*} ; install -m 644 $1 $2
@@ -82,29 +154,13 @@ compress_all() {
   strip_all
 }  
 
-W=`pwd`
-for i in `seq 0 $((${#src[@]} - 1))` ; do
-  S[$i]=$W/${src[$i]} 
-  if [ $arch = "x86_64" ]; then
-    B[$i]=$W/build`test ${#src[@]} -eq 1 || echo $i`
-  else
-    B[$i]=$W/build32`test ${#src[@]} -eq 1 || echo $i`
-  fi      
-done
-P=$W/work ; C=$W/pivot
-infodir=$P/usr/share/info
-mandir=$P/usr/share/man
-xmandir=$P/usr/X11R7/share/man
-docdir=$P/usr/share/doc
-myname=`basename $0`
-pkg=$pkgbase-$vers-$arch-$build
+if [ ! -d $SRC_DIR ]       ; then mkdir -p $SRC_DIR       ; fi
+if [ ! -d $W/source ]      ; then mkdir -p $W/source      ; fi
+if [ ! -d $W/build/$arch ] ; then mkdir -p $W/build/$arch ; fi
 
-if [ $arch = "x86_64" ]; then
-  libdir="lib64"
-  suffix="64"
-else
-  libdir="lib"
-  suffix=""
+if  ! `echo ${apply_arch[@]} | grep -q "$arch"`  ; then
+    echo "This package is not supported: $arch"
+    exit 255
 fi
 
 if [ $# -eq 0 ] ; then
@@ -121,6 +177,7 @@ else
     esac
   done
 fi
+
 if [ $opt_download -eq 1 ] ; then
   for i in $url ; do
     case ${i##*.} in
@@ -132,8 +189,13 @@ if [ $opt_download -eq 1 ] ; then
       fi
       ;;
     *)
-      if [ ! -f ${i##*/} ] ; then cp ${SRC_DIR}/${i##*/} . ; fi
-      if [ ! -f ${i##*/} ] ; then wget ${SRC_URL}/${i##*/} ; fi
+      if [ ! -f ${i##*/} ] ; then
+        if [ -f ${SRC_DIR}/${i##*/} ] ;then
+          cp ${SRC_DIR}/${i##*/} .
+        else
+          wget ${SRC_URL}/${i##*/}
+        fi
+      fi
       if [ ! -f ${i##*/} ] ; then
         wget $i
         for sig in asc sig{,n} {md5,sha{1,256}}{,sum} ; do
@@ -141,9 +203,9 @@ if [ $opt_download -eq 1 ] ; then
         done
         if [ -f ${i##*/}.$sig ] ; then
           case $sig in
-          asc|sig) gpg --verify ${i##*/}.$sig ;;
-          md5|sha1|sha256) ${sig}sum -c ${i##*/}.$sig ;;
-          *) $sig -c ${i##*/}.$sig ;;
+            asc|sig) gpg --verify ${i##*/}.$sig ;;
+            md5|sha1|sha256) ${sig}sum -c ${i##*/}.$sig ;;
+            *) $sig -c ${i##*/}.$sig ;;
           esac
           if [ $? -ne 0 ] ; then echo "archive verify failed" ; exit ; fi
         fi
@@ -154,15 +216,20 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    gz) tar xpzf ${i##*/} ;;
-    bz2) tar xpjf ${i##*/} ;;
-    git) ( cd `basename ${i##*/} .git`
-        git checkout master
-        if [ -n "$commitid" ] ; then
-          git reset --hard $commitid
-        fi
-        git set-file-times ) ;;
-    *) tar xpf ${i##*/} ;;
+    git)
+      ( cd $W/source
+        rm -rf clone $W/`basename ${i##*/} .git`
+        git clone $W/`basename ${i##*/} .git`
+        ( cd $W/source/`basename ${i##*/} .git`
+          if [ -n "$commitid" ] ; then
+            git reset --hard $commitid
+          fi
+          git set-file-times
+        )) ;;
+    zip)
+      ( cd $W/source ; unzip -o $W/${i##*/} ) ;;
+    *)
+      ( cd $W/source ; tar xpf $W/${i##*/} )  ;;
     esac
   done
 fi
@@ -171,10 +238,10 @@ if [ $opt_patch -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     if [ -d ${B[$i]} ] ; then rm -rf ${B[$i]} ; fi ; cp -a ${S[$i]} ${B[$i]}
   done
-######################################################################
-# * ./configure ¤ò¹Ô¤¦Á°¤ËÅ¬ÍÑ¤·¤¿¤¤ÀßÄê¤ä¥Ñ¥Ã¥Á¤Ê¤É¤¬¤¢¤ë¾ì¹ç¤Ï¤³¤³¤Ë
-#   µ­½Ò¤·¤Þ¤¹¡£
-######################################################################
+  ######################################################################
+  # * ./configure ã‚’è¡Œã†å‰ã«é©ç”¨ã—ãŸã„è¨­å®šã‚„ãƒ‘ãƒƒãƒãªã©ãŒã‚ã‚‹å ´åˆã¯ã“ã“ã«
+  #   è¨˜è¿°ã—ã¾ã™ã€‚
+  ######################################################################
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     for patch in $patchfiles ; do
@@ -185,36 +252,24 @@ fi
 
 if [ $opt_config -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
-    cd ${B[$i]}
-
-    # if [ -f autogen.sh ] ; then
-    #   sh ./autogen.sh
-    # fi
-
-    if [ -x configure ] ; then
-      export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
-      export LDFLAGS='-Wl,--as-needed' 
-      ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
-    fi
+    do_config $i
     if [ $? != 0 ]; then
       echo "configure error. $0 script stop"
       exit 255
     fi
   done
 fi
+
 if [ $opt_build -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
-    cd ${B[$i]}
-    if [ -f Makefile ] ; then
-      export LDFLAGS='-Wl,--as-needed'
-      make
-    fi
+    do_build $i
     if [ $? != 0 ]; then
       echo "make error. $0 script stop"
       exit 255
     fi
   done
 fi
+
 if [ $opt_package -eq 1 ] ; then
   if [ `id -u` -ne 0 ] ; then
     read -p "Do you want to package as root? [y/N] " ans
@@ -224,24 +279,17 @@ if [ $opt_package -eq 1 ] ; then
   fi
   if [ -d $P ] ; then rm -rf $P ; fi ; mkdir -p $P
   if [ -d $C ] ; then rm -rf $C ; fi ; mkdir -p $C
-  touch $W/i.st ; sleep 1
   for i in `seq 0 $((${#B[@]} - 1))` ; do
-    cd ${B[$i]}
-    for mk in `find . -name "[Mm]akefile" ` ; do
-      sed -i -e 's|GCONFTOOL = /usr/bin/gconftool-2|GCONFTOOL = echo|' $mk
-    done
-    if [ -f Makefile ] ; then
-      export LDFLAGS='-Wl,--as-needed'
-      make install DESTDIR=$P
-    fi
+    do_install $i
     if [ $? != 0 ]; then
       echo "make install error. $0 script stop"
       exit 255
     fi
   done
 ######################################################################
-# * make install ¤Ç¥³¥Ô¡¼¤µ¤ì¤Ê¤¤¥Õ¥¡¥¤¥ë¤¬¤¢¤ë¾ì¹ç¤Ï¤³¤³¤Ëµ­½Ò¤·¤Þ¤¹¡£
+# * make install ã§ã‚³ãƒ”ãƒ¼ã•ã‚Œãªã„ãƒ•ã‚¡ã‚¤ãƒ«ãŒã‚ã‚‹å ´åˆã¯ã“ã“ã«è¨˜è¿°ã—ã¾ã™ã€‚
 ######################################################################
+  do_extrafunc
   mkdir -p $docdir/$src
   if [ -d $P/usr/share/omf ]; then
     mkdir -p $P/install
@@ -279,7 +327,7 @@ EOF
   done      
 
 ######################################################################
-# path ¤Ë lib ¤¬¤¢¤ë¥Ð¥¤¥Ê¥ê¤Ï strip -g, ¤Ê¤¤¥Ð¥¤¥Ê¥ê¤Ï strip ¤¹¤ë
+# path ã« lib ãŒã‚ã‚‹ãƒã‚¤ãƒŠãƒªã¯ strip -g, ãªã„ãƒã‚¤ãƒŠãƒªã¯ strip ã™ã‚‹
 ######################################################################
   cd $P
   compress_all
@@ -289,9 +337,9 @@ EOF
     done
   fi
 ######################################################################
-# * compress ÂÐ¾Ý°Ê³°¤Ç°µ½Ì¤·¤¿¤¤¥Ç¥£¥ì¥¯¥È¥ê¤ä¥Õ¥¡¥¤¥ë¤¬¤¢¤ë¾ì¹ç¤Ï¤³¤³
-#   ¤Ëµ­½Ò¤·¤Þ¤¹(strip_{bin,lib}dir ¤ä gzip_{dir,one} ¤ò»È¤¤¤Þ¤¹)¡£
-# * Â¾¤Î¥¢¡¼¥«¥¤¥Ö¤«¤éÄÉ²Ã¤·¤¿¤¤¥Õ¥¡¥¤¥ë¤¬¤¢¤ë¾ì¹ç¤Ï¤³¤³¤Ëµ­½Ò¤·¤Þ¤¹¡£
+# * compress å¯¾è±¡ä»¥å¤–ã§åœ§ç¸®ã—ãŸã„ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚„ãƒ•ã‚¡ã‚¤ãƒ«ãŒã‚ã‚‹å ´åˆã¯ã“ã“
+#   ã«è¨˜è¿°ã—ã¾ã™(strip_{bin,lib}dir ã‚„ gzip_{dir,one} ã‚’ä½¿ã„ã¾ã™)ã€‚
+# * ä»–ã®ã‚¢ãƒ¼ã‚«ã‚¤ãƒ–ã‹ã‚‰è¿½åŠ ã—ãŸã„ãƒ•ã‚¡ã‚¤ãƒ«ãŒã‚ã‚‹å ´åˆã¯ã“ã“ã«è¨˜è¿°ã—ã¾ã™ã€‚
 ######################################################################
   cd $W
   for i in `seq 0 $((${#DOCS[@]} - 1))` ; do
@@ -317,8 +365,8 @@ EOF
   done
 
 ############################################################
-#   /usr/share/doc °Ê²¼¤Ë¤Ï°ìÈÌ¥æ¡¼¥¶¤ÎID¤Î¤Þ¤Þ¤Î¥Õ¥¡¥¤¥ë¤¬
-#   Ê¶¤ì¤³¤ß¤¬¤Á¤Ê¤Î¤Ç
+#   /usr/share/doc ä»¥ä¸‹ã«ã¯ä¸€èˆ¬ãƒ¦ãƒ¼ã‚¶ã®IDã®ã¾ã¾ã®ãƒ•ã‚¡ã‚¤ãƒ«ãŒ
+#   ç´›ã‚Œã“ã¿ãŒã¡ãªã®ã§
 ############################################################
 
   chk_me=`whoami | grep root`
@@ -327,20 +375,10 @@ EOF
   fi
 
 ######################################################################
-# * convert ÂÐ¾Ý°Ê³°¤Ç´¢¤ê¼è¤ê¤¿¤¤¥·¥ó¥Ü¥ê¥Ã¥¯¥ê¥ó¥¯¤¬¤¢¤ë¾ì¹ç¤Ï¤³¤³¤Ë
-#   µ­½Ò¤·¤Þ¤¹(prune_symlink ¤ò»È¤¤¤Þ¤¹)¡£
-# * ´°À®¤·¤¿ºî¶È¥Ç¥£¥ì¥¯¥È¥ê¤«¤é tar ¥¤¥á¡¼¥¸¤òºîÀ®¤¹¤ë¼ê½ç¤ò°Ê¹ß¤Ëµ­½Ò
-#   ¤·¤Þ¤¹(¤³¤À¤ï¤ê¤òµá¤á¤Ê¤¤¤Ê¤éÃ±¤Ë makepkg ¤Ç¤âÎÉ¤¤¤Ç¤¹)¡£
+# * convert å¯¾è±¡ä»¥å¤–ã§åˆˆã‚Šå–ã‚ŠãŸã„ã‚·ãƒ³ãƒœãƒªãƒƒã‚¯ãƒªãƒ³ã‚¯ãŒã‚ã‚‹å ´åˆã¯ã“ã“ã«
+#   è¨˜è¿°ã—ã¾ã™(prune_symlink ã‚’ä½¿ã„ã¾ã™)ã€‚
+# * å®Œæˆã—ãŸä½œæ¥­ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‹ã‚‰ tar ã‚¤ãƒ¡ãƒ¼ã‚¸ã‚’ä½œæˆã™ã‚‹æ‰‹é †ã‚’ä»¥é™ã«è¨˜è¿°
+#   ã—ã¾ã™(ã“ã ã‚ã‚Šã‚’æ±‚ã‚ãªã„ãªã‚‰å˜ã« makepkg ã§ã‚‚è‰¯ã„ã§ã™)ã€‚
 ######################################################################
-# tar cvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
-# tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man1 | tail -n+2`
-# tar rvpf $pkg.tar -C $P usr/share/doc/$src
-# touch -t `date '+%m%d0900'` $pkg.tar ; gzip $pkg.tar ; touch $pkg.tar.gz
-# mv $pkg.tar.gz $pkg.tgz
-  cd $P
-  /sbin/makepkg ../$pkg.$compress <<EOF
-y
-1
-EOF
-
+    do_package
 fi

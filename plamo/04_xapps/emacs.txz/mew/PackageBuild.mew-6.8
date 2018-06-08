@@ -1,16 +1,14 @@
 #!/bin/sh
 ##############################################################
-pkgbase=emacs
-vers=25.3
-url="http://ftp.jaist.ac.jp/pub/GNU/emacs/emacs-${vers}.tar.xz"
-verify=
+pkgbase=mew
+vers=6.8
+url="http://www.mew.org/Release/mew-${vers}.tar.gz"
 arch=`uname -m`
 build=T1
-src=${pkgbase}-${vers}
-OPT_CONFIG='--without-all --without-x'
-DOCS='COPYING ChangeLog INSTALL README'
-patchfiles='emacs-24.2-add_txz.patch'
-file2='wb-line-number.el'
+src=mew-${vers}
+OPT_CONFIG='--disable-static'
+DOCS="00readme 00changes* 00copyright 00copyright.ja 00diff README.md dot.emacs dot.mew dot.theme"
+patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -139,20 +137,6 @@ convert() {
   for i in `seq 9` n ; do prune_symlink $mandir/man$i ; done
 }
 
-verify_checksum() {
-  echo "Verify Checksum..."
-  checksum_command=$1
-  verify_file=${verify##*/}
-  for s in $url ; do
-    srcsum=`$checksum_command ${s##*/}`
-    verifysum=`grep ${s##*/} $verify_file`
-    if [ x"$srcsum" != x"$verifysum" ]; then
-      return 1
-    fi
-  done
-  return 0
-}
-
 W=`pwd`
 for i in `seq 0 $((${#src[@]} - 1))` ; do
   S[$i]=$W/${src[$i]} 
@@ -168,10 +152,7 @@ mandir=$P/usr/share/man
 xmandir=$P/usr/X11R7/share/man
 docdir=$P/usr/share/doc
 myname=`basename $0`
-pkg=${pkgbase}-$vers-$arch-$build
-pkgmini=${pkgbase}_mini-$vers-$arch-$build
-pkgbin=${pkgbase}_bin-$vers-$arch-$build
-pkglib=${pkgbase}_lib-$vers-noarch-$build
+pkg=$pkgbase-$vers-$arch-$build
 
 if [ $arch = "x86_64" ]; then
     libdir="lib64"
@@ -180,7 +161,7 @@ else
 fi
 
 if [ $# -eq 0 ] ; then
-  opt_download=1 ; opt_config=1 ; opt_build=1 ; opt_package=1
+  opt_download=0 ; opt_config=1 ; opt_build=1 ; opt_package=1
 else
   opt_download=0 ; opt_config=0 ; opt_build=0 ; opt_package=0
   for i in $@ ; do
@@ -199,30 +180,11 @@ if [ $opt_download -eq 1 ] ; then
     if [ ! -f ${i##*/} ] ; then wget $i ; fi
     if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
   done
-  for i in $verify ; do
-    if [ ! -f ${i##*/} ] ; then
-      wget $i
-    fi
-  done
-  for i in $verify ; do
-    case ${i##*.} in
-    asc) gpg --verify ${i##*/} ;;
-    sig) gpg --verify ${i##*/} ;;
-    sha256sum) verify_checksum "sha256sum" ;;
-    esac
-    if [ $? -ne 0 ]; then
-      echo "archive verify was failed."
-      exit 1
-    else
-      echo "archive verify was successed."
-    fi
-  done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xpf ${i##*/} ;;
-    gz) tar xpzf ${i##*/} ;;
-    bz2) tar xpjf ${i##*/} ;;
-    *) tar xpf ${i##*/} ;;
+    tar) tar xvpf ${i##*/} ;;
+    gz) tar xvpzf ${i##*/} ;;
+    bz2) tar xvpjf ${i##*/} ;;
     esac
   done
 fi
@@ -240,14 +202,14 @@ if [ $opt_config -eq 1 ] ; then
        patch -p1 < $W/$patch
     done
 
-    if [ -f autogen.sh ] ; then
-      sh ./autogen.sh
-    fi
+    # if [ -f autogen.sh ] ; then
+    #   sh ./autogen.sh
+    # fi
 
     if [ -x configure ] ; then
        export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
        export LDFLAGS='-Wl,--as-needed' 
-       ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
+          ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
       if [ $? != 0 ]; then
 	  echo "configure error. $0 script stop"
 	  exit 255
@@ -272,9 +234,6 @@ if [ $opt_package -eq 1 ] ; then
     fi
   fi
   if [ -d $P ] ; then rm -rf $P ; fi ; mkdir -p $P
-  if [ -d ${P}_mini ] ; then rm -rf ${P}_mini ; fi ; mkdir -p ${P}_mini
-  if [ -d ${P}_bin ] ; then rm -rf ${P}_bin ; fi ; mkdir -p ${P}_bin
-  if [ -d ${P}_lib ] ; then rm -rf ${P}_lib ; fi
   if [ -d $C ] ; then rm -rf $C ; fi ; mkdir -p $C
   touch $W/i.st ; sleep 1
   for i in `seq 0 $((${#B[@]} - 1))` ; do
@@ -285,14 +244,12 @@ if [ $opt_package -eq 1 ] ; then
     if [ -f Makefile ] ; then
       export LDFLAGS='-Wl,--as-needed'
       make install DESTDIR=$P
+      make install-jinfo DESTDIR=$P
     fi
   done
 ######################################################################
 # * make install でコピーされないファイルがある場合はここに記述します。
 ######################################################################
-  mkdir -p $P/usr/share/emacs/site-lisp
-  install $W/${file2##*/} $P/usr/share/emacs/site-lisp/
-
   if [ -d $P/usr/share/omf ]; then
       mkdir -p $P/install
       for omf in $P/usr/share/omf/* ; do
@@ -337,7 +294,6 @@ EOF
 #   に記述します(strip_{bin,lib}dir や gzip_{dir,one} を使います)。
 # * 他のアーカイブから追加したいファイルがある場合はここに記述します。
 ######################################################################
-  mkdir -p $P/usr/share/doc/$src
   for i in `seq 0 $((${#DOCS[@]} - 1))` ; do
     for j in ${DOCS[$i]} ; do
       for k in ${S[$i]}/$j ; do
@@ -360,10 +316,6 @@ EOF
       cp $W/$patch $docdir/$src/$patch
       gzip_one $docdir/$src/$patch
   done
-  for patch in $file2 ; do
-      cp $W/$patch $docdir/$src/$patch
-      gzip_one $docdir/$src/$patch
-  done
 ######################################################################
 # * ドキュメントツリーの調整が必要な場合はここに記述します。
 ######################################################################
@@ -379,31 +331,8 @@ EOF
 # tar rvpf $pkg.tar -C $P usr/share/doc/$src
 # touch -t `date '+%m%d0000'` $pkg.tar ; gzip $pkg.tar ; touch $pkg.tar.gz
 # mv $pkg.tar.gz $pkg.tgz
-  cp -pr $P ${P}_lib
-  
-  mkdir -p ${P}_mini/usr/bin
-  mkdir -p ${P}_mini/usr/share/doc
-  mv ${P}_lib/usr/bin/emacs-$vers ${P}_mini/usr/bin/emacs_mini-$vers
-  (cd ${P}_lib/usr/bin; rm emacs)
-  (cd ${P}_mini/usr/bin; ln -sf emacs_mini-$vers emacs_mini)
-  mv ${P}_lib/usr/share/doc/$src ${P}_mini/usr/share/doc/${pkgbase}_mini-$vers
-
-  #
-  mkdir -p ${P}_bin/usr
-  mv ${P}_lib/usr/bin ${P}_lib/usr/libexec ${P}_bin/usr
-  cd ${P}_bin
-  /sbin/makepkg ../${pkgbin}.$compress <<EOF
-y
-1
-EOF
-  cd ${P}_lib
-  /sbin/makepkg ../${pkglib}.$compress <<EOF
-y
-1
-EOF
-  
-  cd ${P}_mini
-  /sbin/makepkg ../${pkgmini}.$compress <<EOF
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
 y
 1
 EOF
