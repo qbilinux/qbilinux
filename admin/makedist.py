@@ -23,16 +23,17 @@ def fild_all_files(directory):
         if 'old' in dirs:
             dirs.remove('old')
 
-if (argc != 3):
+if (argc != 4):
     print("")
     print("copy pakege file and make tagfile form Plamo Linux distrobution.")
     print("")
-    print("Usage: "+args[0]+" buildir destdie")
+    print("Usage: "+args[0]+" buildir destdie arch")
     print("")
     print("   buildir: directory contains package and desc file.")
     print("   destdir: direcotry for Plamo Linux distrobution")
+    print("   arch:    x86_64 armv7l i686")
     print("")
-    print("   ex) "+args[0]+" Plamo-src/plamo Plamo-hoge/x86_64")
+    print("   ex) "+args[0]+" Plamo-src/plamo Plamo-0.0/x86_64 x86_64")
     quit()
     
 for file in fild_all_files(args[1]):
@@ -52,7 +53,7 @@ for file in fild_all_files(args[1]):
                 flg_name = 0
                 flg_head = 0
                 for lll in os.listdir(os.path.join(srcpath, ll)):
-                    # Plamobuild.bash-4.3.30, bash-4.3.30-x86_64-P1.txz, bash.desc
+                    # Plamobuild.bash-4.3.30, bash-4.3.30-x86_64-T1.txz, bash.desc
                     # if fnmatch.fnmatch(lll, basename+'.desc'):
                     #     for llll in os.listdir(os.path.join(srcpath, ll)):
                     #         #if fnmatch.fnmatch(llll, basename+'-'+version+'*.txz'):
@@ -65,7 +66,7 @@ for file in fild_all_files(args[1]):
                         #print(--- "+ext2)
                         for llll in os.listdir(os.path.join(srcpath, ll)):
                             #print(llll)
-                            if fnmatch.fnmatch(llll, basename2+'-*-*-P*.txz'):
+                            if fnmatch.fnmatch(llll, basename2+'-*-'+args[3]+'-*.txz') or fnmatch.fnmatch(llll, basename2+'-*-noarch-*.txz'):
                                 pkglist.append(os.path.join(srcpath, ll, llll))
                                 desclist.append(os.path.join(srcpath, ll, basename2+'.desc'))
                     if fnmatch.fnmatch(lll, basename+'.desc'):
