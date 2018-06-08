@@ -7,7 +7,7 @@ import urllib, time, ftplib
 PKG_PATH = "/var/log/packages/"
 
 def get_args():
-    parser = argparse.ArgumentParser(description="Tsumiki Linux update "
+    parser = argparse.ArgumentParser(description="Plamo nora Linux update "
             "packages check and download")
     parser.add_argument("-v", "--verbose", action="store_true",
             help="verbose messages (not implemented yet)")
@@ -56,17 +56,17 @@ def url_completion(url):
     if not url.endswith("/"):
         url += "/"      # 念のため
     current = "0.0"
-    if os.path.isfile("/etc/tsumiki-release"):
-        # format: Plamo Linux release x.y
-        info = open("/etc/tsumiki-release", "r").readline()
-        version = info.split(" ")[4].strip()
+    if os.path.isfile("/etc/plamo-nora-release"):
+        # format: Plamo nora Linux release x.y
+        info = open("/etc/plamo-nora-release", "r").readline()
+        version = info.split(" ")[5].strip()
     elif os.path.isdir("/usr/lib/setup"):
-        # format: /usr/lib/setup/Tsumiki-x.y
+        # format: /usr/lib/setup/Plamo-nora-x.y
         info = sorted(os.listdir("/usr/lib/setup"))
         version = info[-1].split("-")[-1]
     else:
         print("Cannot find valid version tag.  "
-                "Suppose you use Tsumiki Linux current({})".format(current))
+                "Suppose you use Plamo nora Linux current({})".format(current))
         version = current
     version = re.sub("\..*", ".x", version)
     arch = subprocess.check_output("uname -m".split()).strip()
@@ -79,7 +79,7 @@ def url_completion(url):
             urllib2.urlopen(url + arch + "/allpkgs.pickle").close()
             return url + arch + "/"
         except urllib2.URLError:
-            return url + "Tsumiki-" + version + "/" + arch + "/"
+            return url + "Plamo-nora-" + version + "/" + arch + "/"
 
 def get_confs():
     param = get_args()
@@ -109,7 +109,7 @@ def get_confs():
         elif i in sys_confs:
             confs[i] = sys_confs[i]
     """
-    ローカルの Plamo バージョンとアーキ名を取得し，URL を補完する．
+    ローカルの Plamo nora バージョンとアーキ名を取得し，URL を補完する．
     """
     confs["URL"] = url_completion(confs["URL"])
     """
@@ -356,7 +356,7 @@ def main():
                 not_installed.append((path_list, path, pkgname))
         print("un-selected package(s):")
         """
-        カテゴリー別に，カテゴリー内のパッケージを Plamo インストーラが
+        カテゴリー別に，カテゴリー内のパッケージを Plamo nora インストーラが
         インストールする順番にソートして表示する．
         """
         print("category: {}".format(sorted(not_installed)[0][0][0]))

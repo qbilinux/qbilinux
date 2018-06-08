@@ -1,18 +1,22 @@
 #!/bin/sh
 ##############################################################
-pkgbase=libreoffice
-vers=5.4.5.1
-url="http://download.documentfoundation.org/libreoffice/src/${vers%.*}/libreoffice-${vers}.tar.xz
-http://download.documentfoundation.org/libreoffice/src/${vers%.*}/libreoffice-dictionaries-${vers}.tar.xz
-http://download.documentfoundation.org/libreoffice/src/${vers%.*}/libreoffice-help-${vers}.tar.xz
-http://ftp.tsukuba.wide.ad.jp/software/apache//ant/binaries/apache-ant-1.10.1-bin.zip"
-#http://download.documentfoundation.org/libreoffice/src/${vers%.*}/libreoffice-translations-${vers}.tar.xz
+pkgbase=curl
+vers=7.60.0
+url="http://curl.haxx.se/download/curl-${vers}.tar.bz2"
 commitid=
 arch=`uname -m`
 build=T1
-src=libreoffice-${vers}
-OPT_CONFIG="--with-ant-home=$W/apache-ant-1.10.1/ --without-junit --without-java --with-lang=ja"
-DOCS='COPYING COPYING.LGPL COPYING.MPL ChangeLog README.Solaris README.cross README.md leak-suppress.txt readlicense_oo unusedcode.README'
+src=curl-${vers}
+OPT_CONFIG='--disable-ldap --disable-rtsp
+    --with-gssapi-includes=/usr/include --without-librtmp'
+DOCS='`echo docs/{VERSIONS,MAIL-ETIQUETTE,HTTP-COOKIES.md}`
+    `echo docs/{RELEASE-PROCEDURE,BUGS,SSL-PROBLEMS.md,CODE_STYLE.md}`
+    `echo docs/{KNOWN_BUGS,HTTP2.md,README.win32,INTERNALS.md}`
+    `echo docs/{LICENSE-MIXING.md,THANKS,README.netware,TheArtOfHttpScripting}`
+    `echo docs/{CHECKSRC.md,FAQ,INSTALL,ROADMAP.md,FEATURES}`
+    `echo docs/{MANUAL,CODE_OF_CONDUCT.md,RESOURCES,SECURITY.md,TODO}`
+    `echo docs/{CONTRIBUTE.md,HISTORY.md,SSLCERTS.md}`
+    COPYING README RELEASE-NOTES'
 patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
@@ -150,7 +154,6 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    zip) unzip -o ${i##*/} ;;
     gz) tar xpzf ${i##*/} ;;
     bz2) tar xpjf ${i##*/} ;;
     git) ( cd `basename ${i##*/} .git`
@@ -229,7 +232,7 @@ if [ $opt_package -eq 1 ] ; then
     done
     if [ -f Makefile ] ; then
       export LDFLAGS='-Wl,--as-needed'
-      make distro-pack-install DESTDIR=$P
+      make install DESTDIR=$P
     fi
     if [ $? != 0 ]; then
       echo "make install error. $0 script stop"

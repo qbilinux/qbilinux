@@ -91,13 +91,13 @@ def make_headers(url, filename, vers, readme, patchfiles):
     patchs = " ".join(patchfiles)
     header = '''#!/bin/sh
 ##############################################################
-pkgbase=%s
+pkgbase="%s"
 vers=%s
 url=%s
 commitid=
 apply_arch="x86_64 i686 armv7l"
 arch=`uname -m`
-build=P0m1
+build=T1
 src=%s-${vers}
 OPT_CONFIG=''
 DOCS='%s'
@@ -118,7 +118,7 @@ for i in `seq 0 $((${#src[@]} - 1))` ; do
   S[$i]=$W/source/${src[$i]}
   B[$i]=$W/build/$arch/build`test ${#src[@]} -eq 1 || echo $i`
 done
-P=$W/work/$arch ; C=$W/pivot
+P=$W/work/$arch/${pkgbase[0]} ; C=$W/pivot
 infodir=$P/usr/share/info
 mandir=$P/usr/share/man
 xmandir=$P/usr/X11R7/share/man
@@ -140,12 +140,15 @@ def make_config(type, instdir):
 
 do_config() {
     if [ -d ${B[$1]} ] ; then rm -rf ${B[$1]} ; fi
-    # cp -a ${S[$1]} ${B[$1]}
-    mkdir ${B[$1]}
-    cd ${B[$1]}
+
+    # cd ${S[$1]}
     # if [ -f autogen.sh ] ; then
     #   sh ./autogen.sh
     # fi
+
+    # cp -a ${S[$1]} ${B[$1]}
+    mkdir ${B[$1]}
+    cd ${B[$1]}
     if [ -x ${S[$1]}/configure ] ; then
       export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
       export LDFLAGS='-Wl,--as-needed' 
@@ -170,6 +173,10 @@ do_config() {
 
 def make_body2():
     body='''
+do_extradef() {
+    echo "**"
+}
+
 do_build() {
     cd ${B[$1]}
     if [ -f Makefile ] ; then
@@ -189,8 +196,20 @@ do_install() {
     fi
 }
 
+do_extrafunc() {
+    # mkdir -p $P2/hoge
+    # cp hoge.txt $P2
+    echo "**"
+}
+
 do_package() {
-    echo "this is use function for package."
+    for i in $pkgbase ; do
+        cd $P
+        /sbin/makepkg $W/$pkg.$compress <<EOF
+y
+1
+EOF
+    done
 }
 
 ############# end user function
@@ -260,7 +279,7 @@ if [ ! -d $W/build/$arch ] ; then mkdir -p $W/build/$arch ; fi
 
 if  ! `echo ${apply_arch[@]} | grep -q "$arch"`  ; then
     echo "This package is not supported: $arch"
-    break;
+    exit 255
 fi
 
 if [ $# -eq 0 ] ; then
@@ -389,7 +408,7 @@ if [ $opt_package -eq 1 ] ; then
 ######################################################################
 # * make install でコピーされないファイルがある場合はここに記述します。
 ######################################################################
-  do_package
+  do_extrafunc
   mkdir -p $docdir/$src
   if [ -d $P/usr/share/omf ]; then
     mkdir -p $P/install
@@ -480,17 +499,7 @@ EOF
 # * 完成した作業ディレクトリから tar イメージを作成する手順を以降に記述
 #   します(こだわりを求めないなら単に makepkg でも良いです)。
 ######################################################################
-# tar cvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
-# tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man1 | tail -n+2`
-# tar rvpf $pkg.tar -C $P usr/share/doc/$src
-# touch -t `date '+%m%d0900'` $pkg.tar ; gzip $pkg.tar ; touch $pkg.tar.gz
-# mv $pkg.tar.gz $pkg.tgz
-  cd $P
-  /sbin/makepkg $W/$pkg.$compress <<EOF
-y
-1
-EOF
-
+    do_package
 fi
 '''
     return body

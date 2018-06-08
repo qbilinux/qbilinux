@@ -1,7 +1,7 @@
 #! /bin/sh
 
 setterm -blank 0
-export LANG=ja_JP.TUTF-8
+export LANG=ja_JP.UTF-8
 
 while [ 0 ]; do
  dialog --title "Plamo Linux のセットアップメニューへようこそ" --menu \
@@ -38,7 +38,7 @@ echo "\"どのディスクを fdisk しますか？\" 10 60 5 \\" >> /tmp/fdisks
 
   ( export LANG=C && fdisk -l | grep "^Disk"| grep -v "identifier" |  cut -d ' ' -f 2-4 | \
        sed -f /usr/lib/setup/conv.sed  1>> /tmp/fdiskset 2> /dev/null )
-  export LANG=ja_JP.eucJP
+  export LANG=ja_JP.UTF-8
 echo "\"quit\" \"quit\" 2> /tmp/Fdisk" >> /tmp/fdiskset
 chmod +x /tmp/fdiskset
 /tmp/fdiskset
@@ -63,7 +63,7 @@ echo "\"どのディスクを cfdisk しますか？\" 10 60 5 \\" >> /tmp/fdisk
 
   ( export LANG=C && fdisk -l | grep "^Disk"| grep -v "identifier" | cut -d ' ' -f 2-4 | \
        sed -f /usr/lib/setup/conv.sed  1>> /tmp/fdiskset 2> /dev/null )
-   export LANG=ja_JP.eucJP
+   export LANG=ja_JP.UTF-8
 echo "\"quit\" \"quit\" 2> /tmp/Fdisk" >> /tmp/fdiskset
 chmod +x /tmp/fdiskset
 /tmp/fdiskset
