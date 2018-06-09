@@ -5,9 +5,9 @@ pkgbase=make
 vers=4.2.1
 url="http://ftp.gnu.org/gnu/make/make-${vers}.tar.bz2"
 arch=`uname -m`
-build=T1
+build=T2
 src=$pkgbase-$vers
-patchfiles=""
+patchfiles="make-dfsg-glob-glibc227.diff"
 OPT_CONFIG=""
 DOCS="COPYING README README.W32 ABOUT-NLS INSTALL NEWS README.customs
     README.Amiga README.DOS README.VMS AUTHORS README.OS2"
