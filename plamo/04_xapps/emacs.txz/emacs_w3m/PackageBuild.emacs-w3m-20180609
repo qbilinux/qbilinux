@@ -1,9 +1,9 @@
 #!/bin/sh
 ##############################################################
-url='http://circle2.org/pub/source/emacs-w3m-20161006.tar.bz2'
-#url='cvs -d :pserver:anonymous@cvs.namazu.org:/storage/cvsroot co emacs-w3m'
 pkgbase=emacs_w3m
-vers=20161006
+vers=20180609
+url='http://circle2.org/pub/source/emacs-w3m-20180609.tar.gz'
+#url='cvs -d :pserver:anonymous@cvs.namazu.org:/storage/cvsroot co emacs-w3m'
 arch=`uname -m`
 build=T1
 src=emacs-w3m
