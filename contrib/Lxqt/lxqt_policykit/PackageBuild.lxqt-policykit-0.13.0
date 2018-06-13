@@ -1,8 +1,8 @@
 #!/bin/sh
 ##############################################################
 pkgbase=lxqt_policykit
-vers=0.12.0
-url='https://downloads.lxqt.org/downloads/lxqt-policykit/0.12.0/lxqt-policykit-0.12.0.tar.xz'
+vers=0.13.0
+url="https://downloads.lxqt.org/downloads/lxqt-policykit/${vers}/lxqt-policykit-${vers}.tar.xz"
 commitid=
 arch=`uname -m`
 build=T1
@@ -161,14 +161,14 @@ fi
 
 if [ $opt_patch -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
-    if [ -d ${B[$i]} ] ; then rm -rf ${B[$i]} ; fi ; cp -a ${S[$i]} ${B[$i]}
+    if [ -d ${B[$i]} ] ; then rm -rf ${B[$i]} ; fi ; mkdir ${B[$i]}
   done
 ######################################################################
 # * ./configure を行う前に適用したい設定やパッチなどがある場合はここに
 #   記述します。
 ######################################################################
   for i in `seq 0 $((${#B[@]} - 1))` ; do
-    cd ${B[$i]}
+    cd ${S[$i]}
     for patch in $patchfiles ; do
       patch -p1 < $W/$patch
     done
@@ -181,7 +181,7 @@ if [ $opt_config -eq 1 ] ; then
     if [ -f $S/CMakeLists.txt ]; then
       export PKG_CONFIG_PATH=/opt/kde/${libdir}/pkgconfig:/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
       export LDFLAGS='-Wl,--as-needed' 
-      cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DLIB_INSTALL_DIR:PATH=/usr/${libdir} -DLIB_SUFFIX=$suffix ${OPT_CONFIG} .
+      cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DLIB_INSTALL_DIR:PATH=/usr/${libdir} -DLIB_SUFFIX=$suffix ${OPT_CONFIG} $S
     fi
     if [ $? != 0 ]; then
       echo "configure error. $0 script stop"
