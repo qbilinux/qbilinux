@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://www.ir.isas.jaxa.jp/~cyamauch/eggx_procall/eggx-0.93r4.tar.gz'
 pkgbase=eggx
-vers=0.93r4
+vers=0.93r5
+url="https://www.ir.isas.jaxa.jp/~cyamauch/eggx_procall/eggx-${vers}.tar.gz"
 arch=`uname -m`
 build=T1
-src=eggx-0.93r4
+src=eggx-${vers}
 OPT_CONFIG=''
 DOCS='00README.1st 00README.1st.ja.EUC ChangeLog.ja INSTALL INSTALL.ja LICENSE README README.ja TECHNICAL.ja TODO.ja eggx_procall.ja.pdf eggx_procall.pdf examples.euc/*  examples_academic/* examples_academic/simulations-20110310/* examples_game/* examples_tutorial/*'
 patchfiles='Makefile-plamo.patch'
