@@ -1,13 +1,13 @@
 #!/bin/sh
 ##############################################################
 pkgbase=arm_userland
-vers=20170722
-url='https://github.com/raspberrypi/userland/archive/9aab1498b531b50585b206232d6baea64c0789f7.zip'
+vers=20180619
+url='https://github.com/raspberrypi/userland/archive/2448644657e5fbfd82299416d218396ee1115ece.zip'
 commitid=
 apply_arch="armv7l"
 arch=`uname -m`
 build=T1
-src=userland-9aab1498b531b50585b206232d6baea64c0789f7
+src=userland-2448644657e5fbfd82299416d218396ee1115ece
 OPT_CONFIG=''
 DOCS='README.md'
 patchfiles=''
@@ -185,7 +185,7 @@ if [ $opt_config -eq 1 ] ; then
     if [ -f $S/CMakeLists.txt ]; then
       export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
       export LDFLAGS='-Wl,--as-needed' 
-      cmake -DVMCS_INSTALL_PREFIX:PATH=/usr -DLIB_INSTALL_DIR:PATH=/usr/${libdir} -DLIB_SUFFIX=$suffix ${OPT_CONFIG} $S
+      cmake -DVMCS_INSTALL_PREFIX:PATH=/opt/vc -DLIB_INSTALL_DIR:PATH=/opt/vc/${libdir} -DLIB_SUFFIX=$suffix ${OPT_CONFIG} $S
     fi
 
     if [ -x configure ] ; then
