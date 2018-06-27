@@ -1,5 +1,5 @@
 #!/bin/sh
-##                            Time-stamp: <2017-12-23 09:35:56 toshi>
+##                            Time-stamp: <2018-06-25 05:43:07 plamo>
 
 # 2004-08-07 added support of "AlwaysCore" mouse setting for laptop.
 # 2004-08-04 added support for Plamo-4.01.
@@ -149,17 +149,18 @@ MODES43[9]="1856x1392"
 MODES43[10]="1920x1440"
 MODES43[11]=""
 
-MODESWIDE[0]="1024x600"
-MODESWIDE[1]="1280x600"
-MODESWIDE[2]="1280x768"
-MODESWIDE[3]="1366x768"
-MODESWIDE[4]="1280x800"
-MODESWIDE[5]="1680x1050"
-MODESWIDE[6]="1920x1024"
-MODESWIDE[7]="1920x1080"
-MODESWIDE[8]="1920x1200"
-MODESWIDE[9]="2560x1440"
-MODESWIDE[10]=""
+MODESWIDE[0]="800x480"
+MODESWIDE[1]="1024x600"
+MODESWIDE[2]="1280x600"
+MODESWIDE[3]="1280x768"
+MODESWIDE[4]="1366x768"
+MODESWIDE[5]="1280x800"
+MODESWIDE[6]="1680x1050"
+MODESWIDE[7]="1920x1024"
+MODESWIDE[8]="1920x1080"
+MODESWIDE[9]="1920x1200"
+MODESWIDE[10]="2560x1440"
+MODESWIDE[11]=""
 
 if [ "`cat /etc/rc.d/rc.keymap | sed -e 's/#.*//g' | grep jp106`" ]; then
   XKBMODEL="jp"
