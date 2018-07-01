@@ -70,7 +70,7 @@ def url_completion(url):
         version = current
     #version = re.sub("\..*", ".x", version)
     arch = subprocess.check_output("uname -m".split()).strip()
-    arch = "x86" if arch == "i686" else "armv7" if arch == "armv7l" else arch
+    arch = "x86" if arch == "i686" else "armv7_hf" if arch == "armv7l" else arch
     try:
         urllib2.urlopen(url + "allpkgs.pickle").close()
         return url
