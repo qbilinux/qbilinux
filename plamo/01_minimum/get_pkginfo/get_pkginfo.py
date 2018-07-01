@@ -1,5 +1,5 @@
 #!/usr/bin/python2
-# -*- coding: euc-jp -*-
+# -*- coding: utf-8 -*-
 
 import argparse, os, re, subprocess, urllib2, sys, pickle
 import urllib, time, ftplib
@@ -54,12 +54,12 @@ def get_file_confs(conf_file):
 
 def url_completion(url):
     if not url.endswith("/"):
-        url += "/"      # ǰ�Τ���
-    current = "0.0"
+        url += "/"      # 念のため
+    current = "0.1"
     if os.path.isfile("/etc/plamo-nora-release"):
         # format: Plamo nora Linux release x.y
         info = open("/etc/plamo-nora-release", "r").readline()
-        version = info.split(" ")[5].strip()
+        version = info.split(" ")[4].strip()
     elif os.path.isdir("/usr/lib/setup"):
         # format: /usr/lib/setup/Plamo-nora-x.y
         info = sorted(os.listdir("/usr/lib/setup"))
@@ -68,7 +68,7 @@ def url_completion(url):
         print("Cannot find valid version tag.  "
                 "Suppose you use Plamo nora Linux current({})".format(current))
         version = current
-    version = re.sub("\..*", ".x", version)
+    #version = re.sub("\..*", ".x", version)
     arch = subprocess.check_output("uname -m".split()).strip()
     arch = "x86" if arch == "i686" else "armv7" if arch == "armv7l" else arch
     try:
@@ -86,7 +86,7 @@ def get_confs():
     confs = {}
     confs["VERBOSE"]    = True             if param.verbose     else False
     confs["URL"]        = param.url        if param.url         else \
-                          "http://circle2.org/pub/"
+                          "https://circle2.org/pub/"
     confs["DOWNLOAD"]   = "linear"         if param.download    else \
                           "subdir"         if param.dlsubdir    else ""
     confs["DOWNTODIR"]  = param.downtodir  if param.downtodir   else ""
@@ -97,9 +97,9 @@ def get_confs():
                           "manual"         if param.interactive else ""
     confs["REVERSE"]    = True             if param.reverse     else False
     """
-    �Ƽ�����ϡ�
-    ���� > ��������(~/.pkginfo) > �����ƥ�(/etc/pkginfo.conf)
-    �ν��ɾ�����롥
+    各種設定は，
+    引数 > ローカル(~/.pkginfo) > システム(/etc/pkginfo.conf)
+    の順に評価する．
     """
     loc_confs = get_file_confs(os.path.expanduser("~/.pkginfo"))
     sys_confs = get_file_confs("/etc/pkginfo.conf")
@@ -109,11 +109,11 @@ def get_confs():
         elif i in sys_confs:
             confs[i] = sys_confs[i]
     """
-    ��������� Plamo nora �С������ȥ�����̾���������URL ���䴰���롥
+    ローカルの Plamo nora バージョンとアーキ名を取得し，URL を補完する．
     """
     confs["URL"] = url_completion(confs["URL"])
     """
-    ��������ǥ֥��å��������ѥå��������ɲä�������������������
+    ローカルでブロックしたいパッケージは追加する方が便利だろう．
     """
     confs["LOCALBLOCK"] = param.localblock if param.localblock else ""
     if "LOCALBLOCK" in loc_confs:
@@ -121,7 +121,7 @@ def get_confs():
     if "LOCALBLOCK" in sys_confs:
         confs["LOCALBLOCK"] += " " + sys_confs["LOCALBLOCK"]
     """
-    confs["INSTALL"] �����ꤵ��Ƥ���� sudo ����ݤ�ٹ𤹤롥
+    confs["INSTALL"] が指定されていれば sudo する旨を警告する．
     """
     if confs["INSTALL"]:
         sys.stderr.write("You need sudo to install package(s).  "
@@ -174,8 +174,8 @@ def get_category(pkgs, confs):
                 category.append(i)
         return category
     """
-    �ƥ��ƥ������ɽŪ�ʥѥå������Υꥹ�ȡ������Υѥå�����������
-    �ȡ���Ѥߤʤ�С����Υ��ƥ�������򤵤�Ƥ����ȹͤ��롥
+    各カテゴリの代表的なパッケージのリスト．これらのパッケージがインス
+    トール済みならば，そのカテゴリは選択されていたと考える．
     """
     category = ["00_base"]
     reps = {"01_minimum": "gcc",      "02_x11": "xorg_server",
@@ -304,28 +304,28 @@ def install_pkg(pkgname, ftp_pkgs, rev_list, confs):
 def main():
     confs = get_confs()
     """
-    local_pkgs: ���δĶ��˥��󥹥ȡ���Ѥߥѥå������Υꥹ��
-    ftp_pkgs: FTP�����о�ˤ���ѥå������Υꥹ��
+    local_pkgs: この環境にインストール済みパッケージのリスト
+    ftp_pkgs: FTPサーバ上にあるパッケージのリスト
     """
     local_pkgs = get_local_pkgs()
     ftp_pkgs = get_ftp_pkgs(confs)
     """
-    -b ���ץ�������ꤷ�ƥ֥��å��ꥹ�Ȥ����������⡤�󥤥󥹥ȡ�
-    ��ꥹ��(ftp_pkgs["__no_install"])��ͭ���Ǥ���٤��ʤΤǡ������ƥ�
-    �Υ֥��å����Ȥ��󥤥󥹥ȡ���ꥹ�Ȥ��ɲä��Ƥ�����
+    -b オプションを指定してブロックリストを解除した場合も，非インストー
+    ルリスト(ftp_pkgs["__no_install"])は有効であるべきなので，システム
+    のブロックストを非インストールリストに追加しておく．
     """
     for i in ftp_pkgs["__blockpkgs"]:
         ftp_pkgs["__no_install"].append(i)
     """
-    LOCALBLOCK (--localblock) ���ץ����ǻ��ꤷ���ѥå�����̾��
-    blockpkgs ���ɲä��롥
+    LOCALBLOCK (--localblock) オプションで指定したパッケージ名を，
+    blockpkgs に追加する．
     """
     if confs["LOCALBLOCK"]:
         for i in confs["LOCALBLOCK"].split():
             ftp_pkgs["__blockpkgs"].append(i)
     """
-    -b ���ץ�������ꤷ�ʤ���С��֥��å��ꥹ�Ȥ˻��ꤷ���ѥå�����
-    (ftp_pkgs["__blockpkgs"])��ɽ�����ʤ�(= local_pkgs �ꥹ�Ȥ������)
+    -b オプションを指定しなければ，ブロックリストに指定したパッケージ
+    (ftp_pkgs["__blockpkgs"])は表示しない(= local_pkgs リストから除く)
     """
     if confs["BLOCKLIST"] and not confs["REVERSE"]:
         for bp in ftp_pkgs["__blockpkgs"]:
@@ -334,13 +334,13 @@ def main():
             if bp in ftp_pkgs:
                 del(ftp_pkgs[bp])
     """
-    ��̾�����ѥå����������פ��뤿��ν�����ftp_pkgs["__replaces"] �ˤϡ�
-    ��������ѥå������� replace_list["old_name"] = "new_name" �Ȥ�����
-    �����äƤ��ꡤcheck_replaces() �ǡ�local_pkgs["old_name"] ��
-    local_pkgs["new_name"] = (ver, arch, build) �η����Ȥ�ľ����
-    ftp_pkgs["new_name"] ����Ӥ��ƹ����оݤˤ��롥
-    ���κݡ�local_pkgs �� old_name �ϼ��ʤ���Τǡ�ɽ���Ѥ�
-    replace_list[] ��հ����ˤ��� rev_list[] ��Ȥ���
+    改名したパッケージを追跡するための処理．ftp_pkgs["__replaces"] には，
+    該当するパッケージが replace_list["old_name"] = "new_name" という形
+    で入っており，check_replaces() で，local_pkgs["old_name"] を
+    local_pkgs["new_name"] = (ver, arch, build) の形に組み直し，
+    ftp_pkgs["new_name"] と比較して更新対象にする．
+    その際，local_pkgs の old_name は失なわれるので，表示用に
+    replace_list[] を逆引きにした rev_list[] を使う．
     """
     check_pkgs = check_replaces(local_pkgs, ftp_pkgs["__replaces"])
     rev_list = rev_replaces(ftp_pkgs["__replaces"])
@@ -356,8 +356,8 @@ def main():
                 not_installed.append((path_list, path, pkgname))
         print("un-selected package(s):")
         """
-        ���ƥ��꡼�̤ˡ����ƥ��꡼��Υѥå������� Plamo nora ���󥹥ȡ��餬
-        ���󥹥ȡ��뤹����֤˥����Ȥ���ɽ�����롥
+        カテゴリー別に，カテゴリー内のパッケージを Plamo nora インストーラが
+        インストールする順番にソートして表示する．
         """
         print("category: {}".format(sorted(not_installed)[0][0][0]))
         ct_prev = sorted(not_installed)[0][0][0]
