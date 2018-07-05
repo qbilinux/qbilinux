@@ -2,10 +2,10 @@
 
 ######################################################################
 pkgbase=binutils
-vers=2.29.1
+vers=2.30
 url="http://ftp.gnu.org/gnu/binutils/binutils-${vers}.tar.bz2"
 arch=`uname -m`
-build=T2
+build=T1
 src=$pkgbase-$vers
 patchfiles=""
 OPT_CONFIG="--enable-shared"
