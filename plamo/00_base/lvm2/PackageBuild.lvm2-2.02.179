@@ -2,8 +2,8 @@
 
 ######################################################################
 pkgbase=lvm2
-vers=2.02.90
-url="ftp://sources.redhat.com/pub/lvm2/releases/LVM2.${vers}.tgz"
+vers=2.02.179
+url="ftp://sources.redhat.com/pub/lvm2/LVM2.${vers}.tgz"
 arch=`uname -m`
 build=T1
 src=LVM2.$vers
@@ -12,6 +12,9 @@ OPT_CONFIG="--exec-prefix= --enable-static_link --enable-applib
     --with-thin=internal"
 DOCS="COPYING.LIB COPYING INSTALL VERSION_DM README VERSION WHATS_NEW
     WHATS_NEW_DM"
+patchfiles='patch-a patch-b'
+#patchfiles=''
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -180,8 +183,11 @@ if [ $opt_config -eq 1 ] ; then
     if [ -d ${B[$i]} ] ; then rm -rf ${B[$i]} ; fi ; cp -a ${S[$i]} ${B[$i]}
   done
   cd $B
-  cp -p daemons/dmeventd/Makefile.in{,.orig}
-  sed -i 's@$(ELDFLAGS) @@' daemons/dmeventd/Makefile.in
+    for patch in $patchfiles ; do
+      patch -p1 < $W/$patch
+    done
+  #cp -p daemons/dmeventd/Makefile.in{,.orig}
+  #sed -i 's@$(ELDFLAGS) @@' daemons/dmeventd/Makefile.in
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
@@ -222,16 +228,9 @@ if [ $opt_package -eq 1 ] ; then
       make install DESTDIR=$P
     fi
   done
-  touch $P/usr/$libdir/*.a
-  touch $P/usr/$libdir/pkgconfig/*.pc
-  touch $P/etc/lvm/lvm.conf
-  touch $W/i.et
   cd $W
-  find $P ! -type l -newer i.st ! -newer i.et \
-      -exec touch -t `date '+%m%d0000'` {} \;
   compress
-  strip_libdir $P/$libdir/device-mapper
-  touch -t `date '+%m%d0000'` $P/$libdir/device-mapper
+  strip_libdir $P/$libdir
   for i in `seq 0 $((${#DOCS[@]} - 1))` ; do
     for j in ${DOCS[$i]} ; do
       for k in ${S[$i]}/$j ; do
@@ -249,17 +248,15 @@ if [ $opt_package -eq 1 ] ; then
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
   done
+  for patch in $patchfiles ; do
+    cp $W/$patch $docdir/$src/$patch
+    gzip_one $docdir/$src/$patch
+  done
   convert
-  tar cvpf $pkg.tar -C $P `cd $P ; find sbin | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find $libdir -maxdepth 1 | tail -n+2`
-  tar rvpf $pkg.tar -C $P \
-      `cd $P ; find usr/$libdir ! -name pkgconfig | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/include | tail -n+2`
-  tar rvpf $pkg.tar -C $P etc/lvm
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man5 | tail -n+2`
-  tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man8 | tail -n+2`
-  tar rvpf $pkg.tar -C $P usr/share/doc/$src
-  tar rvpf $pkg.tar -C $P install/doinst.sh
-  touch -t `date '+%m%d0000'` $pkg.tar ; xz $pkg.tar ; touch $pkg.tar.xz
-  mv $pkg.tar.xz $pkg.txz
+  cd $P
+  /sbin/makepkg ../$pkg.$compress <<EOF
+y
+1
+EOF
+
 fi
