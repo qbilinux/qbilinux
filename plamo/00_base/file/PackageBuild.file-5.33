@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=file
-vers=5.32
+vers=5.33
 url="ftp://ftp.astron.com/pub/file/file-${vers}.tar.gz"
 arch=`uname -m`
 build=T1
