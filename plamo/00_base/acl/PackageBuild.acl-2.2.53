@@ -2,8 +2,8 @@
 
 ######################################################################
 pkgbase=acl
-vers=2.2.52
-url="http://download.savannah.gnu.org/releases/acl/acl-${vers}.src.tar.gz"
+vers=2.2.53
+url="http://download.savannah.gnu.org/releases/acl/acl-${vers}.tar.gz"
 arch=`uname -m`
 build=T1
 src=$pkgbase-$vers
@@ -213,7 +213,7 @@ if [ $opt_package -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
-      make install install-dev install-lib DIST_ROOT=$P
+      make install DESTDIR=$P
     fi
   done
   chown -R root.root $P/usr
