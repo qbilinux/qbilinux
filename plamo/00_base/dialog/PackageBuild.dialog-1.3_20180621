@@ -2,11 +2,11 @@
 
 ######################################################################
 pkgbase=dialog
-vers=1.3_20170509
-url="ftp://ftp.invisible-island.net/dialog/dialog-1.3-20170509.tgz"
+vers=1.3_20180621
+url="ftp://ftp.invisible-island.net/dialog/dialog-1.3-20180621.tgz"
 arch=`uname -m`
 build=T1
-src=$pkgbase-1.3-20170509
+src=$pkgbase-1.3-20180621
 OPT_CONFIG="--bindir=/bin --enable-nls --with-shared --with-ncursesw
     --enable-widec"
 DOCS="CHANGES README COPYING"
