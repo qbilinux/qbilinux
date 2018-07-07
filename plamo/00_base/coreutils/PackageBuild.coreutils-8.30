@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=coreutils
-vers=8.28
+vers=8.30
 url="http://ftp.gnu.org/gnu/coreutils/coreutils-${vers}.tar.xz"
 arch=`uname -m`
 build=T1
