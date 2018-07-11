@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=Python2
-vers=2.7.14
+vers=2.7.15
 url="https://www.python.org/ftp/python/${vers}/Python-${vers}.tar.xz"
 arch=`uname -m`
 build=T1
@@ -252,9 +252,9 @@ if [ $opt_package -eq 1 ] ; then
       make install DESTDIR=$P
     fi
   done
-  # rm $P/usr/bin/python
-  # rm $P/usr/bin/python-config
-  # rm $P/usr/$libdir/pkgconfig/python.pc
+  #rm $P/usr/bin/python
+  #rm $P/usr/bin/python-config
+  #rm $P/usr/$libdir/pkgconfig/python.pc
   touch $P/usr/bin/{pydoc,idle,2to3,smtpd.py}
   ln -s /usr/$libdir/libpython2.7.so $P/usr/$libdir/python2.7/config
   touch $P/usr/$libdir/python2.7/lib-dynload/*
