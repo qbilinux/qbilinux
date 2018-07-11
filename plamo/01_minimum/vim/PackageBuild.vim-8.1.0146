@@ -1,8 +1,9 @@
 #!/bin/sh
 ##############################################################
 pkgbase=vim
-vers=8.0.1187
+vers=8.1.0146
 url="https://github.com/vim/vim/archive/v${vers}.tar.gz"
+#source_file=${pkgbase}-${vers}.tar.gz
 commitid=
 arch=`uname -m`
 build=T1
@@ -122,6 +123,7 @@ if [ $opt_download -eq 1 ] ; then
       ;;
     *)
       if [ ! -f ${i##*/} ] ; then
+#        wget -O $source_file $i
         wget $i
         for sig in asc sig{,n} {md5,sha{1,256}}{,sum} ; do
           if wget --spider $i.$sig ; then wget $i.$sig ; break ; fi
