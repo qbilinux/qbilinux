@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=Python
-vers=3.6.3
+vers=3.7.0
 url="https://www.python.org/ftp/python/${vers}/Python-${vers}.tar.xz"
 arch=`uname -m`
 build=T1
@@ -239,16 +239,16 @@ if [ $opt_package -eq 1 ] ; then
   # (cd $P/usr/bin; ln -s python3 python)
   # (cd $P/usr/bin; ln -s python3-config python-config)
   # (cd $P/usr/$libdir/pkgconfig; ln -s python3.pc python.pc)
-  ln -s /usr/$libdir/libpython3.6m.so $P/usr/$libdir/python3.6/config-3.6m
-  touch $P/usr/$libdir/python3.6/lib-dynload/*
+  #ln -s /usr/$libdir/libpython3.6m.so $P/usr/$libdir/python3.6/config-3.6m
+  #touch $P/usr/$libdir/python3.6/lib-dynload/*
   touch $W/i.et
   cd $W
   find $P ! -type l -newer i.st ! -newer i.et \
       -exec touch -t `date '+%m%d0000'` {} \;
   compress
-  strip_libdir $P/usr/$libdir/python3.6/config-3.6m
-  strip_libdir $P/usr/$libdir/python3.6/lib-dynload
-  touch -t `date '+%m%d0000'` $P/usr/$libdir/python3.6/lib-dynload
+  #strip_libdir $P/usr/$libdir/python3.6/config-3.6m
+  #strip_libdir $P/usr/$libdir/python3.6/lib-dynload
+  #touch -t `date '+%m%d0000'` $P/usr/$libdir/python3.6/lib-dynload
   for i in `seq 0 $((${#DOCS[@]} - 1))` ; do
     for j in ${DOCS[$i]} ; do
       for k in ${S[$i]}/$j ; do
