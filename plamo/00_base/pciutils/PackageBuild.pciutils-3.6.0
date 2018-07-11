@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=pciutils
-vers=3.5.5
+vers=3.6.0
 url="http://www.kernel.org/pub/software/utils/pciutils/pciutils-${vers}.tar.xz
     http://pciids.sourceforge.net/v2.2/pci.ids"
 arch=`uname -m`
