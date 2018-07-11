@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=kmod
-vers=24
+vers=25
 url="https://www.kernel.org/pub/linux/utils/kernel/kmod/kmod-${vers}.tar.xz"
 arch=`uname -m`
 build=T1
