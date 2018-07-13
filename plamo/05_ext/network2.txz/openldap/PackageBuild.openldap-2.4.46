@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase=openldap
-vers=2.4.45
+vers=2.4.46
 url="http://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-${vers}.tgz"
 arch=`uname -m`
 build=T1
