@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://www.openprinting.org/download/foomatic/foomatic-db-4.0-20161019.tar.gz'
 pkgbase=foomatic_db
-vers=4.0_20161019
+vers=4.0_20180705
+url='http://www.openprinting.org/download/foomatic/foomatic-db-4.0-20180705.tar.xz'
 arch=noarch
 build=T1
-src=foomatic-db-20161019
+src=foomatic-db-20180705
 OPT_CONFIG=''
 DOCS='COPYING ChangeLog README USAGE'
 patchfiles=''
@@ -123,7 +123,7 @@ if [ $opt_download -eq 1 ] ; then
     case ${i##*.} in
     tar) tar xvpf ${i##*/} ;;
     gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    *) tar xvpf ${i##*/} ;;
     esac
   done
 fi
