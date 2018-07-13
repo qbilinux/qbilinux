@@ -1,10 +1,10 @@
 #!/bin/sh
 ##############################################################
-url='http://ftp.gnu.org/gnu/a2ps/a2ps-4.13b.tar.gz'
 pkgbase=a2ps
 vers=4.13b
+url="http://ftp.gnu.org/gnu/a2ps/a2ps-${vers}.tar.gz"
 arch=`uname -m`
-build=T1
+build=T2
 src=a2ps-4.13
 OPT_CONFIG=''
 DOCS='ABOUT-NLS AUTHORS COPYING ChangeLog INSTALL NEWS README THANKS TODO'
