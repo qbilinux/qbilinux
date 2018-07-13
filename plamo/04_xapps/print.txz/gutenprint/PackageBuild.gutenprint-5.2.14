@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://downloads.sourceforge.net/project/gimp-print/gutenprint-5.2/5.2.10/gutenprint-5.2.10.tar.bz2'
 pkgbase=gutenprint
-vers=5.2.10
+vers=5.2.14
+url="http://downloads.sourceforge.net/project/gimp-print/gutenprint-5.2/${vers}/gutenprint-${vers}.tar.bz2"
 arch=`uname -m`
 build=T1
-src=gutenprint-5.2.10
+src=gutenprint-${vers}
 OPT_CONFIG='--enable-cups-ppds'
 DOCS='ABOUT-NLS AUTHORS COPYING ChangeLog ChangeLogStamp INSTALL NEWS README README.package'
 patchfiles=''
