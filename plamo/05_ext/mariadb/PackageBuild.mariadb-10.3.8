@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase=mariadb
-vers=10.2.10
+vers=10.3.8
 url="https://downloads.mariadb.org/interstitial/mariadb-${vers}/source/mariadb-${vers}.tar.gz"
 arch=`uname -m`
 build=T1
@@ -246,9 +246,6 @@ if [ -d /opt/mariadb ]; then
    chown -R root .
    chown -R mysql data
 fi
-if [ ! -f /etc/my.cnf ]; then
-    cp ./support-files/my-small.cnf /etc/my.cnf
-fi
 EOF
 
   mkdir -p $P/etc/rc.d/init.d/
@@ -307,6 +304,10 @@ EOF
       cp $W/$patch $docdir/$src/$patch
       gzip_one $docdir/$src/$patch
   done
+
+  cp $W/my.cnf.sample $docdir/$src/$patch
+  gzip_one $docdir/$src/my.cnf.sample
+  
 ######################################################################
 # * convert 対象以外で刈り取りたいシンボリックリンクがある場合はここに
 #   記述します(prune_symlink を使います)。
