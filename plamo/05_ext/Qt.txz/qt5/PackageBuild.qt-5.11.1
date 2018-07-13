@@ -1,10 +1,10 @@
 #!/bin/sh
 ##############################################################
 pkgbase=qt5
-vers=5.10.1
+vers=5.11.1
 url="http://download.qt.io/archive/qt/${vers%.*}/${vers}/single/qt-everywhere-src-${vers}.tar.xz"
 arch=`uname -m`
-build=T2
+build=T1
 src=qt-everywhere-src-${vers}
 if [ $arch = "armv7l" ]; then
 OPT_CONFIG="-sysconfdir     /etc/xdg   \
