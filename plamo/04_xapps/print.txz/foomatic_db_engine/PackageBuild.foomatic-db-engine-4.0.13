@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://www.openprinting.org/download/foomatic/foomatic-db-engine-4.0.8.tar.gz'
 pkgbase=foomatic_db_engine
-vers=4.0.8
+vers=4.0.13
+url="http://www.openprinting.org/download/foomatic/foomatic-db-engine-${vers}.tar.gz"
 arch=`uname -m`
 build=T1
-src=foomatic-db-engine-4.0.8
+src=foomatic-db-engine-${vers}
 OPT_CONFIG=''
 DOCS='COPYING ChangeLog Foomatic-Devel-Ideas.txt README TODO'
 patchfiles=''
