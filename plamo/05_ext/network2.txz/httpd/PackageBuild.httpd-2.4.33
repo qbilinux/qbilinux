@@ -1,15 +1,15 @@
 #!/bin/sh
 ##############################################################
 pkgbase=httpd
-vers=2.4.27
+vers=2.4.33
 url="http://www.apache.org/dist/httpd/httpd-${vers}.tar.gz"
 verify=
 arch=`uname -m`
 build=T1
 src=${pkgbase}-${vers}
-OPT_CONFIG="--enable-layout=Slackware-FHS --enable-mods-shared=all --enable-mods-shared=cgi --enable-mpms-shared=all --mandir=/usr/share/man"
+OPT_CONFIG="--enable-layout=Slackware-FHS --enable-mods-shared=all --enable-mods-shared=cgi --enable-mpms-shared=all --mandir=/usr/share/man --enable-ssl --with-ssl=/usr"
 DOCS='ABOUT_APACHE INSTALL InstallBin.dsp LICENSE README README.platforms'
-patchfiles='httpdlogrotate_plamo.patch'
+patchfiles='httpdlogrotate_plamo.patch mod_ssl.patch'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
