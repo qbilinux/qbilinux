@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
-url='https://download.gimp.org/pub/gegl/0.2/gegl-0.2.0.tar.bz2'
 pkgbase=gegl
-vers=0.2.0
+vers=0.4.4
+url="https://download.gimp.org/pub/gegl/0.4/gegl-${vers}.tar.bz2"
 arch=`uname -m`
 build=T1
-src=gegl-0.2.0
+src=gegl-${vers}
 OPT_CONFIG='--disable-docs'
 DOCS='AUTHORS COPYING COPYING.LESSER ChangeLog INSTALL NEWS README'
-patchfiles='gegl-0.2.0-CVE-2012-4433.patch gegl-0.2.0-libav54.patch gegl-0.2.0-remove-src-over-op.patch'
+patchfiles=''
 # https://projects.archlinux.org/svntogit/packages.git/plain/trunk/gegl-0.2.0-CVE-2012-4433.patch?h=packages/gegl
 # https://git.gnome.org/browse/gegl/patch/?id=97067622352e58f86a24851dacb1f5daa0762897
 # https://projects.archlinux.org/svntogit/packages.git/plain/trunk/gegl-0.2.0-remove-src-over-op.patch?h=packages/gegl
