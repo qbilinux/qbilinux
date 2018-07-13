@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
-url='http://www.cups.org/software/2.0.0/cups-2.0.0-source.tar.bz2'
 pkgbase=cups
-vers=2.0.0
+vers=2.2.8
+url="https://github.com/apple/cups/releases/download/v${vers}/cups-${vers}-source.tar.gz"
 arch=`uname -m`
 build=T1
-src=cups-2.0.0
+src=cups-${vers}
 OPT_CONFIG='--disable-systemd'
 DOCS='CHANGES-1.0.txt CHANGES-1.1.txt CHANGES-1.2.txt CHANGES-1.3.txt CHANGES-1.4.txt CHANGES-1.5.txt CHANGES-1.6.txt CHANGES-1.7.txt CHANGES-IPPTOOL.txt CHANGES.txt CREDITS.txt INSTALL.txt IPPTOOL.txt LICENSE.txt README.txt'
-patchfiles='cups-2.0.0-template-ja.patch'
+patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
