@@ -5,7 +5,7 @@ pkgbase=openssl1
 vers=1.0.2o
 url="http://www.openssl.org/source/openssl-${vers}.tar.gz"
 arch=`uname -m`
-build=T1
+build=T2
 src=openssl-$vers
 OPT_CONFIG=""
 DOCS="ACKNOWLEDGMENTS CHANGES CHANGES.SSLeay CONTRIBUTING FAQ INSTALL
@@ -256,6 +256,7 @@ if [ $opt_package -eq 1 ] ; then
   # remove unused files
   rm -rf $P/etc $P/usr/bin $P/usr/include
   rm -rf $P/usr/$libdir/{libcrypto.a,libssl.a,pkgconfig}
+  rm -rf $P/usr/$libdir/{libcrypto.so,libssl.so}
 
   for i in `seq 0 $((${#DOCS[@]} - 1))` ; do
     for j in ${DOCS[$i]} ; do
