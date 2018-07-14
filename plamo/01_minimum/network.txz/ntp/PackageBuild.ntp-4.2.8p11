@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=ntp
-vers=4.2.8p9
+vers=4.2.8p11
 url="http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/ntp-${vers}.tar.gz"
 arch=`uname -m`
 build=T1
@@ -12,7 +12,7 @@ DOCS="README.hackers README.bk NEWS WHERE-TO-START README.leapsmear
     readme.y2kfixes CommitLog-4.1.0 README NOTES.y2kfixes CommitLog
     COPYRIGHT INSTALL README.refclocks TODO ChangeLog README.versions
     README.patches README.pullrequests"
-patchfiles="libssl_compat.c.09.patch libssl_compat.h.patch"
+patchfiles=""
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
