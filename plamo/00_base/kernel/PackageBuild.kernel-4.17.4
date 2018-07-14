@@ -11,15 +11,15 @@ arch=`uname -m`
 build=T1
 src=linux-${version}
 patchfiles="cjktty-kernel.patch cjktty-kernel-font-JP.patch overlayfs-allow_unprivileged_mounts.patch"
-patchfiles_not_used="vd_unicon-kernel-20170609-4.11.patch vd_unicon-kernel-fonts-20140614.patch cjktty-kernel-font.patch rpi-4.14.53-20180704-786b6ff.diff"
+patchfiles_not_used="vd_unicon-kernel-20170609-4.11.patch vd_unicon-kernel-fonts-20140614.patch cjktty-kernel-font.patch rpi-4.17.4-20180709-9f54ddc.diff"
 configfile64="config-${version%.*}-plamo64"
-configfile32="config-${version%.*}-plamoSMP"
+configfile32="config-${version%.*}-plamo32"
 configfileARM="config-${version%.*}-plamoRPi2"
 if [ $arch = "x86_64" ]; then
     vers=${version}_plamo64
     configfile=$configfile64
 elif [ $arch = "i686" ]; then
-    vers=${version}_plamoSMP
+    vers=${version}_plamo32
     configfile=$configfile32
 else
     vers=${version}_plamoRPi2
@@ -249,7 +249,7 @@ if [ $opt_config -eq 1 ] ; then
   cp -av $W/aufs4-standalone/fs .
   cp -pv $W/aufs4-standalone/include/uapi/linux/aufs_type.h include/uapi/linux
   if [ $arch == armv7l ] ; then
-    cat $W/rpi-4.14.53-20180704-786b6ff.diff | patch -Np1 -i -
+    cat $W/rpi-4.17.4-20180709-9f54ddc.diff | patch -Np1 -i -
     chmod 755 drivers/net/wireless/realtek/rtl8192cu/{clean,runwpa,wlan0dhcp}
     chmod 755 scripts/{knlinfo,mkknlimg}
   fi
