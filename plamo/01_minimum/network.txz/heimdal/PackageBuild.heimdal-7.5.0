@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=heimdal
-vers=7.4.0
+vers=7.5.0
 url="https://github.com/heimdal/heimdal/releases/download/heimdal-${vers}/heimdal-${vers}.tar.gz"
 arch=`uname -m`
 build=T1
