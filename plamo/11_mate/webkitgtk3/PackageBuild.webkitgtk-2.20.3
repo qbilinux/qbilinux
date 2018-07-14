@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=webkitgtk3
-vers=2.18.6
+vers=2.20.3
 url="http://webkitgtk.org/releases/webkitgtk-${vers}.tar.xz"
 verify=
 commitid=
 arch=`uname -m`
-build=T2
+build=T1
 src=webkitgtk-${vers}
 OPT_CONFIG='-DPORT=GTK -DCMAKE_BUILD_TYPE=Release -DUSE_LIBHYPHEN=OFF -DENABLE_MINIBROWSER=ON'
 DOCS='NEWS'
