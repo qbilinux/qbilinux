@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
 pkgbase=curl
-vers=7.60.0
+vers=7.61.0
 url="http://curl.haxx.se/download/curl-${vers}.tar.bz2"
 commitid=
 arch=`uname -m`
 build=T1
 src=curl-${vers}
 OPT_CONFIG='--disable-ldap --disable-rtsp
-    --with-gssapi-includes=/usr/include --without-librtmp'
+    --with-gssapi-includes=/usr/include --without-librtmp --with-libssh2'
 DOCS='`echo docs/{VERSIONS,MAIL-ETIQUETTE,HTTP-COOKIES.md}`
     `echo docs/{RELEASE-PROCEDURE,BUGS,SSL-PROBLEMS.md,CODE_STYLE.md}`
     `echo docs/{KNOWN_BUGS,HTTP2.md,README.win32,INTERNALS.md}`
