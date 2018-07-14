@@ -1,8 +1,8 @@
 #!/bin/sh
 ##############################################################
 pkgbase=geoclue
-vers=2.4.7
-url='https://www.freedesktop.org/software/geoclue/releases/2.4/geoclue-2.4.7.tar.xz'
+vers=2.4.10
+url="https://www.freedesktop.org/software/geoclue/releases/2.4/geoclue-${vers}.tar.xz"
 commitid=
 arch=`uname -m`
 build=T1
