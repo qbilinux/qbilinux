@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=git
-vers=2.16.4
+vers=2.18.0
 url="https://www.kernel.org/pub/software/scm/git/git-${vers}.tar.gz
     https://www.kernel.org/pub/software/scm/git/git-manpages-${vers}.tar.gz"
 arch=`uname -m`
