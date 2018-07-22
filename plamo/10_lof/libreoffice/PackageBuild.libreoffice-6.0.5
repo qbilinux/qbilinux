@@ -1,19 +1,19 @@
 #!/bin/sh
 ##############################################################
 pkgbase=libreoffice
-vers=5.4.7.2
+vers=6.0.5.2
 url="http://download.documentfoundation.org/libreoffice/src/${vers%.*}/libreoffice-${vers}.tar.xz
 http://download.documentfoundation.org/libreoffice/src/${vers%.*}/libreoffice-dictionaries-${vers}.tar.xz
 http://download.documentfoundation.org/libreoffice/src/${vers%.*}/libreoffice-help-${vers}.tar.xz
-http://ftp.tsukuba.wide.ad.jp/software/apache//ant/binaries/apache-ant-1.10.1-bin.zip"
+http://ftp.tsukuba.wide.ad.jp/software/apache//ant/binaries/apache-ant-1.10.4-bin.zip"
 #http://download.documentfoundation.org/libreoffice/src/${vers%.*}/libreoffice-translations-${vers}.tar.xz
 commitid=
 arch=`uname -m`
 build=T1
 src=libreoffice-${vers}
-OPT_CONFIG="--with-ant-home=$W/apache-ant-1.10.1/ --without-junit --without-java --with-lang=ja"
+OPT_CONFIG="--with-ant-home=$W/apache-ant-1.10.4/ --without-junit --without-java --with-lang=ja"
 DOCS='COPYING COPYING.LGPL COPYING.MPL ChangeLog README.Solaris README.cross README.md leak-suppress.txt readlicense_oo unusedcode.README'
-patchfiles=''
+patchfiles='pyuno_const_char.patch'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
