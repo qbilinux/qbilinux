@@ -5,7 +5,7 @@ vers=2.3.0
 url="https://github.com/uclouvain/openjpeg/archive/v${vers}.tar.gz"
 commitid=
 arch=`uname -m`
-build=T1
+build=T2
 src=openjpeg-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS.md CHANGELOG.md INSTALL.md LICENSE NEWS.md README.md THANKS.md'
@@ -186,7 +186,7 @@ if [ $opt_config -eq 1 ] ; then
     if [ -f $S/CMakeLists.txt ]; then
       export PKG_CONFIG_PATH=/opt/kde/${libdir}/pkgconfig:/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
       export LDFLAGS='-Wl,--as-needed' 
-      cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DLIB_INSTALL_DIR:PATH=/usr/${libdir} -DLIB_SUFFIX=$suffix ${OPT_CONFIG} .
+      cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DOPENJPEG_INSTALL_LIB_DIR:PATH=/usr/${libdir} -DLIB_SUFFIX=$suffix ${OPT_CONFIG} .
     fi
     if [ $? != 0 ]; then
       echo "configure error. $0 script stop"
