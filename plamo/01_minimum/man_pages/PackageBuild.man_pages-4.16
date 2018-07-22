@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=man_pages
-vers=4.13
+vers=4.16
 url="https://www.kernel.org/pub/linux/docs/man-pages/Archive/man-pages-${vers}.tar.xz"
 arch=noarch
 build=T1
