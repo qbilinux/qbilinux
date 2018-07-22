@@ -2,8 +2,8 @@
 
 ######################################################################
 pkgbase=sylpheed
-vers=3.5.1
-url="http://sylpheed.sraoss.jp/sylpheed/v3.5/sylpheed-${vers}.tar.bz2"
+vers=3.7.0
+url="http://sylpheed.sraoss.jp/sylpheed/v3.7/sylpheed-${vers}.tar.bz2"
 arch=`uname -m`
 build=T1
 src=$pkgbase-$vers
