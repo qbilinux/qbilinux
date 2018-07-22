@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=iproute2
-vers=4.14.1
+vers=4.17.0
 url="https://www.kernel.org/pub/linux/utils/net/iproute2/iproute2-${vers}.tar.xz"
 arch=`uname -m`
 build=T1
