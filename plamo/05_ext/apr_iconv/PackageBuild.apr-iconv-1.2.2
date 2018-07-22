@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://ftp.kddilabs.jp/infosystems/apache//apr/apr-iconv-1.2.1.tar.gz'
 pkgbase=apr_iconv
-vers=1.2.1
+vers=1.2.2
+url="http://ftp.kddilabs.jp/infosystems/apache//apr/apr-iconv-${vers}.tar.gz"
 arch=`uname -m`
 build=T1
-src=apr-iconv-1.2.1
+src=apr-iconv-${vers}
 OPT_CONFIG='--with-apr=/usr/bin/apr-1-config'
 DOCS='AUTHORS COPYING LICENSE README'
 patchfiles='apr-iconv-1.2.1-libpath.patch'
