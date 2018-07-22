@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase=less
-vers=487
+vers=530
 url="http://ftp.gnu.org/gnu/less/less-${vers}.tar.gz"
 commitid=
 arch=`uname -m`
