@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=logrotate
-vers=3.12.3
+vers=3.14.0
 url="https://github.com/logrotate/logrotate/releases/download/${vers}/logrotate-${vers}.tar.xz"
 arch=`uname -m`
 build=T1
