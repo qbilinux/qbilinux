@@ -1,8 +1,8 @@
 #!/bin/sh
 ##############################################################
 pkgbase=clutter_gst
-vers=3.0.24
-url='http://ftp.gnome.org/pub/GNOME/sources/clutter-gst/3.0/clutter-gst-3.0.24.tar.xz'
+vers=3.0.26
+url="http://ftp.gnome.org/pub/GNOME/sources/clutter-gst/3.0/clutter-gst-${vers}.tar.xz"
 commitid=
 arch=`uname -m`
 build=T1
