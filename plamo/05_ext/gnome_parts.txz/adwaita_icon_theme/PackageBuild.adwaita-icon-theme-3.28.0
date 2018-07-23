@@ -1,8 +1,8 @@
 #!/bin/sh
 ##############################################################
 pkgbase=adwaita_icon_theme
-vers=3.26.0
-url='http://ftp.gnome.org/pub/GNOME/sources/adwaita-icon-theme/3.26/adwaita-icon-theme-3.26.0.tar.xz'
+vers=3.28.0
+url='http://ftp.gnome.org/pub/GNOME/sources/adwaita-icon-theme/3.28/adwaita-icon-theme-3.28.0.tar.xz'
 commitid=
 arch=`uname -m`
 build=T1
