@@ -1,8 +1,8 @@
 #!/bin/sh
 ##############################################################
 pkgbase=gcr
-vers=3.20.0
-url="https://download.gnome.org/sources/gcr/3.20/gcr-3.20.0.tar.xz"
+vers=3.28.0
+url="https://download.gnome.org/sources/gcr/3.28/gcr-3.28.0.tar.xz"
 commitid=
 arch=`uname -m`
 build=T1
