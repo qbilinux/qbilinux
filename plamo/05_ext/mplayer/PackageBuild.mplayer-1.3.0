@@ -5,7 +5,7 @@ pkgbase=mplayer
 vers=1.3.0
 url="http://www.mplayerhq.hu/MPlayer/releases/MPlayer-${vers}.tar.xz"
 arch=`uname -m`
-build=T1
+build=T2
 src=MPlayer-1.3.0
 OPT_CONFIG="--confdir=/etc/mplayer --enable-gui --enable-radio
     --disable-inet6 --disable-ossaudio --disable-esd --language=ja
