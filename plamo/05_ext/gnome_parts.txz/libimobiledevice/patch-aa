@@ -1,0 +1,19 @@
+*** libimobiledevice-1.2.0/src/idevice.c	2015-01-28 10:10:32.000000000 +0900
+--- build/src/idevice.c	2018-07-14 18:59:43.860201575 +0900
+***************
+*** 678,684 ****
+  	}
+  	BIO_set_fd(ssl_bio, (int)(long)connection->data, BIO_NOCLOSE);
+  
+! 	SSL_CTX *ssl_ctx = SSL_CTX_new(SSLv3_method());
+  	if (ssl_ctx == NULL) {
+  		debug_info("ERROR: Could not create SSL context.");
+  		BIO_free(ssl_bio);
+--- 678,684 ----
+  	}
+  	BIO_set_fd(ssl_bio, (int)(long)connection->data, BIO_NOCLOSE);
+  
+! 	SSL_CTX *ssl_ctx = SSL_CTX_new(SSLv23_method());
+  	if (ssl_ctx == NULL) {
+  		debug_info("ERROR: Could not create SSL context.");
+  		BIO_free(ssl_bio);
