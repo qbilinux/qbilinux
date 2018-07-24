@@ -5,7 +5,7 @@ pkgbase=gtk_vnc
 vers=0.6.0
 url="http://ftp.gnome.org/pub/GNOME/sources/gtk-vnc/0.6/gtk-vnc-0.6.0.tar.xz"
 arch=`uname -m`
-build=T1
+build=T2
 src=gtk-vnc-$vers
 OPT_CONFIG="--sysconfdir=/etc --disable-static --with-gtk=3.0 --with-python"
 DOCS="ChangeLog INSTALL COPYING.LIB AUTHORS NEWS README ChangeLog-old"
@@ -143,7 +143,7 @@ mandir=$P/usr/share/man
 docdir=$P/usr/share/doc
 myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
-case $arch in i686) libdir=lib ;; x86_64) libdir=lib64 ;; esac
+case $arch in x86_64) libdir=lib64 ;; *) libdir=lib ;; esac
 if [ $# -eq 0 ] ; then
   opt_download=1 ; opt_config=1 ; opt_build=1 ; opt_package=1
 else
