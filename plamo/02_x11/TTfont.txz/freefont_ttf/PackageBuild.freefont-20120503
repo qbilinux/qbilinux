@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://ftp.gnu.org/gnu/freefont/freefont-ttf-20100919.tar.gz'
 pkgbase=freefont_ttf
-vers=20100919
+vers=20120503
+url="http://ftp.gnu.org/gnu/freefont/freefont-ttf-${vers}.zip"
 arch=noarch
 build=T1
-src=freefont-20100919
+src=freefont-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING CREDITS ChangeLog INSTALL README'
 patchfiles=''
@@ -125,6 +125,7 @@ if [ $opt_download -eq 1 ] ; then
     tar) tar xvpf ${i##*/} ;;
     gz) tar xvpzf ${i##*/} ;;
     bz2) tar xvpjf ${i##*/} ;;
+    zip) unzip -o ${i##*/} ;;
     esac
   done
 fi
