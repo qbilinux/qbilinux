@@ -1,8 +1,8 @@
 #!/bin/sh
 ##############################################################
 pkgbase=lame
-vers=3.99.5
-url="https://sourceforge.net/projects/lame/files/lame/3.99/lame-${vers}.tar.gz"
+vers=3.100
+url="https://sourceforge.net/projects/lame/files/lame/${vers}/lame-${vers}.tar.gz"
 arch=`uname -m`
 build=T1
 src=lame-${vers}
