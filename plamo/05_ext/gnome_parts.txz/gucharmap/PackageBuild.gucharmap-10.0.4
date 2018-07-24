@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='http://ftp.gnome.org/pub/GNOME/sources/gucharmap/2.33/gucharmap-2.33.1.tar.bz2'
 pkgbase=gucharmap
-vers=2.33.1
+vers=10.0.4
+url="http://ftp.gnome.org/pub/GNOME/sources/gucharmap/${vers%.*}/gucharmap-${vers}.tar.xz"
 arch=`uname -m`
 build=T1
-src=gucharmap-2.33.1
-OPT_CONFIG=''
+src=gucharmap-${vers}
+OPT_CONFIG='--with-unicode-data=download'
 DOCS='AUTHORS COPYING COPYING.UNICODE ChangeLog ChangeLog.README ChangeLog.pre-2-23 NEWS README TODO'
 patchfiles=''
 compress=txz
@@ -184,7 +184,7 @@ if [ $opt_download -eq 1 ] ; then
     case ${i##*.} in
     tar) tar xvpf ${i##*/} ;;
     gz) tar xvpzf ${i##*/} ;;
-    bz2) tar xvpjf ${i##*/} ;;
+    xz) tar xvpf ${i##*/} ;;
     esac
   done
 fi
