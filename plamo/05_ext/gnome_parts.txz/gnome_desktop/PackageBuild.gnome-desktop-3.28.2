@@ -1,13 +1,13 @@
 #!/bin/sh
 ##############################################################
 pkgbase=gnome_desktop
-vers=3.26.2
-url='http://ftp.gnome.org/pub/GNOME/sources/gnome-desktop/3.26/gnome-desktop-3.26.2.tar.xz'
+vers=3.28.2
+url='http://ftp.gnome.org/pub/GNOME/sources/gnome-desktop/3.28/gnome-desktop-3.28.2.tar.xz'
 commitid=
 arch=`uname -m`
 build=T1
 src=gnome-desktop-${vers}
-OPT_CONFIG='--disable-udev'
+OPT_CONFIG='--disable-udev --disable-nls --disable-desktop-docs'
 DOCS='AUTHORS COPYING COPYING-DOCS COPYING.LIB ChangeLog ChangeLog.pre-git HACKING MAINTAINERS NEWS README'
 patchfiles=''
 compress=txz
@@ -224,7 +224,7 @@ if [ $opt_package -eq 1 ] ; then
     done
     if [ -f Makefile ] ; then
       export LDFLAGS='-Wl,--as-needed'
-      make install DESTDIR=$P
+      make install -k DESTDIR=$P
     fi
     if [ $? != 0 ]; then
       echo "make install error. $0 script stop"
