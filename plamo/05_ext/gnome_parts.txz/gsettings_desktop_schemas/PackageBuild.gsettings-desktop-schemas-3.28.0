@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=gsettings_desktop_schemas
-vers=3.24.1
-url='http://ftp.gnome.org/pub/GNOME/sources/gsettings-desktop-schemas/3.24/gsettings-desktop-schemas-3.24.1.tar.xz'
+vers=3.28.0
+url='http://ftp.gnome.org/pub/GNOME/sources/gsettings-desktop-schemas/3.28/gsettings-desktop-schemas-3.28.0.tar.xz'
 arch=`uname -m`
 build=T1
-src=gsettings-desktop-schemas-3.24.1
+src=gsettings-desktop-schemas-3.28.0
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog HACKING MAINTAINERS NEWS README'
 patchfiles=''
