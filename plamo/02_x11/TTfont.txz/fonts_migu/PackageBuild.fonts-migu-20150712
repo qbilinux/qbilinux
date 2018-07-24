@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url="http://jaist.dl.sourceforge.jp/mix-mplus-ipa/57240/migu-1p-20121030.zip
-	http://jaist.dl.sourceforge.jp/mix-mplus-ipa/57240/migu-1p-20121030.zip
-	http://jaist.dl.sourceforge.jp/mix-mplus-ipa/57240/migu-1m-20121030.zip
-	http://jaist.dl.sourceforge.jp/mix-mplus-ipa/57240/migu-2m-20121030.zip"
 pkgbase=fonts_migu
-vers=20121030
+vers=20150712
+url="http://jaist.dl.sourceforge.jp/mix-mplus-ipa/63545/migu-1p-${vers}.zip
+     http://jaist.dl.sourceforge.jp/mix-mplus-ipa/63545/migu-1p-${vers}.zip
+     http://jaist.dl.sourceforge.jp/mix-mplus-ipa/63545/migu-1m-${vers}.zip
+     http://jaist.dl.sourceforge.jp/mix-mplus-ipa/63545/migu-2m-${vers}.zip"
 arch=noarch
 build=T1
 src=fonts_migu
@@ -163,7 +163,7 @@ if [ $opt_package -eq 1 ] ; then
 # * make install でコピーされないファイルがある場合はここに記述します。
 ######################################################################
   mkdir -p $docdir/$src-$vers
-  cp $W/PlamoBuild.fonts-migu-${vers} $docdir/$src-$vers
+  cp $W/PackageBuild.fonts-migu-${vers} $docdir/$src-$vers
   mkdir -p $P/usr/share/fontconfig/conf.avail
 
 # alterd from migumix configurations 
