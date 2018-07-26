@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://archive.xfce.org/src/apps/xfce4-mixer/4.10/xfce4-mixer-4.10.0.tar.bz2'
 pkgbase=xfce4_mixer
-vers=4.10.0
+vers=4.11.0
+url="http://archive.xfce.org/src/apps/xfce4-mixer/4.11/xfce4-mixer-${vers}.tar.bz2"
 arch=`uname -m`
 build=T1
-src=xfce4-mixer-4.10.0
+src=xfce4-mixer-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README'
 patchfiles=''
