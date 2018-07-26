@@ -5,7 +5,7 @@ pkgbase=mlocate
 vers=0.26
 url="https://releases.pagure.org/mlocate/mlocate-${vers}.tar.xz"
 arch=`uname -m`
-build=T1
+build=T2
 src=$pkgbase-$vers
 OPT_CONFIG="--localstatedir=/var"
 DOCS="README ChangeLog NEWS INSTALL AUTHORS ABOUT-NLS COPYING"
@@ -229,7 +229,7 @@ if [ $opt_package -eq 1 ] ; then
 	renice +19 -p $$ > /dev/null 2>&1
 	updatedb
 	EOF
-  chmod 755 $P/etc/cron.daily/mlocate
+  chmod 644 $P/etc/cron.daily/mlocate
   touch $W/i.et
   cd $W
   find $P ! -type l -newer i.st ! -newer i.et \
