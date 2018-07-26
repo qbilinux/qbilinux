@@ -1,8 +1,0 @@
-microcode_ctl & y & y & y & y
-&
-Intel/AMD CPU用microcodeツール
-&
-Intel/AMD製CPUのmicrocodeを一時的に更新するための
-ツールと更新用のmicrocode
-&
-&
