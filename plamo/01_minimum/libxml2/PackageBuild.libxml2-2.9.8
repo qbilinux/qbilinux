@@ -5,9 +5,9 @@ pkgbase=libxml2
 vers=2.9.8
 url="http://xmlsoft.org/sources/libxml2-${vers}.tar.gz"
 arch=`uname -m`
-build=T1
+build=T2
 src=$pkgbase-$vers
-OPT_CONFIG="--with-history --disable-static --with-python=/usr/bin/python3"
+OPT_CONFIG="--with-history --disable-static --with-python=/usr/bin/python3 --with-icu"
 DOCS="AUTHORS COPYING ChangeLog INSTALL NEWS README TODO Copyright
     TODO_SCHEMAS README.tests"
 patchfiles="libxml2-2.9.7-python3_hack-1.patch"
