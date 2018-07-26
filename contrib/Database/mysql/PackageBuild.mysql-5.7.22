@@ -1,12 +1,13 @@
 #!/bin/sh
 ##############################################################
 pkgbase=mysql
-vers=5.7.20
-url="http://ftp.jaist.ac.jp/pub/mysql/Downloads/MySQL-5.7/mysql-5.7.20.tar.gz"
+vers=5.7.22
+url="http://ftp.jaist.ac.jp/pub/mysql/Downloads/MySQL-5.7/mysql-${vers}.tar.gz"
 arch=`uname -m`
 build=T1
 src=mysql-${vers}
-OPT_CONFIG="-DWITH_EMBEDDED_SERVER:BOOL=ON -DDOWNLOAD_BOOST=1 -DWITH_BOOST=/tmp/boost"
+W=`pwd`
+OPT_CONFIG="-DWITH_EMBEDDED_SERVER:BOOL=ON -DDOWNLOAD_BOOST=1 -DWITH_BOOST=$W/boost"
 DOCS='COPYING INSTALL README VERSION'
 patchfiles=''
 compress=txz
