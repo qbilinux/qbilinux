@@ -2,15 +2,15 @@
 ##############################################################
 verify=
 pkgbase=ctwm
-vers=3.8.2
+vers=4.0.1
 url="http://www.ctwm.org/dist/ctwm-${vers}.tar.xz"
 commitid=
 arch=`uname -m`
 build=T1
-src=ctwm-3.8.2
+src=ctwm-${vers}
 OPT_CONFIG=''
-DOCS='README README.VMS README.gnome TODO TODO.gnome ctwm.txt vms.txt vms2.txt'
-patchfiles='patch-a'
+DOCS='CHANGES.html CHANGES.md COPYRIGHT README.html README.md'
+patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -182,28 +182,27 @@ fi
 
 if [ $opt_config -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
-    if [ -d ${B[$i]} ] ; then rm -rf ${B[$i]} ; fi ; cp -a ${S[$i]} ${B[$i]}
+    if [ -d ${B[$i]} ] ; then rm -rf ${B[$i]} ; fi ; mkdir ${B[$i]}
   done
 ######################################################################
 # * ./configure を行う前に適用したい設定やパッチなどがある場合はここに
 #   記述します。
 ######################################################################
   for i in `seq 0 $((${#B[@]} - 1))` ; do
-    cd ${B[$i]}
+    cd ${S[$i]}
     for patch in $patchfiles ; do
       patch -p1 < $W/$patch
     done
 
-    xmkmf
-
+    cd ${B[$i]}
     # if [ -f autogen.sh ] ; then
     #   sh ./autogen.sh
     # fi
 
-    if [ -x configure ] ; then
-      export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
+    if [ -f ${S[$1]}/CMakeLists.txt ]; then
+      export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
       export LDFLAGS='-Wl,--as-needed' 
-      ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
+      cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DLIB_INSTALL_DIR:PATH=/usr/${libdir} -DLIB_SUFFIX=$suffix ${OPT_CONFIG} ${S[$1]}
     fi
     if [ $? != 0 ]; then
       echo "configure error. $0 script stop"
@@ -238,7 +237,6 @@ if [ $opt_package -eq 1 ] ; then
     if [ -f Makefile ] ; then
       export LDFLAGS='-Wl,--as-needed'
       make install DESTDIR=$P
-      make install.man DESTDIR=$P
     fi
   done
 ######################################################################
