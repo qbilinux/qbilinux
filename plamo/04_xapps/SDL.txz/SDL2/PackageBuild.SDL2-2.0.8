@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://www.libsdl.org/release/SDL2-2.0.5.tar.gz'
 pkgbase=SDL2
-vers=2.0.5
+vers=2.0.8
+url="http://www.libsdl.org/release/SDL2-${vers}.tar.gz"
 arch=`uname -m`
 build=T1
-src=SDL2-2.0.5
+src=SDL2-${vers}
 #OPT_CONFIG='--disable-static'
 OPT_CONFIG=''
 DOCS='BUGS.txt COPYING.txt CREDITS.txt INSTALL.txt README-SDL.txt README.txt TODO.txt WhatsNew.txt'
