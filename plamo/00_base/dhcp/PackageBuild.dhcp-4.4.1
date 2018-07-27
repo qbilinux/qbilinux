@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=dhcp
-vers=4.3.6
+vers=4.4.1
 url="http://ftp.isc.org/isc/dhcp/${vers}/dhcp-${vers}.tar.gz"
 arch=`uname -m`
 build=T1
@@ -216,9 +216,10 @@ if [ $opt_config -eq 1 ] ; then
       rm -rf config.cache config.log
     fi
     if [ -x configure ] ; then
-      ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
-          --libdir='${exec_prefix}'/$libdir --infodir='${prefix}'/share/info \
-          --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
+	export CFLAGS="-Werror=stringop-truncation"
+	./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
+		    --libdir='${exec_prefix}'/$libdir --infodir='${prefix}'/share/info \
+		    --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
     fi
   done
 fi
@@ -226,7 +227,7 @@ if [ $opt_build -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
-      make -j1
+	make -j1
     fi
   done
 fi
