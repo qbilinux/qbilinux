@@ -1,12 +1,12 @@
 #!/bin/sh
 
 ######################################################################
-url="ftp://ftp4.de.freebsd.org/xbmc/build-deps/sources/yajl-2.0.1.tar.gz"
 pkgbase=yajl
-vers=2.0.1
+vers=2.1.0
+url="https://github.com/lloyd/yajl/archive/2.1.0.zip"
 arch=`uname -m`
 build=T1
-src=lloyd-yajl-f4b2b1a
+src=yajl-${vers}
 OPT_CONFIG=""
 DOCS="BUILDING BUILDING.win32 COPYING ChangeLog README TODO"
 compress=txz
@@ -174,7 +174,7 @@ if [ $opt_download -eq 1 ] ; then
   done
   for i in $url ; do
     case ${i##*.} in
-    tar) tar xpf ${i##*/} ;;
+    zip) unzip -o ${i##*/} ;;
     gz) tar xpzf ${i##*/} ;;
     bz2) tar xpjf ${i##*/} ;;
     esac
