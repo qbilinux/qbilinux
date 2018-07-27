@@ -13,10 +13,10 @@ diff -Nrc gptfdisk-1.0.0.orig/Makefile gptfdisk-1.0.0/Makefile
 + 	install -Dp -m0755 sgdisk ${DESTDIR}/usr/sbin
 + 	install -Dp -m0755 cgdisk ${DESTDIR}/usr/sbin
 + 	install -Dp -m0755 fixparts ${DESTDIR}/usr/sbin
-+ 	install -Dp -m0644 gdisk.8 ${DESTDIR}/usr/man/man8/gdisk.8
-+ 	install -Dp -m0644 sgdisk.8 ${DESTDIR}/usr/man/man8/sgdisk.8
-+ 	install -Dp -m0644 cgdisk.8 ${DESTDIR}/usr/man/man8/cgdisk.8
-+ 	install -Dp -m0644 fixparts.8 ${DESTDIR}/usr/man/man8/fixparts.8
++ 	install -Dp -m0644 gdisk.8 ${DESTDIR}/usr/share/man/man8/gdisk.8
++ 	install -Dp -m0644 sgdisk.8 ${DESTDIR}/usr/share/man/man8/sgdisk.8
++ 	install -Dp -m0644 cgdisk.8 ${DESTDIR}/usr/share/man/man8/cgdisk.8
++ 	install -Dp -m0644 fixparts.8 ${DESTDIR}/usr/share/man/man8/fixparts.8
 + 
   gdisk:	$(LIB_OBJS) gdisk.o gpttext.o
   	$(CXX) $(LIB_OBJS) gdisk.o gpttext.o $(LDFLAGS) -luuid -o gdisk
