@@ -1,10 +1,10 @@
 #!/bin/sh -x
 ##############################################################
 pkgbase=gcc
-vers=8.1.0
-url="http://ftp.tsukuba.wide.ad.jp/software/gcc/releases/gcc-${vers}/gcc-${vers}.tar.xz"
+vers=8.2.0
+url="http://ftp.jaist.ac.jp/pub/GNU/gcc/gcc-${vers}/gcc-${vers}.tar.xz"
 arch=`uname -m`
-build=T2
+build=T1
 src=gcc-${vers}
 if [ $arch = "armv7l" ]; then
     build_arch=armv7l-pc-linux-gnueabihf
