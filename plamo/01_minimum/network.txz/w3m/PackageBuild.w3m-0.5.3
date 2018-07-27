@@ -5,7 +5,7 @@ pkgbase=w3m
 vers=0.5.3
 url="http://downloads.sourceforge.net/w3m/w3m-${vers}.tar.gz"
 arch=`uname -m`
-build=T1
+build=T2
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="`echo doc-jp/{FAQ.html,HISTORY,MANUAL.html,README}`
@@ -17,7 +17,7 @@ DOCS="`echo doc-jp/{FAQ.html,HISTORY,MANUAL.html,README}`
     `echo doc/{STORY.html,keymap.{default,lynx},menu.{default,submenu}}`
     `echo doc/README.{cookie,passwd}` ABOUT-NLS ChangeLog NEWS README TODO"
 #patchfiles="w3m-0.5.3-GC_fix.patch libressl.patch"
-patchfiles="w3m-0.5.3-GC_fix.patch"
+patchfiles="w3m-0.5.3-GC_fix.patch undef_use_egd.patch"
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
