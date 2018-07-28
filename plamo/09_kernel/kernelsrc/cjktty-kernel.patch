@@ -23,7 +23,7 @@ diff -Naur a/drivers/tty/vt/selection.c b/drivers/tty/vt/selection.c
 diff -Naur a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
 --- a/drivers/tty/vt/vt.c
 +++ b/drivers/tty/vt/vt.c
-@@ -300,6 +300,20 @@
+@@ -302,6 +302,20 @@
  	return p;
  }
  
@@ -44,7 +44,7 @@ diff -Naur a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
  /* Called  from the keyboard irq path.. */
  static inline void scrolldelta(int lines)
  {
-@@ -336,6 +350,11 @@
+@@ -338,6 +352,11 @@
  	}
  	scr_memmovew(d, s, (b - t - nr) * vc->vc_size_row);
  	scr_memsetw(clear, vc->vc_video_erase_char, vc->vc_size_row * nr);
@@ -56,7 +56,7 @@ diff -Naur a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
  }
  
  static void do_update_region(struct vc_data *vc, unsigned long start, int count)
-@@ -497,6 +516,8 @@
+@@ -499,6 +518,8 @@
  	static int old_offset = -1;
  	static unsigned short old;
  	static unsigned short oldx, oldy;
@@ -65,7 +65,7 @@ diff -Naur a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
  
  	WARN_CONSOLE_UNLOCKED();
  
-@@ -504,7 +525,7 @@
+@@ -506,7 +527,7 @@
  	    old_offset < vc->vc_screenbuf_size) {
  		scr_writew(old, screenpos(vc, old_offset, 1));
  		if (con_should_update(vc))
@@ -74,7 +74,7 @@ diff -Naur a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
  		notify_update(vc);
  	}
  
-@@ -515,13 +536,15 @@
+@@ -517,13 +538,15 @@
  		unsigned short new;
  		unsigned short *p;
  		p = screenpos(vc, offset, 1);
@@ -91,16 +91,16 @@ diff -Naur a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
  		}
  		notify_update(vc);
  	}
-@@ -782,7 +805,7 @@
+@@ -784,7 +807,7 @@
  	if (!*vc->vc_uni_pagedir_loc)
  		con_set_default_unimap(vc);
  
--	vc->vc_screenbuf = kmalloc(vc->vc_screenbuf_size, GFP_KERNEL);
+-	vc->vc_screenbuf = kzalloc(vc->vc_screenbuf_size, GFP_KERNEL);
 +	vc->vc_screenbuf = kmalloc(vc->vc_screenbuf_size * 2, GFP_KERNEL);
  	if (!vc->vc_screenbuf)
  		goto err_free;
  
-@@ -843,7 +866,7 @@
+@@ -845,7 +868,7 @@
  {
  	unsigned long old_origin, new_origin, new_scr_end, rlth, rrem, err = 0;
  	unsigned long end;
@@ -109,25 +109,24 @@ diff -Naur a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
  	unsigned int new_cols, new_rows, new_row_size, new_screen_size;
  	unsigned int user;
  	unsigned short *newscreen;
-@@ -863,13 +886,16 @@
- 	new_rows = (lines ? lines : vc->vc_rows);
- 	new_row_size = new_cols << 1;
- 	new_screen_size = new_row_size * new_rows;
-+	old_screen_size = old_rows * old_row_size;
- 
- 	if (new_cols == vc->vc_cols && new_rows == vc->vc_rows)
- 		return 0;
+@@ -871,7 +894,7 @@
  
  	if (new_screen_size > (4 << 20))
  		return -EINVAL;
--	newscreen = kmalloc(new_screen_size, GFP_USER);
-+
+-	newscreen = kzalloc(new_screen_size, GFP_USER);
 +	newscreen = kmalloc(new_screen_size * 2, GFP_USER);
-+
  	if (!newscreen)
  		return -ENOMEM;
  
-@@ -919,15 +945,23 @@
+@@ -880,6 +903,7 @@
+ 
+ 	old_rows = vc->vc_rows;
+ 	old_row_size = vc->vc_size_row;
++	old_screen_size = old_rows * old_row_size;
+ 
+ 	err = resize_screen(vc, new_cols, new_rows, user);
+ 	if (err) {
+@@ -921,15 +945,23 @@
  	while (old_origin < end) {
  		scr_memcpyw((unsigned short *) new_origin,
  			    (unsigned short *) old_origin, rlth);
@@ -153,7 +152,7 @@ diff -Naur a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
  	kfree(vc->vc_screenbuf);
  	vc->vc_screenbuf = newscreen;
  	vc->vc_screenbuf_size = new_screen_size;
-@@ -2236,6 +2270,8 @@
+@@ -2240,6 +2272,8 @@
  		rescan = 0;
  		inverse = 0;
  		width = 1;
@@ -162,7 +161,7 @@ diff -Naur a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
  
  		/* Do no translation at all in control states */
  		if (vc->vc_state != ESnormal) {
-@@ -2303,7 +2339,7 @@
+@@ -2307,7 +2341,7 @@
  				continue;
  			    }
  			}
@@ -171,7 +170,7 @@ diff -Naur a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
  		    }
  		    /* End of UTF-8 decoding. */
  		    /* c is the received character, or U+FFFD for invalid sequences. */
-@@ -2390,10 +2426,30 @@
+@@ -2394,10 +2428,30 @@
  				}
  				if (vc->vc_decim)
  					insert_char(vc, 1);
@@ -206,7 +205,7 @@ diff -Naur a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
  				if (con_should_update(vc) && draw_x < 0) {
  					draw_x = vc->vc_x;
  					draw_from = vc->vc_pos;
-@@ -2410,11 +2466,13 @@
+@@ -2414,11 +2468,13 @@
  
  				tc = conv_uni_to_pc(vc, ' '); /* A space is printed in the second column */
  				if (tc < 0) tc = ' ';
@@ -224,7 +223,7 @@ diff -Naur a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
  
  			if (rescan) {
  				rescan = 0;
-@@ -3007,7 +3065,7 @@
+@@ -3011,7 +3067,7 @@
  		INIT_WORK(&vc_cons[currcons].SAK_work, vc_SAK);
  		tty_port_init(&vc->port);
  		visual_init(vc, currcons, 1);
@@ -233,7 +232,7 @@ diff -Naur a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
  		vc_init(vc, vc->vc_rows, vc->vc_cols,
  			currcons || !vc->vc_sw->con_save_screen);
  	}
-@@ -4219,6 +4277,11 @@
+@@ -4230,6 +4286,11 @@
  
  int con_font_op(struct vc_data *vc, struct console_font_op *op)
  {
@@ -245,7 +244,7 @@ diff -Naur a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
  	switch (op->op) {
  	case KD_FONT_OP_SET:
  		return con_font_set(vc, op);
-@@ -4242,9 +4305,15 @@
+@@ -4253,8 +4314,14 @@
  	u16 w = scr_readw(screenpos(vc, offset, 1));
  	u16 c = w & 0xff;
  
@@ -263,7 +262,7 @@ diff -Naur a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
 +	}
  }
  EXPORT_SYMBOL_GPL(screen_glyph);
- 
+
 diff -Naur a/drivers/video/console/Kconfig b/drivers/video/console/Kconfig
 --- a/drivers/video/console/Kconfig
 +++ b/drivers/video/console/Kconfig

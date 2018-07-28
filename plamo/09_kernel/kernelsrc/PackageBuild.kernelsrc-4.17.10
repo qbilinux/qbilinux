@@ -8,7 +8,7 @@ url="https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-${version}.tar.xz
 	git://github.com/sfjro/aufs4-standalone.git"
 pkgbase=kernelsrc
 arch=`uname -m`
-build=T1
+build=T2
 src=linux-${version}
 patchfiles="cjktty-kernel.patch cjktty-kernel-font-JP.patch overlayfs-allow_unprivileged_mounts.patch"
 patchfiles_not_used="vd_unicon-kernel-20170609-4.11.patch vd_unicon-kernel-fonts-20140614.patch cjktty-kernel-font.patch rpi-4.17.10-20180726-c9c0c19.diff tuxonice-for-linux-4.8.0-2016-10-08.patch 4.8-morse_code_panics.patch 4.8-panic_beep.patch"
