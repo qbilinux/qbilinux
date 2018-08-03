@@ -4,9 +4,9 @@ pkgbase=cups_filters
 vers=1.20.3
 url="http://www.openprinting.org/download/cups-filters/cups-filters-${vers}.tar.xz"
 arch=`uname -m`
-build=T1
+build=T2
 src=cups-filters-${vers}
-OPT_CONFIG='--disable-static'
+OPT_CONFIG='--disable-static --with-rcdir=/etc/rc.d'
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README'
 patchfiles=''
 compress=txz
