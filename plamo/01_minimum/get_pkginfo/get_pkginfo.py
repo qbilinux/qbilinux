@@ -55,7 +55,7 @@ def get_file_confs(conf_file):
 def url_completion(url):
     if not url.endswith("/"):
         url += "/"      # 念のため
-    current = "0.1"
+    current = "0.2"
     if os.path.isfile("/etc/plamo-nora-release"):
         # format: Plamo nora Linux release x.y
         info = open("/etc/plamo-nora-release", "r").readline()
