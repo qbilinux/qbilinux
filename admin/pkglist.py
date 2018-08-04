@@ -1,5 +1,5 @@
 #!/usr/bin/python2
-# -*- coding: euc-jp -*-
+# -*- coding: utf-8 -*-
 
 import os, pickle
 import sys
@@ -17,21 +17,21 @@ if (argc != 2):
     quit()
 
 basedir = args[1] + '/'
-archdir = ('x86/', 'x86_64/', 'armv7/', 'armv7_hf/')
+archdir = ('x86/', 'x86_64/', 'armv7_hf/')
 channel = ('plamo', 'contrib')
 
 '''
-__blockpkgs: updatepkg ¤À¤±¤Ç¥¢¥Ã¥×¥Ç¡¼¥È¤Ç¤­¤Ê¤¤¥Ñ¥Ã¥±¡¼¥¸¤Ï¡¤¥Ç¥Õ¥©¥ë
-¥È¤Ç¤ÏÉ½¼¨¤·¤Ê¤¤¤è¤¦¤Ë¤¹¤ë¡¥
-¤¿¤À¤· get_pkginfo.py ¤Ç -b ¥ª¥×¥·¥ç¥ó¤ò»ØÄê¤¹¤ì¤Ğ¡¤¤³¤ì¤é¤â¹ç¤ï¤»¤ÆÉ½
-¼¨¤µ¤ì¤ë¡¥
+__blockpkgs: updatepkg ã ã‘ã§ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆã§ããªã„ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã¯ï¼Œãƒ‡ãƒ•ã‚©ãƒ«
+ãƒˆã§ã¯è¡¨ç¤ºã—ãªã„ã‚ˆã†ã«ã™ã‚‹ï¼
+ãŸã ã— get_pkginfo.py ã§ -b ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’æŒ‡å®šã™ã‚Œã°ï¼Œã“ã‚Œã‚‰ã‚‚åˆã‚ã›ã¦è¡¨
+ç¤ºã•ã‚Œã‚‹ï¼
 '''
 blockpkgs = ['aaa_base', 'devs', 'etc', 'hdsetup', 'network_configs',
         'shadow', 'sysvinit']
 
 '''
-__replaces: ²şÌ¾¡¤Ê¬³ä¡¤½¸Ìó¤µ¤ì¤¿¥Ñ¥Ã¥±¡¼¥¸¤òÄÉÀ×¤¹¤ë¤¿¤á¤Ë¡¤µì¥Ñ¥Ã¥±
-¡¼¥¸Ì¾¤ò¿·¥Ñ¥Ã¥±¡¼¥¸Ì¾¤Ë¥Ş¥Ã¥×¤¹¤ë¡¥
+__replaces: æ”¹åï¼Œåˆ†å‰²ï¼Œé›†ç´„ã•ã‚ŒãŸãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã‚’è¿½è·¡ã™ã‚‹ãŸã‚ã«ï¼Œæ—§ãƒ‘ãƒƒã‚±
+ãƒ¼ã‚¸åã‚’æ–°ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸åã«ãƒãƒƒãƒ—ã™ã‚‹ï¼
 ex: 'tamago' -> 'tamago_tsunagi'
     'python' -> 'Python2', 'Python3' -> 'Python'
 '''
@@ -39,8 +39,8 @@ replace_list = {'tamago': 'tamago_tsunagi', 'python': 'Python2',
         'Python3': 'Python', 'pycups2': 'py2cups', 'pycurl2': 'py2curl'}
 
 '''
-__no_install: ¤³¤ì¤é¤Î¥Ñ¥Ã¥±¡¼¥¸¤Ï updatepkg -f °Ê³°¤Îºî¶È¤¬É¬Í×¤Ë¤Ê¤ë
-¤Î¤Ç¡¤¥À¥¦¥ó¥í¡¼¥É¤Ï¤Ç¤­¤ë¤¬¼«Æ°¥¤¥ó¥¹¥È¡¼¥ë¤Ï¤·¤Ê¤¤¡¥
+__no_install: ã“ã‚Œã‚‰ã®ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã¯ updatepkg -f ä»¥å¤–ã®ä½œæ¥­ãŒå¿…è¦ã«ãªã‚‹
+ã®ã§ï¼Œãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ã¯ã§ãã‚‹ãŒè‡ªå‹•ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã¯ã—ãªã„ï¼
 '''
 no_install = ['grub', 'lilo', 'kernel', 'kernel_headers', 'kernelsrc',
         'timezone', 'docbook_xml_4.1.2', 'docbook_xml_4.2', 'docbook_xml_4.3',
