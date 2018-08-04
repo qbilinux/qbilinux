@@ -29,6 +29,7 @@ xfceやkdeのみを選んでも必要なカテゴリは自動的に選択され�
 "tex" "ptexlib 版組みシステム(2.2G)" off \
 "kernel" "Linux カーネルのソースコード(0.6G)" off \
 "mate" "MATE デスクトップ環境(2.2G)" off \
+"lxqt" "LXQT デスクトップ環境(2.2G)" off \
 2> /tmp/tmpseries
 if [ $? = 1 -o $? = 255 ]; then
  rm -f /tmp/tmpseries
@@ -39,7 +40,7 @@ SELECTED="`cat /tmp/tmpseries`"
 INSTSETS='00_base'
 
 # for minimum
-for cat in minimum x11 xclassics xapps ext xfce kde tex kernel lof mate; do
+for cat in minimum x11 xclassics xapps ext xfce kde tex kernel lof mate lxqt; do
     chk=`echo $SELECTED | grep $cat`
     if [ $? == 0 ]; then
        echo "minimum is selected from $cat"
@@ -49,7 +50,7 @@ for cat in minimum x11 xclassics xapps ext xfce kde tex kernel lof mate; do
 done
 
 #for x11
-for cat in x11 xclassics xapps ext xfce kde lof mate; do
+for cat in x11 xclassics xapps ext xfce kde lof mate lxqt; do
     chk=`echo $SELECTED | grep $cat`
     if [ $? == 0 ]; then
        echo "x11 is selected from $cat"
@@ -69,7 +70,7 @@ for cat in xclassics ; do
 done
 
 #for xapps
-for cat in xapps ext xfce kde lof mate; do
+for cat in xapps ext xfce kde lof mate lxqt; do
     chk=`echo $SELECTED | grep $cat`
     if [ $? == 0 ]; then
        echo "xapps is selected from $cat"
@@ -79,7 +80,7 @@ for cat in xapps ext xfce kde lof mate; do
 done
 
 #for ext
-for cat in ext xfce kde lof mate; do
+for cat in ext xfce kde lof mate lxqt; do
     chk=`echo $SELECTED | grep $cat`
     if [ $? == 0 ]; then
        echo "ext is selected from $cat"
@@ -130,5 +131,11 @@ if [ $? == 0 ]; then
     INSTSETS="$INSTSETS 11_mate"
 fi
 
+#for lxqt
+chk=`echo $SELECTED | grep lxqt`
+if [ $? == 0 ]; then
+    echo "kde is selected"
+    INSTSETS="$INSTSETS 12_lxqt"
+fi
 
 echo "$INSTSETS" > /tmp/SeTSERIES
