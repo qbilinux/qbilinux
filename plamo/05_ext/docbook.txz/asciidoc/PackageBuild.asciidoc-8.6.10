@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='https://asciidoc.googlecode.com/archive/8.6.9.tar.gz'
 pkgbase=asciidoc
-vers=8.6.9
+vers=8.6.10
+url="https://github.com/asciidoc/asciidoc/archive/${vers}.zip"
 arch=`uname -m`
 build=T1
-src=asciidoc-8.6.9
+src=asciidoc-${vers}
 OPT_CONFIG=''
 DOCS='BUGS.txt CHANGELOG.txt COPYING INSTALL.txt README.txt'
 patchfiles=''
@@ -122,7 +122,7 @@ if [ $opt_download -eq 1 ] ; then
     case ${i##*.} in
     gz) tar xvpzf ${i##*/} ;;
     bz2) tar xvpjf ${i##*/} ;;
-    *) tar xvpf ${i##*/} ;;
+    *) unzip -o ${i##*/} ;;
     esac
   done
 fi
