@@ -40,7 +40,7 @@ QWT_INSTALL_LIBS      = $${QWT_INSTALL_PREFIX}/lib
 # runtime environment of designer/creator.
 ######################################################################
 
-QWT_INSTALL_PLUGINS   = $${QWT_INSTALL_PREFIX}/plugins/designer
+QWT_INSTALL_PLUGINS   = $${QWT_INSTALL_PREFIX}/lib/qwt/plugins/designer
 
 # linux distributors often organize the Qt installation
 # their way and QT_INSTALL_PREFIX doesn't offer a good
@@ -61,7 +61,7 @@ QWT_INSTALL_PLUGINS   = $${QWT_INSTALL_PREFIX}/plugins/designer
 # with every Qt upgrade. 
 ######################################################################
 
-QWT_INSTALL_FEATURES  = $${QWT_INSTALL_PREFIX}/features
+QWT_INSTALL_FEATURES  = $${QWT_INSTALL_PREFIX}/lib/qwt/features
 # QWT_INSTALL_FEATURES  = $$[QT_INSTALL_PREFIX]/features
 
 ######################################################################
