@@ -4,12 +4,12 @@ pkgbase=gcc
 vers=8.2.0
 url="http://ftp.jaist.ac.jp/pub/GNU/gcc/gcc-${vers}/gcc-${vers}.tar.xz"
 arch=`uname -m`
-build=T1
+build=T2
 src=gcc-${vers}
 if [ $arch = "armv7l" ]; then
-    build_arch=armv7l-pc-linux-gnueabihf
+    build_arch=arm-pc-linux-gnueabihf
     libdir="lib"
-    ARCH_CONFIG='--with-arch=armv7-a --with-float=hard --with-tune=cortex-a8'
+    ARCH_CONFIG='--with-arch=armv6 --with-fpu=vfp --with-float=hard'
 elif [ $arch = "x86_64" ]; then
     build_arch=${arch}-pc-linux-gnu
     libdir="lib64"
