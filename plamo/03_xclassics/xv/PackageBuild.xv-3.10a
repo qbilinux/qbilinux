@@ -9,15 +9,15 @@ url="http://plamo.linet.gr.jp/~tamuki/src/xv-3.10a.tar.gz
     http://plamo.linet.gr.jp/~tamuki/src/xv-3.10a-30.patches.tar.gz
     http://plamo.linet.gr.jp/~tamuki/src/xv-3.10a-Xsun.patch
     http://plamo.linet.gr.jp/~tamuki/src/xv-3.10a-grab.patch
-    http://plamo.linet.gr.jp/~tamuki/src/xv-3.10a-plamo-patch
     http://plamo.linet.gr.jp/~tamuki/src/xvimage.c-cast.patch"
 pkgbase=xv
 vers=3.10a
 arch=`uname -m`
-build=T1
+build=T2
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="CHANGELOG README INSTALL IDEAS BUGS"
+patchfiles='xv-3.10a-plamo-patch xv-3.10a-arm-patch'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -281,7 +281,11 @@ if [ $opt_config -eq 1 ] ; then
   patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-dither16.patch
   patch -Np1 -i $W/xv-3.10a-Xsun.patch
   patch -Np1 -i $W/xv-3.10a-grab.patch
+if [ $arch = "armv7l" ]; then
+  patch -Np1 -i $W/xv-3.10a-arm-patch
+else
   patch -Np1 -i $W/xv-3.10a-plamo-patch
+fi
   patch -Np1 -i $W/xvimage.c-cast.patch
   patch -Np0 -i $W/patch-aa
   patch -Np0 -i $W/patch-ab
@@ -362,6 +366,10 @@ if [ $opt_package -eq 1 ] ; then
       ln $docdir/$src/$myname.gz $docdir/${src[$i]}
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
+  done
+  for patch in $patchfiles ; do
+    cp $W/$patch $docdir/$src/$patch
+    gzip_one $docdir/$src/$patch
   done
   install $W/patch-aa $docdir/$src
   install $W/patch-ab $docdir/$src
