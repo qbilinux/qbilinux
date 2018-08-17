@@ -4,7 +4,7 @@ pkgbase=libcxxabi
 vers=6.0.1
 url="http://www.llvm.org/releases/${vers}/libcxxabi-${vers}.src.tar.xz"
 arch=`uname -m`
-build=T1
+build=T2
 src=libcxxabi-${vers}.src
 OPT_CONFIG=''
 DOCS='CREDITS.TXT LICENSE.TXT'
@@ -144,7 +144,7 @@ if [ $opt_config -eq 1 ] ; then
        fi
     done
 
-    if [ -x /usr/bin/clang-${vers%.0} ]; then
+    if [ -x /usr/bin/clang-${vers%.*} ]; then
 	export CC='clang -v '
 	#export CXX='clang++ -v --std=c++11 -stdlib=libc++ -lc++abi'
 	export CXX='clang++ -v '
