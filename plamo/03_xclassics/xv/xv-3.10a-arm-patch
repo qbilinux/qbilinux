@@ -1,0 +1,170 @@
+*** xv-3.10a.org/Makefile.std	2005-09-01 14:04:42.000000000 +0900
+--- xv-3.10a/Makefile.std	2005-09-01 14:08:26.000000000 +0900
+***************
+*** 1,7 ****
+  # Makefile for xv
+  
+  # your C compiler (and options) of choice
+! CC = cc
+  # CC = gcc -ansi
+  
+  # use this if you're using 'cc' on a DEC Alpha (OSF/1) or MIPS (Ultrix) system:
+--- 1,7 ----
+  # Makefile for xv
+  
+  # your C compiler (and options) of choice
+! CC = gcc
+  # CC = gcc -ansi
+  
+  # use this if you're using 'cc' on a DEC Alpha (OSF/1) or MIPS (Ultrix) system:
+***************
+*** 14,20 ****
+  #       -Wuninitialized -Wparentheses
+  
+  
+! CCOPTS = -O 
+  
+  
+  ### NOTE: Sun running OpenWindows:
+--- 14,20 ----
+  #       -Wuninitialized -Wparentheses
+  
+  
+! CCOPTS = -O2 -DXSHM
+  
+  
+  ### NOTE: Sun running OpenWindows:
+***************
+*** 46,58 ****
+  ### on your machine, *COMMENT OUT* the following lines
+  ###
+  JPEG    = -DDOJPEG
+! JPEGDIR = jpeg
+! JPEGINC = -I$(JPEGDIR)
+! JPEGLIB = $(JPEGDIR)/libjpeg.a
+! $(JPEGDIR)/jconfig.h:
+! 	cd $(JPEGDIR) ; ./configure CC='$(CC)'
+! $(JPEGLIB):  $(JPEGDIR)/jconfig.h
+! 	cd $(JPEGDIR) ; make
+  
+  
+  ###
+--- 46,58 ----
+  ### on your machine, *COMMENT OUT* the following lines
+  ###
+  JPEG    = -DDOJPEG
+! JPEGDIR = /usr/lib
+! JPEGINC = -I/usr/include
+! JPEGLIB = -ljpeg
+! # $(JPEGDIR)/jconfig.h:
+! # 	cd $(JPEGDIR) ; ./configure CC='$(CC)'
+! #$(JPEGLIB):  $(JPEGDIR)/jconfig.h
+! #	cd $(JPEGDIR) ; make
+  
+  
+  ###
+***************
+*** 60,67 ****
+  ### on your machine, *COMMENT OUT* the following lines
+  ###
+  PNG    = -DDOPNG
+! PNGDIR = /usr/local/src/libpng
+! PNGINC = -I$(PNGDIR)
+  PNGLIB = -L$(PNGDIR) -lpng
+  
+  
+--- 60,67 ----
+  ### on your machine, *COMMENT OUT* the following lines
+  ###
+  PNG    = -DDOPNG
+! PNGDIR = /usr/lib
+! PNGINC = -I/usr/include
+  PNGLIB = -L$(PNGDIR) -lpng
+  
+  
+***************
+*** 69,75 ****
+  ### if, for whatever reason, you're unable to get the PNG library to compile
+  ### on your machine, *COMMENT OUT* the following lines
+  ###
+! ZLIBDIR = /usr/local/src/zlib
+  ZLIBINC = -I$(ZLIBDIR)
+  ZLIBLIB = -L$(ZLIBDIR) -lz
+  
+--- 69,75 ----
+  ### if, for whatever reason, you're unable to get the PNG library to compile
+  ### on your machine, *COMMENT OUT* the following lines
+  ###
+! ZLIBDIR = /usr/lib
+  ZLIBINC = -I$(ZLIBDIR)
+  ZLIBLIB = -L$(ZLIBDIR) -lz
+  
+***************
+*** 86,96 ****
+  ### on your machine, *COMMENT OUT* the following lines
+  ###
+  TIFF    = -DDOTIFF
+! TIFFDIR = tiff
+! TIFFINC = -I$(TIFFDIR)
+! TIFFLIB = $(TIFFDIR)/libtiff.a
+! $(TIFFLIB):
+! 	( cd $(TIFFDIR) ; make CC='$(CC)' )
+  
+  
+  ###
+--- 86,96 ----
+  ### on your machine, *COMMENT OUT* the following lines
+  ###
+  TIFF    = -DDOTIFF
+! TIFFDIR = /usr/lib
+! TIFFINC = -I/usr/include
+! TIFFLIB = -ltiff
+! # $(TIFFLIB):
+! #	( cd $(TIFFDIR) ; make CC='$(CC)' )
+  
+  
+  ###
+***************
+*** 133,139 ****
+  
+  
+  ### for LINUX, uncomment the following line
+! #MCHN = -DLINUX
+  
+  
+  # For SCO 1.1 (UNIX 3.2v2) machines, uncomment the following:
+--- 133,139 ----
+  
+  
+  ### for LINUX, uncomment the following line
+! MCHN = -DLINUX
+  
+  
+  # For SCO 1.1 (UNIX 3.2v2) machines, uncomment the following:
+***************
+*** 231,237 ****
+  CFLAGS += $(BZIP2)
+  CFLAGS += $(TVL10N) $(MGCSFX)
+  
+! LIBS = -lX11 $(JPEGLIB) $(TIFFLIB) $(PNGLIB) $(ZLIBLIB) -lm
+  LIBS += $(BZIP2LIB)
+  
+  OBJS = 	xv.o xvevent.o xvroot.o xvmisc.o xvimage.o xvcolor.o xvsmooth.o \
+--- 231,237 ----
+  CFLAGS += $(BZIP2)
+  CFLAGS += $(TVL10N) $(MGCSFX)
+  
+! LIBS = -L/usr/X11R6/lib -lXext -lX11 $(JPEGLIB) $(TIFFLIB) $(PNGLIB) $(ZLIBLIB) -lm
+  LIBS += $(BZIP2LIB)
+  
+  OBJS = 	xv.o xvevent.o xvroot.o xvmisc.o xvimage.o xvcolor.o xvsmooth.o \
+***************
+*** 244,249 ****
+--- 244,250 ----
+  OBJS += xvmag.o xvpic.o xvmaki.o xvpi.o xvpic2.o xvpcd.o xvvd.o xvmgcsfx.o \
+  	xvml.o
+  OBJS += xvmask.o xvcpmask.o xvmeko.o
++ OBJS += xvzoom.o xvreso.o xv16bit.o
+  
+  MISC = README INSTALL CHANGELOG IDEAS
+  
