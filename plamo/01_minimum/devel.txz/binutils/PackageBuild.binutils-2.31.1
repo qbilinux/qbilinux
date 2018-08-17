@@ -5,11 +5,18 @@ pkgbase=binutils
 vers=2.31.1
 url="http://ftp.gnu.org/gnu/binutils/binutils-${vers}.tar.bz2"
 arch=`uname -m`
-build=T1
+build=T2
 src=$pkgbase-$vers
-patchfiles=""
-OPT_CONFIG="--enable-shared"
+if [ $arch = "armv7l" ]; then
+    build_arch=arm-pc-linux-gnueabihf
+elif [ $arch = "x86_64" ]; then
+    build_arch=${arch}-pc-linux-gnu
+else
+    build_arch=${arch}-pc-linux-gnu
+fi
+OPT_CONFIG="--enable-shared --build=$build_arch --host=$build_arch"
 DOCS="ChangeLog COPYING* MAINTAINERS README*"
+patchfiles=""
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -221,9 +228,7 @@ if [ $opt_config -eq 1 ] ; then
     if [ -x configure ] ; then
       ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
           --libdir='${exec_prefix}'/$libdir --infodir='${prefix}'/share/info \
-          --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]} \
-          --build=$arch-pc-linux-gnu`[ $arch == armv7l ] && echo eabihf` \
-          --host=$arch-pc-linux-gnu`[ $arch == armv7l ] && echo eabihf`
+          --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
     fi
   done
 fi
