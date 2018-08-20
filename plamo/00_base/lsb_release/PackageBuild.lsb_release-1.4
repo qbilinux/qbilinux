@@ -5,7 +5,7 @@ pkgbase=lsb_release
 vers=1.4
 url="http://downloads.sourceforge.net/lsb/lsb-release-${vers}.tar.gz"
 arch=noarch
-build=T1
+build=T2
 src=lsb-release-$vers
 OPT_CONFIG=""
 DOCS="ChangeLog INSTALL README lsb-release.template lsb_release.examples"
@@ -221,7 +221,7 @@ if [ $opt_package -eq 1 ] ; then
   done
   install -d $P/etc
   cat <<- "EOF" > $P/etc/plamo-nora-release
-	Plamo nora Linux release 0.1
+	Plamo nora Linux release 0.2
 	EOF
   touch $W/i.et
   cd $W
