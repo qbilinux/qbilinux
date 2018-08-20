@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=openssl
-vers=1.1.0h
+vers=1.1.0i
 url="http://www.openssl.org/source/openssl-${vers}.tar.gz"
 arch=`uname -m`
 build=T1
