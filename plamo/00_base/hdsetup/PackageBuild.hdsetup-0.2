@@ -2,20 +2,20 @@
 
 ######################################################################
 pkgbase=hdsetup
-vers=0.1
+vers=0.2
 url="https://www.busybox.net/downloads/busybox-1.24.1.tar.bz2
-    ftp://invisible-island.net/dialog/dialog-1.3-20170509.tgz
-    http://ftp.gnu.org/gnu/coreutils/coreutils-8.28.tar.xz
-    http://ftp.gnu.org/gnu/gzip/gzip-1.8.tar.gz
+    ftp://ftp.invisible-island.net/dialog/dialog-1.3-20180621.tgz
+    http://ftp.gnu.org/gnu/coreutils/coreutils-8.30.tar.xz
+    http://ftp.gnu.org/gnu/gzip/gzip-1.9.tar.gz
     http://www.bzip.org/1.0.6/bzip2-1.0.6.tar.gz
     http://tukaani.org/xz/xz-5.2.3.tar.xz
     http://ftp.gnu.org/gnu/tar/tar-1.26.tar.gz"
 arch=`uname -m`
-build=T2
+build=T1
 src[0]=busybox-1.24.1
-src[1]=dialog-1.3-20170509
-src[2]=coreutils-8.28
-src[3]=gzip-1.8
+src[1]=dialog-1.3-20180621
+src[2]=coreutils-8.30
+src[3]=gzip-1.9
 src[4]=bzip2-1.0.6
 src[5]=xz-5.2.3
 src[6]=tar-1.26
