@@ -2,10 +2,10 @@
 
 ######################################################################
 pkgbase=openssl1
-vers=1.0.2o
+vers=1.0.2p
 url="http://www.openssl.org/source/openssl-${vers}.tar.gz"
 arch=`uname -m`
-build=T2
+build=T1
 src=openssl-$vers
 OPT_CONFIG=""
 DOCS="ACKNOWLEDGMENTS CHANGES CHANGES.SSLeay CONTRIBUTING FAQ INSTALL
