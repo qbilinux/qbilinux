@@ -7,7 +7,7 @@ vers=60.0
 url="http://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/${vers}/source/${pkgbase}-${vers}.source.tar.xz"
 #verify=$url.asc
 arch=`uname -m`
-build=T1
+build=T2
 src=thunderbird-${vers}
 thunderbird_tag=THUNDERBIRD_${vers//./_}_RELEASE
 OPT_CONFIG=''
@@ -245,6 +245,10 @@ mk_add_options MOZ_CO_PROJECT=mail
 ac_add_options --enable-application=comm/mail
 
 ac_add_options --enable-default-toolkit=cairo-gtk3
+
+ac_add_options --disable-debug
+ac_add_options --disable-rust-debug
+ac_add_options --disable-debug-symbols
 
 ## Directory
 ac_add_options --prefix=/usr
