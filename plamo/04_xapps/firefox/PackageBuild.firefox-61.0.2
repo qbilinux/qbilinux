@@ -7,7 +7,7 @@ vers=61.0.2
 url="https://archive.mozilla.org/pub/firefox/releases/${vers}/source/firefox-${vers}.source.tar.xz"
 #verify=$url.asc
 arch=`uname -m`
-build=T1
+build=T2
 src=firefox-${vers}
 DOCS='LICENSE README.txt other-licenses'
 patchfiles='firefox.desktop.patch'
@@ -269,6 +269,10 @@ if [ $opt_config -eq 1 ] ; then
 ac_add_options --enable-strip
 ac_add_options --disable-install-strip
 #ac_add_options --disable-optimize
+
+ac_add_options --disable-debug
+ac_add_options --disable-rust-debug
+ac_add_options --disable-debug-symbols
 
 ac_add_options --enable-default-toolkit=cairo-gtk3
 
