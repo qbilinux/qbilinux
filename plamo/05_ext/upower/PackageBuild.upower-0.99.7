@@ -3,8 +3,8 @@
 pkgbase=upower
 vers=0.99.7
 url="http://upower.freedesktop.org/releases/upower-${vers}.tar.xz"
-arch=`uname -m | sed -e 's/i.86/i586/'`
-build=T1
+arch=`uname -m`
+build=T2
 src=${pkgbase}-${vers}
 OPT_CONFIG='--disable-static --enable-deprecated'
 DOCS='ABOUT-NLS AUTHORS COPYING ChangeLog HACKING INSTALL NEWS README'
