@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=libtasn1
-vers=4.12
+vers=4.13
 url="http://ftp.gnu.org/gnu/libtasn1/libtasn1-${vers}.tar.gz"
 arch=`uname -m`
 build=T1
