@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
 pkgbase=intel_gpu_tools
-vers=1.20
-url="http://xorg.freedesktop.org/releases/individual/app/intel-gpu-tools-${vers}.tar.bz2"
+vers=1.22
+url="http://xorg.freedesktop.org/releases/individual/app/intel-gpu-tools-${vers}.tar.xz"
 arch=`uname -m`
-build=T2
+build=T1
 src=intel-gpu-tools-${vers}
 OPT_CONFIG=''
-DOCS='COPYING ChangeLog INSTALL NEWS README'
-patchfiles='0001-lib-Fix-compilation-on-non-x86.patch'
+DOCS='CONTRIBUTING COPYING MAINTAINERS NEWS README'
+patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -129,30 +129,23 @@ fi
 
 if [ $opt_config -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
-    if [ -d ${B[$i]} ] ; then rm -rf ${B[$i]} ; fi ; cp -a ${S[$i]} ${B[$i]}
+    if [ -d ${B[$i]} ] ; then rm -rf ${B[$i]} ; fi ; mkdir ${B[$i]}
   done
 ######################################################################
 # * ./configure を行う前に適用したい設定やパッチなどがある場合はここに
 #   記述します。
 ######################################################################
   for i in `seq 0 $((${#B[@]} - 1))` ; do
-    cd ${B[$i]}
+    cd ${S[$i]}
     for patch in $patchfiles ; do
        patch -p1 < $W/$patch
     done
 
-    # if [ -f autogen.sh ] ; then
-    #   sh ./autogen.sh
-    # fi
-
-    if [ -f setup.py ]; then
-        python ./setup.py config        
-    elif [ -f Makefile.PL ]; then
-        perl ./Makefile.PL
-    elif [ -x configure ] ; then
-       export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
-       export LDFLAGS='-Wl,--as-needed' 
-       ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
+    cd ${B[$i]}
+    if [ -f ${S[$1]}/meson.build ] ; then
+      export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
+      export LDFLAGS='-Wl,--as-needed' 
+      meson --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir=/usr/share/man ${OPT_CONFIG[$1]} ${S[$1]}
     fi
       if [ $? != 0 ]; then
 	  echo "configure error. $0 script stop"
@@ -163,11 +156,9 @@ fi
 if [ $opt_build -eq 1 ] ; then
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
-    if [ -f setup.py ]; then
-        python setup.py build
-    elif [ -f Makefile ] ; then
+    if [ -f build.ninja ] ; then
       export LDFLAGS='-Wl,--as-needed'
-      make
+      ninja
     fi
   done
 fi
@@ -183,11 +174,9 @@ if [ $opt_package -eq 1 ] ; then
   touch $W/i.st ; sleep 1
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
-    if [ -f setup.py ]; then
-        python setup.py install --root $P
-    elif [ -f Makefile ] ; then
+    if [ -f build.ninja ] ; then
       export LDFLAGS='-Wl,--as-needed'
-      make install DESTDIR=$P
+      DESTDIR=$P ninja install
     fi
   done
 ######################################################################
