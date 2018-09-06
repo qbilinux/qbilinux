@@ -2,14 +2,14 @@
 
 ######################################################################
 pkgbase=pulseaudio
-vers=9.0
+vers=12.2
 url="http://freedesktop.org/software/pulseaudio/releases/pulseaudio-${vers}.tar.xz"
 arch=`uname -m`
-build=T2
+build=T1
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="LICENSE README NEWS PROTOCOL ABOUT-NLS LGPL GPL todo"
-patchfiles='0001-memfd-wrappers-only-define-memfd_create-if-not-alrea.patch'
+patchfiles=''
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
