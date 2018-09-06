@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
 pkgbase=NetworkManager
-vers=1.0.12
-url="https://download.gnome.org/sources/NetworkManager/1.0/NetworkManager-${vers}.tar.xz"
+vers=1.12.2
+url="https://download.gnome.org/sources/NetworkManager/1.12/NetworkManager-${vers}.tar.xz"
 arch=`uname -m`
 build=T1
 src=NetworkManager-${vers}
-OPT_CONFIG='--with-distro=slackware'
+OPT_CONFIG='--with-distro=slackware --with-libnm-glib'
 DOCS='ABOUT-NLS AUTHORS COPYING ChangeLog INSTALL NEWS README TODO'
-patchfiles=''
+patchfiles='version-fix-compile-error-due-to-NM_AVAILABLE_IN_1_12_2-m.patch'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
