@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=procps_ng
-vers=3.3.12
+vers=3.3.15
 url="http://downloads.sourceforge.net/procps-ng/procps-ng-${vers}.tar.xz"
 arch=`uname -m`
 build=T1
