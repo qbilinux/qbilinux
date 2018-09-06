@@ -3,11 +3,11 @@ unset LS_BLOCK_SIZE
 export LANG=C
 ##############################################################
 pkgbase=firefox
-vers=61.0.2
+vers=62.0
 url="https://archive.mozilla.org/pub/firefox/releases/${vers}/source/firefox-${vers}.source.tar.xz"
 #verify=$url.asc
 arch=`uname -m`
-build=T2
+build=T1
 src=firefox-${vers}
 DOCS='LICENSE README.txt other-licenses'
 patchfiles='firefox.desktop.patch'
@@ -296,7 +296,6 @@ ac_add_options --with-system-libevent
 ac_add_options --enable-system-sqlite
 ac_add_options --enable-system-ffi
 ac_add_options --enable-system-pixman
-ac_add_options --with-pthreads
 
 ## Features
 ac_add_options --enable-startup-notification
