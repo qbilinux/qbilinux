@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='ftp://ftp.x.org/pub/X11R7.6-RC1/src/font/font-util-1.2.0.tar.bz2'
 pkgbase=font_util
-vers=1.2.0
+vers=1.3.1
+url="https://www.x.org/releases/individual/font/font-util-${vers}.tar.bz2"
 arch=`uname -m`
 build=T1
-src=font-util-1.2.0
+src=font-util-${vers}
 OPT_CONFIG=''
 DOCS='COPYING ChangeLog INSTALL README'
 patchfiles=''
