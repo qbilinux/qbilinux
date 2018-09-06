@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='https://xcb.freedesktop.org/dist/libpthread-stubs-0.3.tar.bz2'
 pkgbase=libpthread_stubs
-vers=0.3
+vers=0.4
+url="https://www.x.org/releases/individual/xcb/libpthread-stubs-${vers}.tar.bz2"
 arch=`uname -m`
 build=T1
-src=libpthread-stubs-0.3
+src=libpthread-stubs-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='COPYING README'
 patchfiles=''
