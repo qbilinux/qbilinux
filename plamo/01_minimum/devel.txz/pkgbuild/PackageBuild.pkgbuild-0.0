@@ -1,0 +1,57 @@
+#!/bin/sh
+##############################################################
+pkgbase="pkgbuild"
+vers=0.0
+url=""
+#file=${url##*/}
+commitid=
+apply_arch=noarch
+arch=noarch
+build=T1
+src=pkgbuild-${vers}
+OPT_CONFIG=''
+DOCS=''
+patchfiles=''
+compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
+##############################################################
+
+if [ -f /usr/src/plamo-nora/PackageBuild.def ]; then
+    source /usr/src/plamo-nora/PackageBuild.def
+else
+    source ./PackageBuild.def
+fi
+
+do_prepare() {
+    echo "nothing to do in prepare section.".
+}
+
+do_config() {
+    echo "nothing to do in config section.".
+}
+
+do_build() {
+    echo "nothing to do in build section.".
+}
+
+do_install() {
+    mkdir -p $P/usr/src/plamo-nora
+    cp PackageBuild.def PackageBuild.func $P/usr/src/plamo-nora
+}
+
+do_package() {
+    for i in $pkgbase ; do
+        cd $P
+        /sbin/makepkg $W/$pkg.$compress <<EOF
+y
+1
+EOF
+    done
+}
+
+if [ -f /usr/src/plamo-nora/PackageBuild.func ]; then
+    source /usr/src/plamo-nora/PackageBuild.func
+else
+    source ./PackageBuild.func
+fi
