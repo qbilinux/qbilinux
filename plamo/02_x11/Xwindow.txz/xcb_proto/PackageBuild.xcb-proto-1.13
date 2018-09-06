@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://xcb.freedesktop.org/dist/xcb-proto-1.11.tar.bz2'
 pkgbase=xcb_proto
-vers=1.11
+vers=1.13
+url="https://www.x.org/releases/individual/xcb/xcb-proto-${vers}.tar.bz2"
 arch=`uname -m`
 build=T1
-src=xcb-proto-1.11
+src=xcb-proto-${vers}
 OPT_CONFIG=''
 DOCS='COPYING INSTALL NEWS README TODO'
 patchfiles=''
