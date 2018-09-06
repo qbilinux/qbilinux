@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=libgpg_error
-vers=1.31
+vers=1.32
 url="https://www.gnupg.org/ftp/gcrypt/libgpg-error/libgpg-error-${vers}.tar.bz2"
 arch=`uname -m`
 build=T1
