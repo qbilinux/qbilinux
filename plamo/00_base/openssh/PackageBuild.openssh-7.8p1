@@ -2,12 +2,12 @@
 
 ######################################################################
 pkgbase=openssh
-vers=7.7p1
+vers=7.8p1
 url="http://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-${vers}.tar.gz"
 arch=`uname -m`
 build=T1
 src=$pkgbase-$vers
-patchfiles="openssh-7.7p1-openssl-1.1.0-1.patch"
+patchfiles="openssh-7.8p1-openssl-1.1.0-1.patch"
 OPT_CONFIG="--sysconfdir=/etc/ssh --with-pam --with-privsep-user=sshd
     --with-privsep-path=/var/lib/sshd --with-md5-passwords"
 DOCS="CREDITS INSTALL LICENCE OVERVIEW PROTOCOL PROTOCOL.agent
