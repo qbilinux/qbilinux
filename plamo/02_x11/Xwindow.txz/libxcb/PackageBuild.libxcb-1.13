@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://xcb.freedesktop.org/dist/libxcb-1.11.1.tar.bz2'
 pkgbase=libxcb
-vers=1.11.1
+vers=1.13
+url="https://www.x.org/releases/individual/xcb/libxcb-${vers}.tar.bz2"
 arch=`uname -m`
 build=T1
-src=libxcb-1.11.1
+src=libxcb-${vers}
 OPT_CONFIG='--disable-static --enable-xinput --enable-xkb'
 DOCS='COPYING INSTALL NEWS README'
 patchfiles=''
