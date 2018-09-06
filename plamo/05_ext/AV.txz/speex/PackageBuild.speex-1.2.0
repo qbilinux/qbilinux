@@ -1,9 +1,9 @@
 #!/bin/sh
 
 ######################################################################
-url="http://downloads.xiph.org/releases/speex/speex-1.2rc2.tar.gz"
 pkgbase=speex
-vers=1.2rc2
+vers=1.2.0
+url="http://downloads.xiph.org/releases/speex/speex-${vers}.tar.gz"
 arch=`uname -m`
 build=T1
 src=$pkgbase-$vers
