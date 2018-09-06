@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
-url='http://download.savannah.nongnu.org/releases/openexr/ilmbase-1.0.2.tar.gz'
 pkgbase=ilmbase
-vers=1.0.2
+vers=2.2.1
+url="http://download.savannah.nongnu.org/releases/openexr/ilmbase-${vers}.tar.gz"
 arch=`uname -m`
 build=T1
-src=ilmbase-1.0.2
+src=ilmbase-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING ChangeLog INSTALL LICENSE NEWS README README.CVS README.OSX README.win32'
-patchfiles='ilmbase-1.0.2-ImathMatrix.h_add-string.h.patch'
+patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
