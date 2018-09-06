@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://download.savannah.gnu.org/releases/openexr/openexr-1.7.0.tar.gz'
 pkgbase=openexr
-vers=1.7.0
+vers=2.2.1
+url="http://download.savannah.gnu.org/releases/openexr/openexr-${vers}.tar.gz"
 arch=`uname -m`
 build=T1
-src=openexr-1.7.0
+src=openexr-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING ChangeLog INSTALL LICENSE NEWS README README.CVS README.OSX README.win32'
 patchfiles='blurImage.cpp_add.string.h.patch'
