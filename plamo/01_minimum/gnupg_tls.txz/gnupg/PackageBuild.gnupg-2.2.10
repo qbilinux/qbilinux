@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=gnupg
-vers=2.2.8
+vers=2.2.10
 url="https://www.gnupg.org/ftp/gcrypt/gnupg/gnupg-${vers}.tar.bz2"
 arch=`uname -m`
 build=T1
