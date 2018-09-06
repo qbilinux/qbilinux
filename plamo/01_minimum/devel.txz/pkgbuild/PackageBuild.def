@@ -1,0 +1,22 @@
+#!/bin/sh
+
+W=`pwd`
+for i in `seq 0 $((${#src[@]} - 1))` ; do
+    S[$i]=$W/source/${src[$i]}
+    B[$i]=$W/build/$arch/build`test ${#src[@]} -eq 1 || echo $i`
+done
+P=$W/work/$arch/${pkgbase[0]} ; C=$W/pivot
+infodir=$P/usr/share/info
+mandir=$P/usr/share/man
+xmandir=$P/usr/X11R7/share/man
+docdir=$P/usr/share/doc
+myname=`basename $0`
+pkg=$pkgbase-$vers-$arch-$build
+
+case $arch in
+    x86_64)  libdir="lib64";
+	     suffix="64" ;;
+    *)       libdir="lib";
+	     suffix="" ;;
+esac
+
