@@ -5,7 +5,7 @@ vers=0.7.1
 url="https://github.com/xkbcommon/libxkbcommon/archive/xkbcommon-0.7.1.tar.gz"
 commitid=
 arch=`uname -m`
-build=T1
+build=T2
 src=libxkbcommon-xkbcommon-${vers}
 OPT_CONFIG=''
 DOCS='LICENSE NEWS README.md'
@@ -92,11 +92,9 @@ myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
 
 if [ $arch = "x86_64" ]; then
-  target="-m64"
   libdir="lib64"
   suffix="64"
 else
-  target="-m32"
   libdir="lib"
   suffix=""
 fi
