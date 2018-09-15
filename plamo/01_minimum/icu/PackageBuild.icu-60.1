@@ -4,7 +4,7 @@ pkgbase=icu
 vers=60.1
 url='http://download.icu-project.org/files/icu4c/60.1/icu4c-60_1-src.tgz'
 arch=`uname -m`
-build=T2
+build=T3
 src=icu
 OPT_CONFIG=''
 DOCS='license.html readme.html unicode-license.txt'
@@ -259,6 +259,9 @@ if [ $opt_package -eq 1 ] ; then
 ######################################################################
 # * make install でコピーされないファイルがある場合はここに記述します。
 ######################################################################
+  rm -rf $P/usr/bin
+  rm -rf $P/usr/sbin
+  rm -rf $P/usr/include
   mkdir -p $docdir/$src
   if [ -d $P/usr/share/omf ]; then
       mkdir -p $P/install
