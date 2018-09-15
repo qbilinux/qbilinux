@@ -1,8 +1,8 @@
 #!/bin/sh
 ##############################################################
 pkgbase=ghostscript
-vers=9.24
-url="https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs924/ghostscript-9.24.tar.xz"
+vers=9.25
+url="https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs${vers//./}/ghostscript-${vers}.tar.xz"
 arch=`uname -m`
 build=T1
 src=ghostscript-${vers}
