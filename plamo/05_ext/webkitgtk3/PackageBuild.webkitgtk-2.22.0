@@ -1,0 +1,84 @@
+#!/bin/sh
+##############################################################
+pkgbase=webkitgtk3
+vers=2.22.0
+url="http://webkitgtk.org/releases/webkitgtk-${vers}.tar.xz"
+verify=
+commitid=
+apply_arch="x86_64 i686 armv7l"
+arch=`uname -m`
+build=T1
+src=webkitgtk-${vers}
+OPT_CONFIG='-DPORT=GTK -DCMAKE_BUILD_TYPE=Release -DUSE_LIBHYPHEN=OFF -DENABLE_MINIBROWSER=ON'
+DOCS='NEWS'
+patchfiles=''
+compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
+##############################################################
+
+source /usr/src/plamo-nora/PackageBuild.def
+
+do_prepare() {
+    cd ${S[$i]}
+    for patch in $patchfiles ; do
+	patch -p1 < $W/$patch
+    done
+}
+
+do_config() {
+    if [ -d ${B[$1]} ] ; then rm -rf ${B[$1]} ; fi
+
+    mkdir ${B[$1]}
+    cd ${B[$1]}
+    if [ -f $S/CMakeLists.txt ]; then
+	export PKG_CONFIG_PATH=/opt/kde/${libdir}/pkgconfig:/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
+	export LDFLAGS='-Wl,--as-needed' 
+	cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DLIB_INSTALL_DIR:PATH=/usr/${libdir} -DLIB_SUFFIX=$suffix ${OPT_CONFIG} $S
+    fi
+    if [ $? != 0 ]; then
+	echo "configure error. $0 script stop"
+	exit 255
+    fi
+}
+
+do_build() {
+    cd ${B[$1]}
+    if [ -f Makefile ] ; then
+	export LDFLAGS='-Wl,--as-needed'
+	make Programs_DumpRenderTree_LDFLAGS="-no-fast-install -no-install -lfontconfig"
+    fi
+    if [ $? != 0 ]; then
+	echo "make error. $0 script stop"
+	exit 255
+    fi
+}
+
+do_install() {
+    cd ${B[$1]}
+    for mk in `find . -name "[Mm]akefile" ` ; do
+	sed -i -e 's|GCONFTOOL = /usr/bin/gconftool-2|GCONFTOOL = echo|' $mk
+    done
+    if [ -f Makefile ] ; then
+	export LDFLAGS='-Wl,--as-needed'
+	make install DESTDIR=$P
+    fi
+    if [ $? != 0 ]; then
+	echo "make install error. $0 script stop"
+	exit 255
+    fi
+
+    # add extra func
+}
+
+do_package() {
+    for i in $pkgbase ; do
+        cd $P
+        /sbin/makepkg $W/$pkg.$compress <<EOF
+y
+1
+EOF
+    done
+}
+
+source /usr/src/plamo-nora/PackageBuild.func
