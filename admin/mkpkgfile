@@ -78,7 +78,7 @@ seek_dir () {
 	    
 	    # execute
 	    if [ $opt_download -eq 1 ] ; then
-		sh ./$SCN download patch config build |& tee 00.make.log
+		sh ./$SCN download prepare patch config build |& tee 00.make.log
 	    else
 		sh ./$SCN patch config build |& tee 00.make.log
 	    fi
