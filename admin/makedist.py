@@ -23,7 +23,7 @@ def fild_all_files(directory):
         if 'old' in dirs:
             dirs.remove('old')
 
-if (argc != 4):
+def usage():
     print("")
     print("copy pakege file and make tagfile form Plamo Linux distrobution.")
     print("")
@@ -31,19 +31,40 @@ if (argc != 4):
     print("")
     print("   buildir: directory contains package and desc file.")
     print("   destdir: direcotry for Plamo Linux distrobution")
-    print("   arch:    x86_64 armv7l i686")
+    print("   arch:    x86_64 x86 armv7l")
     print("")
-    print("   ex) "+args[0]+" Plamo-src/plamo Plamo-0.0/x86_64 x86_64")
-    quit()
+#    print("   ex) "+args[0]+" Plamo-src/plamo Plamo-0.0/x86_64 x86_64")
+    print("   ex) "+args[0]+" Plamo-src/plamo Plamo-0.0 x86_64")
+    print("")
     
-for file in fild_all_files(args[1]):
+if (argc != 4):
+    usage()
+    quit()
+
+#if (args[1]):
+#    usage()
+#    quit()
+
+if (args[3] != "x86_64" and args[3] != "x86" and args[3] != "armv7l"):
+    usage()
+    quit()
+
+source_dir=args[1]
+dest_dir=args[2]+"/"+args[3]
+
+if (args[3] == "x86"):
+    arch_def="i?86"
+else:
+    arch_def=args[3]
+    
+for file in fild_all_files(source_dir):
     if fnmatch.fnmatch(file, '*/00header.desc'):
         print("###########")
         print(file)
         srcpath=os.path.dirname(file)
         srcfile=os.path.basename(file)
         srcparentpath=os.path.dirname(srcpath)
-        dstpath=os.path.join(args[2], srcpath)
+        dstpath=os.path.join(dest_dir, srcpath)
         dstfile=os.path.join(dstpath, srcfile)
         pkglist = []
         desclist = []
@@ -66,7 +87,7 @@ for file in fild_all_files(args[1]):
                         #print(--- "+ext2)
                         for llll in os.listdir(os.path.join(srcpath, ll)):
                             #print(llll)
-                            if fnmatch.fnmatch(llll, basename2+'-*-'+args[3]+'-*.txz') or fnmatch.fnmatch(llll, basename2+'-*-noarch-*.txz'):
+                            if fnmatch.fnmatch(llll, basename2+'-*-'+arch_def+'-*.txz') or fnmatch.fnmatch(llll, basename2+'-*-noarch-*.txz'):
                                 pkglist.append(os.path.join(srcpath, ll, llll))
                                 desclist.append(os.path.join(srcpath, ll, basename2+'.desc'))
                     if fnmatch.fnmatch(lll, basename+'.desc'):
