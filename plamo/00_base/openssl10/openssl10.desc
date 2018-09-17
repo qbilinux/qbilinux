@@ -1,4 +1,4 @@
-openssl1 & y & y & y & y
+openssl10 & y & y & y & y
 &
 通信経路暗号化ツール
 &
