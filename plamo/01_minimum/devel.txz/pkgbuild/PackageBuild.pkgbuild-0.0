@@ -7,7 +7,7 @@ url=""
 commitid=
 apply_arch=noarch
 arch=noarch
-build=T1
+build=T2
 src=pkgbuild-${vers}
 OPT_CONFIG=''
 DOCS=''
@@ -17,8 +17,8 @@ SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ##############################################################
 
-if [ -f /usr/src/plamo-nora/PackageBuild.def ]; then
-    source /usr/src/plamo-nora/PackageBuild.def
+if [ -f /usr/src/qbilinux/PackageBuild.def ]; then
+    source /usr/src/qbilinux/PackageBuild.def
 else
     source ./PackageBuild.def
 fi
@@ -36,8 +36,9 @@ do_build() {
 }
 
 do_install() {
-    mkdir -p $P/usr/src/plamo-nora
-    cp PackageBuild.def PackageBuild.func $P/usr/src/plamo-nora
+    install -d $P/usr/src/qbilinux
+    cp PackageBuild.def PackageBuild.func $P/usr/src/qbilinux
+    (cd $P/usr/src; ln -s qbilinux plamo-nora)
 }
 
 do_package() {
@@ -50,8 +51,8 @@ EOF
     done
 }
 
-if [ -f /usr/src/plamo-nora/PackageBuild.func ]; then
-    source /usr/src/plamo-nora/PackageBuild.func
+if [ -f /usr/src/qbilinux/PackageBuild.func ]; then
+    source /usr/src/qbilinux/PackageBuild.func
 else
     source ./PackageBuild.func
 fi
