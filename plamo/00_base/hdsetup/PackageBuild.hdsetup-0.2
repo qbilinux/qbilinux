@@ -11,7 +11,7 @@ url="https://www.busybox.net/downloads/busybox-1.24.1.tar.bz2
     http://tukaani.org/xz/xz-5.2.3.tar.xz
     http://ftp.gnu.org/gnu/tar/tar-1.26.tar.gz"
 arch=`uname -m`
-build=T1
+build=T2
 src[0]=busybox-1.24.1
 src[1]=dialog-1.3-20180621
 src[2]=coreutils-8.30
@@ -22,7 +22,7 @@ src[6]=tar-1.26
 patchfiles[0]=""
 patchfiles[1]=""
 patchfiles[2]=""
-patchfiles[3]=""
+patchfiles[3]="gnulib.patch"
 patchfiles[4]=""
 patchfiles[5]=""
 patchfiles[6]="tar-1.23-tartime.patch.gz tar-1.23-txz.patch.gz tar-1.26-no-gets.patch.gz"
@@ -313,7 +313,7 @@ if [ $opt_package -eq 1 ] ; then
   mv $P/bin $P/sbin/installer
   cp -r $W/sbin $P
   install -d $P/usr/lib/setup
-  touch $P/usr/lib/setup/Plamo-nora-$vers
+  touch $P/usr/lib/setup/qbilinux-$vers
   touch $W/i.et
   cd $W
   compress
