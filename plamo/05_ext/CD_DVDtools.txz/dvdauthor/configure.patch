@@ -1,0 +1,66 @@
+*** dvdauthor/configure.ac	2016-12-31 08:25:38.000000000 +0900
+--- dvdauthor/configure.ac.new	2018-09-15 14:46:37.472293754 +0900
+***************
+*** 1,4 ****
+! AC_INIT(DVDAuthor,0.7.2,dvdauthor-users@lists.sourceforge.net)
+  
+  AC_CONFIG_HEADERS(src/config.h)
+  AC_CONFIG_AUX_DIR(autotools)
+--- 1,4 ----
+! AC_INIT(DVDAuthor,0.7.2+,dvdauthor-users@lists.sourceforge.net)
+  
+  AC_CONFIG_HEADERS(src/config.h)
+  AC_CONFIG_AUX_DIR(autotools)
+***************
+*** 45,74 ****
+      config_static='--static'
+  fi
+  
+  usemagick=0
+  
+! AC_CHECK_PROGS(MAGICKCONFIG, [MagickCore-config])
+! if test -n "$MAGICKCONFIG"; then
+!     ac_save_CPPFLAGS="$CPPFLAGS"
+!     ac_save_LIBS="$LIBS"
+!     MAGICK_CPPFLAGS="`$MAGICKCONFIG --cppflags`"
+!     MAGICK_LIBS="`$MAGICKCONFIG --ldflags` `$MAGICKCONFIG --libs`"
+!     CPPFLAGS="$CPPFLAGS $MAGICK_CPPFLAGS"
+!     LIBS="$MAGICK_LIBS $LIBS"
+!     AC_CHECK_FUNC(ExportImagePixels, usemagick=1, AC_MSG_NOTICE([ImageMagick does not support the function
+!          ExportImagePixels.  Please upgrade to ImageMagick 5.5.7 or newer]))
+!     CPPFLAGS="$ac_save_CPPFLAGS"
+!     LIBS="$ac_save_LIBS"
+!     if test "$usemagick" = 1; then
+!         AC_DEFINE(HAVE_MAGICK, 1, [Whether the ImageMagick libraries are available])
+      fi
+  fi
+  
+  if test "$usemagick" != 1; then
+-     PKG_CHECK_MODULES([MAGICK], [GraphicsMagick], usemagick=1; [AC_DEFINE(HAVE_GMAGICK, 1, [whether the GraphicsMagick libraries are available])], [:])
+- fi
+- 
+- if test "$usemagick" != 1; then
+      MAGICK_CPPFLAGS="$LIBPNG_CFLAGS"
+      MAGICK_LIBS="$LIBPNG_LIBS"
+  fi
+--- 45,64 ----
+      config_static='--static'
+  fi
+  
++ AC_ARG_WITH([graphicsmagick],
++ AS_HELP_STRING([--with-graphicsmagick], [use GraphicsMagick instead of ImageMagick]))
++ 
+  usemagick=0
+  
+! if test "x$with_graphicsmagick" != xyes; then
+!     PKG_CHECK_MODULES([MAGICK], [ImageMagick >= 5.5.7], usemagick=1; AC_DEFINE(HAVE_MAGICK, 1, [Whether the ImageMagick libraries are available]), [:])
+! else
+!     if test "$usemagick" != 1; then
+!         PKG_CHECK_MODULES([MAGICK], [GraphicsMagick], usemagick=1; [AC_DEFINE(HAVE_GMAGICK, 1, [whether the GraphicsMagick libraries are available])], [:])
+      fi
+  fi
+  
+  if test "$usemagick" != 1; then
+      MAGICK_CPPFLAGS="$LIBPNG_CFLAGS"
+      MAGICK_LIBS="$LIBPNG_LIBS"
+  fi
