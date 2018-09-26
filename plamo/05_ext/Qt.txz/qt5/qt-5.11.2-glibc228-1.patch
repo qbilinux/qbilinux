@@ -1,0 +1,48 @@
+Submitted By: Ken Moffat <ken at linuxfromscratch dot org>
+Date: 2018-09-22
+Initial Package Version: 5.11.2
+Upstream Status: Unknown, probably ignored because it is just a hack.
+Origin: Fedora
+Description: Fixes build failures with glibc-2.28.  Rebased for 5.11.2.
+
+diff -Naur a/qtbase/mkspecs/linux-g++/qplatformdefs.h b/qtbase/mkspecs/linux-g++/qplatformdefs.h
+--- a/qtbase/mkspecs/linux-g++/qplatformdefs.h	2018-09-13 05:25:10.000000000 +0100
++++ b/qtbase/mkspecs/linux-g++/qplatformdefs.h	2018-09-22 00:51:05.383218547 +0100
+@@ -72,7 +72,9 @@
+ #include <sys/time.h>
+ #include <sys/shm.h>
+ #include <sys/socket.h>
++#if 0
+ #include <sys/stat.h>
++#endif
+ #include <sys/wait.h>
+ #include <netinet/in.h>
+ 
+diff -Naur a/qtbase/src/corelib/io/qfilesystemengine_unix.cpp b/qtbase/src/corelib/io/qfilesystemengine_unix.cpp
+--- a/qtbase/src/corelib/io/qfilesystemengine_unix.cpp	2018-09-13 05:25:10.000000000 +0100
++++ b/qtbase/src/corelib/io/qfilesystemengine_unix.cpp	2018-09-22 00:51:05.384218571 +0100
+@@ -50,7 +50,9 @@
+ #include <pwd.h>
+ #include <stdlib.h> // for realpath()
+ #include <sys/types.h>
++#if 0
+ #include <sys/stat.h>
++#endif
+ #include <unistd.h>
+ #include <stdio.h>
+ #include <errno.h>
+@@ -105,12 +107,12 @@
+ #    undef SYS_statx
+ #    undef STATX_BASIC_STATS
+ #  else
+-#    if !QT_CONFIG(renameat2) && defined(SYS_renameat2)
++#    if 0 && !QT_CONFIG(renameat2) && defined(SYS_renameat2)
+ static int renameat2(int oldfd, const char *oldpath, int newfd, const char *newpath, unsigned flags)
+ { return syscall(SYS_renameat2, oldfd, oldpath, newfd, newpath, flags); }
+ #    endif
+ 
+-#    if !QT_CONFIG(statx) && defined(SYS_statx)
++#    if 0 && !QT_CONFIG(statx) && defined(SYS_statx)
+ #      include <linux/stat.h>
+ static int statx(int dirfd, const char *pathname, int flag, unsigned mask, struct statx *statxbuf)
+ { return syscall(SYS_statx, dirfd, pathname, flag, mask, statxbuf); }
