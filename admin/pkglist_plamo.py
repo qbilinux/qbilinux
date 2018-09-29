@@ -18,7 +18,7 @@ if (argc != 2):
 
 basedir = args[1] + '/'
 archdir = ('x86/', 'x86_64/', 'armv7_hf/')
-channel = ('qbilinux', 'contrib')
+channel = ('plamo', 'contrib')
 
 '''
 __blockpkgs: updatepkg だけでアップデートできないパッケージは，デフォル
