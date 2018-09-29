@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=openjdk
-vers=9.0.4_11
-url='http://hg.openjdk.java.net/jdk-updates/jdk9u'
-commitid=jdk-9.0.4+11
+vers=10.0.2_13
+url='http://hg.openjdk.java.net/jdk-updates/jdk10u'
+commitid=jdk-10.0.2+13
 arch=`uname -m`
 build=T1
-src=jdk9u
+src=jdk10u
 #OPT_CONFIG='--enable-unlimited-crypto                   --disable-warnings-as-errors                --with-stdc++lib=dynamic                    --with-giflib=system                        --with-lcms=system                          --with-libjpeg=system                       --with-libpng=system                        --with-zlib=system                          --with-version-build=11                   --with-version-pre=""                       --with-version-opt=""                       --with-cacerts-file=/etc/ssl/java/cacerts.jks'
 OPT_CONFIG='--enable-unlimited-crypto                   --disable-warnings-as-errors                --with-stdc++lib=dynamic                    --with-giflib=system                        --with-lcms=system                          --with-libjpeg=system                       --with-libpng=system                        --with-zlib=system                          --with-version-build=11                   --with-version-pre=""                       --with-version-opt=""                       '
 DOCS='ADDITIONAL_LICENSE_INFO LICENSE README'
@@ -130,7 +130,7 @@ if [ $opt_download -eq 1 ] ; then
     case ${i##*.} in
     *) ( cd ${i##*/}
         if [ -n "$commitid" ] ; then
-          hg update -r $commitid
+          hg update $commitid
         fi 
         ) ;;
     esac
@@ -150,7 +150,6 @@ if [ $opt_patch -eq 1 ] ; then
     for patch in $patchfiles ; do
       patch -p1 < $W/$patch
     done
-    sh get_source.sh
   done
 fi
 
@@ -213,51 +212,51 @@ if [ $opt_package -eq 1 ] ; then
 ######################################################################
 # * make install でコピーされないファイルがある場合はここに記述します。
 ######################################################################
-  install -vdm755 $P/opt/jdk-9.0.4+11
-  cp -Rv build/*/images/jdk/* $P/opt/jdk-9.0.4+11
-  #chown -R root:root $P/opt/jdk-9.0.4+11
-  find $P/opt/jdk-9.0.4+11 -name \*.diz -delete
+  install -vdm755 $P/opt/jdk-${vers}
+  cp -Rv build/*/images/jdk/* $P/opt/jdk-${vers}
+  #chown -R root:root $P/opt/jdk-${vers}
+  find $P/opt/jdk-${vers} -name \*.diz -delete
   for s in 16 24 32 48; do
-      install -Dm 644 jdk/src/java.desktop/unix/classes/sun/awt/X11/java-icon${s}.png \
-              $P/usr/share/icons/hicolor/${s}x${s}/apps/java9.png
+      install -Dm 644 src/java.desktop/unix/classes/sun/awt/X11/java-icon${s}.png \
+              $P/usr/share/icons/hicolor/${s}x${s}/apps/java10.png
   done
-  ln -v -nsf jdk-9.0.4+11 $P/opt/jdk
+  ln -v -nsf jdk-${vers} $P/opt/jdk
 
   mkdir -pv $P/usr/share/applications
-  cat > $P/usr/share/applications/openjdk-9-java.desktop << "EOF"
+  cat > $P/usr/share/applications/openjdk-10-java.desktop << "EOF"
 [Desktop Entry]
-Name=OpenJDK Java 9 Runtime
-Comment=OpenJDK Java 9 Runtime
+Name=OpenJDK Java 10 Runtime
+Comment=OpenJDK Java 10 Runtime
 Exec=/opt/jdk/bin/java -jar
 Terminal=false
 Type=Application
-Icon=java9
+Icon=java10
 MimeType=application/x-java-archive;application/java-archive;application/x-jar;
 NoDisplay=true
 EOF
 
-cat > $P/usr/share/applications/openjdk-9-policytool.desktop << "EOF"
+cat > $P/usr/share/applications/openjdk-10-policytool.desktop << "EOF"
 [Desktop Entry]
-Name=OpenJDK Java 9 Policy Tool
-Name[pt_BR]=OpenJDK Java 9 - Ferramenta de Política
-Comment=OpenJDK Java 9 Policy Tool
-Comment[pt_BR]=OpenJDK Java 9 - Ferramenta de Política
+Name=OpenJDK Java 10 Policy Tool
+Name[pt_BR]=OpenJDK Java 10 - Ferramenta de Política
+Comment=OpenJDK Java 10 Policy Tool
+Comment[pt_BR]=OpenJDK Java 10 - Ferramenta de Política
 Exec=/opt/jdk/bin/policytool
 Terminal=false
 Type=Application
-Icon=java9
+Icon=java10
 Categories=Settings;
 EOF
 
-cat > $P/usr/share/applications/openjdk-9-jconsole.desktop << "EOF"
+cat > $P/usr/share/applications/openjdk-10-jconsole.desktop << "EOF"
 [Desktop Entry]
-Name=OpenJDK Java 9 Console
-Comment=OpenJDK Java 9 Console
+Name=OpenJDK Java 10 Console
+Comment=OpenJDK Java 10 Console
 Keywords=java;console;monotoring
 Exec=/opt/jdk/bin/jconsole
 Terminal=false
 Type=Application
-Icon=java9
+Icon=java10
 Categories=Application;System;
 EOF
 
