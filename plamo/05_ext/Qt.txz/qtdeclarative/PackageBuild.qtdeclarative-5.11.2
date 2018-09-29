@@ -1,15 +1,15 @@
 #!/bin/sh
 ##############################################################
-pkgbase=qtwebkit
-vers=5.9.1
-url="https://download.qt.io/official_releases/qt/5.9/${vers}/submodules/qtwebkit-opensource-src-${vers}.tar.xz"
+pkgbase=qtdeclarative
+vers=5.11.2
+url="https://download.qt.io/archive/qt/${vers%.*}/${vers}/submodules/qtdeclarative-everywhere-src-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l"
 arch=`uname -m`
-build=T4
-src=qtwebkit-opensource-src-${vers}
+build=T1
+src=qtdeclarative-everywhere-src-${vers}
 OPT_CONFIG=''
-DOCS='ChangeLog-2012-05-22 LICENSE.GPLv2 LICENSE.GPLv3 LICENSE.LGPLv21 LICENSE.LGPLv3'
+DOCS='LICENSE.FDL LICENSE.GPL2 LICENSE.GPL3 LICENSE.GPL3-EXCEPT LICENSE.LGPL3'
 patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
@@ -23,7 +23,6 @@ do_prepare() {
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
-    sed -e '/CONFIG/a QMAKE_CXXFLAGS += -Wno-expansion-to-defined' -i Tools/qmake/mkspecs/features/unix/default_pre.prf
 }
 
 do_config() {
@@ -31,7 +30,7 @@ do_config() {
 
     mkdir ${B[$1]}
     cd ${B[$1]}
-    qmake-qt5 ${S[$i]}/WebKit.pro
+    qmake-qt5 ${S[$i]}
     if [ $? != 0 ]; then
 	echo "configure error. $0 script stop"
 	exit 255
