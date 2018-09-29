@@ -4,7 +4,7 @@ pkgbase=mate_session_manager
 vers=1.20.1
 url="http://pub.mate-desktop.org/releases/${vers%.*}/mate-session-manager-${vers}.tar.xz"
 arch=`uname -m`
-build=T2
+build=T3
 src=mate-session-manager-${vers}
 OPT_CONFIG='--enable-upower --without-systemd'
 DOCS='AUTHORS COPYING ChangeLog HACKING INSTALL NEWS README'
@@ -259,9 +259,9 @@ if [ $opt_package -eq 1 ] ; then
 # runlevel4 起動メニュー用
 mkdir -p $P/etc/X11/xinit
 install -m 0755 $W/xinitrc.mate-session $P/etc/X11/xinit/xinitrc.mate-session
-mkdir -p $P/opt/kde/share/apps/kdm/sessions
+mkdir -p $P/usr/share/apps/kdm/sessions
 if [ -f $P/usr/share/xsessions/mate.desktop ];then
- cp $P/usr/share/xsessions/mate.desktop $P/opt/kde/share/apps/kdm/sessions/
+ cp $P/usr/share/xsessions/mate.desktop $P/usr/share/apps/kdm/sessions/
 fi
 
 mkdir -p $docdir/$src
