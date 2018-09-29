@@ -58,13 +58,13 @@ while [ 0 ]; do
 
 # Reset menu flag:
 rm -f /tmp/SeTQUICK
- dialog --title "Plamo Linuxインストールメニュー(version 2.0)" \
+ dialog --title "qbilinux インストールメニュー(version 2.0)" \
 --menu \
-"Plamo Linuxインストールメニューへようこそ.\n\
+"qbilinux インストールメニューへようこそ.\n\
 上下カーソルキーおよびスペースあるいはENTERキーで以下のオプションを\n\
 選択してください。'+', '-'とTABキーも使用できます。KEYMAPは先に\n\
 設定していれば設定不要です。" 19 76 10 \
-"HELP" "Plamo Linux セットアップのHELPを表示" \
+"HELP" "qbilinux セットアップのHELPを表示" \
 "KEYMAP" "キーボードのキー配列を変更" \
 "ADDSWAP" "スワップパーティションの設定" \
 "TARGET" "インストール先パーティションの設定" \
@@ -72,7 +72,7 @@ rm -f /tmp/SeTQUICK
 "DISK SETS" "インストールするディスクセットの選択" \
 "INSTALL" "選択したディスクセットのインストール" \
 "CONFIGURE" "インストールしたLinuxシステムの設定" \
-"EXIT" "Plamo Linuxセットアップを終了" 2> /tmp/hdset
+"EXIT" "qbilinux セットアップを終了" 2> /tmp/hdset
  if [ $? = 1 -o $? = 255 ]; then
   rm -f /tmp/hdset /tmp/SeT*
   exit

@@ -44,7 +44,7 @@ ENTERを押してください。" 7 70
  elif [ "`cat /tmp/SeTreturn`" = "cdrom" ]; then
   if [ ! -d /cdrom/kernels ]; then
    dialog --title "エラー" --msgbox "申し訳ありませんが，ディレクトリ \
-/cdrom/kernels は存在しません。Plamo LinuxのCDからインストールしようと \
+/cdrom/kernels は存在しません。qbilinux のCDからインストールしようと \
 していますか? そうでないなら，フロッピー，起動ディスク，あるいはAシリ \
 ーズからカーネルをインストールせねばなりません"  7 70
   else

@@ -135,7 +135,7 @@ LOCAL_NETWORK=`ipmask $LOCAL_NETMASK $LOCAL_IPADDR | cut -f 2 -d ' '`
 
 さて、こちら側の設定は終りましたが、次はどこにインストールする
 ソフトウェアパッケージがあるかを指定する必要があります。まず、
-Plamo Linuxのインストール元となるマシンのIPアドレスを設定します。
+qbilinux のインストール元となるマシンのIPアドレスを設定します。
 
 EOF
  if [ "$UPNRUN" = "0" ]; then
@@ -160,15 +160,15 @@ EOF
 
  cat << EOF > /tmp/tmpmsg
 
- サーバーのPlamo Linuxの入っているディレクトリの下には、
+ サーバーの qbilinux の入っているディレクトリの下には、
 個々のディスクに対応したサブディレクトリがなければ
 なりません。
 このインストールスクリプトを実行するために、それぞれの
 ディスクに対応したサブディレクトリを持っているサーバー
-のディレクトリ名が必要です。例えば、ディスクセット a 
-が /plamo/a にあるのなら、/plamo とお答えください。
+のディレクトリ名が必要です。例えば、ディスクセット 00_base 
+が /qbilinux/00_base にあるのなら、/qbilinux とお答えください。
 
-Plamoのインストール元のディレクトリを入力してください。
+qbilinux のインストール元のディレクトリを入力してください。
 EOF
  dialog --title "ソースディレクトリの選択" --inputbox "`cat /tmp/tmpmsg`" 17 65 2> /tmp/slacksrc
  if [ $? = 1 -o $? = 255 ]; then

@@ -10,7 +10,7 @@ if [ ! -r /tmp/SeTplist ]; then
     echo "exit"
 fi
 dialog --title "ハードディスクのスキャン中" --infobox \
-    "Plamo セットアップはLinuxパーティションを探すために \n\
+    "qbilinux セットアップはLinuxパーティションを探すために \n\
 ハードディスクをスキャン中です。少々お待ちください。" 6 60
 
 cat << EOF > /tmp/tmpscript
@@ -65,7 +65,7 @@ DOFORMAT="`cat /tmp/format`"
 rm -f /tmp/format
 if [ ! "$DOFORMAT" = "No" ]; then
     dialog --title "$ROOT_DEVICEのFS形式の選択" --menu \
-	"Plamo Linux ではファイルシステムとしてext4/ext3/ext2/btrfs  \
+	"qbilinux ではファイルシステムとしてext4/ext3/ext2/btrfs  \
 	が利用できます．このパーティションをどのファイルシステムで作成 \
 	しますか？" 22 76 6 \
 	"ext4" "ext3 + 新機能(過去との互換性を気にしないなら高性能)" \
@@ -209,7 +209,7 @@ EOF
 	FSTYPE=""
 	if [ ! "$DOFORMAT" = "No" ]; then
             dialog --title "$NEXT_PARTITIONのFS形式の選択" --menu \
-		"現在のPlamo ではファイルシステムとして，ext4/ext3/ext2/btrfsの4種 \
+		"現在の qbilinux ではファイルシステムとして，ext4/ext3/ext2/btrfsの4種 \
 が利用できます．このパーティションをどのファイルシステムで作成 \
 しますか？" 22 74 6 \
 		"ext4" "ext3 + 新機能(過去との互換性を気にしないなら高性能)" \

@@ -60,7 +60,7 @@ grub 版と syslinux 版の 2 種があります． \n\
 	    dialog --title "grub ブートディスク作成" --yesno \
 		"\n\
 ブート可能なFDドライブにフォーマット済みのフロッピーを \n\
-入れてください。このディスクを Plamo Linux のブートディ \n\
+入れてください。このディスクを qbilinux のブートディ \n\
 スクにします．ハードディスクからブートできるようになる \n\
 までは、このフロッピーをご利用ください。 \n\n\
 このフロッピーディスクの内容は完全に上書きされます。\n\n\
@@ -85,7 +85,7 @@ default 0
 timeout 30
 fallback 1
 
-title Plamo Linux
+title qbilinux
 kernel (fd0)/vmlinuz root=$ROOT_DEVICE ro
 EOF
 		    dialog --infobox "\nGRUBをインストール中..." 5 40
@@ -106,7 +106,7 @@ FD に grub をインストールできませんでした" 5 70
 	elif [ "$REPLY" = "syslinux" ]; then # make syslinux bootdisk
 	    dialog --title "/dev/fd0でsyslinuxのブートディスク作成" --yesno \
 		"ブート可能なFDドライブにフォーマット済みのフロッピーを入れてください。\n\
-これが Plamo Linuxシステムを起動するブートディスクとなります。\n\
+これが qbilinux システムを起動するブートディスクとなります。\n\
 フロッピーの内容は完全に上書きされます。YESでディスクを作成し、 \n\
 NOで中止します。" 10 74
 	    if [ $? = 0 ]; then # make the disk
@@ -122,8 +122,8 @@ DISPLAY plamo.msg
 EOF
 		    cat << EOF > /fd/plamo.msg
 plamo2.lss
-Welcome to Plamo Linux !!
-We hope you'll enjoy the simple linux environment via Plamo Linux :-)
+Welcome to qbilinux !!
+We hope you'll enjoy the simple linux environment via qbilinux :-)
 
 EOF
 
@@ -161,18 +161,18 @@ else   # FDTYPE=USB
 
     dialog --title "USB 用のブートディスク作成" --yesno \
         "USB な FDドライブにフォーマット済みのフロッピーを入れてください。\n\
-これが Plamo Linuxシステムを起動するブートディスクとなります。\n\
+これが qbilinux システムを起動するブートディスクとなります。\n\
 フロッピーの内容は完全に上書きされます。YESでディスクを作成し、 \n\
 NOで中止します。" 9 72 
     if [ $? = 0 ]; then # make FD
 	DEV=`fdisk -l | grep "1 MB" | cut -d" " -f2 | tr -d ":"`
 	if [ -f /var/adm/mount/boot/syslinux.img ]; then
 	    FDIMG=/var/adm/mount/boot/syslinux.img
-	elif [ -f /var/adm/mount/plamo/boot/syslinux.img ]; then
-	    FDIMG=/var/adm/mount/plamo/boot/syslinux.img
+	elif [ -f /var/adm/mount/qbilinux/boot/syslinux.img ]; then
+	    FDIMG=/var/adm/mount/qbilinux/boot/syslinux.img
 	else
 	    dialog --msgbox "USBブートディスク用のイメージが見付かりません. \n\
-手動でUSBブートディスクを作る場合は，plamo/boot ディレクトリにある \n\
+手動でUSBブートディスクを作る場合は，qbilinux/boot ディレクトリにある \n\
 mkbootdsk.sh コマンドを実行してください．" 10 72
 	    exit
 	fi
@@ -186,8 +186,8 @@ DEFAULT vmlinuz root=$ROOT_DEVICE ro
 DISPLAY plamo.msg
 EOF
 	    cat << EOF > /fd/plamo.msg
-Welcome to Plamo Linux !!
-We hope you'll enjoy the simple linux environment via Plamo Linux :-)
+Welcome to qbilinux !!
+We hope you'll enjoy the simple linux environment via qbilinux :-)
 
 EOF
 	    copy_bootparms

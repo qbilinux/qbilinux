@@ -5,12 +5,12 @@ rm -f /tmp/SeTDS /tmp/SeTmount
 while [ 0 ]; do
  cat << EOF > /tmp/tmpmsg
 
-ハードディスクから直接インストールするには、Plamo
-Linux のブートディスク以外の各ディスクに対応したサブディ
+ハードディスクから直接インストールするには、qbilinux の
+ブートディスク以外の各ディスクに対応したサブディ
 レクトリを持つパーティションがなければなりません。例え
-ば、Plamo Linuxが/dev/hda4の/tmp/plamo以下にある場合、
+ば、qbilinux が/dev/hda4の/tmp/qbilinux 以下にある場合、
 パーティションとして/dev/hda4を、ディレクトリとして
-/tmp/plamoを指定する必要があります。/dev/hda4はDOSや
+/tmp/qbilinux を指定する必要があります。/dev/hda4はDOSや
 VFATパーティションであっても構いません。
 
 パーティションリストを見るには[enter]キーを押してく
@@ -34,13 +34,13 @@ done
 
 dialog --title "インストール元ディレクトリの選択" --inputbox \
 "\n\
-このパーティションのどこにPlamo Linuxのパッケージがあるのか\n\
+このパーティションのどこに qbilinux のパッケージがあるのか\n\
 指定してください（a や ap というディレクトリが存在する\n\
 ディレクトリです。）注：指定はパーティションの先頭からの\n\
 指定になります。普段は/dev/hda4を/mntにマウントして使って\n\
-いて/mnt/plamo以下にパッケージがある場合、パーティションは\n\
-/dev/hda4、ディレクトリの指定はplamoになります。 \n\n\
-どこにPlamo Linuxのパッケージがありますか？ \n" \
+いて /mnt/qbilinux 以下にパッケージがある場合、パーティションは\n\
+/dev/hda4、ディレクトリの指定は qbilinux になります。 \n\n\
+どこに qbilinux のパッケージがありますか？ \n" \
 19 65 2> /tmp/source.dir
 if [ $? = 1 -o $? = 255 ]; then
  rm -f /tmp/source.dir
