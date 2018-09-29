@@ -202,15 +202,15 @@ EOF
 
     # remove locales except ja
     # 
-    for loc_dir in `find $P -name locale` ; do
-	pushd $loc_dir
-	for loc in * ; do
-	    if [ "$loc" != "ja" ]; then
-		rm -rf $loc
-	    fi
-	done
-	popd
-    done      
+    # for loc_dir in `find $P -name locale` ; do
+    # 	pushd $loc_dir
+    # 	for loc in * ; do
+    # 	    if [ "$loc" != "ja" ]; then
+    # 		rm -rf $loc
+    # 	    fi
+    # 	done
+    # 	popd
+    # done      
 
     ######################################################################
     # path に lib があるバイナリは strip -g, ないバイナリは strip する
