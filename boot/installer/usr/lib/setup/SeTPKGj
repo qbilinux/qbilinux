@@ -18,7 +18,7 @@ x11にはminimumが必要，といった依存関係があります．\n\
   KDE環境の場合: minimum + x11 + xapps + ext + kde(7.5G) \n\
 となります。依存関係にあるカテゴリは自動的に選択されるので、\n\
 xfceやkdeのみを選んでも必要なカテゴリは自動的に選択されます" 25 74 8 \
-"minimum" "Plamo Linux 基本環境(1.2G)" on \
+"minimum" "qbilinux 基本環境(1.2G)" on \
 "x11" "X11 ウィンドウシステム(0.4G)" on \
 "xclassics" "GTK/Qtを使わない古めのXアプリ(0.1G)" off \
 "xapps" "最近の環境向けのXアプリ(1.0G)" on \

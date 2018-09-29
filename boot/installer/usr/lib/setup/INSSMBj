@@ -106,7 +106,7 @@ LOCAL_NETWORK=`ipmask $LOCAL_NETMASK $LOCAL_IPADDR | cut -f 2 -d ' '`
  cat << EOF > /tmp/tmpmsg
 
 このマシンの設定は終りました。次にサーバとなるマシンの
-情報を登録します。まず、Plamo Linuxのパッケージを共有で
+情報を登録します。まず、qbilinux のパッケージを共有で
 提供しているWindowsマシンのIPアドレスを設定します。
 
 EOF

@@ -66,7 +66,7 @@ subvolumeはファイルシステム上ではディレクトリのように見�
 btrfsのCOW機能を使って，簡単にsnapshotを作ることが可能です．\n\
 (例えば /home をsubvolumeにしておけば，一般ユーザのデータのバックアップ \n\
 がコマンド一つで可能になります) \n\n\
-Plamo Linuxでは，btrfsのパーティション内に / 用のsubvolumeを \n\
+qbilinux では，btrfsのパーティション内に / 用のsubvolumeを \n\
 作ってインストールするようにしており、その内部には新たにsubvolumeを作って \n\
 ディレクトリごとにsubvolumeを分けることが可能です． \n\n\
 $BTRFS_DEVICE上に新しいsubvolumeを作りますか？" 18 76

@@ -1,2 +1,2 @@
 #!/bin/sh
-dialog --title "Plamo Linuxセットアップヘルプ" --textbox "/usr/lib/setup/FDhelpj" 22 77
+dialog --title "qbilinux セットアップヘルプ" --textbox "/usr/lib/setup/FDhelpj" 22 77

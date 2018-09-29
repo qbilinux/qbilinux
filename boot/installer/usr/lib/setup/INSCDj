@@ -6,9 +6,9 @@ modprobe isofs
 modprobe nls_cp932
 modprobe sr_mod
 
-dialog --title "Install from the Plamo Linux CD-ROM" \
+dialog --title "Install from the qbilinux CD-ROM" \
 --menu \
-"Plamo Linuxでは、ATAPIとSCSI以外の独自仕様CD-ROMはサポート \n\
+"qbilinux では、ATAPIとSCSI以外の独自仕様CD-ROMはサポート \n\
 しておりません（テスト環境が周りに存在しないので、、） \n\
 それらのCD-ROMの場合、あらかじめCD-ROMの内容をハードディスク \n\
 にコピーしておいて、HDDからインストールする方法があります。 \n\
@@ -131,11 +131,11 @@ fi
 
 while [ 0 ] ; do
  dialog --title "インストール方法の選択" \
---menu "Plamo Linux の配布 CD-R からのインストールの場合は plamo を \n\
-選んでください(/cdrom/plamo から必要なファイルがインストールされます) \n\
+--menu "qbilinux の配布 CD-R からのインストールの場合は qbilinux を \n\
+選んでください(/cdrom/qbilinux から必要なファイルがインストールされます) \n\
 配布CD-R以外のCD-ROMからインストールする場合は、custom を選んで \n\
-plamo Linuxのパッケージのあるディレクトリを指定してください。" 15 74 4 \
- "plamo" "ハードディスクへの通常のインストール" \
+qbilinux のパッケージのあるディレクトリを指定してください。" 15 74 4 \
+ "qbilinux" "ハードディスクへの通常のインストール" \
  "custom" "通常とは異なるディレクトリからのインストール" \
  2> /tmp/SeTreturn
  if [ $? = 1 -o $? = 255 ]; then
@@ -153,11 +153,11 @@ done
 SLACK_SOURCE_LOCATION="`cat /tmp/SeTreturn`"
 
 if [ "$SLACK_SOURCE_LOCATION" = "custom" ]; then
- dialog --title "インストール元ディレクトリの選択" --inputbox "Plamo Linuxの \
+ dialog --title "インストール元ディレクトリの選択" --inputbox "qbilinux の \
  ソースが入っているCDのディレクトリを入力\n\
  してください。これはCDの種類によって異なっている可能性があり\n\
  ます。先頭の'/'は省いてしまってもかまいません。 \n\
- どのディレクトリにPlamo Linuxのソースがありますか？" 11 67 \
+ どのディレクトリに qbilinux のソースがありますか？" 11 67 \
  2> /tmp/slacksource
  if [ $? = 1 -o $? = 255 ]; then
   rm -f /tmp/cdtype /tmp/slacksource
@@ -189,7 +189,7 @@ while [ 0 ]; do
   fi
  else
   if [ ! -d /var/adm/mount/$SLACK_SOURCE_LOCATION ]; then
-   dialog --title "エラー：ディレクトリが見つかりません" --msgbox "Plamo Linuxのソースディレクトリが見つかりませんでした。\n\
+   dialog --title "エラー：ディレクトリが見つかりません" --msgbox "qbilinux のソースディレクトリが見つかりませんでした。\n\
 インストールするには，ソースディレクトリを設定し直してください。" 8 70
     rm -f /tmp/SeTmount /tmp/SeTDS /tmp/SeTCDdev   
    exit

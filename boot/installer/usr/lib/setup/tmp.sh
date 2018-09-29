@@ -10,6 +10,6 @@ if [ ! -r /tmp/SeTplist ]; then
   exit
 fi
   dialog --title "ハードディスクのスキャン中" --infobox \
-"Plamo セットアップはLinuxパーティションを探すために \n\
+"qbilinux セットアップはLinuxパーティションを探すために \n\
 ハードディスクをスキャン中です。少々お待ちください。" 6 60
 

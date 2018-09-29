@@ -4,7 +4,7 @@ setterm -blank 0
 export LANG=ja_JP.UTF-8
 
 while [ 0 ]; do
- dialog --title "Plamo Linux のセットアップメニューへようこそ" --menu \
+ dialog --title "qbilinux のセットアップメニューへようこそ" --menu \
 "お使いのハードウェアがブートディスクのカーネルに認識されていない \n\
 場合、いったんこのメニューを終了して、modules コマンドで必要なモ  \n\
 ジュールを組みこんでから、再度 install コマンドを実行するか、KON を \n\
@@ -15,7 +15,7 @@ while [ 0 ]; do
 "KEYMAP" "キーボードのキー配列を変更" \
 "fdisk" "fdisk で Linux 用パーティションを作成" \
 "cfdisk" "cfdisk でLinux 用パーティションを作成" \
-"install" "Plamo Linux のインストールを開始" \
+"install" "qbilinux のインストールを開始" \
 "exit" "いったん終了" 2> /tmp/preset
 
 if [ $? = 1 -o $? = 255 ]; then
