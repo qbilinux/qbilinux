@@ -25,16 +25,15 @@ def fild_all_files(directory):
 
 def usage():
     print("")
-    print("copy pakege file and make tagfile form Plamo Linux distrobution.")
+    print("copy pakege file and make tagfile form qbilinux distrobution.")
     print("")
     print("Usage: "+args[0]+" buildir destdie arch")
     print("")
     print("   buildir: directory contains package and desc file.")
-    print("   destdir: direcotry for Plamo Linux distrobution")
+    print("   destdir: direcotry for qbilinux distrobution")
     print("   arch:    x86_64 x86 armv7l")
     print("")
-#    print("   ex) "+args[0]+" Plamo-src/plamo Plamo-0.0/x86_64 x86_64")
-    print("   ex) "+args[0]+" Plamo-src/plamo Plamo-0.0 x86_64")
+    print("   ex) "+args[0]+" qbilinux qbilinux-0.0 x86_64")
     print("")
     
 if (argc != 4):
@@ -74,7 +73,7 @@ for file in fild_all_files(source_dir):
                 flg_name = 0
                 flg_head = 0
                 for lll in os.listdir(os.path.join(srcpath, ll)):
-                    # Plamobuild.bash-4.3.30, bash-4.3.30-x86_64-T1.txz, bash.desc
+                    # Packagebuild.bash-4.3.30, bash-4.3.30-x86_64-T1.txz, bash.desc
                     # if fnmatch.fnmatch(lll, basename+'.desc'):
                     #     for llll in os.listdir(os.path.join(srcpath, ll)):
                     #         #if fnmatch.fnmatch(llll, basename+'-'+version+'*.txz'):

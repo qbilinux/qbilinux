@@ -31,7 +31,7 @@ seek_dir () {
 	    echo "not package.log file"
 	fi
 	
-    # check Plamobuild script and make log.
+    # check Packagebuild script and make log.
     elif [ $opt_force -eq 1 ] || [ ! -f 00.make.log ] || [ 00.make.log -ot $SCN ] ; then
     
 	# backup log file

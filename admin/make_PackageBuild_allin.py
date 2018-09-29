@@ -114,7 +114,7 @@ SRC_DIR="/home/archives/source/"
 
 def make_body1():
     body='''
-source /usr/src/plamo-nora/PackageBuild.def
+source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
     cd ${S[$i]}
@@ -235,7 +235,7 @@ EOF
     done
 }
 
-source /usr/src/plamo-nora/PackageBuild.func
+source /usr/src/qbilinux/PackageBuild.func
 '''
     else:
         body='''
@@ -280,7 +280,7 @@ EOF
     done
 }
 
-source /usr/src/plamo-nora/PackageBuild.func
+source /usr/src/qbilinux/PackageBuild.func
 '''
     return body
 
