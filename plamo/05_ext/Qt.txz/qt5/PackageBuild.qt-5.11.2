@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase=qt5
-vers=5.10.1
+vers=5.11.2
 url="http://download.qt.io/archive/qt/${vers%.*}/${vers}/single/qt-everywhere-src-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l"
 arch=`uname -m`
@@ -39,7 +39,7 @@ OPT_CONFIG="-sysconfdir     /etc/xdg   \
 fi
 #OPT_CONFIG="-no-webkit -confirm-license -opensource -sysconfdir /etc/xdg -headerdir /usr/include/qt5 -docdir /usr/share/doc/${src} -system-libpng -system-libjpeg -system-zlib -system-sqlite -system-pcre -plugin-sql-sqlite -icu -openssl -verbose -optimized-qmake -dbus-linked -qpa xcb -xcb -glib -accessibility -no-separate-debug-info -no-pch -no-rpath -no-strip -release -no-use-gold-linker -reduce-relocations -pulseaudio -nomake examples"
 DOCS='LGPL_EXCEPTION.txt LICENSE.FDL LICENSE.GPLv2 LICENSE.GPLv3 LICENSE.LGPLv21 LICENSE.LGPLv3 LICENSE.PREVIEW.COMMERCIAL README'
-patchfiles=''
+patchfiles='qt-5.11.2-glibc228-1.patch'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
