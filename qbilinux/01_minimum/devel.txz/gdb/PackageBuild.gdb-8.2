@@ -6,7 +6,7 @@ vers=8.2
 url="ftp://ftp.gnu.org/gnu/gdb/gdb-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l"
 arch=`uname -m`
-build=T1
+build=T2
 src=$pkgbase-$vers
 OPT_CONFIG="--enable-host-shared --enable-shared --with-system-readline"
 DOCS="ChangeLog COPYING.LIB README MAINTAINERS COPYING COPYING3.LIB
@@ -62,7 +62,7 @@ do_install() {
     done
     if [ -f Makefile ] ; then
 	export LDFLAGS='-Wl,--as-needed'
-	make install-strip DESTDIR=$P
+	make install DESTDIR=$P
     fi
     if [ $? != 0 ]; then
 	echo "make install error. $0 script stop"
