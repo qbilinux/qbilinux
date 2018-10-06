@@ -1,0 +1,24 @@
+--- extipl-5.04/src/extipl.c.orig	2001-07-03 00:35:12.000000000 +0900
++++ extipl-5.04/src/extipl.c	2009-05-13 23:09:31.000000000 +0900
+@@ -79,7 +79,9 @@
+ static char *ask(char *);
+ static int  sure(char *);
+ #ifdef __linux__
++#ifdef _syscall5
+ static _syscall5(int, _llseek,  uint,  fd, ulong, hi, ulong, lo, loff_t *, res, uint, wh);
++#endif
+ static int long_seek(int, off_t, int);
+ #endif
+ /*================ for DEBUG ======================== */
+@@ -1120,7 +1122,11 @@
+ 		offset, loffset, loff_hi, loff_lo);
+ 	fflush(stderr);
+     }
++#ifdef _syscall5
+     if(_llseek(fd, loff_hi, loff_lo, &result, whence) != 0) {
++#else
++    if(syscall(__NR__llseek, fd, loff_hi, loff_lo, &result, whence) != 0) {
++#endif
+ 	perror("llseek");
+         return(ERR);
+     }

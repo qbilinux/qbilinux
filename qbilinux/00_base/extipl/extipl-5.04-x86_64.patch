@@ -1,0 +1,126 @@
+--- extipl-5.04/src/extipl.c.orig	2001-07-03 00:35:12.000000000 +0900
++++ extipl-5.04/src/extipl.c	2010-11-26 13:27:05.000000000 +0900
+@@ -78,7 +78,7 @@
+ static void tblpack(struct partition_s *);
+ static char *ask(char *);
+ static int  sure(char *);
+-#ifdef __linux__
++#if defined(__linux__) && !defined(__x86_64__)
+ static _syscall5(int, _llseek,  uint,  fd, ulong, hi, ulong, lo, loff_t *, res, uint, wh);
+ static int long_seek(int, off_t, int);
+ #endif
+@@ -253,7 +253,7 @@
+ 	perror(device);
+ 	return(ERR);
+     }
+-#ifdef __linux__
++#if defined(__linux__) && !defined(__x86_64__)
+     long_seek(fd, (off_t)offset->lba, SEEK_SET);
+ #else
+     lseek(fd, (off_t)offset->lba * SECTOR_SIZE, SEEK_SET);
+@@ -287,7 +287,7 @@
+ 	perror(device);
+ 	return(ERR);
+     }
+-#ifdef __linux__
++#if defined(__linux__) && !defined(__x86_64__)
+     long_seek(fd, (off_t)offset->lba, SEEK_SET);
+ #else
+     lseek(fd, (off_t)offset->lba * (off_t)SECTOR_SIZE, SEEK_SET);
+@@ -483,7 +483,7 @@
+     memcpy((char *)table, buff + TABLE_OFFSET, TABLE_SIZE);
+     tblpack(table);
+     if (opt_debug) {
+-	printf("#1 sysid = 0x%02X, start = %ld, len = %ld\n",
++	printf("#1 sysid = 0x%02X, start = %d, len = %d\n",
+ 		table[0].sysind, table[0].sector_offset, table[0].nr_sector);
+     }
+     if (table[0].sector_offset < holdblks) {
+@@ -812,9 +812,9 @@
+ 	    else {
+ 		if (bootp == 0 && p->bootind & 0x80) bootp = count;
+ 		if (opt_debug == 0)
+-		    printf(" %8luMB\n", p->nr_sector >> 11);
++		    printf(" %8uMB\n", p->nr_sector >> 11);
+ 		else
+-		    printf(" ;%luMB@%lu\n", p->nr_sector >> 11, base->offset.lba);
++		    printf(" ;%uMB@%lu\n", p->nr_sector >> 11, base->offset.lba);
+ 	    }
+ 	}
+ 	base = base->next;
+@@ -858,7 +858,7 @@
+ 		}
+ 	    }
+ 	} else {
+-	    printf("%8luMB\n", table->nr_sector >> 11);
++	    printf("%8uMB\n", table->nr_sector >> 11);
+ 	}
+     }
+     if (n == 0) {
+@@ -1103,20 +1103,20 @@
+     return(tolower(*ask((s == NULL) ? "... Sure(y/n)?" : s)) == 'y');
+ }
+ 
+-#ifdef __linux__
++#if defined(__linux__) && !defined(__x86_64__)
+ /* Hacked by Taketoshi Sano <xlj06203@nifty.ne.jp>  */
+ static int long_seek(fd, offset, whence)
+ int fd, whence;
+ off_t offset;
+ {
+     loff_t loffset, result;
+-    unsigned long loff_hi, loff_lo;
++    unsigned LONG_32 loff_hi, loff_lo;
+ 
+     loffset = (loff_t)offset << 9;
+-    loff_hi = (unsigned long)(loffset>>32);
+-    loff_lo = (unsigned long)(loffset & 0xffffffff);
++    loff_hi = (unsigned LONG_32)(loffset>>32);
++    loff_lo = (unsigned LONG_32)(loffset & 0xffffffff);
+     if (opt_debug) {
+-	fprintf(stderr, " sector: %lu, loffset: %Lu, loff_hi: %lu, loff_lo: %lu\n",
++	fprintf(stderr, " sector: %lu, loffset: %llu, loff_hi: %lu, loff_lo: %lu\n",
+ 		offset, loffset, loff_hi, loff_lo);
+ 	fflush(stderr);
+     }
+@@ -1126,7 +1126,7 @@
+     }
+     if (opt_debug) {
+ 	loffset = (ul_long)result >> 9;
+-	fprintf(stderr, " result: %Lu, sector: %Lu\n", result, loffset);
++	fprintf(stderr, " result: %llu, sector: %llu\n", result, loffset);
+ 	fflush(stderr);
+     }
+     return(OK);
+--- extipl-5.04/src/extipl.h.orig	2002-03-25 22:48:52.000000000 +0900
++++ extipl-5.04/src/extipl.h	2010-11-26 13:06:18.000000000 +0900
+@@ -7,6 +7,9 @@
+ #define VERSION			"5.04"
+ #define DATE			"2002/03/26"
+ 
++#define LONG_32			int
++#define LONG_64			long
++
+ #define SECTOR_SIZE		512
+ #define IPL_SIZE		446
+ #define TABLE_OFFSET		446
+@@ -39,7 +42,7 @@
+ #define bell()			printf("\007")
+ 
+ typedef unsigned char byte;
+-typedef unsigned long long ul_long;
++typedef unsigned LONG_64 ul_long;
+ 
+ typedef struct hdadr_s {
+ 	byte  head;
+@@ -52,8 +55,8 @@
+ 	hdadr_s        start_chs;
+ 	byte	       sysind;
+ 	hdadr_s        end_chs;
+-	unsigned long  sector_offset;
+-	unsigned long  nr_sector;
++	unsigned LONG_32 sector_offset;
++	unsigned LONG_32 nr_sector;
+     } partition_s;
+ 
+ typedef struct offset_s {
