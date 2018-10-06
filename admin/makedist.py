@@ -22,6 +22,8 @@ def fild_all_files(directory):
             dirs.remove('work')
         if 'old' in dirs:
             dirs.remove('old')
+        if 'source' in dirs:
+            dirs.remove('source')
 
 def usage():
     print("")
