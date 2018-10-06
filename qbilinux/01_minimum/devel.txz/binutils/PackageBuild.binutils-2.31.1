@@ -5,16 +5,19 @@ pkgbase=binutils
 vers=2.31.1
 url="http://ftp.gnu.org/gnu/binutils/binutils-${vers}.tar.bz2"
 arch=`uname -m`
-build=T2
+build=T3
 src=$pkgbase-$vers
-if [ $arch = "armv7l" ]; then
-    build_arch=arm-pc-linux-gnueabihf
-elif [ $arch = "x86_64" ]; then
-    build_arch=${arch}-pc-linux-gnu
-else
-    build_arch=${arch}-pc-linux-gnu
-fi
-OPT_CONFIG="--enable-shared --build=$build_arch --host=$build_arch"
+case $arch in
+    x86_64)
+	OPT_CONFIG="" ;;
+    arm7vl)
+	OPT_CONFIG="--build=arm-pc-linux-gnueabihf --host=arm-pc-linux-gnueabihf" ;;
+    aarch64)
+	OPT_CONFIG="" ;;
+    *)
+	OPT_CONFIG="--enable-64-bit-bfd"
+esac
+OPT_CONFIG="$OPT_CONFIG --enable-shared"
 DOCS="ChangeLog COPYING* MAINTAINERS README*"
 patchfiles=""
 compress=txz
