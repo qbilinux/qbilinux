@@ -1,0 +1,63 @@
+diff -urN a/multi.c b/multi.c
+--- a/multi.c	2011-06-29 17:37:57.000000000 +0900
++++ b/multi.c	2013-12-13 08:49:54.000000000 +0900
+@@ -161,7 +161,7 @@
+ 
+ static ENCSET output = ESISO8;		/* Character set for output */
+ #if JAPANESE
+-static J_PRIORITY def_priority = PUTF8;	/* Which code was given priority. */
++static J_PRIORITY def_priority = PUJIS;	/* Which code was given priority. */
+ #endif
+ 
+ static UWidth utfwidth = UWIDTH_NORMAL;	/* default UTF-8 Width */
+diff -urN a/optfunc.c b/optfunc.c
+--- a/optfunc.c	2011-05-23 12:48:54.000000000 +0900
++++ b/optfunc.c	2013-12-13 08:49:54.000000000 +0900
+@@ -386,11 +386,11 @@
+ 	{
+ 	case INIT:
+ 		if (opt_Z_var == OPT_OFF)
+-			init_def_priority(PUTF8);
+-		else if (opt_Z_var == OPT_ON)
+ 			init_def_priority(PUJIS);
+-		else if (opt_Z_var == OPT_ONPLUS)
++		else if (opt_Z_var == OPT_ON)
+ 			init_def_priority(PSJIS);
++		else if (opt_Z_var == OPT_ONPLUS)
++			init_def_priority(PUTF8);
+ 		break;
+ 	case QUERY:
+ 		break;
+@@ -410,11 +410,11 @@
+ 			return;
+ 		}
+ 		if (opt_Z_var == OPT_OFF)
+-			init_def_priority(PUTF8);
+-		else if (opt_Z_var == OPT_ON)
+ 			init_def_priority(PUJIS);
+-		else if (opt_Z_var == OPT_ONPLUS)
++		else if (opt_Z_var == OPT_ON)
+ 			init_def_priority(PSJIS);
++		else if (opt_Z_var == OPT_ONPLUS)
++			init_def_priority(PUTF8);
+ 		init_priority(get_mulbuf(curr_ifile));
+ 		break;
+ 	}
+diff -urN a/opttbl.c b/opttbl.c
+--- a/opttbl.c	2011-05-23 12:48:54.000000000 +0900
++++ b/opttbl.c	2013-12-13 08:49:54.000000000 +0900
+@@ -488,11 +488,11 @@
+ 	}
+ #if JAPANESE
+ 	if (opt_Z_var == OPT_OFF)
+-		init_def_priority(PUTF8);
+-	else if (opt_Z_var == OPT_ON)
+ 		init_def_priority(PUJIS);
+-	else if (opt_Z_var == OPT_ONPLUS)
++	else if (opt_Z_var == OPT_ON)
+ 		init_def_priority(PSJIS);
++	else if (opt_Z_var == OPT_ONPLUS)
++		init_def_priority(PUTF8);
+ #endif
+ }
+ 
