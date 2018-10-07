@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=util_linux
-vers=2.32
+vers=2.32.1
 url="http://www.kernel.org/pub/linux/utils/util-linux/v2.32/util-linux-${vers}.tar.xz"
 arch=`uname -m`
 build=T1
@@ -10,7 +10,7 @@ src=util-linux-$vers
 OPT_CONFIG="--localstatedir=/var --disable-setpriv --disable-last
     --disable-mesg --disable-chfn-chsh --disable-login --disable-nologin
     --disable-sulogin --disable-su --enable-write --disable-pylibmount
-    --without-user --without-python"
+    --without-user --without-python --enable-line"
 DOCS="COPYING ABOUT-NLS ChangeLog README NEWS README.licensing AUTHORS"
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
