@@ -6,7 +6,7 @@ vers=2.02
 url="https://ftp.gnu.org/gnu/grub/grub-${vers}.tar.xz"
 apply_arch="x86_64 i686"
 arch=`uname -m`
-build=T3
+build=T4
 src[0]=$pkgbase-$vers
 src[1]=${src[0]}
 patchfiles[0]="0008-Fix-packed-not-aligned-error-on-GCC-8.patch"
@@ -20,7 +20,7 @@ SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
 
-source /usr/src/plamo-nora/PackageBuild.def
+source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
     cd ${S[$i]}
@@ -109,4 +109,4 @@ EOF
     done
 }
 
-source /usr/src/plamo-nora/PackageBuild.func
+source /usr/src/qbilinux/PackageBuild.func
