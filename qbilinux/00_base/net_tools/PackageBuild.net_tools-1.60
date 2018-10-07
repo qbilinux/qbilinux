@@ -5,7 +5,7 @@ pkgbase=net_tools
 vers=1.60
 url="http://downloads.sourceforge.net/net-tools/net-tools-${vers}.tar.bz2"
 arch=`uname -m`
-build=T1
+build=T2
 src=net-tools-$vers
 OPT_CONFIG=""
 DOCS="ABOUT-NLS COPYING INSTALLING README README.ipv6 TODO"
@@ -233,6 +233,7 @@ if [ $opt_build -eq 1 ] ; then
       make -j1
     fi
   done
+  cc -O2 -o ipmask $W/ipmask.c
 fi
 if [ $opt_package -eq 1 ] ; then
   if [ `id -u` -ne 0 ] ; then
@@ -250,6 +251,9 @@ if [ $opt_package -eq 1 ] ; then
       make install BASEDIR=$P
     fi
   done
+  install -d $P/usr/bin $P/usr/share/man/man8/
+  install -s ipmask $P/usr/bin
+  cat $W/ipmask.8 | gzip -9c > $P/usr/share/man/man8/ipmask.8.gz
   touch $W/i.et
   cd $W
   find $P ! -type l -newer i.st ! -newer i.et \
