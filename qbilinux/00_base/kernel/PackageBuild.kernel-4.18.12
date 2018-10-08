@@ -8,10 +8,10 @@ url="https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-${version}.tar.xz
 	git://github.com/sfjro/aufs4-standalone.git"
 pkgbase=kernel
 arch=`uname -m`
-build=T1
+build=T2
 src=linux-${version}
 patchfiles="cjktty-kernel.patch cjktty-kernel-font-JP.patch overlayfs-allow_unprivileged_mounts.patch"
-patchfiles_not_used="vd_unicon-kernel-20170609-4.11.patch vd_unicon-kernel-fonts-20140614.patch cjktty-kernel-font.patch rpi-4.18.9-20180922-7733c3c.diff tuxonice-for-linux-4.8.0-2016-10-08.patch 4.8-morse_code_panics.patch 4.8-panic_beep.patch"
+patchfiles_not_used="vd_unicon-kernel-20170609-4.11.patch vd_unicon-kernel-fonts-20140614.patch cjktty-kernel-font.patch rpi-4.18.12-20181008-8324b0c.diff tuxonice-for-linux-4.8.0-2016-10-08.patch 4.8-morse_code_panics.patch 4.8-panic_beep.patch"
 configfile64="config-${version%.*}-x64"
 configfile32="config-${version%.*}-x86"
 configfileARM="config-${version%.*}-RPi2"
@@ -253,7 +253,7 @@ if [ $opt_config -eq 1 ] ; then
   cp -av $W/aufs4-standalone/fs .
   cp -pv $W/aufs4-standalone/include/uapi/linux/aufs_type.h include/uapi/linux
   if [ $arch == armv7l -o $arch == aarch64 ] ; then
-    cat $W/rpi-4.18.9-20180922-7733c3c.diff | patch -Np1 -i -
+    cat $W/rpi-4.18.12-20181008-8324b0c.diff | patch -Np1 -i -
     chmod 755 drivers/net/wireless/realtek/rtl8192cu/{clean,runwpa,wlan0dhcp}
     chmod 755 scripts/{knlinfo,mkknlimg}
   fi
