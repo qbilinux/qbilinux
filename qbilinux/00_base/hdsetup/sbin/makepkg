@@ -75,7 +75,7 @@ usage() {
 echo
 echo "Usage: $0 <pkgname>"
 echo "<pkgname> must be abc(basename)-1.2.3(version)-i586(arch)-P1(build).t[gbx]z format"
-echo "arch should be : noarch, i[3456]86, x86_64, armv7l"
+echo "arch should be : noarch, i[3456]86, x86_64, armv7l aarch64"
 exit
 
 }
@@ -117,7 +117,7 @@ check_pkgname() {
 	usage
     fi
 
-    if [ "$arch" != "i586" -a "$arch" != "i386" -a "$arch" != "i486" -a "$arch" != "i686"  -a "$arch" != "x86_64" -a "$arch" != "noarch" -a "$arch" != "armv7l" ]; then
+    if [ "$arch" != "i586" -a "$arch" != "i386" -a "$arch" != "i486" -a "$arch" != "i686"  -a "$arch" != "x86_64" -a "$arch" != "noarch" -a "$arch" != "armv7l"  -a "$arch" != "aarch64" ]; then
 	echo "Error: cannot find arch for $tmp"
 	echo "use abc(basename)-1.2.3(version)-i586(arch)-P1(build).t[gbx]z for package name"
 	usage
