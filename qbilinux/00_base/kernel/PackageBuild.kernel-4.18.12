@@ -270,6 +270,7 @@ if [ $opt_config -eq 1 ] ; then
   else
     cp -p arch/arm/boot/install.sh{,.orig}
     sed -i '/INSTALLKERNEL/s@^@#@g' arch/arm/boot/install.sh
+    if [ $arch == armv7l ] ; then
     cat <<- "EOF" | patch arch/arm/boot/install.sh
 	40a41,42
 	> cp .config $4/config-$1
@@ -279,6 +280,17 @@ if [ $opt_config -eq 1 ] ; then
 	---
 	> scripts/mkknlimg $2 $4/kernel7.img-$1
 	EOF
+    else
+    cat <<- "EOF" | patch arch/arm64/boot/install.sh
+	40a41,42
+	> cp .config $4/config-$1
+	> 
+	54c56
+	< cat $2 > $4/$base-$1
+	---
+	> scripts/mkknlimg $2 $4/kernel8.img-$1
+	EOF
+    fi
   fi
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
@@ -327,13 +339,21 @@ if [ $opt_package -eq 1 ] ; then
     ln -s vmlinuz-$krel $P/boot/vmlinuz
     ln -s System.map-$krel $P/boot/System.map
   else
+    if [ $arch == armv7l ] ; then
+	cp -p $P/boot/kernel7.img{-$krel,}
+	install -m 644 $B/arch/arm/boot/dts/*.dtb $P/boot
+	install -d $P/boot/overlays
+	install -m 644 $B/arch/arm/boot/dts/overlays/README $P/boot/overlays
+	install -m 644 $B/arch/arm/boot/dts/overlays/*.dtbo $P/boot/overlays
+    else
+	cp -p $P/boot/kernel8.img{-$krel,}
+	install -m 644 $B/arch/arm64/boot/dts/broadcom/*.dtb $P/boot
+	install -d $P/boot/overlays
+	install -m 644 $B/arch/arm64/boot/dts/overlays/README $P/boot/overlays
+	install -m 644 $B/arch/arm64/boot/dts/overlays/*.dtbo $P/boot/overlays
+    fi
     cp -p $P/boot/config{-$krel,}
-    cp -p $P/boot/kernel7.img{-$krel,}
     cp -p $P/boot/System.map{-$krel,}
-    install -m 644 $B/arch/arm/boot/dts/*.dtb $P/boot
-    install -d $P/boot/overlays
-    install -m 644 $B/arch/arm/boot/dts/overlays/README $P/boot/overlays
-    install -m 644 $B/arch/arm/boot/dts/overlays/*.dtbo $P/boot/overlays
   fi
   ln -s /usr/src/linux $P/lib/modules/$krel/source
   ln -s /usr/src/linux $P/lib/modules/$krel/build
