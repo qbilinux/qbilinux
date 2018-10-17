@@ -22,6 +22,8 @@ do_prepare() {
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
+    cp $W/config.guess .
+    cp $W/config.sub .
 }
 
 do_config() {
