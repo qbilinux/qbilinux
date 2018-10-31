@@ -4,16 +4,16 @@
 pkgbase=fftw
 vers=3.3.8
 url="http://www.fftw.org/fftw-${vers}.tar.gz"
-apply_arch="x86_64 i686 armv7l"
+apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=T2
 src[0]=fftw-${vers}
-if [ $arch != "armv7l" ]; then
+if [ $arch != "armv7l" -a $arch != "aarch64" ]; then
     src[1]=fftw-${vers}
     src[2]=fftw-${vers}
 fi
 OPT_CONFIG[0]="--enable-long-double"
-if [ $arch != "armv7l" ]; then
+if [ $arch != "armv7l" -a $arch != "aarch64" ]; then
     OPT_CONFIG[1]="--enable-sse2"
     OPT_CONFIG[2]="--enable-float --enable-sse"
 fi
@@ -38,7 +38,7 @@ do_config() {
 
     mkdir ${B[$1]}
     cd ${B[$1]}
-    if [ $arch = "armv7l" ]; then
+    if [ $arch = "armv7l" -o $arch = "aarch64" ]; then
 	export CFLAGS=" -O3 -fomit-frame-pointer -fstrict-aliasing -ffast-math"
     else
 	export CFLAGS=" -O3 -fomit-frame-pointer -malign-double -fstrict-aliasing -ffast-math"
