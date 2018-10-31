@@ -10,6 +10,10 @@ if [ $arch = "armv7l" ]; then
     build_arch=arm-pc-linux-gnueabihf
     libdir="lib"
     ARCH_CONFIG='--with-arch=armv6 --with-fpu=vfp --with-float=hard'
+elif [ $arch = "aarch64" ]; then
+    build_arch=${arch}-pc-linux-gnu
+    libdir="lib64"
+    ARCH_CONFIG=''
 elif [ $arch = "x86_64" ]; then
     build_arch=${arch}-pc-linux-gnu
     libdir="lib64"
