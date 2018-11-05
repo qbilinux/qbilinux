@@ -85,6 +85,10 @@ do_install() {
     rm -rf $P/etc $P/usr/bin $P/usr/include
     rm -rf $P/usr/$libdir/{libcrypto.a,libssl.a,pkgconfig}
     rm -rf $P/usr/$libdir/{libcrypto.so,libssl.so}
+    if [ $arch = "aarch64" ]; then
+	rm -rf $P/usr/lib/{libcrypto.a,libssl.a,pkgconfig}
+	rm -rf $P/usr/lib/{libcrypto.so,libssl.so}
+    fi
 }
 
 do_package() {
