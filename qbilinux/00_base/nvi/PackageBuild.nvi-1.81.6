@@ -213,8 +213,8 @@ if [ $opt_config -eq 1 ] ; then
   cd $B
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}/build.unix
-    cp $W/config.guess ${B[$i]}/dist
-    cp $W/config.sub ${B[$i]}/dist
+    cp -f $W/config.guess ${B[$i]}/dist
+    cp -f $W/config.sub ${B[$i]}/dist
     if [ -x ../dist/configure ] ; then
       ../dist/configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
           --libdir='${exec_prefix}'/$libdir --infodir='${prefix}'/share/info \
