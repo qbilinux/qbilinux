@@ -3,34 +3,45 @@
 ######################################################################
 #url="https://www.kernel.org/pub/linux/kernel/v4.x/linux-4.9.30.tar.xz
 #    git://github.com/sfjro/aufs4-standalone.git"
-version=4.18.12
+version=4.19.1
 url="https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-${version}.tar.xz
 	git://github.com/sfjro/aufs4-standalone.git"
 pkgbase=kernelsrc
 arch=`uname -m`
 build=T1
 src=linux-${version}
-patchfiles="cjktty-kernel.patch cjktty-kernel-font-JP.patch overlayfs-allow_unprivileged_mounts.patch"
-patchfiles_not_used="vd_unicon-kernel-20170609-4.11.patch vd_unicon-kernel-fonts-20140614.patch cjktty-kernel-font.patch rpi-4.18.9-20180922-7733c3c.diff tuxonice-for-linux-4.8.0-2016-10-08.patch 4.8-morse_code_panics.patch 4.8-panic_beep.patch"
+patchfiles="cjktty-kernel-4.19.patch cjktty-kernel-font-JP.patch overlayfs-allow_unprivileged_mounts.patch"
+patchfiles_not_used="vd_unicon-kernel-20170609-4.11.patch vd_unicon-kernel-fonts-20140614.patch cjktty-kernel-font.patch rpi-4.19.1-20181107-db63de0.diff tuxonice-for-linux-4.8.0-2016-10-08.patch 4.8-morse_code_panics.patch 4.8-panic_beep.patch"
 configfile64="config-${version%.*}-x64"
 configfile32="config-${version%.*}-x86"
-configfileARM="config-${version%.*}-RPi2"
-configfileARM64="config-${version%.*}-RPi3"
-if [ $arch = "x86_64" ]; then
-    vers=${version}_x64
-    configfile=$configfile64
-elif [ $arch = "i686" ]; then
-    vers=${version}_x86
-    configfile=$configfile32
-elif [ $arch = "armv7l" ]; then
-    vers=${version}_RPi2
-    configfile=$configfileARM
-else
-    vers=${version}_RPi3
-    configfile=$configfileARM64
-fi
-aufs_vers=4.18
-aufs_git_vers=ce1f81228a9a30dec23ded541270a99dd594fe6d
+configfileARMv6="config-${version%.*}-armv6l"
+configfileARMv7="config-${version%.*}-armv7l"
+configfileARM64="config-${version%.*}-aarch64"
+case $arch in
+    x86_64)
+	vers=${version}_x64
+	configfile=$configfile64
+	;;
+    i?86)
+	vers=${version}_x86
+	configfile=$configfile32
+	;;
+    armv6l)
+	vers=${version}_armv6l
+	configfile=$configfileARMv6
+	;;
+    armv7l)
+	vers=${version}_armv7l
+	configfile=$configfileARMv7
+	;;
+    *)
+	vers=${version}_aarch64
+	configfile=$configfileARM64
+	;;
+esac
+#aufs_vers=aufs4.19
+aufs_vers=aufs4.x-rcN
+aufs_git_vers=8feaac51328a45472fbe28df1c206d5b9670cd45
 OPT_CONFIG=""
 DOCS=""
 compress=txz
@@ -225,7 +236,7 @@ if [ $opt_download -eq 1 ] ; then
     bz2|tbz) tar xpjf ${i##*/} ;;
     xz|txz) tar xpJf ${i##*/} ;;
     git) ( cd `basename ${i##*/} .git`
-        git checkout origin/aufs${aufs_vers} ; git reset --hard ${aufs_git_vers} ) ;;
+        git checkout origin/${aufs_vers} ) ;;
     esac
   done
 fi
@@ -253,7 +264,7 @@ if [ $opt_config -eq 1 ] ; then
   cp -av $W/aufs4-standalone/fs .
   cp -pv $W/aufs4-standalone/include/uapi/linux/aufs_type.h include/uapi/linux
   if [ $arch == armv7l -o $arch == aarch64 ] ; then
-    cat $W/rpi-4.18.9-20180922-7733c3c.diff | patch -Np1 -i -
+    cat $W/rpi-4.19.1-20181107-db63de0.diff | patch -Np1 -i -
     chmod 755 drivers/net/wireless/realtek/rtl8192cu/{clean,runwpa,wlan0dhcp}
     chmod 755 scripts/{knlinfo,mkknlimg}
   fi
@@ -369,14 +380,10 @@ if [ $opt_package -eq 1 ] ; then
       gzip_one $docdir/$src/$patch
   done
 
-  cp $W/$configfile32 $docdir/$src/$configfile32
-  gzip_one $docdir/$src/$configfile32
-  cp $W/$configfile64 $docdir/$src/$configfile64
-  gzip_one $docdir/$src/$configfile64
-  cp $W/$configfileARM $docdir/$src/$configfileARM
-  gzip_one $docdir/$src/$configfileARM
-  cp $W/$configfileARM $docdir/$src/$configfileARM64
-  gzip_one $docdir/$src/$configfileARM64
+  for i in $configfile64 $configfile32 $configfileARMv6 $configfileARMv7 $configfileARM64 ; do
+      cp $W/$i $docdir/$src/$i
+      gzip_one $docdir/$src/$i
+  done
 
 ######################################################################
 # * convert 対象以外で刈り取りたいシンボリックリンクがある場合はここに
