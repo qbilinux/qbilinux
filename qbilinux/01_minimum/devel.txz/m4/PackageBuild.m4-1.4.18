@@ -213,6 +213,8 @@ if [ $opt_config -eq 1 ] ; then
   cd $B
   cp -p lib/stdio.in.h{,.orig}
   sed -i '/gets is a security hole/d' lib/stdio.in.h
+  sed -i 's/IO_ftrylockfile/IO_EOF_SEEN/' lib/*.c
+  echo "#define _IO_IN_BACKUP 0x100" >> lib/stdio-impl.h
   for i in `seq 0 $((${#B[@]} - 1))` ; do
     cd ${B[$i]}
     if [ -f Makefile ] ; then
