@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
 pkgbase=nasm
-vers=2.13.01
-url="http://www.nasm.us/pub/nasm/releasebuilds/${vers}/nasm-${vers}.tar.xz"
+vers=2.13.03
+url="https://www.nasm.us/pub/nasm/releasebuilds/${vers}/nasm-${vers}.tar.xz"
 arch=`uname -m`
-build=T1
+build=T1patch
 src=nasm-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS ChangeLog INSTALL LICENSE README TODO nasm.txt ndisasm.txt'
-patchfiles=''
+patchfiles='gcc8.patch'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
