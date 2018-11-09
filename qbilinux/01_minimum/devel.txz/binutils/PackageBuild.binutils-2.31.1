@@ -8,11 +8,11 @@ arch=`uname -m`
 build=T3
 src=$pkgbase-$vers
 case $arch in
-    x86_64)
-	OPT_CONFIG="" ;;
+    aarch64)
+	OPT_CONFIG="--build=aarch64-pc-linux-gnu --host=aarch64-pc-linux-gnu" ;;
     arm7vl)
 	OPT_CONFIG="--build=arm-pc-linux-gnueabihf --host=arm-pc-linux-gnueabihf" ;;
-    aarch64)
+    x86_64)
 	OPT_CONFIG="" ;;
     *)
 	OPT_CONFIG="--enable-64-bit-bfd"
