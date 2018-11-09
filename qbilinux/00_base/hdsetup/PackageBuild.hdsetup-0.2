@@ -281,6 +281,7 @@ if [ $opt_build -eq 1 ] ; then
       1) make LIBS="-lncursesw -lm -ldl -static" ;;
       4) make LDFLAGS="-ldl -static" ;;
       5) make LIBS="-ldl -all-static" ;;
+      6) make LIBS="-lacl -static" ;;
       *) make LIBS="-ldl -static" ;;
       esac
     fi
