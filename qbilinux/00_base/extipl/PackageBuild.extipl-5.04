@@ -4,7 +4,7 @@
 pkgbase=extipl
 vers=5.04
 url="http://jaist.dl.sourceforge.jp/extipl/2166/extipl-${vers}.tar.gz"
-apply_arch="x86_64 i686 armv7l"
+apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=T2
 src=$pkgbase-$vers

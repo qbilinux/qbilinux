@@ -1,0 +1,10 @@
+--- sg3_utils-1.42/src/sg_map26.c	2016-01-28 00:13:35.000000000 +0900
++++ build32/src/sg_map26.c	2018-11-15 07:56:07.906998188 +0900
+@@ -34,6 +34,7 @@
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ #include <linux/major.h>
++#include <sys/sysmacros.h>
+ 
+ #ifdef HAVE_CONFIG_H
+ #include "config.h"

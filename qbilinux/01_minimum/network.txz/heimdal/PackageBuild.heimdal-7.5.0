@@ -4,7 +4,7 @@
 pkgbase=heimdal
 vers=7.5.0
 url="https://github.com/heimdal/heimdal/releases/download/heimdal-${vers}/heimdal-${vers}.tar.gz"
-apply_arch="x86_64 i686 armv7l"
+apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=T2
 src=$pkgbase-$vers

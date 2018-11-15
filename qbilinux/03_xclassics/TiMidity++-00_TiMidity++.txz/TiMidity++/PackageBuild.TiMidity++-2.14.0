@@ -151,7 +151,7 @@ myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
 case $arch in
     i686)   libdir=lib ;;
-    x86_64) libdir=lib64 ;;
+    x86_64 | aarch64) libdir=lib64 ;;
     armv7l) libdir=lib ;;
 esac
 if [ $# -eq 0 ] ; then

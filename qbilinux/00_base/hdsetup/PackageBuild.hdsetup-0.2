@@ -9,7 +9,7 @@ url="https://www.busybox.net/downloads/busybox-1.24.1.tar.bz2
     http://ftp.gnu.org/gnu/gzip/gzip-1.9.tar.gz
     http://www.bzip.org/1.0.6/bzip2-1.0.6.tar.gz
     http://tukaani.org/xz/xz-5.2.3.tar.xz
-    http://ftp.gnu.org/gnu/tar/tar-1.26.tar.gz"
+    http://ftp.gnu.org/gnu/tar/tar-1.29.tar.gz"
 arch=`uname -m`
 build=T2
 src[0]=busybox-1.24.1
@@ -18,14 +18,15 @@ src[2]=coreutils-8.30
 src[3]=gzip-1.9
 src[4]=bzip2-1.0.6
 src[5]=xz-5.2.3
-src[6]=tar-1.26
+src[6]=tar-1.29
 patchfiles[0]=""
 patchfiles[1]=""
 patchfiles[2]=""
 patchfiles[3]="gnulib.patch"
 patchfiles[4]=""
 patchfiles[5]=""
-patchfiles[6]="tar-1.23-tartime.patch.gz tar-1.23-txz.patch.gz tar-1.26-no-gets.patch.gz"
+#patchfiles[6]="tar-1.23-tartime.patch.gz tar-1.23-txz.patch.gz tar-1.26-no-gets.patch.gz"
+patchfiles[6]=""
 OPT_CONFIG[0]=""
 OPT_CONFIG[1]="--bindir=/bin --enable-nls --with-ncursesw --enable-widec"
 OPT_CONFIG[2]="--bindir=/bin --enable-no-install-program=install,chroot"
@@ -188,7 +189,7 @@ mandir=$P/usr/share/man
 docdir=$P/usr/share/doc
 myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
-case $arch in x86_64) libdir=lib64 ;; *) libdir=lib ;; esac
+case $arch in x86_64 | aarch64) libdir=lib64 ;; *) libdir=lib ;; esac
 if [ $# -eq 0 ] ; then
   opt_download=1 ; opt_config=1 ; opt_build=1 ; opt_package=1
 else
@@ -280,6 +281,7 @@ if [ $opt_build -eq 1 ] ; then
       1) make LIBS="-lncursesw -lm -ldl -static" ;;
       4) make LDFLAGS="-ldl -static" ;;
       5) make LIBS="-ldl -all-static" ;;
+      6) make LIBS="-lacl -static" ;;
       *) make LIBS="-ldl -static" ;;
       esac
     fi

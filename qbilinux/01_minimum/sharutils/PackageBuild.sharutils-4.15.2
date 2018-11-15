@@ -106,13 +106,7 @@ docdir=$P/usr/share/doc
 myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
 
-if [ $arch = "x86_64" ]; then
-  libdir="lib64"
-  suffix="64"
-else
-  libdir="lib"
-  suffix=""
-fi
+case $arch in x86_64 | aarch64) libdir=lib64 ;; *) libdir=lib ;; esac
 
 if [ $# -eq 0 ] ; then
   opt_download=1 ; opt_config=1 ; opt_build=1 ; opt_package=1
@@ -191,6 +185,8 @@ if [ $opt_config -eq 1 ] ; then
     for patch in $patchfiles ; do
       patch -p1 < $W/$patch
     done
+    sed -i 's/IO_ftrylockfile/IO_EOF_SEEN/' lib/*.c        &&
+	echo "#define _IO_IN_BACKUP 0x100" >> lib/stdio-impl.h &&
 
     # if [ -f autogen.sh ] ; then
     #   sh ./autogen.sh

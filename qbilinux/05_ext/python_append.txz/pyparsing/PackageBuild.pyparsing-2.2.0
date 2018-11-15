@@ -4,7 +4,7 @@
 pkgbase=pyparsing
 vers=2.2.0
 url="https://sourceforge.net/projects/pyparsing/files/pyparsing/pyparsing-${vers}/pyparsing-${vers}.tar.gz"
-apply_arch="x86_64 i686 armv7l"
+apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=T2
 src=$pkgbase-$vers

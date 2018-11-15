@@ -3,7 +3,7 @@
 pkgbase=poppler
 vers=0.68.0
 url="https://poppler.freedesktop.org/poppler-${vers}.tar.xz"
-apply_arch="x86_64 i686 armv7l"
+apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=T1
 src=poppler-${vers}
