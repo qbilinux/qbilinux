@@ -31,7 +31,7 @@ OPT_CONFIG="$OPT_CONFIG \
 OPT_CONFIG="$OPT_CONFIG \
  --enable-libvo-amrwbenc
  --enable-libass"
-if [ $arch != "armv7l" ]; then
+if [ $arch != "armv7l" -o $arch != "aarch64" ]; then
     OPT_CONFIG="$OPT_CONFIG --enable-libx265"
 fi
 DOCS='COPYING.GPLv2 COPYING.GPLv3 COPYING.LGPLv2.1 COPYING.LGPLv3 CREDITS Changelog INSTALL.md LICENSE.md MAINTAINERS README.md RELEASE RELEASE_NOTES VERSION'

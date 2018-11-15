@@ -31,8 +31,8 @@ myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
 
 case $arch in
-  x86_64)  libdir="lib64"; suffix="64" ;;
-  *)       libdir="lib";   suffix="" ;;
+    i686 | armv7l)   libdir=lib ;;
+    x86_64 | aarch64) libdir=lib64 ;;
 esac
 
 ############# begin user function

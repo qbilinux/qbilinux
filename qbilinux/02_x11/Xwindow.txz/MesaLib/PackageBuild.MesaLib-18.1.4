@@ -6,7 +6,7 @@ url="ftp://ftp.freedesktop.org/pub/mesa/mesa-${vers}.tar.xz"
 arch=`uname -m`
 build=T2
 src=mesa-${vers}
-if [ $arch = "armv7l" ]; then
+if [ $arch = "armv7l" -o $arch = "armv7l" ]; then
 OPT_CONFIG='--enable-texture-float 
          --enable-llvm-shared-libs
          --enable-gles1  --enable-gles2 
