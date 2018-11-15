@@ -11,6 +11,7 @@ OPT_CONFIG=""
 DOCS="INSTALL COPYING PERFORMANCE.README README DONATIONS
     ACKNOWLEDGEMENTS CHANGES pseudo-file.example README-4.2
     `echo OLD-READMEs/README-{3.3,2.0,3.1,3.2,4.0,AMD64,4.1,2.1,3.0}`"
+patchfiles='glibc.patch'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -145,7 +146,7 @@ mandir=$P/usr/share/man
 docdir=$P/usr/share/doc
 myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
-case $arch in i586) libdir=lib ;; x86_64) libdir=lib64 ;; esac
+case $arch in x86_64 | aarch64) libdir=lib64 ;; *) libdir=lib ;; esac
 if [ $# -eq 0 ] ; then
   opt_download=1 ; opt_config=1 ; opt_build=1 ; opt_package=1
 else
@@ -203,6 +204,10 @@ if [ $opt_config -eq 1 ] ; then
 	> 	cp unsquashfs $(DESTDIR)$(INSTALL_DIR)
 	EOF
   for i in `seq 0 $((${#B[@]} - 1))` ; do
+    cd ${B[$i]}
+    for patch in $patchfiles ; do
+	patch -p1 < $W/$patch
+    done
     cd ${B[$i]}/squashfs-tools
     if [ -f Makefile ] ; then
       make clean
@@ -262,6 +267,10 @@ if [ $opt_package -eq 1 ] ; then
       ln $docdir/$src/$myname.gz $docdir/${src[$i]}
     fi
     ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
+  done
+  for patch in $patchfiles ; do
+      cp $W/$patch $docdir/$src/$patch
+      gzip_one $docdir/$src/$patch
   done
   convert
   cd $P

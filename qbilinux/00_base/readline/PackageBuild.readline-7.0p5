@@ -9,7 +9,7 @@ https://ftp.gnu.org/gnu/readline/readline-7.0-patches/readline70-003
 https://ftp.gnu.org/gnu/readline/readline-7.0-patches/readline70-004
 https://ftp.gnu.org/gnu/readline/readline-7.0-patches/readline70-005"
 commitid=
-apply_arch="x86_64 i686 armv7l"
+apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=T1
 src=readline-7.0

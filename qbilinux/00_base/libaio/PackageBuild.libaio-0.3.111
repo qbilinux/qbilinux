@@ -4,7 +4,7 @@ pkgbase="libaio"
 vers=0.3.111
 url='https://releases.pagure.org/libaio/libaio-0.3.111.tar.gz'
 commitid=
-apply_arch="x86_64 i686 armv7l"
+apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=T1
 src=libaio-${vers}
@@ -30,10 +30,7 @@ docdir=$P/usr/share/doc
 myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
 
-case $arch in
-  x86_64)  libdir="lib64"; suffix="64" ;;
-  *)       libdir="lib";   suffix="" ;;
-esac
+case $arch in x86_64 | aarch64) libdir=lib64 ;; *) libdir=lib ;; esac
 
 ############# begin user function
 
