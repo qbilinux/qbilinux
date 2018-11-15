@@ -33,7 +33,7 @@ def usage():
     print("")
     print("   buildir: directory contains package and desc file.")
     print("   destdir: direcotry for qbilinux distrobution")
-    print("   arch:    x86_64 x86 armv7l")
+    print("   arch:    x86_64 x86 armv7l aarch64")
     print("")
     print("   ex) "+args[0]+" qbilinux qbilinux-0.0 x86_64")
     print("")
@@ -46,7 +46,7 @@ if (argc != 4):
 #    usage()
 #    quit()
 
-if (args[3] != "x86_64" and args[3] != "x86" and args[3] != "armv7l"):
+if (args[3] != "x86_64" and args[3] != "x86" and args[3] != "armv7l" and args[3] != "aarch64"):
     usage()
     quit()
 

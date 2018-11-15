@@ -281,7 +281,7 @@ if [ $opt_config -eq 1 ] ; then
   patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-dither16.patch
   patch -Np1 -i $W/xv-3.10a-Xsun.patch
   patch -Np1 -i $W/xv-3.10a-grab.patch
-if [ $arch = "armv7l" ]; then
+if [ $arch = "armv7l" -o $arch = "aarch64" ]; then
   patch -Np1 -i $W/xv-3.10a-arm-patch
 else
   patch -Np1 -i $W/xv-3.10a-plamo-patch

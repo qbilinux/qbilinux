@@ -10,6 +10,10 @@ if [ $arch = "armv7l" ]; then
     build_arch=arm-pc-linux-gnueabihf
     libdir="lib"
     ARCH_CONFIG='--with-arch=armv6 --with-fpu=vfp --with-float=hard'
+elif [ $arch = "aarch64" ]; then
+    build_arch=${arch}-pc-linux-gnu
+    libdir="lib64"
+    ARCH_CONFIG=''
 elif [ $arch = "x86_64" ]; then
     build_arch=${arch}-pc-linux-gnu
     libdir="lib64"
@@ -172,12 +176,6 @@ xmandir=$P/usr/X11R7/share/man
 docdir=$P/usr/share/doc
 myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
-
-if [ $arch = "x86_64" ]; then
-    libdir="lib64"
-else
-    libdir="lib"
-fi
 
 if [ $# -eq 0 ] ; then
   opt_download=0 ; opt_config=1 ; opt_build=1 ; opt_package=1
@@ -357,7 +355,7 @@ if [ $opt_package -eq 1 ] ; then
   pkgbase=gcc
   pkg=$pkgbase-$vers-$arch-$build
   mkdir -p $P/usr/bin $P/usr/${libdir}
-  for i in cpp cc gcc gccbug gcov gcov-tool ${build_arch}-gcc ${build_arch}-gcc-$vers ; do
+  for i in cpp cc gcc gccbug gcov gcov-tool gcov-dump ${build_arch}-gcc ${build_arch}-gcc-$vers ; do
       mv $P2/usr/bin/$i $P/usr/bin
   done
   # wrappers for LTO. 
@@ -369,6 +367,10 @@ if [ $opt_package -eq 1 ] ; then
 
   mkdir -p $P/lib
   ( cd $P/lib ; ln -sf ../usr/bin/cpp cpp )
+  if [ $arch = "aarch64" ]; then
+      mkdir -p $P/usr/lib
+      mv $P2/usr/lib/gcc $P/usr/lib
+  fi
   mv $P2/usr/${libdir}/gcc $P/usr/${libdir}
   mv $P2/usr/${libdir}/libgcc* $P/usr/${libdir}/
   mv $P2/usr/${libdir}/libgomp* $P/usr/${libdir}/
@@ -398,7 +400,7 @@ if [ $opt_package -eq 1 ] ; then
       mv $P2/usr/share/info/$i.info.gz $P/usr/share/info
   done
   mv $P2/usr/share/locale/* $P/usr/share/locale
-  for i in cpp gcc gcov ; do
+  for i in cpp gcc gcov gcov-dump gcov-tool ; do
       mv $P2/usr/share/man/man1/$i.1.gz $P/usr/share/man/man1
   done
   for i in fsf-funding gfdl gpl ; do

@@ -3,13 +3,13 @@
 pkgbase=icu62
 vers=62.1
 url="http://download.icu-project.org/files/icu4c/${vers}/icu4c-${vers//./_}-src.tgz"
-apply_arch="x86_64 i686 armv7l"
+apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=T1
 src=icu
 OPT_CONFIG=''
 DOCS='license.html readme.html unicode-license.txt'
-if [ $arch = "armv7l" ]; then
+if [ $arch = "armv7l"]; then
     patchfiles='arm.patch'
 else
     patchfiles=''

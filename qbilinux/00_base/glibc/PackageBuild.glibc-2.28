@@ -146,7 +146,7 @@ mandir=$P/usr/share/man
 docdir=$P/usr/share/doc
 myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
-case $arch in x86_64) libdir=lib64 ;; *) libdir=lib ;; esac
+case $arch in x86_64 | aarch64) libdir=lib64 ;; *) libdir=lib ;; esac
 if [ $# -eq 0 ] ; then
   opt_download=1 ; opt_config=1 ; opt_build=1 ; opt_package=1
 else
@@ -229,6 +229,10 @@ if [ $opt_config -eq 1 ] ; then
       cat <<- "EOF" > configparms ;;
 	CFLAGS += -march=armv7-a -mtune=native -O3 -pipe
 	EOF
+    aarch64)
+      cat <<- "EOF" > configparms ;;
+	slibdir=/lib64
+	EOF
     esac
     if [ -x ${S2[$i]}/configure ] ; then
       ${S2[$i]}/configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
@@ -262,7 +266,7 @@ if [ $opt_package -eq 1 ] ; then
     if [ -f Makefile ] ; then
       make install DESTDIR=$P
       ln -s $P/usr/share/locale $P/usr/$libdir
-      make localedata/install-locales DESTDIR=$P
+      #make localedata/install-locales DESTDIR=$P
     fi
   done
   find $P/usr/$libdir -maxdepth 1 ! -type d -exec rm {} \;

@@ -3,7 +3,7 @@
 pkgbase=libcxx
 vers=7.0.0
 url="http://www.llvm.org/releases/${vers}/libcxx-${vers}.src.tar.xz"
-apply_arch="x86_64 i686 armv7l"
+apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=T1
 src=libcxx-${vers}.src

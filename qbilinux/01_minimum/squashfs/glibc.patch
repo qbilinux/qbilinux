@@ -1,0 +1,20 @@
+--- squashfs4.3/squashfs-tools/mksquashfs.c	2014-05-13 07:18:20.000000000 +0900
++++ build/squashfs-tools/mksquashfs.c	2018-11-15 07:47:35.995998384 +0900
+@@ -50,6 +50,7 @@
+ #include <sys/wait.h>
+ #include <limits.h>
+ #include <ctype.h>
++#include <sys/sysmacros.h>
+ 
+ #ifndef linux
+ #define __BYTE_ORDER BYTE_ORDER
+--- squashfs4.3/squashfs-tools/unsquashfs.c	2014-05-13 07:18:35.000000000 +0900
++++ build/squashfs-tools/unsquashfs.c	2018-11-15 07:50:53.658998308 +0900
+@@ -37,6 +37,7 @@
+ #include <sys/resource.h>
+ #include <limits.h>
+ #include <ctype.h>
++#include <sys/sysmacros.h>
+ 
+ struct cache *fragment_cache, *data_cache;
+ struct queue *to_reader, *to_inflate, *to_writer, *from_writer;
