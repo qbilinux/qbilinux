@@ -1,0 +1,11 @@
+--- elfutils-0.170/backends/linux-core-note.c	2017-06-19 23:45:16.000000000 +0900
++++ build/backends/linux-core-note.c	2018-11-13 22:31:02.480841315 +0900
+@@ -111,7 +111,7 @@
+   FIELD (INT, pr_fpvalid);
+ }
+ #ifdef ALIGN_PRSTATUS
+-  __attribute__ ((packed, aligned (ALIGN_PRSTATUS)))
++  attribute_packed __attribute__ ((aligned (ALIGN_PRSTATUS)))
+ #endif
+ ;
+ 

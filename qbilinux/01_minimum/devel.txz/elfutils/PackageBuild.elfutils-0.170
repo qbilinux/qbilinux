@@ -10,7 +10,7 @@ src=$pkgbase-$vers
 OPT_CONFIG="--program-prefix=eu-"
 DOCS="COPYING THANKS NOTES AUTHORS ABOUT-NLS COPYING-GPLV2 NEWS
     COPYING-LGPLV3 CONTRIBUTING INSTALL TODO README ChangeLog"
-patchfiles=""
+patchfiles="m68k-alignment-error.patch"
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
