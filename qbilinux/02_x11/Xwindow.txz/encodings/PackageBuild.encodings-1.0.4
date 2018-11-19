@@ -154,11 +154,10 @@ docdir=$P/usr/share/doc
 myname=`basename $0`
 pkg=$pkgbase-$vers-$arch-$build
 
-if [ $arch = "x86_64" ]; then
-    libdir="lib64"
-else
-    libdir="lib"
-fi
+case $arch in
+    i686 | armv7l)   libdir=lib ;;
+    x86_64 | aarch64) libdir=lib64 ;;
+esac
 
 if [ $arch = "noarch" ]; then
     target=""
