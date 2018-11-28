@@ -1,19 +1,20 @@
 #!/bin/sh
 ##############################################################
 pkgbase=kodi
-vers=17.6
-url="https://github.com/xbmc/xbmc/archive/${vers}-Krypton.tar.gz"
+vers=18.0rc1
+url="https://github.com/xbmc/xbmc/archive/18.0rc1-Leia.tar.gz"
 commitid=
-apply_arch="x86_64 i686 armv7l"
+apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T3
-src=xbmc-${vers}-Krypton
-OPT_CONFIG='--disable-mysql'
-if [ $arch = 'armv7l' ] ; then
+build=T1
+src=xbmc-${vers}-Leia
+OPT_CONFIG='-DENABLE_INTERNAL_FLATBUFFERS=ON -DENABLE_INTERNAL_FSTRCMP=ON -DENABLE_INTERNAL_RapidJSON=ON'
+#OPT_CONFIG='-DENABLE_INTERNAL_FLATBUFFERS=ON -DENABLE_INTERNAL_FMT=ON -DENABLE_INTERNAL_FSTRCMP=ON -DENABLE_INTERNAL_RapidJSON=ON'
+if [ $arch = 'armv7l' -o $arch = 'aarch64' ] ; then
     OPT_CONFIG="$OPT_CONFIG --disable-gl"
 fi
 DOCS='LICENSE.GPL README.md copying.txt privacy-policy.txt version.txt'
-patchfiles='patch-aa'
+patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -36,12 +37,9 @@ do_config() {
 
     cp -a ${S[$1]} ${B[$1]}
     cd ${B[$1]}
-    if [ -x ./configure ] ; then
-	export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
-	export LDFLAGS='-Wl,--as-needed' 
-	./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc \
-		--localstatedir=/var --infodir='${prefix}'/share/info --mandir='${prefix}'/share/man ${OPT_CONFIG[$1]}
-    fi
+    export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
+    export LDFLAGS='-Wl,--as-needed' 
+    cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DLIB_INSTALL_DIR:PATH=/usr/${libdir} -DLIB_SUFFIX=$suffix ${OPT_CONFIG} ${S[$1]}
     if [ $? != 0 ]; then
 	echo "configure error. $0 script stop"
 	exit 255
@@ -75,13 +73,6 @@ do_install() {
     fi
 
     # add extra func
-    mkdir $docdir/$src
-    cp -a $S/examples $docdir/$src
-    rm $docdir/$src/examples/Makefile
-    chmod -R o+r $docdir/$src/examples
-    chown -R root.root $docdir/$src/examples
-    mv $docdir/$src/{examples,$myname.gz} $C
-    mv $C/{examples,$myname.gz} $docdir/$src
 }
 
 do_package() {
