@@ -1,13 +1,13 @@
 #!/bin/sh
 ##############################################################
 pkgbase=qt5
-vers=5.11.2
+vers=5.10.1
 url="http://download.qt.io/archive/qt/${vers%.*}/${vers}/single/qt-everywhere-src-${vers}.tar.xz"
-apply_arch="x86_64 i686 armv7l aarch64"
+apply_arch="x86_64 i686 armv7l"
 arch=`uname -m`
-build=T4
+build=T5
 src=qt-everywhere-src-${vers}
-if [ $arch = "armv7l" -o $arch = "aarch64" ]; then
+if [ $arch = "armv7l" ]; then
 OPT_CONFIG="-sysconfdir     /etc/xdg   \
             -no-opengl                 \
             -confirm-license           \
@@ -39,13 +39,13 @@ OPT_CONFIG="-sysconfdir     /etc/xdg   \
 fi
 #OPT_CONFIG="-no-webkit -confirm-license -opensource -sysconfdir /etc/xdg -headerdir /usr/include/qt5 -docdir /usr/share/doc/${src} -system-libpng -system-libjpeg -system-zlib -system-sqlite -system-pcre -plugin-sql-sqlite -icu -openssl -verbose -optimized-qmake -dbus-linked -qpa xcb -xcb -glib -accessibility -no-separate-debug-info -no-pch -no-rpath -no-strip -release -no-use-gold-linker -reduce-relocations -pulseaudio -nomake examples"
 DOCS='LGPL_EXCEPTION.txt LICENSE.FDL LICENSE.GPLv2 LICENSE.GPLv3 LICENSE.LGPLv21 LICENSE.LGPLv3 LICENSE.PREVIEW.COMMERCIAL README'
-patchfiles='qt-5.11.2-glibc228-1.patch'
+patchfiles='qt-5.10.1-glibc228-1.patch'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ##############################################################
 
-source /usr/src/plamo-nora/PackageBuild.def
+source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
     cd ${S[$i]}
@@ -112,7 +112,7 @@ do_install() {
 	esac
     done
 
-cat > $P/usr/lib${suffix}/pkgconfig/Qt5.pc << EOF
+    cat > $P/usr/lib${suffix}/pkgconfig/Qt5.pc << EOF
 prefix=/usr/lib${suffix}/qt5
 bindir=\${prefix}/bin
 datadir=\${prefix}
@@ -135,51 +135,34 @@ Description: Qt5 Configuration
 Version: $VERSION
 EOF
 
-# Fix internal linking for Qt5WebEngineCore.pc.
-sed -i 's|-Wl,--start-group.*-Wl,--end-group||' $P/usr/lib${suffix}/pkgconfig/Qt5WebEngineCore.pc
+    # Fix internal linking for Qt5WebEngineCore.pc.
+    sed -i 's|-Wl,--start-group.*-Wl,--end-group||' $P/usr/lib${suffix}/pkgconfig/Qt5WebEngineCore.pc
 
-#./usr/lib64/pkgconfig/Qt5WebEngineCore.pc
-sed -i 's|-L$W[^ ]* ||g' $P/usr/lib${suffix}/pkgconfig/Qt5WebEngineCore.pc
-#./usr/lib64/libqgsttools_p.prl
-sed -i 's|-L$W[^ ]* ||g' $P/usr/lib${suffix}/libqgsttools_p.prl
+    #./usr/lib64/pkgconfig/Qt5WebEngineCore.pc
+    sed -i 's|-L$W[^ ]* ||g' $P/usr/lib${suffix}/pkgconfig/Qt5WebEngineCore.pc
+    #./usr/lib64/libqgsttools_p.prl
+    sed -i 's|-L$W[^ ]* ||g' $P/usr/lib${suffix}/libqgsttools_p.prl
 
-# While we are at it, there isn't any reason to keep references to $PKG in the *.prl files.
-for PRL in $(find $P -name "*\.prl"); do
-  sed -i '/^QMAKE_PRL_BUILD_DIR/d' $PRL
-done
+    # While we are at it, there isn't any reason to keep references to $PKG in the *.prl files.
+    for PRL in $(find $P -name "*\.prl"); do
+	sed -i '/^QMAKE_PRL_BUILD_DIR/d' $PRL
+    done
 
-for i in $W/*.desktop; do
-  install -D -m 0644 $i $P/usr/share/applications/$(basename $i)
-done
-sed -i "s|@LIBDIR@|$suffix|" $P/usr/share/applications/*
+    for i in $W/*.desktop; do
+	install -D -m 0644 $i $P/usr/share/applications/$(basename $i)
+    done
+    sed -i "s|@LIBDIR@|$suffix|" $P/usr/share/applications/*
 
-# Remove executable bits from files.
-find $P \( -name "*.qml" -o -name "*.app" \) -perm 755 -exec chmod 644 '{}' \;
+    # Remove executable bits from files.
+    find $P \( -name "*.qml" -o -name "*.app" \) -perm 755 -exec chmod 644 '{}' \;
 
+    mkdir -p $P/etc/profile.d
+    sed -e "s|@LIBDIRSUFFIX@|${suffix}|g" $W/qt5.sh  > $P/etc/profile.d/qt5.sh
+    sed -e "s|@LIBDIRSUFFIX@|${suffix}|g" $W/qt5.csh > $P/etc/profile.d/qt5.csh
+    chmod 0755 $PKG/etc/profile.d/*
 
-######################################################################
-# * make install でコピーされないファイルがある場合はここに記述します。
-######################################################################
-  mkdir -p $P/etc/profile.d
-  sed -e "s|@LIBDIRSUFFIX@|${suffix}|g" $W/qt5.sh \
-  > $P/etc/profile.d/qt5.sh
-  sed -e "s|@LIBDIRSUFFIX@|${suffix}|g" $W/qt5.csh \
-  > $P/etc/profile.d/qt5.csh
-  chmod 0755 $PKG/etc/profile.d/*
-
-  # application configurations from BLFS
-  install -dm755 $P/usr/share/applications
-
-  # for kxmlgui
-  #(cd $P/usr/include/qt5/QtCore ; ln -sf $vers/QtCore/private . )
-  # for kwayland
-  #(cd $P/usr/include/qt5/QtGui ; ln -sf $vers/QtGui/qpa . )
-  # for kwin
-  #(cd $P/usr/include/qt5/QtGui ; ln -sf $vers/QtGui/private . )
-  # for 
-  #(cd $P/usr/include/qt5/QtPrintSupport ; ln -sf $vers/QtPrintSupport/private . )
-  # for 
-  #(cd $P/usr/include/qt5/QtWidgets ; ln -sf $vers/QtWidgets/private . )
+    # application configurations from BLFS
+    install -dm755 $P/usr/share/applications
 }
 
 do_package() {
@@ -192,4 +175,4 @@ EOF
     done
 }
 
-source /usr/src/plamo-nora/PackageBuild.func
+source /usr/src/qbilinux/PackageBuild.func
