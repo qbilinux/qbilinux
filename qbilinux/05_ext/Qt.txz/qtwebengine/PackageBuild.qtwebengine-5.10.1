@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=qtwebengine
-vers=5.11.2
+vers=5.10.1
 url="https://download.qt.io/archive/qt/${vers%.*}/${vers}/submodules/qtwebengine-everywhere-src-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T1
+build=T3
 src=qtwebengine-everywhere-src-${vers}
 OPT_CONFIG=''
 DOCS='LICENSE.GPL2 LICENSE.GPL3 LICENSE.GPL3-EXCEPT LICENSE.GPLv3 LICENSE.LGPL3'
@@ -16,7 +16,7 @@ SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ##############################################################
 
-source /usr/src/plamo-nora/PackageBuild.def
+source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
     cd ${S[$i]}
@@ -30,7 +30,7 @@ do_config() {
 
     mkdir ${B[$1]}
     cd ${B[$1]}
-    qmake-qt5 ${S[$i]}
+    qmake-qt5 ${S[$1]}
     if [ $? != 0 ]; then
 	echo "configure error. $0 script stop"
 	exit 255
@@ -89,4 +89,4 @@ EOF
     done
 }
 
-source /usr/src/plamo-nora/PackageBuild.func
+source /usr/src/qbilinux/PackageBuild.func
