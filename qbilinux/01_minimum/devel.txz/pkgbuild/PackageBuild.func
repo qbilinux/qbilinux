@@ -160,7 +160,6 @@ if [ $opt_download -eq 1 ] ; then
 	case ${i##*.} in
 	    git)
 		( cd $W/source
-		  rm -rf clone $W/`basename ${i##*/} .git`
 		  git clone $W/`basename ${i##*/} .git`
 		  ( cd $W/source/`basename ${i##*/} .git`
 		    if [ -n "$commitid" ] ; then
