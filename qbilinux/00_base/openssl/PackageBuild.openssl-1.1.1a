@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=openssl
-vers=1.1.1
+vers=1.1.1a
 url="http://www.openssl.org/source/openssl-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
@@ -41,7 +41,6 @@ do_config() {
 	x86_64) sys=x86_64 ;;
 	armv7l) sys=armv4 ;;
     esac
-    # ./Configure linux-$sys --prefix=/usr --openssldir=/etc/ssl shared zlib-dynamic enable-ssl2
     ${S[$1]}/config --prefix=/usr --openssldir=/etc/ssl shared zlib-dynamic enable-ssl2
     if [ $? != 0 ]; then
 	echo "configure error. $0 script stop"
