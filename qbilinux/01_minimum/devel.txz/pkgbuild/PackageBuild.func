@@ -167,6 +167,8 @@ if [ $opt_download -eq 1 ] ; then
 		    fi
 		    git set-file-times
 		  )) ;;
+	    jar)
+		;;
 	    zip)
 		( cd $W/source ; unzip -o $W/${i##*/} ) ;;
 	    *)

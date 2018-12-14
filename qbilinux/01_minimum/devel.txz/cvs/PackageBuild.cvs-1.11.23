@@ -6,7 +6,7 @@ vers=1.11.23
 url="http://ftp.gnu.org/non-gnu/cvs/source/stable/${vers}/cvs-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T2
+build=T3
 src=$pkgbase-$vers
 patchfiles=""
 OPT_CONFIG=""
@@ -59,9 +59,6 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}
-    for mk in `find . -name "[Mm]akefile" ` ; do
-	sed -i -e 's|GCONFTOOL = /usr/bin/gconftool-2|GCONFTOOL = echo|' $mk
-    done
     if [ -f Makefile ] ; then
 	export LDFLAGS='-Wl,--as-needed'
 	make install DESTDIR=$P
@@ -72,6 +69,9 @@ do_install() {
     fi
 
     # add extra func
+}
+
+do_package() {
     mkdir $docdir/$src
     cp -a $S/examples $docdir/$src
     rm $docdir/$src/examples/Makefile
@@ -79,9 +79,7 @@ do_install() {
     chown -R root.root $docdir/$src/examples
     mv $docdir/$src/{examples,$myname.gz} $C
     mv $C/{examples,$myname.gz} $docdir/$src
-}
 
-do_package() {
     for i in $pkgbase ; do
         cd $P
         /sbin/makepkg $W/$pkg.$compress <<EOF
