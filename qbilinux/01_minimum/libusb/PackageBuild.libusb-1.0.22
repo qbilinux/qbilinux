@@ -4,7 +4,7 @@
 pkgbase=libusb
 vers=1.0.22
 url="http://downloads.sourceforge.net/libusb/libusb-${vers}.tar.bz2"
-apply_arch="x86_64 i686 armv7l"
+apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=T1
 src=$pkgbase-$vers
