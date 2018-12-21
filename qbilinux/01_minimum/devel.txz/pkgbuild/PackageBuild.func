@@ -281,7 +281,7 @@ EOF
 	else
 	    ln $docdir/$src/$myname.gz $docdir/${src[$i]}
 	fi
-	( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
+	#( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
     done
 
     for patch in $patchfiles ; do
