@@ -5,7 +5,7 @@ vers=1.0.10
 url="ftp://ftp.x.org/pub/individual/app/twm-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T1
+build=T2
 src=twm-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='COPYING ChangeLog INSTALL README'
@@ -56,9 +56,6 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}
-    for mk in `find . -name "[Mm]akefile" ` ; do
-	sed -i -e 's|GCONFTOOL = /usr/bin/gconftool-2|GCONFTOOL = echo|' $mk
-    done
     if [ -f Makefile ] ; then
 	export LDFLAGS='-Wl,--as-needed'
 	make install DESTDIR=$P
