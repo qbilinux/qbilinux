@@ -5,11 +5,11 @@ vers=4.20
 url="http://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v${vers}/src/nspr-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T1
+build=T2
 src=${pkgbase}-${vers}
 OPT_CONFIG='--with-mozilla --with-pthreads'
-if [ $arch = "x86_64" ]; then
-  OPT_CONFIG="$OPT_CONFIG --enable-64bit"
+if [ $arch = "x86_64" -o $arch = "aarch64" ]; then
+    OPT_CONFIG="$OPT_CONFIG --enable-64bit"
 fi 
 DOCS=''
 patchfiles=''
@@ -63,9 +63,6 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}/nspr
-    for mk in `find . -name "[Mm]akefile" ` ; do
-	sed -i -e 's|GCONFTOOL = /usr/bin/gconftool-2|GCONFTOOL = echo|' $mk
-    done
     if [ -f Makefile ] ; then
 	export LDFLAGS='-Wl,--as-needed'
 	make install DESTDIR=$P

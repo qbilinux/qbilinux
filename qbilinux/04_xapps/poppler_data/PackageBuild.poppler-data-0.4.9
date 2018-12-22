@@ -5,7 +5,7 @@ vers=0.4.9
 url="http://poppler.freedesktop.org/poppler-data-${vers}.tar.gz"
 apply_arch="noarch"
 arch=noarch
-build=T1
+build=T2
 src=poppler-data-${vers}
 OPT_CONFIG=''
 DOCS='COPYING README'
@@ -54,9 +54,6 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}
-    for mk in `find . -name "[Mm]akefile" ` ; do
-	sed -i -e 's|GCONFTOOL = /usr/bin/gconftool-2|GCONFTOOL = echo|' $mk
-    done
     if [ -f Makefile ] ; then
 	export LDFLAGS='-Wl,--as-needed'
 	make install prefix=/usr DESTDIR=$P
