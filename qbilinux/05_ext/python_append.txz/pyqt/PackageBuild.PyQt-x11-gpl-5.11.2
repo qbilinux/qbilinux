@@ -5,7 +5,7 @@ vers=5.11.2
 url="https://sourceforge.net/projects/pyqt/files/PyQt5/PyQt-${vers}/PyQt5_gpl-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T1
+build=T2
 src=PyQt5_gpl-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='ChangeLog LICENSE NEWS README'
@@ -32,7 +32,7 @@ do_config() {
     python3 ./configure.py --confirm-license
 
     # Thanks Gerardo for the rpath fix
-    if [ "$arch" = "x86_64" ]; then
+    if [ "$arch" = "x86_64" -o "$arch" = "aarch64" ]; then
 	find -name 'Makefile' | xargs sed -i 's|-Wl,-rpath,/usr/lib64||g;s|-Wl,-rpath,.* ||g'
     else
     	find -name 'Makefile' | xargs sed -i 's|-Wl,-rpath,/usr/lib||g;s|-Wl,-rpath,.* ||g'
@@ -56,9 +56,6 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}
-    for mk in `find . -name "[Mm]akefile" ` ; do
-	sed -i -e 's|GCONFTOOL = /usr/bin/gconftool-2|GCONFTOOL = echo|' $mk
-    done
     make install DESTDIR=$P INSTALL_ROOT=$P
 
     if [ $? != 0 ]; then

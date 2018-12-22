@@ -5,7 +5,7 @@ vers=4.19.12
 url="http://downloads.sourceforge.net/project/pyqt/sip/sip-${vers}/sip-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T1
+build=T2
 src=sip-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='LICENSE LICENSE-GPL2 LICENSE-GPL3 NEWS README'
@@ -49,9 +49,6 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}
-    for mk in `find . -name "[Mm]akefile" ` ; do
-	sed -i -e 's|GCONFTOOL = /usr/bin/gconftool-2|GCONFTOOL = echo|' $mk
-    done
     make install DESTDIR=$P
 
     if [ $? != 0 ]; then

@@ -6,7 +6,7 @@ vers=0.10.1
 url="https://sourceforge.net/projects/lirc/files/LIRC/${vers}/lirc-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T1
+build=T21
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="AUTHORS CONTRIBUTE.md COPYING COPYING.ciniparser COPYING.curl ChangeLog INSTALL NEWS README README.conf.d VERSION"
@@ -55,9 +55,6 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}
-    for mk in `find . -name "[Mm]akefile" ` ; do
-	sed -i -e 's|GCONFTOOL = /usr/bin/gconftool-2|GCONFTOOL = echo|' $mk
-    done
     if [ -f Makefile ] ; then
 	export LDFLAGS='-Wl,--as-needed'
 	make install DESTDIR=$P
