@@ -6,7 +6,7 @@ url='https://files.pythonhosted.org/packages/cf/61/d3b2aab34ed230eeb363e833e2ccc
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T2
+build=T3
 src=grabber-${vers}
 OPT_CONFIG=''
 DOCS='LICENSE README.md'
@@ -48,9 +48,6 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}
-    for mk in `find . -name "[Mm]akefile" ` ; do
-	sed -i -e 's|GCONFTOOL = /usr/bin/gconftool-2|GCONFTOOL = echo|' $mk
-    done
     PYTHON=/usr/bin/python3
     python3 ./setup.py install --root=$P
 
