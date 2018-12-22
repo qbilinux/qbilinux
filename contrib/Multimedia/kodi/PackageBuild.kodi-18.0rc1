@@ -6,7 +6,7 @@ url="https://github.com/xbmc/xbmc/archive/18.0rc1-Leia.tar.gz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T1
+build=T2
 src=xbmc-${vers}-Leia
 OPT_CONFIG='-DENABLE_INTERNAL_FLATBUFFERS=ON -DENABLE_INTERNAL_FSTRCMP=ON -DENABLE_INTERNAL_RapidJSON=ON'
 #OPT_CONFIG='-DENABLE_INTERNAL_FLATBUFFERS=ON -DENABLE_INTERNAL_FMT=ON -DENABLE_INTERNAL_FSTRCMP=ON -DENABLE_INTERNAL_RapidJSON=ON'
@@ -60,9 +60,6 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}
-    for mk in `find . -name "[Mm]akefile" ` ; do
-	sed -i -e 's|GCONFTOOL = /usr/bin/gconftool-2|GCONFTOOL = echo|' $mk
-    done
     if [ -f Makefile ] ; then
 	export LDFLAGS='-Wl,--as-needed'
 	make install DESTDIR=$P
