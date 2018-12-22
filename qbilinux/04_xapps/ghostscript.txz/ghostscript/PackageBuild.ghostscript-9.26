@@ -5,7 +5,7 @@ vers=9.26
 url="https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs${vers//./}/ghostscript-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T1
+build=T2
 src=ghostscript-${vers}
 OPT_CONFIG="--x-includes=/usr/include/X11 --x-libraries=/usr/lib64 --disable-compile-inits --with-system-libtiff --with-ijs --with-jbig2dec --with-jasper --with-x --with-drivers=ALL --enable-contrib"
 DOCS='LICENSE'
@@ -60,9 +60,6 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}
-    for mk in `find . -name "[Mm]akefile" ` ; do
-	sed -i -e 's|GCONFTOOL = /usr/bin/gconftool-2|GCONFTOOL = echo|' $mk
-    done
     if [ -f Makefile ] ; then
 	export LDFLAGS='-Wl,--as-needed'
 	make install DESTDIR=$P

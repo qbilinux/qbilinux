@@ -5,7 +5,7 @@ vers=1.12.10
 url="http://dbus.freedesktop.org/releases/dbus/dbus-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T1
+build=T2
 src=dbus-${vers}
 OPT_CONFIG='--with-console-auth-dir=/var/run/console --disable-static  --with-xml=expat --without-systemdsystemunitdir --disable-systemd '
 DOCS='AUTHORS COPYING ChangeLog ChangeLog.pre-1-0 ChangeLog.pre-1-2 HACKING INSTALL NEWS NEWS.pre-1-0 NEWS.pre-1-2 README README.cygwin README.launchd README.win README.wince'
@@ -55,9 +55,6 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}
-    for mk in `find . -name "[Mm]akefile" ` ; do
-	sed -i -e 's|GCONFTOOL = /usr/bin/gconftool-2|GCONFTOOL = echo|' $mk
-    done
     if [ -f Makefile ] ; then
 	export LDFLAGS='-Wl,--as-needed'
 	make install DESTDIR=$P

@@ -6,7 +6,7 @@ vers=3.41
 url="http://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_${vers//./_}_RTM/src/nss-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T1
+build=T2
 src=${pkgbase}-${vers}
 OPT_CONFIG=''
 DOCS=''
@@ -52,17 +52,14 @@ do_build() {
     export NSPR_INCLUDE_DIR=/usr/include/nspr
     export USE_SYSTEM_NSPR=1
     export USE_SYSTEM_ZLIB=1
-    if [ $arch = "x86_64" ]; then
-      export USE_64=1
+    if [ $arch = "x86_64" -o $arch = "aarch64" ]; then
+	export USE_64=1
     fi
     cd nss && make -j1
 }
 
 do_install() {
     cd ${B[$1]}
-    for mk in `find . -name "[Mm]akefile" ` ; do
-	sed -i -e 's|GCONFTOOL = /usr/bin/gconftool-2|GCONFTOOL = echo|' $mk
-    done
     export NSS_LINUXDIR=$( basename `ls -d $PWD/dist/Linux*` )
     pushd dist
     install -v -m755 -d $P/usr/${libdir}

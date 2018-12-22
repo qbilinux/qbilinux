@@ -3,9 +3,9 @@
 pkgbase=sane_backends
 vers=1.0.24
 url='https://alioth.debian.org/frs/download.php/file/3958/sane-backends-1.0.24.tar.gz'
-apply_arch="x86_64 i686 armv7l"
+apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T1
+build=T2
 src=sane-backends-1.0.24
 OPT_CONFIG='--disable-static --enable-avahi'
 DOCS='AUTHORS COPYING ChangeLog* INSTALL LICENSE NEWS PROBLEMS PROJECTS README* sane-backends.lsm'
@@ -55,9 +55,6 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}
-    for mk in `find . -name "[Mm]akefile" ` ; do
-	sed -i -e 's|GCONFTOOL = /usr/bin/gconftool-2|GCONFTOOL = echo|' $mk
-    done
     if [ -f Makefile ] ; then
 	export LDFLAGS='-Wl,--as-needed'
 	make install DESTDIR=$P
