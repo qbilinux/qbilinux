@@ -6,7 +6,7 @@ url='https://downloadmirror.intel.com/28087/eng/microcode-20180807a.tgz'
 commitid=
 apply_arch="x86_64 i686"
 arch=`uname -m`
-build=T1
+build=T2
 src=microcode_intel-${vers}
 OPT_CONFIG=''
 DOCS='license releasenote'
@@ -16,7 +16,7 @@ SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ##############################################################
 
-source /usr/src/plamo-nora/PackageBuild.def
+source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
     cd ${S[$i]}
@@ -55,4 +55,4 @@ EOF
     done
 }
 
-source /usr/src/plamo-nora/PackageBuild.func
+source /usr/src/qbilinux/PackageBuild.func

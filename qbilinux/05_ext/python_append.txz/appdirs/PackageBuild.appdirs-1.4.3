@@ -6,7 +6,7 @@ url="https://pypi.python.org/packages/48/69/d87c60746b393309ca30761f8e2b49473d43
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T3
+build=T4
 src=appdirs-${vers}
 OPT_CONFIG=''
 DOCS='CHANGES.rst LICENSE.txt README.rst'
@@ -16,7 +16,7 @@ SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ##############################################################
 
-source /usr/src/plamo-nora/PackageBuild.def
+source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
     cd ${S[$i]}
@@ -69,4 +69,4 @@ EOF
     done
 }
 
-source /usr/src/plamo-nora/PackageBuild.func
+source /usr/src/qbilinux/PackageBuild.func

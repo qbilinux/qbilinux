@@ -6,7 +6,7 @@ vers=snapshot_20180905
 url="http://circle2.org/pub/source/mplayer-export-snapshot_20180905.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T3
+build=T4
 src=mplayer-export-2018-09-05
 if [ $arch = "armv7l" -o $arch = "aarch64" ]; then
 OPT_CONFIG="--confdir=/etc/mplayer --enable-gui --enable-radio
@@ -23,7 +23,7 @@ SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
 
-source /usr/src/plamo-nora/PackageBuild.def
+source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
     cd ${S[$i]}
@@ -106,4 +106,4 @@ EOF
     done
 }
 
-source /usr/src/plamo-nora/PackageBuild.func
+source /usr/src/qbilinux/PackageBuild.func

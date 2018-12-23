@@ -6,7 +6,7 @@ vers=2.2.0
 url="https://sourceforge.net/projects/pyparsing/files/pyparsing/pyparsing-${vers}/pyparsing-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T3
+build=T4
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="CHANGES LICENSE README"
@@ -15,7 +15,7 @@ SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
 
-source /usr/src/plamo-nora/PackageBuild.def
+source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
     cd ${S[$i]}
@@ -68,4 +68,4 @@ EOF
     done
 }
 
-source /usr/src/plamo-nora/PackageBuild.func
+source /usr/src/qbilinux/PackageBuild.func

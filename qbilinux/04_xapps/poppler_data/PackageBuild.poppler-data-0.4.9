@@ -5,7 +5,7 @@ vers=0.4.9
 url="http://poppler.freedesktop.org/poppler-data-${vers}.tar.gz"
 apply_arch="noarch"
 arch=noarch
-build=T2
+build=T3
 src=poppler-data-${vers}
 OPT_CONFIG=''
 DOCS='COPYING README'
@@ -15,7 +15,7 @@ SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ##############################################################
 
-source /usr/src/plamo-nora/PackageBuild.def
+source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
     cd ${S[$i]}
@@ -76,4 +76,4 @@ EOF
     done
 }
 
-source /usr/src/plamo-nora/PackageBuild.func
+source /usr/src/qbilinux/PackageBuild.func

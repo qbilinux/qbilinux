@@ -6,7 +6,7 @@ vers=1.4
 url="http://downloads.sourceforge.net/lsb/lsb-release-${vers}.tar.gz"
 apply_arch="noarch"
 arch=noarch
-build=T3
+build=T5
 src=lsb-release-$vers
 OPT_CONFIG=""
 DOCS="ChangeLog INSTALL README lsb-release.template lsb_release.examples"
@@ -15,7 +15,7 @@ SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
 
-source /usr/src/plamo-nora/PackageBuild.def
+source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
     cd ${S[$i]}
@@ -77,4 +77,4 @@ EOF
     done
 }
 
-source /usr/src/plamo-nora/PackageBuild.func
+source /usr/src/qbilinux/PackageBuild.func

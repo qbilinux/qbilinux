@@ -71,7 +71,7 @@ do_build() {
     cd ${B[$1]}
     if [ -f Makefile ] ; then
 	export LDFLAGS='-Wl,--as-needed'
-	make V=1 
+	make
 	make -C xdemos DEMOS_PREFIX=/usr
     fi
     if [ $? != 0 ]; then
