@@ -10,9 +10,9 @@ url="http://download.documentfoundation.org/libreoffice/src/${vers%.*}/libreoffi
 commitid=
 apply_arch="x86_64 i686 armv7l"
 arch=`uname -m`
-build=T2
+build=T3
 src=libreoffice-${vers}
-OPT_CONFIG="--with-ant-home=$W/apache-ant-1.10.4/ --without-junit --without-java --with-lang=ja"
+OPT_CONFIG="--with-ant-home=$W/source/apache-ant-1.10.4/ --without-junit --without-java --with-lang=ja"
 DOCS='COPYING COPYING.LGPL COPYING.MPL ChangeLog README.Solaris README.cross README.md leak-suppress.txt readlicense_oo unusedcode.README'
 patchfiles=''
 compress=txz
