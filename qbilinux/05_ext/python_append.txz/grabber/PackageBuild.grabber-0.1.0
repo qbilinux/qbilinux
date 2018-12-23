@@ -6,7 +6,7 @@ url='https://files.pythonhosted.org/packages/cf/61/d3b2aab34ed230eeb363e833e2ccc
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T3
+build=T4
 src=grabber-${vers}
 OPT_CONFIG=''
 DOCS='LICENSE README.md'
@@ -16,7 +16,7 @@ SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ##############################################################
 
-source /usr/src/plamo-nora/PackageBuild.def
+source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
     cd ${S[$i]}
@@ -69,4 +69,4 @@ EOF
     done
 }
 
-source /usr/src/plamo-nora/PackageBuild.func
+source /usr/src/qbilinux/PackageBuild.func

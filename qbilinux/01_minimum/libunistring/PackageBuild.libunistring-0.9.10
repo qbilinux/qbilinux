@@ -6,7 +6,7 @@ url="http://ftp.gnu.org/gnu/libunistring/libunistring-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T1
+build=T2
 src=libunistring-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS BUGS COPYING COPYING.LIB ChangeLog HACKING INSTALL NEWS README THANKS'
@@ -16,7 +16,7 @@ SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ##############################################################
 
-source /usr/src/plamo-nora/PackageBuild.def
+source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
     cd ${S[$i]}
@@ -81,4 +81,4 @@ EOF
     done
 }
 
-source /usr/src/plamo-nora/PackageBuild.func
+source /usr/src/qbilinux/PackageBuild.func

@@ -6,7 +6,7 @@ vers=7.5.0
 url="https://github.com/heimdal/heimdal/releases/download/heimdal-${vers}/heimdal-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T2
+build=T3
 src=$pkgbase-$vers
 patchfiles=""
 OPT_CONFIG="--prefix=/usr --infodir=/usr/share/info
@@ -17,7 +17,7 @@ SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
 
-source /usr/src/plamo-nora/PackageBuild.def
+source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
     cd ${S[$i]}
@@ -212,4 +212,4 @@ EOF
     done
 }
 
-source /usr/src/plamo-nora/PackageBuild.func
+source /usr/src/qbilinux/PackageBuild.func

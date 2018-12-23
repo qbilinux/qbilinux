@@ -5,7 +5,7 @@ vers=7.43.0.2
 url="https://files.pythonhosted.org/packages/e8/e4/0dbb8735407189f00b33d84122b9be52c790c7c3b25286826f4e1bdb7bde/pycurl-7.43.0.2.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T2
+build=T3
 src=pycurl-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING-LGPL COPYING-MIT ChangeLog INSTALL.rst README.rst RELEASE-NOTES.rst'
@@ -15,7 +15,7 @@ SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ##############################################################
 
-source /usr/src/plamo-nora/PackageBuild.def
+source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
     cd ${S[$i]}
@@ -66,4 +66,4 @@ EOF
     done
 }
 
-source /usr/src/plamo-nora/PackageBuild.func
+source /usr/src/qbilinux/PackageBuild.func

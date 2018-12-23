@@ -10,7 +10,7 @@ url="http://download.documentfoundation.org/libreoffice/src/${vers%.*}/libreoffi
 commitid=
 apply_arch="x86_64 i686 armv7l"
 arch=`uname -m`
-build=T1
+build=T2
 src=libreoffice-${vers}
 OPT_CONFIG="--with-ant-home=$W/apache-ant-1.10.4/ --without-junit --without-java --with-lang=ja"
 DOCS='COPYING COPYING.LGPL COPYING.MPL ChangeLog README.Solaris README.cross README.md leak-suppress.txt readlicense_oo unusedcode.README'
@@ -20,7 +20,7 @@ SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ##############################################################
 
-source /usr/src/plamo-nora/PackageBuild.def
+source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
     cd ${S[$i]}
@@ -85,4 +85,4 @@ EOF
     done
 }
 
-source /usr/src/plamo-nora/PackageBuild.func
+source /usr/src/qbilinux/PackageBuild.func
