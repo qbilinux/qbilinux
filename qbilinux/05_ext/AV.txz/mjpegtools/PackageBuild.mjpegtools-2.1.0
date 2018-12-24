@@ -13,6 +13,7 @@ DOCS="README.avilib TODO INSTALL AUTHORS INSTALL.real README.lavpipe
     CHANGES README.transist COPYING PLANS BUGS HINTS mjpeg_howto.txt
     README.glav README README.AltiVec README.DV ChangeLog NEWS"
 patchfiles='03_disable_optimization.patch'
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
@@ -24,6 +25,7 @@ do_prepare() {
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
+    ./autogen.sh
 }
 
 do_config() {
