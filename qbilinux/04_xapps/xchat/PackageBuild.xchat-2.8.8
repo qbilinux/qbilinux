@@ -1,8 +1,7 @@
 #!/bin/sh
 
 ######################################################################
-url="http://jaist.dl.sourceforge.net/sourceforge/xchat/xchat-2.8.8.tar.bz2
-    http://plamo.linet.gr.jp/~tamuki/src/xchat-2.8.8-glib-2.31.patch.gz"
+url="http://jaist.dl.sourceforge.net/sourceforge/xchat/xchat-2.8.8.tar.bz2"
 pkgbase=xchat
 vers=2.8.8
 apply_arch="x86_64 i686 armv7l aarch64"
@@ -16,6 +15,7 @@ else
 fi
 DOCS="faq.html HACKING COPYING INSTALL.w32 README ChangeLog AUTHORS
     INSTALL"
+patchfiles="xchat-2.8.8-glib-2.31.patch"
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
