@@ -28,7 +28,7 @@ do_prepare() {
 	3350a3351
 	> 	sed -i 's/^  \(char \*type_name;\)/  const \1/' gv_php.cpp
 	EOF
-    autogen.sh
+    ./autogen.sh NOCONFIG
 }
 
 do_config() {
