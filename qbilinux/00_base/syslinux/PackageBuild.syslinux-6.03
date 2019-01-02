@@ -13,7 +13,7 @@ build=T2
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="COPYING NEWS README"
-patchfiles='0014_fix_ftbfs_no_dynamic_linker.patch'
+patchfiles='0014_fix_ftbfs_no_dynamic_linker.patch patch-aa'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -40,24 +40,11 @@ do_config() {
 	cp -p Makefile{,.orig}
 	sed -i '/^all_firmware/s@ efi64@@' Makefile
     fi
-    if [ -x ./configure ] ; then
-	export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
-	export LDFLAGS='-Wl,--as-needed' 
-	./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc \
-		--localstatedir=/var --infodir='${prefix}'/share/info --mandir='${prefix}'/share/man ${OPT_CONFIG[$1]}
-    fi
-    if [ $? != 0 ]; then
-	echo "configure error. $0 script stop"
-	exit 255
-    fi
 }
 
 do_build() {
     cd ${B[$1]}
-    if [ -f Makefile ] ; then
-	export LDFLAGS='-Wl,--as-needed'
-	make
-    fi
+    make
     if [ $? != 0 ]; then
 	echo "make error. $0 script stop"
 	exit 255
@@ -66,14 +53,7 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}
-    for mk in `find . -name "[Mm]akefile" ` ; do
-	sed -i -e 's|GCONFTOOL = /usr/bin/gconftool-2|GCONFTOOL = echo|' $mk
-    done
-    if [ -f Makefile ] ; then
-	export LDFLAGS='-Wl,--as-needed'
-	make install INSTALLROOT=$P MANDIR=/usr/share/man
-
-    fi
+    make install INSTALLROOT=$P MANDIR=/usr/share/man
     if [ $? != 0 ]; then
 	echo "make install error. $0 script stop"
 	exit 255
