@@ -1,0 +1,12 @@
+*** syslinux-6.03/extlinux/main.c	2014-10-07 01:27:44.000000000 +0900
+--- build/extlinux/main.c	2019-01-03 08:38:43.058150468 +0900
+***************
+*** 41,46 ****
+--- 41,47 ----
+  #include <sys/types.h>
+  #include <sys/mount.h>
+  #include <sys/vfs.h>
++ #include <sys/sysmacros.h>
+  
+  #include "linuxioctl.h"
+  
