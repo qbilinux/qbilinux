@@ -1,16 +1,16 @@
 #!/bin/sh
 ##############################################################
 pkgbase=httpd
-vers=2.4.34
+vers=2.4.37
 url="http://www.apache.org/dist/httpd/httpd-${vers}.tar.gz"
 verify=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T3
+build=T1
 src=${pkgbase}-${vers}
 OPT_CONFIG="--enable-layout=Slackware-FHS --enable-mods-shared=all --enable-mods-shared=cgi --enable-mpms-shared=all --mandir=/usr/share/man --enable-ssl --with-ssl=/usr"
 DOCS='ABOUT_APACHE INSTALL InstallBin.dsp LICENSE README README.platforms'
-patchfiles='httpdlogrotate_plamo.patch mod_ssl.patch'
+patchfiles='httpdlogrotate_plamo.patch mod_ssl.patch httpd-2.4.37-blfs_layout-1.patch'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -68,17 +68,17 @@ do_install() {
 
     # add extra func
     mkdir -p $P/etc/logrotate.d
-    cp ${B[i]}/build/rpm/httpd.logrotate $P/etc/logrotate.d/
-    mv $P/etc/httpd/httpd.conf $P/etc/httpd/httpd.conf.dist
-    mv $P/etc/httpd/extra $P/etc/httpd/extra.dist
+    cp ${S[$1]}/build/rpm/httpd.logrotate $P/etc/logrotate.d/
+    mv $P/etc/httpd.conf $P/etc/httpd.conf.dist
+    mv $P/etc/extra $P/etc/extra.dist
     for d in htdocs icons error cgi-bin
     do
 	mv $P/srv/httpd/$d $P/srv/httpd/$d.dist
     done
     mkdir -p $P/install
     cat <<EOF >> $P/install/initpkg
-  MYHOST=\`cat /etc/HOSTNAME\`
-  sed -i -e 's/^User\sdaemon/User www/' \
+MYHOST=\`cat /etc/HOSTNAME\`
+sed -i -e 's/^User\sdaemon/User www/' \
     -e 's/Group\sdaemon/Group apache/'  \
     -e 's/mpm_event/mpm_prefork/g' \
     -e "s/^#ServerName.*$/ServerName \$MYHOST/" /etc/httpd/httpd.conf.dist
