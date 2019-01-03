@@ -10,6 +10,7 @@ build=T3
 src=lua-alt-getopt-$vers
 OPT_CONFIG=""
 DOCS="NEWS README ChangeLog"
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
