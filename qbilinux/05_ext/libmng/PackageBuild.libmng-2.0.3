@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='http://downloads.sourceforge.net/project/libmng/libmng-devel/2.0.2/libmng-2.0.2.tar.gz'
 pkgbase=libmng
-vers=2.0.2
+vers=2.0.3
+url="https://downloads.sourceforge.net/libmng/libmng-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T2
-src=libmng-2.0.2
+build=T1
+src=libmng-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='LICENSE README README.autoconf README.config README.contrib README.dll README.examples README.footprint README.packaging'
 patchfiles=''
@@ -22,6 +22,7 @@ do_prepare() {
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
+    make distclean
 }
 
 do_config() {
