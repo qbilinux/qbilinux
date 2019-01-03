@@ -1,0 +1,40 @@
+*** xv-3.10a/xvimage.c.orig	2007-01-29 22:56:27.000000000 +0900
+--- xv-3.10a/xvimage.c	2007-01-29 22:56:56.000000000 +0900
+***************
+*** 1816,1823 ****
+  	if (dithpic) xcol = ((*pp) ? white : black) & 0xffff;
+  		else xcol = xcolors[*pp] & 0xffff;
+  
+! 	*((unsigned char *)ip)++ = (xcol>>8) & 0xff;
+! 	*((unsigned char *)ip)++ = (xcol) & 0xff;
+        }
+      }
+      else {   /* LSBFirst */
+--- 1816,1823 ----
+  	if (dithpic) xcol = ((*pp) ? white : black) & 0xffff;
+  		else xcol = xcolors[*pp] & 0xffff;
+  
+! 	*ip++ = (xcol>>8) & 0xff;
+! 	*ip++ = (xcol) & 0xff;
+        }
+      }
+      else {   /* LSBFirst */
+***************
+*** 1827,1834 ****
+  	if (dithpic) xcol = ((*pp) ? white : black) & 0xffff;
+  	        else xcol = xcolors[*pp];
+  
+! 	*((unsigned char *)ip)++ = (xcol) & 0xff;
+! 	*((unsigned char *)ip)++ = (xcol>>8) & 0xff;
+        }
+      }
+    }
+--- 1827,1834 ----
+  	if (dithpic) xcol = ((*pp) ? white : black) & 0xffff;
+  	        else xcol = xcolors[*pp];
+  
+! 	*ip++ = (xcol) & 0xff;
+! 	*ip++ = (xcol>>8) & 0xff;
+        }
+      }
+    }
