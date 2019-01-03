@@ -1,17 +1,17 @@
 #!/bin/sh
 
 ######################################################################
-url="http://downloads.sourceforge.net/cdrdao/cdrdao-1.2.3.tar.bz2"
 pkgbase=cdrdao
-vers=1.2.3
+vers=1.2.4
+url="https://downloads.sourceforge.net/cdrdao/cdrdao-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T2
+build=T1
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="NEWS AUTHORS README INSTALL ChangeLog README.PlexDAE
     README.Win32 CREDITS COPYING"
-patchfiles='cdrdao-1.2.3-stat.patch cdrdao_conversion.patch'
+patchfiles='cdrdao-1.2.3-stat.patch'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
