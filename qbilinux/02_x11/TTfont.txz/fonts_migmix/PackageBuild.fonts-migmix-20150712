@@ -2,14 +2,15 @@
 ##############################################################
 pkgbase=fonts_migmix
 vers=20150712
-url='http://jaist.dl.sourceforge.jp/mix-mplus-ipa/63544/migmix-1p-20150712.zip
-     http://jaist.dl.sourceforge.jp/mix-mplus-ipa/63544/migmix-2p-20150712.zip
-     http://jaist.dl.sourceforge.jp/mix-mplus-ipa/63544/migmix-1m-20150712.zip
-     http://jaist.dl.sourceforge.jp/mix-mplus-ipa/63544/migmix-2m-20150712.zip'
+url="http://jaist.dl.sourceforge.jp/mix-mplus-ipa/63544/migmix-1p-${vers}.zip
+     http://jaist.dl.sourceforge.jp/mix-mplus-ipa/63544/migmix-2p-${vers}.zip
+     http://jaist.dl.sourceforge.jp/mix-mplus-ipa/63544/migmix-1m-${vers}.zip
+     http://jaist.dl.sourceforge.jp/mix-mplus-ipa/63544/migmix-2m-${vers}.zip"
 apply_arch="noarch"
 arch=noarch
 build=T2
-src=fonts_migmix
+src=migmix-1p-20150712
+#src='migmix-1p-20150712 migmix-2p-20150712 migmix-1m-20150712 migmix-2m-20150712'
 OPT_CONFIG=''
 DOCS='migmix-README.txt ipag00303/*'
 patchfiles=''
@@ -21,16 +22,14 @@ SRC_DIR="/home/archives/source/"
 source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
-    cd ${S[$i]}
-    for patch in $patchfiles ; do
-	patch -p1 < $W/$patch
-    done
+    echo ${S[$1]}
+    cd ${S[$1]}
 }
 
 do_config() {
     if [ -d ${B[$1]} ] ; then rm -rf ${B[$1]} ; fi
 
-    cp -a ${S[$1]} ${B[$1]}
+    mkdir ${B[$1]}
 }
 
 do_build() {
@@ -41,12 +40,14 @@ do_install() {
     cd ${B[$1]}
 
     mkdir -p $P/usr/share/fonts/TrueType
-    cp *ttf $P/usr/share/fonts/TrueType
+    for i in migmix-1p-${vers} migmix-2p-${vers} migmix-1m-${vers} migmix-2m-${vers} ; do
+	cp -p $W/source/$i/*.ttf $P/usr/share/fonts/TrueType
+    done
     mkdir -p $P/usr/share/fontconfig/conf.avail
 
-# derived from FreeBSD's port collection
-# https://github.com/freebsd/freebsd-ports/blob/master/japanese/font-migmix/files/20-unhint-migmix.conf
-# https://github.com/freebsd/freebsd-ports/blob/master/japanese/font-migmix/files/62-fonts-migmix.conf
+    # derived from FreeBSD's port collection
+    # https://github.com/freebsd/freebsd-ports/blob/master/japanese/font-migmix/files/20-unhint-migmix.conf
+    # https://github.com/freebsd/freebsd-ports/blob/master/japanese/font-migmix/files/62-fonts-migmix.conf
 
     cat <<"EOF" > $P/usr/share/fontconfig/conf.avail/20-unhint-migmix.conf 
 <?xml version="1.0"?>
@@ -122,7 +123,6 @@ rm -f /usr/share/fonts/TrueType/fonts.scale
 mkfontscale /usr/share/fonts/TrueType
 fc-cache /usr/share/fonts/TrueType
 EOF
-
 }
 
 do_package() {
