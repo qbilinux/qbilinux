@@ -1,15 +1,14 @@
 #!/bin/sh
 
 ######################################################################
-url="http://tuxera.com/opensource/ntfs-3g_ntfsprogs-2015.3.14.tgz
-    https://github.com/PhantomX/slackbuilds/raw/master/ntfs-3g/patches/ntfs-3g_ntfsprogs-2011.10.9-RC-ntfsck-unsupported-return-0.patch"
 pkgbase=ntfs_3g_ntfsprogs
-vers=2015.3.14
+vers=2017.3.23
+url="http://tuxera.com/opensource/ntfs-3g_ntfsprogs-${vers}.tgz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T2
+build=T1
 src=ntfs-3g_ntfsprogs-$vers
-patchfiles="0002-CVE-2015-3202.patch"
+patchfiles=""
 OPT_CONFIG=""
 DOCS="INSTALL TODO.ntfsprogs README NEWS ChangeLog CREDITS COPYING.LIB
     COPYING AUTHORS"
@@ -25,7 +24,6 @@ do_prepare() {
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
-    patch -p1 < $W/ntfs-3g_ntfsprogs-2011.10.9-RC-ntfsck-unsupported-return-0.patch
 }
 
 do_config() {
@@ -59,6 +57,7 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}
+    mkdir -p $P/${libdir}
     if [ -f Makefile ] ; then
 	export LDFLAGS='-Wl,--as-needed'
 	make install DESTDIR=$P
