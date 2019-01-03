@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=libva
-vers=1.8.2
-url="http://www.freedesktop.org/software/vaapi/releases/libva/libva-${vers}.tar.bz2"
+vers=2.3.0
+url="https://github.com/intel/libva/releases/download/${vers}/libva-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T2
+build=T1
 src=libva-${vers}
 OPT_CONFIG=''
 DOCS='COPYING NEWS'
