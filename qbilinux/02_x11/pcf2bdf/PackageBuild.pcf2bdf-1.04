@@ -6,7 +6,7 @@ url='ftp://ftp.mirrorservice.org/sites/ftp.netbsd.org/pub/pkgsrc/distfiles/pcf2b
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=T2
-src=pcf2bdf-1.04
+src=pcf2bdf-${vers}
 OPT_CONFIG=''
 DOCS='README.txt pcf.txt'
 patchfiles='pcf2bdf_1.04-2.diff'
@@ -18,6 +18,9 @@ SRC_DIR="/home/archives/source/"
 source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
+    cd $W/source
+    mkdir $src
+    mv * $src
     cd ${S[$i]}
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
