@@ -123,6 +123,13 @@ fi
 if [ $opt_download -eq 1 ] ; then
     for i in $url ; do
 	case ${i##*.} in
+	    svn)
+		if [ ! -d `basename ${i##*/} .svn` ] ; then
+		    svn co $i
+		else
+		    ( cd `basename ${i##*/} .svn` ; svn update )
+		fi
+		;;
 	    git)
 		if [ ! -d `basename ${i##*/} .git` ] ; then
 		    git clone $i
@@ -158,12 +165,30 @@ if [ $opt_download -eq 1 ] ; then
     done
     for i in $url ; do
 	case ${i##*.} in
+	    svn)
+		( cd $W/source
+		  if [ ! -d `basename ${i##*/} .svn` ] ; then
+		      rm -rf `basename ${i##*/} .svn`
+		  fi
+		  cp -a $W/`basename ${i##*/} .svn` .
+		  ( cd $W/source/`basename ${i##*/} .svn`
+		    if [ -n "$svn_revision" ] ; then
+			svn checkout -r $commitid
+		    elif [ -n "$svn_branch" ] ; then
+			svn checkout $git_branch
+		    fi
+		  )) ;;
 	    git)
 		( cd $W/source
-		  git clone $W/`basename ${i##*/} .git`
+		  if [ ! -d `basename ${i##*/} .git` ] ; then
+		      rm -rf `basename ${i##*/} .git`
+		  fi
+		  cp -a $W/`basename ${i##*/} .git` .
 		  ( cd $W/source/`basename ${i##*/} .git`
 		    if [ -n "$commitid" ] ; then
 			git reset --hard $commitid
+		    elif [ -n "$git_branch" ] ; then
+			git checkout $git_branch
 		    fi
 		    git set-file-times
 		  )) ;;
