@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='http://www.webdav.org/neon/neon-0.29.6.tar.gz'
 pkgbase=neon
-vers=0.29.6
+vers=0.30.2
+url="http://www.webdav.org/neon/neon-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T2
-src=neon-0.29.6
+build=T1
+src=neon-${vers}
 OPT_CONFIG='--enable-shared --disable-static --with-ssl'
 DOCS='.release.sh AUTHORS ChangeLog ChangeLog.CVS INSTALL.win32 NEWS README THANKS TODO'
 patchfiles=''
