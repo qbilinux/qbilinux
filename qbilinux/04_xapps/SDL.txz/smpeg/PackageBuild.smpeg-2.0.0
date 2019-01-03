@@ -1,6 +1,6 @@
 #!/bin/sh
 ##############################################################
-url="svn co svn://svn.icculus.org/smpeg/tags/release_2_0_0/"
+url="svn://svn.icculus.org/smpeg/tags/release_2_0_0.svn"
 pkgbase=smpeg
 vers=2.0.0
 apply_arch="x86_64 i686 armv7l aarch64"
