@@ -1,15 +1,15 @@
 #!/bin/sh
 ##############################################################
-url='http://downloads.sourceforge.net/liboauth/liboauth-0.9.7.tar.gz'
 pkgbase=liboauth
-vers=0.9.7
+vers=1.0.3
+url="https://master.dl.sourceforge.net/project/liboauth/liboauth-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T2
-src=liboauth-0.9.7
+build=T1
+src=liboauth-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING COPYING.GPL COPYING.MIT ChangeLog INSTALL LICENSE.OpenSSL NEWS README'
-patchfiles=''
+patchfiles='liboauth-1.0.3-openssl-1.1.0-2.patch'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
