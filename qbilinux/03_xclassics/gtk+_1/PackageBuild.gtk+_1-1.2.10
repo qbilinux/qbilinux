@@ -8,7 +8,7 @@ pkgbase=gtk+_1
 vers=1.2.10
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T2
+build=T3
 src=gtk+-$vers
 OPT_CONFIG="--sysconfdir=/etc"
 compress=txz
@@ -22,33 +22,33 @@ source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
     cd ${S[$i]}
-  patch -Np1 -i $W/gtk+-1.2.10-61.fc9.src/gtk+-1.2.6-ahiguti.patch
-  patch -Np1 -i $W/gtk+-1.2.10-61.fc9.src/gtk+-1.2.8-wrap-alnum.patch
-  patch -Np1 -i $W/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-alignment.patch
-  patch -Np1 -i $W/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-expose.patch
-  patch -Np1 -i $W/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-focus.patch
-  patch -Np1 -i $W/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-encoding.patch
-  patch -Np1 -i $W/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-ctext.patch
-  patch -Np1 -i $W/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-utf8fontset.patch
-  patch -Np1 -i $W/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-kpenter.patch
-  patch -Np1 -i $W/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-themeswitch.patch
-  patch -Np1 -i $W/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-pixmapref.patch
-  patch -Np1 -i $W/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-missingchar.patch
-  patch -Np1 -i $W/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-ukfont.patch
-  patch -Np1 -i $W/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-deletedir.patch
-  patch -Np1 -i $W/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-fontwarning.patch
-  patch -Np0 -i $W/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-troughpaint.patch
-  patch -Np1 -i $W/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-localecrash.patch
-  patch -Np0 -i $W/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-dndorder.patch
-  patch -Np0 -i $W/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-clistfocusrow.patch
-  patch -Np1 -i $W/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-bellvolume.patch
-  patch -Np1 -i $W/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-libtool.patch
-  patch -Np1 -i $W/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-gtkgdkdep.patch
-  patch -Np1 -i $W/gtk+-1.2.10-61.fc9.src/gtk+-underquoted.patch
-  patch -Np1 -i $W/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-ppc64.patch
-  patch -Np1 -i $W/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-no_undefined.patch
-  patch -Np1 -i $W/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-multilib.patch
-  patch -Np1 -i $W/gtk+-1.2.10-config_update-1.patch
+    patch -Np1 -i $W/source/gtk+-1.2.10-61.fc9.src/gtk+-1.2.6-ahiguti.patch
+    patch -Np1 -i $W/source/gtk+-1.2.10-61.fc9.src/gtk+-1.2.8-wrap-alnum.patch
+    patch -Np1 -i $W/source/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-alignment.patch
+    patch -Np1 -i $W/source/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-expose.patch
+    patch -Np1 -i $W/source/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-focus.patch
+    patch -Np1 -i $W/source/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-encoding.patch
+    patch -Np1 -i $W/source/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-ctext.patch
+    patch -Np1 -i $W/source/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-utf8fontset.patch
+    patch -Np1 -i $W/source/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-kpenter.patch
+    patch -Np1 -i $W/source/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-themeswitch.patch
+    patch -Np1 -i $W/source/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-pixmapref.patch
+    patch -Np1 -i $W/source/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-missingchar.patch
+    patch -Np1 -i $W/source/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-ukfont.patch
+    patch -Np1 -i $W/source/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-deletedir.patch
+    patch -Np1 -i $W/source/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-fontwarning.patch
+    patch -Np0 -i $W/source/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-troughpaint.patch
+    patch -Np1 -i $W/source/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-localecrash.patch
+    patch -Np0 -i $W/source/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-dndorder.patch
+    patch -Np0 -i $W/source/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-clistfocusrow.patch
+    patch -Np1 -i $W/source/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-bellvolume.patch
+    patch -Np1 -i $W/source/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-libtool.patch
+    patch -Np1 -i $W/source/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-gtkgdkdep.patch
+    patch -Np1 -i $W/source/gtk+-1.2.10-61.fc9.src/gtk+-underquoted.patch
+    patch -Np1 -i $W/source/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-ppc64.patch
+    patch -Np1 -i $W/source/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-no_undefined.patch
+    patch -Np1 -i $W/source/gtk+-1.2.10-61.fc9.src/gtk+-1.2.10-multilib.patch
+    patch -Np1 -i $W/gtk+-1.2.10-config_update-1.patch
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
