@@ -6,11 +6,12 @@ vers=1.2.0
 url="http://downloads.xiph.org/releases/speex/speex-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T2
+build=T3
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="README.TI-DSP ChangeLog README.symbian README TODO COPYING
     AUTHORS NEWS INSTALL README.blackfin"
+compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
