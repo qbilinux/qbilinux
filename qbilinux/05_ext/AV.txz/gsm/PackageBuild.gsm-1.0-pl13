@@ -5,7 +5,7 @@ pkgbase=gsm
 vers=1.0_pl13
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T2
+build=T3
 src=gsm-1.0-pl13
 OPT_CONFIG=''
 DOCS='ChangeLog INSTALL README'
@@ -21,8 +21,9 @@ source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
     cd ${S[$i]}
-    for patch in $patchfiles ; do
-	patch -p1 < $W/$patch
+    cat $W/$patchfiles | patch -p1
+    for patchfile in debian/patches/*.dpatch ; do
+	patch -p1 < $patchfile
     done
     sed -i -e 's|-DNeedFunctionPrototypes=1|-DNeedFunctionPrototypes=1 -fPIC|' Makefile
 }
