@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=qemu
-vers=2.11.1
+vers=3.1.0
 url="http://wiki.qemu-project.org/download/qemu-${vers}.tar.bz2"
 arch=`uname -m`
 build=T1
