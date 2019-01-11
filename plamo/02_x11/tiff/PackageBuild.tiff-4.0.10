@@ -1,8 +1,8 @@
 #!/bin/sh
 ##############################################################
 pkgbase=tiff
-vers=4.0.8
-url="ftp://download.osgeo.org/libtiff/tiff-${vers}.tar.gz"
+vers=4.0.10
+url="https://download.osgeo.org/libtiff/tiff-${vers}.tar.gz"
 arch=`uname -m`
 build=T1
 src=tiff-${vers}
