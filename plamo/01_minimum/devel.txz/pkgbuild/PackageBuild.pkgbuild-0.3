@@ -1,13 +1,15 @@
 #!/bin/sh
 ##############################################################
 pkgbase="pkgbuild"
-vers=0.0
+vers=0.3
 url=""
 #file=${url##*/}
+#http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD
+#http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=HEAD
 commitid=
 apply_arch=noarch
 arch=noarch
-build=T2
+build=T1
 src=pkgbuild-${vers}
 OPT_CONFIG=''
 DOCS=''
@@ -38,7 +40,11 @@ do_build() {
 do_install() {
     install -d $P/usr/src/qbilinux
     cp PackageBuild.def PackageBuild.func $P/usr/src/qbilinux
+    cp config.guess config.sub $P/usr/src/qbilinux
     (cd $P/usr/src; ln -s qbilinux plamo-nora)
+
+    install -d $docdir/$src
+    cp PackageBuild.def PackageBuild.func config.guess config.sub $docdir/$src
 }
 
 do_package() {

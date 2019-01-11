@@ -59,6 +59,43 @@ compress_all() {
     strip_all
 }  
 
+prune_symlink() {
+  echo "pruning symlink in $1"
+  if [ -d $1 ] ; then (
+    cd $P
+    rm -f /tmp/iNsT-a.$$ ; touch /tmp/iNsT-a.$$
+    for i in `find ${1#$P/} -type l` ; do
+      target=`readlink $i`
+      echo "$i -> $target"
+      echo $i$'\n'$target >> /tmp/iNsT-a.$$
+    done
+    COUNT=1
+    LINE=`sed -n "${COUNT}p" /tmp/iNsT-a.$$`
+    while [ -n "$LINE" ] ; do
+      LINKGOESIN=`dirname $LINE`
+      LINKNAMEIS=`basename $LINE`
+      COUNT=$(($COUNT + 1))
+      LINKPOINTSTO=`sed -n "${COUNT}p" /tmp/iNsT-a.$$`
+      if [ ! -d install ] ; then mkdir install ; fi
+      cat <<- EOF >> install/doinst.sh
+	( cd $LINKGOESIN ; rm -rf $LINKNAMEIS )
+	( cd $LINKGOESIN ; ln -sf $LINKPOINTSTO $LINKNAMEIS )
+	EOF
+      rm -rf $LINE ; touch -t `date '+%m%d0000'` install/doinst.sh $LINE
+      COUNT=$(($COUNT + 1))
+      LINE=`sed -n "${COUNT}p" /tmp/iNsT-a.$$`
+    done
+    rm -f /tmp/iNsT-a.$$
+  ) fi
+}
+
+convert() {
+  for i in {$P,$P/usr}/{sbin,bin} ; do prune_symlink $i ; done
+  for i in {$P,$P/usr}/$libdir ; do prune_symlink $i ; done
+  prune_symlink $infodir
+  for i in `seq 9` n ; do prune_symlink $mandir/man$i ; done
+}
+
 if [ ! -d $SRC_DIR ]       ; then mkdir -p $SRC_DIR       ; fi
 if [ ! -d $W/source ]      ; then mkdir -p $W/source      ; fi
 if [ ! -d $W/build/$arch ] ; then mkdir -p $W/build/$arch ; fi
@@ -86,6 +123,13 @@ fi
 if [ $opt_download -eq 1 ] ; then
     for i in $url ; do
 	case ${i##*.} in
+	    svn)
+		if [ ! -d `basename ${i##*/} .svn` ] ; then
+		    svn co $i
+		else
+		    ( cd `basename ${i##*/} .svn` ; svn update )
+		fi
+		;;
 	    git)
 		if [ ! -d `basename ${i##*/} .git` ] ; then
 		    git clone $i
@@ -121,16 +165,35 @@ if [ $opt_download -eq 1 ] ; then
     done
     for i in $url ; do
 	case ${i##*.} in
+	    svn)
+		( cd $W/source
+		  if [ ! -d `basename ${i##*/} .svn` ] ; then
+		      rm -rf `basename ${i##*/} .svn`
+		  fi
+		  cp -a $W/`basename ${i##*/} .svn` .
+		  ( cd $W/source/`basename ${i##*/} .svn`
+		    if [ -n "$svn_revision" ] ; then
+			svn checkout -r $commitid
+		    elif [ -n "$svn_branch" ] ; then
+			svn checkout $git_branch
+		    fi
+		  )) ;;
 	    git)
 		( cd $W/source
-		  rm -rf clone $W/`basename ${i##*/} .git`
-		  git clone $W/`basename ${i##*/} .git`
+		  if [ ! -d `basename ${i##*/} .git` ] ; then
+		      rm -rf `basename ${i##*/} .git`
+		  fi
+		  cp -a $W/`basename ${i##*/} .git` .
 		  ( cd $W/source/`basename ${i##*/} .git`
 		    if [ -n "$commitid" ] ; then
 			git reset --hard $commitid
+		    elif [ -n "$git_branch" ] ; then
+			git checkout $git_branch
 		    fi
 		    git set-file-times
 		  )) ;;
+	    jar)
+		;;
 	    zip)
 		( cd $W/source ; unzip -o $W/${i##*/} ) ;;
 	    *)
@@ -202,15 +265,15 @@ EOF
 
     # remove locales except ja
     # 
-    for loc_dir in `find $P -name locale` ; do
-	pushd $loc_dir
-	for loc in * ; do
-	    if [ "$loc" != "ja" ]; then
-		rm -rf $loc
-	    fi
-	done
-	popd
-    done      
+    # for loc_dir in `find $P -name locale` ; do
+    # 	pushd $loc_dir
+    # 	for loc in * ; do
+    # 	    if [ "$loc" != "ja" ]; then
+    # 		rm -rf $loc
+    # 	    fi
+    # 	done
+    # 	popd
+    # done      
 
     ######################################################################
     # path に lib があるバイナリは strip -g, ないバイナリは strip する
@@ -243,7 +306,7 @@ EOF
 	else
 	    ln $docdir/$src/$myname.gz $docdir/${src[$i]}
 	fi
-	( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
+	#( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
     done
 
     for patch in $patchfiles ; do
@@ -267,5 +330,6 @@ EOF
     # * 完成した作業ディレクトリから tar イメージを作成する手順を以降に記述
     #   します(こだわりを求めないなら単に makepkg でも良いです)。
     ######################################################################
+    #convert
     do_package
 fi
