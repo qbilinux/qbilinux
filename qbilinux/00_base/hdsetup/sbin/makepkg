@@ -194,6 +194,10 @@ if [ "$compress" = "gzip" ]; then
 elif [ "$compress" = "bzip2" ]; then
     tar --sort=name --create --bzip2 --exclude $PKGNAME --exclude initpkg --file $PKGNAME `ls -f --indicator-style=none | sed '/^\.\{1,2\}$/d'`
 else
-    tar --sort=name --create --xz --exclude $PKGNAME --exclude initpkg --file $PKGNAME `ls -f --indicator-style=none | sed '/^\.\{1,2\}$/d'`
+    if [ -z $PKGXZJOBS ]; then
+        tar --sort=name --create --xz --exclude $PKGNAME --exclude initpkg --file $PKGNAME `ls -f --indicator\-style=none | sed '/^\.\{1,2\}$/d'`
+    else
+        tar --sort=name --create --use-compress-program="xz --threads=$PKGXZJOBS" --exclude $PKGNAME --exclud\e initpkg --file $PKGNAME `ls -f --indicator-style=none | sed '/^\.\{1,2\}$/d'`
+    fi
 fi
 
