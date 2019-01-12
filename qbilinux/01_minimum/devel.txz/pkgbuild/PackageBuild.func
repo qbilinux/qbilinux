@@ -240,6 +240,7 @@ if [ $opt_package -eq 1 ] ; then
     # * make install でコピーされないファイルがある場合はここに記述します。
     ######################################################################
     mkdir -p $docdir/$src
+    mkdir -p $srcdir
     if [ -d $P/usr/share/omf ]; then
 	mkdir -p $P/install
 	for omf in $P/usr/share/omf/* ; do
@@ -300,19 +301,13 @@ EOF
 		gzip_one $docdir/${src[$i]}/${k#${S[$i]}/}
 	    done
 	done
-	if [ $i -eq 0 ] ; then
-	    install $myname $docdir/$src
-	    gzip_one $docdir/$src/$myname
-	else
-	    ln $docdir/$src/$myname.gz $docdir/${src[$i]}
-	fi
 	#( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
     done
 
     for patch in $patchfiles ; do
-	cp $W/$patch $docdir/$src/$patch
-	gzip_one $docdir/$src/$patch
+	cp $W/$patch $srcdir/$patch
     done
+    install $myname $srcdir
 
     ############################################################
     #   /usr/share/doc 以下には一般ユーザのIDのままのファイルが

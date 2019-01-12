@@ -22,3 +22,12 @@ case $arch in
 	suffix="" ;;
 esac
 
+topdir=$W
+while  [ ! -f $topdir/.topdir ] ; do
+    topdir=`dirname $topdir` ;
+done
+pkgdir=${W#$topdir}
+srcdir=$P/usr/src/qbilinux/$pkgdir
+echo $topdir
+echo $pkgdir
+echo $srcdir
