@@ -3,7 +3,7 @@
 ######################################################################
 #url="https://www.kernel.org/pub/linux/kernel/v4.x/linux-4.9.30.tar.xz
 #    git://github.com/sfjro/aufs4-standalone.git"
-version=4.19.7
+version=4.19.14
 url="https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-${version}.tar.xz
 	git://github.com/sfjro/aufs4-standalone.git"
 pkgbase=kernelsrc
@@ -12,7 +12,7 @@ arch=`uname -m`
 build=T1
 src=linux-${version}
 patchfiles="cjktty-kernel-4.19.patch cjktty-kernel-font-JP.patch overlayfs-allow_unprivileged_mounts.patch"
-arm_patchfiles="rpi-4.19.7-20181209-172a80a.diff"
+arm_patchfiles="rpi-4.19.14-20190113-0841e2a.diff"
 patchfiles_not_used="vd_unicon-kernel-20180826-4.18.patch vd_unicon-kernel-fonts-20140614.patch cjktty-kernel-font.patch tuxonice-for-linux-4.8.0-2016-10-08.patch 4.8-morse_code_panics.patch 4.8-panic_beep.patch"
 configfile64="config-${version%.*}-x64"
 configfile32="config-${version%.*}-x86"
