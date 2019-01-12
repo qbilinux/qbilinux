@@ -44,7 +44,7 @@ do_build() {
     cd ${B[$1]}
     if [ -f Makefile ] ; then
 	export LDFLAGS='-Wl,--as-needed'
-	make tgif
+	make tgif -j1
     fi
     ( cd po ; make )
     if [ $? != 0 ]; then
