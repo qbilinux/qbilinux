@@ -29,7 +29,7 @@ do_config() {
 
     mkdir ${B[$1]}
     cd ${B[$1]}
-    cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr/ -DLIB_INSTALL_DIR:PATH=/usr/${libdir} $S
+    cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr/ -DLIB_INSTALL_DIR:PATH=/usr/${libdir} $S/source
     if [ $? != 0 ]; then
 	echo "configure error. $0 script stop"
 	exit 255
