@@ -7,7 +7,7 @@ url=""
 srcfiles="xfplamoconfig xfplamoconfig.sh"
 apply_arch="noarch"
 arch=noarch
-build=T3
+build=T4
 src=$pkgbase
 patchfiles=""
 OPT_CONFIG=""
@@ -21,10 +21,7 @@ SRC_DIR="/home/archives/source/"
 source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
-    cd ${S[$i]}
-    for patch in $patchfiles ; do
-	patch -p1 < $W/$patch
-    done
+    echo "nothing to do in prepare."
 }
 
 do_config() {
