@@ -2,8 +2,8 @@
 ##############################################################
 pkgbase=openjdk
 vers=10.0.2_13
-url='http://hg.openjdk.java.net/jdk-updates/jdk10u'
-commitid=jdk-10.0.2+13
+url="http://hg.openjdk.java.net/jdk-updates/jdk10u.hg"
+hg_revision=jdk-10.0.2+13
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=T2
@@ -58,18 +58,18 @@ do_build() {
 do_install() {
     cd ${B[$1]}
 
-  install -vdm755 $P/opt/jdk-${vers}
-  cp -Rv build/*/images/jdk/* $P/opt/jdk-${vers}
-  #chown -R root:root $P/opt/jdk-${vers}
-  find $P/opt/jdk-${vers} -name \*.diz -delete
-  for s in 16 24 32 48; do
-      install -Dm 644 src/java.desktop/unix/classes/sun/awt/X11/java-icon${s}.png \
-              $P/usr/share/icons/hicolor/${s}x${s}/apps/java10.png
-  done
-  ln -v -nsf jdk-${vers} $P/opt/jdk
-
-  mkdir -pv $P/usr/share/applications
-  cat > $P/usr/share/applications/openjdk-10-java.desktop << "EOF"
+    install -vdm755 $P/opt/jdk-${vers}
+    cp -Rv build/*/images/jdk/* $P/opt/jdk-${vers}
+    #chown -R root:root $P/opt/jdk-${vers}
+    find $P/opt/jdk-${vers} -name \*.diz -delete
+    for s in 16 24 32 48; do
+	install -Dm 644 src/java.desktop/unix/classes/sun/awt/X11/java-icon${s}.png \
+		$P/usr/share/icons/hicolor/${s}x${s}/apps/java10.png
+    done
+    ln -v -nsf jdk-${vers} $P/opt/jdk
+    
+    mkdir -pv $P/usr/share/applications
+    cat > $P/usr/share/applications/openjdk-10-java.desktop << "EOF"
 [Desktop Entry]
 Name=OpenJDK Java 10 Runtime
 Comment=OpenJDK Java 10 Runtime
@@ -81,7 +81,7 @@ MimeType=application/x-java-archive;application/java-archive;application/x-jar;
 NoDisplay=true
 EOF
 
-cat > $P/usr/share/applications/openjdk-10-policytool.desktop << "EOF"
+    cat > $P/usr/share/applications/openjdk-10-policytool.desktop << "EOF"
 [Desktop Entry]
 Name=OpenJDK Java 10 Policy Tool
 Name[pt_BR]=OpenJDK Java 10 - Ferramenta de Pol«¿tica
@@ -94,7 +94,7 @@ Icon=java10
 Categories=Settings;
 EOF
 
-cat > $P/usr/share/applications/openjdk-10-jconsole.desktop << "EOF"
+    cat > $P/usr/share/applications/openjdk-10-jconsole.desktop << "EOF"
 [Desktop Entry]
 Name=OpenJDK Java 10 Console
 Comment=OpenJDK Java 10 Console
@@ -106,8 +106,8 @@ Icon=java10
 Categories=Application;System;
 EOF
 
-mkdir -p $P/etc/profile.d
-cat <<"EOF" > $P/etc/profile.d/jdk.csh
+    mkdir -p $P/etc/profile.d
+    cat <<"EOF" > $P/etc/profile.d/jdk.csh
 # JAVA variables
 setenv JAVA_HOME /opt/jdk
 if ($?PATH) then
@@ -117,7 +117,7 @@ else
 endif
 EOF
 
-cat <<"EOF" > $P/etc/profile.d/jdk.sh
+    cat <<"EOF" > $P/etc/profile.d/jdk.sh
 # JAVA variables
 export JAVA_HOME=/opt/jdk
 if [ "$PATH.x" != ".x" ]; then
