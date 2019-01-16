@@ -1,5 +1,5 @@
---- daemon/daemon-connection.c.orig	2010-02-09 13:16:14.000000000 +0100
-+++ daemon/daemon-connection.c	2013-05-06 23:42:57.000000000 +0200
+--- a/daemon/daemon-connection.c.orig	2010-02-09 13:16:14.000000000 +0100
++++ b/daemon/daemon-connection.c	2013-05-06 23:42:57.000000000 +0200
 @@ -67,14 +67,14 @@
  	gint32            id;
  } FileHandle;
@@ -192,8 +192,8 @@
  	
  	return handle;
  }
---- libgnomevfs/gnome-vfs-async-job-map.c.orig	2010-02-09 13:16:14.000000000 +0100
-+++ libgnomevfs/gnome-vfs-async-job-map.c	2013-05-06 23:43:56.000000000 +0200
+--- a/libgnomevfs/gnome-vfs-async-job-map.c.orig	2010-02-09 13:16:14.000000000 +0100
++++ b/libgnomevfs/gnome-vfs-async-job-map.c	2013-05-06 23:43:56.000000000 +0200
 @@ -27,14 +27,14 @@
  #include <glib.h>
  
@@ -310,8 +310,8 @@
 -	g_static_mutex_unlock (&async_job_callback_map_lock);
 +	g_mutex_unlock (&async_job_callback_map_lock);
  }
---- libgnomevfs/gnome-vfs-daemon-method.c.orig	2010-02-09 13:16:14.000000000 +0100
-+++ libgnomevfs/gnome-vfs-daemon-method.c	2013-05-07 00:20:38.000000000 +0200
+--- a/libgnomevfs/gnome-vfs-daemon-method.c.orig	2010-02-09 13:16:14.000000000 +0100
++++ b/libgnomevfs/gnome-vfs-daemon-method.c	2013-05-07 00:20:38.000000000 +0200
 @@ -81,8 +81,17 @@
  static DBusHandlerResult connection_message_func      (DBusConnection  *conn,
  						       DBusMessage     *message,
@@ -373,8 +373,8 @@
  	
  	return ret;
  }
---- libgnomevfs/gnome-vfs-dbus-utils.c.orig	2010-02-09 13:16:14.000000000 +0100
-+++ libgnomevfs/gnome-vfs-dbus-utils.c	2013-05-07 00:22:19.000000000 +0200
+--- a/libgnomevfs/gnome-vfs-dbus-utils.c.orig	2010-02-09 13:16:14.000000000 +0100
++++ b/libgnomevfs/gnome-vfs-dbus-utils.c	2013-05-07 00:22:19.000000000 +0200
 @@ -187,16 +187,16 @@
  	return main_dbus;
  }
@@ -395,8 +395,8 @@
 -	g_static_private_set (&daemon_connection_private, conn, NULL);
 +	g_private_set (&daemon_connection_private, conn);
  }
---- libgnomevfs/gnome-vfs-file-info.c.orig	2010-02-09 13:16:14.000000000 +0100
-+++ libgnomevfs/gnome-vfs-file-info.c	2013-05-06 23:47:46.000000000 +0200
+--- a/libgnomevfs/gnome-vfs-file-info.c.orig	2010-02-09 13:16:14.000000000 +0100
++++ b/libgnomevfs/gnome-vfs-file-info.c	2013-05-06 23:47:46.000000000 +0200
 @@ -31,7 +31,7 @@
  /* Mutex for making GnomeVFSFileInfo ref's/unref's atomic */
  /* Note that an atomic increment function (such as is present in NSPR) is preferable */
@@ -464,8 +464,8 @@
  
  }
  
---- libgnomevfs/gnome-vfs-init.c.orig	2010-07-01 17:36:09.000000000 +0200
-+++ libgnomevfs/gnome-vfs-init.c	2013-05-07 11:50:18.000000000 +0200
+--- a/libgnomevfs/gnome-vfs-init.c.orig	2010-07-01 17:36:09.000000000 +0200
++++ b/libgnomevfs/gnome-vfs-init.c	2013-05-07 11:50:18.000000000 +0200
 @@ -122,8 +122,6 @@
  		return FALSE;
  	}
@@ -486,8 +486,8 @@
 -	}
 +	return GPOINTER_TO_UINT(g_private_get (private_is_primary_thread)) == 1;
  }
---- libgnomevfs/gnome-vfs-job.c.orig	2010-02-09 13:16:14.000000000 +0100
-+++ libgnomevfs/gnome-vfs-job.c	2013-05-07 00:23:25.000000000 +0200
+--- a/libgnomevfs/gnome-vfs-job.c.orig	2010-02-09 13:16:14.000000000 +0100
++++ b/libgnomevfs/gnome-vfs-job.c	2013-05-07 00:23:25.000000000 +0200
 @@ -43,7 +43,7 @@
  #include <string.h>
  #include <unistd.h>
@@ -545,8 +545,8 @@
  
  	g_return_if_fail (job != NULL);
  
---- libgnomevfs/gnome-vfs-method.c.orig	2010-02-09 13:16:14.000000000 +0100
-+++ libgnomevfs/gnome-vfs-method.c	2013-05-06 23:50:29.000000000 +0200
+--- a/libgnomevfs/gnome-vfs-method.c.orig	2010-02-09 13:16:14.000000000 +0100
++++ b/libgnomevfs/gnome-vfs-method.c	2013-05-06 23:50:29.000000000 +0200
 @@ -63,7 +63,7 @@
  
  static GHashTable *module_hash = NULL;
@@ -574,8 +574,8 @@
  
  	return module_element;
  }
---- libgnomevfs/gnome-vfs-module-callback.c.orig	2010-02-09 13:16:14.000000000 +0100
-+++ libgnomevfs/gnome-vfs-module-callback.c	2013-05-07 00:10:11.000000000 +0200
+--- a/libgnomevfs/gnome-vfs-module-callback.c.orig	2010-02-09 13:16:14.000000000 +0100
++++ b/libgnomevfs/gnome-vfs-module-callback.c	2013-05-07 00:10:11.000000000 +0200
 @@ -59,7 +59,7 @@
  
  /* -- Global variables -- */
@@ -797,8 +797,8 @@
  
  	initialize_per_thread_if_needed ();
  	copy_callback_stack_tops (g_private_get (callback_stacks_key),
---- libgnomevfs/gnome-vfs-resolve.c.orig	2010-02-09 13:16:14.000000000 +0100
-+++ libgnomevfs/gnome-vfs-resolve.c	2013-05-06 23:56:04.000000000 +0200
+--- a/libgnomevfs/gnome-vfs-resolve.c.orig	2010-02-09 13:16:14.000000000 +0100
++++ b/libgnomevfs/gnome-vfs-resolve.c	2013-05-06 23:56:04.000000000 +0200
 @@ -139,11 +139,11 @@
  restart_resolve (void)
  {
@@ -822,8 +822,8 @@
  	   return ret;
  }
  #else
---- modules/sftp-method.c.orig	2010-02-09 13:16:14.000000000 +0100
-+++ modules/sftp-method.c	2013-05-07 11:50:33.000000000 +0200
+--- a/modules/sftp-method.c.orig	2010-02-09 13:16:14.000000000 +0100
++++ b/modules/sftp-method.c	2013-05-07 11:50:33.000000000 +0200
 @@ -1488,8 +1488,6 @@
  			invoke_save_auth (uri, keyring, user_name, object, authtype, password);
  		}
