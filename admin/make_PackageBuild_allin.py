@@ -96,7 +96,7 @@ pkgbase="%s"
 vers=%s
 url=%s
 commitid=
-apply_arch="x86_64 i686 armv7l"
+apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=T1
 src=%s-${vers}
@@ -132,16 +132,10 @@ def make_config(type, instdir):
 do_config() {
     if [ -d ${B[$1]} ] ; then rm -rf ${B[$1]} ; fi
 
-    # cd ${S[$1]}
-    # if [ -f autogen.sh ] ; then
-    #   sh ./autogen.sh
-    # fi
-
-    # cp -a ${S[$1]} ${B[$1]}
     mkdir ${B[$1]}
     cd ${B[$1]}
     if [ -x ${S[$1]}/configure ] ; then
-      export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
+      export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
       export LDFLAGS='-Wl,--as-needed' 
       ${S[$1]}/configure --prefix=%s --libdir=%s/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$1]}
     fi
@@ -174,7 +168,6 @@ do_config() {
 do_config() {
     if [ -d ${B[$1]} ] ; then rm -rf ${B[$1]} ; fi
 
-    # cp -a ${S[$1]} ${B[$1]}
     mkdir ${B[$1]}
     cd ${B[$1]}
     if [ -f ${S[$1]}/CMakeLists.txt ]; then
@@ -196,10 +189,8 @@ def make_body2(type):
         body='''
 do_build() {
     cd ${B[$1]}
-    if [ -f build.ninja ] ; then
-      export LDFLAGS='-Wl,--as-needed'
-      ninja
-    fi
+    export LDFLAGS='-Wl,--as-needed'
+    ninja
     if [ $? != 0 ]; then
 	echo "make error. $0 script stop"
 	exit 255
@@ -208,13 +199,8 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}
-    for mk in `find . -name "[Mm]akefile" ` ; do
-	sed -i -e 's|GCONFTOOL = /usr/bin/gconftool-2|GCONFTOOL = echo|' $mk
-    done
-    if [ -f build.ninja ] ; then
-        export LDFLAGS='-Wl,--as-needed'
-        DESTDIR=$P ninja install
-    fi
+    export LDFLAGS='-Wl,--as-needed'
+    DESTDIR=$P ninja install
     if [ $? != 0 ]; then
 	echo "make install error. $0 script stop"
 	exit 255
@@ -241,10 +227,8 @@ source /usr/src/qbilinux/PackageBuild.func
         body='''
 do_build() {
     cd ${B[$1]}
-    if [ -f Makefile ] ; then
-	export LDFLAGS='-Wl,--as-needed'
-	make
-    fi
+    export LDFLAGS='-Wl,--as-needed'
+    make
     if [ $? != 0 ]; then
 	echo "make error. $0 script stop"
 	exit 255
@@ -253,13 +237,8 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}
-    for mk in `find . -name "[Mm]akefile" ` ; do
-	sed -i -e 's|GCONFTOOL = /usr/bin/gconftool-2|GCONFTOOL = echo|' $mk
-    done
-    if [ -f Makefile ] ; then
-	export LDFLAGS='-Wl,--as-needed'
-	make install DESTDIR=$P
-    fi
+    export LDFLAGS='-Wl,--as-needed'
+    make install DESTDIR=$P
     if [ $? != 0 ]; then
 	echo "make install error. $0 script stop"
 	exit 255
@@ -365,7 +344,7 @@ def main():
     header = make_headers(url, filename, vers, READMEs, patches)
     body1 = make_body1()
     config = make_config(type, instdir)
-    body2 = make_body2()
+    body2 = make_body2(type)
     body = body1 + config + body2
 
     scriptname = 'PackageBuild.' + dirname
