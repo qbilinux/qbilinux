@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='http://jaist.dl.sourceforge.net/project/gtkpod/gtkpod/gtkpod-1.0.0/gtkpod-1.0.0.tar.gz'
 pkgbase=gtkpod
-vers=1.0.0
+vers=2.1.5
+url="http://jaist.dl.sourceforge.net/project/gtkpod/gtkpod/gtkpod-${vers}/gtkpod-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T2
-src=gtkpod-1.0.0
+build=T1
+src=gtkpod-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README TODO TODOandBUGS.txt'
 patchfiles=''
@@ -22,7 +22,6 @@ do_prepare() {
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
-    cp -f /usr/src/qbilinux/{config.guess,config.sub} .
 }
 
 do_config() {
