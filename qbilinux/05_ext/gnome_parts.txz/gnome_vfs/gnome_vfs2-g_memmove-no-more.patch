@@ -1,5 +1,5 @@
-*** ../gnome-vfs-2.24.4/libgnomevfs/gnome-vfs-ace.c	2010-02-09 21:16:14.000000000 +0900
---- libgnomevfs/gnome-vfs-ace.c	2017-11-27 15:50:51.647371716 +0900
+*** gnome-vfs-2.24.4/libgnomevfs/gnome-vfs-ace.c	2010-02-09 21:16:14.000000000 +0900
+--- b/libgnomevfs/gnome-vfs-ace.c	2017-11-27 15:50:51.647371716 +0900
 ***************
 *** 523,529 ****
   
@@ -17,8 +17,8 @@
   			permset->count--;
   			break;
   		}
-*** ../gnome-vfs-2.24.4/libgnomevfs/gnome-vfs-job.c	2010-02-09 21:16:14.000000000 +0900
---- libgnomevfs/gnome-vfs-job.c	2017-11-27 15:51:20.692373187 +0900
+*** gnome-vfs-2.24.4/libgnomevfs/gnome-vfs-job.c	2010-02-09 21:16:14.000000000 +0900
+--- b/libgnomevfs/gnome-vfs-job.c	2017-11-27 15:51:20.692373187 +0900
 ***************
 *** 851,857 ****
   					if (written_bytes_in_buffer > 0) {
@@ -36,8 +36,8 @@
   							  (char *) buffer + written_bytes_in_buffer,
   							  filled_bytes_in_buffer - written_bytes_in_buffer);
   						filled_bytes_in_buffer =
-*** ../gnome-vfs-2.24.4/libgnomevfs/gnome-vfs-resolve.c	2010-02-09 21:16:14.000000000 +0900
---- libgnomevfs/gnome-vfs-resolve.c	2017-11-27 15:51:37.559374041 +0900
+*** gnome-vfs-2.24.4/libgnomevfs/gnome-vfs-resolve.c	2010-02-09 21:16:14.000000000 +0900
+--- b/libgnomevfs/gnome-vfs-resolve.c	2017-11-27 15:51:37.559374041 +0900
 ***************
 *** 115,121 ****
   	   *handle = NULL;
@@ -55,8 +55,8 @@
   			 addr = gnome_vfs_address_new_from_sockaddr (sa, addrlen);
   
   			 if (addr != NULL)
-*** ../gnome-vfs-2.24.4/modules/nntp-method.c	2010-02-09 21:16:14.000000000 +0900
---- modules/nntp-method.c	2017-11-27 15:52:13.078375839 +0900
+*** gnome-vfs-2.24.4/modules/nntp-method.c	2010-02-09 21:16:14.000000000 +0900
+--- b/modules/nntp-method.c	2017-11-27 15:52:13.078375839 +0900
 ***************
 *** 587,593 ****
   			segment_size = right_ptr - left_ptr;
