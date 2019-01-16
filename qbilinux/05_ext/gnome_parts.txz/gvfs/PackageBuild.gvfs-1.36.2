@@ -8,7 +8,7 @@ arch=`uname -m`
 build=T3
 src=gvfs-${vers}
 OPT_CONFIG="--disable-static  --with-bash-completion-dir=/usr/share/bash-completion/completions --disable-obexftp"
-DOCS='AUTHORS COPYING ChangeLog ChangeLog.pre-1-2 INSTALL MAINTAINERS NEWS README README.commits TODO'
+DOCS='AUTHORS COPYING ChangeLog.pre-1-2 MAINTAINERS NEWS README README.commits'
 patchfiles=''
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
@@ -22,6 +22,7 @@ do_prepare() {
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
+    env NOCONFIGURE=yes ./autogen.sh
 }
 
 do_config() {
