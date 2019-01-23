@@ -32,6 +32,7 @@ do_prepare() {
   gunzip -c $W/rxvt-2.7.10-utempter.patch.gz | patch -Np1 -i -
   cp -p src/feature.h{,.orig}
   sed 's@/X11R6/lib@/share@g' src/feature.h.orig > src/feature.h
+  cp -f /usr/src/qbilinux/{config.guess,config.sub} autoconf
 }
 
 do_config() {
