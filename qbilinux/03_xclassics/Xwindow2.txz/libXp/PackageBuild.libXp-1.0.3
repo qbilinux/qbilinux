@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='https://www.x.org/releases/individual/lib/libXp-1.0.2.tar.bz2'
 pkgbase=libXp
-vers=1.0.2
+vers=1.0.3
+url="https://www.x.org/releases/individual/lib/libXp-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T2
-src=libXp-1.0.2
+build=T1
+src=libXp-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='COPYING ChangeLog INSTALL README'
 patchfiles=''
