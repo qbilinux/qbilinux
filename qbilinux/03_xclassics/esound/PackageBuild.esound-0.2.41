@@ -27,6 +27,7 @@ do_prepare() {
     cp -p esd.conf esd.conf.orig
     sed '/spawn_options=/s@-as 2@-as 5@g' esd.conf.orig \
 	| sed '/default_options=/s@$@-as 5@g' > esd.conf
+    cp -f /usr/src/qbilinux/{config.guess,config.sub} .
 }
 
 do_config() {
