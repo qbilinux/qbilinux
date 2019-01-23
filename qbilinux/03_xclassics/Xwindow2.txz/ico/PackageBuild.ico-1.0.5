@@ -1,12 +1,12 @@
 #!/bin/sh
 
 ######################################################################
-url="http://ftp.x.org/pub/individual/app/ico-1.0.3.tar.bz2"
 pkgbase=ico
-vers=1.0.3
+vers=1.0.5
+url="http://ftp.x.org/pub/individual/app/ico-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T2
+build=T1
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="ChangeLog COPYING INSTALL README"
