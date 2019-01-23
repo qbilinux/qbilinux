@@ -37,6 +37,7 @@ do_prepare() {
     cp -p dict/Makefile.in dict/Makefile.in.orig
     sed 's@ \($(SJ3DICTDIR)\)@ $(DESTDIR)\1@g' dict/Makefile.in.orig \
 	> dict/Makefile.in
+    cp -f /usr/src/qbilinux/{config.guess,config.sub} config
 }
 
 do_config() {
