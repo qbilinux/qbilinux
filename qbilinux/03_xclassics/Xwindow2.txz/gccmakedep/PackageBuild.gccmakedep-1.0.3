@@ -1,12 +1,12 @@
 #!/bin/sh
 
 ######################################################################
-url="http://ftp.x.org/pub/individual/util/gccmakedep-1.0.2.tar.bz2"
 pkgbase=gccmakedep
-vers=1.0.2
+vers=1.0.3
+url="http://ftp.x.org/pub/individual/util/gccmakedep-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T2
+build=T1
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="COPYING ChangeLog"
