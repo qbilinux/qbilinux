@@ -1,12 +1,12 @@
 #!/bin/sh
 
 ######################################################################
-url="http://ftp.x.org/pub/individual/app/bitmap-1.0.5.tar.bz2"
 pkgbase=bitmap
-vers=1.0.5
+vers=1.0.8
+url="http://ftp.x.org/pub/individual/app/bitmap-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T2
+build=T1
 src=$pkgbase-$vers
 OPT_CONFIG="--with-appdefaultdir=/usr/share/X11/app-defaults"
 DOCS="README COPYING AUTHORS INSTALL ChangeLog"
