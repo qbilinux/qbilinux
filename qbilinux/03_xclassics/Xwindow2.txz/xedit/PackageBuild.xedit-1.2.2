@@ -1,12 +1,12 @@
 #!/bin/sh
 
 ######################################################################
-url="http://ftp.x.org/pub/individual/app/xedit-1.2.0.tar.bz2"
 pkgbase=xedit
-vers=1.2.0
+vers=1.2.2
+url="http://ftp.x.org/pub/individual/app/xedit-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T2
+build=T1
 src=$pkgbase-$vers
 OPT_CONFIG="--with-appdefaultdir=/usr/share/X11/app-defaults"
 DOCS="COPYING AUTHORS README INSTALL ChangeLog"
