@@ -21,6 +21,7 @@ do_prepare() {
     mkdir -p ${S[$i]}
     cd ${S[$i]}
     mv ../* .
+    mv ../.cargo .
     cd ${S[$i]}/js/src
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
