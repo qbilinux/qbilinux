@@ -2,9 +2,7 @@
 
 ######################################################################
 url="http://pupngo.dk/source/qvwm-1.1.12.tar.gz
-    http://plamo.linet.gr.jp/~tamuki/src/qvwm-1.1.12-timer.diff.gz
     http://pupngo.dk/source/qvbanner-1.0.2-src-11.00.tar.gz
-    http://plamo.linet.gr.jp/~tamuki/src/qvbanner-1.0.2-expire.patch.gz
     http://plamo.linet.gr.jp/~tamuki/src/qvwm_sounds.tar.bz2
     http://ftp.openbsd.org/pub/OpenBSD/distfiles/fvwm_icons-20070101.tar.gz
     http://plamo.linet.gr.jp/~tamuki/src/plamo_pixmaps.tar.bz2"
@@ -20,6 +18,7 @@ OPT_CONFIG[1]=""
 DOCS[0]="README `echo doc/{COPYING,BUGS.{en,fr,jp},CHANGES.{en,jp}}`
     `echo doc/{FAQ,INSTALL,README,TODO}.{en,fr,jp}`"
 DOCS[1]="COPYING `echo README.{jp,en,fr}` `echo CHANGES.{jp,en}`"
+patchfiles="qvwm-1.1.12-timer.diff qvbanner-1.0.2-expire.patch"
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -28,14 +27,11 @@ SRC_DIR="/home/archives/source/"
 source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
-    cd ${S[$i]}
-    for patch in $patchfiles ; do
-	patch -p1 < $W/$patch
-    done
-    cd ${S[0]}
-    gunzip -c $W/qvwm-1.1.12-timer.diff.gz | patch -Np1 -i -
-    cd ${S[1]}
-    gunzip -c $W/qvbanner-1.0.2-expire.patch.gz | patch -Np1 -i -
+    cd ${S[$1]}
+    case $1 in
+	0) gunzip -c $W/qvwm-1.1.12-timer.diff | patch -Np1 -i - ;;
+	1) gunzip -c $W/qvbanner-1.0.2-expire.patch | patch -Np1 -i - ;;
+    esac
 }
 
 do_config() {
@@ -79,6 +75,7 @@ do_install() {
 	echo "make install error. $0 script stop"
 	exit 255
     fi
+
     install2 $B/man/qvwm.man-jp $mandir/ja_JP.eucJP/man1/qvwm.1x
     install2 $B/man/qvwm.man-fr $mandir/fr_FR/man1/qvwm.1x
     install -m 644 ${B[1]}/logo.xpm $P/usr/share/qvwm/images
