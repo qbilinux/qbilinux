@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase=eudev
-vers=3.2.6
+vers=3.2.7
 url="https://dev.gentoo.org/~blueness/eudev/eudev-${vers}.tar.gz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
@@ -31,11 +31,9 @@ do_config() {
 
     mkdir ${B[$1]}
     cd ${B[$1]}
-    if [ -x ${S[$1]}/configure ] ; then
-      export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
-      export LDFLAGS='-Wl,--as-needed' 
-      ${S[$1]}/configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man --with-rootlibdir=/${libdir} ${OPT_CONFIG[$i]}
-    fi
+    export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
+    export LDFLAGS='-Wl,--as-needed' 
+    ${S[$1]}/configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man --with-rootlibdir=/${libdir} ${OPT_CONFIG[$i]}
     if [ $? != 0 ]; then
 	echo "configure error. $0 script stop"
 	exit 255
@@ -44,10 +42,8 @@ do_config() {
 
 do_build() {
     cd ${B[$1]}
-    if [ -f Makefile ] ; then
-	export LDFLAGS='-Wl,--as-needed'
-	make
-    fi
+    export LDFLAGS='-Wl,--as-needed'
+    make
     if [ $? != 0 ]; then
 	echo "make error. $0 script stop"
 	exit 255
@@ -56,13 +52,8 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}
-    for mk in `find . -name "[Mm]akefile" ` ; do
-	sed -i -e 's|GCONFTOOL = /usr/bin/gconftool-2|GCONFTOOL = echo|' $mk
-    done
-    if [ -f Makefile ] ; then
-	export LDFLAGS='-Wl,--as-needed'
-	make install DESTDIR=$P
-    fi
+    export LDFLAGS='-Wl,--as-needed'
+    make install DESTDIR=$P
     if [ $? != 0 ]; then
 	echo "make install error. $0 script stop"
 	exit 255
