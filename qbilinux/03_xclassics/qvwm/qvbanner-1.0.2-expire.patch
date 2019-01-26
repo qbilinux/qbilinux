@@ -1,0 +1,13 @@
+--- qvbanner-1.0.2/qvbanner.cc.orig	1999-11-01 11:49:23.000000000 +0900
++++ qvbanner-1.0.2/qvbanner.cc	2008-02-23 20:06:32.000000000 +0900
+@@ -249,8 +249,8 @@
+  */
+ void ExpireBanner(int sig)
+ {
+-  XUngrabServer(display);
++  Window this_window;
+ 
+-  XCloseDisplay(display);
++  XDestroyWindow(display, this_window);
+   exit(0);
+ }

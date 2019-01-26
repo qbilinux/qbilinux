@@ -1,0 +1,16 @@
+--- qvwm-1.1.12/src/timer.h.pristine	2006-07-18 14:32:26.000000000 -0500
++++ qvwm-1.1.12/src/timer.h	2006-07-19 08:39:40.000000000 -0500
+@@ -42,10 +42,10 @@
+ 
+       gettimeofday(&now, NULL);
+ 
+-      timeo.tv_sec = now.tv_sec;
+-      timeo.tv_usec = now.tv_usec + msec * 1000;
++      timeo.tv_sec = now.tv_sec + msec / 1000;
++      timeo.tv_usec = now.tv_usec + msec % 1000 * 1000;
+       if (timeo.tv_usec > 1000 * 1000) {
+-	timeo.tv_sec += timeo.tv_usec / (1000 * 1000);
++	timeo.tv_sec += 1;
+ 	timeo.tv_usec %= 1000 * 1000;
+       }
+     }
