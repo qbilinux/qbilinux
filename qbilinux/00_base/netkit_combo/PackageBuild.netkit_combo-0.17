@@ -158,13 +158,13 @@ do_install() {
 
 do_package() {
     rm $docdir/$src/netkit-routed/ChangeLog.gz
-    install2 $B/netkit-routed/ChangeLog $docdir/$src/netkit-routed
+    install -Dm644 $B/netkit-routed/ChangeLog $docdir/$src/netkit-routed
     touch -t 200012251418.04 $docdir/$src/netkit-routed/ChangeLog
     gzip_one $docdir/$src/netkit-routed/ChangeLog
     rm $docdir/$src/netkit-routed/README.gz
-    install2 $B/netkit-routed/README $docdir/$src/netkit-routed
+    install -Dm644 $B/netkit-routed/README $docdir/$src/netkit-routed
     touch -t 200012251420.54 $docdir/$src/netkit-routed/README
-    gzip_one $docdir/$src/netkit-routed/README
+    gzip $docdir/$src/netkit-routed/README
     touch -r $S/netkit-routed $docdir/$src/netkit-routed
 
     for i in $pkgbase ; do
