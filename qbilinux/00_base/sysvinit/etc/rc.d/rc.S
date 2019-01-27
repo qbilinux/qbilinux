@@ -198,12 +198,12 @@ if [ -x /sbin/rsyslogd ]; then
     if [ ! -d /var/run ]; then
 	# Workaround when /var is on non-root partition.
 	mkdir /var/run
-	/sbin/rsyslogd -m 0 -f /bootlog.conf
+	/sbin/rsyslogd -f /bootlog.conf
         sleep 1
 	mv -f /var/run/rsyslogd.pid /
 	rmdir /var/run
     else
-	/sbin/rsyslogd -m 0 -f /bootlog.conf
+	/sbin/rsyslogd -f /bootlog.conf
         sleep 1
 	mv -f /var/run/rsyslogd.pid /
     fi
