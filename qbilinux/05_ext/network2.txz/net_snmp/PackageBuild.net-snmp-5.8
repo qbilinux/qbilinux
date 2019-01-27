@@ -5,12 +5,12 @@ vers=5.8
 url="https://downloads.sourceforge.net/project/net-snmp/net-snmp/${vers}/net-snmp-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T1
+build=T2
 src=net-snmp-${vers}
 OPT_CONFIG='--disable-static --with-krb5=/usr/heimdal --with-defaults --with-python-modules'
 DOCS='AGENT.txt COPYING ChangeLog INSTALL NEWS README README.Panasonic_AM3X.txt README.agent-mibs README.agentx README.aix README.hpux11 README.irix README.krb5 README.osX README.snmpv3 README.solaris README.sql README.thread README.tru64 README.win32 TODO'
 #patchfiles='remove_u64_typdef.patch  fix_perl_module_compilation.patch'
-patchfiles='fix_snmpcheck_perl_path.patch'
+patchfiles='fix_snmpcheck_perl_path.patch types_h.patch'
 compress=txz
 SRC_URL="http://circle2.org/pub/source/"
 SRC_DIR="/home/archives/source/"
