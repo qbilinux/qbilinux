@@ -54,14 +54,14 @@ do_build() {
     ( cd src ; make include/efivar/efivar-guids.h )
     ( cd src ; make libefivar.so )
     ( cd src ; make libefiboot.so )
-    make efivar-static
+    env LIBDIR=/usr/${libdir} make efivar-static
 }
 
 do_install() {
     cd ${B[$1]}
     if [ -f Makefile ] ; then
 	export LDFLAGS='-Wl,--as-needed'
-	make install DESTDIR=$P
+	env LIBDIR=/usr/${libdir} make install DESTDIR=$P
     fi
     if [ $? != 0 ]; then
 	echo "make install error. $0 script stop"
