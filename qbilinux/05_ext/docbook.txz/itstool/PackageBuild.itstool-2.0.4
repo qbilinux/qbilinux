@@ -32,7 +32,7 @@ do_config() {
     if [ -x ${S[$1]}/configure ] ; then
 	export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
 	export LDFLAGS='-Wl,--as-needed' 
-	export PYTHON=/usr/bin/python3
+	export PYTHON=/usr/bin/python2
 	${S[$1]}/configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc \
 		--localstatedir=/var --infodir='${prefix}'/share/info --mandir='${prefix}'/share/man ${OPT_CONFIG[$1]}
     fi
