@@ -137,6 +137,13 @@ if [ $opt_download -eq 1 ] ; then
 		    ( cd `basename ${i##*/} .git` ; git pull origin master )
 		fi
 		;;
+	    hg)
+		if [ ! -d `basename ${i##*/} .hg` ] ; then
+		    hg clone ${i%.*}
+		else
+		    ( cd `basename ${i##*/} .hg` ; hg pull )
+		fi
+		;;
 	    *)
 		if [ ! -f ${i##*/} ] ; then
 		    if [ -f ${SRC_DIR}/${i##*/} ] ;then
@@ -191,6 +198,19 @@ if [ $opt_download -eq 1 ] ; then
 			git checkout $git_branch
 		    fi
 		    git set-file-times
+		  )) ;;
+	    hg)
+		( cd $W/source
+		  if [ ! -d `basename ${i##*/} .hg` ] ; then
+		      rm -rf `basename ${i##*/} .hg`
+		  fi
+		  cp -a $W/`basename ${i##*/} .hg` .
+		  ( cd $W/source/`basename ${i##*/} .hg`
+		    if [ -n "$commitid" ] ; then
+			hg update -r $commitid
+		    elif [ -n "$hg_branch" ] ; then
+			hg update $hg_branch
+		    fi
 		  )) ;;
 	    jar)
 		;;
