@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
 pkgbase=mysql
-vers=5.7.22
-url="http://ftp.jaist.ac.jp/pub/mysql/Downloads/MySQL-5.7/mysql-${vers}.tar.gz"
+vers=8.0.14
+url="http://ftp.jaist.ac.jp/pub/mysql/Downloads/MySQL-${vers%.*}/mysql-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T2
+build=T1
 src=mysql-${vers}
 W=`pwd`
-OPT_CONFIG="-DWITH_EMBEDDED_SERVER:BOOL=ON -DDOWNLOAD_BOOST=1 -DWITH_BOOST=$W/boost"
+OPT_CONFIG="-DWITH_EMBEDDED_SERVER:BOOL=ON -DUSING_SYSTEM_BOOST=1"
 DOCS='COPYING INSTALL README VERSION'
 patchfiles=''
 compress=txz
@@ -19,7 +19,7 @@ SRC_DIR="/home/archives/source/"
 source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
-    cd ${S[$i]}
+    cd ${S[$1]}
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
@@ -30,11 +30,9 @@ do_config() {
 
     mkdir ${B[$1]}
     cd ${B[$1]}
-    if [ -f $S/CMakeLists.txt ]; then
-        export PKG_CONFIG_PATH=/opt/kde/${libdir}/pkgconfig:/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
-        export LDFLAGS='-Wl,--as-needed' 
-        cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/mysql -DINSTALL_LIBDIR:STRING=${libdir} -DINSTALL_PLUGINDIR:STRING=${libdir}/plugin -DINSTALL_MANDIR:STRING=/usr/share/man ${OPT_CONFIG} $S
-    fi
+    export PKG_CONFIG_PATH=/opt/kde/${libdir}/pkgconfig:/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
+    export LDFLAGS='-Wl,--as-needed' 
+    cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/mysql -DINSTALL_LIBDIR:STRING=${libdir} -DINSTALL_PLUGINDIR:STRING=${libdir}/plugin -DINSTALL_MANDIR:STRING=/usr/share/man ${OPT_CONFIG} $S
     if [ $? != 0 ]; then
 	echo "configure error. $0 script stop"
 	exit 255
@@ -43,10 +41,8 @@ do_config() {
 
 do_build() {
     cd ${B[$1]}
-    if [ -f Makefile ] ; then
-	export LDFLAGS='-Wl,--as-needed'
-	make
-    fi
+    export LDFLAGS='-Wl,--as-needed'
+    make
     if [ $? != 0 ]; then
 	echo "make error. $0 script stop"
 	exit 255
@@ -55,10 +51,8 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}
-    if [ -f Makefile ] ; then
-	export LDFLAGS='-Wl,--as-needed'
-	make install DESTDIR=$P
-    fi
+    export LDFLAGS='-Wl,--as-needed'
+    make install DESTDIR=$P
     if [ $? != 0 ]; then
 	echo "make install error. $0 script stop"
 	exit 255
@@ -68,8 +62,8 @@ do_install() {
 	strip -g $archive
     done
 
-  mkdir -p $P/etc/profile.d
-  cat <<'EOF' > $P/etc/profile.d/mysql.csh
+    mkdir -p $P/etc/profile.d
+    cat <<'EOF' > $P/etc/profile.d/mysql.csh
 # path for MySQL
 if ($?PATH) then
     set path = ( $path /opt/mysql/bin )
@@ -77,7 +71,7 @@ else
     set path = ( /bin /usr/bin /opt/mysql/bin )
 endif
 EOF
-  cat <<'EOF' > $P/etc/profile.d/mysql.sh
+    cat <<'EOF' > $P/etc/profile.d/mysql.sh
 # path for MariDB
 if [ "$PATH.x" != ".x" ]; then
     PATH=$PATH:/opt/mysql/bin
@@ -85,8 +79,8 @@ else
     PATH=/bin:/usr/bin:/opt/mysql/bin
 fi
 EOF
-  mkdir -p $P/install
-  cat <<"EOF" > $P/install/initpkg
+    mkdir -p $P/install
+    cat <<"EOF" > $P/install/initpkg
 ldchk=`cat /etc/ld.so.conf | grep mysql`
 if [ "$ldchk.x" = ".x" ]; then
     cat /etc/ld.so.conf >> /etc/ld.so.conf.mysql
@@ -117,17 +111,17 @@ if [ ! -f /etc/my.cnf ]; then
 fi
 EOF
 
-  mkdir -p $P/etc/rc.d/init.d/
-  install -m 644 support-files/mysql.server $P/etc/rc.d/init.d/mysql
-  sed -i -e "s|^basedir=|basedir=/opt/mysql|" -e "s|^datadir=|datadir=/opt/mysql/data|" $P/etc/rc.d/init.d/mysql
+    mkdir -p $P/etc/rc.d/init.d/
+    install -m 644 support-files/mysql.server $P/etc/rc.d/init.d/mysql
+    sed -i -e "s|^basedir=|basedir=/opt/mysql|" -e "s|^datadir=|datadir=/opt/mysql/data|" $P/etc/rc.d/init.d/mysql
 
-  cat <<EOF > $P/etc/ld.so.conf.mysql
+    cat <<EOF > $P/etc/ld.so.conf.mysql
 /opt/mysql/${libdir}
 EOF
 
-  if [ -d $W/work2 ]; then rm -rf $W/work2 ; fi
-  mkdir -p $W/work2/opt/mysql/
-  mv $P/opt/mysql/{mysql-test,sql-bench} $W/work2/opt/mysql
+    if [ -d $W/work2 ]; then rm -rf $W/work2 ; fi
+    mkdir -p $W/work2/opt/mysql/
+    mv $P/opt/mysql/{mysql-test,sql-bench} $W/work2/opt/mysql
 }
 
 do_package() {
