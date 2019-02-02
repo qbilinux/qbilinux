@@ -6,7 +6,7 @@ url="http://curl.haxx.se/download/curl-${vers}.tar.bz2"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T2
+build=1
 src=curl-${vers}
 OPT_CONFIG='--disable-ldap --disable-rtsp
     --with-gssapi-includes=/usr/include --without-librtmp --with-libssh2'
@@ -50,7 +50,7 @@ docs/VERSIONS
 COPYING README RELEASE-NOTES'
 patchfiles=''
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ##############################################################
 

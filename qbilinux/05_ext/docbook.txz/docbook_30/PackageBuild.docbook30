@@ -5,13 +5,13 @@ pkgbase=docbook_30
 vers=1.0
 apply_arch="noarch"
 arch=noarch
-build=T2
+build=1
 src=docbook30
 OPT_CONFIG=''
 DOCS='30chg.txt 40issues.txt announce.txt'
 patchfiles='dbcat30.patch'
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ##############################################################
 

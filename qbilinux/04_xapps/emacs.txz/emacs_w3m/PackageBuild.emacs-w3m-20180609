@@ -6,13 +6,13 @@ url='http://circle2.org/pub/source/emacs-w3m-20180609.tar.gz'
 #url='cvs -d :pserver:anonymous@cvs.namazu.org:/storage/cvsroot co emacs-w3m'
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T2
+build=1
 src=emacs-w3m
 OPT_CONFIG=''
 DOCS='COPYING ChangeLog ChangeLog.1 NEWS NEWS.ja README README.ja'
 patchfiles=''
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ##############################################################
 

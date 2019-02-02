@@ -6,13 +6,13 @@ url='http://download.kde.org/stable/frameworks/5.52/qqc2-desktop-style-5.52.0.ta
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T1
+build=1
 src=qqc2-desktop-style-${vers}
 OPT_CONFIG=''
 DOCS='LICENSE.GPL-2 LICENSE.LGPL-3 README.md'
 patchfiles=''
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ##############################################################
 

@@ -6,14 +6,14 @@ vers=0.8.0
 url="http://spice-space.org/download/usbredir/usbredir-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T1
+build=1
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="usb-redirection-protocol.txt COPYING ChangeLog TODO README
     README.multi-thread COPYING.LIB"
 patchfiles=''
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
 

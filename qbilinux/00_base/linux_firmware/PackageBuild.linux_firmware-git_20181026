@@ -7,7 +7,7 @@ commitid=1baa348
 url="https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git"
 apply_arch="noarch"
 arch=noarch
-build=T1
+build=1
 src=linux-firmware
 OPT_CONFIG=""
 DOCS="GPL-3 `echo LICENCE.{Abilis,IntcSST2,Marvell,OLPC}` LICENSE.radeon
@@ -26,7 +26,7 @@ DOCS="GPL-3 `echo LICENCE.{Abilis,IntcSST2,Marvell,OLPC}` LICENSE.radeon
     `echo LICENSE.{QualcommAtheros_{ar3k,ath10k},amdgpu,atmel,hfi1_firmware}`
     LICENSE.i915"
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
 

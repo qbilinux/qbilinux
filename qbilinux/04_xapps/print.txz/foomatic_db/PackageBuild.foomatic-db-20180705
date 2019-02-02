@@ -5,13 +5,13 @@ vers=4.0_20180705
 url='http://www.openprinting.org/download/foomatic/foomatic-db-4.0-20180705.tar.xz'
 apply_arch="noarch"
 arch=noarch
-build=T2
+build=1
 src=foomatic-db-20180705
 OPT_CONFIG=''
 DOCS='COPYING ChangeLog README USAGE'
 patchfiles=''
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ##############################################################
 

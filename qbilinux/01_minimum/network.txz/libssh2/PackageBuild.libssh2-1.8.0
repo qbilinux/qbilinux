@@ -6,7 +6,7 @@ vers=1.8.0
 url="https://www.libssh2.org/download/libssh2-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T3
+build=1
 src=$pkgbase-$vers
 patchfiles=""
 OPT_CONFIG=""
@@ -14,7 +14,7 @@ DOCS="`echo docs/{BINDINGS,HACKING,INSTALL_CMAKE,AUTHORS,TODO}`
     `echo docs/{INSTALL_AUTOTOOLS,HACKING.CRYPTO}`
     README RELEASE-NOTES ChangeLog COPYING NEWS"
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
 

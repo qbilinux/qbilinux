@@ -7,12 +7,12 @@ url="http://ftp.tku.edu.tw/Linux/LinuxMint/latest/pools/B/pool/main/o/openbsd-in
     http://ftp.tku.edu.tw/Linux/LinuxMint/latest/pools/B/pool/main/o/openbsd-inetd/openbsd-inetd_0.20080125-6.diff.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T2
+build=1
 src=openbsd-inetd-$vers.orig
 OPT_CONFIG=""
 DOCS="ChangeLog"
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
 

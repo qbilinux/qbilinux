@@ -5,13 +5,13 @@ pkgbase=hicolor_icon_theme
 vers=0.12
 apply_arch="noarch"
 arch=noarch
-build=T2
+build=1
 src=hicolor-icon-theme-0.12
 OPT_CONFIG=''
 DOCS='COPYING ChangeLog README'
 patchfiles=''
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ##############################################################
 

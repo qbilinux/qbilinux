@@ -5,14 +5,14 @@ pkgbase=libc
 vers=2.28
 url="http://ftp.gnu.org/gnu/glibc/glibc-${vers}.tar.xz"
 arch=`uname -m`
-build=T1
+build=1
 src=glibc-$vers
 OPT_CONFIG="--enable-kernel=3.2 --enable-obsolete-rpc --enable-obsolete-nsl"
 DOCS="BUGS CONFORMANCE COPYING* ChangeLog* INSTALL LICENSES NEWS
     PROJECTS README"
 compress=txz
 patchfiles='glibc-2.26-fhs-1.patch'
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
 
