@@ -6,13 +6,13 @@ url='https://files.pythonhosted.org/packages/cf/61/d3b2aab34ed230eeb363e833e2ccc
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T4
+build=1
 src=grabber-${vers}
 OPT_CONFIG=''
 DOCS='LICENSE README.md'
 patchfiles=''
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ##############################################################
 

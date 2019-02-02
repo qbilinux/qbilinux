@@ -6,13 +6,13 @@ vers=017
 url="http://launchpad.net/ntrack/main/017/+download/ntrack-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T2
+build=1
 src=$pkgbase-$vers
 patchfiles=""
 OPT_CONFIG=""
 DOCS="README COPYING AUTHORS COPYING.LESSER NEWS ChangeLog INSTALL"
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
 

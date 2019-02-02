@@ -8,14 +8,14 @@ url="http://jaist.dl.sourceforge.jp/mix-mplus-ipa/63544/migmix-1p-${vers}.zip
      http://jaist.dl.sourceforge.jp/mix-mplus-ipa/63544/migmix-2m-${vers}.zip"
 apply_arch="noarch"
 arch=noarch
-build=T2
+build=1
 src=migmix-1p-20150712
 #src='migmix-1p-20150712 migmix-2p-20150712 migmix-1m-20150712 migmix-2m-20150712'
 OPT_CONFIG=''
 DOCS='migmix-README.txt ipag00303/*'
 patchfiles=''
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ##############################################################
 

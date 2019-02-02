@@ -5,13 +5,13 @@ vers=1.10
 url="http://ftp.gnome.org/pub/GNOME/sources/ttf-bitstream-vera/${vers}/ttf-bitstream-vera-${vers}.tar.bz2"
 apply_arch="noarch"
 arch=noarch
-build=T3
+build=1
 src=ttf-bitstream-vera-${vers}
 OPT_CONFIG=''
 DOCS='COPYRIGHT.TXT README.TXT RELEASENOTES.TXT'
 patchfiles=''
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ##############################################################
 

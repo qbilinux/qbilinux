@@ -6,7 +6,7 @@ vers=20180414
 url="http://ftp.math.utah.edu/pub/tex/historic/systems/texlive/${vers:0:4}/texlive-${vers}-texmf.tar.xz"
 apply_arch="noarch"
 arch=noarch
-build=T1
+build=1
 src=texlive-${vers}-texmf
 prefix=/opt/texlive/2018
 OPT_CONFIG=''
@@ -24,7 +24,7 @@ PKG2='dvips fonts hbf2gf makeindex metafont metapost mft omega'
 #doc/xindy'
 patchfiles=''
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ##############################################################
 

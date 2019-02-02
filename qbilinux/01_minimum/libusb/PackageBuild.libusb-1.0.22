@@ -6,13 +6,13 @@ vers=1.0.22
 url="http://downloads.sourceforge.net/libusb/libusb-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T1
+build=1
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="COPYING ChangeLog README PORTING AUTHORS INSTALL NEWS TODO"
 patchfiles=""
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
 

@@ -5,13 +5,13 @@ vers=1.22
 url="http://xorg.freedesktop.org/releases/individual/app/intel-gpu-tools-${vers}.tar.xz"
 apply_arch="x86_64 i686"
 arch=`uname -m`
-build=T3
+build=1
 src=intel-gpu-tools-${vers}
 OPT_CONFIG=''
 DOCS='CONTRIBUTING COPYING MAINTAINERS NEWS README'
 patchfiles=''
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ##############################################################
 

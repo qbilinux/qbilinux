@@ -5,13 +5,13 @@ vers=0.26
 url="http://www.exiv2.org/builds/exiv2-${vers}-trunk.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T2
+build=1
 src=exiv2-trunk
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING README'
 patchfiles=''
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ##############################################################
 

@@ -7,7 +7,7 @@ pkgbase=TiMidity++
 vers=2.14.0
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T2
+build=1
 src=$pkgbase-$vers
 OPT_CONFIG="--enable-audio=alsa,arts,esd,jack,ao,vorbis,flac,speex
     --enable-dynamic=ncurses,slang,motif,tcltk,emacs,vt100,xaw,xskin,gtk,server,alsaseq
@@ -18,7 +18,7 @@ DOCS="README AUTHORS COPYING ChangeLog INSTALL NEWS TODO ChangeLog.[123]
     `echo doc/ja_JP.eucJP/README.{dl,sf,tk,xskin,xaw,alsaseq,m2m,mts,w32}`"
 patchfiles='inline.patch'
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
 

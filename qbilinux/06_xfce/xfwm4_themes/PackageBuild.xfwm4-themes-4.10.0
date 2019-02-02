@@ -5,13 +5,13 @@ pkgbase=xfwm4_themes
 vers=4.10.0
 apply_arch="noarch"
 arch=noarch
-build=T2
+build=1
 src=xfwm4-themes-4.10.0
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README TODO'
 patchfiles=''
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ##############################################################
 

@@ -6,13 +6,13 @@ vers=4.89+dfsg
 url="http://ftp.uni-erlangen.de/ubuntu/pool/main/l/lsof/lsof_${vers}.orig.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T2
+build=1
 src=$pkgbase-${vers}.orig
 OPT_CONFIG=""
 DOCS="00.README.FIRST 00CREDITS 00DCACHE 00DIALECTS 00DIST 00FAQ 00LSOF-L 00MANIFEST 00PORTING 00QUICKSTART 00README 00TEST 00XCONFIG ChangeLog"
 patchfiles=""
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
 
