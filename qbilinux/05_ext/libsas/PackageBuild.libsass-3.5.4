@@ -23,6 +23,7 @@ do_prepare() {
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
+    autoreconf -vif .
 }
 
 do_config() {
