@@ -5,14 +5,14 @@ vers=1.4.19
 url="http://downloads.sourceforge.net/libpng/libpng-${vers}.tar.xz" 
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T1
+build=1
 src=libpng-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='INSTALL LICENSE README TODO'
 #http://jaist.dl.sourceforge.net/project/libpng-apng/libpng14/${vers}/libpng-${vers}-apng.patch.gz
 patchfiles="libpng-${vers}-apng.patch"
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ##############################################################
 

@@ -6,12 +6,12 @@ vers=0.6.0
 url="http://ftp.gnome.org/pub/GNOME/sources/gtk-vnc/0.6/gtk-vnc-0.6.0.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T3
+build=1
 src=gtk-vnc-$vers
 OPT_CONFIG="--sysconfdir=/etc --disable-static --with-gtk=3.0 --with-python"
 DOCS="ChangeLog INSTALL COPYING.LIB AUTHORS NEWS README ChangeLog-old"
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
 

@@ -6,14 +6,14 @@ url="http://downloads.sourceforge.net/freetype/freetype-${vers}.tar.bz2"
 verify=$url.sig
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T2
+build=1
 src=${pkgbase}-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='ChangeLog ChangeLog.20 ChangeLog.21 ChangeLog.22 ChangeLog.23 README README.git'
 patchfiles='freetype-2.7.1-enable-spr.patch freetype-2.7.1-enable-valid.patch'
 no_apply_patchfiles=''
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ##############################################################
 
@@ -57,9 +57,6 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}
-    for mk in `find . -name "[Mm]akefile" ` ; do
-	sed -i -e 's|GCONFTOOL = /usr/bin/gconftool-2|GCONFTOOL = echo|' $mk
-    done
     if [ -f Makefile ] ; then
 	export LDFLAGS='-Wl,--as-needed'
 	make install DESTDIR=$P

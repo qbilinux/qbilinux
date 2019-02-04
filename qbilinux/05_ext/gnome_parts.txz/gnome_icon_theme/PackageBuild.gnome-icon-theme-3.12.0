@@ -5,13 +5,13 @@ vers=3.12.0
 url="http://ftp.gnome.org/pub/gnome/sources/gnome-icon-theme/3.12/gnome-icon-theme-${vers}.tar.xz"
 apply_arch="noarch"
 arch=noarch
-build=T2
+build=1
 src=gnome-icon-theme-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING NEWS README TODO'
 patchfiles=''
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ##############################################################
 

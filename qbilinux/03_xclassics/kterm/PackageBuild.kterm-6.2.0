@@ -8,12 +8,12 @@ pkgbase=kterm
 vers=6.2.0
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T2
+build=1
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="DEMO.kt.uu DEMO.xbm README.kt"
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
 
@@ -21,19 +21,19 @@ source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
     cd ${S[$i]}
-  gunzip -c $W/kterm-6.2.0-16colors.diff.gz | patch -Np1 -i -
-  gunzip -c $W/kterm-6.2.0-secure.diff.gz | patch -Np1 -i -
-  gunzip -c $W/kterm-6.2.0-pje.diff.gz | patch -Np1 -i -
-  gunzip -c $W/kterm-6.2.0-glibc.pje.patch.gz | patch -Np0 -i -
-  gunzip -c $W/kterm-6.2.0-glibc2.1-1.patch.gz | patch -Np1 -i -
-  gunzip -c $W/kterm-6.2.0-glibc2.1-2.patch.gz | patch -Np1 -i -
-  gunzip -c $W/kterm-6.2.0-ext02.patch.gz | patch -Np1 -i -
-  bunzip2 -c $W/kterm-6.2.0-utmp98.patch.bz2 | patch -Np1 -i -
-  gunzip -c $W/kterm-6.2.0-rightbar.patch.gz | patch -Np1 -i -
-  gunzip -c $W/kterm-6.2.0-plamo.patch.gz | patch -Np1 -i -
-  gunzip -c $W/kterm-6.2.0-malloc.patch.gz | patch -Np0 -i -
-  cp -p kterm.h kterm.h.orig
-  chmod u+w kterm.h
+    gunzip -c $W/kterm-6.2.0-16colors.diff.gz | patch -Np1 -i -
+    gunzip -c $W/kterm-6.2.0-secure.diff.gz | patch -Np1 -i -
+    gunzip -c $W/kterm-6.2.0-pje.diff.gz | patch -Np1 -i -
+    gunzip -c $W/kterm-6.2.0-glibc.pje.patch.gz | patch -Np0 -i -
+    gunzip -c $W/kterm-6.2.0-glibc2.1-1.patch.gz | patch -Np1 -i -
+    gunzip -c $W/kterm-6.2.0-glibc2.1-2.patch.gz | patch -Np1 -i -
+    gunzip -c $W/kterm-6.2.0-ext02.patch.gz | patch -Np1 -i -
+    bunzip2 -c $W/kterm-6.2.0-utmp98.patch.bz2 | patch -Np1 -i -
+    gunzip -c $W/kterm-6.2.0-rightbar.patch.gz | patch -Np1 -i -
+    gunzip -c $W/kterm-6.2.0-plamo.patch.gz | patch -Np1 -i -
+    gunzip -c $W/kterm-6.2.0-malloc.patch.gz | patch -Np0 -i -
+    cp -p kterm.h kterm.h.orig
+    chmod u+w kterm.h
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
@@ -42,7 +42,7 @@ do_prepare() {
 do_config() {
     if [ -d ${B[$1]} ] ; then rm -rf ${B[$1]} ; fi
 
-    mkdir ${B[$1]}
+    cp -a ${S[$1]} ${B[$1]}
     cd ${B[$1]}
     if [ -x ${S[$1]}/configure ] ; then
 	export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
@@ -50,11 +50,11 @@ do_config() {
 	${S[$1]}/configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc \
 		--localstatedir=/var --infodir='${prefix}'/share/info --mandir='${prefix}'/share/man ${OPT_CONFIG[$1]}
     fi
-  xmkmf -a
-  cp -p Makefile Makefile.orig
-  sed '/MANPATH =/s@man$@share/man@g' Makefile.orig \
-      | sed '/CONFDIR =/s@ETCX11@LIB@g' \
-      | sed '/$(INSTALL).*kterm$/s@UID@BIN@g' > Makefile
+    xmkmf -a
+    cp -p Makefile Makefile.orig
+    sed '/MANPATH =/s@man$@share/man@g' Makefile.orig \
+	| sed '/CONFDIR =/s@ETCX11@LIB@g' \
+	| sed '/$(INSTALL).*kterm$/s@UID@BIN@g' > Makefile
     if [ $? != 0 ]; then
 	echo "configure error. $0 script stop"
 	exit 255
@@ -83,13 +83,14 @@ do_install() {
 	echo "make install error. $0 script stop"
 	exit 255
     fi
-  jappdefdir=$P/usr/${libdir}/X11/ja_JP.eucJP/app-defaults
-  install -d $jappdefdir
-  install -m 444 $W/app-defaults/KTerm-ja.ad $jappdefdir/KTerm
-  jmandir=$P/usr/share/man/ja_JP.eucJP
-  install -d $jmandir/man1
-  nkf -e $B/kterm.jman > $jmandir/man1/kterm.1x
-  chmod 444 $jmandir/man1/kterm.1x
+
+    jappdefdir=$P/usr/${libdir}/X11/ja_JP.eucJP/app-defaults
+    install -d $jappdefdir
+    install -m 444 $W/app-defaults/KTerm-ja.ad $jappdefdir/KTerm
+    jmandir=$P/usr/share/man/ja_JP.eucJP
+    install -d $jmandir/man1
+    nkf -e $B/kterm.jman > $jmandir/man1/kterm.1x
+    chmod 444 $jmandir/man1/kterm.1x
 }
 
 do_package() {

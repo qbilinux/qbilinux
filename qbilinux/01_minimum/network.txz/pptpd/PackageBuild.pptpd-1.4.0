@@ -6,7 +6,7 @@ vers=1.4.0
 url="http://downloads.sourceforge.net/poptop/pptpd-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T2
+build=1
 src=$pkgbase-$vers
 patchfiles=""
 OPT_CONFIG="--enable-bcrelay --with-libwrap"
@@ -14,7 +14,7 @@ DOCS="NEWS COPYING AUTHORS README.inetd README.slirp README.bcrelay
     README.cvs TODO README.portslave README ChangeLog INSTALL
     README.logwtmp"
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
 

@@ -6,7 +6,7 @@ vers=4.2.8p12
 url="http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/ntp-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T1
+build=1
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="README.hackers README.bk NEWS WHERE-TO-START README.leapsmear
@@ -15,7 +15,7 @@ DOCS="README.hackers README.bk NEWS WHERE-TO-START README.leapsmear
     README.patches README.pullrequests"
 patchfiles=""
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
 

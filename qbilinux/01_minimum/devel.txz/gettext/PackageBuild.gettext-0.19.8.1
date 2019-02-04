@@ -6,14 +6,14 @@ vers=0.19.8.1
 url="http://ftp.gnu.org/gnu/gettext/gettext-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T3
+build=1
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="ChangeLog.0 DEPENDENCIES ChangeLog HACKING README INSTALL
     AUTHORS README.woe32 THANKS COPYING PACKAGING NEWS"
 patchfiles=""
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
 
@@ -61,9 +61,6 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}
-    for mk in `find . -name "[Mm]akefile" ` ; do
-	sed -i -e 's|GCONFTOOL = /usr/bin/gconftool-2|GCONFTOOL = echo|' $mk
-    done
     if [ -f Makefile ] ; then
 	export LDFLAGS='-Wl,--as-needed'
 	make install DESTDIR=$P

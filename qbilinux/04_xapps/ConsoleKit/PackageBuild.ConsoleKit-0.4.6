@@ -5,7 +5,7 @@ pkgbase=ConsoleKit
 vers=0.4.6
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T3
+build=1
 src=ConsoleKit-0.4.6
 if [ $arch = "x86_64" ]; then
     libdir="lib64"
@@ -18,7 +18,7 @@ OPT_CONFIG="--enable-pam-module --enable-udev-acl --libexecdir=/usr/${libdir}/Co
 DOCS='AUTHORS COPYING ChangeLog HACKING INSTALL NEWS README TODO'
 patchfiles=''
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ##############################################################
 
@@ -62,9 +62,6 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}
-    for mk in `find . -name "[Mm]akefile" ` ; do
-	sed -i -e 's|GCONFTOOL = /usr/bin/gconftool-2|GCONFTOOL = echo|' $mk
-    done
     if [ -f Makefile ] ; then
 	export LDFLAGS='-Wl,--as-needed'
 	make install DESTDIR=$P

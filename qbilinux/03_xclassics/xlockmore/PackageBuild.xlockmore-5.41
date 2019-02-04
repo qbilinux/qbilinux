@@ -6,13 +6,13 @@ pkgbase=xlockmore
 vers=5.41
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T2
+build=1
 src=$pkgbase-$vers
 OPT_CONFIG="--enable-pam --enable-use-mb --with-esound --with-lang=ja --without-magick"
 DOCS="`echo docs/{3d.howto,cell_automata,HACKERS.GUIDE{,.fr}}`
     `echo docs/{Purify{,.sunos{4,5}},Revisions,TODO}` README"
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
 

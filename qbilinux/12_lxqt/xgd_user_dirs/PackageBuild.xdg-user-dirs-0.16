@@ -6,13 +6,13 @@ url='https://user-dirs.freedesktop.org/releases/xdg-user-dirs-0.16.tar.gz'
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T2
+build=1
 src=xdg-user-dirs-${vers}
 OPT_CONFIG=''
 DOCS='ABOUT-NLS AUTHORS COPYING ChangeLog INSTALL NEWS README TODO'
 patchfiles=''
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ##############################################################
 
@@ -55,9 +55,6 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}
-    for mk in `find . -name "[Mm]akefile" ` ; do
-	sed -i -e 's|GCONFTOOL = /usr/bin/gconftool-2|GCONFTOOL = echo|' $mk
-    done
     if [ -f Makefile ] ; then
 	export LDFLAGS='-Wl,--as-needed'
 	make install DESTDIR=$P
@@ -81,151 +78,3 @@ EOF
 }
 
 source /usr/src/qbilinux/PackageBuild.func
-    if [ $? != 0 ]; then
-      echo "configure error. $0 script stop"
-      exit 255
-    fi
-  done
-fi
-if [ $opt_build -eq 1 ] ; then
-  for i in `seq 0 $((${#B[@]} - 1))` ; do
-    cd ${B[$i]}
-    if [ -f Makefile ] ; then
-      export LDFLAGS='-Wl,--as-needed'
-      make
-    fi
-    if [ $? != 0 ]; then
-      echo "make error. $0 script stop"
-      exit 255
-    fi
-  done
-fi
-if [ $opt_package -eq 1 ] ; then
-  if [ `id -u` -ne 0 ] ; then
-    read -p "Do you want to package as root? [y/N] " ans
-    if [ "x$ans" == "xY" -o "x$ans" == "xy" ] ; then
-      cd $W ; /bin/su -c "$0 package" ; exit
-    fi
-  fi
-  if [ -d $P ] ; then rm -rf $P ; fi ; mkdir -p $P
-  if [ -d $C ] ; then rm -rf $C ; fi ; mkdir -p $C
-  touch $W/i.st ; sleep 1
-  for i in `seq 0 $((${#B[@]} - 1))` ; do
-    cd ${B[$i]}
-    for mk in `find . -name "[Mm]akefile" ` ; do
-      sed -i -e 's|GCONFTOOL = /usr/bin/gconftool-2|GCONFTOOL = echo|' $mk
-    done
-    if [ -f Makefile ] ; then
-      export LDFLAGS='-Wl,--as-needed'
-      make install DESTDIR=$P
-    fi
-    if [ $? != 0 ]; then
-      echo "make install error. $0 script stop"
-      exit 255
-    fi
-  done
-######################################################################
-# * make install でコピーされないファイルがある場合はここに記述します。
-######################################################################
-  mkdir -p $docdir/$src
-  if [ -d $P/usr/share/omf ]; then
-    mkdir -p $P/install
-    for omf in $P/usr/share/omf/* ; do
-      omf_name=`basename $omf`
-      cat << EOF >> $P/install/initpkg
-if [ -x /usr/bin/scrollkeeper-update ]; then
-  scrollkeeper-update -p /var/lib/rarian -o /usr/share/omf/$omf_name
-fi
-EOF
-    done
-  fi
-
-  if [ -d $P/etc/gconf/schemas ]; then
-    mkdir -p $P/install
-    for schema in $P/etc/gconf/schemas/* ; do
-      cat << EOF >> $P/install/initpkg
-if [ -x /usr/bin/gconftool-2 ]; then
-  ( cd /etc/gconf/schemas ; GCONF_CONFIG_SOURCE=xml:merged:/etc/gconf/gconf.xml.defaults /usr/bin/gconftool-2 --makefile-install-rule `basename $schema` )
-fi
-EOF
-    done
-  fi
-
-# remove locales except ja
-# 
-  for loc_dir in `find $P -name locale` ; do
-    pushd $loc_dir
-    for loc in * ; do
-      if [ "$loc" != "ja" ]; then
-        rm -rf $loc
-      fi
-    done
-    popd
-  done      
-
-######################################################################
-# path に lib があるバイナリは strip -g, ないバイナリは strip する
-######################################################################
-  cd $P
-  compress_all
-  if [ -d $P/usr/share/man ]; then
-    for mdir in `find $P/usr/share/man -name man[0-9mno] -type d`; do
-      gzip_dir $mdir
-    done
-  fi
-######################################################################
-# * compress 対象以外で圧縮したいディレクトリやファイルがある場合はここ
-#   に記述します(strip_{bin,lib}dir や gzip_{dir,one} を使います)。
-# * 他のアーカイブから追加したいファイルがある場合はここに記述します。
-######################################################################
-  cd $W
-  for i in `seq 0 $((${#DOCS[@]} - 1))` ; do
-    for j in ${DOCS[$i]} ; do
-      for k in ${S[$i]}/$j ; do
-        install2 $k $docdir/${src[$i]}/${k#${S[$i]}/}
-        touch -r $k $docdir/${src[$i]}/${k#${S[$i]}/}
-        gzip_one $docdir/${src[$i]}/${k#${S[$i]}/}
-      done
-    done
-    if [ $i -eq 0 ] ; then
-      install $myname $docdir/$src
-      gzip_one $docdir/$src/$myname
-    else
-      ln $docdir/$src/$myname.gz $docdir/${src[$i]}
-    fi
-    ( cd $docdir ; find ${src[$i]} -type d -exec touch -r $W/{} {} \; )
-  done
-
-  for patch in $patchfiles ; do
-    cp $W/$patch $docdir/$src/$patch
-    gzip_one $docdir/$src/$patch
-  done
-
-############################################################
-#   /usr/share/doc 以下には一般ユーザのIDのままのファイルが
-#   紛れこみがちなので
-############################################################
-
-  chk_me=`whoami | grep root`
-  if [ "$chk_me.x" != ".x" ]; then
-    chown -R root.root $P/usr/share/doc
-  fi
-
-######################################################################
-# * convert 対象以外で刈り取りたいシンボリックリンクがある場合はここに
-#   記述します(prune_symlink を使います)。
-# * 完成した作業ディレクトリから tar イメージを作成する手順を以降に記述
-#   します(こだわりを求めないなら単に makepkg でも良いです)。
-######################################################################
-# tar cvpf $pkg.tar -C $P `cd $P ; find usr/bin | tail -n+2`
-# tar rvpf $pkg.tar -C $P `cd $P ; find usr/share/man/man1 | tail -n+2`
-# tar rvpf $pkg.tar -C $P usr/share/doc/$src
-# touch -t `date '+%m%d0900'` $pkg.tar ; gzip $pkg.tar ; touch $pkg.tar.gz
-# mv $pkg.tar.gz $pkg.tgz
-  cd $P
-  /sbin/makepkg ../$pkg.$compress <<EOF
-y
-1
-EOF
-
-fi

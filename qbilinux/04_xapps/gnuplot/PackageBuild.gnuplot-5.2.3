@@ -5,7 +5,7 @@ vers=5.2.3
 url="https://sourceforge.net/projects/gnuplot/files/gnuplot/${vers}/gnuplot-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T2
+build=1
 src=gnuplot-${vers}
 OPT_CONFIG="--enable-qt --enable-thin-splines --enable-backwards-compatibility
     --with-texdir=/opt/texlive/texmf-local/gnuplot --with-lasergnu
@@ -13,7 +13,7 @@ OPT_CONFIG="--enable-qt --enable-thin-splines --enable-backwards-compatibility
 DOCS='BUGS ChangeLog Copyright INSTALL INSTALL.gnu NEWS README RELEASE_NOTES TODO'
 patchfiles=''
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ##############################################################
 
