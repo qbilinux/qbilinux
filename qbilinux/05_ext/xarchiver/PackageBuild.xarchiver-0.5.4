@@ -24,6 +24,7 @@ do_prepare() {
 	patch -p1 < $W/$patch
     done
     cp -f /usr/src/qbilinux/{config.guess,config.sub} .
+    make distclean
 }
 
 do_config() {
