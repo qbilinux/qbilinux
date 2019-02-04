@@ -8,7 +8,7 @@ apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=T2
 src=itk${vers}
-if [ $arch = "x86_64" ]; then
+if [ $arch = "x86_64" -o $arch = "aarch64" ]; then
     OPT_CONFIG="--with-itcl=/usr/lib64/itcl4.1.0"
 else
     OPT_CONFIG="--with-itcl=/usr/lib/itcl4.1.0"
