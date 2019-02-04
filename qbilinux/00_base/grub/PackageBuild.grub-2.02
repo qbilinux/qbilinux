@@ -6,7 +6,7 @@ vers=2.02
 url="https://ftp.gnu.org/gnu/grub/grub-${vers}.tar.xz"
 apply_arch="x86_64 i686"
 arch=`uname -m`
-build=T4
+build=1
 src[0]=$pkgbase-$vers
 src[1]=${src[0]}
 patchfiles[0]="0008-Fix-packed-not-aligned-error-on-GCC-8.patch"
@@ -16,7 +16,7 @@ OPT_CONFIG[1]="${OPT_CONFIG[0]} --with-platform=efi"
 DOCS[0]="BUGS TODO THANKS COPYING ABOUT-NLS ChangeLog AUTHORS README NEWS INSTALL"
 DOCS[1]=""
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
 
@@ -60,9 +60,6 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}
-    for mk in `find . -name "[Mm]akefile" ` ; do
-	sed -i -e 's|GCONFTOOL = /usr/bin/gconftool-2|GCONFTOOL = echo|' $mk
-    done
     if [ -f Makefile ] ; then
 	export LDFLAGS='-Wl,--as-needed'
 	make install DESTDIR=$P

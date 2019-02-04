@@ -8,13 +8,13 @@ url="http://jaist.dl.sourceforge.jp/mix-mplus-ipa/63545/migu-1p-${vers}.zip
      http://jaist.dl.sourceforge.jp/mix-mplus-ipa/63545/migu-2m-${vers}.zip"
 apply_arch="noarch"
 arch=noarch
-build=T2
+build=1
 src=migu-1p-${vers}
 OPT_CONFIG=''
 DOCS='migu-README.txt ipag00303/*'
 patchfiles=''
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ##############################################################
 

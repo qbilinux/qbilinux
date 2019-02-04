@@ -1,26 +1,26 @@
 #!/bin/sh
 ##############################################################
 pkgbase=openjdk
-vers=10.0.2_13
-url="http://hg.openjdk.java.net/jdk-updates/jdk10u.hg"
-hg_revision=jdk-10.0.2+13
+vers=11.0.2+9
+url="https://hg.openjdk.java.net/jdk-updates/jdk11u.hg"
+commitid=jdk-11.0.2+9
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T2
-src=jdk10u
+build=1
+src=jdk11u
 #OPT_CONFIG='--enable-unlimited-crypto                   --disable-warnings-as-errors                --with-stdc++lib=dynamic                    --with-giflib=system                        --with-lcms=system                          --with-libjpeg=system                       --with-libpng=system                        --with-zlib=system                          --with-version-build=11                   --with-version-pre=""                       --with-version-opt=""                       --with-cacerts-file=/etc/ssl/java/cacerts.jks'
 OPT_CONFIG='--enable-unlimited-crypto                   --disable-warnings-as-errors                --with-stdc++lib=dynamic                    --with-giflib=system                        --with-lcms=system                          --with-libjpeg=system                       --with-libpng=system                        --with-zlib=system                          --with-version-build=11                   --with-version-pre=""                       --with-version-opt=""                       '
 DOCS='ADDITIONAL_LICENSE_INFO LICENSE README'
 patchfiles=''
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ##############################################################
 
 source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
-    cd ${S[$i]}
+    cd ${S[$1]}
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done

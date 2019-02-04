@@ -6,13 +6,13 @@ pkgbase=xplanet
 vers=1.3.0
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T2
+build=1
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="INSTALL AUTHORS NEWS TODO ChangeLog COPYING README"
 patchfiles='giflib5.patch gcc6.patch'
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
 

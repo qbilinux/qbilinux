@@ -6,14 +6,14 @@ vers=1.22.3
 url="http://ftp.gnu.org/gnu/groff/groff-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T2
+build=1
 src=$pkgbase-$vers
 patchfiles=""
 OPT_CONFIG="--enable-multibyte"
 DOCS="BUG-REPORT COPYING ChangeLog FDL INSTALL* MANIFEST MORE.STUFF
      NEWS PROBLEMS PROJECTS README* REVISION TODO VERSION"
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
 
@@ -57,9 +57,6 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}
-    for mk in `find . -name "[Mm]akefile" ` ; do
-	sed -i -e 's|GCONFTOOL = /usr/bin/gconftool-2|GCONFTOOL = echo|' $mk
-    done
     if [ -f Makefile ] ; then
 	export LDFLAGS='-Wl,--as-needed'
 	install -d $P/usr

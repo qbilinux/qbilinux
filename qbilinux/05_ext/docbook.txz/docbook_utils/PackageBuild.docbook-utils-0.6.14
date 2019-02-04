@@ -6,13 +6,13 @@ pkgbase=docbook_utils
 vers=0.6.14
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T2
+build=1
 src=docbook-utils-0.6.14
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README TODO'
 patchfiles='docbook-utils-0.6.14-grep_fix-1.patch'
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ##############################################################
 

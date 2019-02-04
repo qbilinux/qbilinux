@@ -5,13 +5,13 @@ vers=6.0sj
 url='ftp://ftp.info-zip.org/pub/infozip/src/unzip60.tgz'
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T2
+build=1
 src=unzip60
 OPT_CONFIG=''
 DOCS='COPYING.OLD History.600 INSTALL LICENSE README ToDo funzip.txt unzip.txt unzipsfx.txt zipgrep.txt zipinfo.txt'
 patchfiles='unzip60-nls_sjis.patch CVE-2014-8139.patch CVE-2014-8140.patch CVE-2014-8141.patch CVE-2014-9636.patch heapoverflow.patch'
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ##############################################################
 

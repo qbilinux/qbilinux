@@ -6,7 +6,7 @@ vers=1.20.7
 url="http://www.nico.schottelius.org/software/gpm/archives/gpm-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T3
+build=1
 src=$pkgbase-$vers
 patchfiles="gpm-1.20.7-sysmacros.patch gpm-1.20.7-sigemptyset.patch"
 OPT_CONFIG="--enable-shared --disable-static"
@@ -15,7 +15,7 @@ DOCS="COPYING MANIFEST README* TODO
     doc/specs/synaptics/www.synaptics.com/decaf/utilities/*
     doc/support/* doc/todo/*"
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
 

@@ -1,5 +1,6 @@
 #!/bin/bash
 export LANG=en_US.UTF-8
+arch=`uname -m`
 
 seek_dir () {
 #    dfas dfa/fdafsd/fdafd/afkdjsakf/PackageBuild*
@@ -73,7 +74,7 @@ seek_dir () {
 	else
 	    # rm work build directory
 	    if [ $opt_notrm -eq 0 ] ; then
-		sudo rm -rf build build32 work*
+		sudo rm -rf build/$arch work/$arch
 	    fi
 	    
 	    # execute

@@ -6,13 +6,13 @@ vers=6.2.32
 url="http://download.oracle.com/berkeley-db/db-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T2
+build=1
 src=db-$vers
 patchfiles=""
 OPT_CONFIG="--enable-compat185 --enable-dbm --disable-static --enable-cxx --enable-o_direct"
 DOCS="LICENSE README"
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
 
@@ -57,9 +57,6 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}
-    for mk in `find . -name "[Mm]akefile" ` ; do
-	sed -i -e 's|GCONFTOOL = /usr/bin/gconftool-2|GCONFTOOL = echo|' $mk
-    done
     if [ -f Makefile ] ; then
 	export LDFLAGS='-Wl,--as-needed'
 	make install DESTDIR=$P

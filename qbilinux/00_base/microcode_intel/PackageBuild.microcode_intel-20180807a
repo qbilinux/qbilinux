@@ -6,13 +6,13 @@ url='https://downloadmirror.intel.com/28087/eng/microcode-20180807a.tgz'
 commitid=
 apply_arch="x86_64 i686"
 arch=`uname -m`
-build=T2
+build=1
 src=microcode_intel-${vers}
 OPT_CONFIG=''
 DOCS='license releasenote'
 patchfiles=''
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ##############################################################
 

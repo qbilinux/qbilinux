@@ -5,13 +5,13 @@ vers=9100h
 url="https://ja.osdn.net/projects/anthy/downloads/37536/anthy-9100h.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T2
+build=1
 src=anthy-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS AUTHORS.patch COPYING ChangeLog INSTALL INSTALL.patch NEWS README README.en'
 patchfiles=''
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ##############################################################
 

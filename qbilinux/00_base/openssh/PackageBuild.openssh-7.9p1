@@ -6,7 +6,7 @@ vers=7.9p1
 url="http://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T1
+build=1
 src=$pkgbase-$vers
 patchfiles=""
 OPT_CONFIG="--sysconfdir=/etc/ssh --with-pam --with-privsep-user=sshd
@@ -15,7 +15,7 @@ DOCS="CREDITS INSTALL LICENCE OVERVIEW PROTOCOL PROTOCOL.agent
     `echo PROTOCOL.{certkeys,chacha20poly1305,key,krl,mux}`
     README `echo README.{dns,platform,privsep,tun}` TODO ChangeLog"
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ######################################################################
 

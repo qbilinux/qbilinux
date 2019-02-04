@@ -2,16 +2,16 @@
 ##############################################################
 pkgbase=gyp
 vers=20171223
-url="https://chromium.googlesource.com/external/gyp"
+url="https://chromium.googlesource.com/external/gyp.git"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T2
+build=1
 src=gyp
 OPT_CONFIG=''
-DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README'
+DOCS='AUTHORS LICENSE README.md'
 patchfiles=''
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ##############################################################
 
