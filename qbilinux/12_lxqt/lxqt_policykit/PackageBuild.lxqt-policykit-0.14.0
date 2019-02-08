@@ -1,13 +1,13 @@
 #!/bin/sh
 ##############################################################
-pkgbase=lxqt_notificationd
-vers=0.13.0
-url="https://downloads.lxqt.org/downloads/lxqt-notificationd/${vers}/lxqt-notificationd-${vers}.tar.xz"
+pkgbase=lxqt_policykit
+vers=0.14.0
+url="https://downloads.lxqt.org/downloads/lxqt-policykit/${vers}/lxqt-policykit-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=lxqt-notificationd-${vers}
+src=lxqt-policykit-${vers}
 OPT_CONFIG='-DPULL_TRANSLATIONS=no -DCMAKE_BUILD_TYPE=Release'
 DOCS='AUTHORS CHANGELOG LICENSE README.md'
 patchfiles=''
@@ -19,7 +19,7 @@ SRC_DIR="/home/archives/source/"
 source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
-    cd ${S[$i]}
+    cd ${S[$1]}
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
