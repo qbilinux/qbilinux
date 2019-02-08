@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase=qt5
-vers=5.10.1
+vers=5.12.1
 url="http://download.qt.io/archive/qt/${vers%.*}/${vers}/single/qt-everywhere-src-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
@@ -37,9 +37,8 @@ OPT_CONFIG="-sysconfdir     /etc/xdg   \
 	    -ssl -icu -release -qpa xcb -pulseaudio \
             -skip qtwebengine"
 fi
-#OPT_CONFIG="-no-webkit -confirm-license -opensource -sysconfdir /etc/xdg -headerdir /usr/include/qt5 -docdir /usr/share/doc/${src} -system-libpng -system-libjpeg -system-zlib -system-sqlite -system-pcre -plugin-sql-sqlite -icu -openssl -verbose -optimized-qmake -dbus-linked -qpa xcb -xcb -glib -accessibility -no-separate-debug-info -no-pch -no-rpath -no-strip -release -no-use-gold-linker -reduce-relocations -pulseaudio -nomake examples"
 DOCS='LGPL_EXCEPTION.txt LICENSE.FDL LICENSE.GPLv2 LICENSE.GPLv3 LICENSE.LGPLv21 LICENSE.LGPLv3 LICENSE.PREVIEW.COMMERCIAL README'
-patchfiles='qt-5.10.1-glibc228-1.patch'
+patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -48,12 +47,10 @@ SRC_DIR="/home/archives/source/"
 source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
-    cd ${S[$i]}
+    cd ${S[$1]}
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
-    # Fix missing private includes https://bugreports.qt.io/browse/QTBUG-37417
-    sed -e '/CMAKE_NO_PRIVATE_INCLUDES\ \=\ true/d' -i qtbase/mkspecs/features/create_cmake.prf
 }
 
 do_config() {
@@ -61,11 +58,10 @@ do_config() {
 
     mkdir ${B[$1]}
     cd ${B[$1]}
-    if [ -x ${S[$1]}/configure ] ; then
-	export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
-	export LDFLAGS='-Wl,--as-needed' 
-        ${S[$i]}/configure -prefix /usr/${libdir}/qt5 -libdir /usr/${libdir} -L /opt/mariadb/${libdir} -plugindir /usr/${libdir}/qt5/plugins -importdir /usr/${libdir}/qt5/imports $OPT_CONFIG
-    fi
+    export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
+    export LDFLAGS='-Wl,--as-needed' 
+    ${S[$i]}/configure -prefix /usr/${libdir}/qt5 -libdir /usr/${libdir} -L /opt/mariadb/${libdir} \
+	    -plugindir /usr/${libdir}/qt5/plugins -importdir /usr/${libdir}/qt5/imports $OPT_CONFIG
     if [ $? != 0 ]; then
 	echo "configure error. $0 script stop"
 	exit 255
@@ -74,10 +70,8 @@ do_config() {
 
 do_build() {
     cd ${B[$1]}
-    if [ -f Makefile ] ; then
-	export LDFLAGS='-Wl,--as-needed'
-	make
-    fi
+    export LDFLAGS='-Wl,--as-needed'
+    make
     if [ $? != 0 ]; then
 	echo "make error. $0 script stop"
 	exit 255
@@ -86,10 +80,8 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}
-    if [ -f Makefile ] ; then
-	export LDFLAGS='-Wl,--as-needed'
-	make install INSTALL_ROOT=$P
-    fi
+    export LDFLAGS='-Wl,--as-needed'
+    make install INSTALL_ROOT=$P
     if [ $? != 0 ]; then
 	echo "make install error. $0 script stop"
 	exit 255
@@ -132,14 +124,6 @@ Description: Qt5 Configuration
 Version: $VERSION
 EOF
 
-    # Fix internal linking for Qt5WebEngineCore.pc.
-    sed -i 's|-Wl,--start-group.*-Wl,--end-group||' $P/usr/lib${suffix}/pkgconfig/Qt5WebEngineCore.pc
-
-    #./usr/lib64/pkgconfig/Qt5WebEngineCore.pc
-    sed -i 's|-L$W[^ ]* ||g' $P/usr/lib${suffix}/pkgconfig/Qt5WebEngineCore.pc
-    #./usr/lib64/libqgsttools_p.prl
-    sed -i 's|-L$W[^ ]* ||g' $P/usr/lib${suffix}/libqgsttools_p.prl
-
     # While we are at it, there isn't any reason to keep references to $PKG in the *.prl files.
     for PRL in $(find $P -name "*\.prl"); do
 	sed -i '/^QMAKE_PRL_BUILD_DIR/d' $PRL
@@ -151,7 +135,7 @@ EOF
     sed -i "s|@LIBDIR@|$suffix|" $P/usr/share/applications/*
 
     # Remove executable bits from files.
-    find $P \( -name "*.qml" -o -name "*.app" \) -perm 755 -exec chmod 644 '{}' \;
+    #find $P \( -name "*.qml" -o -name "*.app" \) -perm 755 -exec chmod 644 '{}' \;
 
     mkdir -p $P/etc/profile.d
     sed -e "s|@LIBDIRSUFFIX@|${suffix}|g" $W/qt5.sh  > $P/etc/profile.d/qt5.sh
