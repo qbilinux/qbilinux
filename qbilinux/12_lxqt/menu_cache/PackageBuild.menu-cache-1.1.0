@@ -1,8 +1,8 @@
 #!/bin/sh
 ##############################################################
 pkgbase=menu_cache
-vers=1.0.2
-url='https://downloads.sourceforge.net/lxde/menu-cache-1.0.2.tar.xz'
+vers=1.1.0
+url="https://sourceforge.net/projects/lxde/files/menu-cache/${vers%.*}/menu-cache-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
