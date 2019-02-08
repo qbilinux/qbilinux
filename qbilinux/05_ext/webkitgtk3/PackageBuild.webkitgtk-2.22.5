@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase=webkitgtk3
-vers=2.22.0
+vers=2.22.5
 url="http://webkitgtk.org/releases/webkitgtk-${vers}.tar.xz"
 verify=
 commitid=
@@ -20,7 +20,7 @@ SRC_DIR="/home/archives/source/"
 source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
-    cd ${S[$i]}
+    cd ${S[$1]}
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
@@ -31,11 +31,9 @@ do_config() {
 
     mkdir ${B[$1]}
     cd ${B[$1]}
-    if [ -f $S/CMakeLists.txt ]; then
-	export PKG_CONFIG_PATH=/opt/kde/${libdir}/pkgconfig:/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
-	export LDFLAGS='-Wl,--as-needed' 
-	cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DLIB_INSTALL_DIR:PATH=/usr/${libdir} -DLIB_SUFFIX=$suffix ${OPT_CONFIG} $S
-    fi
+    export PKG_CONFIG_PATH=/opt/kde/${libdir}/pkgconfig:/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
+    export LDFLAGS='-Wl,--as-needed' 
+    cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DLIB_INSTALL_DIR:PATH=/usr/${libdir} -DLIB_SUFFIX=$suffix ${OPT_CONFIG} $S
     if [ $? != 0 ]; then
 	echo "configure error. $0 script stop"
 	exit 255
@@ -44,10 +42,8 @@ do_config() {
 
 do_build() {
     cd ${B[$1]}
-    if [ -f Makefile ] ; then
-	export LDFLAGS='-Wl,--as-needed'
-	make Programs_DumpRenderTree_LDFLAGS="-no-fast-install -no-install -lfontconfig"
-    fi
+    export LDFLAGS='-Wl,--as-needed'
+    make Programs_DumpRenderTree_LDFLAGS="-no-fast-install -no-install -lfontconfig"
     if [ $? != 0 ]; then
 	echo "make error. $0 script stop"
 	exit 255
@@ -56,10 +52,8 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}
-    if [ -f Makefile ] ; then
-	export LDFLAGS='-Wl,--as-needed'
-	make install DESTDIR=$P
-    fi
+    export LDFLAGS='-Wl,--as-needed'
+    make install DESTDIR=$P
     if [ $? != 0 ]; then
 	echo "make install error. $0 script stop"
 	exit 255
