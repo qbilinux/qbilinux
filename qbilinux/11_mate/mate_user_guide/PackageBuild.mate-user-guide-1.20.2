@@ -1,12 +1,14 @@
 #!/bin/sh
 ##############################################################
-pkgbase=caja_extensions
-vers=1.20.1
-url="http://pub.mate-desktop.org/releases/${vers%.*}/caja-extensions-${vers}.tar.xz"
-apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+pkgbase=mate_user_guide
+vers=1.20.2
+url="http://pub.mate-desktop.org/releases/${vers%.*}/mate-user-guide-${vers}.tar.xz"
+verify=
+commitid=
+apply_arch="noarch"
+arch=noarch
 build=1
-src=caja-extensions-${vers}
+src=mate-user-guide-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README'
 patchfiles=''
@@ -18,7 +20,7 @@ SRC_DIR="/home/archives/source/"
 source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
-    cd ${S[$i]}
+    cd ${S[$1]}
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
@@ -63,10 +65,12 @@ do_install() {
 	echo "make install error. $0 script stop"
 	exit 255
     fi
-mkdir -p $P/install
-cat << EOF >> $P/install/initpkg
-glib-compile-schemas /usr/share/glib-2.0/schemas > /dev/null 2>&1
-touch /usr/share/glib-2.0/schemas/gschemas.compiled
+    mkdir -p $P/install
+    cat << EOF >> $P/install/initpkg
+update-mime-database /usr/share/mime > /dev/null 2>&1
+touch /usr/share/mime/mime.cache
+update-desktop-database /usr/share/applications > /dev/null 2>&1
+touch /usr/share/applications/mimeinfo.cache
 EOF
 }
 
