@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=nfs_utils
-vers=2.3.2
+vers=2.3.3
 url="https://www.kernel.org/pub/linux/utils/nfs-utils/${vers}/nfs-utils-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
@@ -20,7 +20,7 @@ SRC_DIR="/home/archives/source/"
 source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
-    cd ${S[$i]}
+    cd ${S[$1]}
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
@@ -74,7 +74,7 @@ do_install() {
     fi
 
     # add extra func
-  cat <<- "EOF" > $P/sbin/nfs4_setup.sh
+    cat <<- "EOF" > $P/sbin/nfs4_setup.sh
 	#!/bin/sh
 	#
 	# Simple NFSv4 setup scripts for NFS mount by hands
@@ -89,14 +89,14 @@ do_install() {
 	/usr/sbin/rpc.idmapd
 	/usr/sbin/rpc.statd
 	EOF
-  chmod 755 $P/sbin/nfs4_setup.sh
-  mv $P/usr/sbin/{sm-notify,rpc.statd} $C
-  mv $C/{sm-notify,rpc.statd} $P/usr/sbin
-  ln -s /bin/ture $P/usr/sbin/rpc.gssd
-  mkdir -m 700 $P/var/lib/nfs/{rpc_pipefs,v4recovery}
-  chown nobody $P/var/lib/nfs/{rpc_pipefs,v4recovery}
-  mkdir $P/etc
-  cat <<- "EOF" > $P/etc/idmapd.conf
+    chmod 755 $P/sbin/nfs4_setup.sh
+    mv $P/usr/sbin/{sm-notify,rpc.statd} $C
+    mv $C/{sm-notify,rpc.statd} $P/usr/sbin
+    ln -s /bin/ture $P/usr/sbin/rpc.gssd
+    mkdir -m 700 $P/var/lib/nfs/{rpc_pipefs,v4recovery}
+    chown nobody $P/var/lib/nfs/{rpc_pipefs,v4recovery}
+    mkdir $P/etc
+    cat <<- "EOF" > $P/etc/idmapd.conf
 	[General]
 	Verbosity = 1
 	Pipefs-Directory = /var/lib/nfs/rpc_pipefs
@@ -107,11 +107,11 @@ do_install() {
 	Nobody-User = nobody
 	Nobody-Group = nogroup
 	EOF
-  install -d $P/install
-  cat <<- EOF >> $P/install/doinst.sh
+    install -d $P/install
+    cat <<- EOF >> $P/install/doinst.sh
 	#%% begin initialize $pkg
 	EOF
-  cat <<- "EOF" | unexpand >> $P/install/doinst.sh
+    cat <<- "EOF" | unexpand >> $P/install/doinst.sh
 	if [ -z `grep "^nfs" etc/services` ] ; then
 	  echo "adding nfs service into /etc/services"
 	  cat <<- "EOF" >> etc/services
