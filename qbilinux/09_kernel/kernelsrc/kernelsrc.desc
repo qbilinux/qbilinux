@@ -2,8 +2,8 @@ kernelsrc & y & y & y & y
 &
 Linux kernel ソースコード
 &
-Linux カーネルのソースコードです。元々のカーネルソースに unicon パッチ，
-aufs パッチ，tuxonice パッチなどを当てて，パッケージ化しています。
+Linux カーネルのソースコードです。元々のカーネルソースに cjk パッチ，
+aufs パッチなどを当てて，パッケージ化しています。
 &
 Linux kernel source code
 &
