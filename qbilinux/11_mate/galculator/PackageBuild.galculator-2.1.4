@@ -22,6 +22,12 @@ do_prepare() {
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
+    aclocal \
+	&& libtoolize --force --copy \
+	&& intltoolize --force --copy --automake \
+	&& autoheader \
+	&& automake --add-missing --gnu --copy \
+	&& autoconf
 }
 
 do_config() {
