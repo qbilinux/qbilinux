@@ -22,7 +22,6 @@ do_prepare() {
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
-    cp -f /usr/src/qbilinux/{config.guess,config.sub} build/generic
 }
 
 do_config() {
