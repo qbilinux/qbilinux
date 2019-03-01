@@ -1,0 +1,33 @@
+--- AfterStepClassic-1.1beta2.orig/modules/asclock/asclock.c	2006-12-09 19:36:59.000000000 +0900
++++ AfterStepClassic-1.1beta2/modules/asclock/asclock.c	2006-12-09 20:18:11.000000000 +0900
+@@ -306,8 +306,8 @@
+   static char **clock_xpm;
+   XColor col;
+   XWindowAttributes attributes;
+-  char led1[22];
+-  char led2[22];
++  char led1[24];
++  char led2[24];
+   int ret;
+ 
+   clock_xpm =ONLYSHAPE ? mask_xpm : clk_xpm;
+@@ -321,7 +321,8 @@
+       nocolor("parse",LedColor);
+     }
+ 
+-  sprintf(&led1[0], ".      c #%4X%4X%4X", col.red, col.green, col.blue);
++  snprintf (led1, sizeof led1, ".      c #%4X%4X%4X",
++	    col.red, col.green, col.blue);
+   for(ret=10;ret<22;ret++)
+     if(led1[ret]==' ') led1[ret]='0';
+   led_xpm[2] = &led1[0];
+@@ -329,7 +330,8 @@
+   col.red   = (col.red  /10) *3;
+   col.green = (col.green/10) *3;
+   col.blue  = (col.blue /10) *3;
+-  sprintf(&led2[0], "X      c #%4X%4X%4X", col.red, col.green, col.blue);
++  snprintf (led2, sizeof led2, "X      c #%4X%4X%4X",
++	    col.red, col.green, col.blue);
+   for(ret=10;ret<22;ret++)
+     if(led2[ret]==' ') led2[ret]='0';
+   led_xpm[3] = &led2[0];

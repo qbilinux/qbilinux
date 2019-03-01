@@ -1,0 +1,17 @@
+--- afterstep/events.c.orig	2005-06-01 16:52:20.000000000 +0900
++++ afterstep/events.c	2005-06-01 17:24:09.000000000 +0900
+@@ -476,12 +476,14 @@
+ 	      Tmp_win->flags &= ~ICONIFIED;
+ 	      Tmp_win->flags &= ~ICON_UNMAPPED;
+ 	      CreateIconWindow(Tmp_win,Tmp_win->icon_x_loc,Tmp_win->icon_y_loc);
++	      /*
+ 	      Broadcast(M_ICONIFY,7,Tmp_win->w,Tmp_win->frame,
+ 			(unsigned long)Tmp_win,
+ 			Tmp_win->icon_x_loc,
+ 			Tmp_win->icon_y_loc,
+ 			Tmp_win->icon_p_width,
+ 			Tmp_win->icon_p_height);
++	      */
+ 	      BroadcastConfig(M_CONFIGURE_WINDOW,Tmp_win);
+ 	      
+ 	      if (!(Tmp_win->flags & SUPPRESSICON))

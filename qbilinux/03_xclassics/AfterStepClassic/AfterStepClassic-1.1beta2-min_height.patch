@@ -1,0 +1,12 @@
+--- afterstep/resize.c.orig	2005-11-28 10:11:00.000000000 +0900
++++ afterstep/resize.c	2005-11-28 10:24:30.000000000 +0900
+@@ -472,8 +472,6 @@
+     dheight -= (tmp_win->title_height + tmp_win->boundary_height);
+ 
+     minWidth = tmp_win->hints.min_width;
+-/*    minHeight = tmp_win->hints.min_height;
+-*/    
+-    minHeight = 1;
++    minHeight = tmp_win->hints.min_height;
+ 
+     baseWidth = tmp_win->hints.base_width;

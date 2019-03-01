@@ -1,0 +1,22 @@
+--- ./modules/Wharf/hide.c.orig	1998-09-07 02:50:27.000000000 +0900
++++ ./modules/Wharf/hide.c	2004-02-09 07:21:40.000000000 +0900
+@@ -72,6 +72,9 @@
+    to root.  Return true if we really did hide the Wharf. */
+ int HideOnLeaveNotify(Window w, int x, int y)
+ {
++  if (!HideWharfMode)
++    return FALSE;
++
+   if (wharfActuallyHidden)
+     return FALSE;
+ 
+@@ -92,6 +95,9 @@
+ /* Pop down Wharf if necessary */
+ void HidePopDown(void)
+ {
++  if (!HideWharfMode)
++    return FALSE;
++
+   if (!wharfActuallyHidden)
+     hideWharfWindows();
+ }
