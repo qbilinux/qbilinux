@@ -1,0 +1,1110 @@
+diff -urNb AfterStepClassic-1.1beta2.orig/afterstep/afterstep.c AfterStepClassic-1.1beta2/afterstep/afterstep.c
+--- AfterStepClassic-1.1beta2.orig/afterstep/afterstep.c	1998-09-06 07:45:27.000000000 +0900
++++ AfterStepClassic-1.1beta2/afterstep/afterstep.c	2005-09-10 13:08:13.000000000 +0900
+@@ -153,7 +153,7 @@
+  *
+  ***********************************************************************
+  */
+-void main(int argc, char **argv)
++int main(int argc, char **argv)
+ {
+     unsigned long valuemask;	/* mask for create windows */
+     XSetWindowAttributes attributes;	/* attributes for create windows */
+@@ -470,7 +470,7 @@
+ 
+     XDefineCursor(dpy, Scr.Root, Scr.ASCursors[DEFAULT]);
+     HandleEvents();
+-    return;
++    return 0;
+ }
+ 
+ /***********************************************************************
+diff -urNb AfterStepClassic-1.1beta2.orig/afterstep/configure.c AfterStepClassic-1.1beta2/afterstep/configure.c
+--- AfterStepClassic-1.1beta2.orig/afterstep/configure.c	1998-08-04 20:43:34.000000000 +0900
++++ AfterStepClassic-1.1beta2/afterstep/configure.c	2005-09-10 22:46:58.000000000 +0900
+@@ -36,6 +36,7 @@
+ 
+ 
+ #include "afterstep.h"
++#include "decorations.h"
+ #include "menus.h"
+ #include "misc.h"
+ #include "parse.h"
+@@ -73,7 +74,6 @@
+ void     GetColors(void);
+ Pixel    GetColor(char *);
+ MenuRoot *NewMenuRoot(char *name);
+-char     *stripcpy(char *);
+ char     *stripcpy2(char *,int, Bool);
+ char     *stripcpy3(char *, Bool);
+ #ifndef NO_PAGER
+@@ -506,10 +506,10 @@
+ 
+   tline = fgets(line,(sizeof line)-1,config_fd);
+   orig_tline = tline;
+-  while(tline != (char *)0)
++  while (tline != NULL)
+     {
+-      while(isspace(*tline))tline++;
+-      if((strlen(&tline[0])>1)&&(tline[0]!='#')&&(tline[0]!='*'))
++      while(isspace((unsigned char)*tline))mbinc(&tline);
++      if(tline[0]!='\0' && tline[0]!='#' && tline[0]!='*')
+ 	match_string(main_config,tline,"error in config:",config_fd);
+       tline = fgets(line,(sizeof line)-1,config_fd);
+       orig_tline = tline;
+@@ -725,7 +725,7 @@
+  ****************************************************************************/
+ void assign_string(char *text, FILE *fd, char **arg, int *junk)
+ {
+-  *arg = stripcpy(text);
++  CopyString(arg, text);
+ }
+ 
+ /*****************************************************************************
+@@ -1436,6 +1436,6 @@
+ {
+   MenuRoot *mr;
+   char newline[256];
+-  register char *pline;
++  char *pline;
+   char unit_1,unit_2;
+   int n;
+@@ -1448,7 +1448,7 @@
+   mr = NewMenuRoot(name);
+   GetColors();
+ 
+-  while(isspace(*pline))pline++;
++  while(isspace((unsigned char)*pline))mbinc(&pline);
+   while((pline != (char *)0)
+       &&(mystrncasecmp("End",pline,3)!=0))
+     {
+@@ -1482,7 +1482,7 @@
+ 
+       orig_tline = pline;
+ 
+-      while(isspace(*pline))pline++;
++      while(isspace((unsigned char)*pline))mbinc(&pline);
+     }
+   MakeMenu(mr);
+ 
+@@ -1891,14 +1891,15 @@
+ void scanForHotkeys(MenuItem *it, int which) 
+ {
+   char *start, *txt;
++  int l, l2;
+ 
+   start = (which > 0) ? it->item : it->item2;	/* Get start of string	*/
+-  for (txt = start; *txt != '\0'; txt++) 
+-    {	/* Scan whole string	*/
+-      if (*txt == '&') 
+-	{		/* A hotkey marker?			*/
+-      if (txt[1] == '&') 
+-	{	/* Just an escaped &			*/
++  /* Scan whole string */
++  for (txt=start, l=mblenq(txt); l; txt+=l, l=l2) {
++    l2 = mblenq(&txt[l]);
++    if (l != 1 || l2 != 1) continue;
++    if (txt[0] == '&') {	/* A hotkey marker?			*/
++      if (txt[1] == '&') {	/* Just an escaped &			*/
+ 	  char *tmp;		/* Copy the string down over it		*/
+ 	  for (tmp = txt; *tmp != '\0'; tmp++) tmp[0] = tmp[1];
+ 	  continue;		/* ...And skip to the key char		*/
+@@ -2145,31 +2146,6 @@
+ {
+   afterstep_err("can't %s color %s", note,name,NULL);
+ }
+-/****************************************************************************
+- * 
+- * Copies a string into a new, malloc'ed string
+- * Strips leading spaces and trailing spaces and new lines
+- *
+- ****************************************************************************/ 
+-char *stripcpy(char *source)
+-{
+-  char *tmp,*ptr;
+-  int len;
+-
+-  while(isspace(*source))
+-    source++;
+-  len = strlen(source);
+-  tmp = source + len -1;
+-  while(((isspace(*tmp))||(*tmp == '\n'))&&(tmp >=source))
+-    {
+-      tmp--;
+-      len--;
+-    }
+-  ptr = safemalloc(len+1);
+-  strncpy(ptr,source,len);
+-  ptr[len]=0;
+-  return ptr;
+-}
+   
+ 
+ /****************************************************************************
+@@ -2181,48 +2157,36 @@
+ char *stripcpy2(char *source, int tab_sensitive, Bool error)
+ {
+   char *ptr;
+-  int count;
+-  while((*source != '"')&&(*source != 0))
+-    source++;
+-  if(*source == 0)
+-    {
++  int count, l;
++
++  while ((l = mbinc(&source)) && !(l==1 && *(source-1)=='"'));
++  if (!l) {
+       if(error)
+ 	bad_binding(2);
+-      return 0;
++    return NULL;
+     }
+-  source++;
++
+   ptr = source;
+   count = 0;
+   if(!tab_sensitive)
+-    while((*ptr!='"')&&(*ptr != 0))
+-      {
+-	ptr++;  
+-	count++;
+-      }
++    while ((l = mbinc(&ptr)) && !(l==1 && *(ptr-1)=='"'))
++      count += l;
++
+   else if(tab_sensitive==1)
+-    while((*ptr!='"')&&(*ptr != 0)&&(*ptr!='\t'))
+-      {
+-	ptr++;  
+-	count++;
+-      }
++    while ((l = mbinc(&ptr)) && !(l==1 && (*(ptr-1)=='"' || *(ptr-1)=='\t')))
++      count += l;
++
+   else if(tab_sensitive==2)
+     {
+-      while((*ptr!='"')&&(*ptr != 0)&&(*ptr!='\t'))
+-	{
+-	  source++;
+-	  ptr++;
+-	}
+-      if((*ptr!='"')&&(*ptr != 0))
+-	{
+-	  ptr++;
+-	  source++;
+-	}
+-      while((*ptr!='"')&&(*ptr != 0))
+-	{
+-	  ptr++;
+-	  count++;
+-	}
++      while ((l = mbinc(&ptr)) && !(l==1 && (*(ptr-1)=='"' || *(ptr-1)=='\t')));
++      if (l==1 && *(ptr-1)!='\t') ptr --;
++      source = ptr;
++      while ((l = mbinc(&ptr)) && !(l==1 && *(ptr-1)=='"'))
++	count += l;
+     }
++  if (!count)
++    return NULL;
++
+   ptr = safemalloc(count+1);
+   strncpy(ptr,source,count);
+   ptr[count]=0;
+@@ -2239,19 +2203,16 @@
+  ****************************************************************************/
+ char *stripcpy3(char *source,Bool Warn)
+ {
+-  while((*source != '"')&&(*source != 0))
+-    source++;
+-  if(*source != 0)
+-    source++;
+-  while((*source != '"')&&(*source != 0))
+-    source++;
+-  if(*source == 0)
+-    {
++  char* dest;
++  int l;
++  while ((l = mbinc(&source)) && !(l==1 && *(source-1)=='"'));
++  while ((l = mbinc(&source)) && !(l==1 && *(source-1)=='"'));
++  if(!l) {
+       if(Warn)bad_binding(3);
+-      return 0;
++    return NULL;
+     }
+-  source++;
+-  return stripcpy(source);
++  CopyString(&dest, source);
++  return dest;
+ }
+   
+ void bad_binding(int num)
+@@ -2412,7 +2373,7 @@
+   if((new_flags & ICON_FLAG) || (new_flags & STAYSONDESK_FLAG))
+     name = stripcpy2(text,FALSE,TRUE);
+   else
+-    name = stripcpy(text);
++    CopyString(&name, text);
+ 
+   /* in case there was no argument! */
+   if(name == NULL)
+diff -urNb AfterStepClassic-1.1beta2.orig/afterstep/decorations.h AfterStepClassic-1.1beta2/afterstep/decorations.h
+--- AfterStepClassic-1.1beta2.orig/afterstep/decorations.h	1970-01-01 09:00:00.000000000 +0900
++++ AfterStepClassic-1.1beta2/afterstep/decorations.h	2005-09-10 22:46:29.000000000 +0900
+@@ -0,0 +1,8 @@
++#ifndef _DECORATIONS_
++#define _DECORATIONS_
++
++#ifdef ENABLE_TEXTURE
++int ParseColor(char *input, int from[3], int to[3]);
++#endif
++
++#endif
+diff -urNb AfterStepClassic-1.1beta2.orig/afterstep/functions.c AfterStepClassic-1.1beta2/afterstep/functions.c
+--- AfterStepClassic-1.1beta2.orig/afterstep/functions.c	1998-08-04 22:07:48.000000000 +0900
++++ AfterStepClassic-1.1beta2/afterstep/functions.c	2005-09-11 00:00:53.000000000 +0900
+@@ -63,7 +63,7 @@
+ extern XEvent Event;
+ extern ASWindow *Tmp_win;
+ extern int menuFromFrameOrWindowOrTitlebar;
+-extern DoHandlePageing;
++extern Bool DoHandlePageing;
+ 
+ extern char **g_argv;
+ 
+diff -urNb AfterStepClassic-1.1beta2.orig/afterstep/functions.h AfterStepClassic-1.1beta2/afterstep/functions.h
+--- AfterStepClassic-1.1beta2.orig/afterstep/functions.h	1970-01-01 09:00:00.000000000 +0900
++++ AfterStepClassic-1.1beta2/afterstep/functions.h	2005-09-10 23:06:46.000000000 +0900
+@@ -0,0 +1,6 @@
++#ifndef _FUNCTIONS_
++#define _FUNCTIONS_
++
++void CloseOneWindow (ASWindow *tmp_win);
++
++#endif
+diff -urNb AfterStepClassic-1.1beta2.orig/afterstep/hotedge.h AfterStepClassic-1.1beta2/afterstep/hotedge.h
+--- AfterStepClassic-1.1beta2.orig/afterstep/hotedge.h	1998-09-07 02:50:27.000000000 +0900
++++ AfterStepClassic-1.1beta2/afterstep/hotedge.h	2005-09-10 23:10:32.000000000 +0900
+@@ -1,5 +1,7 @@
+-#ifndef HOTEDGE_H
+-#define  HOTEDGE_H
++#ifndef _HOTEDGE_H
++#define _HOTEDGE_H
++
++#include "screen.h"
+ 
+ /* Each edge of the screen has a unique edge number >= 0 */
+ enum
+@@ -17,4 +19,4 @@
+ void HotEdgeEnter(PanFrame *panframe);
+ 
+ 
+-#endif /* HOTEDGE_H */
++#endif /* _HOTEDGE_H */
+diff -urNb AfterStepClassic-1.1beta2.orig/afterstep/icons.c AfterStepClassic-1.1beta2/afterstep/icons.c
+--- AfterStepClassic-1.1beta2.orig/afterstep/icons.c	1998-08-04 22:07:48.000000000 +0900
++++ AfterStepClassic-1.1beta2/afterstep/icons.c	2005-09-10 22:53:06.000000000 +0900
+@@ -11,7 +11,7 @@
+  * Modifications: Copyright 1995 Bo Yang. No further restrictions,
+  * as long as this copyright notice is preserved.
+  * 
+-/***********************************************************************
++ ***********************************************************************
+  *
+  * afterstep icon code
+  *
+diff -urNb AfterStepClassic-1.1beta2.orig/afterstep/module.c AfterStepClassic-1.1beta2/afterstep/module.c
+--- AfterStepClassic-1.1beta2.orig/afterstep/module.c	1998-09-06 07:45:28.000000000 +0900
++++ AfterStepClassic-1.1beta2/afterstep/module.c	2005-09-10 23:12:48.000000000 +0900
+@@ -26,6 +26,8 @@
+ #include <sys/socket.h>
+ 
+ #include "afterstep.h"
++#include "functions.h"
++#include "hotedge.h"
+ #include "menus.h"
+ #include "misc.h"
+ #include "parse.h"
+@@ -104,7 +106,7 @@
+   /* Process events until all modules that intercept M_EXIT_NOTIFY
+      respond with EXIT_ACK. Allow up to 10 seconds for this. */
+   {
+-    void *old_handler = signal(SIGALRM, ExitAckTimeout);
++    sig_t old_handler = signal(SIGALRM, ExitAckTimeout);
+     int old_alarm = alarm(10);
+     if (!setjmp(exitAckJump))
+     {
+@@ -158,24 +160,24 @@
+   strcpy(command,action);
+ 
+   cptr = command;
+-  while((isspace(*cptr))&&(*cptr != '\n')&&(*cptr != 0))
++  while((isspace((unsigned char)*cptr))&&(*cptr != '\n')&&(*cptr != '\0'))
+     cptr++;
+ 
+   end = cptr;
+-  while((!(isspace(*end))&&(*end != '\n'))&&(*end != 0)&&(end <(command+256)))
++  while((!(isspace((unsigned char)*end))&&(*end != '\n'))&&(*end != '\0')&&(end <(command+256)))
+     end++;
+ 
+-  if((*end == 0)||(end >= command+256))
++  if((*end == '\0')||(end >= command+256))
+     aptr = NULL;
+   else
+     aptr = end+1;
+-  *end = 0;
++  *end = '\0';
+ 
+   if(aptr)
+     {
+-      while((isspace(*aptr)||(*aptr=='\n'))&&(*aptr!=0)&&(aptr<(command+256)))
++      while((isspace((unsigned char)*aptr)||(*aptr=='\n'))&&(*aptr!='\0')&&(aptr<(command+256)))
+ 	aptr++;
+-      if((*aptr == 0)||(*aptr == '\n'))
++      if((*aptr == '\0')||(*aptr == '\n'))
+ 	aptr = NULL;
+     }
+ 
+@@ -265,10 +267,10 @@
+       if(aptr != NULL)
+ 	{
+ 	  args[6] = aptr;
+-	  args[7] = 0;
++	  args[7] = '\0';
+ 	}
+       else
+-	args[6]= 0;
++	args[6]= '\0';
+       execvp(arg1,args);
+       fprintf(stderr,"Execution of module failed: %s",arg1);      
+       perror("");
+@@ -356,7 +358,7 @@
+   if(strlen(text)>0)
+     {
+       char function[256],*ptr;
+-      MenuRoot *mr=0;
++      MenuRoot *mr=NULL;
+       char *item=NULL;
+       extern int func_val_1,func_val_2,func,Context;
+       extern struct config func_config[];
+diff -urNb AfterStepClassic-1.1beta2.orig/afterstep/move.c AfterStepClassic-1.1beta2/afterstep/move.c
+--- AfterStepClassic-1.1beta2.orig/afterstep/move.c	1998-08-04 20:43:34.000000000 +0900
++++ AfterStepClassic-1.1beta2/afterstep/move.c	2005-09-10 22:51:55.000000000 +0900
+@@ -47,7 +47,7 @@
+   w = tmp_win->frame;
+   if(tmp_win->flags & ICONIFIED)
+     {
+-	tmp_win->icon_pixmap_w;
++	w = tmp_win->icon_pixmap_w;
+     }
+ 
+   if((val1 !=0)||(val2 != 0))
+diff -urNb AfterStepClassic-1.1beta2.orig/afterstep/placement.c AfterStepClassic-1.1beta2/afterstep/placement.c
+--- AfterStepClassic-1.1beta2.orig/afterstep/placement.c	1998-08-04 20:43:34.000000000 +0900
++++ AfterStepClassic-1.1beta2/afterstep/placement.c	2005-09-11 16:40:26.000000000 +0900
+@@ -334,7 +334,7 @@
+       {  1,  1 },			/* SouthEastGravity */
+       {  0,  0 },			/* StaticGravity */
+     };
+-  register int g = ((tmp->hints.flags & PWinGravity) 
++  int g = ((tmp->hints.flags & PWinGravity) 
+ 		    ? tmp->hints.win_gravity : NorthWestGravity);
+   
+   if (g < ForgetGravity || g > StaticGravity) 
+diff -urNb AfterStepClassic-1.1beta2.orig/afterstep/stepgfx.c AfterStepClassic-1.1beta2/afterstep/stepgfx.c
+--- AfterStepClassic-1.1beta2.orig/afterstep/stepgfx.c	1998-08-04 22:07:48.000000000 +0900
++++ AfterStepClassic-1.1beta2/afterstep/stepgfx.c	2005-09-10 23:52:42.000000000 +0900
+@@ -172,9 +172,9 @@
+ 	rv += sr;
+ 	gv += sg;
+ 	bv += sb;
+-	rv = ((rv > 65535.0) || (rv < 0.0)) ? rv -= sr : rv;
+-	gv = ((gv > 65535.0) || (gv < 0.0)) ? gv -= sg : gv;
+-	bv = ((bv > 65535.0) || (bv < 0.0)) ? bv -= sb : bv;
++	if (rv > 65535.0 || rv < 0.0) rv -= sr;
++	if (gv > 65535.0 || gv < 0.0) gv -= sg;
++	if (bv > 65535.0 || bv < 0.0) bv -= sb;
+     }
+     /* allocate 2 colors for the bevel */
+     if (alloc_relief) {
+diff -urNb AfterStepClassic-1.1beta2.orig/afterstep/style.c AfterStepClassic-1.1beta2/afterstep/style.c
+--- AfterStepClassic-1.1beta2.orig/afterstep/style.c	1998-08-04 20:43:34.000000000 +0900
++++ AfterStepClassic-1.1beta2/afterstep/style.c	2005-09-10 12:10:53.000000000 +0900
+@@ -54,16 +54,16 @@
+   line = restofline;
+ 
+   if(restofline == NULL)return;
+-  while((*restofline != 0)&&(*restofline != '\n'))
++  while((*restofline != '\0')&&(*restofline != '\n'))
+     {
+-      while(isspace(*restofline))restofline++;
++      while(isspace((unsigned char)*restofline))restofline++;
+       if(mystrncasecmp(restofline,"ICON",4)==0)
+ 	{
+ 	  restofline +=4;
+-	  while(isspace(*restofline))restofline++;
++	  while(isspace((unsigned char)*restofline))restofline++;
+ 	  tmp = restofline;
+ 	  len = 0;
+-	  while((tmp != NULL)&&(*tmp != 0)&&(*tmp != ',')&&(*tmp != '\n'))
++	  while((tmp != NULL)&&(*tmp != '\0')&&(*tmp != ',')&&(*tmp != '\n'))
+ 	    {
+ 	      tmp++;
+ 	      len++;
+@@ -72,7 +72,7 @@
+ 	    {
+ 	      icon_name = safemalloc(len+1);
+ 	      strncpy(icon_name,restofline,len);
+-	      icon_name[len] = 0;
++	      icon_name[len] = '\0';
+ 	      off_flags |= ICON_FLAG;
+ 	      on_flags |= SUPPRESSICON_FLAG;
+ 	    }
+@@ -83,11 +83,11 @@
+       if(mystrncasecmp(restofline,"COLOR",5)==0)
+ 	{
+ 	  restofline +=5;
+-	  while(isspace(*restofline))restofline++;
++	  while(isspace((unsigned char)*restofline))restofline++;
+ 	  tmp = restofline;
+ 	  len = 0;
+-	  while((tmp != NULL)&&(*tmp != 0)&&(*tmp != ',')&&
+-		(*tmp != '\n')&&(*tmp != '/')&&(!isspace(*tmp)))
++	  while((tmp != NULL)&&(*tmp != '\0')&&(*tmp != ',')&&
++		(*tmp != '\n')&&(*tmp != '/')&&(!isspace((unsigned char)*tmp)))
+ 	    {
+ 	      tmp++;
+ 	      len++;
+@@ -96,19 +96,19 @@
+ 	    {
+ 	      forecolor = safemalloc(len+1);
+ 	      strncpy(forecolor,restofline,len);
+-	      forecolor[len] = 0;
++	      forecolor[len] = '\0';
+ 	      off_flags |= FORE_COLOR_FLAG;
+ 	    }
+ 
+-	  while(isspace(*tmp))tmp++;
++	  while(isspace((unsigned char)*tmp))tmp++;
+ 	  if(*tmp == '/')
+ 	    {
+ 	      tmp++;
+-	      while(isspace(*tmp))tmp++;
++	      while(isspace((unsigned char)*tmp))tmp++;
+ 	      restofline = tmp;
+ 	      len = 0;
+-	      while((tmp != NULL)&&(*tmp != 0)&&(*tmp != ',')&&
+-		    (*tmp != '\n')&&(*tmp != '/')&&(!isspace(*tmp)))
++	      while((tmp != NULL)&&(*tmp != '\0')&&(*tmp != ',')&&
++		    (*tmp != '\n')&&(*tmp != '/')&&(!isspace((unsigned char)*tmp)))
+ 		{
+ 		  tmp++;
+ 		  len++;
+@@ -117,7 +117,7 @@
+ 		{
+ 		  backcolor = safemalloc(len+1);
+ 		  strncpy(backcolor,restofline,len);
+-		  backcolor[len] = 0;
++		  backcolor[len] = '\0';
+ 		  off_flags |= BACK_COLOR_FLAG;
+ 		}
+ 	    }
+@@ -126,11 +126,11 @@
+       if(mystrncasecmp(restofline,"FORECOLOR",9)==0)
+ 	{
+ 	  restofline +=9;
+-	  while(isspace(*restofline))restofline++;
++	  while(isspace((unsigned char)*restofline))restofline++;
+ 	  tmp = restofline;
+ 	  len = 0;
+-	  while((tmp != NULL)&&(*tmp != 0)&&(*tmp != ',')&&
+-		(*tmp != '\n')&&(*tmp != '/')&&(!isspace(*tmp)))
++	  while((tmp != NULL)&&(*tmp != '\0')&&(*tmp != ',')&&
++		(*tmp != '\n')&&(*tmp != '/')&&(!isspace((unsigned char)*tmp)))
+ 	    {
+ 	      tmp++;
+ 	      len++;
+@@ -139,7 +139,7 @@
+ 	    {
+ 	      forecolor = safemalloc(len+1);
+ 	      strncpy(forecolor,restofline,len);
+-	      forecolor[len] = 0;
++	      forecolor[len] = '\0';
+ 	      off_flags |= FORE_COLOR_FLAG;
+ 	    }
+ 	  restofline = tmp;
+@@ -148,11 +148,11 @@
+       if(mystrncasecmp(restofline,"BACKCOLOR",9)==0)
+ 	{
+ 	  restofline +=9;
+-	  while(isspace(*restofline))restofline++;
++	  while(isspace((unsigned char)*restofline))restofline++;
+ 	  tmp = restofline;
+ 	  len = 0;
+-	  while((tmp != NULL)&&(*tmp != 0)&&(*tmp != ',')&&
+-		(*tmp != '\n')&&(*tmp != '/')&&(!isspace(*tmp)))
++	  while((tmp != NULL)&&(*tmp != '\0')&&(*tmp != ',')&&
++		(*tmp != '\n')&&(*tmp != '/')&&(!isspace((unsigned char)*tmp)))
+ 	    {
+ 	      tmp++;
+ 	      len++;
+@@ -161,7 +161,7 @@
+ 	    {
+ 	      backcolor = safemalloc(len+1);
+ 	      strncpy(backcolor,restofline,len);
+-	      backcolor[len] = 0;
++	      backcolor[len] = '\0';
+ 	      off_flags |= BACK_COLOR_FLAG;
+ 	    }
+ 	  restofline = tmp;
+@@ -201,11 +201,11 @@
+         restofline +=8;
+ 
+         sscanf(restofline,"%d",&butt);
+-        while(isspace(*restofline))restofline++;
+-        while((!isspace(*restofline))&&(*restofline!= 0)&&
++        while(isspace((unsigned char)*restofline))restofline++;
++        while((!isspace((unsigned char)*restofline))&&(*restofline!='\0')&&
+               (*restofline != ',')&&(*restofline != '\n'))
+           restofline++;
+-        while(isspace(*restofline))restofline++;
++        while(isspace((unsigned char)*restofline))restofline++;
+ 
+         off_buttons |= (1<<(butt-1));
+       }
+@@ -214,11 +214,11 @@
+ 	  restofline +=6;
+ 	  
+ 	  sscanf(restofline,"%d",&butt);
+-	  while(isspace(*restofline))restofline++;
+-	  while((!isspace(*restofline))&&(*restofline!= 0)&&
++	  while(isspace((unsigned char)*restofline))restofline++;
++	  while((!isspace((unsigned char)*restofline))&&(*restofline!='\0')&&
+ 		(*restofline != ',')&&(*restofline != '\n'))
+ 	    restofline++;
+-	  while(isspace(*restofline))restofline++;
++	  while(isspace((unsigned char)*restofline))restofline++;
+ 	  
+ 	  on_buttons |= (1<<(butt-1));        
+ 	}
+@@ -277,43 +277,43 @@
+ 	  restofline +=11;
+ 	  off_flags |= BW_FLAG;
+ 	  sscanf(restofline,"%d",&bw);
+-	  while(isspace(*restofline))restofline++;
+-	  while((!isspace(*restofline))&&(*restofline!= 0)&&
++	  while(isspace((unsigned char)*restofline))restofline++;
++	  while((!isspace((unsigned char)*restofline))&&(*restofline!='\0')&&
+ 		 (*restofline != ',')&&(*restofline != '\n'))
+ 	    restofline++;
+-	  while(isspace(*restofline))restofline++;
++	  while(isspace((unsigned char)*restofline))restofline++;
+ 	}
+       else if(mystrncasecmp(restofline,"HandleWidth",11)==0)
+ 	{
+ 	  restofline +=11;
+ 	  off_flags |= NOBW_FLAG;
+ 	  sscanf(restofline,"%d",&nobw);
+-	  while(isspace(*restofline))restofline++;
+-	  while((!isspace(*restofline))&&(*restofline!= 0)&&
++	  while(isspace((unsigned char)*restofline))restofline++;
++	  while((!isspace((unsigned char)*restofline))&&(*restofline!='\0')&&
+ 		 (*restofline != ',')&&(*restofline != '\n'))
+ 	    restofline++;
+-	  while(isspace(*restofline))restofline++;
++	  while(isspace((unsigned char)*restofline))restofline++;
+ 	}
+       else if(mystrncasecmp(restofline,"STARTSONDESK",12)==0)
+ 	{
+ 	  restofline +=12;
+ 	  off_flags |= STAYSONDESK_FLAG;
+ 	  sscanf(restofline,"%d",&desknumber);
+-	  while(isspace(*restofline))restofline++;
+-	  while((!isspace(*restofline))&&(*restofline!= 0)&&
++	  while(isspace((unsigned char)*restofline))restofline++;
++	  while((!isspace((unsigned char)*restofline))&&(*restofline!='\0')&&
+ 		 (*restofline != ',')&&(*restofline != '\n'))
+ 	    restofline++;
+-	  while(isspace(*restofline))restofline++;
++	  while(isspace((unsigned char)*restofline))restofline++;
+ 	}
+       else if(mystrncasecmp(restofline,"STARTSANYWHERE",14)==0)
+ 	{
+ 	  restofline +=14;
+ 	  on_flags |= STAYSONDESK_FLAG;
+ 	}
+-      while(isspace(*restofline))restofline++;
++      while(isspace((unsigned char)*restofline))restofline++;
+       if(*restofline == ',')
+ 	restofline++;
+-      else if((*restofline != 0)&&(*restofline != '\n'))
++      else if((*restofline != '\0')&&(*restofline != '\n'))
+ 	{
+ 	  afterstep_err("bad style command in line %s at %s",
+ 		   orig_tline,restofline,NULL);
+diff -urNb AfterStepClassic-1.1beta2.orig/lib/CopyString.c AfterStepClassic-1.1beta2/lib/CopyString.c
+--- AfterStepClassic-1.1beta2.orig/lib/CopyString.c	1998-08-04 20:43:34.000000000 +0900
++++ AfterStepClassic-1.1beta2/lib/CopyString.c	2005-09-10 21:23:15.000000000 +0900
+@@ -9,30 +9,27 @@
+  ***************************************************************************/
+ void CopyString(char **dest, char *source)
+ {
+-  int len;
++  int len, spclen, l;
+   char *start;
+   
+-  while(((isspace(*source))&&(*source != '\n'))&&(*source != 0))
+-    {
+-      source++;
+-    }
++  while(isspace((unsigned char)*source) && !mbeol(source) && mbinc(&source));
++
+   len = 0;
++  spclen = 0;
+   start = source;
+-  while((*source != '\n')&&(*source != 0))
+-    {
+-      len++;
+-      source++;
++  while(!mbeol(source) && (l = mbinc(&source))) {
++    if (!l) break;
++    if (l==1 && isspace((unsigned char)*(source-1)))
++      spclen ++;
++    else {
++      len += spclen + l;
++      spclen = 0;
+     }
+-  
+-  source--;
+-  while((isspace(*source))&&(*source != 0)&&(len >0))
+-    {
+-      len--;
+-      source--;
+     }
++  
+   *dest = safemalloc(len+1);
+   strncpy(*dest,start,len);
+-  (*dest)[len]=0;	  
++  (*dest)[len] = '\0';
+ }
+ 
+ 
+diff -urNb AfterStepClassic-1.1beta2.orig/lib/Imakefile AfterStepClassic-1.1beta2/lib/Imakefile
+--- AfterStepClassic-1.1beta2.orig/lib/Imakefile	1998-08-04 20:43:34.000000000 +0900
++++ AfterStepClassic-1.1beta2/lib/Imakefile	2005-09-10 13:53:25.000000000 +0900
+@@ -11,7 +11,7 @@
+ COMPILER
+ 
+ OBJS = CatString3.o SendInfo.o SendText.o wild.o safemalloc.o findIconFile.o \
+-       mystrcasecmp.o strncmp.o hostname.o  ReadPacket.o \
++       ReadPacket.o mbfuncs.o \
+        sleep.o CopyString.o mygetostype.o GetFdWidth.o
+ 
+ NormalLibraryTarget(afterstep, $(OBJS))
+diff -urNb AfterStepClassic-1.1beta2.orig/lib/ReadPacket.c AfterStepClassic-1.1beta2/lib/ReadPacket.c
+--- AfterStepClassic-1.1beta2.orig/lib/ReadPacket.c	1998-08-04 20:43:34.000000000 +0900
++++ AfterStepClassic-1.1beta2/lib/ReadPacket.c	2005-09-10 21:22:56.000000000 +0900
+@@ -1,3 +1,4 @@
++#include <unistd.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include "aftersteplib.h"
+@@ -9,7 +10,7 @@
+  * unsigned long header[3];
+  * unsigned long *body;
+  * int fd[2];
+- * void DeadPipe(int nonsense); /* Called if the pipe is no longer open 
++ * void DeadPipe(int nonsense); Called if the pipe is no longer open 
+  *
+  * ReadASPacket(fd[1],header, &body);
+  *
+diff -urNb AfterStepClassic-1.1beta2.orig/lib/SendInfo.c AfterStepClassic-1.1beta2/lib/SendInfo.c
+--- AfterStepClassic-1.1beta2.orig/lib/SendInfo.c	1998-08-04 20:43:34.000000000 +0900
++++ AfterStepClassic-1.1beta2/lib/SendInfo.c	2005-09-10 12:54:53.000000000 +0900
+@@ -1,3 +1,5 @@
++#include <unistd.h>
++#include <string.h>
+ #include <stdio.h>
+ #include <ctype.h>
+ 
+diff -urNb AfterStepClassic-1.1beta2.orig/lib/SendText.c AfterStepClassic-1.1beta2/lib/SendText.c
+--- AfterStepClassic-1.1beta2.orig/lib/SendText.c	1998-08-04 20:43:34.000000000 +0900
++++ AfterStepClassic-1.1beta2/lib/SendText.c	2005-09-10 21:19:39.000000000 +0900
+@@ -1,3 +1,5 @@
++#include <string.h>
++#include <unistd.h>
+ #include <stdio.h>
+ #include <ctype.h>
+ /************************************************************************
+diff -urNb AfterStepClassic-1.1beta2.orig/lib/aftersteplib.h AfterStepClassic-1.1beta2/lib/aftersteplib.h
+--- AfterStepClassic-1.1beta2.orig/lib/aftersteplib.h	1998-08-04 20:43:34.000000000 +0900
++++ AfterStepClassic-1.1beta2/lib/aftersteplib.h	2005-09-10 22:46:24.000000000 +0900
+@@ -1,7 +1,10 @@
+-int mystrcasecmp(char *a, char *b);
+-int mystrncasecmp(char *a, char *b,int n);
++#ifndef _AFTERSTEPLIB_H
++#define _AFTERSTEPLIB_H
++
++#define mystrcasecmp strcasecmp
++#define mystrncasecmp strncasecmp
+ char *CatString3(char *a, char *b, char *c);
+-int mygethostname(char *client, int namelen);
++#define mygethostname gethostname
+ void SendText(int *fd,char *message,unsigned long window);
+ void SendInfo(int *fd,char *message,unsigned long window);
+ char *safemalloc(int);
+@@ -10,3 +13,10 @@
+ void CopyString(char **dest, char *source);
+ void sleep_a_little(int n);
+ int GetFdWidth(void);
++
++int mblenq (char* line);
++int mbinc (char** line);
++int mbeol (char* line);
++int mbdec (char** top, char* cur);
++
++#endif
+diff -urNb AfterStepClassic-1.1beta2.orig/lib/mbfuncs.c AfterStepClassic-1.1beta2/lib/mbfuncs.c
+--- AfterStepClassic-1.1beta2.orig/lib/mbfuncs.c	1970-01-01 09:00:00.000000000 +0900
++++ AfterStepClassic-1.1beta2/lib/mbfuncs.c	2005-09-10 21:22:26.000000000 +0900
+@@ -0,0 +1,67 @@
++#include <stdlib.h>
++
++int
++mblenq(char* line)
++{
++  int l = mblen(line, MB_CUR_MAX);
++  if (l < 0)
++    l = 1;
++  return l;
++}
++
++int
++mbinc (char** line)
++{
++  int l;
++
++  l = mblenq(*line);
++  *line += l;
++
++  return l;
++}
++
++
++int
++mbeol (char* line)
++{
++  int l;
++
++  l = mblen(line, MB_CUR_MAX);
++
++  if (l == 0)
++    return 1;
++
++  if (l > 1)
++    return 0;
++
++  if (*line=='\n' || *line=='\r' || *line=='\0')
++    return 1;
++
++  return 0;
++}
++
++
++int
++mbdec (char** top, char* cur)
++{
++  int   l;
++
++  while (*top < cur) {
++    l = mblen(*top, MB_CUR_MAX);
++
++    if (l == 0)
++      break;
++
++    if (l < 0)
++      l = 1;
++
++    if (*top + l >= cur)
++      break;
++
++    *top += l;
++  }
++
++  return ((size_t) cur - (size_t) *top);
++}
++
++
+diff -urNb AfterStepClassic-1.1beta2.orig/lib/sleep.c AfterStepClassic-1.1beta2/lib/sleep.c
+--- AfterStepClassic-1.1beta2.orig/lib/sleep.c	1998-08-04 20:43:34.000000000 +0900
++++ AfterStepClassic-1.1beta2/lib/sleep.c	2005-09-10 12:56:45.000000000 +0900
+@@ -1,7 +1,5 @@
+-#include <sys/time.h>
+-#if defined ___AIX || defined _AIX || defined __QNX__ || defined ___AIXV3 || defined AIXV3 || defined _SEQUENT_
+-#include <sys/select.h>
+-#endif
++#include <errno.h>
++#include <time.h>
+ 
+ /**************************************************************************
+  * 
+@@ -10,15 +8,16 @@
+  *************************************************************************/
+ void sleep_a_little(int n)
+ {
+-  struct timeval value;
++  struct timespec req, rem;
+   
+   if (n <= 0)
+     return;
+   
+-  value.tv_usec = n % 1000000;
+-  value.tv_sec = n / 1000000;
++  req.tv_sec  =  n / 1000000;
++  req.tv_nsec = (n % 1000000) * 1000;
+   
+-  (void) select(1, 0, 0, 0, &value);
++  if (nanosleep(&req, &rem) && errno==EINTR)
++    while (nanosleep(&rem, &rem) && errno==EINTR);
+ }
+ 
+ 
+diff -urNb AfterStepClassic-1.1beta2.orig/lib/wild.c AfterStepClassic-1.1beta2/lib/wild.c
+--- AfterStepClassic-1.1beta2.orig/lib/wild.c	1998-08-04 20:43:34.000000000 +0900
++++ AfterStepClassic-1.1beta2/lib/wild.c	2005-09-10 21:20:17.000000000 +0900
+@@ -1,3 +1,4 @@
++#include <string.h>
+ #include <stdio.h>
+ 
+ #ifndef TRUE
+diff -urNb AfterStepClassic-1.1beta2.orig/module-interface.txt AfterStepClassic-1.1beta2/module-interface.txt
+--- AfterStepClassic-1.1beta2.orig/module-interface.txt	1998-09-06 07:45:08.000000000 +0900
++++ AfterStepClassic-1.1beta2/module-interface.txt	2005-09-10 12:33:20.000000000 +0900
+@@ -371,19 +371,9 @@
+ 	Returns a nonzero value if the string matches the pattern.
+ 	The characters '?' and '*' are wildcards with the usual meanings.
+ 
+-int mystrcasecmp(char *a, char *b);
+-int mystrncasecmp(char *a, char *b, int n);
+-	These provide the nonstandard but useful str[n]casecmp functions
+-	for systems that do not have them.  Briefly, they are just like
+-	the ANSI str[n]cmp functions but ignore case differences.
+-
+ char *CatString3(char *a, char *b, char *c);
+ 	Concatenate 3 strings into a single 256 byte global buffer.
+ 
+-int mygethostname(char *client, int namelen);
+-	Get the name of the host machine if it is available by some means.
+-	The string buffer is provided by the caller.
+-
+ int mygetostype(char *buf, int max);
+ 	Acquire a string indicating the OS type if such information is
+ 	available.  The string buffer is provided by the caller.
+diff -urNb AfterStepClassic-1.1beta2.orig/modules/Animate/Animate.c AfterStepClassic-1.1beta2/modules/Animate/Animate.c
+--- AfterStepClassic-1.1beta2.orig/modules/Animate/Animate.c	1998-08-04 20:43:34.000000000 +0900
++++ AfterStepClassic-1.1beta2/modules/Animate/Animate.c	2005-09-10 23:46:58.000000000 +0900
+@@ -252,6 +252,7 @@
+ 			|GCSubwindowMode, &gcv);
+     SendText(Channel,"Nop",0);
+     Loop();
++    return 0;	/* only for formality */
+ }
+ 
+ void GetWindowSize(Window win, int *x, int *y, int *w, int *h)
+diff -urNb AfterStepClassic-1.1beta2.orig/modules/Audio/Audio.c AfterStepClassic-1.1beta2/modules/Audio/Audio.c
+--- AfterStepClassic-1.1beta2.orig/modules/Audio/Audio.c	1998-09-06 13:45:43.000000000 +0900
++++ AfterStepClassic-1.1beta2/modules/Audio/Audio.c	2005-09-10 23:15:23.000000000 +0900
+@@ -63,6 +63,7 @@
+ #include <string.h>
+ #include <sys/wait.h>
+ #include <sys/time.h>
++#include <time.h>
+ #include <unistd.h>
+ #include <ctype.h>
+ #include <stdlib.h>
+@@ -138,7 +139,7 @@
+ RPLAY	*rplay_table[MAX_MESSAGES+MAX_BUILTIN];
+ #endif
+ 
+-main(int argc, char **argv)
++int main(int argc, char **argv)
+ {
+ 	char *temp, *s;
+ 
+@@ -179,6 +180,7 @@
+ 	audio_play(BUILTIN_STARTUP);
+ 	SendText(fd,"Nop",0);
+ 	Loop(fd);
++	return 0;	/* only for formality */
+ }
+ 
+ /***********************************************************************
+diff -urNb AfterStepClassic-1.1beta2.orig/modules/Auto/Auto.c AfterStepClassic-1.1beta2/modules/Auto/Auto.c
+--- AfterStepClassic-1.1beta2.orig/modules/Auto/Auto.c	1998-08-04 20:43:33.000000000 +0900
++++ AfterStepClassic-1.1beta2/modules/Auto/Auto.c	2005-09-10 23:55:19.000000000 +0900
+@@ -59,7 +59,7 @@
+  *	main - start of module
+  *
+  ***********************************************************************/
+-void main(int argc, char **argv)
++int main(int argc, char **argv)
+ {
+   FILE *file;
+   char mask_mesg[80];
+@@ -84,6 +84,7 @@
+   sprintf(mask_mesg,"SET_MASK %lu\n",(unsigned long)(M_FOCUS_CHANGE));
+   SendInfo(fd,mask_mesg,0);
+   Loop(fd);
++  return 0;	/* only for formality */
+ }
+ 
+ 
+diff -urNb AfterStepClassic-1.1beta2.orig/modules/Banner/Banner.c AfterStepClassic-1.1beta2/modules/Banner/Banner.c
+--- AfterStepClassic-1.1beta2.orig/modules/Banner/Banner.c	1998-08-04 20:43:33.000000000 +0900
++++ AfterStepClassic-1.1beta2/modules/Banner/Banner.c	2005-09-10 23:34:17.000000000 +0900
+@@ -100,7 +100,7 @@
+ #define M_END_CONFIG_INFO    (1<<19)
+ #define M_CONFIG_INFO        (1<<18)
+ 
+-void *GetConfigLine(int *fd, char **tline)
++void GetConfigLine(int *fd, char **tline)
+ {
+   static int first_pass = 1;
+   int count,done = 0;
+diff -urNb AfterStepClassic-1.1beta2.orig/modules/Pager/Pager.c AfterStepClassic-1.1beta2/modules/Pager/Pager.c
+--- AfterStepClassic-1.1beta2.orig/modules/Pager/Pager.c	1998-08-04 20:43:34.000000000 +0900
++++ AfterStepClassic-1.1beta2/modules/Pager/Pager.c	2005-09-10 23:44:00.000000000 +0900
+@@ -85,7 +85,7 @@
+  *	main - start of module
+  *
+  ***********************************************************************/
+-void main(int argc, char **argv)
++int main(int argc, char **argv)
+ {
+   char *temp, *s, *cptr;
+   char *display_name = NULL;
+@@ -189,6 +189,7 @@
+   SendInfo(fd,"Send_WindowList",0);
+   
+   Loop(fd);
++  return 0;	/* only for formality */
+ }
+ 
+ /***********************************************************************
+@@ -751,7 +752,7 @@
+   
+   if(FD_ISSET(fd[1], &in_fdset))
+     {
+-      if(count = ReadASPacket(fd[1],header,&body) > 0)
++      if((count = ReadASPacket(fd[1],header,&body)) > 0)
+ 	 {
+ 	   process_message(header[1],body);
+ 	   free(body);
+diff -urNb AfterStepClassic-1.1beta2.orig/modules/Wharf/Wharf.c AfterStepClassic-1.1beta2/modules/Wharf/Wharf.c
+--- AfterStepClassic-1.1beta2.orig/modules/Wharf/Wharf.c	1998-09-07 02:50:27.000000000 +0900
++++ AfterStepClassic-1.1beta2/modules/Wharf/Wharf.c	2005-09-10 23:23:44.000000000 +0900
+@@ -54,6 +54,7 @@
+ #include <string.h>
+ #include <sys/wait.h>
+ #include <sys/time.h>
++#include <time.h>
+ #if defined ___AIX || defined _AIX || defined __QNX__ || defined ___AIXV3 || defined AIXV3 || defined _SEQUENT_
+ #include <sys/select.h>
+ #endif
+@@ -212,7 +213,7 @@
+  *
+  ***********************************************************************
+  */
+-void main(int argc, char **argv)
++int main(int argc, char **argv)
+ {
+   char *display_name = NULL;
+   int i,j;
+@@ -307,7 +308,8 @@
+     /* startup sound subsystem */
+      if (SoundActive) {
+ 	if (pipe(PlayerChannel)<0) {
+-	    fprintf(stderr,"%s: could not create pipe. Disabling sound\n");
++	    fprintf(stderr,"%s: could not create pipe. Disabling sound\n",
++		    MyName);
+ 	    SoundActive=0;
+ 	} else {
+ 	    signal(SIGCHLD,waitchild);
+@@ -443,6 +445,7 @@
+   SendText(fd,"Send_WindowList",0);
+   Loop();
+ 
++  return 0;	/* only for formality */
+ }
+     
+ /***********************************************************************
+@@ -515,7 +518,7 @@
+ 			  Withdrawn=0;
+ 		      } else {
+ 			  Window junk;
+-			  int junk2,junk3,junk4,junk5;
++			  unsigned int junk2,junk3,junk4,junk5;
+ 			  int CornerX, CornerY;
+ 
+ #ifdef ENABLE_SOUND			  
+@@ -633,7 +636,7 @@
+ 		}
+ 	      if (mystrncasecmp(Buttons[CurrentButton].action,"Folder",6)==0) {
+                 Window junk;
+-                int junk2,junk3,junk4,junk5;
++                unsigned int junk2,junk3,junk4,junk5;
+                 XGetGeometry(dpy,main_win,&junk,&x,&y,
+                           &junk2,&junk3,&junk4,&junk5);
+                 XTranslateCoordinates(dpy,main_win,Root,
+@@ -960,7 +963,8 @@
+ {
+     int winc, hinc;
+     int cx, cy, cw, ch;
+-    int x,y,w,h, junk_depth, junk_bd;
++    int x, y;
++    unsigned int w, h, junk_bd, junk_depth;
+     int fsize, direction;
+     Window win, junk_win;
+ 
+diff -urNb AfterStepClassic-1.1beta2.orig/modules/Wharf/stepgfx.c AfterStepClassic-1.1beta2/modules/Wharf/stepgfx.c
+--- AfterStepClassic-1.1beta2.orig/modules/Wharf/stepgfx.c	1998-08-04 20:43:33.000000000 +0900
++++ AfterStepClassic-1.1beta2/modules/Wharf/stepgfx.c	2005-09-10 23:56:10.000000000 +0900
+@@ -65,9 +65,9 @@
+ 	rv += sr;
+ 	gv += sg;
+ 	bv += sb;
+-	rv = ((rv > 65535.0) || (rv < 0.0)) ? rv -= sr : rv;
+-	gv = ((gv > 65535.0) || (gv < 0.0)) ? gv -= sg : gv;
+-	bv = ((bv > 65535.0) || (bv < 0.0)) ? bv -= sb : bv;
++	if (rv > 65535.0 || rv < 0.0) rv -= sr;
++	if (gv > 65535.0 || gv < 0.0) gv -= sg;
++	if (bv > 65535.0 || bv < 0.0) bv -= sb;
+     }
+     /* allocate 2 colors for the bevel */
+     if (alloc_relief) {
+diff -urNb AfterStepClassic-1.1beta2.orig/modules/asclock/asclock.c AfterStepClassic-1.1beta2/modules/asclock/asclock.c
+--- AfterStepClassic-1.1beta2.orig/modules/asclock/asclock.c	1998-08-04 20:43:33.000000000 +0900
++++ AfterStepClassic-1.1beta2/modules/asclock/asclock.c	2005-09-10 23:54:08.000000000 +0900
+@@ -1,3 +1,6 @@
++#include <stdlib.h>
++#include <string.h>
++#include <unistd.h>
+ #include <stdio.h>
+ #include <X11/Xlib.h>
+ #include <X11/xpm.h>
+@@ -245,6 +248,7 @@
+ 	      InsertTime();
+ 	    }
+ 	  if (ITBLINKS)
++	    {
+ 	    if (actualtime % 2)
+ 	      /* Sekunden Doppelpunkt ein */
+ 	      XCopyArea(dpy, led.pixmap, visible.pixmap, NormalGC,
+@@ -253,7 +257,7 @@
+ 	      /* Sekunden Doppelpunkt aus */
+ 	      XCopyArea(dpy, asclock.pixmap, visible.pixmap, NormalGC,
+ 			27,6,3,11,posx[2], posy[0]);
+-	  
++	    }
+ 	  RedrawWindow(&visible);
+ 
+ 	}

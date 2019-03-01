@@ -1,0 +1,849 @@
+diff -ubBr -x '*~' -x '*.o' AfterStepClassic-1.1beta2.orig/afterstep/add_window.c AfterStepClassic-1.1beta2/afterstep/add_window.c
+--- AfterStepClassic-1.1beta2.orig/afterstep/add_window.c	1998-08-04 22:07:47.000000000 +0900
++++ AfterStepClassic-1.1beta2/afterstep/add_window.c	2005-09-09 18:28:13.000000000 +0900
+@@ -107,6 +107,8 @@
+   XrmValue rm_value;
+   unsigned long buttons;
+   XTextProperty text_prop;
++  char **list;
++  int num;
+ 
+   NeedToResizeToo = False;
+   /* allocate space for the afterstep window */
+@@ -127,7 +129,25 @@
+       return(NULL);
+     }
+    if ( XGetWMName(dpy, tmp_win->w, &text_prop) != 0 ) 
++     {
++       if (text_prop.value) {
++	 if (text_prop.encoding == XA_STRING)
+      tmp_win->name = (char *)text_prop.value ;
++	 else {
++	   list = NULL;
++	   if (XmbTextPropertyToTextList(dpy,&text_prop,&list,&num)
++	       == Success && num == 1 && list) {
++	     tmp_win->name = list[0];
++	     XFree(list);
++	     XFree(text_prop.value);
++	   } else {
++	     if (list) XFreeStringList(list);
++	     tmp_win->name = (char *)text_prop.value;
++	   }
++	 }
++       } else
++	 tmp_win->name = NoName;
++     }
+    else
+      tmp_win->name = NoName;
+ 
+@@ -263,16 +283,32 @@
+ 		  &JunkWidth, &JunkHeight,
+ 		  &JunkBW,  &JunkDepth) == 0)
+     {
++      if (tmp_win->name) XFree(tmp_win->name);
++      if (tmp_win->icon_name) XFree(tmp_win->icon_name);
+       free((char *)tmp_win);
+       XUngrabServer(dpy);
+       return(NULL);
+     }
+   XSetWindowBorderWidth (dpy, tmp_win->w,0);
+-  XGetWindowProperty (dpy, tmp_win->w, XA_WM_ICON_NAME, 0L, 200L, False,
+-		      XA_STRING, &actual_type, &actual_format, &nitems,
+-			  &bytesafter,(unsigned char **)&tmp_win->icon_name);
+-  if(tmp_win->icon_name==(char *)NULL)
++  XGetWindowProperty(dpy, tmp_win->w, XA_WM_ICON_NAME, 0L, 200L, False,
++		     AnyPropertyType, &text_prop.encoding, &text_prop.format,
++		     &text_prop.nitems, &bytesafter, &text_prop.value);
++  if(text_prop.value == NULL)
+     tmp_win->icon_name = tmp_win->name;
++  else if (text_prop.encoding == XA_STRING)
++    tmp_win->icon_name = (char *)text_prop.value;
++  else {
++    list = NULL;
++    if (XmbTextPropertyToTextList(dpy,&text_prop,&list,&num)
++	== Success && num == 1 && list) {
++      tmp_win->icon_name = list[0];
++      XFree(list);
++      XFree(text_prop.value);
++    } else {
++      if (list) XFreeStringList(list);
++      tmp_win->icon_name = (char *)text_prop.value;
++    }
++  }
+ 
+   tmp_win->flags &= ~ICONIFIED;
+   tmp_win->flags &= ~ICON_UNMAPPED;
+@@ -487,7 +523,24 @@
+     }
+   XChangeWindowAttributes (dpy, tmp_win->w, valuemask, &attributes);
+   if ( XGetWMName(dpy, tmp_win->w, &text_prop) != 0 ) 
++    {
++      if (text_prop.value) {
++	if (text_prop.encoding == XA_STRING)
+     tmp_win->name = (char *)text_prop.value ;
++	else {
++	  list = NULL;
++	  if (XmbTextPropertyToTextList(dpy,&text_prop,&list,&num)
++	      == Success && num == 1 && list) {
++	    tmp_win->name = list[0];
++	    XFree(list);
++	  } else {
++	    if (list) XFreeStringList(list);
++	    tmp_win->name = (char *)text_prop.value;
++	  }
++	}
++      } else
++	tmp_win->name = NoName;
++    }
+   else
+     tmp_win->name = NoName;
+   
+diff -ubBr -x '*~' -x '*.o' AfterStepClassic-1.1beta2.orig/afterstep/afterstep.c AfterStepClassic-1.1beta2/afterstep/afterstep.c
+--- AfterStepClassic-1.1beta2.orig/afterstep/afterstep.c	1998-09-06 07:45:27.000000000 +0900
++++ AfterStepClassic-1.1beta2/afterstep/afterstep.c	2005-09-09 20:19:20.000000000 +0900
+@@ -56,6 +56,7 @@
+ #include "misc.h"
+ #include "screen.h"
+ #include "parse.h"
++#include <locale.h>
+ #include <X11/Xproto.h>
+ #include <X11/Xatom.h>
+ /* need to get prototype for XrmUniqueQuark for XUniqueContext call */
+@@ -170,6 +171,9 @@
+     Bool single = False;
+     Bool option_error = FALSE;
+ 
++    if (setlocale(LC_ALL, "") == NULL)
++      afterstep_err("can't set locale", NULL, NULL, NULL);
++
+ #ifdef M4
+     /* Set the defaults for m4 processing */
+      
+@@ -421,7 +425,7 @@
+     if(debugging)
+       XSynchronize(dpy,1);
+ 
+-    Scr.SizeStringWidth = XTextWidth (Scr.StdFont.font,
++    Scr.SizeStringWidth = XmbTextEscapement(Scr.StdFont.fontset,
+ 				      " +8888 x +8888 ", 15);
+     attributes.border_pixel = Scr.StdColors.fore;
+     attributes.background_pixel = Scr.StdColors.back;
+@@ -707,7 +712,7 @@
+   Scr.Focus = NULL;
+   Scr.Ungrabbed = NULL;
+   
+-  Scr.StdFont.font = NULL;
++  Scr.StdFont.fontset = None;
+   Scr.StdFont.name = "fixed";
+   Scr.WindowFont.name = "fixed";
+ 
+diff -ubBr -x '*~' -x '*.o' AfterStepClassic-1.1beta2.orig/afterstep/afterstep.h AfterStepClassic-1.1beta2/afterstep/afterstep.h
+--- AfterStepClassic-1.1beta2.orig/afterstep/afterstep.h	1998-09-06 07:45:27.000000000 +0900
++++ AfterStepClassic-1.1beta2/afterstep/afterstep.h	2005-09-09 16:50:13.000000000 +0900
+@@ -118,7 +118,7 @@
+ typedef struct MyFont
+ {
+   char *name;			/* name of the font */
+-  XFontStruct *font;		/* font structure */
++  XFontSet fontset;		/* font set */
+   int height;			/* height of the font */
+   int y;			/* Y coordinate to draw characters */
+ } MyFont;
+diff -ubBr -x '*~' -x '*.o' AfterStepClassic-1.1beta2.orig/afterstep/borders.c AfterStepClassic-1.1beta2/afterstep/borders.c
+--- AfterStepClassic-1.1beta2.orig/afterstep/borders.c	1998-08-04 20:43:34.000000000 +0900
++++ AfterStepClassic-1.1beta2/afterstep/borders.c	2005-09-09 18:30:46.000000000 +0900
+@@ -294,8 +294,9 @@
+ 	}
+       if((t->icon_name != NULL)&&(Scr.PagerFont.height > 0))
+ 	{
+-	  NewFontAndColor(Scr.PagerFont.font->fid,TextColor,BackColor);
+-	  XDrawImageString(dpy, t->pager_view, Scr.FontGC, 2,Scr.PagerFont.y+2,
++	  NewFontAndColor(Scr.PagerFont, TextColor, BackColor);
++	  XmbDrawImageString(dpy, t->pager_view, Scr.PagerFont.fontset,
++			     Scr.FontGC, 2, Scr.PagerFont.y+2,
+ 			   t->icon_name, strlen(t->icon_name));
+ 	}
+     }
+@@ -562,7 +563,7 @@
+   
+   if(t->name != (char *)NULL)
+     {
+-      w=XTextWidth(Scr.WindowFont.font,t->name,strlen(t->name));
++      w = XmbTextEscapement(Scr.WindowFont.fontset, t->name, strlen(t->name));
+       if(w > t->title_width-12)
+ 	w = t->title_width-4;
+       if(w < 0)
+@@ -588,7 +589,7 @@
+     hor_off = (t->title_width - w)/2;
+   }
+   
+-  NewFontAndColor(Scr.WindowFont.font->fid,Forecolor, BackColor);
++  NewFontAndColor(Scr.WindowFont, Forecolor, BackColor);
+   			
+       
+   if(NewTitle)
+@@ -610,8 +611,8 @@
+       XDrawLine(dpy,t->title_w,ShadowGC,hor_off+w+1,0,hor_off+w+1,
+ 		t->title_height);
+       if(t->name != (char *)NULL)
+-	XDrawString (dpy, t->title_w,Scr.FontGC,hor_off, 
+-		Scr.WindowFont.y + 4,
++	XmbDrawString(dpy, t->title_w, Scr.WindowFont.fontset,
++		      Scr.FontGC, hor_off, Scr.WindowFont.y + 4,
+ 		     t->name, strlen(t->name));
+     }
+   else
+@@ -630,18 +631,18 @@
+ 	
+ 	if(t->name != (char *)NULL) {
+ 	    if (onoroff && (Textures.flags & GradientText)) {
+-		DrawTexturedText(dpy,t->title_w,Scr.WindowFont.font,hor_off,
+-				 4,Scr.TitleGradient, t->name, strlen(t->name));
++	        DrawTexturedText(dpy, t->title_w, &Scr.WindowFont, hor_off, 4,
++				 Scr.TitleGradient, t->name, strlen(t->name));
+ 	    } else {
+-		XDrawString (dpy, t->title_w,Scr.FontGC,hor_off,
+-			     Scr.WindowFont.y+ 4,
++		XmbDrawString(dpy, t->title_w, Scr.WindowFont.fontset,
++			      Scr.FontGC, hor_off, Scr.WindowFont.y+ 4,
+ 			     t->name, strlen(t->name));
+ 	    }
+ 	}	
+ #else
+       if(t->name != (char *)NULL)
+-	  XDrawString (dpy, t->title_w,Scr.FontGC,hor_off, 
+-		       Scr.WindowFont.y+ 4,
++	  XmbDrawString(dpy, t->title_w, Scr.WindowFont.fontset,
++			Scr.FontGC, hor_off, Scr.WindowFont.y+ 4,
+ 		       t->name, strlen(t->name));
+ 	RelieveWindow(t,t->title_w,0,0,t->title_width,t->title_height,
+ 		      ReliefGC, ShadowGC, BOTTOM_HILITE| RIGHT_HILITE);
+diff -ubBr -x '*~' -x '*.o' AfterStepClassic-1.1beta2.orig/afterstep/configure.c AfterStepClassic-1.1beta2/afterstep/configure.c
+--- AfterStepClassic-1.1beta2.orig/afterstep/configure.c	1998-08-04 20:43:34.000000000 +0900
++++ AfterStepClassic-1.1beta2/afterstep/configure.c	2005-09-09 19:16:58.000000000 +0900
+@@ -28,6 +28,7 @@
+ #include <unistd.h>
+ #include <pwd.h>
+ 
++#include <locale.h>
+ #include <X11/Xproto.h>
+ #include <X11/Xatom.h>
+ #ifdef M4
+@@ -412,6 +413,7 @@
+   char line[256],*tline;
+   char *Home;			/* the HOME environment variable */
+   int HomeLen;			/* length of Home */
++  char *Lang;
+ #ifdef ENABLE_TEXTURE
+   int icol, mcol, ucol, tcol, scol;	/* texture colors */
+   int defcol;  
+@@ -463,11 +465,31 @@
+     }
+   else
+     {
++      if ((Lang = setlocale(LC_CTYPE, NULL)) != NULL) {
++        home_file = safemalloc(HomeLen+strlen(Lang)+strlen(config_file)+4);
++        strcpy(home_file,Home);
++        strcat(home_file,"/");
++        strcat(home_file,config_file);
++        strcat(home_file,".");
++        strcat(home_file,Lang);
++        config_fd = fopen(home_file,"r");
++        if (config_fd == (FILE *)NULL) {
++          free(home_file);
++          home_file = safemalloc(HomeLen+strlen(config_file)+3);
++          strcpy(home_file,Home);
++          strcat(home_file,"/");
++          strcat(home_file,config_file);
++        }
++        else
++          fclose(config_fd);
++      }
++      else {
+       home_file = safemalloc(HomeLen+strlen(config_file)+3);
+       strcpy(home_file,Home);
+       strcat(home_file,"/");
+       strcat(home_file,config_file);
+     }
++    }
+   afterstep_file = home_file;
+   config_fd = fopen(home_file,"r");
+   if(config_fd == (FILE *)NULL)
+@@ -1286,6 +1308,10 @@
+ #endif
+ void GetColors(void)
+ {
++  XFontSetExtents *fset_extents;
++  char **ml;
++  int mc, i;
++  char *ds;
+   extern MyFont *IconFont;
+ 
+   if(have_the_colors) return;
+@@ -1353,36 +1379,56 @@
+     }
+ 
+   /* load the font */
+-  if ((Scr.StdFont.font = XLoadQueryFont(dpy, Scr.StdFont.name)) == NULL)
+-    {
++  ml = NULL;
++  Scr.StdFont.fontset = XCreateFontSet(dpy, Scr.StdFont.name, &ml, &mc, &ds);
++  if (Scr.StdFont.fontset == NULL) {
++    char* tmp = "-alias-*-medium-r-normal--12-*-*-*-*-*-*-*";
+       nofont(Scr.StdFont.name);
+-      if ((Scr.StdFont.font = XLoadQueryFont(dpy, "fixed")) == NULL)
++    fprintf(stderr,"Trying... \"%s\"\n", tmp);
++    if (ml) { XFreeStringList(ml); ml = NULL; }
++    Scr.StdFont.fontset = XCreateFontSet(dpy, tmp, &ml, &mc, &ds);
++    if (Scr.StdFont.fontset == NULL) {
++      nofont(tmp);
++      fprintf(stderr,"ERROR: no fontset available\n"); 
+ 	exit(1);
+     }
+-  Scr.StdFont.height = Scr.StdFont.font->ascent + Scr.StdFont.font->descent;
+-  Scr.StdFont.y = Scr.StdFont.font->ascent;
++  }
++
++  fset_extents = XExtentsOfFontSet(Scr.StdFont.fontset);
++  Scr.StdFont.height = fset_extents->max_logical_extent.height;
++  Scr.StdFont.y = - fset_extents->max_logical_extent.y;
+   Scr.EntryHeight = Scr.StdFont.height + HEIGHT_EXTRA +2;
++
++  if (ml) { XFreeStringList(ml); ml = NULL; }
+   /* load the window-title font */
+-  if ((Scr.WindowFont.font = XLoadQueryFont(dpy, Scr.WindowFont.name)) == NULL)
+-    {
++  Scr.WindowFont.fontset = XCreateFontSet(dpy,Scr.WindowFont.name,&ml,&mc,&ds);
++  if (Scr.WindowFont.name == NULL) {
++    char* tmp = "-alias-*-bold-r-normal--12-*-*-*-*-*-*-*";
+       nofont(Scr.WindowFont.name);
+-      if ((Scr.WindowFont.font = XLoadQueryFont(dpy, "fixed")) == NULL)
++    fprintf(stderr,"Trying... \"%s\"\n", tmp);
++    if (ml) { XFreeStringList(ml); ml = NULL; }
++    Scr.WindowFont.fontset = XCreateFontSet(dpy, tmp, &ml, &mc, &ds);
++    if (Scr.WindowFont.fontset == NULL) {
++      nofont(tmp);
++      fprintf(stderr,"ERROR: no fontset available\n"); 
+ 	exit(1);
+     }
++  }
+ 
+-  Scr.WindowFont.height=
+-    Scr.WindowFont.font->ascent+Scr.WindowFont.font->descent;
+-  Scr.WindowFont.y = Scr.WindowFont.font->ascent;
++  fset_extents = XExtentsOfFontSet(Scr.WindowFont.fontset);
++  Scr.WindowFont.height = fset_extents->max_logical_extent.height;
++  Scr.WindowFont.y = - fset_extents->max_logical_extent.y;
+ 
+   /* load the pager-label font */
+ #ifndef NO_PAGER
+   if(Scr.PagerFont.name != NULL)
+     {
+-      if ((Scr.PagerFont.font = XLoadQueryFont(dpy, Scr.PagerFont.name))!=NULL)
+-	{
+-	  Scr.PagerFont.height=
+-	    Scr.PagerFont.font->ascent+Scr.PagerFont.font->descent;
+-	  Scr.PagerFont.y = Scr.PagerFont.font->ascent;
++      if (ml) { XFreeStringList(ml); ml = NULL; }
++      Scr.PagerFont.fontset=XCreateFontSet(dpy,Scr.PagerFont.name,&ml,&mc,&ds);
++      if (Scr.PagerFont.fontset != NULL) {
++        fset_extents = XExtentsOfFontSet(Scr.PagerFont.fontset);
++        Scr.PagerFont.height = fset_extents->max_logical_extent.height;
++        Scr.PagerFont.y = - fset_extents->max_logical_extent.y;
+ 	}
+       else
+ 	nofont(Scr.PagerFont.name);
+@@ -1391,24 +1437,30 @@
+ 
+   IconFont = &Scr.StdFont;
+   if(Scr.IconFont.name != NULL) {
+-	  if ((Scr.IconFont.font = XLoadQueryFont(dpy, Scr.IconFont.name))!=NULL) {
+-		  Scr.IconFont.height=
+-			Scr.IconFont.font->ascent+Scr.IconFont.font->descent;
+-		  Scr.IconFont.y = Scr.IconFont.font->ascent;
+-		  IconFont = &Scr.IconFont;
+-	  } else
++    if (ml) { XFreeStringList(ml); ml = NULL; }
++    Scr.IconFont.fontset = XCreateFontSet(dpy,Scr.IconFont.name,&ml,&mc,&ds);
++    if (Scr.IconFont.fontset == NULL) {
++      char* tmp = "-alias-*-medium-r-normal--8-*-*-*-*-*-*-*";
+ 		nofont(Scr.IconFont.name);
+-  } else {
+-	  if ((Scr.IconFont.font = XLoadQueryFont(dpy, "fixed"))!=NULL) {
+-		  Scr.IconFont.height=
+-			Scr.IconFont.font->ascent+Scr.IconFont.font->descent;
+-		  Scr.IconFont.y = Scr.IconFont.font->ascent;
++      fprintf(stderr,"Trying... \"%s\"\n", tmp);
++      if (ml) { XFreeStringList(ml); ml = NULL; }
++      Scr.IconFont.fontset = XCreateFontSet(dpy, tmp, &ml, &mc, &ds);
++      if (Scr.IconFont.fontset == NULL) {
++	nofont(tmp);
++	fprintf(stderr,"ERROR: no fontset available\n");
++	exit(1);
++      }
++    }
++
++    fset_extents = XExtentsOfFontSet(Scr.IconFont.fontset);
++    Scr.IconFont.height = fset_extents->max_logical_extent.height;
++    Scr.IconFont.y = - fset_extents->max_logical_extent.y;
+ 		  IconFont = &Scr.IconFont;
+ 	  } else {		  
+ 		  nofont("fixed: that's bad...");
+ 		  exit(1);
+ 	  }
+-  }
++  if (ml) { XFreeStringList(ml); ml = NULL; }
+ 	
+ 
+   /* create graphics contexts */
+@@ -1834,7 +1886,7 @@
+     cur->x = 5;
+     if(cur->func==F_TITLE)
+ 	/* Title */
+-	cur->y_height = NS_TITLE_HEIGHT+1;
++	cur->y_height = Scr.EntryHeight;
+     else if(cur->func==F_NOP && *cur->item==0)
+       /* Separator */
+       cur->y_height = HEIGHT_SEPARATOR;
+@@ -2005,16 +2057,16 @@
+     tmp->val2_unit = Scr.MyDisplayHeight;
+ 
+      if(func==F_TITLE)
+-       width = XTextWidth(Scr.WindowFont.font, item, tmp->strlen);
++       width = XmbTextEscapement(Scr.WindowFont.fontset, item, tmp->strlen);
+      else
+-  	width = XTextWidth(Scr.StdFont.font, item, tmp->strlen);
++  	width = XmbTextEscapement(Scr.StdFont.fontset, item, tmp->strlen);
+   if(tmp->func == F_POPUP || tmp->hotkey)
+     width += 15;
+   if (width <= 0)
+     width = 1;
+   if (width > menu->width)
+     menu->width = width;
+-  width = XTextWidth(Scr.StdFont.font, item2, tmp->strlen2);
++  width = XmbTextEscapement(Scr.StdFont.fontset, item2, tmp->strlen2);
+   if (width < 0)
+     width = 0;
+   if (width > menu->width2)
+@@ -2289,13 +2341,12 @@
+   Scr.DrawGC = XCreateGC(dpy, Scr.Root, gcm, &gcv);
+ 
+   gcm = GCFunction|GCPlaneMask|GCGraphicsExposures|GCLineWidth|GCForeground|
+-    GCBackground|GCFont;
++    GCBackground;
+   gcv.line_width = 0;
+   gcv.function = GXcopy;
+   gcv.plane_mask = AllPlanes;
+   gcv.foreground = Scr.StdColors.fore;
+   gcv.background = Scr.StdColors.back;
+-  gcv.font =  Scr.StdFont.font->fid;
+   /*
+    * Prevent GraphicsExpose and NoExpose events.  We'd only get NoExpose
+    * events anyway;  they cause BadWindow errors from XGetWindowAttributes
+@@ -2312,12 +2363,12 @@
+   gcv.fill_style = FillStippled;
+   gcv.stipple = Scr.gray_bitmap;
+   gcm = GCFunction|GCPlaneMask|GCGraphicsExposures|GCLineWidth|GCForeground|
+-    GCBackground|GCFont|GCStipple|GCFillStyle;
++    GCBackground|GCStipple|GCFillStyle;
+ 
+   Scr.StippleGC = XCreateGC(dpy, Scr.Root, gcm, &gcv);
+ 
+   gcm = GCFunction|GCPlaneMask|GCGraphicsExposures|GCLineWidth|GCForeground|
+-    GCBackground|GCFont;
++    GCBackground;
+   Globalgcm = gcm;
+   Globalgcv = gcv;
+   gcv.foreground = Scr.HiRelief.fore;
+@@ -2346,11 +2397,11 @@
+       gcv.fill_style = FillStippled;
+       gcv.stipple = Scr.gray_bitmap;
+       gcm=GCFunction|GCPlaneMask|GCGraphicsExposures|GCLineWidth|GCForeground|
+-	GCBackground|GCFont|GCStipple|GCFillStyle;
++	GCBackground|GCStipple|GCFillStyle;
+       Scr.MenuStippleGC = XCreateGC(dpy, Scr.Root, gcm, &gcv);
+       
+       gcm=GCFunction|GCPlaneMask|GCGraphicsExposures|GCLineWidth|GCForeground|
+-	GCBackground|GCFont;
++	GCBackground;
+       gcv.fill_style = FillSolid;
+     }
+   else
+@@ -2385,8 +2436,7 @@
+   Scr.StickyShadowGC = XCreateGC(dpy, Scr.Root, gcm, &gcv);
+ 
+   gcv.foreground = Scr.HiColors.fore;
+-  gcv.font = Scr.IconFont.font->fid;
+-  Scr.IconGC = XCreateGC(dpy, Scr.Root, GCForeground|GCFont, &gcv);
++  Scr.IconGC = XCreateGC(dpy, Scr.Root, GCForeground, &gcv);
+ }
+ 
+ /***********************************************************************
+diff -ubBr -x '*~' -x '*.o' AfterStepClassic-1.1beta2.orig/afterstep/events.c AfterStepClassic-1.1beta2/afterstep/events.c
+--- AfterStepClassic-1.1beta2.orig/afterstep/events.c	2005-09-09 10:31:42.000000000 +0900
++++ AfterStepClassic-1.1beta2/afterstep/events.c	2005-09-09 15:36:26.000000000 +0900
+@@ -364,9 +364,10 @@
+ void HandlePropertyNotify()
+ {
+   char *prop = NULL;
+-  Atom actual = None;
+-  int actual_format;
+-  unsigned long nitems, bytesafter;
++  unsigned long bytesafter;
++  XTextProperty text_prop;
++  char **list;
++  int num;
+   
+   if ((!Tmp_win)||(XGetGeometry(dpy, Tmp_win->w, &JunkRoot, &JunkX, &JunkY,
+ 				&JunkWidth, &JunkHeight, &JunkBW, &JunkDepth) == 0))
+@@ -376,12 +377,30 @@
+     {
+     case XA_WM_NAME:
+       if (XGetWindowProperty (dpy, Tmp_win->w, Event.xproperty.atom, 0L, 
+-			      MAX_NAME_LEN, False, XA_STRING, &actual,
+-			      &actual_format, &nitems, &bytesafter,
+-			      (unsigned char **) &prop) != Success ||
+-	  actual == None)
+-	return;
+-      if (!prop) prop = NoName;
++			      MAX_NAME_LEN, False, AnyPropertyType,
++			      &text_prop.encoding, &text_prop.format,
++			      &text_prop.nitems, &bytesafter, &text_prop.value)
++	  != Success || text_prop.encoding == None) {
++	if (text_prop.value) XFree(text_prop.value);
++	return;
++      }
++      if (text_prop.value) {
++	if (text_prop.encoding == XA_STRING)
++	  prop = (char *)text_prop.value;
++	else {
++	  list = NULL;
++	  if (XmbTextPropertyToTextList(dpy,&text_prop,&list,&num)
++	      == Success && num == 1 && list) {
++	    prop = list[0];
++	    XFree(list);
++	    XFree(text_prop.value);
++	  } else {
++	    if (list) XFreeStringList(list);
++	    prop = (char *)text_prop.value;
++	  }
++	}
++      } else 
++	prop = NoName;
+       free_window_names (Tmp_win, True, False);
+       
+       Tmp_win->name = prop;
+@@ -407,13 +426,31 @@
+       break;
+       
+     case XA_WM_ICON_NAME:
+-      if (XGetWindowProperty (dpy, Tmp_win->w, Event.xproperty.atom, 0, 
+-			      MAX_ICON_NAME_LEN, False, XA_STRING, &actual,
+-			      &actual_format, &nitems, &bytesafter,
+-			      (unsigned char **) &prop) != Success ||
+-	  actual == None)
+-	return;
+-      if (!prop) prop = NoName;
++      if (XGetWindowProperty (dpy, Tmp_win->w, Event.xproperty.atom, 0L, 
++			      MAX_NAME_LEN, False, AnyPropertyType,
++			      &text_prop.encoding, &text_prop.format,
++			      &text_prop.nitems, &bytesafter, &text_prop.value)
++	  != Success || text_prop.encoding == None) {
++	if (text_prop.value) XFree(text_prop.value);
++	return;
++      }
++      if (text_prop.value) {
++	if (text_prop.encoding == XA_STRING)
++	  prop = (char *)text_prop.value;
++	else {
++	  list = NULL;
++	  if (XmbTextPropertyToTextList(dpy,&text_prop,&list,&num)
++	      == Success && num == 1 && list) {
++	    prop = list[0];
++	    XFree(list);
++	    XFree(text_prop.value);
++	  } else {
++	    if (list) XFreeStringList(list);
++	    prop = (char *)text_prop.value;
++	  }
++	}
++      } else
++	prop = NoName;
+       free_window_names (Tmp_win, False, True);
+       Tmp_win->icon_name = prop;
+       BroadcastName(M_ICON_NAME,Tmp_win->w,Tmp_win->frame,
+diff -ubBr -x '*~' -x '*.o' AfterStepClassic-1.1beta2.orig/afterstep/functions.c AfterStepClassic-1.1beta2/afterstep/functions.c
+--- AfterStepClassic-1.1beta2.orig/afterstep/functions.c	1998-08-04 22:07:48.000000000 +0900
++++ AfterStepClassic-1.1beta2/afterstep/functions.c	2005-09-09 17:08:37.000000000 +0900
+@@ -489,8 +489,9 @@
+       XClearWindow(dpy,tmp_win->pager_view);
+       if((tmp_win->icon_name != NULL)&&(Scr.PagerFont.height > 0))
+ 	{
+-	  NewFontAndColor(Scr.PagerFont.font->fid,TextColor,BackColor);
+-	  XDrawString (dpy, tmp_win->pager_view,Scr.FontGC,2,Scr.PagerFont.y+2,
++	  NewFontAndColor(Scr.PagerFont, TextColor, BackColor);
++	  XmbDrawString(dpy, tmp_win->pager_view, Scr.PagerFont.fontset,
++			Scr.FontGC, 2, Scr.PagerFont.y+2,
+ 		       tmp_win->icon_name, strlen(tmp_win->icon_name));
+ 	}
+ #endif
+diff -ubBr -x '*~' -x '*.o' AfterStepClassic-1.1beta2.orig/afterstep/icons.c AfterStepClassic-1.1beta2/afterstep/icons.c
+--- AfterStepClassic-1.1beta2.orig/afterstep/icons.c	1998-08-04 22:07:48.000000000 +0900
++++ AfterStepClassic-1.1beta2/afterstep/icons.c	2005-09-09 19:49:03.000000000 +0900
+@@ -204,38 +204,20 @@
+ 		     Tmp_win->icon_p_width-2,titleH+6);
+       XSetForeground(dpy, Scr.IconGC, Scr.HiColors.fore);	  
+       if (Tmp_win->icon_name==NULL) {
+-	if (Tmp_win->name!=NULL) {
+-	  cnt = strlen(Tmp_win->name);
+-	  textX = XTextWidth(Scr.IconFont.font,Tmp_win->name, cnt);
+-	  if (textX < Tmp_win->icon_p_width) {
+-	    textX = (Tmp_win->icon_p_width-textX)/2;
+ 	    text = Tmp_win->name;
+ 	  } else {
+-	    int i;
+-	    /* try to find approx. characters that fit here */
+-	    i=(Tmp_win->icon_p_width*cnt)/textX;
+-	    textX = 1;
+-	    text = &(Tmp_win->name[cnt-i]);
+-	    cnt = i;
+-	  }
+-	}
+-      } else {
+-	cnt = strlen(Tmp_win->icon_name);
+-	textX = XTextWidth(Scr.IconFont.font,Tmp_win->icon_name, cnt);
+-	if (textX < Tmp_win->icon_p_width) {
+-	  textX = (Tmp_win->icon_p_width-textX)/2;
+ 	  text = Tmp_win->icon_name;
+-	} else {
+-	  int i;
+-	  /* try to find approx. characters that fit here */
+-	  i=(Tmp_win->icon_p_width*cnt)/textX;
+-	  textX = 1;
+-	  text = &(Tmp_win->icon_name[cnt-i]);
+-	  cnt = i;
+ 	}
++      if (text != NULL) {
++	cnt = strlen(text);
++	textX = XmbTextEscapement(Scr.IconFont.fontset, text, cnt);
++	if (textX > Tmp_win->icon_p_width - 4)
++	  textX = Tmp_win->icon_p_width - 4 - textX;
++	else
++	  textX = (Tmp_win->icon_p_width-textX)/2;
++	XmbDrawString(dpy, Tmp_win->icon_pixmap_w, Scr.IconFont.fontset,
++		      Scr.IconGC, textX, Scr.IconFont.y, text, cnt);
+       }
+-      XDrawString(dpy, Tmp_win->icon_pixmap_w, Scr.IconGC, textX,
+-		  Scr.IconFont.font->ascent+1,  text, cnt);	  
+     }
+ }
+ 
+diff -ubBr -x '*~' -x '*.o' AfterStepClassic-1.1beta2.orig/afterstep/menus.c AfterStepClassic-1.1beta2/afterstep/menus.c
+--- AfterStepClassic-1.1beta2.orig/afterstep/menus.c	1998-08-04 22:07:48.000000000 +0900
++++ AfterStepClassic-1.1beta2/afterstep/menus.c	2005-09-09 16:42:30.000000000 +0900
+@@ -142,7 +142,7 @@
+ 	}
+       if(ActiveItem) {
+ 	  if (!(Scr.flags & MenusHigh))
+-            y = MenuY - 10 + ((ActiveItem->item_num)*(ActiveItem->y_height));
++	    y = MenuY + ((ActiveItem->item_num)*(ActiveItem->y_height))-(Scr.EntryHeight & 1) - (Scr.EntryHeight >>1);
+ 	  else
+             y = MenuY + (Scr.EntryHeight >>1);
+ 
+@@ -411,18 +411,38 @@
+       XChangeGC(dpy,Scr.ScratchGC1,Globalgcm,&Globalgcv);
+       currentGC = Scr.ScratchGC1;      
+   }
++  if (mi->item_num == 0) {  /* when paintig first entry(menu title) */
++    text_y = Scr.WindowFont.y + 4;
+   if(*mi->item)
+-    XDrawString(dpy, mr->w, currentGC,mi->x,text_y, mi->item, mi->strlen);
++      XmbDrawString(dpy, mr->w, Scr.WindowFont.fontset,
++		    currentGC, mi->x, text_y, mi->item, mi->strlen);
+   if(mi->strlen2>0)
+-    XDrawString(dpy, mr->w, currentGC,mi->x2,text_y, mi->item2,mi->strlen2);
++      XmbDrawString(dpy, mr->w, Scr.WindowFont.fontset,
++		    currentGC, mi->x2, text_y, mi->item2, mi->strlen2);
+ 
+   d=(Scr.EntryHeight-7)/2;
+   if(mi->func != F_POPUP && mi->hotkey != 0) {
+ 	hk[0]= mi->hotkey;
+-	XDrawString(dpy, mr->w, currentGC,
+-		mr->width-d-4- XTextWidth(Scr.StdFont.font, hk, 1)/2,
++      XmbDrawString(dpy, mr->w, Scr.WindowFont.fontset, currentGC,
++		  mr->width-d-4- XmbTextEscapement(Scr.StdFont.fontset,hk,1)/2,
+ 		text_y, hk, 1);
+   }
++  } else { 
++    if(*mi->item)
++      XmbDrawString(dpy, mr->w, Scr.StdFont.fontset,
++		    currentGC, mi->x, text_y, mi->item, mi->strlen);
++    if(mi->strlen2>0)
++      XmbDrawString(dpy, mr->w, Scr.StdFont.fontset,
++		    currentGC, mi->x2, text_y, mi->item2, mi->strlen2);
++
++    d=(Scr.EntryHeight-7)/2;
++    if(mi->func != F_POPUP && mi->hotkey != 0) {
++      hk[0]= mi->hotkey;
++      XmbDrawString(dpy, mr->w, Scr.StdFont.fontset, currentGC,
++		  mr->width-d-4- XmbTextEscapement(Scr.StdFont.fontset,hk,1)/2,
++		  text_y, hk, 1);
++    }
++  }
+   d=(Scr.EntryHeight-7)/2;
+   if(mi->func == F_POPUP)
+       DrawTrianglePattern(mr->w, ShadowGC, ReliefGC, ShadowGC,mr->width-d-8,
+@@ -447,8 +467,8 @@
+  ****************************************************************************/
+ void  DrawUnderline(Window w, GC gc, int x, int y, char *txt, int posn) 
+ {
+-  int off1 = XTextWidth(Scr.StdFont.font, txt, posn);
+-  int off2 = XTextWidth(Scr.StdFont.font, txt, posn + 1) - 1;
++  int off1 = XmbTextEscapement(Scr.StdFont.fontset, txt, posn);
++  int off2 = XmbTextEscapement(Scr.StdFont.fontset, txt, posn + 1) - 1;
+   
+   XDrawLine(dpy, w, gc, x + off1, y + 2, x + off2, y + 2);
+ }
+diff -ubBr -x '*~' -x '*.o' AfterStepClassic-1.1beta2.orig/afterstep/misc.h AfterStepClassic-1.1beta2/afterstep/misc.h
+--- AfterStepClassic-1.1beta2.orig/afterstep/misc.h	1998-08-04 22:07:48.000000000 +0900
++++ AfterStepClassic-1.1beta2/afterstep/misc.h	2005-09-09 17:43:17.000000000 +0900
+@@ -100,10 +100,9 @@
+ 
+ /* some fancy font handling stuff */
+ #define NewFontAndColor(newfont,color,backcolor) {\
+-   Globalgcv.font = newfont;\
+    Globalgcv.foreground = color;\
+    Globalgcv.background = backcolor;\
+-   Globalgcm = GCFont | GCForeground | GCBackground; \
++   Globalgcm = GCForeground | GCBackground; \
+    XChangeGC(dpy,Scr.FontGC,Globalgcm,&Globalgcv); \
+ }
+ 
+diff -ubBr -x '*~' -x '*.o' AfterStepClassic-1.1beta2.orig/afterstep/move.c AfterStepClassic-1.1beta2/afterstep/move.c
+--- AfterStepClassic-1.1beta2.orig/afterstep/move.c	1998-08-04 20:43:34.000000000 +0900
++++ AfterStepClassic-1.1beta2/afterstep/move.c	2005-09-09 16:46:25.000000000 +0900
+@@ -316,10 +316,9 @@
+     }
+ 
+   offset = (Scr.SizeStringWidth + SIZE_HINDENT*2
+-	    - XTextWidth(Scr.StdFont.font,str,strlen(str)))/2;
+-  XDrawString (dpy, Scr.SizeWindow, Scr.NormalGC,
+-	       offset,
+-	       Scr.StdFont.font->ascent + SIZE_VINDENT,
++	    - XmbTextEscapement(Scr.StdFont.fontset,str,strlen(str)))/2;
++  XmbDrawString(dpy, Scr.SizeWindow, Scr.StdFont.fontset, Scr.NormalGC,
++		offset, Scr.StdFont.y + SIZE_VINDENT,
+ 	       str, strlen(str));
+ }
+ 
+diff -ubBr -x '*~' -x '*.o' AfterStepClassic-1.1beta2.orig/afterstep/pager.c AfterStepClassic-1.1beta2/afterstep/pager.c
+--- AfterStepClassic-1.1beta2.orig/afterstep/pager.c	1998-09-06 07:45:28.000000000 +0900
++++ AfterStepClassic-1.1beta2/afterstep/pager.c	2005-09-09 17:08:10.000000000 +0900
+@@ -69,17 +69,17 @@
+ 	    {
+ 	      TextColor = Scr.HiColors.fore;
+ 	      BackColor = Scr.HiColors.back;
+-	      NewFontAndColor(Scr.PagerFont.font->fid,TextColor,BackColor);
++	      NewFontAndColor(Scr.PagerFont, TextColor, BackColor);
+ 	      flush_expose(Scr.Hilite->pager_view);
+-	      XDrawImageString (dpy, Scr.Hilite->pager_view, Scr.FontGC,
+-			   2,Scr.PagerFont.y+2, 
++	      XmbDrawImageString (dpy, Scr.Hilite->pager_view, Scr.PagerFont.fontset,
++				  Scr.FontGC, 2, Scr.PagerFont.y+2,
+ 			   Scr.Hilite->icon_name, strlen(Scr.Hilite->icon_name));
+ 	    }
+ 	}
+ 
+       TextColor = Scr.StdColors.fore;
+       BackColor = Scr.StdColors.back;
+-      NewFontAndColor(Scr.PagerFont.font->fid,TextColor,BackColor);
++      NewFontAndColor(Scr.PagerFont, TextColor, BackColor);
+ 	
+ 	
+       for (t = Scr.ASRoot.next; t != NULL; t = t->next)
+@@ -92,8 +92,8 @@
+ 		 (t->icon_name != NULL))
+ 		{
+ 		  flush_expose(t->pager_view);		  
+-		  XDrawImageString (dpy, t->pager_view, Scr.FontGC,
+-				    2,Scr.PagerFont.y+2, 
++		  XmbDrawImageString(dpy, t->pager_view, Scr.PagerFont.fontset,
++				     Scr.FontGC, 2, Scr.PagerFont.y, 
+ 				    t->icon_name, strlen(t->icon_name));
+ 		}
+ 	    }
+diff -ubBr -x '*~' -x '*.o' AfterStepClassic-1.1beta2.orig/afterstep/resize.c AfterStepClassic-1.1beta2/afterstep/resize.c
+--- AfterStepClassic-1.1beta2.orig/afterstep/resize.c	1998-08-04 20:43:34.000000000 +0900
++++ AfterStepClassic-1.1beta2/afterstep/resize.c	2005-09-09 16:46:13.000000000 +0900
+@@ -428,7 +428,7 @@
+   
+   (void) sprintf (str, " %4d x %-4d ", dwidth, dheight);
+   offset = (Scr.SizeStringWidth + SIZE_HINDENT*2
+-    - XTextWidth(Scr.StdFont.font,str,strlen(str)))/2;  
++    - XmbTextEscapement(Scr.StdFont.fontset,str,strlen(str)))/2;  
+   if(Init)
+     {
+       XClearWindow(dpy,Scr.SizeWindow);
+@@ -444,8 +444,8 @@
+ 		 Scr.StdFont.height,False);
+     }
+ 
+-  XDrawString (dpy, Scr.SizeWindow, Scr.NormalGC,
+-	       offset, Scr.StdFont.font->ascent + SIZE_VINDENT, str, 13);
++  XmbDrawString(dpy, Scr.SizeWindow, Scr.StdFont.fontset, Scr.NormalGC,
++		offset, Scr.StdFont.y, str, 13);
+ 
+ }
+ 
+diff -ubBr -x '*~' -x '*.o' AfterStepClassic-1.1beta2.orig/afterstep/stepgfx.c AfterStepClassic-1.1beta2/afterstep/stepgfx.c
+--- AfterStepClassic-1.1beta2.orig/afterstep/stepgfx.c	1998-08-04 22:07:48.000000000 +0900
++++ AfterStepClassic-1.1beta2/afterstep/stepgfx.c	2005-09-09 20:30:43.000000000 +0900
+@@ -593,13 +593,13 @@
+  * Draws text with a texture
+  * 
+  * d - target drawable
+- * font - font to draw text
++ * font - font struct to draw text
+  * x,y - position of text
+  * gradient - texture pixmap. size must be at least as large as text
+  * text - text to draw
+  * chars - chars in text
+  ************************************************************************/
+-void DrawTexturedText(Display *dpy, Drawable d, XFontStruct *font,
++void DrawTexturedText(Display *dpy, Drawable d, MyFont *font,
+ 		      int x, int y, Pixmap gradient, char *text, int chars)
+ 		      
+ {
+@@ -609,16 +609,15 @@
+     XGCValues gcv;
+     
+     /* make the mask pixmap */
+-    w = XTextWidth(font,text,chars);
+-    h = font->ascent+font->descent;
++    w = XmbTextEscapement(font->fontset,text,chars);
++    h = font->height;
+     mask=XCreatePixmap(dpy,DefaultRootWindow(dpy),w+1,h+1,1);
+ 	gcv.foreground = 0;
+ 	gcv.function = GXcopy;
+-    gcv.font = font->fid;	
+-	gc = XCreateGC(dpy,mask,GCFunction|GCForeground|GCFont,&gcv);
++	gc = XCreateGC(dpy,mask,GCFunction|GCForeground,&gcv);
+     XFillRectangle(dpy,mask,gc,0,0,w,h);
+ 	XSetForeground(dpy,gc,1);
+-    XDrawString(dpy,mask,gc,0,font->ascent,text,chars);
++    XmbDrawString(dpy,mask,font->fontset,gc,0,font->y,text,chars);
+ 	XFreeGC(dpy,gc);
+ 	/* draw the texture */
+ 	gcv.function=GXcopy;
+diff -ubBr -x '*~' -x '*.o' AfterStepClassic-1.1beta2.orig/afterstep/stepgfx.h AfterStepClassic-1.1beta2/afterstep/stepgfx.h
+--- AfterStepClassic-1.1beta2.orig/afterstep/stepgfx.h	1998-08-04 20:43:34.000000000 +0900
++++ AfterStepClassic-1.1beta2/afterstep/stepgfx.h	2005-09-09 16:49:11.000000000 +0900
+@@ -24,7 +24,7 @@
+ extern int DrawDegradeRelief(Display *dpy, Drawable d, int x, int y, int w, 
+ 			     int h, int from[3], int to[3], int relief,
+ 			     int maxcols);
+-extern void DrawTexturedText(Display *dpy, Drawable d, XFontStruct *font,
++extern void DrawTexturedText(Display *dpy, Drawable d, MyFont *font,
+ 		      int x, int y, Pixmap gradient, char *text, int chars);
+ 
+ extern int MakeShadowColors(Display *dpy, int from[3], int to[3],
