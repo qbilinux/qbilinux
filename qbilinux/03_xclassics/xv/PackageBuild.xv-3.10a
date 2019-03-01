@@ -27,94 +27,7 @@ SRC_DIR="/home/archives/source/"
 source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
-    cd ${S[$i]}
-    for patch in $patchfiles ; do
-	patch -p1 < $W/$patch
-    done
-  patch -Np0 -i $W/xv-3.10a-30.patches/grabpatch
-  patch -Np2 -i $W/xv-3.10a-30.patches/mp-tiff-patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/longname.patch
-  patch -Np0 -i $W/xv-3.10a-30.patches/deepcolor.patch
-  patch -Np0 -i $W/xv-3.10a-30.patches/gifpatch
-  patch -Np0 -i $W/xv-3.10a-30.patches/xv-3.10a-gifil.patch
-  patch -Np0 -i $W/xv-3.10a-30.patches/gssafer.patch
-  patch -Np0 -i $W/xv-3.10a-30.patches/xv-3.10a.JPEG-patch
-  patch -Np0 -i $W/xv-3.10a-30.patches/xv-3.10a.TIFF-patch
-  patch -Np1 -i $B/xvpng.diff
-  patch -Np0 -i $W/xv-3.10a-30.patches/xvpng-1.2d-fix3.patch
-  patch -Np0 -i $W/xv-3.10a-30.patches/pdf.patch
-  patch -Np0 -i $W/xv-3.10a-30.patches/windowid.patch
-  patch -Np0 -i $W/xv-3.10a-30.patches/bmp32.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-bmp16.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-linux.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-glibc.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-ansi.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv_smooth.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-xvsmooth_fix.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-jpegparams.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/browse-remember.patch
-  patch -Np0 -i $W/xv-3.10a-30.patches/xv-3.10a-patch-for-resizing.txt
-  patch -Np1 -i $B/xv-jp-extension/Patch.xv310a-ext-5.3.3
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-jp_rej.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-jpextconfig.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-zlib.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-bzlib.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-unrar.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-rpm2cpio.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-xvvd_passwd.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-jp_macbin.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-jp_xvpcd.patch
-  patch -Np0 -i $W/xv-3.10a-30.patches/xv-3.10a-timtoppm.patch
-  patch -Np0 -i $W/xv-3.10a-30.patches/xv-3.10a-xvpic-optbug.patch
-  patch -Np0 -i $W/xv-3.10a-30.patches/xv-3.10a-towns-tiff.patch
-  patch -d tiff -Np1 -i $B/xv-3.10a-towns-tiff-patch/libtiff-v3.3-towns-tiff-patch
-  patch -Np1 -i $B/XV+FLmask.v2.1/XV+FLmask.v2.1.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-Makefile.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-fl_make.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-fl_refine.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-sysconfdir.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-xvexecpath.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-noblink.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-timer.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-addwait.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-zeroquit.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-jp_qs.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-locale-linux.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-jp_mb.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-jp_star.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-jp_utf8.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-text_key.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-text_butt.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-sh_quote-zlib.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-directory.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-menubutton.patch
-  patch -Np0 -i $W/xv-3.10a-30.patches/xv-3.10a-keepinside.patch
-  patch -Np0 -i $W/xv-3.10a-30.patches/xv-3.10a-formatstr.patch
-  patch -Np0 -i $W/xv-3.10a-30.patches/xv-3.10a-dirwkey.patch
-  patch -Np0 -i $W/xv-3.10a-30.patches/xv-3.10a-printkey.patch
-  patch -Np0 -i $W/xv-3.10a-30.patches/xv-3.10a-forcequit.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-xvpopup_accel.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-zerolength.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-keyzoom.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-wheelmouse.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-xvzoom.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-resolution.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-staytoppdir.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-showlongname.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-xvbrowse_pdir.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-selall.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-rotatesel.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-wresize.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-wedge.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-minfill.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-shiftspace.patch
-  patch -Np0 -i $W/xv-3.10a-30.patches/xv-3.10a-forcermode.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-xvscrl_button2.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-raisetext.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-xvtext_vfn.patch
-  patch -Np1 -i $W/xv-3.10a-30.patches/xv-3.10a-dither16.patch
-  patch -Np1 -i $W/xv-3.10a-Xsun.patch
-  patch -Np1 -i $W/xv-3.10a-grab.patch
+    cd ${S[$1]}
 }
 
 do_config() {
@@ -122,23 +35,111 @@ do_config() {
 
     cp -a ${S[$1]} ${B[$1]}
     cd ${B[$1]}
-if [ $arch = "armv7l" -o $arch = "aarch64" ]; then
-  patch -Np1 -i $W/xv-3.10a-arm-patch
-else
-  patch -Np1 -i $W/xv-3.10a-plamo-patch
-fi
-  patch -Np1 -i $W/xvimage.c-cast.patch
-  patch -Np0 -i $W/patch-aa
-  patch -Np0 -i $W/patch-ab
-  patch -Np0 -i $W/patch-ac
-  cp -p Makefile.std Makefile.std.orig
-  sed '/^BINDIR =/s@/local@@g' Makefile.std.orig \
-      | sed '/^MANDIR =/s@local@share@g' \
-      | sed '/^LIBDIR =/s@local/lib@share/doc/xv@g' \
-      | sed '/^.*DIR =/s@lib@lib64@g' \
-      | sed '/^LIBS =/s@X11R6/lib@lib64@g' \
-      | sed '/cp /s@[[:graph:]]*$@$(DESTDIR)&@g' > Makefile.std
-  cat <<- "EOF" | patch Makefile.std
+    tar xpzf $W/xv-3.10a-png-1.2d.tar.gz
+    tar xpzf $W/xv310a-jp-extension-rev5.3.3.tar.gz
+    tar xpzf $W/xv-3.10a-towns-tiff-patch.tar.gz
+    tar xpzf $W/XV+FLmask.v2.1.tar.gz
+    patch -Np0 -i $W/source/xv-3.10a-30.patches/grabpatch
+    patch -Np2 -i $W/source/xv-3.10a-30.patches/mp-tiff-patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/longname.patch
+    patch -Np0 -i $W/source/xv-3.10a-30.patches/deepcolor.patch
+    patch -Np0 -i $W/source/xv-3.10a-30.patches/gifpatch
+    patch -Np0 -i $W/source/xv-3.10a-30.patches/xv-3.10a-gifil.patch
+    patch -Np0 -i $W/source/xv-3.10a-30.patches/gssafer.patch
+    patch -Np0 -i $W/source/xv-3.10a-30.patches/xv-3.10a.JPEG-patch
+    patch -Np0 -i $W/source/xv-3.10a-30.patches/xv-3.10a.TIFF-patch
+    patch -Np1 -i $W/source/xvpng.diff
+    patch -Np0 -i $W/source/xv-3.10a-30.patches/xvpng-1.2d-fix3.patch
+    patch -Np0 -i $W/source/xv-3.10a-30.patches/pdf.patch
+    patch -Np0 -i $W/source/xv-3.10a-30.patches/windowid.patch
+    patch -Np0 -i $W/source/xv-3.10a-30.patches/bmp32.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-bmp16.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-linux.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-glibc.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-ansi.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv_smooth.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-xvsmooth_fix.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-jpegparams.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/browse-remember.patch
+    patch -Np0 -i $W/source/xv-3.10a-30.patches/xv-3.10a-patch-for-resizing.txt
+    patch -Np1 -i $W/source/xv-jp-extension/Patch.xv310a-ext-5.3.3
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-jp_rej.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-jpextconfig.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-zlib.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-bzlib.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-unrar.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-rpm2cpio.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-xvvd_passwd.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-jp_macbin.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-jp_xvpcd.patch
+    patch -Np0 -i $W/source/xv-3.10a-30.patches/xv-3.10a-timtoppm.patch
+    patch -Np0 -i $W/source/xv-3.10a-30.patches/xv-3.10a-xvpic-optbug.patch
+    patch -Np0 -i $W/source/xv-3.10a-30.patches/xv-3.10a-towns-tiff.patch
+    patch -d tiff -Np1 -i $W/source/xv-3.10a-towns-tiff-patch/libtiff-v3.3-towns-tiff-patch
+    patch -Np1 -i $W/source/XV+FLmask.v2.1/XV+FLmask.v2.1.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-Makefile.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-fl_make.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-fl_refine.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-sysconfdir.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-xvexecpath.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-noblink.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-timer.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-addwait.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-zeroquit.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-jp_qs.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-locale-linux.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-jp_mb.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-jp_star.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-jp_utf8.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-text_key.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-text_butt.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-sh_quote-zlib.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-directory.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-menubutton.patch
+    patch -Np0 -i $W/source/xv-3.10a-30.patches/xv-3.10a-keepinside.patch
+    patch -Np0 -i $W/source/xv-3.10a-30.patches/xv-3.10a-formatstr.patch
+    patch -Np0 -i $W/source/xv-3.10a-30.patches/xv-3.10a-dirwkey.patch
+    patch -Np0 -i $W/source/xv-3.10a-30.patches/xv-3.10a-printkey.patch
+    patch -Np0 -i $W/source/xv-3.10a-30.patches/xv-3.10a-forcequit.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-xvpopup_accel.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-zerolength.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-keyzoom.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-wheelmouse.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-xvzoom.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-resolution.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-staytoppdir.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-showlongname.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-xvbrowse_pdir.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-selall.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-rotatesel.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-wresize.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-wedge.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-minfill.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-shiftspace.patch
+    patch -Np0 -i $W/source/xv-3.10a-30.patches/xv-3.10a-forcermode.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-xvscrl_button2.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-raisetext.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-xvtext_vfn.patch
+    patch -Np1 -i $W/source/xv-3.10a-30.patches/xv-3.10a-dither16.patch
+    patch -Np1 -i $W/xv-3.10a-Xsun.patch
+    patch -Np1 -i $W/xv-3.10a-grab.patch
+    if [ $arch = "armv7l" -o $arch = "aarch64" ]; then
+	patch -Np1 -i $W/xv-3.10a-arm-patch
+    else
+	patch -Np1 -i $W/xv-3.10a-plamo-patch
+    fi
+    patch -Np1 -i $W/xvimage.c-cast.patch
+    patch -Np0 -i $W/patch-aa
+    patch -Np0 -i $W/patch-ab
+    patch -Np0 -i $W/patch-ac
+    cp -p Makefile.std Makefile.std.orig
+    sed '/^BINDIR =/s@/local@@g' Makefile.std.orig \
+	| sed '/^MANDIR =/s@local@share@g' \
+	| sed '/^LIBDIR =/s@local/lib@share/doc/xv@g' \
+	| sed '/^.*DIR =/s@lib@lib64@g' \
+	| sed '/^LIBS =/s@X11R6/lib@lib64@g' \
+	| sed '/cp /s@[[:graph:]]*$@$(DESTDIR)&@g' > Makefile.std
+    cat <<- "EOF" | patch Makefile.std
 	34a35
 	> SYSCONFDIR = /etc
 	232a234
@@ -151,10 +152,8 @@ fi
 
 do_build() {
     cd ${B[$1]}
-    if [ -f Makefile ] ; then
-	export LDFLAGS='-Wl,--as-needed'
-	make -f Makefile.std
-    fi
+    export LDFLAGS='-Wl,--as-needed'
+    make -f Makefile.std
     if [ $? != 0 ]; then
 	echo "make error. $0 script stop"
 	exit 255
@@ -163,10 +162,8 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}
-    if [ -f Makefile ] ; then
-	export LDFLAGS='-Wl,--as-needed'
-	make -f Makefile.std install DESTDIR=$P
-    fi
+    export LDFLAGS='-Wl,--as-needed'
+    make -f Makefile.std install DESTDIR=$P
     if [ $? != 0 ]; then
 	echo "make install error. $0 script stop"
 	exit 255
@@ -174,12 +171,13 @@ do_install() {
 }
 
 do_package() {
-  install $W/patch-aa $docdir/$src
-  install $W/patch-ab $docdir/$src
-  install $W/patch-ac $docdir/$src
-  mv $docdir/xv $docdir/$src/lib
-  mv $docdir/$src/{lib,$myname.gz} $C
-  mv $C/{lib,$myname.gz} $docdir/$src
+    install $W/patch-aa $docdir/$src
+    install $W/patch-ab $docdir/$src
+    install $W/patch-ac $docdir/$src
+    mv $docdir/xv $docdir/$src/lib
+    mv $docdir/$src/{lib,$myname.gz} $C
+    mv $C/{lib,$myname.gz} $docdir/$src
+
     for i in $pkgbase ; do
         cd $P
         /sbin/makepkg $W/$pkg.$compress <<EOF
