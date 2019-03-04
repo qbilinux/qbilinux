@@ -20,18 +20,18 @@ SRC_DIR="/home/archives/source/"
 source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
-    cd ${S[$i]}
-    gunzip -c $W/kterm-6.2.0-16colors.diff.gz | patch -Np1 -i -
-    gunzip -c $W/kterm-6.2.0-secure.diff.gz | patch -Np1 -i -
-    gunzip -c $W/kterm-6.2.0-pje.diff.gz | patch -Np1 -i -
-    gunzip -c $W/kterm-6.2.0-glibc.pje.patch.gz | patch -Np0 -i -
-    gunzip -c $W/kterm-6.2.0-glibc2.1-1.patch.gz | patch -Np1 -i -
-    gunzip -c $W/kterm-6.2.0-glibc2.1-2.patch.gz | patch -Np1 -i -
-    gunzip -c $W/kterm-6.2.0-ext02.patch.gz | patch -Np1 -i -
-    bunzip2 -c $W/kterm-6.2.0-utmp98.patch.bz2 | patch -Np1 -i -
-    gunzip -c $W/kterm-6.2.0-rightbar.patch.gz | patch -Np1 -i -
-    gunzip -c $W/kterm-6.2.0-plamo.patch.gz | patch -Np1 -i -
-    gunzip -c $W/kterm-6.2.0-malloc.patch.gz | patch -Np0 -i -
+    cd ${S[$1]}
+    gunzip -c $W/source/kterm-6.2.0-16colors.diff.gz | patch -Np1 -i -
+    gunzip -c $W/source/kterm-6.2.0-secure.diff.gz | patch -Np1 -i -
+    gunzip -c $W/source/kterm-6.2.0-pje.diff.gz | patch -Np1 -i -
+    gunzip -c $W/source/kterm-6.2.0-glibc.pje.patch.gz | patch -Np0 -i -
+    gunzip -c $W/source/kterm-6.2.0-glibc2.1-1.patch.gz | patch -Np1 -i -
+    gunzip -c $W/source/kterm-6.2.0-glibc2.1-2.patch.gz | patch -Np1 -i -
+    gunzip -c $W/source/kterm-6.2.0-ext02.patch.gz | patch -Np1 -i -
+    bunzip2 -c $W/source/kterm-6.2.0-utmp98.patch.bz2 | patch -Np1 -i -
+    gunzip -c $W/source/kterm-6.2.0-rightbar.patch.gz | patch -Np1 -i -
+    gunzip -c $W/source/kterm-6.2.0-plamo.patch.gz | patch -Np1 -i -
+    gunzip -c $W/source/kterm-6.2.0-malloc.patch.gz | patch -Np0 -i -
     cp -p kterm.h kterm.h.orig
     chmod u+w kterm.h
     for patch in $patchfiles ; do
@@ -86,7 +86,7 @@ do_install() {
 
     jappdefdir=$P/usr/${libdir}/X11/ja_JP.eucJP/app-defaults
     install -d $jappdefdir
-    install -m 444 $W/app-defaults/KTerm-ja.ad $jappdefdir/KTerm
+    install -m 444 $W/source/app-defaults/KTerm-ja.ad $jappdefdir/KTerm
     jmandir=$P/usr/share/man/ja_JP.eucJP
     install -d $jmandir/man1
     nkf -e $B/kterm.jman > $jmandir/man1/kterm.1x
