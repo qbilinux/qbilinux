@@ -98,7 +98,7 @@ url=%s
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=T1
+build=1
 src=%s-${vers}
 OPT_CONFIG=''
 DOCS='%s'
@@ -117,7 +117,7 @@ def make_body1():
 source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
-    cd ${S[$i]}
+    cd ${S[$1]}
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
