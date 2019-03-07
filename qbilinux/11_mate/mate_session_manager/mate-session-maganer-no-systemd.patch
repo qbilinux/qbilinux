@@ -1,0 +1,24 @@
+*** mate-session-manager-1.22.0/mate-session/gsm-systemd.c.orig	2019-02-10 22:54:15.000000000 +0900
+--- mate-session-manager-1.22.0/mate-session/gsm-systemd.c	2019-03-07 09:02:53.767447895 +0900
+***************
+*** 429,434 ****
+--- 429,435 ----
+          gboolean is_last_session;
+          int ret, i;
+  
++ #ifdef HAVE_SYSTEMD
+          ret = sd_pid_get_session (getpid (), &session);
+  
+          if (ret != 0) {
+***************
+*** 484,489 ****
+--- 485,493 ----
+          free (session);
+  
+          return is_last_session;
++ #else
++ 	return FALSE;
++ #endif
+  }
+  
+  void
