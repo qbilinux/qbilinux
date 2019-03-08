@@ -1,21 +1,88 @@
---- youtube-dl/Makefile	2014-09-14 21:07:33.000000000 +0900
-+++ build/Makefile	2017-11-27 19:06:45.617966914 +0900
-@@ -1,4 +1,4 @@
--all: youtube-dl README.md README.txt youtube-dl.1 youtube-dl.bash-completion youtube-dl.fish
-+all: youtube-dl README.md youtube-dl.bash-completion youtube-dl.fish
- 
- clean:
- 	rm -rf youtube-dl.1.temp.md youtube-dl.1 youtube-dl.bash-completion README.txt MANIFEST build/ dist/ .coverage cover/ youtube-dl.tar.gz youtube-dl.fish
-@@ -22,11 +22,9 @@
- 	endif
- endif
- 
--install: youtube-dl youtube-dl.1 youtube-dl.bash-completion
-+install: youtube-dl youtube-dl.bash-completion
- 	install -d $(DESTDIR)$(BINDIR)
- 	install -m 755 youtube-dl $(DESTDIR)$(BINDIR)
--	install -d $(DESTDIR)$(MANDIR)/man1
--	install -m 644 youtube-dl.1 $(DESTDIR)$(MANDIR)/man1
- 	install -d $(DESTDIR)$(SYSCONFDIR)/bash_completion.d
- 	install -m 644 youtube-dl.bash-completion $(DESTDIR)$(SYSCONFDIR)/bash_completion.d/youtube-dl
- 	install -d $(DESTDIR)$(SYSCONFDIR)/fish/completions
+*** youtube-dl-2019.03.01/Makefile.orig	2019-03-09 04:13:41.996374281 +0900
+--- youtube-dl-2019.03.01/Makefile	2019-03-09 04:32:02.811481474 +0900
+***************
+*** 1,4 ****
+! all: youtube-dl README.md CONTRIBUTING.md README.txt youtube-dl.1 youtube-dl.bash-completion youtube-dl.zsh youtube-dl.fish supportedsites
+  
+  clean:
+  	rm -rf youtube-dl.1.temp.md youtube-dl.1 youtube-dl.bash-completion README.txt MANIFEST build/ dist/ .coverage cover/ youtube-dl.tar.gz youtube-dl.zsh youtube-dl.fish youtube_dl/extractor/lazy_extractors.py *.dump *.part* *.ytdl *.info.json *.mp4 *.m4a *.flv *.mp3 *.avi *.mkv *.webm *.3gp *.wav *.ape *.swf *.jpg *.png CONTRIBUTING.md.tmp ISSUE_TEMPLATE.md.tmp youtube-dl youtube-dl.exe
+--- 1,4 ----
+! all: youtube-dl README.md CONTRIBUTING.md youtube-dl.bash-completion youtube-dl.zsh youtube-dl.fish supportedsites
+  
+  clean:
+  	rm -rf youtube-dl.1.temp.md youtube-dl.1 youtube-dl.bash-completion README.txt MANIFEST build/ dist/ .coverage cover/ youtube-dl.tar.gz youtube-dl.zsh youtube-dl.fish youtube_dl/extractor/lazy_extractors.py *.dump *.part* *.ytdl *.info.json *.mp4 *.m4a *.flv *.mp3 *.avi *.mkv *.webm *.3gp *.wav *.ape *.swf *.jpg *.png CONTRIBUTING.md.tmp ISSUE_TEMPLATE.md.tmp youtube-dl youtube-dl.exe
+***************
+*** 17,27 ****
+  # set markdown input format to "markdown-smart" for pandoc version 2 and to "markdown" for pandoc prior to version 2
+  MARKDOWN = $(shell if [ `pandoc -v | head -n1 | cut -d" " -f2 | head -c1` = "2" ]; then echo markdown-smart; else echo markdown; fi)
+  
+! install: youtube-dl youtube-dl.1 youtube-dl.bash-completion youtube-dl.zsh youtube-dl.fish
+  	install -d $(DESTDIR)$(BINDIR)
+  	install -m 755 youtube-dl $(DESTDIR)$(BINDIR)
+  	install -d $(DESTDIR)$(MANDIR)/man1
+- 	install -m 644 youtube-dl.1 $(DESTDIR)$(MANDIR)/man1
+  	install -d $(DESTDIR)$(SYSCONFDIR)/bash_completion.d
+  	install -m 644 youtube-dl.bash-completion $(DESTDIR)$(SYSCONFDIR)/bash_completion.d/youtube-dl
+  	install -d $(DESTDIR)$(SHAREDIR)/zsh/site-functions
+--- 17,26 ----
+  # set markdown input format to "markdown-smart" for pandoc version 2 and to "markdown" for pandoc prior to version 2
+  MARKDOWN = $(shell if [ `pandoc -v | head -n1 | cut -d" " -f2 | head -c1` = "2" ]; then echo markdown-smart; else echo markdown; fi)
+  
+! install: youtube-dl youtube-dl.bash-completion youtube-dl.zsh youtube-dl.fish
+  	install -d $(DESTDIR)$(BINDIR)
+  	install -m 755 youtube-dl $(DESTDIR)$(BINDIR)
+  	install -d $(DESTDIR)$(MANDIR)/man1
+  	install -d $(DESTDIR)$(SYSCONFDIR)/bash_completion.d
+  	install -m 644 youtube-dl.bash-completion $(DESTDIR)$(SYSCONFDIR)/bash_completion.d/youtube-dl
+  	install -d $(DESTDIR)$(SHAREDIR)/zsh/site-functions
+***************
+*** 55,61 ****
+  
+  .PHONY: all clean install test tar bash-completion pypi-files zsh-completion fish-completion ot offlinetest codetest supportedsites
+  
+! pypi-files: youtube-dl.bash-completion README.txt youtube-dl.1 youtube-dl.fish
+  
+  youtube-dl: youtube_dl/*.py youtube_dl/*/*.py
+  	mkdir -p zip
+--- 54,60 ----
+  
+  .PHONY: all clean install test tar bash-completion pypi-files zsh-completion fish-completion ot offlinetest codetest supportedsites
+  
+! pypi-files: youtube-dl.bash-completion youtube-dl.fish
+  
+  youtube-dl: youtube_dl/*.py youtube_dl/*/*.py
+  	mkdir -p zip
+***************
+*** 113,119 ****
+  youtube_dl/extractor/lazy_extractors.py: devscripts/make_lazy_extractors.py devscripts/lazy_load_template.py $(_EXTRACTOR_FILES)
+  	$(PYTHON) devscripts/make_lazy_extractors.py $@
+  
+! youtube-dl.tar.gz: youtube-dl README.md README.txt youtube-dl.1 youtube-dl.bash-completion youtube-dl.zsh youtube-dl.fish ChangeLog AUTHORS
+  	@tar -czf youtube-dl.tar.gz --transform "s|^|youtube-dl/|" --owner 0 --group 0 \
+  		--exclude '*.DS_Store' \
+  		--exclude '*.kate-swp' \
+--- 112,118 ----
+  youtube_dl/extractor/lazy_extractors.py: devscripts/make_lazy_extractors.py devscripts/lazy_load_template.py $(_EXTRACTOR_FILES)
+  	$(PYTHON) devscripts/make_lazy_extractors.py $@
+  
+! youtube-dl.tar.gz: youtube-dl README.md youtube-dl.bash-completion youtube-dl.zsh youtube-dl.fish ChangeLog AUTHORS
+  	@tar -czf youtube-dl.tar.gz --transform "s|^|youtube-dl/|" --owner 0 --group 0 \
+  		--exclude '*.DS_Store' \
+  		--exclude '*.kate-swp' \
+***************
+*** 125,131 ****
+  		--exclude 'docs/_build' \
+  		-- \
+  		bin devscripts test youtube_dl docs \
+! 		ChangeLog AUTHORS LICENSE README.md README.txt \
+! 		Makefile MANIFEST.in youtube-dl.1 youtube-dl.bash-completion \
+  		youtube-dl.zsh youtube-dl.fish setup.py setup.cfg \
+  		youtube-dl
+--- 124,130 ----
+  		--exclude 'docs/_build' \
+  		-- \
+  		bin devscripts test youtube_dl docs \
+! 		ChangeLog AUTHORS LICENSE README.md \
+! 		Makefile MANIFEST.in youtube-dl.bash-completion \
+  		youtube-dl.zsh youtube-dl.fish setup.py setup.cfg \
+  		youtube-dl
