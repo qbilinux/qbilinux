@@ -19,11 +19,7 @@ SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ##############################################################
 
-if [ -f /usr/src/qbilinux/PackageBuild.def ]; then
-    source /usr/src/qbilinux/PackageBuild.def
-else
-    source ./PackageBuild.def
-fi
+source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
     echo "nothing to do in prepare section.".
@@ -41,7 +37,6 @@ do_install() {
     install -d $P/usr/src/qbilinux
     cp PackageBuild.def PackageBuild.func $P/usr/src/qbilinux
     cp config.guess config.sub $P/usr/src/qbilinux
-    (cd $P/usr/src; ln -s qbilinux plamo-nora)
 
     install -d $docdir/$src
     cp PackageBuild.def PackageBuild.func config.guess config.sub $docdir/$src
@@ -57,8 +52,4 @@ EOF
     done
 }
 
-if [ -f /usr/src/qbilinux/PackageBuild.func ]; then
-    source /usr/src/qbilinux/PackageBuild.func
-else
-    source ./PackageBuild.func
-fi
+source /usr/src/qbilinux/PackageBuild.func
