@@ -201,15 +201,15 @@ if [ $opt_download -eq 1 ] ; then
 		  )) ;;
 	    hg)
 		( cd $W/source
-		  if [ ! -d `basename ${i##*/} .hg` ] ; then
+		  if [ -d `basename ${i##*/} .hg` ] ; then
 		      rm -rf `basename ${i##*/} .hg`
 		  fi
 		  cp -a $W/`basename ${i##*/} .hg` .
 		  ( cd $W/source/`basename ${i##*/} .hg`
 		    if [ -n "$commitid" ] ; then
-			hg update -r $commitid
+			hg update $commitid
 		    elif [ -n "$hg_branch" ] ; then
-			hg update $hg_branch
+			hg checkout $hg_branch
 		    fi
 		  )) ;;
 	    jar)
