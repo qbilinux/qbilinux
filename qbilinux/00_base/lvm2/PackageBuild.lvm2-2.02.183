@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=lvm2
-vers=2.02.179
+vers=2.02.183
 url="ftp://sources.redhat.com/pub/lvm2/LVM2.${vers}.tgz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
