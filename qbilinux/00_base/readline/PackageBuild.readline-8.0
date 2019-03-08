@@ -1,18 +1,13 @@
 #!/bin/sh
 ##############################################################
 pkgbase=readline
-vers=7.0p5
-url="http://ftp.gnu.org/gnu/readline/readline-7.0.tar.gz
-https://ftp.gnu.org/gnu/readline/readline-7.0-patches/readline70-001
-https://ftp.gnu.org/gnu/readline/readline-7.0-patches/readline70-002
-https://ftp.gnu.org/gnu/readline/readline-7.0-patches/readline70-003
-https://ftp.gnu.org/gnu/readline/readline-7.0-patches/readline70-004
-https://ftp.gnu.org/gnu/readline/readline-7.0-patches/readline70-005"
+vers=8.0
+url="http://ftp.gnu.org/gnu/readline/readline-${vers}.tar.gz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=readline-7.0
+src=readline-${vers}
 OPT_CONFIG=''
 DOCS='CHANGELOG COPYING INSTALL NEWS README history.c history.h'
 patchfiles=''
@@ -25,11 +20,6 @@ source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
     cd ${S[$i]}
-    patch -p2 -i $W/readline70-001
-    patch -p2 -i $W/readline70-002
-    patch -p2 -i $W/readline70-003
-    patch -p2 -i $W/readline70-004
-    patch -p2 -i $W/readline70-005
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
@@ -77,8 +67,10 @@ do_install() {
 
     # add extra func
     install -d $P/usr/$libdir
-    ln -s /$libdir/libhistory.so.7 $P/usr/$libdir/libhistory.so
-    ln -s /$libdir/libreadline.so.7 $P/usr/$libdir/libreadline.so
+    ln -s /$libdir/libhistory.so.8 $P/usr/$libdir/libhistory.so
+    ln -s /$libdir/libreadline.so.8 $P/usr/$libdir/libreadline.so
+    ln -s /$libdir/libhistory.so.8 $P/$libdir/libhistory.so.7
+    ln -s /$libdir/libreadline.so.8 $P/$libdir/libreadline.so.7
 }
 
 do_package() {
