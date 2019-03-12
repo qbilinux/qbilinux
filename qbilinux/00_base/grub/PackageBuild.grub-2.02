@@ -6,7 +6,7 @@ vers=2.02
 url="https://ftp.gnu.org/gnu/grub/grub-${vers}.tar.xz"
 apply_arch="x86_64 i686"
 arch=`uname -m`
-build=1
+build=2
 src[0]=$pkgbase-$vers
 src[1]=${src[0]}
 patchfiles[0]="0008-Fix-packed-not-aligned-error-on-GCC-8.patch"
@@ -73,8 +73,8 @@ do_install() {
 do_package() {
     # add extra func
     install -d $P/sbin
-    install $W/plamo_grubconfig/sbin/grubconfig{,_mbr,_efi} $P/sbin
-    install $W/plamo_grubconfig/sbin/grub_partuuid.sh $P/sbin
+    install $W/files/sbin/grubconfig{,_mbr,_efi} $P/sbin
+    install $W/files/sbin/grub_partuuid.sh $P/sbin
     install -d $P/etc/default
     cat <<- "EOF" > $P/etc/default/grub
 	# Default menu entry
@@ -86,7 +86,7 @@ do_package() {
 	# Display countdown or not
 	#GRUB_HIDDEN_TIMEOUT_QUIET=false
 	# Command line arguments for default linux entry
-	GRUB_CMDLINE_LINUX_DEFAULT="vga16 unicon=eucjp vt.default_utf8=0 panic_output=7"
+	GRUB_CMDLINE_LINUX_DEFAULT="vga16 panic_output=7"
 	# Command line arguments for all linux entry
 	#GRUB_CMDLINE_LINUX=
 	# Distributor
@@ -94,7 +94,7 @@ do_package() {
 	EOF
     install -d $P/var/log/setup
     for i in {,e}setup.bootloader ; do
-	install $W/plamo_grubconfig/var/log/setup/$i $P/var/log/setup
+	install $W/files/var/log/setup/$i $P/var/log/setup
     done
 
     for i in $pkgbase ; do
