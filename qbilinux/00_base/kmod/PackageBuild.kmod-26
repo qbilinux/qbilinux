@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=kmod
-vers=25
+vers=26
 url="https://www.kernel.org/pub/linux/utils/kernel/kmod/kmod-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
@@ -72,7 +72,7 @@ do_install() {
     install -d $P/usr/bin
     ln -s /bin/kmod $P/usr/bin/lsmod
     install -d $P/etc/modprobe.d
-    cat <<- "EOF" > $P/etc/modprobe.d/plamo-default.conf.new
+    cat <<- "EOF" > $P/etc/modprobe.d/qbilinux-default.conf.new
 	# sample modprobe.conf entries
 	#
 	# alias 定義をしておけば modprobe eth0 で必要なモジュールをロード可能
@@ -96,11 +96,11 @@ do_install() {
 do_package() {
     cat <<- "EOF" >> $P/install/doinst.sh
 	
-	mv etc/modprobe.d/plamo-default.conf.new /tmp
-	if [ -f etc/modprobe.d/plamo-default.conf ] ; then
-	  mv /tmp/plamo-default.conf.new etc/modprobe.d/plamo-default.conf.dist
+	mv etc/modprobe.d/qbilinux-default.conf.new /tmp
+	if [ -f etc/modprobe.d/qbilinux-default.conf ] ; then
+	  mv /tmp/qbilinux-default.conf.new etc/modprobe.d/qbilinux-default.conf.dist
 	else
-	  mv /tmp/plamo-default.conf.new etc/modprobe.d/plamo-default.conf
+	  mv /tmp/qbilinux-default.conf.new etc/modprobe.d/qbilinux-default.conf
 	fi
 	EOF
 
