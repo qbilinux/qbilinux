@@ -27,7 +27,7 @@ if [ "$EFI_PART.x" = ".x" ]; then
 		    "${ROOT_DISK}ではなく，${EFI_PART}をEFI System Partitionとして利用します．大丈夫ですか？" 8 70
 	if [ $? -ne 0 ]; then
 	    /bin/dialog --title "grub install abondoned" --msgbox \
-		"GRUB2のインストールを中止しました．このままではシステムを起動できないので，Plamoのインストーラで再起動し，設定等を修正してください" 8 70
+		"GRUB2のインストールを中止しました．このままではシステムを起動できないので，Qbilinuxのインストーラで再起動し，設定等を修正してください" 8 70
 	    exit 1
 	fi
     fi
@@ -40,7 +40,7 @@ if [ ! -d /boot/efi/EFI ]; then
     mount $EFI_PART /boot/efi
     if [ $? -ne 0 ]; then
 	/bin/dialog --title "cannot mount EFI partition" --msgbox \
-		    "EFIシステム用パーティション($EFI_PART)がマウントできませんでした．このままではシステムを起動できないので，Plamoのインストーラで再起動し，設定等を修正してください" 6 70
+		    "EFIシステム用パーティション($EFI_PART)がマウントできませんでした．このままではシステムを起動できないので，Qbilinuxのインストーラで再起動し，設定等を修正してください" 6 70
 	exit 1
     fi
 fi
@@ -58,7 +58,7 @@ fi
 if [ $? -ne 0 ]; then
     /bin/dialog --title "grub install error" --msgbox \
 	"${EFI_PART}にgrubをinstallできませんでした． \
-何か問題があるようなので処理を中断します．このままではシステムを起動できないので，Plamoのインストーラで再起動し，設定等を修正してください" 6 70
+何か問題があるようなので処理を中断します．このままではシステムを起動できないので，Qbilinuxのインストーラで再起動し，設定等を修正してください" 6 70
     exit 1
 fi
 sleep 3
@@ -72,7 +72,7 @@ LANG=ja_JP.UTF-8
 if [ $? -ne 0 ]; then
     /bin/dialog --title "grub.cfg install error" --msgbox \
 	"/boot/efi/grub/grub.cfg を生成できませんでした． \
-         何か問題があるようなので処理を中断します．このままではシステムを起動できないので，Plamoのインストーラで再起動し，設定等を修正してください" 6 70
+         何か問題があるようなので処理を中断します．このままではシステムを起動できないので，Qbilinuxのインストーラで再起動し，設定等を修正してください" 6 70
     exit 1
 fi
 
@@ -97,7 +97,7 @@ fi
 if [ $? != 0 ]; then
     dialog --title "install failed" --msgbox \
 	   "grubを${EFI_PART}にインストールできませんでした．\
-このままではシステムを起動できないので，Plamoのインストーラで再起動し，設定等を確認，修正してください．" 10 70
+このままではシステムを起動できないので，Qbilinuxのインストーラで再起動し，設定等を確認，修正してください．" 10 70
     exit 1
 fi
 
