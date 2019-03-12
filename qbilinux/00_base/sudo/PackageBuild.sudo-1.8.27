@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=sudo
-vers=1.8.26
+vers=1.8.27
 url="http://www.sudo.ws/sudo/dist/sudo-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
@@ -72,10 +72,10 @@ do_install() {
     install -d $P/etc/pam.d
     cat <<- "EOF" > $P/etc/pam.d/sudo
 	#%PAM-1.0
-	auth		include		plamo-default
-	account		include		plamo-default
-	password	include		plamo-default
-	session		include		plamo-default
+	auth		include		qbilinux-default
+	account		include		qbilinux-default
+	password	include		qbilinux-default
+	session		include		qbilinux-default
 	EOF
     install -d $P/install
     cat <<- "EOF" >> $P/install/doinst.sh
