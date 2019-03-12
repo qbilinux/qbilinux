@@ -2,13 +2,13 @@
 
 ######################################################################
 url="http://ftp.gnome.org/pub/gnome/sources/gtk+/1.2/gtk+-1.2.10.tar.gz
-    http://plamo.linet.gr.jp/~tamuki/src/gtk+-1.2.10-61.fc9.src.tar.gz
+    https://qbilinux.org/pub/source/gtk+-1.2.10-61.fc9.src.tar.gz
     http://www.linuxfromscratch.org/patches/downloads/gtk+/gtk+-1.2.10-config_update-1.patch"
 pkgbase=gtk+_1
 vers=1.2.10
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=gtk+-$vers
 OPT_CONFIG="--sysconfdir=/etc"
 compress=txz
