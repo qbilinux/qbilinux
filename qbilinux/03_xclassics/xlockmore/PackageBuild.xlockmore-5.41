@@ -1,12 +1,12 @@
 #!/bin/sh
 
 ######################################################################
-url="http://www.tux.org/~bagleyd/xlock/xlockmore-5.41/xlockmore-5.41.tar.bz2"
 pkgbase=xlockmore
 vers=5.41
+url="http://www.tux.org/~bagleyd/xlock/xlockmore-5.41/xlockmore-5.41.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=$pkgbase-$vers
 OPT_CONFIG="--enable-pam --enable-use-mb --with-esound --with-lang=ja --without-magick"
 DOCS="`echo docs/{3d.howto,cell_automata,HACKERS.GUIDE{,.fr}}`
@@ -122,7 +122,7 @@ do_install() {
     install -d $P/etc/pam.d
     cat <<- "EOF" > $P/etc/pam.d/xlock
 	#%PAM-1.0
-	auth	include	plamo-default
+	auth	include	qbilinux-default
 	EOF
 }
 
