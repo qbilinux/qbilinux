@@ -1,12 +1,12 @@
 #!/bin/sh
 
 ######################################################################
-url="http://plamo.linet.gr.jp/~tamuki/src/xcalendar-4.0.1+i18n.tar.bz2"
 pkgbase=xcalendar
 vers=4.0.1+i18n
+url="https://qbilinux.org/pub/source/xcalendar-4.0.1+i18n.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="README README.wall"
@@ -29,17 +29,17 @@ do_config() {
 
     cp -a ${S[$1]} ${B[$1]}
     cd ${B[$1]}
-  cp -p Makefile Makefile.orig
-if [ $arch = "x86_64" ]; then
-  sed 's@/X11R6@@g' Makefile.orig | sed '/MANPATH =/s@man@share/man@g' \
-      | sed '/USRLIBDIR =/s@/lib@/lib64@g' | sed 's@-DCSRG_BASED @@g' \
-      | sed 's@\(EXTRA_LIBRARIES =\).*$@\1@g' | sed 's@EUC@eucJP@g' > Makefile
-else
-  sed 's@/X11R6@@g' Makefile.orig | sed '/MANPATH =/s@man@share/man@g' \
-      | sed 's@-DCSRG_BASED @@g' \
-      | sed 's@\(EXTRA_LIBRARIES =\).*$@\1@g' | sed 's@EUC@eucJP@g' > Makefile
-fi
-  cat <<- "EOF" | patch Makefile
+    cp -p Makefile Makefile.orig
+    if [ $arch = "x86_64" ]; then
+	sed 's@/X11R6@@g' Makefile.orig | sed '/MANPATH =/s@man@share/man@g' \
+	    | sed '/USRLIBDIR =/s@/lib@/lib64@g' | sed 's@-DCSRG_BASED @@g' \
+	    | sed 's@\(EXTRA_LIBRARIES =\).*$@\1@g' | sed 's@EUC@eucJP@g' > Makefile
+    else
+	sed 's@/X11R6@@g' Makefile.orig | sed '/MANPATH =/s@man@share/man@g' \
+	    | sed 's@-DCSRG_BASED @@g' \
+	    | sed 's@\(EXTRA_LIBRARIES =\).*$@\1@g' | sed 's@EUC@eucJP@g' > Makefile
+    fi
+    cat <<- "EOF" | patch Makefile
 	707,709c707,709
 	< 	@if [ -d $(LIBDIR)/ja_JP.eucJP/app-defaults ]; then set +x; \
 	< 	else (set -x; $(MKDIRHIER) $(LIBDIR)/ja_JP.eucJP/app-defaults); fi
@@ -59,8 +59,8 @@ fi
 	---
 	> 	(set -x; $(INSTALL) $(INSTALLFLAGS)  $(INSTDATFLAGS) $$i $(DESTDIR)$(XCALENDAR_LIBDIR)); \
 	EOF
-  cp -p xcalendar.c xcalendar.c.orig
-  sed 's@/X11R6@@g' xcalendar.c.orig > xcalendar.c
+    cp -p xcalendar.c xcalendar.c.orig
+    sed 's@/X11R6@@g' xcalendar.c.orig > xcalendar.c
 }
 
 do_build() {
