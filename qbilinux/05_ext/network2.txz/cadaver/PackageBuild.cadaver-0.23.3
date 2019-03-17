@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='http://www.webdav.org/cadaver/cadaver-0.23.3.tar.gz'
 pkgbase=cadaver
 vers=0.23.3
+url="http://www.webdav.org/cadaver/cadaver-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
-src=cadaver-0.23.3
+build=2
+src=cadaver-${vers}
 OPT_CONFIG=''
 DOCS='.release.sh COPYING ChangeLog INSTALL NEWS README THANKS TODO'
 patchfiles=''
