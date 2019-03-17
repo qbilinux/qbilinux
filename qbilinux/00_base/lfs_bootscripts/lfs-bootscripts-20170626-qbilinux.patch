@@ -1,6 +1,6 @@
-diff -uprN lfs-bootscripts-20170626/Makefile lfs-bootscripts-20170626-plamo/Makefile
+diff -uprN lfs-bootscripts-20170626/Makefile lfs-bootscripts-20170626-qbilinux/Makefile
 --- lfs-bootscripts-20170626/Makefile	2014-07-09 01:36:46.000000000 +0900
-+++ lfs-bootscripts-20170626-plamo/Makefile	2017-07-16 16:26:09.801486537 +0900
++++ lfs-bootscripts-20170626-qbilinux/Makefile	2017-07-16 16:26:09.801486537 +0900
 @@ -42,8 +42,5 @@ files: create-dirs
  	install -m ${MODE} lfs/init.d/rc            ${ETCDIR}/rc.d/init.d/
  	install -m ${MODE} lfs/init.d/reboot        ${ETCDIR}/rc.d/init.d/
@@ -62,9 +62,9 @@ diff -uprN lfs-bootscripts-20170626/Makefile lfs-bootscripts-20170626-plamo/Make
  	ln -sf ../init.d/sendsignals ${ETCDIR}/rc.d/rc6.d/S60sendsignals
  	ln -sf ../init.d/swap        ${ETCDIR}/rc.d/rc6.d/S65swap
  	ln -sf ../init.d/mountfs     ${ETCDIR}/rc.d/rc6.d/S70mountfs
-diff -uprN lfs-bootscripts-20170626/lfs/init.d/mountfs lfs-bootscripts-20170626-plamo/lfs/init.d/mountfs
+diff -uprN lfs-bootscripts-20170626/lfs/init.d/mountfs lfs-bootscripts-20170626-qbilinux/lfs/init.d/mountfs
 --- lfs-bootscripts-20170626/lfs/init.d/mountfs	2017-06-27 01:28:19.000000000 +0900
-+++ lfs-bootscripts-20170626-plamo/lfs/init.d/mountfs	2017-07-24 17:56:43.276947784 +0900
++++ lfs-bootscripts-20170626-qbilinux/lfs/init.d/mountfs	2017-07-24 17:56:43.276947784 +0900
 @@ -48,6 +48,11 @@ case "${1}" in
        log_info_msg "Mounting remaining file systems..."
        mount --all --test-opts no_netdev >/dev/null
@@ -77,9 +77,9 @@ diff -uprN lfs-bootscripts-20170626/lfs/init.d/mountfs lfs-bootscripts-20170626-
        exit $failed
        ;;
  
-diff -uprN lfs-bootscripts-20170626/lfs/init.d/rc lfs-bootscripts-20170626-plamo/lfs/init.d/rc
+diff -uprN lfs-bootscripts-20170626/lfs/init.d/rc lfs-bootscripts-20170626-qbilinux/lfs/init.d/rc
 --- lfs-bootscripts-20170626/lfs/init.d/rc	2017-03-25 14:48:04.000000000 +0900
-+++ lfs-bootscripts-20170626-plamo/lfs/init.d/rc	2017-07-14 14:54:15.462194970 +0900
++++ lfs-bootscripts-20170626-qbilinux/lfs/init.d/rc	2017-07-14 14:54:15.462194970 +0900
 @@ -83,9 +83,9 @@ run()
  # Read any local settings/overrides
  [ -r /etc/sysconfig/rc.site ] && source /etc/sysconfig/rc.site
@@ -87,15 +87,15 @@ diff -uprN lfs-bootscripts-20170626/lfs/init.d/rc lfs-bootscripts-20170626-plamo
 -DISTRO=${DISTRO:-"Linux From Scratch"}
 -DISTRO_CONTACT=${DISTRO_CONTACT:-"lfs-dev@linuxfromscratch.org (Registration required)"}
 -DISTRO_MINI=${DISTRO_MINI:-"LFS"}
-+DISTRO=${DISTRO:-"Plamo Linux"}
-+DISTRO_CONTACT=${DISTRO_CONTACT:-"plamo@linet.gr.jp"}
-+DISTRO_MINI=${DISTRO_MINI:-"plamo"}
++DISTRO=${DISTRO:-"Qbilinux"}
++DISTRO_CONTACT=${DISTRO_CONTACT:-"contact@qbilinux.org"}
++DISTRO_MINI=${DISTRO_MINI:-"qbilinux"}
  IPROMPT=${IPROMPT:-"no"}
  
  # These 3 signals will not cause our script to exit
-diff -uprN lfs-bootscripts-20170626/lfs/init.d/setclock lfs-bootscripts-20170626-plamo/lfs/init.d/setclock
+diff -uprN lfs-bootscripts-20170626/lfs/init.d/setclock lfs-bootscripts-20170626-qbilinux/lfs/init.d/setclock
 --- lfs-bootscripts-20170626/lfs/init.d/setclock	2012-05-21 10:47:41.000000000 +0900
-+++ lfs-bootscripts-20170626-plamo/lfs/init.d/setclock	1970-01-01 09:00:00.000000000 +0900
++++ lfs-bootscripts-20170626-qbilinux/lfs/init.d/setclock	1970-01-01 09:00:00.000000000 +0900
 @@ -1,63 +0,0 @@
 -#!/bin/sh
 -########################################################################
@@ -160,9 +160,9 @@ diff -uprN lfs-bootscripts-20170626/lfs/init.d/setclock lfs-bootscripts-20170626
 -esac
 -
 -exit 0
-diff -uprN lfs-bootscripts-20170626/lfs/init.d/sysctl lfs-bootscripts-20170626-plamo/lfs/init.d/sysctl
+diff -uprN lfs-bootscripts-20170626/lfs/init.d/sysctl lfs-bootscripts-20170626-qbilinux/lfs/init.d/sysctl
 --- lfs-bootscripts-20170626/lfs/init.d/sysctl	2012-05-06 12:56:30.000000000 +0900
-+++ lfs-bootscripts-20170626-plamo/lfs/init.d/sysctl	1970-01-01 09:00:00.000000000 +0900
++++ lfs-bootscripts-20170626-qbilinux/lfs/init.d/sysctl	1970-01-01 09:00:00.000000000 +0900
 @@ -1,54 +0,0 @@
 -#!/bin/sh
 -########################################################################
@@ -218,9 +218,9 @@ diff -uprN lfs-bootscripts-20170626/lfs/init.d/sysctl lfs-bootscripts-20170626-p
 -exit 0
 -
 -# End sysctl
-diff -uprN lfs-bootscripts-20170626/lfs/init.d/sysklogd lfs-bootscripts-20170626-plamo/lfs/init.d/sysklogd
+diff -uprN lfs-bootscripts-20170626/lfs/init.d/sysklogd lfs-bootscripts-20170626-qbilinux/lfs/init.d/sysklogd
 --- lfs-bootscripts-20170626/lfs/init.d/sysklogd	2014-12-25 13:36:44.000000000 +0900
-+++ lfs-bootscripts-20170626-plamo/lfs/init.d/sysklogd	1970-01-01 09:00:00.000000000 +0900
++++ lfs-bootscripts-20170626-qbilinux/lfs/init.d/sysklogd	1970-01-01 09:00:00.000000000 +0900
 @@ -1,82 +0,0 @@
 -#!/bin/sh
 -########################################################################
