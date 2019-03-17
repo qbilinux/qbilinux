@@ -70,7 +70,7 @@ def url_completion(url):
         version = current
     #version = re.sub("\..*", ".x", version)
     arch = subprocess.check_output("uname -m".split()).strip()
-    arch = "x86" if arch == "i686" else "armv7_hf" if arch == "armv7l" else arch
+    arch = "x86" if arch == "i686" else arch
     try:
         urllib2.urlopen(url + "allpkgs.pickle").close()
         return url
@@ -178,12 +178,18 @@ def get_category(pkgs, confs):
     トール済みならば，そのカテゴリは選択されていたと考える．
     """
     category = ["00_base"]
-    reps = {"01_minimum": "gcc",      "02_x11": "xorg_server",
-            "03_xclassics": "kterm",  "04_xapps": "firefox",
-            "05_ext": "mplayer",      "06_xfce": "xfwm4",
-            "07_kde": "kde_baseapps", "08_tex": "ptexlive",
-            "09_kernel": "kernelsrc", "10_lof": "libreoffice_base",
-            "11_mate": "mate_desktop"}
+    reps = {"01_minimum": "gcc",
+            "02_x11": "xorg_server",
+            "03_xclassics": "kterm",
+            "04_xapps": "firefox",
+            "05_ext": "mplayer",
+            "06_xfce": "xfwm4",
+            "07_kde": "plasma_desktop",
+            "08_tex": "ptexlive",
+            "09_kernel": "kernelsrc",
+            "10_lof": "libreoffice",
+            "11_mate": "mate_desktop",
+            "12_lxqt": "lxqt_session"}
     for i in sorted(reps.keys()):
         if reps[i] in pkgs:
             category.append(i)
