@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase=php
-vers=7.2.13
+vers=7.3.3
 url="http://www.php.net/distributions/php-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
@@ -10,7 +10,7 @@ src=${pkgbase}-${vers}
 CONFDIR="/etc/"
 OPT_CONFIG="--with-apxs2=/usr/bin/apxs --with-zlib --with-curl --with-gd --enable-gd-jis-conv --with-freetype-dir=/usr --with-jpeg-dir=/usr --enable-mbstring --enable-pdo --with-pdo-mysql=shared,/opt/mariadb --with-pdo-sqlite --with-config-file-path=$CONFDIR --enable-zip=shared --with-libzip --enable-ftp=shared --with-bz2=shared --with-dba=shared,/usr --with-gdbm=shared --enable-exif=shared --with-ldap=shared --enable-opcache=shared --enable-opcache-file --with-openssl=shared --enable-exif=shared --enable-calendar"
 if [ $arch == 'x86_64' -o $arch == 'aarch64' ]; then
-  OPT_CONFIG="$OPT_CONFIG --with-libdir=lib64"
+    OPT_CONFIG="$OPT_CONFIG --with-libdir=lib64"
 fi
 DOCS='CODING_STANDARDS CONTRIBUTING.md CREDITS EXTENSIONS INSTALL LICENSE NEWS README.EXT_SKEL README.GIT-RULES README.MAILINGLIST_RULES README.NEW-OUTPUT-API README.PARAMETER_PARSING_API README.REDIST.BINS README.RELEASE_PROCESS README.SELF-CONTAINED-EXTENSIONS README.STREAMS README.SUBMITTING_PATCH README.TESTING README.TESTING2 README.UNIX-BUILD-SYSTEM README.WIN32-BUILD-SYSTEM README.input_filter README.md UPGRADING UPGRADING.INTERNALS'
 patchfiles=''
@@ -22,7 +22,7 @@ SRC_DIR="/home/archives/source/"
 source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
-    cd ${S[$i]}
+    cd ${S[$1]}
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
