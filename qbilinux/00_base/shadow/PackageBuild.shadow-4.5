@@ -3,11 +3,10 @@
 ######################################################################
 pkgbase=shadow
 vers=4.5
-url="https://github.com/shadow-maint/shadow/releases/download/4.5/shadow-4.5.tar.xz
-    ftp://plamo.linet.gr.jp/pub/Plamo-src.new/plamo/00_base/shadow/shadow-adduser-20160122"
+url="https://github.com/shadow-maint/shadow/releases/download/4.5/shadow-4.5.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=$pkgbase-$vers
 OPT_CONFIG="--sysconfdir=/etc --enable-man --without-selinux --without-xml-catalog
     --with-libcrack"
