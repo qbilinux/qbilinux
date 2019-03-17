@@ -12,8 +12,8 @@ fi
 
 TMP_REPLY=`mktemp /tmp/tmp_reply_$$.XXXXXX`
 
-dialog --title "Plamo Linux セットアップメニュー" --menu \
-"Plamo では以下の簡易設定ツールを用意しています．どれを実行しますか？\
+dialog --title "Qbilinux セットアップメニュー" --menu \
+"Qbilinux では以下の簡易設定ツールを用意しています．どれを実行しますか？\
 " \
 22 77 15 \
 "adduser" "一般ユーザ追加(Xの利用は必ずadduserで追加したユーザで!)" \
