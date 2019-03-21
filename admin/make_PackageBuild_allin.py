@@ -155,7 +155,7 @@ do_config() {
     if [ -f ${S[$1]}/meson.build ] ; then
       export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
       export LDFLAGS='-Wl,--as-needed' 
-      meson --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir=/usr/share/man ${OPT_CONFIG[$1]} ${S[$1]}
+      meson --prefix=%s --libdir=%s/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir=/usr/share/man ${OPT_CONFIG[$1]} ${S[$1]}
     fi
     if [ $? != 0 ]; then
 	echo "configure error. $0 script stop"
