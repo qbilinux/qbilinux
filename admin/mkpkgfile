@@ -3,8 +3,6 @@ export LANG=en_US.UTF-8
 arch=`uname -m`
 
 seek_dir () {
-#    dfas dfa/fdafsd/fdafd/afkdjsakf/PackageBuild*
-
     DIR=${1%/*}
     SCN=${1##*/}
     CAT=${DIR%/*}
@@ -61,18 +59,18 @@ seek_dir () {
 	    pkg=`ls -1 *.desc`
 	    for i in $pkg ; do
 		pkgname=${i%.desc}
-		mv -f ${pkgname}-*-*-*.txz old
+		mv -f ${pkgname}-*-${arch}-*.txz old
+		mv -f ${pkgname}-*-noarch-*.txz old
 	    done
-	    #mv -f ${BASE}-*-*-*.txz old
 	fi
 	    
-	# only packagin
+	# only package
 	if [ $opt_package -eq 1 ] ; then
 	    touch 00.make.log
 	    sudo sh ./$SCN package |& tee 00.package.log
 
 	else
-	    # rm work build directory
+	    # delete work and build directory
 	    if [ $opt_notrm -eq 0 ] ; then
 		sudo rm -rf build/$arch work/$arch
 	    fi
