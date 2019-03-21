@@ -17,7 +17,7 @@ if (argc != 2):
     quit()
 
 basedir = args[1] + '/'
-archdir = ('x86/', 'x86_64/', 'armv7_hf/')
+archdir = ('x86/', 'x86_64/', 'armv7l/', 'aarch64/')
 channel = ('qbilinux', 'contrib')
 
 '''
@@ -58,8 +58,6 @@ for arch in archdir:
                 dirs.remove('old')
             if 'NG' in dirs:
                 dirs.remove('NG')
-            if '11_mate.old' in dirs:
-                dirs.remove('11_mate.old')
             for i in files:
                 if '.txz' in i or '.tgz' in i:
                     #print i
