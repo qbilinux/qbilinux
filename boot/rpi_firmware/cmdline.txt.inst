@@ -1,0 +1,1 @@
+dwc_otg.lpm_enable=0 console=tty1 nofont root=/dev/sda1 rootfstype=ext4 rootwait ro vga16 unicon=eucjp vt.default_utf8=0 panic_output=7
