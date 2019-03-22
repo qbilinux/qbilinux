@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
 pkgbase=fuse
-vers=3.4.2
-url="https://github.com/libfuse/libfuse/releases/download/fuse-${vers}/fuse-${vers}.tar.xz"
+vers=2.9.9
+url="https://github.com/libfuse/libfuse/releases/download/fuse-${vers}/fuse-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
 src=fuse-${vers}
-OPT_CONFIG='-Dutils=true'
-DOCS='AUTHORS ChangeLog.rst GPL2.txt LGPL2.txt LICENSE README.md'
+OPT_CONFIG='--enable-lib --enable-util'
+DOCS='AUTHORS COPYING COPYING.LIB ChangeLog NEWS README.NFS README.md'
 patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
@@ -29,10 +29,12 @@ do_config() {
 
     mkdir ${B[$1]}
     cd ${B[$1]}
-    if [ -f ${S[$1]}/meson.build ] ; then
-      export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
-      export LDFLAGS='-Wl,--as-needed' 
-      meson --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir=/usr/share/man ${OPT_CONFIG[$1]} ${S[$1]}
+    if [ -x ${S[$1]}/configure ] ; then
+	export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
+	export LDFLAGS='-Wl,--as-needed' 
+        export INIT_D_PATH="/etc/rc.d/init.d"
+	${S[$1]}/configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc \
+		--localstatedir=/var --infodir='${prefix}'/share/info --mandir='${prefix}'/share/man ${OPT_CONFIG[$1]}
     fi
     if [ $? != 0 ]; then
 	echo "configure error. $0 script stop"
@@ -42,7 +44,10 @@ do_config() {
 
 do_build() {
     cd ${B[$1]}
-    ninja
+    if [ -f Makefile ] ; then
+	export LDFLAGS='-Wl,--as-needed'
+	make
+    fi
     if [ $? != 0 ]; then
 	echo "make error. $0 script stop"
 	exit 255
@@ -51,7 +56,10 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}
-    DESTDIR=$P ninja install
+    if [ -f Makefile ] ; then
+	export LDFLAGS='-Wl,--as-needed'
+	make install DESTDIR=$P
+    fi
     if [ $? != 0 ]; then
 	echo "make install error. $0 script stop"
 	exit 255
