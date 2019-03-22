@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase=gimp
-vers=2.10.6
+vers=2.10.8
 url="http://download.gimp.org/pub/gimp/v2.10/gimp-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
@@ -18,7 +18,7 @@ SRC_DIR="/home/archives/source/"
 source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
-    cd ${S[$i]}
+    cd ${S[$1]}
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
