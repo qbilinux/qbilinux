@@ -44,6 +44,7 @@ if [ $3 != "x86" -a  $3 != "x86_64" ] ; then
     exit ;
 fi
 
+topdir=$1
 ver=$2
 arch=$3
 dt=`date +%Y%m%d`
@@ -58,6 +59,6 @@ xorrisofs -o qbilinux-${ver}_${arch}_${dt}_dvd.iso \
    -e isolinux/efiboot.img \
    -no-emul-boot \
    -isohybrid-gpt-basdat \
-   -append_partition 2 0xef ./$1/${arch}/isolinux/efiboot.img \
-   $1/${arch}
+   -append_partition 2 0xef ./${topdir}/${arch}/isolinux/efiboot.img \
+   ${topdir}/${arch}
 sha256sum qbilinux-${ver}_${arch}_${dt}_dvd.iso > qbilinux-${ver}_${arch}_${dt}_dvd.iso.sha256
