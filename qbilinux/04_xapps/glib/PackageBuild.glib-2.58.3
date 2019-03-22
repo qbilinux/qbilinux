@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase=glib
-vers=2.56.1
+vers=2.58.3
 url="http://ftp.gnome.org/pub/gnome/sources/glib/${vers%.*}/glib-${vers}.tar.xz"
 verify="http://ftp.gnome.org/pub/gnome/sources/glib/${vers%.*}/glib-${vers}.sha256sum"
 commitid=
@@ -9,7 +9,7 @@ apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
 src=glib-${vers}
-OPT_CONFIG='--with-pcre=system --disable-gtk-doc-html'
+OPT_CONFIG='--with-pcre=system'
 DOCS='AUTHORS COPYING ChangeLog ChangeLog.pre-1-2 ChangeLog.pre-2-0 ChangeLog.pre-2-10 ChangeLog.pre-2-12 ChangeLog.pre-2-14 ChangeLog.pre-2-16 ChangeLog.pre-2-18 ChangeLog.pre-2-2 ChangeLog.pre-2-20 ChangeLog.pre-2-4 ChangeLog.pre-2-6 ChangeLog.pre-2-8 HACKING INSTALL NEWS NEWS.pre-1-3 README README.commits README.rationale README.win32'
 patchfiles=''
 compress=txz
@@ -24,6 +24,7 @@ do_prepare() {
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
+    env NOCONFIGURE=y ./autogen.sh
 }
 
 do_config() {
