@@ -34,7 +34,7 @@ do_build() {
 }
 
 do_install() {
-    cd ${B[$1]}/docbook-5.0
+    cd ${B[$1]}
 
     # pasted from http://cblfs.cross-lfs.org/index.php/DocBook-XML-5.0
 
