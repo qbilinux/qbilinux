@@ -1,13 +1,12 @@
 #!/bin/sh
 ##############################################################
-#url='http://sources-redhat.mirrors.redwire.net/docbook-tools/new-trials/SOURCES/docbook-utils-0.6.14.tar.gz'
-url='ftp://sources.redhat.com/pub/docbook-tools/new-trials/SOURCES/docbook-utils-0.6.14.tar.gz'
 pkgbase=docbook_utils
 vers=0.6.14
+url="ftp://sourceware.org/pub/docbook-tools/new-trials/SOURCES/docbook-utils-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
-src=docbook-utils-0.6.14
+build=2
+src=docbook-utils-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README TODO'
 patchfiles='docbook-utils-0.6.14-grep_fix-1.patch'
@@ -19,7 +18,7 @@ SRC_DIR="/home/archives/source/"
 source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
-    cd ${S[$i]}
+    cd ${S[$1]}
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
