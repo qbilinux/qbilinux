@@ -1,0 +1,130 @@
+diff -Nrc tmp/udev-175/extras/cdrom_id/cdrom_id.c udev-175/extras/cdrom_id/cdrom_id.c
+*** udev-175/extras/cdrom_id/cdrom_id.c	2011-06-17 10:28:33.251601571 +0900
+--- udev-175/extras/cdrom_id/cdrom_id.c	2019-03-25 20:56:34.975946683 +0900
+***************
+*** 37,42 ****
+--- 37,43 ----
+  #include <sys/time.h>
+  #include <sys/ioctl.h>
+  #include <linux/cdrom.h>
++ #include <sys/sysmacros.h>
+  
+  #include "libudev.h"
+  #include "libudev-private.h"
+diff -Nrc udev-175/extras/scsi_id/scsi_serial.c udev-175/extras/scsi_id/scsi_serial.c
+*** udev-175/extras/scsi_id/scsi_serial.c	2011-04-15 07:14:23.739780499 +0900
+--- udev-175/extras/scsi_id/scsi_serial.c	2019-03-25 20:53:48.014528000 +0900
+***************
+*** 33,38 ****
+--- 33,39 ----
+  #include <scsi/sg.h>
+  #include <linux/types.h>
+  #include <linux/bsg.h>
++ #include <sys/sysmacros.h> 
+  
+  #include "libudev.h"
+  #include "libudev-private.h"
+diff -Nrc udev-175/libudev/libudev-device-private.c udev-175/libudev/libudev-device-private.c
+*** udev-175/libudev/libudev-device-private.c	2011-04-24 07:13:02.466797877 +0900
+--- udev-175/libudev/libudev-device-private.c	2019-03-25 20:54:29.627383221 +0900
+***************
+*** 18,23 ****
+--- 18,24 ----
+  #include <fcntl.h>
+  #include <string.h>
+  #include <sys/stat.h>
++ #include <sys/sysmacros.h> 
+  
+  #include "libudev.h"
+  #include "libudev-private.h"
+diff -Nrc udev-175/libudev/libudev-device.c udev-175/libudev/libudev-device.c
+*** udev-175/libudev/libudev-device.c	2011-09-23 21:43:44.305381687 +0900
+--- udev-175/libudev/libudev-device.c	2019-03-25 20:45:42.511211582 +0900
+***************
+*** 24,29 ****
+--- 24,30 ----
+  #include <sys/ioctl.h>
+  #include <sys/socket.h>
+  #include <linux/sockios.h>
++ #include <sys/sysmacros.h> 
+  
+  #include "libudev.h"
+  #include "libudev-private.h"
+diff -Nrc udev-175/libudev/libudev-enumerate.c udev-175/libudev/libudev-enumerate.c
+*** udev-175/libudev/libudev-enumerate.c	2011-08-04 11:26:50.130004746 +0900
+--- udev-175/libudev/libudev-enumerate.c	2019-03-25 20:47:27.027850044 +0900
+***************
+*** 20,25 ****
+--- 20,26 ----
+  #include <stdbool.h>
+  #include <sys/stat.h>
+  #include <sys/param.h>
++ #include <sys/sysmacros.h> 
+  
+  #include "libudev.h"
+  #include "libudev-private.h"
+diff -Nrc udev-175/udev/udev-event.c udev-175/udev/udev-event.c
+*** udev-175/udev/udev-event.c	2011-10-06 07:58:11.372582876 +0900
+--- udev-175/udev/udev-event.c	2019-03-25 20:52:22.402825619 +0900
+***************
+*** 33,38 ****
+--- 33,39 ----
+  #include <sys/socket.h>
+  #include <sys/signalfd.h>
+  #include <linux/sockios.h>
++ #include <sys/sysmacros.h> 
+  
+  #include "udev.h"
+  
+diff -Nrc udev-175/udev/udev-node.c udev-175/udev/udev-node.c
+*** udev-175/udev/udev-node.c	2011-11-01 21:08:15.803635931 +0900
+--- udev-175/udev/udev-node.c	2019-03-25 20:52:39.107767569 +0900
+***************
+*** 28,33 ****
+--- 28,34 ----
+  #include <sys/time.h>
+  #include <sys/stat.h>
+  #include <sys/types.h>
++ #include <sys/sysmacros.h> 
+  
+  #include "udev.h"
+  
+diff -Nrc udev-175/udev/udev-rules.c udev-175/udev/udev-rules.c
+*** udev-175/udev/udev-rules.c	2011-10-23 04:17:06.587663679 +0900
+--- udev-175/udev/udev-rules.c	2019-03-25 20:53:15.341641621 +0900
+***************
+*** 29,34 ****
+--- 29,35 ----
+  #include <dirent.h>
+  #include <fnmatch.h>
+  #include <time.h>
++ #include <sys/sysmacros.h> 
+  
+  #include "udev.h"
+  
+diff -Nrc udev-175/udev/udevadm-info.c udev-175/udev/udevadm-info.c
+*** udev-175/udev/udevadm-info.c	2011-10-10 05:49:21.817999569 +0900
+--- udev-175/udev/udevadm-info.c	2019-03-25 20:55:15.180224643 +0900
+***************
+*** 28,33 ****
+--- 28,34 ----
+  #include <fcntl.h>
+  #include <sys/stat.h>
+  #include <sys/types.h>
++ #include <sys/sysmacros.h> 
+  
+  #include "udev.h"
+  
+diff -Nrc udev-175/udev/udevd.c udev-175/udev/udevd.c
+*** udev-175/udev/udevd.c	2011-10-11 20:25:39.619713005 +0900
+--- udev-175/udev/udevd.c	2019-03-25 20:51:39.832973501 +0900
+***************
+*** 43,48 ****
+--- 43,49 ----
+  #include <sys/ioctl.h>
+  #include <sys/inotify.h>
+  #include <sys/utsname.h>
++ #include <sys/sysmacros.h> 
+  
+  #include "udev.h"
+  #include "sd-daemon.h"

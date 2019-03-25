@@ -175,58 +175,60 @@ case $arch in
 	    mkdir -p $media
 	fi
 
-	# cp -a ${bootdir}/DVD32/* $media
+	cp -a ${bootdir}/DVD32/* $media
 
-	K=$media/isolinux
+	# K=$media/isolinux
+	# mkdir -p $K
+	# mkdir -p __tmpdir__
+	# innstallpkg -root __tmpdir__ ${pkgdir}/qbilinux/00_base/syslinux-*-${pkg_arch}-*.txz
+	# cp -p __tmpdir__/usr/share/syslinux/isolinux.bin $K
+	# cp -p __tmpdir__/usr/share/syslinux/{ldlinux,menu,vesamenu,lib{util,com32}}.c32 $K
+	# rm -rf __tmpdir__
+	# cp -p ${bootdir}/isolinux/{isolinux.cfg,sample.msg,qbilinux.lss} $K
+	# chown root.root $K/{isolinux.cfg,sample.msg,qbilinux.lss}
 
-	mkdir -p $K
-	cp -p /usr/share/syslinux/isolinux.bin $K
-	cp -p /usr/share/syslinux/{ldlinux,menu,vesamenu,lib{util,com32}}.c32 $K
-	cp -p ${bootdir}/isolinux/{isolinux.cfg,sample.msg,qbilinux.lss} $K
-	chown root.root $K/{isolinux.cfg,sample.msg,qbilinux.lss}
+	# mkdir -p $media/EFI/BOOT
+	# # execute in each architecture.
+	# # grub-mkimage -p '' -o $media/EFI/BOOT/BOOTIA32.EFI -O i386-efi fat \
+	# # 	     part_msdos iso9660 gzio all_video gfxterm font terminal normal \
+	# # 	     linux echo test search configfile cpuid minicmd
+	# # grub-mkimage -p '' -o $media/EFI/BOOT/BOOTX64.EFI -O x86_64-efi fat \
+	# # 	     part_msdos iso9660 gzio all_video gfxterm font terminal normal \
+	# # 	     linux echo test search configfile cpuid minicmd
+	# cp ${bootdir}/efi/BOOTX64.EFI $media/EFI/BOOT
+	# cp ${bootdir}/efi/BOOTIA32.EFI $media/EFI/BOOT
+	# cat <<- "EOF" > $media/EFI/BOOT/GRUB.CFG
+	# 	menuentry "UEFI Qbilinux install from DVD" {
+	# 	  linux (cd0)/isolinux/vmlinuz root=/dev/ram0 rw nomodeset vga16 kbd=usbkbd
+	# 	  initrd (cd0)/isolinux/initrd.gz
+	# 	}
+	# 	menuentry "UEFI Qbilinux install from USB DVD" {
+	# 	  linux (hd0)/isolinux/vmlinuz root=/dev/ram0 rw nomodeset vga16 kbd=usbkbd
+	# 	  initrd (hd0)/isolinux/initrd.gz
+	# 	}
+	# 	menuentry "UEFI Qbilinux install from USB memory" {
+	# 	  linux (hd0,msdos1)/isolinux/vmlinuz root=/dev/ram0 rw nomodeset vga16 kbd=usbkbd
+	# 	  initrd (hd0,msdos1)/isolinux/initrd.gz
+	# 	}
+	# 	menuentry "UEFI Qbilinux install on VirtualBox" {
+	# 	  linux (hd1)/isolinux/vmlinuz root=/dev/ram0 rw nomodeset vga16 kbd=usbkbd
+	# 	  initrd (hd1)/isolinux/initrd.gz
+	# 	}
+	# 	EOF
 
-	mkdir -p $media/EFI/BOOT
-	# execute in each architecture.
-	# grub-mkimage -p '' -o $media/EFI/BOOT/BOOTIA32.EFI -O i386-efi fat \
-	# 	     part_msdos iso9660 gzio all_video gfxterm font terminal normal \
-	# 	     linux echo test search configfile cpuid minicmd
-	# grub-mkimage -p '' -o $media/EFI/BOOT/BOOTX64.EFI -O x86_64-efi fat \
-	# 	     part_msdos iso9660 gzio all_video gfxterm font terminal normal \
-	# 	     linux echo test search configfile cpuid minicmd
-	cp ${bootdir}/efi/BOOTX64.EFI $media/EFI/BOOT
-	cp ${bootdir}/efi/BOOTIA32.EFI $media/EFI/BOOT
-	cat <<- "EOF" > $media/EFI/BOOT/GRUB.CFG
-		menuentry "UEFI Qbilinux install from DVD" {
-		  linux (cd0)/isolinux/vmlinuz root=/dev/ram0 rw nomodeset vga16 kbd=usbkbd
-		  initrd (cd0)/isolinux/initrd.gz
-		}
-		menuentry "UEFI Qbilinux install from USB DVD" {
-		  linux (hd0)/isolinux/vmlinuz root=/dev/ram0 rw nomodeset vga16 kbd=usbkbd
-		  initrd (hd0)/isolinux/initrd.gz
-		}
-		menuentry "UEFI Qbilinux install from USB memory" {
-		  linux (hd0,msdos1)/isolinux/vmlinuz root=/dev/ram0 rw nomodeset vga16 kbd=usbkbd
-		  initrd (hd0,msdos1)/isolinux/initrd.gz
-		}
-		menuentry "UEFI Qbilinux install on VirtualBox" {
-		  linux (hd1)/isolinux/vmlinuz root=/dev/ram0 rw nomodeset vga16 kbd=usbkbd
-		  initrd (hd1)/isolinux/initrd.gz
-		}
-		EOF
-
-	mkdir efiboot
-	fallocate -l 1440K $K/efiboot.img
-	/sbin/mkfs -t fat $K/efiboot.img
-	mount -o loop $K/efiboot.img efiboot
-	mkdir -p efiboot/EFI/BOOT
-	cp -p $media/EFI/BOOT/BOOT{IA32,X64}.EFI efiboot/EFI/BOOT
-	cat <<- "EOF" > efiboot/EFI/BOOT/GRUB.CFG
-		menuentry "Qbilinux install from DVD" {
-		  linux (cd0)/isolinux/vmlinuz root=/dev/ram0 rw
-		  initrd (cd0)/isolinux/initrd.gz
-		}
-		EOF
-	umount efiboot
+	# mkdir efiboot
+	# fallocate -l 1440K $K/efiboot.img
+	# /sbin/mkfs -t fat $K/efiboot.img
+	# mount -o loop $K/efiboot.img efiboot
+	# mkdir -p efiboot/EFI/BOOT
+	# cp -p $media/EFI/BOOT/BOOT{IA32,X64}.EFI efiboot/EFI/BOOT
+	# cat <<- "EOF" > efiboot/EFI/BOOT/GRUB.CFG
+	# 	menuentry "Qbilinux install from DVD" {
+	# 	  linux (cd0)/isolinux/vmlinuz root=/dev/ram0 rw
+	# 	  initrd (cd0)/isolinux/initrd.gz
+	# 	}
+	# 	EOF
+	# umount efiboot
 
 	cp kernel/{System.map,vmlinuz,config} $media/isolinux/
 	cp initrd.gz $media/isolinux/
