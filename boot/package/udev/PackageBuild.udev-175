@@ -35,8 +35,10 @@ do_config() {
     if [ -x ${S[$1]}/configure ] ; then
 	export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
 	export LDFLAGS='-Wl,--as-needed' 
-	${S[$1]}/configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc \
-		--localstatedir=/var --infodir='${prefix}'/share/info --mandir='${prefix}'/share/man ${OPT_CONFIG[$1]}
+	${S[$1]}/configure --prefix=/usr --libdir='${exec_prefix}'/$libdir \
+		--infodir='${prefix}'/share/info \
+		--mandir='${prefix}'/share/man ${OPT_CONFIG[$i]} \
+		--with-rootlibdir=/$libdir
     fi
     if [ $? != 0 ]; then
 	echo "configure error. $0 script stop"
@@ -66,6 +68,14 @@ do_install() {
 	echo "make install error. $0 script stop"
 	exit 255
     fi
+
+    install -d $P/sbin
+    mv $P/lib/udev/udevd $P/sbin
+    ln -s /sbin/udevd $P/lib/udev
+    mv $P/usr/sbin/udevadm $P/sbin
+    ln -s /sbin/udevadm $P/usr/sbin
+    mv $P/usr/$libdir/{lib{udev,gudev-1.0}.{so,la},pkgconfig} $C
+    mv $C/{lib{udev,gudev-1.0}.{so,la},pkgconfig} $P/usr/$libdir
 }
 
 do_package() {
