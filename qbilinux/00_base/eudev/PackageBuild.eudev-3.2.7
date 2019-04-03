@@ -6,10 +6,10 @@ url="https://dev.gentoo.org/~blueness/eudev/eudev-${vers}.tar.gz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=eudev-${vers}
 OPT_CONFIG='--bindir=/sbin --sbindir=/sbin --libexecdir=/lib --with-rootprefix=
-     --with-rootlibexecdir=/lib/udev --disable-static --enable-manpages'
+     --with-rootlibexecdir=/lib/udev --enable-manpages'
 DOCS='COPYING'
 patchfiles=''
 compress=txz
