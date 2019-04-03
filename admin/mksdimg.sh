@@ -62,10 +62,10 @@ cat <<- EOF | sfdisk $img
 EOF
 loop=`losetup -f`
 losetup -P $loop $img
-/sbin/mkfs -t fat ${loop}p1
+/sbin/mkfs.fat -F32 ${loop}p1
 mount ${loop}p1 $imgdir
 
-cp -r ${topdir}/${arch} $imgdir
+cp -r ${topdir}/${arch}/* $imgdir
 
 umount $imgdir
 losetup -d $loop
