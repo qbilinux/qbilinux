@@ -13,6 +13,7 @@ dest=.
 
 pkg="
 	busybox
+	dosfstools
 	udev"
 dist_pkg="
 	00_base/btrfs_progs
@@ -21,7 +22,6 @@ dist_pkg="
 	00_base/bzip2
 	00_base/coreutils
 	00_base/dialog
-	00_base/dosfstools
 	00_base/e2fsprogs
 	00_base/glibc
 	00_base/libgcc
@@ -218,7 +218,7 @@ case $arch in
 
 	# mkdir efiboot
 	# fallocate -l 1440K $K/efiboot.img
-	# /sbin/mkfs -t fat $K/efiboot.img
+	# /sbin/mkfs.fat -F32 $K/efiboot.img
 	# mount -o loop $K/efiboot.img efiboot
 	# mkdir -p efiboot/EFI/BOOT
 	# cp -p $media/EFI/BOOT/BOOT{IA32,X64}.EFI efiboot/EFI/BOOT
