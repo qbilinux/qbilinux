@@ -1,24 +1,24 @@
 Submitted By: Ken Moffat <ken at linuxfromscratch dot org>
-Date: 2018-05-02
+Date: 2018-12-26
 Initial Package Version: 20180414
 Upstream Status: Applied
 Origin: Upstream
-Description: Three fixes, cherry-picked from svn.
+Description: Two fixes, cherry-picked from svn plus a CVE fix.
+I have removed the partial fixes for various system versions of poppler.
 
 r47469 Fix segfault in dvipdfm-x (XeTeX) on 1/2/4-bit transparent indexed PNGs.
 
-r47470 Support poppler-0.64.0 (this one is critical for current BLFS).
-
 r47477 Fix a ptex regression for discontinuous kinsoku table.
 
-NB most updates in current svn are for ongoing development.
+Also, via fedora (I got lost in svn) a critical fix for CVE-2018-17407
 
-I have ignored r47476 (m-tx-0.63a) because the announcement at CTAN says this is
-a minor correction which will not be moticed on most architectures.
+"A buffer overflow in the handling of Type 1 fonts allows arbitrary code
+execution when a malicious font is loaded by one of the vulnerable tools:
+pdflatex, pdftex, dvips, or luatex."
 
 diff -Naur a/texk/dvipdfm-x/pngimage.c b/texk/dvipdfm-x/pngimage.c
 --- a/texk/dvipdfm-x/pngimage.c	2018-02-17 08:41:35.000000000 +0000
-+++ b/texk/dvipdfm-x/pngimage.c	2018-04-30 16:30:00.495894146 +0100
++++ b/texk/dvipdfm-x/pngimage.c	2018-10-09 01:52:01.648670875 +0100
 @@ -964,12 +964,16 @@
    png_bytep   trans;
    int         num_trans;
@@ -46,9 +46,35 @@ diff -Naur a/texk/dvipdfm-x/pngimage.c b/texk/dvipdfm-x/pngimage.c
      smask_data_ptr[i] = (idx < num_trans) ? trans[idx] : 0xff;
    }
    pdf_add_stream(smask, (char *)smask_data_ptr, width*height);
+diff -Naur a/texk/dvipsk/writet1.c b/texk/dvipsk/writet1.c
+--- a/texk/dvipsk/writet1.c	2016-11-25 18:24:26.000000000 +0000
++++ b/texk/dvipsk/writet1.c	2018-10-09 01:52:01.648670875 +0100
+@@ -1449,7 +1449,9 @@
+         *(strend(t1_buf_array) - 1) = ' ';
+ 
+         t1_getline();
++        alloc_array(t1_buf, strlen(t1_line_array) + strlen(t1_buf_array) + 1, T1_BUF_SIZE);
+         strcat(t1_buf_array, t1_line_array);
++        alloc_array(t1_line, strlen(t1_buf_array) + 1, T1_BUF_SIZE);
+         strcpy(t1_line_array, t1_buf_array);
+         t1_line_ptr = eol(t1_line_array);
+     }
+diff -Naur a/texk/web2c/luatexdir/font/writet1.w b/texk/web2c/luatexdir/font/writet1.w
+--- a/texk/web2c/luatexdir/font/writet1.w	2016-11-25 18:24:34.000000000 +0000
++++ b/texk/web2c/luatexdir/font/writet1.w	2018-10-09 01:52:01.648670875 +0100
+@@ -1625,7 +1625,9 @@
+     if (sscanf(p, "%i", &i) != 1) {
+         strcpy(t1_buf_array, t1_line_array);
+         t1_getline();
++        alloc_array(t1_buf, strlen(t1_line_array) + strlen(t1_buf_array) + 1, T1_BUF_SIZE);
+         strcat(t1_buf_array, t1_line_array);
++        alloc_array(t1_line, strlen(t1_buf_array) + 1, T1_BUF_SIZE);
+         strcpy(t1_line_array, t1_buf_array);
+         t1_line_ptr = eol(t1_line_array);
+     }
 diff -Naur a/texk/web2c/luatexdir/image/pdftoepdf.w b/texk/web2c/luatexdir/image/pdftoepdf.w
 --- a/texk/web2c/luatexdir/image/pdftoepdf.w	2018-01-17 18:00:12.000000000 +0000
-+++ b/texk/web2c/luatexdir/image/pdftoepdf.w	2018-04-30 16:29:12.201899987 +0100
++++ b/texk/web2c/luatexdir/image/pdftoepdf.w	2018-10-09 01:52:01.648670875 +0100
 @@ -472,10 +472,10 @@
          break;
      */
@@ -64,7 +90,7 @@ diff -Naur a/texk/web2c/luatexdir/image/pdftoepdf.w b/texk/web2c/luatexdir/image
          pdf_add_null(pdf);
 diff -Naur a/texk/web2c/luatexdir/lua/lepdflib.cc b/texk/web2c/luatexdir/lua/lepdflib.cc
 --- a/texk/web2c/luatexdir/lua/lepdflib.cc	2018-02-14 14:44:38.000000000 +0000
-+++ b/texk/web2c/luatexdir/lua/lepdflib.cc	2018-04-30 16:29:17.889917722 +0100
++++ b/texk/web2c/luatexdir/lua/lepdflib.cc	2018-10-09 01:52:01.649670868 +0100
 @@ -674,7 +674,7 @@
      uin = (udstruct *) luaL_checkudata(L, 1, M_##in);          \
      if (uin->pd != NULL && uin->pd->pc != uin->pc)             \
@@ -83,93 +109,28 @@ diff -Naur a/texk/web2c/luatexdir/lua/lepdflib.cc b/texk/web2c/luatexdir/lua/lep
          lua_pushlstring(L, gs->getCString(), gs->getLength());
      } else
          lua_pushnil(L);
-diff -Naur a/texk/web2c/pdftexdir/pdftoepdf-newpoppler.cc b/texk/web2c/pdftexdir/pdftoepdf-newpoppler.cc
---- a/texk/web2c/pdftexdir/pdftoepdf-newpoppler.cc	2018-04-04 05:08:11.000000000 +0100
-+++ b/texk/web2c/pdftexdir/pdftoepdf-newpoppler.cc	2018-04-30 16:29:35.849907790 +0100
-@@ -290,7 +290,7 @@
- static void copyDictEntry(Object * obj, int i)
- {
-     Object obj1;
--    copyName(obj->dictGetKey(i));
-+    copyName((char *)obj->dictGetKey(i));
-     pdf_puts(" ");
-     obj1 = obj->dictGetValNF(i);
-     copyObject(&obj1);
-@@ -355,7 +355,7 @@
-         if (!procset.isName())
-             pdftex_fail("PDF inclusion: invalid ProcSet entry type <%s>",
-                         procset.getTypeName());
--        copyName(procset.getName());
-+        copyName((char *)procset.getName());
-         pdf_puts(" ");
+diff -Naur a/texk/web2c/pdftexdir/writet1.c b/texk/web2c/pdftexdir/writet1.c
+--- a/texk/web2c/pdftexdir/writet1.c	2016-11-25 18:24:37.000000000 +0000
++++ b/texk/web2c/pdftexdir/writet1.c	2018-10-09 01:52:01.649670868 +0100
+@@ -1598,7 +1598,9 @@
+         *(strend(t1_buf_array) - 1) = ' ';
+ 
+         t1_getline();
++        alloc_array(t1_buf, strlen(t1_line_array) + strlen(t1_buf_array) + 1, T1_BUF_SIZE);
+         strcat(t1_buf_array, t1_line_array);
++        alloc_array(t1_line, strlen(t1_buf_array) + 1, T1_BUF_SIZE);
+         strcpy(t1_line_array, t1_buf_array);
+         t1_line_ptr = eol(t1_line_array);
      }
-     pdf_puts("]\n");
-@@ -418,7 +418,7 @@
-         && fontdescRef.isRef()
-         && fontdesc.isDict()
-         && embeddableFont(&fontdesc)
--        && (fontmap = lookup_fontmap(basefont.getName())) != NULL) {
-+        && (fontmap = lookup_fontmap((char *)basefont.getName())) != NULL) {
-         // round /StemV value, since the PDF input is a float
-         // (see Font Descriptors in PDF reference), but we only store an
-         // integer, since we don't want to change the struct.
-@@ -427,7 +427,7 @@
-         charset = fontdesc.dictLookup("CharSet");
-         if (!charset.isNull() &&
-             charset.isString() && is_subsetable(fontmap))
--            epdf_mark_glyphs(fd, charset.getString()->getCString());
-+            epdf_mark_glyphs(fd, (char *)charset.getString()->getCString());
-         else
-             embed_whole_font(fd);
-         addFontDesc(fontdescRef.getRef(), fd);
-@@ -456,7 +456,7 @@
-         if (fontRef.isRef())
-             copyFont(obj->dictGetKey(i), &fontRef);
-         else if (fontRef.isDict()) {   // some programs generate pdf with embedded font object
--            copyName(obj->dictGetKey(i));
-+            copyName((char *)obj->dictGetKey(i));
-             pdf_puts(" ");
-             copyObject(&fontRef);
-         }
-@@ -565,7 +565,7 @@
-     } else if (obj->isNum()) {
-         pdf_printf("%s", convertNumToPDF(obj->getNum()));
-     } else if (obj->isString()) {
--        s = obj->getString();
-+        s = (GooString *)obj->getString();
-         p = s->getCString();
-         l = s->getLength();
-         if (strlen(p) == (unsigned int) l) {
-@@ -589,7 +589,7 @@
-             pdf_puts(">");
-         }
-     } else if (obj->isName()) {
--        copyName(obj->getName());
-+        copyName((char *)obj->getName());
-     } else if (obj->isNull()) {
-         pdf_puts("null");
-     } else if (obj->isArray()) {
-diff -Naur a/texk/web2c/pdftexdir/pdftosrc-newpoppler.cc b/texk/web2c/pdftexdir/pdftosrc-newpoppler.cc
---- a/texk/web2c/pdftexdir/pdftosrc-newpoppler.cc	2017-10-17 22:52:13.000000000 +0100
-+++ b/texk/web2c/pdftexdir/pdftosrc-newpoppler.cc	2018-04-30 16:29:41.360904749 +0100
-@@ -109,7 +109,7 @@
-             fprintf(stderr, "No SourceName found\n");
-             exit(1);
-         }
--        outname = srcName.getString()->getCString();
-+        outname = (char *)srcName.getString()->getCString();
-         // We cannot free srcName, as objname shares its string.
-         // srcName.free();
-     } else if (objnum > 0) {
 diff -Naur a/texk/web2c/ptexdir/ptex_version.h b/texk/web2c/ptexdir/ptex_version.h
 --- a/texk/web2c/ptexdir/ptex_version.h	2018-01-21 03:48:06.000000000 +0000
-+++ b/texk/web2c/ptexdir/ptex_version.h	2018-04-30 16:27:55.978626503 +0100
++++ b/texk/web2c/ptexdir/ptex_version.h	2018-10-09 01:52:01.649670868 +0100
 @@ -1 +1 @@
 -#define PTEX_VERSION "p3.8.0"
 +#define PTEX_VERSION "p3.8.1"
 diff -Naur a/texk/web2c/ptexdir/tests/free_ixsp.tex b/texk/web2c/ptexdir/tests/free_ixsp.tex
 --- a/texk/web2c/ptexdir/tests/free_ixsp.tex	1970-01-01 01:00:00.000000000 +0100
-+++ b/texk/web2c/ptexdir/tests/free_ixsp.tex	2018-04-30 16:13:49.260128806 +0100
++++ b/texk/web2c/ptexdir/tests/free_ixsp.tex	2018-10-09 01:52:01.649670868 +0100
 @@ -0,0 +1,53 @@
 +%#!eptex -ini -etex
 +\let\dump\relax
@@ -226,7 +187,7 @@ diff -Naur a/texk/web2c/ptexdir/tests/free_ixsp.tex b/texk/web2c/ptexdir/tests/f
 +\bye
 diff -Naur a/texk/web2c/ptexdir/tests/free_pena.tex b/texk/web2c/ptexdir/tests/free_pena.tex
 --- a/texk/web2c/ptexdir/tests/free_pena.tex	1970-01-01 01:00:00.000000000 +0100
-+++ b/texk/web2c/ptexdir/tests/free_pena.tex	2018-04-30 16:15:00.829396672 +0100
++++ b/texk/web2c/ptexdir/tests/free_pena.tex	2018-10-09 01:52:01.649670868 +0100
 @@ -0,0 +1,52 @@
 +%#!eptex -ini -etex
 +\let\dump\relax
