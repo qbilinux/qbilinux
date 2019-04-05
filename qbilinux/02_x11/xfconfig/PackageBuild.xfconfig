@@ -1,10 +1,10 @@
 #!/bin/sh
 
 ######################################################################
-pkgbase=xfplamoconfig
+pkgbase=xfconfig
 vers=1.5
 url=""
-srcfiles="xfplamoconfig xfplamoconfig.sh"
+srcfiles="xfconfig xfconfig.sh"
 apply_arch="noarch"
 arch=noarch
 build=1
