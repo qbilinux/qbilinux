@@ -17,7 +17,7 @@ dialog --title "Qbilinux セットアップメニュー" --menu \
 " \
 22 77 15 \
 "adduser" "一般ユーザ追加(Xの利用は必ずadduserで追加したユーザで!)" \
-"xfplamoconfig" "X.orgサーバの設定(推奨)" \
+"xfconfig" "X.orgサーバの設定(推奨)" \
 "pkgtool" "パッケージ管理" \
 "mkinfodir"  "/usr/share/info/dir を再構築" \
 "netconfig" "ネットワークの設定" \
@@ -37,9 +37,9 @@ rm -f $TMP_REPLY
 clear
 if [ "$TG" = "Exit" ] ; then
   exit
-elif [ "$TG" = "xfplamoconfig" ] ; then
+elif [ "$TG" = "xfconfig" ] ; then
   PATH="$PATH:/usr/X11/bin"
-  xfplamoconfig
+  xfconfig
   echo "  X の設定が成功したら adduser でユーザを作成し、"
   echo "  一般ユーザで X 環境を利用してください。"
 elif [ "$TG" = "xf86cfg" ] ; then
