@@ -1,5 +1,5 @@
 #!/bin/sh
-##                            Time-stamp: <2018-06-25 05:43:07 plamo>
+##                            Time-stamp: <2019-04-05 20:37:28 matsuki>
 
 # 2004-08-07 added support of "AlwaysCore" mouse setting for laptop.
 # 2004-08-04 added support for Plamo-4.01.
@@ -174,7 +174,7 @@ LCD_CHK=`/usr/sbin/lspci -n | grep "Class 060[57]"`
 CDPLAMO_CHK="`ls /usr/lib/setup/ | grep cdplamo`"
 
 
-TMPFILE=`mktemp /tmp/tmp_xfplamoconfig_$$.XXXXXX`
+TMPFILE=`mktemp /tmp/tmp_xfconfig_$$.XXXXXX`
 
 #LINE_BEGIN=`/usr/X11R7/bin/scanpci -v|nl -b a|grep '	  CLASS     0x03 0x'|awk 'NR==1{print $1}'`
 # 
@@ -350,7 +350,7 @@ fi
 #echo $WIDEMODE $MODENUM
 #exit
 
-# TMPFILE=`mktemp /tmp/tmp_xfplamoconfig_$$.XXXXXX`
+# TMPFILE=`mktemp /tmp/tmp_xfconfig_$$.XXXXXX`
 TMPDRIVER=`mktemp /tmp/tmp_tmpdriver_$$.XXXXXX`
 
 # if [ "$VENDOR" != "" ] ; then
@@ -389,7 +389,7 @@ if [ "$CDPLAMO_CHK" != "" -a "$LCD_CHK" != "" -a "$NO855TEST" = "" ]; then
       LFP_RESOLUTION="$XSCREEN"
     fi
     if [ "$LFP_RESOLUTION" != "" ]; then
-      TMP855FILE=`mktemp /tmp/tmp855_xfplamoconfig_$$.XXXXXX`
+      TMP855FILE=`mktemp /tmp/tmp855_xfconfig_$$.XXXXXX`
       /usr/bin/855resolution -l | grep 'Mode ' > $TMP855FILE
       MODE_CHK="`cat $TMP855FILE | grep \" ${LFP_RESOLUTION},\"`"
       if [ "$MODE_CHK" = "" ]; then

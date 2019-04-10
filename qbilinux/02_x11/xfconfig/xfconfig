@@ -1,5 +1,5 @@
 #!/bin/sh
-##                            Time-stamp: <2018-06-17 15:25:56 matsuki>
+##                            Time-stamp: <2019-04-05 20:36:34 matsuki>
 
 ################################
 select_main() {
@@ -377,10 +377,10 @@ fi
 TMP_REPLY=`mktemp /tmp/tmp_reply_$$.XXXXXX`
 
 INSTDIR="/sbin"
-XFPLAMOCONFIG="${INSTDIR}/xfplamoconfig.sh"
-GPMPLAMOCONFIG="${INSTDIR}/gpmplamoconfig.sh"
+XFCONFIG="${INSTDIR}/xfconfig.sh"
+GPMCONFIG="${INSTDIR}/gpmconfig.sh"
 
-. $XFPLAMOCONFIG --initonly
+. $XFCONFIG --initonly
 #LCD_CHK="hoge"
 
 MAXHSYNC=""
@@ -467,9 +467,9 @@ if [ $RTV = 0 ] ; then
     chmod 755 /etc/rc.d/rc.gpm
   fi
   if [ "$USBMCHK" = "usb" ] ; then
-    USBMOUSE_CHK=$USBMCHK $XFPLAMOCONFIG $ARGS > $XFCONFIGFILE
+    USBMOUSE_CHK=$USBMCHK $XFCONFIG $ARGS > $XFCONFIGFILE
   else
-    $XFPLAMOCONFIG $ARGS > $XFCONFIGFILE
+    $XFCONFIG $ARGS > $XFCONFIGFILE
   fi
   if [ "$CDPLAMO_CHK" = "" ]; then
     dialog --title "Complete!" --msgbox "\n\
