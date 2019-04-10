@@ -132,7 +132,7 @@ if [ $opt_download -eq 1 ] ; then
 		;;
 	    git)
 		if [ ! -d `basename ${i##*/} .git` ] ; then
-		    git clone $i
+		    git clone --recursive $i
 		else
 		    ( cd `basename ${i##*/} .git` ; git pull origin master )
 		fi
