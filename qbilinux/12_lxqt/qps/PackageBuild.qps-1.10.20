@@ -1,15 +1,15 @@
 #!/bin/sh
 ##############################################################
-pkgbase=lxqt_about
-vers=0.14.0
-url="https://downloads.lxqt.org/downloads/lxqt-about/${vers}/lxqt-about-${vers}.tar.xz"
+pkgbase="qps"
+vers=1.10.20
+url="https://downloads.lxqt.org/downloads/qps/${vers}/qps-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=lxqt-about-${vers}
-OPT_CONFIG='-DPULL_TRANSLATIONS=no -DCMAKE_BUILD_TYPE=Release'
-DOCS='AUTHORS CHANGELOG COPYING README.md aboutdialog'
+src=qps-${vers}
+OPT_CONFIG=''
+DOCS='CHANGELOG COPYING LICENSE.QPL README.md'
 patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
