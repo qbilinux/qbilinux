@@ -6,7 +6,7 @@ vers=2.02
 url="https://ftp.gnu.org/gnu/grub/grub-${vers}.tar.xz"
 apply_arch="x86_64 i686"
 arch=`uname -m`
-build=4
+build=5
 src[0]=$pkgbase-$vers
 src[1]=${src[0]}
 patchfiles[0]="0008-Fix-packed-not-aligned-error-on-GCC-8.patch grub-2.02-relocation_fix-1.patch"
@@ -86,11 +86,11 @@ do_package() {
 	# Display countdown or not
 	#GRUB_HIDDEN_TIMEOUT_QUIET=false
 	# Command line arguments for default linux entry
-	GRUB_CMDLINE_LINUX_DEFAULT="vga16 panic_output=7"
+	GRUB_CMDLINE_LINUX_DEFAULT="vga16 panic_output=7 net.ifnames=0"
 	# Command line arguments for all linux entry
 	#GRUB_CMDLINE_LINUX=
 	# Distributor
-	GRUB_DISTRIBUTOR=Plamo
+	GRUB_DISTRIBUTOR=Qbilinux
 	EOF
     install -d $P/var/log/setup
     for i in {,e}setup.bootloader ; do
