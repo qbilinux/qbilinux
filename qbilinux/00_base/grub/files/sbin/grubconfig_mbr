@@ -64,7 +64,7 @@ EOF
 
 # これをしないとfdiskの出力が日本語になる
 export LANG=C
-$PROBE -l | grep -v ram | grep "^Disk " | grep -v "identifier" > /tmp/SeTdlist
+$PROBE -l | grep -v ram | grep "^Disk " | grep -v "model" | grep -v "identifier" > /tmp/SeTdlist
 cat /tmp/SeTdlist | while [ 0 ]; do
     read DISK;
     if [ "$DISK" = "" ]; then
