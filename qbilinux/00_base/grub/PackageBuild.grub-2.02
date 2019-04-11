@@ -6,10 +6,10 @@ vers=2.02
 url="https://ftp.gnu.org/gnu/grub/grub-${vers}.tar.xz"
 apply_arch="x86_64 i686"
 arch=`uname -m`
-build=3
+build=4
 src[0]=$pkgbase-$vers
 src[1]=${src[0]}
-patchfiles[0]="0008-Fix-packed-not-aligned-error-on-GCC-8.patch"
+patchfiles[0]="0008-Fix-packed-not-aligned-error-on-GCC-8.patch grub-2.02-relocation_fix-1.patch"
 patchfiles[1]=""
 OPT_CONFIG[0]="--disable-grub-mount --disable-werror"
 OPT_CONFIG[1]="${OPT_CONFIG[0]} --with-platform=efi"
