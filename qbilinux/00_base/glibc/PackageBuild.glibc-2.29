@@ -6,7 +6,7 @@ vers=2.29
 url="http://ftp.gnu.org/gnu/glibc/glibc-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=$pkgbase-$vers
 OPT_CONFIG="--enable-kernel=3.2 --enable-obsolete-rpc --enable-obsolete-nsl"
 DOCS="BUGS CONFORMANCE COPYING* ChangeLog* INSTALL LICENSES NEWS
@@ -95,9 +95,9 @@ do_install() {
     mv $P/usr/$libdir/{gconv,glibc,audit} $C
     mv $C/{gconv,glibc,audit} $P/usr/$libdir
     ln -sf /usr/share/locale $P/usr/$libdir
-    ln -s ja_JP.eucJP $P/usr/share/locale/ja_JP
+    ln -s ja_JP.UTF-8 $P/usr/share/locale/ja_JP
     mv $P/usr/share/locale/{ja,ja_JP.eucJP}
-    ln -s ja_JP.eucJP $P/usr/share/locale/ja
+    ln -s ja_JP.UTF-8 $P/usr/share/locale/ja
     gunzip $P/usr/share/i18n/charmaps/EUC-JP.gz
     localedef -f $P/usr/share/i18n/charmaps/EUC-JP \
 	      -i $P/usr/share/i18n/locales/ja_JP \
