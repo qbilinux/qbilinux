@@ -120,12 +120,12 @@ for OPT in "$@" ; do
 done
 
 inst_pkg() {
-    if [ -f ${pkgdir}/qbilinux/$1-*-${pkg_arch}-*.txz ] ; then
-	installpkg -root $W/initrd ${pkgdir}/qbilinux/$1-*-${pkg_arch}-*.txz
-    elif [ -f ${pkgdir}/qbilinux/$1-*-noarch-*.txz ] ; then
-	installpkg -root ${pkgdir}/qbilinux/$1-*-noarch-*.txz
+    if [ -f ${pkgdir}/$1/$2-*-${pkg_arch}-*.txz ] ; then
+	installpkg -root $W/initrd ${pkgdir}/$1/$2-*-${pkg_arch}-*.txz
+    elif [ -f ${pkgdir}/$1/$2-*-noarch-*.txz ] ; then
+	installpkg -root $W/initrd ${pkgdir}/$1/$2-*-noarch-*.txz
     else
-	"required package does not exist. (${pkgdir}/qbilinux/$1-*-${pkg_arch}-*.txz)"
+	"required package does not exist. (${pkgdir}/$1/$2-*-${pkg_arch}-*.txz)"
 	exit 1
     fi
 }
@@ -143,20 +143,17 @@ make_initrd() {
     # initrd_plain.tar 中の kbd の一部ファイルも差し替える必要ありそう．
 
     for i in $pkg; do
-	if [ -f ${bootdir}/package/$i/$i-*-${pkg_arch}-*.txz ] ; then
-	    find ${bootdir}/package/$i -maxdepth 1 -name PackageBuild* -not -name *.inf -not -name *~ -exec ${cmddir}/mkpkgfile -dm {} \;
-	fi
-	installpkg -root $W/initrd ${bootdir}/package/$i/$i-*-${pkg_arch}-*.txz
+	inst_pkg boot/package $i ;
     done
     for i in $dist_pkg; do
-	inst_pkg $i ;
+	inst_pkg qbilinux $i ;
     done
     if [ $contain_firm = 1 ] ; then
 	for i in $dist_firmware; do
-	    inst_pkg $i ;
+	    inst_pkg qbilinux $i ;
 	done
     fi
-    inst_pkg 00_base/kernel
+    inst_pkg qbilinux 00_base/kernel
 
     cp -a ${bootdir}/installer/* initrd/
     (cd initrd/usr/lib/setup/; ln -sf setup2 setup)
@@ -189,14 +186,14 @@ case $arch in
 
 	# mkdir -p $media/EFI/BOOT
 	# # execute in each architecture.
-	# # grub-mkimage -p '' -o $media/EFI/BOOT/BOOTIA32.EFI -O i386-efi fat \
+	# # grub-mkimage -p '' -o $media/EFI/BOOT/bootia32.efi -O i386-efi fat \
 	# # 	     part_msdos iso9660 gzio all_video gfxterm font terminal normal \
 	# # 	     linux echo test search configfile cpuid minicmd
-	# # grub-mkimage -p '' -o $media/EFI/BOOT/BOOTX64.EFI -O x86_64-efi fat \
+	# # grub-mkimage -p '' -o $media/EFI/BOOT/BOOTx64.efi -O x86_64-efi fat \
 	# # 	     part_msdos iso9660 gzio all_video gfxterm font terminal normal \
 	# # 	     linux echo test search configfile cpuid minicmd
-	# cp ${bootdir}/efi/BOOTX64.EFI $media/EFI/BOOT
-	# cp ${bootdir}/efi/BOOTIA32.EFI $media/EFI/BOOT
+	# cp ${bootdir}/efi/BOOTx64.efi $media/EFI/BOOT
+	# cp ${bootdir}/efi/bootia32.efi $media/EFI/BOOT
 	# cat <<- "EOF" > $media/EFI/BOOT/GRUB.CFG
 	# 	menuentry "UEFI Qbilinux install from DVD" {
 	# 	  linux (cd0)/isolinux/vmlinuz root=/dev/ram0 rw nomodeset vga16 kbd=usbkbd
@@ -218,10 +215,10 @@ case $arch in
 
 	# mkdir efiboot
 	# fallocate -l 1440K $K/efiboot.img
-	# /sbin/mkfs.fat -F32 $K/efiboot.img
+	# mkfs.fat -F32 $K/efiboot.img
 	# mount -o loop $K/efiboot.img efiboot
 	# mkdir -p efiboot/EFI/BOOT
-	# cp -p $media/EFI/BOOT/BOOT{IA32,X64}.EFI efiboot/EFI/BOOT
+	# cp -p $media/EFI/BOOT/{BOOTx64,bootia32}.efi efiboot/EFI/BOOT
 	# cat <<- "EOF" > efiboot/EFI/BOOT/GRUB.CFG
 	# 	menuentry "Qbilinux install from DVD" {
 	# 	  linux (cd0)/isolinux/vmlinuz root=/dev/ram0 rw
