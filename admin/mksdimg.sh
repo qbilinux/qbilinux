@@ -50,7 +50,7 @@ arch=$3
 dt=`date +%Y%m%d`
 
 imgdir=__tmp__
-if [ ! -d $imdir ] ; then
+if [ ! -d $imgdir ] ; then
     mkdir $imgdir
 fi
 
@@ -62,7 +62,7 @@ cat <<- EOF | sfdisk $img
 EOF
 loop=`losetup -f`
 losetup -P $loop $img
-/sbin/mkfs.fat -F32 ${loop}p1
+mkfs.fat -F32 ${loop}p1
 mount ${loop}p1 $imgdir
 
 cp -r ${topdir}/${arch}/* $imgdir
