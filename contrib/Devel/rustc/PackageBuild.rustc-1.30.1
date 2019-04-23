@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase=rustc
-vers=1.31.1
+vers=1.30.1
 url="https://static.rust-lang.org/dist/rustc-${vers}-src.tar.gz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
@@ -21,7 +21,7 @@ SRC_DIR="/home/archives/source/"
 source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
-    cd ${S[$1]}
+    cd ${S[$i]}
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
@@ -32,7 +32,7 @@ do_config() {
 
     cp -a ${S[$1]} ${B[$1]}
     cd ${B[$1]}
-    cat <<EOF > config.toml
+cat <<EOF > config.toml
 [build]
 # install cargo as well as rust
 extended = true
