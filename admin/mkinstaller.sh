@@ -160,6 +160,19 @@ make_initrd() {
     (cd initrd/usr/lib/setup/; ln -sf fdsetupj setupj)
     mv initrd/boot kernel
 
+    # remove files
+    pushd initrd
+    find lib lib64 usr/lib usr/lib64 -name "*.a" -exec rm {} \;
+    rm -rf usr/include usr/src/qbilinux
+    pushd usr/share/locale
+    for loc in * ; do
+    	if [ "$loc" != "ja" -a "$loc" != "ja_JP" -a "$loc" != "ja_JP.UTF-8" -a "$loc" != "ja_JP.eucJP" -a "$loc" != "locale.alias" ]; then
+    	    rm -rf $loc
+    	fi
+    done
+    popd
+    popd
+    
     (cd initrd ; find . | tail -n+2 | cpio -o -H newc | gzip -n ) > initrd.gz
 }
 
