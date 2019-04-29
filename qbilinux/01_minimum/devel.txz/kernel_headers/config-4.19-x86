@@ -1,6 +1,6 @@
 #
 # Automatically generated file; DO NOT EDIT.
-# Linux/x86 4.19.30 Kernel Configuration
+# Linux/x86 4.19.36 Kernel Configuration
 #
 
 #
@@ -2187,6 +2187,7 @@ CONFIG_MACVLAN=m
 CONFIG_MACVTAP=m
 # CONFIG_IPVLAN is not set
 # CONFIG_VXLAN is not set
+# CONFIG_GTP is not set
 # CONFIG_MACSEC is not set
 CONFIG_NETCONSOLE=m
 # CONFIG_NETCONSOLE_DYNAMIC is not set
@@ -3049,6 +3050,7 @@ CONFIG_SERIAL_NONSTANDARD=y
 # CONFIG_N_HDLC is not set
 # CONFIG_N_GSM is not set
 # CONFIG_TRACE_SINK is not set
+CONFIG_LDISC_AUTOLOAD=y
 CONFIG_DEVMEM=y
 # CONFIG_DEVKMEM is not set
 
@@ -3105,7 +3107,6 @@ CONFIG_HW_RANDOM=y
 CONFIG_HW_RANDOM_GEODE=y
 CONFIG_HW_RANDOM_VIA=y
 CONFIG_NVRAM=y
-# CONFIG_R3964 is not set
 # CONFIG_APPLICOM is not set
 # CONFIG_SONYPI is not set
 
@@ -4772,6 +4773,7 @@ CONFIG_MXM_WMI=m
 # CONFIG_MLX_PLATFORM is not set
 # CONFIG_TOUCHSCREEN_DMI is not set
 # CONFIG_I2C_MULTI_INSTANTIATE is not set
+# CONFIG_INTEL_ATOMISP2_PM is not set
 CONFIG_PMC_ATOM=y
 # CONFIG_CHROME_PLATFORMS is not set
 # CONFIG_MELLANOX_PLATFORM is not set
