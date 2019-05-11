@@ -1,15 +1,15 @@
 #!/bin/sh
 ##############################################################
-pkgbase=konsole
-vers=18.12.3
-url='https://download.kde.org/stable/applications/18.12.3/src/konsole-18.12.3.tar.xz'
+pkgbase=khelpcenter
+vers=19.04.1
+url='https://download.kde.org/stable/applications/19.04.1/src/khelpcenter-19.04.1.tar.xz'
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=konsole-${vers}
+src=khelpcenter-${vers}
 OPT_CONFIG=''
-DOCS='COPYING COPYING.DOC COPYING.LIB COPYING.Unicode README'
+DOCS='COPYING README.metadata history.cpp history.h'
 patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
