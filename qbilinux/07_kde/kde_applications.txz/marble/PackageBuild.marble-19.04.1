@@ -1,16 +1,16 @@
 #!/bin/sh
 ##############################################################
-pkgbase="konqueror"
-vers=18.12.3
-url='https://download.kde.org/stable/applications/18.12.3/src/konqueror-18.12.3.tar.xz'
+pkgbase=marble
+vers=19.04.1
+url='https://download.kde.org/stable/applications/19.04.1/src/marble-19.04.1.tar.xz'
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=konqueror-${vers}
+src=marble-${vers}
 OPT_CONFIG=''
-DOCS='AUTHORS COPYING COPYING.DOC COPYING.LIB ChangeLog about'
-patchfiles='tidy_header_name.patch'
+DOCS=''
+patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"

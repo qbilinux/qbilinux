@@ -1,15 +1,15 @@
 #!/bin/sh
 ##############################################################
-pkgbase=kate
-vers=18.12.3
-url='https://download.kde.org/stable/applications/18.12.3/src/kate-18.12.3.tar.xz'
+pkgbase="libkcddb"
+vers=19.04.1
+url='https://download.kde.org/stable/applications/19.04.1/src/libkcddb-19.04.1.tar.xz'
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=kate-${vers}
+src=libkcddb-${vers}
 OPT_CONFIG=''
-DOCS='AUTHORS COPYING-GPL3 COPYING-LGPL3 COPYING.LIB README.md'
+DOCS='AUTHORS COPYING COPYING.DOC COPYING.LIB ChangeLog about'
 patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
