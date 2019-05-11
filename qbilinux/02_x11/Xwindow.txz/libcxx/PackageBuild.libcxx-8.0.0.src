@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase=libcxx
-vers=7.0.1
+vers=8.0.0
 url="http://www.llvm.org/releases/${vers}/libcxx-${vers}.src.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
