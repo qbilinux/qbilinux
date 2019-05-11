@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
 pkgbase=texlive_texmf
-vers=20180414
+vers=20190410
 #url="ftp://tug.org/historic/systems/texlive/${vers:0:4}/texlive-${vers}-texmf.tar.xz"
 url="http://ftp.math.utah.edu/pub/tex/historic/systems/texlive/${vers:0:4}/texlive-${vers}-texmf.tar.xz"
 apply_arch="noarch"
 arch=noarch
 build=1
 src=texlive-${vers}-texmf
-prefix=/opt/texlive/2018
+prefix=/opt/texlive/2019
 OPT_CONFIG=''
 DOCS=''
 PKG1='README ls-R asymptote bibtex chktex context pbibtex psutils scripts source tex tex4ht texconfig texdoc texdoctk ttf2pk xdvi xindy'
@@ -22,6 +22,7 @@ PKG2='dvips fonts hbf2gf makeindex metafont metapost mft omega'
 #doc/pmxchords doc/ptex doc/sjisconv doc/support doc/tetex doc/texdoc doc/texlive
 #doc/texworks doc/tpic2pdftex doc/ttf2pk doc/uptex doc/vlna doc/web2c doc/xetex
 #doc/xindy'
+NOCOMPRESS=y
 patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
