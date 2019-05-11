@@ -1,17 +1,17 @@
 #!/bin/sh
 ##############################################################
 pkgbase=texlive
-vers=20180414
+vers=20190410
 #url="ftp://tug.org/texlive/historic/2018/texlive-${vers}-source.tar.xz"
 url="http://ftp.math.utah.edu/pub/tex/historic/systems/texlive/${vers:0:4}/texlive-${vers}-source.tar.xz"
 verify=$url.sha256
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=4
+build=1
 src=texlive-${vers}-source
 #
-PREFIX=/opt/texlive/2018
+PREFIX=/opt/texlive/2019
 TEXARCH=$(uname -m | sed -e 's/i.86/i386/' -e 's/$/-linux/')
 #
 OPT_CONFIG="--prefix=${PREFIX} \
@@ -24,7 +24,7 @@ OPT_CONFIG="--prefix=${PREFIX} \
 	--disable-native-texlive-build \
 	--disable-static \
 	--enable-shared \
-	--with-banner-add=-qbilinux "
+	--with-banner-add=-qbilinux --disable-dvisvgm"
 SYS_LIB="cairo fontconfig freetype2 gmp icu libgs libpng mpfr pixman zlib"
 for l in $SYS_LIB
 do
@@ -36,7 +36,7 @@ do
   OPT_CONFIG="$OPT_CONFIG --with-$p"
 done
 DOCS='ChangeLog README README.0overview README.1prerequisites README.2building README.3installing README.4layout README.5configure README.6cross README.7coding'
-patchfiles='texlive-20180414-source-upstream_fixes-3.patch dvipdfmx.patch'
+patchfiles='dvipdfmx.patch'
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
