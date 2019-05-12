@@ -1,16 +1,14 @@
 #!/bin/sh
 ##############################################################
-pkgbase=mate_user_guide
-vers=1.22.0
-url="http://pub.mate-desktop.org/releases/${vers%.*}/mate-user-guide-${vers}.tar.xz"
-verify=
-commitid=
+pkgbase=mate_icon_theme
+vers=1.22.1
+url="http://pub.mate-desktop.org/releases/${vers%.*}/mate-icon-theme-${vers}.tar.xz"
 apply_arch="noarch"
 arch=noarch
 build=1
-src=mate-user-guide-${vers}
+src=mate-icon-theme-${vers}
 OPT_CONFIG=''
-DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README'
+DOCS='AUTHORS COPYING ChangeLog NEWS README TODO'
 patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
@@ -67,10 +65,10 @@ do_install() {
     fi
     mkdir -p $P/install
     cat << EOF >> $P/install/initpkg
-update-mime-database /usr/share/mime > /dev/null 2>&1
-touch /usr/share/mime/mime.cache
-update-desktop-database /usr/share/applications > /dev/null 2>&1
-touch /usr/share/applications/mimeinfo.cache
+gtk-update-icon-cache -f /usr/share/icons/mate > /dev/null 2>&1
+touch /usr/share/icons/mate/icon-theme.cache
+gtk-update-icon-cache -f /usr/share/icons/menta > /dev/null 2>&1
+touch /usr/share/icons/menta/icon-theme.cache
 EOF
 }
 
