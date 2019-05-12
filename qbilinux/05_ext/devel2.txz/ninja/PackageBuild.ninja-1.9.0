@@ -1,8 +1,8 @@
 #!/bin/sh
 ##############################################################
 pkgbase=ninja
-vers=1.8.2
-url='https://github.com/ninja-build/ninja/archive/v1.8.2.tar.gz'
+vers=1.9.0
+url="https://github.com/ninja-build/ninja/archive/v${vers}.tar.gz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
@@ -10,7 +10,7 @@ build=1
 src=ninja-${vers}
 OPT_CONFIG=''
 DOCS='COPYING HACKING.md README RELEASING doc misc'
-patchfiles='ninja-1.8.2-add_NINJAJOBS_var-1.patch'
+patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -23,6 +23,12 @@ do_prepare() {
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
+    sed -i '/int Guess/a \
+    int   j = 0;\
+    char* jobs = getenv( "NINJAJOBS" );\
+    if ( jobs != NULL ) j = atoi( jobs );\
+    if ( j > 0 ) return j;\
+    ' src/ninja.cc
 }
 
 do_config() {
