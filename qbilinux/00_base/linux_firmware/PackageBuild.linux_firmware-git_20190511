@@ -2,8 +2,8 @@
 
 ######################################################################
 pkgbase=linux_firmware
-vers=git_20190212
-commitid=28f5f7d
+vers=git_20190511
+commitid=92e17d0
 url="https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git"
 apply_arch="noarch"
 arch=noarch
@@ -25,6 +25,7 @@ DOCS="GPL-3 `echo LICENCE.{Abilis,IntcSST2,Marvell,OLPC}` LICENSE.radeon
     `echo LICENCE.{qla1280,ti-keystone}`
     `echo LICENSE.{QualcommAtheros_{ar3k,ath10k},amdgpu,atmel,hfi1_firmware}`
     LICENSE.i915"
+NOCOMPRESS=y
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -33,7 +34,7 @@ SRC_DIR="/home/archives/source/"
 source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
-    cd ${S[$i]}
+    cd ${S[$1]}
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
