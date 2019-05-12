@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='ftp://ftp.gnome.org/pub/gnome/sources/yelp-tools/3.16/yelp-tools-3.16.1.tar.xz'
 pkgbase=yelp_tools
-vers=3.16.1
+vers=3.32.1
+url="ftp://ftp.gnome.org/pub/gnome/sources/yelp-tools/${vers%.*}/yelp-tools-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=yelp-tools-3.16.1
+src=yelp-tools-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING COPYING.GPL ChangeLog INSTALL NEWS README'
 patchfiles=''
