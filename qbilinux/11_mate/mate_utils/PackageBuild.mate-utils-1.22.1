@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
-pkgbase=mate_power_manager
-vers=1.22.0
-url="http://pub.mate-desktop.org/releases/${vers%.*}/mate-power-manager-${vers}.tar.xz"
+pkgbase=mate_utils
+vers=1.22.1
+url="http://pub.mate-desktop.org/releases/${vers%.*}/mate-utils-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=mate-power-manager-${vers}
-OPT_CONFIG='--disable-docbook-docs'
-DOCS='AUTHORS COPYING ChangeLog HACKING NEWS README TODO'
+src=mate-utils-${vers}
+OPT_CONFIG=''
+DOCS='AUTHORS COPYING COPYING.docs COPYING.libs ChangeLog NEWS README THANKS'
 patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"

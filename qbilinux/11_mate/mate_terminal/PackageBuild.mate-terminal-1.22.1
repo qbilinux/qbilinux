@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
-pkgbase=mate_icon_theme
-vers=1.22.0
-url="http://pub.mate-desktop.org/releases/${vers%.*}/mate-icon-theme-${vers}.tar.xz"
-apply_arch="noarch"
-arch=noarch
+pkgbase=mate_terminal
+vers=1.22.1
+url="http://pub.mate-desktop.org/releases/${vers%.*}/mate-terminal-${vers}.tar.xz"
+apply_arch="x86_64 i686 armv7l aarch64"
+arch=`uname -m`
 build=1
-src=mate-icon-theme-${vers}
+src=mate-terminal-${vers}
 OPT_CONFIG=''
-DOCS='AUTHORS COPYING ChangeLog NEWS README TODO'
+DOCS='AUTHORS COPYING ChangeLog HACKING NEWS README'
 patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
@@ -65,10 +65,14 @@ do_install() {
     fi
     mkdir -p $P/install
     cat << EOF >> $P/install/initpkg
-gtk-update-icon-cache -f /usr/share/icons/mate > /dev/null 2>&1
-touch /usr/share/icons/mate/icon-theme.cache
-gtk-update-icon-cache -f /usr/share/icons/menta > /dev/null 2>&1
-touch /usr/share/icons/menta/icon-theme.cache
+glib-compile-schemas /usr/share/glib-2.0/schemas > /dev/null 2>&1
+touch /usr/share/glib-2.0/schemas/gschemas.compiled
+update-mime-database /usr/share/mime > /dev/null 2>&1
+touch /usr/share/mime/mime.cache
+update-desktop-database /usr/share/applications > /dev/null 2>&1
+touch /usr/share/applications/mimeinfo.cache
+gtk-update-icon-cache -f /usr/share/icons/hicolor > /dev/null 2>&1
+touch /usr/share/icons/hicolor/icon-theme.cache
 EOF
 }
 
