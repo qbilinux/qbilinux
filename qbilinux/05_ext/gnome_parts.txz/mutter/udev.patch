@@ -1,0 +1,20 @@
+diff -Nrc mutter-3.32.1.orig/meson.build mutter-3.32.1/meson.build
+*** mutter-3.32.1.orig/meson.build	2019-04-18 04:10:50.000000000 +0900
+--- mutter-3.32.1/meson.build	2019-05-12 10:55:35.818599088 +0900
+***************
+*** 31,37 ****
+  atk_req = '>= 2.5.3'
+  
+  # optional version requirements
+! udev_req = '>= 228'
+  gudev_req = '>= 232'
+  
+  # wayland version requirements
+--- 31,37 ----
+  atk_req = '>= 2.5.3'
+  
+  # optional version requirements
+! udev_req = '>= 220'
+  gudev_req = '>= 232'
+  
+  # wayland version requirements
