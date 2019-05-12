@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='ftp://ftp.gnome.org/pub/gnome/sources/yelp-xsl/3.16/yelp-xsl-3.16.1.tar.xz'
 pkgbase=yelp_xsl
-vers=3.16.1
+vers=3.32.1
+url="ftp://ftp.gnome.org/pub/gnome/sources/yelp-xsl/${vers%.*}/yelp-xsl-${vers}.tar.xz"
 apply_arch="noarch"
 arch=noarch
 build=1
-src=yelp-xsl-3.16.1
+src=yelp-xsl-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING COPYING.GPL COPYING.LGPL ChangeLog INSTALL NEWS README'
 patchfiles=''
