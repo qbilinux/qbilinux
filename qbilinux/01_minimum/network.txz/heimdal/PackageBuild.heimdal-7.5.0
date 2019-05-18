@@ -11,7 +11,7 @@ src=$pkgbase-$vers
 OPT_CONFIG="--prefix=/usr --infodir=/usr/share/info
     --mandir=/usr/share/man --with-sqlite3=/usr LIBS=-pthread"
 DOCS="ChangeLog* LICENSE NEWS README TODO"
-patchfiles="parallel-build-dependencies CVE-2018-16860.patch"
+patchfiles="parallel-build-dependencies CVE-2018-16860.patch CVE-2019-12098.patch"
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
