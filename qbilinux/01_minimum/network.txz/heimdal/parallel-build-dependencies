@@ -1,0 +1,23 @@
+Description: Fix header dependencies for parallel builds
+ The heimdal package builds with dh --parallel, but a header which is
+ generated at build-time is not marked as a dependency of the programs
+ that depend on it for building.  Correct this so that parallel builds work
+ reliably.
+Author: Steve Langasek <steve.langasek@ubuntu.com>
+
+Index: heimdal-1.6~rc2+dfsg/kdc/Makefile.am
+===================================================================
+--- heimdal-1.6~rc2+dfsg.orig/kdc/Makefile.am
++++ heimdal-1.6~rc2+dfsg/kdc/Makefile.am
+@@ -19,9 +19,9 @@
+ hprop_SOURCES = hprop.c mit_dump.c hprop.h
+ hpropd_SOURCES = hpropd.c hprop.h
+ 
+-kstash_SOURCES = kstash.c headers.h
++kstash_SOURCES = kstash.c headers.h $(srcdir)/kdc-protos.h
+ 
+-string2key_SOURCES = string2key.c headers.h
++string2key_SOURCES = string2key.c headers.h $(srcdir)/kdc-protos.h
+ 
+ digest_service_SOURCES = \
+ 	digest-service.c
