@@ -5,7 +5,7 @@ vers=5.39
 url="http://www.jwz.org/xscreensaver/xscreensaver-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=xscreensaver-${vers}
 OPT_CONFIG='--with-pam --with-shadow --with-gtk --with-gl --with-pixbuf --with-xpm --with-jpeg'
 DOCS='INSTALL README README.VMS README.hacking'
@@ -18,7 +18,7 @@ SRC_DIR="/home/archives/source/"
 source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
-    cd ${S[$i]}
+    cd ${S[$1]}
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
@@ -57,7 +57,7 @@ do_install() {
     cd ${B[$1]}
     if [ -f Makefile ] ; then
 	export LDFLAGS='-Wl,--as-needed'
-	make install DESTDIR=$P
+	make install install_prefix=$P
     fi
     if [ $? != 0 ]; then
 	echo "make install error. $0 script stop"
