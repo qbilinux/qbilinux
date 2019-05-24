@@ -3174,7 +3174,7 @@ diff -Naur a/xdemos/Makefile b/xdemos/Makefile
 +X11_LIBS =  $(shell pkg-config --libs x11)
 +
 +DEMOS_CFLAGS = -g -O2 -I../include $(X11_INCLUDES)
-+DEMOS_LDFLAGS = -L../lib$(EXT) -lGL $(X11_LIBS) -lm
++DEMOS_LDFLAGS = -L$(LIBRARY_PATH) -lGL $(X11_LIBS) -lm
 +
 +default: glxgears glxinfo
 +
