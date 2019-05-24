@@ -6,7 +6,7 @@ url="https://github.com/libevent/libevent/releases/download/release-2.1.8-stable
 apply_arch="x86_64 i686 armv7l aarch64"
 commitid=
 arch=`uname -m`
-build=1
+build=2
 src=libevent-2.1.8-stable
 # for libressl
 # OPT_CONFIG='--disable-libevent-regress --disable-samples'
@@ -21,7 +21,7 @@ SRC_DIR="/home/archives/source/"
 source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
-    cd ${S[$i]}
+    cd ${S[$1]}
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
