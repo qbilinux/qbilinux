@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase=libreoffice
-vers=6.2.1.2
+vers=6.2.4.2
 url="http://download.documentfoundation.org/libreoffice/src/${vers%.*}/libreoffice-${vers}.tar.xz
 	http://download.documentfoundation.org/libreoffice/src/${vers%.*}/libreoffice-dictionaries-${vers}.tar.xz
 	http://download.documentfoundation.org/libreoffice/src/${vers%.*}/libreoffice-help-${vers}.tar.xz
@@ -12,9 +12,9 @@ apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
 src=libreoffice-${vers}
-OPT_CONFIG="--with-ant-home=$W/source/apache-ant-1.10.4/ --without-junit --without-java --with-lang=ja --with-system-boost --with-system-curl --with-system-icu --with-system-harfbuzz"
+OPT_CONFIG="--with-ant-home=$W/source/apache-ant-1.10.4/ --without-junit --without-java --with-lang=ja --with-system-boost --with-system-curl --with-system-icu --with-system-harfbuzz --with-system-libxml --with-system-xmlsec"
 DOCS='COPYING COPYING.LGPL COPYING.MPL ChangeLog README.Solaris README.cross README.md leak-suppress.txt readlicense_oo unusedcode.README'
-patchfiles=''
+patchfiles='u8.patch'
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
