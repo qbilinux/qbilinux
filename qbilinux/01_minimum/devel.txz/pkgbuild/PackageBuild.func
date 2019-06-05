@@ -26,6 +26,9 @@ fi
 
 if [ $opt_download -eq 1 ] ; then
     for i in $url ; do
+	if [ "x$srcfile" == "x" ] ; then
+	    srcfile=${i##*/}
+	fi
 	case ${i##*.} in
 	    svn)
 		if [ ! -d `basename ${i##*/} .svn` ] ; then
@@ -49,15 +52,15 @@ if [ $opt_download -eq 1 ] ; then
 		fi
 		;;
 	    *)
-		if [ ! -f ${i##*/} ] ; then
-		    if [ -f ${SRC_DIR}/${i##*/} ] ;then
-			cp ${SRC_DIR}/${i##*/} .
+		if [ ! -f $srcfile ] ; then
+		    if [ -f ${SRC_DIR}/$srcfile ] ;then
+			cp ${SRC_DIR}/$srcfile .
 		    else
-			wget ${SRC_URL}/${i##*/}
+			wget ${SRC_URL}/$srcfile
 		    fi
 		fi
-		if [ ! -f ${i##*/} ] ; then
-		    wget $i
+		if [ ! -f $srcfile ] ; then
+		    wget $i -O $srcfile
 		    for sig in asc sig{,n} {md5,sha{1,256}}{,sum} ; do
 			if wget --spider $i.$sig ; then wget $i.$sig ; break ; fi
 		    done
@@ -70,11 +73,14 @@ if [ $opt_download -eq 1 ] ; then
 			if [ $? -ne 0 ] ; then echo "archive verify failed" ; exit ; fi
 		    fi
 		fi
-		if [ ! -f ${SRC_DIR}/${i##*/} ] ; then cp -p ${i##*/} ${SRC_DIR} ; fi
+		if [ ! -f ${SRC_DIR}/$srcfile ] ; then cp -p $srcfile ${SRC_DIR} ; fi
 		;;
 	esac
     done
     for i in $url ; do
+	if [ "x$srcfile" == "x" ] ; then
+	    srcfile=${i##*/}
+	fi
 	case ${i##*.} in
 	    svn)
 		( cd $W/source
@@ -119,9 +125,9 @@ if [ $opt_download -eq 1 ] ; then
 	    jar)
 		;;
 	    zip)
-		( cd $W/source ; unzip -o $W/${i##*/} ) ;;
+		( cd $W/source ; unzip -o $W/$srcfile ) ;;
 	    *)
-		( cd $W/source ; tar xpf $W/${i##*/} )  ;;
+		( cd $W/source ; tar xpf $W/$srcfile )  ;;
 	esac
     done
 fi
