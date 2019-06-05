@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='http://sourceforge.net/projects/modplug-xmms/files/libmodplug/0.8.8.5/libmodplug-0.8.8.5.tar.gz'
 pkgbase=libmodplug
-vers=0.8.8.5
+vers=0.8.9.0
+url="http://sourceforge.net/projects/modplug-xmms/files/libmodplug/${vers}/libmodplug-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=libmodplug-0.8.8.5
+src=libmodplug-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README TODO'
 patchfiles=''
@@ -18,7 +18,7 @@ SRC_DIR="/home/archives/source/"
 source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
-    cd ${S[$i]}
+    cd ${S[$1]}
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
