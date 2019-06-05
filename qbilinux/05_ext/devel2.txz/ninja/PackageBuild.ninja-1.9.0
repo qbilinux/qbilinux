@@ -3,10 +3,11 @@
 pkgbase=ninja
 vers=1.9.0
 url="https://github.com/ninja-build/ninja/archive/v${vers}.tar.gz"
+srcfile=${pkgbase}-${vers}.tar.gz
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=ninja-${vers}
 OPT_CONFIG=''
 DOCS='COPYING HACKING.md README RELEASING doc misc'
@@ -19,7 +20,7 @@ SRC_DIR="/home/archives/source/"
 source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
-    cd ${S[$i]}
+    cd ${S[$1]}
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
