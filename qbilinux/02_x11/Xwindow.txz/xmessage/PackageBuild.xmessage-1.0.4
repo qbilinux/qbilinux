@@ -5,7 +5,7 @@ pkgbase=xmessage
 vers=1.0.4
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=xmessage-1.0.4
 OPT_CONFIG="--with-appdefaultdir=/usr/share/X11/app-defaults"
 DOCS='COPYING ChangeLog INSTALL README'
@@ -22,8 +22,7 @@ do_prepare() {
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
-    cp -f $W/config.guess .
-    cp -f $W/config.sub .
+    cp -f /usr/src/qbilinux/{config.guess,config.sub} .
 }
 
 do_config() {
