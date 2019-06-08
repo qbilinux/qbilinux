@@ -6,7 +6,7 @@ vers=0.5.3
 url="http://downloads.sourceforge.net/w3m/w3m-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="`echo doc-jp/{FAQ.html,HISTORY,MANUAL.html,README}`
@@ -33,8 +33,7 @@ do_prepare() {
     done
     sed -i '/w3mimgdisplay/s@$(LIBS)@& -lX11@g' Makefile.in
     sed -i 's@file_handle@w3m_&@g' istream.[ch]
-    cp $W/config.guess .
-    cp $W/config.sub .
+    cp /usr/src/qbilinux/{config.guess,config.sub} .
 }
 
 do_config() {
