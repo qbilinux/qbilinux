@@ -8,7 +8,7 @@ url="http://download.savannah.gnu.org/releases/hddtemp/hddtemp-0.3-beta15.tar.bz
     http://download.savannah.gnu.org/releases/hddtemp/hddtemp.db"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=$pkgbase-0.3-beta15
 #patchfiles="hddtemp-0.3-beta15-reg-eip.patch.gz"
 patchfiles=""
@@ -28,8 +28,7 @@ do_prepare() {
 	patch -p1 < $W/$patch
     done
     zcat $W/hddtemp-0.3-beta15-reg-eip.patch.gz | patch -p1
-    cp $W/config.guess .
-    cp $W/config.sub .
+    cp /usr/src/qbilinux/{config.guess,config.sub} .
 }
 
 do_config() {
