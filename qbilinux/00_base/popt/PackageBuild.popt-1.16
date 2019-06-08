@@ -5,7 +5,7 @@ vers=1.16
 url="http://rpm5.org/files/popt/popt-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=popt-1.16
 OPT_CONFIG=''
 DOCS='ABOUT-NLS COPYING README'
@@ -18,12 +18,11 @@ SRC_DIR="/home/archives/source/"
 source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
-    cd ${S[$i]}
+    cd ${S[$1]}
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
-    cp $W/config.guess ${S[$i]}
-    cp $W/config.sub ${S[$i]}
+    cp /usr/src/qbilinux/{config.guess,config.sub} .
 }
 
 do_config() {
