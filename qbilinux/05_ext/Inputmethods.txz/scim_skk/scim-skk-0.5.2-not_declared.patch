@@ -1,0 +1,10 @@
+--- scim-skk-0.5.2/src/scim_skk_imengine_setup.cpp.orig	2005-12-18 21:15:53.000000000 +0900
++++ scim-skk-0.5.2/src/scim_skk_imengine_setup.cpp	2011-08-11 17:36:22.000000000 +0900
+@@ -26,6 +26,7 @@
+ #define Uses_SCIM_CONFIG_BASE
+ 
+ #include <gtk/gtk.h>
++#include <string.h>
+ 
+ #ifdef HAVE_CONFIG_H
+ #  include <config.h>
