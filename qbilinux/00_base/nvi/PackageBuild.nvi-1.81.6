@@ -30,8 +30,7 @@ do_config() {
 
     cp -a ${S[$1]} ${B[$1]}
     cd ${B[$i]}/build.unix
-    cp -f $W/config.guess ${B[$i]}/dist
-    cp -f $W/config.sub ${B[$i]}/dist
+    cp -f /usr/src/qbilinux/{config.guess,config.sub} ${B[$i]}/dist
     if [ -x ../dist/configure ] ; then
       ../dist/configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
           --libdir='${exec_prefix}'/$libdir --infodir='${prefix}'/share/info \
