@@ -5,7 +5,7 @@ vers=1.1.2
 url='ftp://ftp.x.org/pub/individual/font/font-bitstream-speedo-1.0.2.tar.bz2'
 apply_arch="noarch"
 arch=noarch
-build=1
+build=2
 src=font-bitstream-speedo-1.0.2
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING ChangeLog INSTALL README'
@@ -22,8 +22,7 @@ do_prepare() {
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
-    cp $W/config.guess .
-    cp $W/config.sub .
+    cp /usr/src/qbilinux/{config.guess,config.sub} .
 }
 
 do_config() {
