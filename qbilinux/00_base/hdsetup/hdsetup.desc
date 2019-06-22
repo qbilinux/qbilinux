@@ -1,6 +1,6 @@
 hdsetup & y & y & y & y
 &
-Plamo Linux セットアップ/パッケージ管理システム
+Qbilinux セットアップ/パッケージ管理システム
 &
 Slackware 由来のセットアップ/パッケージ管理ツールです．
 あらかじめ用意された *.tgz ファイルをインストールしたり
@@ -9,4 +9,4 @@ Slackware 由来のセットアップ/パッケージ管理ツールです．
 &
 Slackware setup/management packages
 &
-setup/management packages for Plamo Linux(Slackware)
+setup/management packages for Qbilinux (Slackware)
