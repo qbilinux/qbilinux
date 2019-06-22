@@ -5,12 +5,12 @@ url="ftp://ftp.afterstep.org/archives/Classic/AfterStepClassic-1.1beta2.tar.gz
     http://www.tigr.net/afterstep/download/ascpu/ascpu-1.11.tar.gz
     http://www.tigr.net/afterstep/download/asmem/asmem-1.12.tar.gz
     http://www.tigr.net/afterstep/download/astime/astime-2.8.tar.gz
-    http://plamo.linet.gr.jp/~tamuki/src/plamo_stepicons.tar.bz2"
+    https://qbilinux.org/pub/source/plamo_stepicons.tar.bz2"
 pkgbase=AfterStepClassic
 vers=1.1beta2
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src[0]=$pkgbase-$vers
 src[1]=ascpu-1.11
 src[2]=asmem-1.12
