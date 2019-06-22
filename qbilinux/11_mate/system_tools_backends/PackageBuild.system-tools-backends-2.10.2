@@ -1,13 +1,13 @@
 #!/bin/sh
 ##############################################################
+pkgbase=system_tools_backends
+vers=2.10.2
 url='http://ftp.gnome.org/pub/GNOME/sources/system-tools-backends/2.10/system-tools-backends-2.10.2.tar.bz2 https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=761806'
 #fix-user-module.patch
 verify=
-pkgbase=system_tools_backends
-vers=2.10.2
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=system-tools-backends-2.10.2
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README TODO'
