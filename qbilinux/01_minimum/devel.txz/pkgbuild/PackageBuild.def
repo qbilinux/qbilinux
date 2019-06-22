@@ -29,6 +29,12 @@ done
 pkgdir=${W#$topdir}
 srcdir=$P/usr/src/qbilinux/$pkgdir
 
+if [ "$BUILD_TARGET.x" != ".x" ]; then
+    for i in `seq 0 $((${#B[@]} - 1))` ; do
+	OPT_CONFIG[$i]="$OPT_CONFIG[$i] --target=$BUILD_TARGET"
+    done
+fi
+
 install2() {
     install -d ${2%/*} ; install -m 644 $1 $2
 }
