@@ -1,15 +1,15 @@
 #!/bin/sh
 ##############################################################
-pkgbase=libksane
-vers=19.04.1
-url='https://download.kde.org/stable/applications/19.04.1/src/libksane-19.04.1.tar.xz'
+pkgbase="juk"
+vers=19.04.2
+url='https://download.kde.org/stable/applications/19.04.2/src/juk-19.04.2.tar.xz'
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=libksane-${vers}
+src=juk-${vers}
 OPT_CONFIG=''
-DOCS=''
+DOCS='AUTHORS COPYING COPYING.DOC COPYING.LIB ChangeLog about'
 patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
@@ -30,7 +30,7 @@ do_config() {
 
     mkdir ${B[$1]}
     cd ${B[$1]}
-    if [ -f $S/CMakeLists.txt ]; then
+    if [ -f ${S[$1]}/CMakeLists.txt ]; then
 	export PKG_CONFIG_PATH=/opt/kde/${libdir}/pkgconfig:/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
 	export LDFLAGS='-Wl,--as-needed' 
 	cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DLIB_INSTALL_DIR:PATH=/usr/${libdir} -DLIB_SUFFIX=$suffix ${OPT_CONFIG} ${S[$1]}
