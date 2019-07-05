@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase=cairo
-vers=1.14.10
+vers=1.16.0
 url="http://cairographics.org/releases/cairo-${vers}.tar.xz"
 verify=${url}.sha1
 commitid=
