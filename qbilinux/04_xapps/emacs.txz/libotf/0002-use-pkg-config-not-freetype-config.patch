@@ -1,0 +1,22 @@
+# Use pkg-config instead of freetype-config
+--- a/configure.ac
++++ b/configure.ac
+@@ -49,14 +49,14 @@
+ AC_FUNC_MALLOC
+ 
+ # Check for Freetype2 usability.
+-AC_CHECK_PROG(HAVE_FREETYPE_CONFIG, freetype-config, yes)
+-if test "x$HAVE_FREETYPE_CONFIG" = "xyes"; then
+-  FREETYPE_INC=`freetype-config --cflags`
++AC_CHECK_PROG(HAVE_PKG_CONFIG, pkg-config, yes)
++if test "x$HAVE_PKG_CONFIG" = "xyes"; then
++  FREETYPE_INC=`pkg-config freetype2 --cflags`
+   CPPFLAGS="$CPPFLAGS $FREETYPE_INC"
+   AC_CHECK_HEADER(ft2build.h, HAVE_FREETYPE=yes,
+   			      HAVE_FREETYPE=no CPPFLAGS=$save_CPPFLAGS)
+   if test "x$HAVE_FREETYPE" = "xyes" ; then
+-    FREETYPE_LD_FLAGS=`freetype-config --libs`;
++    FREETYPE_LD_FLAGS=`pkg-config freetype2 --libs`;
+     LIBS="$LIBS $FREETYPE_LD_FLAGS"
+     AC_CHECK_LIB(freetype, FT_Init_FreeType, HAVE_FREETYPE=yes,
+     			   		     HAVE_FREETYPE=no)
