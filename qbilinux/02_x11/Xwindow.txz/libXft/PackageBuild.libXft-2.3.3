@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='https://www.x.org/releases/individual/lib/libXft-2.3.2.tar.bz2'
 pkgbase=libXft
-vers=2.3.2
+vers=2.3.3
+url="https://www.x.org/releases/individual/lib/libXft-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=libXft-2.3.2
+src=libXft-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README'
 #patchfiles='libXft-2.3.1-freetype_fix-1.patch'
