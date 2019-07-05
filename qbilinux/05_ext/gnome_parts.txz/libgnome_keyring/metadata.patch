@@ -1,0 +1,11 @@
+--- a/library/GnomeKeyring-1.0.metadata	2014-01-17 03:28:19.000000000 +0900
++++ b/library/GnomeKeyring-1.0.metadata	2019-07-05 13:40:32.252609086 +0900
+@@ -54,7 +54,7 @@
+ set_network_password skip=false
+ store_password skip=false
+ store_password_sync skip=false
+-unlock skip=false
++@unlock skip=false
+ 
+ find_items*.callback type_arguments="GnomeKeyring.Found"
+ find_network_password*.callback type_arguments="GnomeKeyring.NetworkPasswordData"
