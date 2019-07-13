@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=stunnel
-vers=5.50
+vers=5.55
 url="https://www.stunnel.org/downloads/stunnel-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
@@ -70,13 +70,14 @@ do_install() {
 }
 
 do_package() {
-  mkdir $docdir/$src/doc
-  mv $docdir/stunnel/stunnel{,.pl}.html $docdir/$src/doc
-  mv $docdir/stunnel/examples $docdir/$src
-  mv $docdir/$src/{doc,{COPYRIGHT.GPL,AUTHORS,TODO,INSTALL.WCE,NEWS}.gz} $C
-  mv $docdir/$src/{examples,{INSTALL.W32,INSTALL,BUGS,PORTS,$myname}.gz} $C
-  mv $C/{doc,{COPYRIGHT.GPL,AUTHORS,TODO,INSTALL.WCE,NEWS}.gz} $docdir/$src
-  mv $C/{examples,{INSTALL.W32,INSTALL,BUGS,PORTS,$myname}.gz} $docdir/$src
+    mkdir $docdir/$src/doc
+    mv $docdir/stunnel/stunnel{,.pl}.html $docdir/$src/doc
+    mv $docdir/stunnel/examples $docdir/$src
+    mv $docdir/$src/{doc,{COPYRIGHT.GPL,AUTHORS,TODO,INSTALL.WCE,NEWS}.gz} $C
+    mv $docdir/$src/{examples,{INSTALL.W32,INSTALL,BUGS,PORTS,$myname}.gz} $C
+    mv $C/{doc,{COPYRIGHT.GPL,AUTHORS,TODO,INSTALL.WCE,NEWS}.gz} $docdir/$src
+    mv $C/{examples,{INSTALL.W32,INSTALL,BUGS,PORTS,$myname}.gz} $docdir/$src
+
     for i in $pkgbase ; do
         cd $P
         /sbin/makepkg $W/$pkg.$compress <<EOF
