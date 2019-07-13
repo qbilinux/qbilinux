@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='https://www.x.org/releases/individual/lib/xtrans-1.3.5.tar.bz2'
 pkgbase=xtrans
-vers=1.3.5
+vers=1.4.0
+url="https://www.x.org/releases/individual/lib/xtrans-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=xtrans-1.3.5
+src=xtrans-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING ChangeLog INSTALL README'
 patchfiles=''
