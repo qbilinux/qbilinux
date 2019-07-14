@@ -1,16 +1,15 @@
 #!/bin/sh
 ##############################################################
 pkgbase=xorg_server
-vers=1.19.6
+vers=1.20.5
 url="http://www.x.org/releases/individual/xserver/xorg-server-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
 src=xorg-server-${vers}
 OPT_CONFIG='--disable-systemd-logind --enable-listen-tcp'
-DOCS='COPYING ChangeLog INSTALL README'
-patchfiles='xorg-server-1.16.2-add_prime_support-1.patch'
-# http://www.linuxfromscratch.org/patches/blfs/svn/xorg-server-1.16.2-add_prime_support-1.patch
+DOCS='COPYING ChangeLog INSTALL README.md'
+patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
