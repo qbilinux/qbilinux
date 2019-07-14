@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='https://www.x.org/releases/individual/lib/libXt-1.1.5.tar.bz2'
 pkgbase=libXt
-vers=1.1.5
+vers=1.2.0
+url="https://www.x.org/releases/individual/lib/libXt-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=libXt-1.1.5
+src=libXt-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='COPYING ChangeLog INSTALL README'
 patchfiles=''
