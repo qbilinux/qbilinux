@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='http://xorg.freedesktop.org/archive/individual/lib/libxkbfile-1.0.9.tar.bz2'
 pkgbase=libxkbfile
-vers=1.0.9
+vers=1.1.0
+url="http://xorg.freedesktop.org/archive/individual/lib/libxkbfile-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=libxkbfile-1.0.9
+src=libxkbfile-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='COPYING ChangeLog INSTALL README'
 patchfiles=''
