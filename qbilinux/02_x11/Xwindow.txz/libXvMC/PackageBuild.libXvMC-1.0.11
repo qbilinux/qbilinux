@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase=libXvMC
-vers=1.0.10
+vers=1.0.11
 url="https://www.x.org/releases/individual/lib/libXvMC-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
