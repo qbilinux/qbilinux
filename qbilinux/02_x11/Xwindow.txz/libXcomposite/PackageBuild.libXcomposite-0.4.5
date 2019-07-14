@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='https://www.x.org/releases/individual/lib/libXcomposite-0.4.4.tar.bz2'
 pkgbase=libXcomposite
-vers=0.4.4
+vers=0.4.5
+url="https://www.x.org/releases/individual/lib/libXcomposite-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=libXcomposite-0.4.4
+build=1
+src=libXcomposite-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING ChangeLog INSTALL README'
 patchfiles=''
@@ -22,7 +22,7 @@ do_prepare() {
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
-    cp /usr/src/qbilinux/{config.guess,config.sub} .
+    cp -f /usr/src/qbilinux/{config.guess,config.sub} .
 }
 
 do_config() {
