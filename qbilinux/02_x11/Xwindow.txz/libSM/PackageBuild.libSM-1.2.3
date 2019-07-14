@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='http://xorg.freedesktop.org/releases/individual/lib/libSM-1.2.2.tar.bz2'
 pkgbase=libSM
-vers=1.2.2
+vers=1.2.3
+url="http://xorg.freedesktop.org/releases/individual/lib/libSM-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=libSM-1.2.2
+src=libSM-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING ChangeLog INSTALL README'
 patchfiles=''
