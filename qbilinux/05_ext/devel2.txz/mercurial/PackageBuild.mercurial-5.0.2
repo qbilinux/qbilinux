@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
 pkgbase=mercurial
-vers=4.3.1
+vers=5.0.2
 url="https://www.mercurial-scm.org/release/mercurial-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
 src=mercurial-${vers}
 OPT_CONFIG=''
-DOCS='COPYING README'
+DOCS='CONTRIBUTING CONTRIBUTORS COPYING README.rst'
 patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
@@ -30,7 +30,7 @@ do_config() {
     cp -a ${S[$1]} ${B[$1]}
     cd ${B[$1]}
     if [ -f setup.py ]; then
-        python2 ./setup.py config        
+	env HGPYTHON3=1 python3 ./setup.py config
     fi
     if [ $? != 0 ]; then
 	echo "configure error. $0 script stop"
@@ -41,7 +41,7 @@ do_config() {
 do_build() {
     cd ${B[$1]}
     if [ -f setup.py ]; then
-        python2 setup.py build
+        env HGPYTHON3=1 python3 setup.py build
     fi
     if [ $? != 0 ]; then
 	echo "make error. $0 script stop"
@@ -52,7 +52,7 @@ do_build() {
 do_install() {
     cd ${B[$1]}
     if [ -f setup.py ]; then
-        python2 setup.py install --root $P
+        env HGPYTHON3=1 python3 setup.py install --root $P
     fi
     if [ $? != 0 ]; then
 	echo "make install error. $0 script stop"
