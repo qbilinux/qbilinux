@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='https://www.x.org/archive/individual/app/mkfontscale-1.1.1.tar.bz2'
 pkgbase=mkfontscale
-vers=1.1.1
+vers=1.2.1
+url="https://www.x.org/archive/individual/app/mkfontscale-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=mkfontscale-1.1.1
+src=mkfontscale-${vers}
 OPT_CONFIG=''
 DOCS='COPYING ChangeLog INSTALL README'
 patchfiles=''
