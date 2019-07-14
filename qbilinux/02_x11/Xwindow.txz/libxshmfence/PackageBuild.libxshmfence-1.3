@@ -1,15 +1,15 @@
 #!/bin/sh
 ##############################################################
-url='https://www.x.org/releases/individual/lib/libxshmfence-1.2.tar.bz2'
 pkgbase=libxshmfence
-vers=1.2
+vers=1.3
+url="https://www.x.org/releases/individual/lib/libxshmfence-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=libxshmfence-1.2
+src=libxshmfence-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='COPYING ChangeLog README'
-patchfiles='memfd_create.patch'
+patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
