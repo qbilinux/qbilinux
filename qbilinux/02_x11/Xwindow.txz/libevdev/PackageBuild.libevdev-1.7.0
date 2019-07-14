@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='http://www.freedesktop.org/software/libevdev/libevdev-1.4.4.tar.xz'
 pkgbase=libevdev
-vers=1.4.4
+vers=1.7.0
+url="http://www.freedesktop.org/software/libevdev/libevdev-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=libevdev-1.4.4
+src=libevdev-${vers}
 OPT_CONFIG=''
 DOCS='COPYING'
 patchfiles=''
