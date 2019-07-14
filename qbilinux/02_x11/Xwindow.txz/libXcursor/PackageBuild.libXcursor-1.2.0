@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='https://www.x.org/releases/individual/lib/libXcursor-1.1.14.tar.bz2'
 pkgbase=libXcursor
-vers=1.1.14
+vers=1.2.0
+url="https://www.x.org/releases/individual/lib/libXcursor-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=libXcursor-1.1.14
+src=libXcursor-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING ChangeLog INSTALL README'
 patchfiles=''
