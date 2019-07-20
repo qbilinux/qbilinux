@@ -1,13 +1,13 @@
 #!/bin/sh
 
 ######################################################################
-url="http://jaist.dl.sourceforge.jp/scim-imengine/18121/scim-skk-0.5.2.tar.gz"
 pkgbase=scim_skk
 vers=0.5.2
+url="http://jaist.dl.sourceforge.jp/scim-imengine/18121/scim-skk-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=4
-src=scim-skk-$vers
+build=5
+src=scim-skk-${vers}
 OPT_CONFIG="--disable-static"
 DOCS="NEWS TODO README.ja README AUTHORS INSTALL ABOUT-NLS ChangeLog
     COPYING"
