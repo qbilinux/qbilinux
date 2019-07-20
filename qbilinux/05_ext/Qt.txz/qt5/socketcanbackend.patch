@@ -1,0 +1,12 @@
+*** qt-everywhere-src-5.12.4/qtserialbus/src/plugins/canbus/socketcan/socketcanbackend.cpp.orig	2019-05-28 13:36:39.000000000 +0900
+--- qt-everywhere-src-5.12.4/qtserialbus/src/plugins/canbus/socketcan/socketcanbackend.cpp	2019-07-20 19:11:35.587491166 +0900
+***************
+*** 50,55 ****
+--- 50,56 ----
+  #include <net/if.h>
+  #include <sys/ioctl.h>
+  #include <sys/time.h>
++ #include <linux/sockios.h>
+  
+  #ifndef CANFD_MTU
+  // CAN FD support was added by Linux kernel 3.6
