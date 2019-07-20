@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase=xf86_video_vmware
-vers=13.2.1
+vers=13.3.0
 url="https://www.x.org/releases/individual/driver/xf86-video-vmware-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
