@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase="network_manager_applet"
-vers=1.8.16
+vers=1.8.22
 url="https://download.gnome.org/sources/network-manager-applet/1.8/network-manager-applet-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
