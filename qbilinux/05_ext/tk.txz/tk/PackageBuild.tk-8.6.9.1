@@ -2,12 +2,12 @@
 
 ######################################################################
 pkgbase=tk
-vers=8.6.7
+vers=8.6.9.1
 url="http://jaist.dl.sourceforge.net/sourceforge/tcl/tk${vers}-src.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=tk$vers
+src=tk${vers%.*}
 OPT_CONFIG="--enable-threads"
 DOCS="changes ChangeLog.2002 README ChangeLog license.terms
     ChangeLog.2004"
@@ -68,9 +68,9 @@ do_install() {
 	echo "make install error. $0 script stop"
 	exit 255
     fi
-  ln -s wish8.5 $P/usr/bin/wish
-  mv $P/usr/bin/{wish8.5,wish} $C
-  mv $C/{wish8.5,wish} $P/usr/bin
+  ln -s wish8.6 $P/usr/bin/wish
+  mv $P/usr/bin/{wish8.6,wish} $C
+  mv $C/{wish8.6,wish} $P/usr/bin
 }
 
 do_package() {
