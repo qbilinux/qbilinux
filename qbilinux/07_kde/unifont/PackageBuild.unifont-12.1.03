@@ -2,8 +2,8 @@
 PATH=$PATH:`pwd`
 ##############################################################
 pkgbase=unifont
-vers=10.0.06
-url="https://ftp.gnu.org/gnu/unifont/unifont-10.0.06/unifont-10.0.06.tar.gz"
+vers=12.1.03
+url="https://ftp.gnu.org/gnu/unifont/unifont-${vers}/unifont-${vers}.tar.gz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
