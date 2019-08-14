@@ -1,10 +1,10 @@
 #!/bin/sh
 ##############################################################
 pkgbase=llvm
-vers=8.0.0
-url="http://llvm.org/releases/${vers}/llvm-${vers}.src.tar.xz
- http://llvm.org/releases/${vers}/cfe-${vers}.src.tar.xz
- http://llvm.org/releases/${vers}/compiler-rt-${vers}.src.tar.xz"
+vers=8.0.1
+url="https://github.com/llvm/llvm-project/releases/download/llvmorg-${vers}/llvm-${vers}.src.tar.xz
+ https://github.com/llvm/llvm-project/releases/download/llvmorg-${vers}/cfe-${vers}.src.tar.xz
+ https://github.com/llvm/llvm-project/releases/download/llvmorg-${vers}/compiler-rt-${vers}.src.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
