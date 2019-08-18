@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase=MesaLib
-vers=19.1.2
+vers=19.1.4
 url="ftp://ftp.freedesktop.org/pub/mesa/mesa-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
@@ -21,6 +21,7 @@ case $arch in
 	OPT_CONFIG='-Dshared-llvm=true
          -Dgles1=true -Dgles2=true 
          -Dosmesa=gallium -Dgallium-xa=true -Dgbm=true 
+      	 -Dbuildtype=release
          ';;
 esac
 DOCS='docs/*'
