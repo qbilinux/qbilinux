@@ -1,8 +1,8 @@
 #!/bin/sh
 ##############################################################
 pkgbase=xf86_video_intel
-vers=git_20190121
-commitid=33ee0c3b21ea279e08d0863fcb2e874f0974b00e
+vers=git_20190724
+commitid=6f4972d5c368c30e971a23c1dc370d3e43761282
 url='git://anongit.freedesktop.org/xorg/driver/xf86-video-intel.git'
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
