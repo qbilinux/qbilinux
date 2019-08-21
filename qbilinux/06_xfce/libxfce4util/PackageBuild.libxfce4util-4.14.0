@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='http://archive.xfce.org/xfce/4.12/src/libxfce4util-4.12.1.tar.bz2'
 pkgbase=libxfce4util
-vers=4.12.1
+vers=4.14.0
+url="http://archive.xfce.org/xfce/${vers%.*}/src/libxfce4util-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=libxfce4util-4.12.1
+build=1
+src=libxfce4util-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README README.Kiosk THANKS TODO'
 patchfiles=''
