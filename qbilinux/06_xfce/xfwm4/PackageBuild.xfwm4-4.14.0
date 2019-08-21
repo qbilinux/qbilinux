@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='http://archive.xfce.org/xfce/4.12/src/xfwm4-4.12.0.tar.bz2'
 pkgbase=xfwm4
-vers=4.12.0
+vers=4.14.0
+url="http://archive.xfce.org/xfce/${vers%.*}/src/xfwm4-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=xfwm4-4.12.0
+src=xfwm4-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README TODO'
 patchfiles=''
