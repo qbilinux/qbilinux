@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='http://archive.xfce.org/xfce/4.12/src/tumbler-0.1.31.tar.bz2'
 pkgbase=tumbler
-vers=0.1.31
+vers=0.2.7
+url="http://archive.xfce.org/xfce/4.14/src/tumbler-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=3
-src=tumbler-0.1.31
+build=1
+src=tumbler-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README TODO'
 patchfiles=''
