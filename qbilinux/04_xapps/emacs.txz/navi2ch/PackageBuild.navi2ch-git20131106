@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='http://sourceforge.net/projects/navi2ch/files/navi2ch/navi2ch-1.8.4/navi2ch-1.8.4.tar.gz'
 pkgbase=navi2ch
-vers=1.8.4
+vers=git20131106
+url="https://sourceforge.net/code-snapshots/git/n/na/navi2ch/git.git/navi2ch-git-75ceac8e93d8d7cc02cc8fa44f14cd44ce0b9d0a.zip"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=navi2ch-1.8.4
+build=1
+src=navi2ch-git-75ceac8e93d8d7cc02cc8fa44f14cd44ce0b9d0a
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog ChangeLog.1 ChangeLog.2 INSTALL NEWS README TODO navi2ch-history.el'
 patchfiles='patch-aa'
