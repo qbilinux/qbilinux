@@ -2,8 +2,8 @@
 
 ######################################################################
 pkgbase=wpa_supplicant
-vers=2.7
-url="http://hostap.epitest.fi/releases/wpa_supplicant-${vers}.tar.gz"
+vers=2.9
+url="https://w1.fi/releases/wpa_supplicant-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
@@ -27,34 +27,10 @@ do_prepare() {
     done
   cp -p wpa_supplicant/{defconfig,.config}
   cat <<- "EOF" | patch wpa_supplicant/.config
-	44c44
-	< #CONFIG_LIBNL32=y
-	---
-	> CONFIG_LIBNL32=y
-	151c151
-	< #CONFIG_WPS=y
-	---
-	> CONFIG_WPS=y
-	203c203
-	< #CONFIG_READLINE=y
-	---
-	> CONFIG_READLINE=y
-	331c331
-	< #CONFIG_CTRL_IFACE_DBUS=y
-	---
-	> CONFIG_CTRL_IFACE_DBUS=y
-	335c335
-	< #CONFIG_CTRL_IFACE_DBUS_NEW=y
-	---
-	> CONFIG_CTRL_IFACE_DBUS_NEW=y
-	338c338
-	< #CONFIG_CTRL_IFACE_DBUS_INTRO=y
-	---
-	> CONFIG_CTRL_IFACE_DBUS_INTRO=y
-	365c365
-	< #CONFIG_DEBUG_FILE=y
-	---
-	> CONFIG_DEBUG_FILE=y
+225c225
+< #CONFIG_READLINE=y
+---
+> CONFIG_READLINE=y
 	EOF
 }
 
