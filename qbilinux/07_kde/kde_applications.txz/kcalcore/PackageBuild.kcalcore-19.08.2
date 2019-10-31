@@ -1,16 +1,16 @@
 #!/bin/sh
 ##############################################################
-pkgbase="konqueror"
-vers=19.04.2
-url='https://download.kde.org/stable/applications/19.04.2/src/konqueror-19.04.2.tar.xz'
+pkgbase=kcalcore
+vers=19.08.2
+url='https://download.kde.org/stable/applications/19.08.2/src/kcalcore-19.08.2.tar.xz'
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=konqueror-${vers}
+src=kcalcore-${vers}
 OPT_CONFIG=''
-DOCS='AUTHORS COPYING COPYING.DOC COPYING.LIB ChangeLog about'
-patchfiles='tidy_header_name.patch'
+DOCS=''
+patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
