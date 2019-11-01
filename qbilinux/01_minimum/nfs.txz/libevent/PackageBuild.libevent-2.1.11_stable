@@ -1,13 +1,13 @@
 #!/bin/sh
 ##############################################################
 pkgbase=libevent
-vers=2.1.8
-url="https://github.com/libevent/libevent/releases/download/release-2.1.8-stable/libevent-2.1.8-stable.tar.gz"
+vers=2.1.11
+url="https://github.com/libevent/libevent/releases/download/release-${vers}-stable/libevent-${vers}-stable.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 commitid=
 arch=`uname -m`
-build=2
-src=libevent-2.1.8-stable
+build=1
+src=libevent-${vers}-stable
 # for libressl
 # OPT_CONFIG='--disable-libevent-regress --disable-samples'
 OPT_CONFIG=''
