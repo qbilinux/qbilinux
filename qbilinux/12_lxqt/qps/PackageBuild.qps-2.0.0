@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase="qps"
-vers=1.10.20
+vers=2.0.0
 url="https://downloads.lxqt.org/downloads/qps/${vers}/qps-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
