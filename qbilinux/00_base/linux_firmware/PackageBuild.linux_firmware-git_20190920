@@ -2,8 +2,8 @@
 
 ######################################################################
 pkgbase=linux_firmware
-vers=git_20190803
-commitid=dff98c6
+vers=git_20190920
+commitid=6c6918a
 url="https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git"
 apply_arch="noarch"
 arch=noarch
