@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=ntp
-vers=4.2.8p12
+vers=4.2.8p13
 url="http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/ntp-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
@@ -134,11 +134,9 @@ do_package() {
     mv $docdir/$src/{sntp,README.gz,html,{NOTES.y2kfixes,CommitLog}.gz} $C
     mv $docdir/$src/{COPYRIGHT,INSTALL,README.refclocks,TODO,ChangeLog}.gz $C
     mv $docdir/$src/{README.versions,README.patches,README.pullrequests}.gz $C
-    mv $docdir/$src/$myname.gz $C
     mv $C/{sntp,README.gz,html,{NOTES.y2kfixes,CommitLog}.gz} $docdir/$src
     mv $C/{COPYRIGHT,INSTALL,README.refclocks,TODO,ChangeLog}.gz $docdir/$src
     mv $C/{README.versions,README.patches,README.pullrequests}.gz $docdir/$src
-    mv $C/$myname.gz $docdir/$src
 
     for i in $pkgbase ; do
         cd $P
