@@ -3,7 +3,7 @@ unset LS_BLOCK_SIZE
 export LANG=C
 ##############################################################
 pkgbase=thunderbird
-vers=68.0
+vers=68.2.1
 url="http://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/${vers}/source/${pkgbase}-${vers}.source.tar.xz"
 #verify=$url.asc
 apply_arch="x86_64 i686 armv7l aarch64"
@@ -46,7 +46,7 @@ do_config() {
 # jobs. The build system automatically adds -jN to the "make" flags, where N
 # is the number of CPU cores. The option below is therefore useless, unless
 # you want to use a smaller number of jobs:
-#mk_add_options MOZ_MAKE_FLAGS="-j1"
+mk_add_options MOZ_MAKE_FLAGS="-j1"
 
 # If you have installed dbus-glib, comment out this line:
 ac_add_options --disable-dbus
