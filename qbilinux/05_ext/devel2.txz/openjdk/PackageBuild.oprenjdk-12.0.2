@@ -1,14 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=openjdk
-vers=12.0.1
-url="https://hg.openjdk.java.net/jdk/jdk12.hg"
-commitid=jdk-12-ga
+vers=12.0.2+10
+url="http://hg.openjdk.java.net/jdk-updates/jdk12u/archive/jdk-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=jdk12
-#OPT_CONFIG='--enable-unlimited-crypto                   --disable-warnings-as-errors                --with-stdc++lib=dynamic                    --with-giflib=system                        --with-lcms=system                          --with-libjpeg=system                       --with-libpng=system                        --with-zlib=system                          --with-version-build=12                   --with-version-pre=""                       --with-version-opt=""                       --with-cacerts-file=/etc/ssl/java/cacerts.jks'
+src=jdk12u-jdk-${vers}
 OPT_CONFIG='--enable-unlimited-crypto                   --disable-warnings-as-errors                --with-stdc++lib=dynamic                    --with-giflib=system                        --with-lcms=system                          --with-libjpeg=system                       --with-libpng=system                        --with-zlib=system                          --with-version-build=12                   --with-version-pre=""                       --with-version-opt=""                       '
 DOCS='ADDITIONAL_LICENSE_INFO LICENSE README'
 patchfiles=''
