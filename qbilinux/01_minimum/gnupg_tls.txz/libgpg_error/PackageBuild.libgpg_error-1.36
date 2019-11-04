@@ -6,7 +6,7 @@ vers=1.36
 url="https://www.gnupg.org/ftp/gcrypt/libgpg-error/libgpg-error-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=libgpg-error-$vers
 OPT_CONFIG=""
 DOCS="NEWS INSTALL ABOUT-NLS COPYING COPYING.LIB AUTHORS ChangeLog
@@ -24,6 +24,7 @@ do_prepare() {
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
+    sed -i 's/namespace/pkg_&/' src/Makefile.{am,in} src/mkstrtable.awk
 }
 
 do_config() {
