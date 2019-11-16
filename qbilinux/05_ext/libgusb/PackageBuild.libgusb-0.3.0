@@ -6,7 +6,7 @@ url="https://people.freedesktop.org/~hughsient/releases/libgusb-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l"
 arch=`uname -m`
-build=1
+build=2
 src=libgusb-${vers}
 OPT_CONFIG='-Ddocs=false'
 DOCS='AUTHORS COPYING MAINTAINERS NEWS README.md RELEASE.md meson_options.txt'

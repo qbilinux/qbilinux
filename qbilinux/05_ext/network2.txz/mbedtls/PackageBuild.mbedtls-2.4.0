@@ -6,7 +6,7 @@ url='https://tls.mbed.org/download/mbedtls-2.4.0-gpl.tgz'
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=mbedtls-${vers}
 OPT_CONFIG='-DUSE_SHARED_MBEDTLS_LIBRARY=On'
 DOCS='ChangeLog LICENSE README.md gpl-2.0.txt'

@@ -10,7 +10,7 @@ http://www.unicode.org/Public/emoji/11.0/emoji-variation-sequences.txt
 http://www.unicode.org/Public/emoji/11.0/emoji-zwj-sequences.txt'
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=$pkgbase-$vers
 OPT_CONFIG=''
 DOCS=''
