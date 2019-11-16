@@ -5,7 +5,7 @@ vers=0.68.0
 url="https://poppler.freedesktop.org/poppler-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=poppler-${vers}
 #OPT_CONFIG='--enable-zlib --disable-static --enable-xpdf-headers --enable-libcurl'
 OPT_CONFIG='-DENABLE_LIBCURL=ON -DENABLE_ZLIB=ON -DENABLE_XPDF_HEADERS=ON'
