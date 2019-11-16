@@ -35,7 +35,7 @@ if [ $opt_download -eq 1 ] ; then
 	case ${i##*.} in
 	    svn)
 		if [ ! -d `basename ${i##*/} .svn` ] ; then
-		    svn co $i
+		    svn co ${i%.svn}
 		else
 		    ( cd `basename ${i##*/} .svn` ; svn update )
 		fi
