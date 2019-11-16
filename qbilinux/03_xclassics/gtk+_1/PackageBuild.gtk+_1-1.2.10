@@ -8,7 +8,7 @@ pkgbase=gtk+_1
 vers=1.2.10
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=3
 src=gtk+-$vers
 OPT_CONFIG="--sysconfdir=/etc"
 compress=txz
