@@ -10,7 +10,7 @@ url="http://download.documentfoundation.org/libreoffice/src/${vers%.*}/libreoffi
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=libreoffice-${vers}
 OPT_CONFIG="--with-ant-home=$W/source/apache-ant-1.10.4/ --without-junit --without-java --with-lang=ja --with-system-boost --with-system-curl --with-system-icu --with-system-harfbuzz --with-system-libxml --with-system-xmlsec"
 DOCS='COPYING COPYING.LGPL COPYING.MPL ChangeLog README.Solaris README.cross README.md leak-suppress.txt readlicense_oo unusedcode.README'
