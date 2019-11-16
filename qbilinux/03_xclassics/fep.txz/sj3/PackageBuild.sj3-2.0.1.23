@@ -6,7 +6,7 @@ pkgbase=sj3
 vers=2.0.1.23
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=$pkgbase-$vers
 OPT_CONFIG="--sysconfdir=/usr/share --localstatedir=/var/lib/sj3
     --docdir=/usr/share/sj3/doc --with-user=bin --with-group=bin"
