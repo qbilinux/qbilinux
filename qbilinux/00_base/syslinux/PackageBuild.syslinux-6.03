@@ -9,7 +9,7 @@ url="https://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-${vers}.tar.x
     http://git.yoctoproject.org/cgit.cgi/poky/plain/meta/recipes-devtools/syslinux/syslinux/syslinux-remove-clean-script.patch"
 apply_arch="x86_64 i686"
 arch=`uname -m`
-build=1
+build=2
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="COPYING NEWS README"

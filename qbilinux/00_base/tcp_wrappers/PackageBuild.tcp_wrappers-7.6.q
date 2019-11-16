@@ -7,7 +7,7 @@ url="http://archive.debian.org/debian/pool/main/t/tcp-wrappers/tcp-wrappers_7.6.
     http://archive.debian.org/debian/pool/main/t/tcp-wrappers/tcp-wrappers_7.6.q-16.diff.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=tcp_wrappers_7.6
 OPT_CONFIG=""
 DOCS="README BLURB DISCLAIMER CHANGES README.IRIX README.NIS"
