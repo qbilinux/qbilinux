@@ -8,7 +8,7 @@ url="http://jaist.dl.sourceforge.jp/mix-mplus-ipa/63545/migu-1p-${vers}.zip
      http://jaist.dl.sourceforge.jp/mix-mplus-ipa/63545/migu-2m-${vers}.zip"
 apply_arch="noarch"
 arch=noarch
-build=1
+build=2
 src=migu-1p-${vers}
 OPT_CONFIG=''
 DOCS='migu-README.txt ipag00303/*'

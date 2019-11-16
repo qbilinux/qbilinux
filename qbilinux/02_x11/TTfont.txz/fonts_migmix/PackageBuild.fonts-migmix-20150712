@@ -8,7 +8,7 @@ url="http://jaist.dl.sourceforge.jp/mix-mplus-ipa/63544/migmix-1p-${vers}.zip
      http://jaist.dl.sourceforge.jp/mix-mplus-ipa/63544/migmix-2m-${vers}.zip"
 apply_arch="noarch"
 arch=noarch
-build=1
+build=2
 src=migmix-1p-20150712
 #src='migmix-1p-20150712 migmix-2p-20150712 migmix-1m-20150712 migmix-2m-20150712'
 OPT_CONFIG=''
