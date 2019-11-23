@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=gcr
-vers=3.28.1
+vers=3.34.0
 url="https://download.gnome.org/sources/gcr/${vers%.*}/gcr-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=gcr-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog HACKING NEWS README'
