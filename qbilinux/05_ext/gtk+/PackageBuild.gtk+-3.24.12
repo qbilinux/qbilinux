@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=gtk+
-vers=3.24.9
+vers=3.24.12
 url="http://ftp.gnome.org/pub/gnome/sources/gtk+/${vers%.*}/gtk+-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=gtk+-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog HACKING INSTALL NEWS NEWS.pre-1-0 README README.commits README.win32'
