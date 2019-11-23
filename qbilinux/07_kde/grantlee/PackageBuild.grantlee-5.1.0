@@ -3,6 +3,7 @@
 pkgbase=grantlee
 vers=5.1.0
 url='https://github.com/steveire/grantlee/archive/v5.1.0.tar.gz'
+srcfile=$pkgbase-$vers.tar.gz
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
