@@ -1,0 +1,1011 @@
+Submitted By:             Douglas R. Reno <renodr at linuxfromscratch dot org>
+Date:                     2019-10-17
+Original Package Version: 3.34.1
+Upstream Status:          Applied
+Origin:                   Upstream
+Description:              Fixes several bugs in Mutter-3.34.1, including some
+                          that prevent copying and pasting from Wayland apps to
+                          X applications and vice versa. Also, QtWayland apps
+                          can now open properly.
+
+diff -Naurp mutter-3.34.1.orig/clutter/clutter/clutter-actor.c mutter-3.34.1/clutter/clutter/clutter-actor.c
+--- mutter-3.34.1.orig/clutter/clutter/clutter-actor.c	2019-10-08 12:15:10.000000000 -0500
++++ mutter-3.34.1/clutter/clutter/clutter-actor.c	2019-10-17 12:12:44.866731734 -0500
+@@ -835,6 +835,7 @@ struct _ClutterActorPrivate
+   guint enable_model_view_transform : 1;
+   guint enable_paint_unmapped       : 1;
+   guint has_pointer                 : 1;
++  guint has_key_focus               : 1;
+   guint propagated_one_redraw       : 1;
+   guint paint_volume_valid          : 1;
+   guint last_paint_volume_valid     : 1;
+@@ -1692,6 +1693,20 @@ clutter_actor_is_mapped (ClutterActor *s
+ }
+ 
+ static void
++maybe_unset_key_focus (ClutterActor *self)
++{
++   ClutterActor *stage;
++
++   if (!self->priv->has_key_focus)
++      return;
++
++   stage = _clutter_actor_get_stage_internal (self);
++
++   if (stage)
++      clutter_stage_set_key_focus (CLUTTER_STAGE (stage), NULL);
++}
++
++static void
+ clutter_actor_real_unmap (ClutterActor *self)
+ {
+   ClutterActorPrivate *priv = self->priv;
+@@ -1724,17 +1739,7 @@ clutter_actor_real_unmap (ClutterActor *
+ 
+   /* relinquish keyboard focus if we were unmapped while owning it */
+   if (!CLUTTER_ACTOR_IS_TOPLEVEL (self))
+-    {
+-      ClutterStage *stage;
+-
+-      stage = CLUTTER_STAGE (_clutter_actor_get_stage_internal (self));
+-
+-      if (stage != NULL &&
+-          clutter_stage_get_key_focus (stage) == self)
+-        {
+-          clutter_stage_set_key_focus (stage, NULL);
+-        }
+-    }
++     maybe_unset_key_focus (self);
+ }
+ 
+ /**
+@@ -6064,6 +6069,8 @@ clutter_actor_dispose (GObject *object)
+                 object->ref_count,
+ 		g_type_name (G_OBJECT_TYPE (self)));
+ 
++  maybe_unset_key_focus (self);
++
+   /* Stop the emission of any property change */
+   g_object_freeze_notify (object);
+ 
+@@ -15979,6 +15986,9 @@ clutter_actor_grab_key_focus (ClutterAct
+ 
+   g_return_if_fail (CLUTTER_IS_ACTOR (self));
+ 
++  if (self->priv->has_key_focus)
++     return;
++
+   stage = _clutter_actor_get_stage_internal (self);
+   if (stage != NULL)
+     clutter_stage_set_key_focus (CLUTTER_STAGE (stage), self);
+@@ -16768,6 +16778,23 @@ _clutter_actor_set_has_pointer (ClutterA
+     }
+ }
+ 
++void
++_clutter_actor_set_has_key_focus (ClutterActor *self,
++                                  gboolean     has_key_focus)
++{
++   ClutterActorPrivate *priv = self->priv;
++
++   if (priv->has_key_focus != has_key_focus)
++   {
++      priv->has_key_focus = has_key_focus;
++
++      if (has_key_focus)
++         g_signal_emit (self, actor_signals[KEY_FOCUS_IN], 0);
++      else
++         g_signal_emit (self, actor_signals[KEY_FOCUS_OUT], 0);
++   }
++}
++
+ /**
+  * clutter_actor_get_text_direction:
+  * @self: a #ClutterActor
+@@ -17616,15 +17643,9 @@ clutter_actor_clear_effects (ClutterActo
+ gboolean
+ clutter_actor_has_key_focus (ClutterActor *self)
+ {
+-  ClutterActor *stage;
+-
+   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
+ 
+-  stage = _clutter_actor_get_stage_internal (self);
+-  if (stage == NULL)
+-    return FALSE;
+-
+-  return clutter_stage_get_key_focus (CLUTTER_STAGE (stage)) == self;
++  return self->priv->has_key_focus;
+ }
+ 
+ static gboolean
+diff -Naurp mutter-3.34.1.orig/clutter/clutter/clutter-actor-private.h mutter-3.34.1/clutter/clutter/clutter-actor-private.h
+--- mutter-3.34.1.orig/clutter/clutter/clutter-actor-private.h	2019-10-08 12:15:10.000000000 -0500
++++ mutter-3.34.1/clutter/clutter/clutter-actor-private.h	2019-10-17 12:12:07.868163058 -0500
+@@ -274,6 +274,9 @@ void                            _clutter
+ void                            _clutter_actor_set_has_pointer                          (ClutterActor *self,
+                                                                                          gboolean      has_pointer);
+ 
++void                            _clutter_actor_set_has_key_focus                        (ClutterActor *self,
++                                                                                         gboolean      has_key_focus);
++
+ void                            _clutter_actor_queue_redraw_with_clip                   (ClutterActor             *self,
+                                                                                          ClutterRedrawFlags        flags,
+                                                                                          const ClutterPaintVolume *clip_volume);
+diff -Naurp mutter-3.34.1.orig/clutter/clutter/clutter-shader-effect.c mutter-3.34.1/clutter/clutter/clutter-shader-effect.c
+--- mutter-3.34.1.orig/clutter/clutter/clutter-shader-effect.c	2019-10-08 12:15:10.000000000 -0500
++++ mutter-3.34.1/clutter/clutter/clutter-shader-effect.c	2019-10-17 11:00:30.533133801 -0500
+@@ -500,6 +500,7 @@ static void
+ clutter_shader_effect_init (ClutterShaderEffect *effect)
+ {
+   effect->priv = clutter_shader_effect_get_instance_private (effect);
++  effect->priv->shader_type = CLUTTER_FRAGMENT_SHADER;
+ }
+ 
+ /**
+diff -Naurp mutter-3.34.1.orig/clutter/clutter/clutter-stage.c mutter-3.34.1/clutter/clutter/clutter-stage.c
+--- mutter-3.34.1.orig/clutter/clutter/clutter-stage.c	2019-10-08 12:15:10.000000000 -0500
++++ mutter-3.34.1/clutter/clutter/clutter-stage.c	2019-10-17 12:06:50.656889232 -0500
+@@ -1066,10 +1066,7 @@ clutter_stage_emit_key_focus_event (Clut
+   if (priv->key_focused_actor == NULL)
+     return;
+ 
+-  if (focus_in)
+-    g_signal_emit_by_name (priv->key_focused_actor, "key-focus-in");
+-  else
+-    g_signal_emit_by_name (priv->key_focused_actor, "key-focus-out");
++  _clutter_actor_set_has_key_focus (CLUTTER_ACTOR (stage), focus_in);
+ 
+   g_object_notify_by_pspec (G_OBJECT (stage), obj_props[PROP_KEY_FOCUS]);
+ }
+@@ -3011,14 +3008,6 @@ clutter_stage_get_title (ClutterStage
+   return stage->priv->title;
+ }
+ 
+-static void
+-on_key_focus_destroy (ClutterActor *actor,
+-                      ClutterStage *stage)
+-{
+-  /* unset the key focus */
+-  clutter_stage_set_key_focus (stage, NULL);
+-}
+-
+ /**
+  * clutter_stage_set_key_focus:
+  * @stage: the #ClutterStage
+@@ -3058,18 +3047,14 @@ clutter_stage_set_key_focus (ClutterStag
+       old_focused_actor = priv->key_focused_actor;
+ 
+       /* set key_focused_actor to NULL before emitting the signal or someone
+-       * might hide the previously focused actor in the signal handler and we'd
+-       * get re-entrant call and get glib critical from g_object_weak_unref
++       * might hide the previously focused actor in the signal handler
+        */
+-      g_signal_handlers_disconnect_by_func (priv->key_focused_actor,
+-                                            G_CALLBACK (on_key_focus_destroy),
+-                                            stage);
+       priv->key_focused_actor = NULL;
+ 
+-      g_signal_emit_by_name (old_focused_actor, "key-focus-out");
++      _clutter_actor_set_has_key_focus (old_focused_actor, FALSE);
+     }
+   else
+-    g_signal_emit_by_name (stage, "key-focus-out");
++    _clutter_actor_set_has_key_focus (CLUTTER_ACTOR (stage), FALSE);
+ 
+   /* Note, if someone changes key focus in focus-out signal handler we'd be
+    * overriding the latter call below moving the focus where it was originally
+@@ -3079,14 +3064,10 @@ clutter_stage_set_key_focus (ClutterStag
+   if (actor != NULL)
+     {
+       priv->key_focused_actor = actor;
+-
+-      g_signal_connect (actor,
+-                        "destroy", G_CALLBACK (on_key_focus_destroy),
+-                        stage);
+-      g_signal_emit_by_name (priv->key_focused_actor, "key-focus-in");
++      _clutter_actor_set_has_key_focus (CLUTTER_ACTOR (stage), TRUE);
+     }
+   else
+-    g_signal_emit_by_name (stage, "key-focus-in");
++     _clutter_actor_set_has_key_focus (CLUTTER_ACTOR (stage), TRUE);
+ 
+   g_object_notify_by_pspec (G_OBJECT (stage), obj_props[PROP_KEY_FOCUS]);
+ }
+diff -Naurp mutter-3.34.1.orig/cogl/cogl-pango/meson.build mutter-3.34.1/cogl/cogl-pango/meson.build
+--- mutter-3.34.1.orig/cogl/cogl-pango/meson.build	2019-10-08 12:15:10.000000000 -0500
++++ mutter-3.34.1/cogl/cogl-pango/meson.build	2019-10-17 10:23:01.602749313 -0500
+@@ -62,7 +62,7 @@ if have_introspection
+     ],
+     extra_args: introspection_args + [
+       '-UCOGL_COMPILATION',
+-      '-DG_LOG_DOMAIN=\"CoglPango\"',
++      '-DG_LOG_DOMAIN="CoglPango"',
+     ],
+     install_dir_gir: pkglibdir,
+     install_dir_typelib: pkglibdir,
+diff -Naurp mutter-3.34.1.orig/src/backends/meta-dbus-session-watcher.c mutter-3.34.1/src/backends/meta-dbus-session-watcher.c
+--- mutter-3.34.1.orig/src/backends/meta-dbus-session-watcher.c	2019-10-08 12:15:10.000000000 -0500
++++ mutter-3.34.1/src/backends/meta-dbus-session-watcher.c	2019-10-17 11:56:08.658746936 -0500
+@@ -214,6 +214,8 @@ meta_dbus_session_watcher_finalize (GObj
+   MetaDbusSessionWatcher *session_watcher = META_DBUS_SESSION_WATCHER (object);
+ 
+   g_hash_table_destroy (session_watcher->clients);
++
++  G_OBJECT_CLASS (meta_dbus_session_watcher_parent_class)->finalize (object);
+ }
+ 
+ static void
+diff -Naurp mutter-3.34.1.orig/src/backends/meta-idle-monitor.c mutter-3.34.1/src/backends/meta-idle-monitor.c
+--- mutter-3.34.1.orig/src/backends/meta-idle-monitor.c	2019-10-08 12:15:10.000000000 -0500
++++ mutter-3.34.1/src/backends/meta-idle-monitor.c	2019-10-17 10:22:24.722112073 -0500
+@@ -516,9 +516,16 @@ meta_idle_monitor_reset_idletime (MetaId
+         }
+       else
+         {
+-          g_source_set_ready_time (watch->timeout_source,
+-                                   monitor->last_event_time +
+-                                   watch->timeout_msec * 1000);
++          if (monitor->inhibited)
++          {
++             g_source_set_ready_time (watch->timeout_source, -1);
++          }
++          else
++          {
++             g_source_set_ready_time (watch->timeout_source,
++                                      monitor->last_event_time +
++                                      watch->timeout_msec * 1000);
++          }
+         }
+     }
+ 
+diff -Naurp mutter-3.34.1.orig/src/backends/native/meta-kms.c mutter-3.34.1/src/backends/native/meta-kms.c
+--- mutter-3.34.1.orig/src/backends/native/meta-kms.c	2019-10-08 12:15:10.000000000 -0500
++++ mutter-3.34.1/src/backends/native/meta-kms.c	2019-10-17 10:50:08.470492719 -0500
+@@ -211,8 +211,7 @@ meta_kms_update_process_in_impl (MetaKms
+ 
+   ret = meta_kms_impl_process_update (impl, update, error);
+ 
+-  if (meta_kms_update_has_mode_set (update))
+-    meta_kms_predict_states_in_impl (meta_kms_impl_get_kms (impl), update);
++  meta_kms_predict_states_in_impl (meta_kms_impl_get_kms (impl), update);
+ 
+   return ret;
+ }
+diff -Naurp mutter-3.34.1.orig/src/backends/native/meta-kms-crtc.c mutter-3.34.1/src/backends/native/meta-kms-crtc.c
+--- mutter-3.34.1.orig/src/backends/native/meta-kms-crtc.c	2019-10-08 12:15:10.000000000 -0500
++++ mutter-3.34.1/src/backends/native/meta-kms-crtc.c	2019-10-17 12:38:54.831653948 -0500
+@@ -143,14 +143,26 @@ meta_kms_crtc_update_state (MetaKmsCrtc
+   drmModeFreeCrtc (drm_crtc);
+ }
+ 
++static void
++clear_gamma_state (MetaKmsCrtc *crtc)
++{
++   crtc->current_state.gamma.size = 0;
++   g_clear_pointer (&crtc->current_state.gamma.red, g_free);
++   g_clear_pointer (&crtc->current_state.gamma.green, g_free);
++   g_clear_pointer (&crtc->current_state.gamma.blue, g_free);
++}
++
+ void
+ meta_kms_crtc_predict_state (MetaKmsCrtc   *crtc,
+                              MetaKmsUpdate *update)
+ {
++  gboolean is_gamma_valid;
+   GList *mode_sets;
+   GList *crtc_gammas;
+   GList *l;
+ 
++  is_gamma_valid = TRUE;
++
+   mode_sets = meta_kms_update_get_mode_sets (update);
+   for (l = mode_sets; l; l = l->next)
+     {
+@@ -178,6 +190,8 @@ meta_kms_crtc_predict_state (MetaKmsCrtc
+           crtc->current_state.drm_mode = (drmModeModeInfo) { 0 };
+         }
+ 
++      is_gamma_valid = FALSE;
++
+       break;
+     }
+ 
+@@ -196,8 +210,36 @@ meta_kms_crtc_predict_state (MetaKmsCrtc
+         g_memdup (gamma->green, gamma->size * sizeof (uint16_t));
+       crtc->current_state.gamma.blue =
+         g_memdup (gamma->blue, gamma->size * sizeof (uint16_t));
++
++      is_gamma_valid = TRUE;
+       break;
+     }
++
++  if (!is_gamma_valid)
++  {
++     if (crtc->current_state.is_drm_mode_valid)
++     {
++        MetaKmsImplDevice *impl_device;
++        drmModeCrtc *drm_crtc;
++
++        impl_device = meta_kms_device_get_impl_device (crtc->device);
++        drm_crtc = drmModeGetCrtc (meta_kms_impl_device_get_fd (impl_device),
++                                   crtc->id);
++        if (drm_crtc)
++        {
++           read_gamma_state (crtc, impl_device, drm_crtc);
++           drmModeFreeCrtc (drm_crtc);
++        }
++        else
++        {
++           clear_gamma_state (crtc);
++        }
++     }
++     else 
++     {
++        clear_gamma_state (crtc);
++     }
++  }
+ }
+ 
+ MetaKmsCrtc *
+@@ -220,9 +262,7 @@ meta_kms_crtc_finalize (GObject *object)
+ {
+   MetaKmsCrtc *crtc = META_KMS_CRTC (object);
+ 
+-  g_clear_pointer (&crtc->current_state.gamma.red, g_free);
+-  g_clear_pointer (&crtc->current_state.gamma.green, g_free);
+-  g_clear_pointer (&crtc->current_state.gamma.blue, g_free);
++  clear_gamma_state (crtc);
+ 
+   G_OBJECT_CLASS (meta_kms_crtc_parent_class)->finalize (object);
+ }
+diff -Naurp mutter-3.34.1.orig/src/backends/native/meta-kms-update.c mutter-3.34.1/src/backends/native/meta-kms-update.c
+--- mutter-3.34.1.orig/src/backends/native/meta-kms-update.c	2019-10-08 12:15:10.000000000 -0500
++++ mutter-3.34.1/src/backends/native/meta-kms-update.c	2019-10-17 10:49:21.665300625 -0500
+@@ -282,12 +282,6 @@ meta_kms_update_get_crtc_gammas (MetaKms
+   return update->crtc_gammas;
+ }
+ 
+-gboolean
+-meta_kms_update_has_mode_set (MetaKmsUpdate *update)
+-{
+-  return !!update->mode_sets;
+-}
+-
+ void
+ meta_kms_update_seal (MetaKmsUpdate *update)
+ {
+diff -Naurp mutter-3.34.1.orig/src/backends/native/meta-kms-update-private.h mutter-3.34.1/src/backends/native/meta-kms-update-private.h
+--- mutter-3.34.1.orig/src/backends/native/meta-kms-update-private.h	2019-10-08 12:15:10.000000000 -0500
++++ mutter-3.34.1/src/backends/native/meta-kms-update-private.h	2019-10-17 10:48:49.710864823 -0500
+@@ -110,6 +110,4 @@ GList * meta_kms_update_get_connector_pr
+ 
+ GList * meta_kms_update_get_crtc_gammas (MetaKmsUpdate *update);
+ 
+-gboolean meta_kms_update_has_mode_set (MetaKmsUpdate *update);
+-
+ #endif /* META_KMS_UPDATE_PRIVATE_H */
+diff -Naurp mutter-3.34.1.orig/src/backends/x11/meta-clutter-backend-x11.c mutter-3.34.1/src/backends/x11/meta-clutter-backend-x11.c
+--- mutter-3.34.1.orig/src/backends/x11/meta-clutter-backend-x11.c	2019-10-08 12:15:10.000000000 -0500
++++ mutter-3.34.1/src/backends/x11/meta-clutter-backend-x11.c	2019-10-17 10:47:38.851156280 -0500
+@@ -129,7 +129,7 @@ meta_clutter_backend_x11_translate_event
+     return TRUE;
+ 
+   if (meta_keymap_x11_handle_event (backend_x11->keymap, native))
+-    return TRUE;
++    return FALSE;
+ 
+   stage_x11 = META_STAGE_X11 (clutter_backend_get_stage_window (backend));
+   if (meta_stage_x11_translate_event (stage_x11, native, event))
+diff -Naurp mutter-3.34.1.orig/src/backends/x11/meta-event-x11.c mutter-3.34.1/src/backends/x11/meta-event-x11.c
+--- mutter-3.34.1.orig/src/backends/x11/meta-event-x11.c	2019-10-08 12:15:10.000000000 -0500
++++ mutter-3.34.1/src/backends/x11/meta-event-x11.c	2019-10-17 10:46:44.952179855 -0500
+@@ -82,12 +82,12 @@ meta_x11_handle_event (XEvent *xevent)
+   gboolean allocated_event;
+ 
+   /* The return values here are someone approximate; we return
+-   * META_X11_FILTER_REMOVE if a clutter event is
++   * CLUTTER_X11_FILTER_REMOVE if a clutter event is
+    * generated for the event. This mostly, but not entirely,
+    * corresponds to whether other event processing should be
+    * excluded. As long as the stage window is not shared with another
+    * toolkit it should be safe, and never return
+-   * %META_X11_FILTER_REMOVE when more processing is needed.
++   * %CLUTTER_X11_FILTER_REMOVE when more processing is needed.
+    */
+ 
+   result = CLUTTER_X11_FILTER_CONTINUE;
+diff -Naurp mutter-3.34.1.orig/src/core/main.c mutter-3.34.1/src/core/main.c
+--- mutter-3.34.1.orig/src/core/main.c	2019-10-08 12:15:10.000000000 -0500
++++ mutter-3.34.1/src/core/main.c	2019-10-17 10:59:39.175841678 -0500
+@@ -766,6 +766,6 @@ meta_test_init (void)
+ 
+   close (fd);
+ #else
+-  g_error ("Tests require wayland support");
++  g_warning ("Tests require wayland support");
+ #endif
+ }
+diff -Naurp mutter-3.34.1.orig/src/core/meta-selection-source-memory.c mutter-3.34.1/src/core/meta-selection-source-memory.c
+--- mutter-3.34.1.orig/src/core/meta-selection-source-memory.c	2019-10-08 12:15:10.000000000 -0500
++++ mutter-3.34.1/src/core/meta-selection-source-memory.c	2019-10-17 12:17:01.485752848 -0500
+@@ -76,6 +76,9 @@ meta_selection_source_memory_get_mimetyp
+ {
+   MetaSelectionSourceMemory *source_mem = META_SELECTION_SOURCE_MEMORY (source);
+ 
++  if (!source_mem->mimetype)
++     return NULL;
++
+   return g_list_prepend (NULL, g_strdup (source_mem->mimetype));
+ }
+ 
+@@ -84,7 +87,7 @@ meta_selection_source_memory_finalize (G
+ {
+   MetaSelectionSourceMemory *source_mem = META_SELECTION_SOURCE_MEMORY (object);
+ 
+-  g_bytes_unref (source_mem->content);
++  g_clear_pointer (&source_mem->content, g_bytes_unref);
+   g_free (source_mem->mimetype);
+ 
+   G_OBJECT_CLASS (meta_selection_source_memory_parent_class)->finalize (object);
+diff -Naurp mutter-3.34.1.orig/src/wayland/meta-selection-source-wayland.c mutter-3.34.1/src/wayland/meta-selection-source-wayland.c
+--- mutter-3.34.1.orig/src/wayland/meta-selection-source-wayland.c	2019-10-08 12:15:10.000000000 -0500
++++ mutter-3.34.1/src/wayland/meta-selection-source-wayland.c	2019-10-17 11:19:46.000269334 -0500
+@@ -29,10 +29,8 @@
+ struct _MetaSelectionSourceWayland
+ {
+   MetaSelectionSource parent_instance;
++  MetaWaylandDataSource *data_source;
+   GList *mimetypes;
+-  MetaWaylandSendFunc send_func;
+-  MetaWaylandCancelFunc cancel_func;
+-  struct wl_resource *resource;
+ };
+ 
+ G_DEFINE_TYPE (MetaSelectionSourceWayland, meta_selection_source_wayland,
+@@ -85,7 +83,8 @@ meta_selection_source_wayland_read_async
+   g_task_set_source_tag (task, meta_selection_source_wayland_read_async);
+ 
+   stream = g_unix_input_stream_new (pipe_fds[0], TRUE);
+-  source_wayland->send_func (source_wayland->resource, mimetype, pipe_fds[1]);
++  meta_wayland_data_source_send (source_wayland->data_source,
++                                 mimetype, pipe_fds[1]);
+   close (pipe_fds[1]);
+ 
+   g_task_return_pointer (task, stream, g_object_unref);
+@@ -119,7 +118,7 @@ meta_selection_source_wayland_deactivate
+   MetaSelectionSourceWayland *source_wayland =
+     META_SELECTION_SOURCE_WAYLAND (source);
+ 
+-  source_wayland->cancel_func (source_wayland->resource);
++  meta_wayland_data_source_cancel (source_wayland->data_source);
+   META_SELECTION_SOURCE_CLASS (meta_selection_source_wayland_parent_class)->deactivated (source);
+ }
+ 
+@@ -143,20 +142,29 @@ meta_selection_source_wayland_init (Meta
+ {
+ }
+ 
++static GList *
++copy_string_array_to_list (struct wl_array *array)
++{
++   GList *l = NULL;
++   char **p;
++
++   wl_array_for_each (p, array)
++      l = g_list_prepend (l, g_strdup (*p));
++
++   return l;
++}
++
+ MetaSelectionSource *
+-meta_selection_source_wayland_new (struct wl_resource    *resource,
+-                                   GList                 *mime_types,
+-                                   MetaWaylandSendFunc    send_func,
+-                                   MetaWaylandCancelFunc  cancel_func)
++meta_selection_source_wayland_new (MetaWaylandDataSource *data_source)
+ {
+   MetaSelectionSourceWayland *source_wayland;
++  struct wl_array *mimetypes;
+ 
+   source_wayland = g_object_new (META_TYPE_SELECTION_SOURCE_WAYLAND, NULL);
+-  source_wayland->mimetypes = g_list_copy_deep (mime_types,
+-                                                (GCopyFunc) g_strdup, NULL);
+-  source_wayland->send_func = send_func;
+-  source_wayland->cancel_func = cancel_func;
+-  source_wayland->resource = resource;
++  source_wayland->data_source = data_source;
++
++  mimetypes = meta_wayland_data_source_get_mime_types (data_source);
++  source_wayland->mimetypes = copy_string_array_to_list (mimetypes);
+ 
+   return META_SELECTION_SOURCE (source_wayland);
+ }
+diff -Naurp mutter-3.34.1.orig/src/wayland/meta-selection-source-wayland-private.h mutter-3.34.1/src/wayland/meta-selection-source-wayland-private.h
+--- mutter-3.34.1.orig/src/wayland/meta-selection-source-wayland-private.h	2019-10-08 12:15:10.000000000 -0500
++++ mutter-3.34.1/src/wayland/meta-selection-source-wayland-private.h	2019-10-17 12:26:34.478148915 -0500
+@@ -25,6 +25,8 @@
+ #include <wayland-server.h>
+ 
+ #include "meta/meta-selection-source.h"
++#include "wayland/meta-wayland-data-device.h"
++#include "wayland/meta-wayland-data-device-private.h"
+ 
+ #define META_TYPE_SELECTION_SOURCE_WAYLAND (meta_selection_source_wayland_get_type ())
+ 
+@@ -33,14 +35,6 @@ G_DECLARE_FINAL_TYPE (MetaSelectionSourc
+                       META, SELECTION_SOURCE_WAYLAND,
+                       MetaSelectionSource)
+ 
+-typedef void (* MetaWaylandSendFunc) (struct wl_resource *resource,
+-                                      const char         *mimetype,
+-                                      int                 fd);
+-typedef void (* MetaWaylandCancelFunc) (struct wl_resource *resource);
+-
+-MetaSelectionSource * meta_selection_source_wayland_new (struct wl_resource    *resource,
+-                                                         GList                 *mime_types,
+-                                                         MetaWaylandSendFunc    send_func,
+-                                                         MetaWaylandCancelFunc  cancel_func);
++MetaSelectionSource * meta_selection_source_wayland_new (MetaWaylandDataSource *source);
+ 
+ #endif /* META_SELECTION_SOURCE_WAYLAND_H */
+diff -Naurp mutter-3.34.1.orig/src/wayland/meta-wayland-actor-surface.c mutter-3.34.1/src/wayland/meta-wayland-actor-surface.c
+--- mutter-3.34.1.orig/src/wayland/meta-wayland-actor-surface.c	2019-10-08 12:15:10.000000000 -0500
++++ mutter-3.34.1/src/wayland/meta-wayland-actor-surface.c	2019-10-17 12:40:49.412340646 -0500
+@@ -241,6 +241,11 @@ meta_wayland_actor_surface_commit (MetaW
+   if (!priv->actor)
+     return;
+ 
++  if (!wl_list_empty (&pending->frame_callback_list) &&
++      cairo_region_is_empty (pending->surface_damage) &&
++      cairo_region_is_empty (pending->buffer_damage))
++     clutter_actor_queue_redraw (CLUTTER_ACTOR (priv->actor));
++
+   meta_wayland_actor_surface_queue_frame_callbacks (actor_surface, pending);
+ 
+   meta_wayland_actor_surface_sync_actor_state (actor_surface);
+diff -Naurp mutter-3.34.1.orig/src/wayland/meta-wayland-data-device.c mutter-3.34.1/src/wayland/meta-wayland-data-device.c
+--- mutter-3.34.1.orig/src/wayland/meta-wayland-data-device.c	2019-10-08 12:15:10.000000000 -0500
++++ mutter-3.34.1/src/wayland/meta-wayland-data-device.c	2019-10-17 12:37:32.844593811 -0500
+@@ -36,6 +36,7 @@
+ #include <unistd.h>
+ 
+ #include "compositor/meta-dnd-actor-private.h"
++#include "meta/meta-selection-source-memory.h"
+ #include "wayland/meta-selection-source-wayland-private.h"
+ #include "wayland/meta-wayland-dnd-surface.h"
+ #include "wayland/meta-wayland-pointer.h"
+@@ -59,6 +60,7 @@ struct _MetaWaylandDataOffer
+   gboolean action_sent;
+   uint32_t dnd_actions;
+   enum wl_data_device_manager_dnd_action preferred_dnd_action;
++  MetaSelectionType selection_type;
+ };
+ 
+ typedef struct _MetaWaylandDataSourcePrivate
+@@ -84,8 +86,6 @@ typedef struct _MetaWaylandDataSourceWay
+ typedef struct _MetaWaylandDataSourcePrimary
+ {
+   MetaWaylandDataSourceWayland parent;
+-
+-  struct wl_resource *resource;
+ } MetaWaylandDataSourcePrimary;
+ 
+ G_DEFINE_TYPE_WITH_PRIVATE (MetaWaylandDataSource, meta_wayland_data_source,
+@@ -252,7 +252,7 @@ meta_wayland_data_source_get_mime_types
+   return &priv->mime_types;
+ }
+ 
+-static void
++void
+ meta_wayland_data_source_cancel (MetaWaylandDataSource *source)
+ {
+   META_WAYLAND_DATA_SOURCE_GET_CLASS (source)->cancel (source);
+@@ -400,11 +400,7 @@ data_offer_receive (struct wl_client *cl
+   GList *mime_types;
+   gboolean found;
+ 
+-  if (offer->dnd_actions != 0)
+-    selection_type = META_SELECTION_DND;
+-  else
+-    selection_type = META_SELECTION_CLIPBOARD;
+-
++  selection_type = offer->selection_type;
+   mime_types = meta_selection_get_mimetypes (meta_display_get_selection (display),
+                                              selection_type);
+   found = g_list_find_custom (mime_types, mime_type, (GCompareFunc) g_strcmp0) != NULL;
+@@ -623,6 +619,7 @@ create_and_send_dnd_offer (MetaWaylandDa
+   MetaWaylandDataOffer *offer = g_slice_new0 (MetaWaylandDataOffer);
+   char **p;
+ 
++  offer->selection_type = META_SELECTION_DND;
+   offer->source = source;
+   g_object_add_weak_pointer (G_OBJECT (source), (gpointer *)&offer->source);
+   offer->resource = wl_resource_create (wl_resource_get_client (target),
+@@ -1154,18 +1151,6 @@ destroy_data_device_icon (struct wl_list
+     clutter_actor_remove_all_children (drag_grab->feedback_actor);
+ }
+ 
+-static GList *
+-copy_string_array_to_list (struct wl_array *array)
+-{
+-  GList *l = NULL;
+-  char **p;
+-
+-  wl_array_for_each (p, array)
+-    l = g_list_prepend (l, g_strdup (*p));
+-
+-  return l;
+-}
+-
+ void
+ meta_wayland_data_device_start_drag (MetaWaylandDataDevice                 *data_device,
+                                      struct wl_client                      *client,
+@@ -1265,7 +1250,6 @@ data_device_start_drag (struct wl_client
+   MetaWaylandSurface *surface = NULL, *icon_surface = NULL;
+   MetaWaylandDataSource *drag_source = NULL;
+   MetaSelectionSource *selection_source;
+-  GList *mimetypes;
+ 
+   if (origin_resource)
+     surface = wl_resource_get_user_data (origin_resource);
+@@ -1301,14 +1285,10 @@ data_device_start_drag (struct wl_client
+       return;
+     }
+ 
+-  mimetypes = copy_string_array_to_list (meta_wayland_data_source_get_mime_types (drag_source));
+-  selection_source = meta_selection_source_wayland_new (source_resource,
+-                                                        mimetypes,
+-                                                        wl_data_source_send_send,
+-                                                        wl_data_source_send_cancelled);
+-  g_list_free_full (mimetypes, g_free);
++  selection_source = meta_selection_source_wayland_new (drag_source);
+   set_selection_source (data_device, META_SELECTION_DND,
+                         selection_source);
++  g_object_unref (selection_source);
+ 
+   meta_wayland_pointer_set_focus (seat->pointer, NULL);
+   meta_wayland_data_device_start_drag (data_device, client,
+@@ -1370,7 +1350,8 @@ meta_wayland_source_cancel (MetaWaylandD
+   MetaWaylandDataSourceWayland *source_wayland =
+     META_WAYLAND_DATA_SOURCE_WAYLAND (source);
+ 
+-  wl_data_source_send_cancelled (source_wayland->resource);
++  if (source_wayland->resource)
++     wl_data_source_send_cancelled (source_wayland->resource);
+ }
+ 
+ static void
+@@ -1421,7 +1402,7 @@ meta_wayland_source_drag_finished (MetaW
+ static void
+ meta_wayland_source_finalize (GObject *object)
+ {
+-  G_OBJECT_CLASS (meta_wayland_data_source_parent_class)->finalize (object);
++  G_OBJECT_CLASS (meta_wayland_data_source_wayland_parent_class)->finalize (object);
+ }
+ 
+ static void
+@@ -1451,10 +1432,10 @@ meta_wayland_data_source_primary_send (M
+                                        const gchar           *mime_type,
+                                        gint                   fd)
+ {
+-  MetaWaylandDataSourcePrimary *source_primary;
++  MetaWaylandDataSourceWayland *source_wayland;
+ 
+-  source_primary = META_WAYLAND_DATA_SOURCE_PRIMARY (source);
+-  gtk_primary_selection_source_send_send (source_primary->resource,
++  source_wayland = META_WAYLAND_DATA_SOURCE_WAYLAND (source);
++  gtk_primary_selection_source_send_send (source_wayland->resource,
+                                           mime_type, fd);
+   close (fd);
+ }
+@@ -1462,10 +1443,11 @@ meta_wayland_data_source_primary_send (M
+ static void
+ meta_wayland_data_source_primary_cancel (MetaWaylandDataSource *source)
+ {
+-  MetaWaylandDataSourcePrimary *source_primary;
++  MetaWaylandDataSourceWayland *source_wayland;
+ 
+-  source_primary = META_WAYLAND_DATA_SOURCE_PRIMARY (source);
+-  gtk_primary_selection_source_send_cancelled (source_primary->resource);
++  source_wayland = META_WAYLAND_DATA_SOURCE_WAYLAND (source);
++  if (source_wayland->resource)
++     gtk_primary_selection_source_send_cancelled (source_wayland->resource);
+ }
+ 
+ static void
+@@ -1644,6 +1626,7 @@ meta_wayland_data_device_set_selection (
+   MetaWaylandSeat *seat = wl_container_of (data_device, seat, data_device);
+   struct wl_resource *data_device_resource;
+   struct wl_client *focus_client;
++  MetaSelectionSource *selection_source;
+ 
+   if (data_device->selection_data_source &&
+       data_device->selection_serial - serial < UINT32_MAX / 2)
+@@ -1661,45 +1644,36 @@ meta_wayland_data_device_set_selection (
+   data_device->selection_data_source = source;
+   data_device->selection_serial = serial;
+ 
+-  focus_client = meta_wayland_keyboard_get_focus_client (seat->keyboard);
+-  if (focus_client)
+-    {
+-      data_device_resource = wl_resource_find_for_client (&data_device->resource_list, focus_client);
+-      if (data_device_resource)
+-        {
+-          struct wl_resource *offer;
+-          offer = create_and_send_clipboard_offer (data_device, data_device_resource);
+-          wl_data_device_send_selection (data_device_resource, offer);
+-        }
+-    }
+-
+   if (source)
+     {
+-      MetaWaylandDataSourceWayland *source_wayland =
+-        META_WAYLAND_DATA_SOURCE_WAYLAND (source);
+-      MetaSelectionSource *selection_source;
+-      GList *mimetypes;
+-
+       meta_wayland_data_source_set_seat (source, seat);
+       g_object_weak_ref (G_OBJECT (source),
+                          selection_data_source_destroyed,
+                          data_device);
+ 
+-      mimetypes = copy_string_array_to_list (meta_wayland_data_source_get_mime_types (source));
+-      selection_source = meta_selection_source_wayland_new (source_wayland->resource,
+-                                                            mimetypes,
+-                                                            wl_data_source_send_send,
+-                                                            wl_data_source_send_cancelled);
+-      g_list_free_full (mimetypes, g_free);
+-
+-      set_selection_source (data_device, META_SELECTION_CLIPBOARD,
+-                            selection_source);
++      selection_source = meta_selection_source_wayland_new (source);
+     }
+   else
+     {
+-      unset_selection_source (data_device, META_SELECTION_CLIPBOARD);
++      selection_source = g_object_new (META_TYPE_SELECTION_SOURCE_MEMORY, NULL);
+     }
+ 
++  set_selection_source (data_device, META_SELECTION_CLIPBOARD,
++                        selection_source);
++  g_object_unref (selection_source);
++
++  focus_client = meta_wayland_keyboard_get_focus_client (seat->keyboard);
++  if (focus_client)
++     {
++        data_device_resource = wl_resource_find_for_client (&data_device->resource_list, focus_client);
++        if (data_device_resource)
++        {
++           struct wl_resource *offer;
++           offer = create_and_send_clipboard_offer (data_device, data_device_resource);
++           wl_data_device_send_selection (data_device_resource, offer);
++        }
++     }
++
+   wl_signal_emit (&data_device->selection_ownership_signal, source);
+ }
+ 
+@@ -1773,12 +1747,13 @@ meta_wayland_data_device_set_primary (Me
+   MetaWaylandSeat *seat = wl_container_of (data_device, seat, data_device);
+   struct wl_resource *data_device_resource;
+   struct wl_client *focus_client;
++  MetaSelectionSource *selection_source;
+ 
+   if (META_IS_WAYLAND_DATA_SOURCE_PRIMARY (source))
+     {
+       struct wl_resource *resource;
+ 
+-      resource = META_WAYLAND_DATA_SOURCE_PRIMARY (source)->resource;
++      resource = META_WAYLAND_DATA_SOURCE_WAYLAND (source)->resource;
+ 
+       if (wl_resource_get_client (resource) !=
+           meta_wayland_keyboard_get_focus_client (seat->keyboard))
+@@ -1800,43 +1775,36 @@ meta_wayland_data_device_set_primary (Me
+   data_device->primary_data_source = source;
+   data_device->primary_serial = serial;
+ 
+-  focus_client = meta_wayland_keyboard_get_focus_client (seat->keyboard);
+-  if (focus_client)
+-    {
+-      data_device_resource = wl_resource_find_for_client (&data_device->primary_resource_list, focus_client);
+-      if (data_device_resource)
+-        {
+-          struct wl_resource *offer;
+-          offer = create_and_send_primary_offer (data_device, data_device_resource);
+-          gtk_primary_selection_device_send_selection (data_device_resource, offer);
+-        }
+-    }
+-
+   if (source)
+     {
+-      MetaSelectionSource *selection_source;
+-      GList *mimetypes;
+-
+       meta_wayland_data_source_set_seat (source, seat);
+       g_object_weak_ref (G_OBJECT (source),
+                          primary_source_destroyed,
+                          data_device);
+ 
+-      mimetypes = copy_string_array_to_list (meta_wayland_data_source_get_mime_types (source));
+-      selection_source = meta_selection_source_wayland_new (META_WAYLAND_DATA_SOURCE_PRIMARY (source)->resource,
+-                                                            mimetypes,
+-                                                            gtk_primary_selection_source_send_send,
+-                                                            gtk_primary_selection_source_send_cancelled);
+-      g_list_free_full (mimetypes, g_free);
+-
+-      set_selection_source (data_device, META_SELECTION_PRIMARY,
+-                            selection_source);
++      selection_source = meta_selection_source_wayland_new (source);
+     }
+   else
+     {
+-      unset_selection_source (data_device, META_SELECTION_PRIMARY);
++      selection_source = g_object_new (META_TYPE_SELECTION_SOURCE_MEMORY, NULL);
+     }
+ 
++  set_selection_source (data_device, META_SELECTION_PRIMARY,
++                        selection_source);
++  g_object_unref (selection_source);
++
++  focus_client = meta_wayland_keyboard_get_focus_client (seat->keyboard);
++  if (focus_client)
++  {
++     data_device_resource = wl_resource_find_for_client (&data_device->primary_resource_list, focus_client);
++     if (data_device_resource)
++     {
++        struct wl_resource *offer;
++        offer = create_and_send_primary_offer (data_device, data_device_resource);
++        gtk_primary_selection_device_send_selection (data_device_resource, offer);
++     }
++  }
++
+   wl_signal_emit (&data_device->primary_ownership_signal, source);
+ }
+ 
+@@ -1968,7 +1936,7 @@ static const struct wl_data_device_manag
+ static void
+ destroy_primary_source (struct wl_resource *resource)
+ {
+-  MetaWaylandDataSourcePrimary *source = wl_resource_get_user_data (resource);
++  MetaWaylandDataSourceWayland *source = wl_resource_get_user_data (resource);
+ 
+   source->resource = NULL;
+   g_object_unref (source);
+@@ -2073,6 +2041,7 @@ create_and_send_clipboard_offer (MetaWay
+     return NULL;
+ 
+   offer = g_slice_new0 (MetaWaylandDataOffer);
++  offer->selection_type = META_SELECTION_CLIPBOARD;
+   offer->resource = wl_resource_create (wl_resource_get_client (target),
+                                         &wl_data_offer_interface,
+                                         wl_resource_get_version (target), 0);
+@@ -2105,6 +2074,7 @@ create_and_send_primary_offer (MetaWayla
+     return NULL;
+ 
+   offer = g_slice_new0 (MetaWaylandDataOffer);
++  offer->selection_type = META_SELECTION_PRIMARY;
+   offer->resource = wl_resource_create (wl_resource_get_client (target),
+                                         &gtk_primary_selection_offer_interface,
+                                         wl_resource_get_version (target), 0);
+@@ -2204,7 +2174,7 @@ meta_wayland_data_source_wayland_new (st
+ static MetaWaylandDataSource *
+ meta_wayland_data_source_primary_new (struct wl_resource *resource)
+ {
+-  MetaWaylandDataSourcePrimary *source_primary =
++  MetaWaylandDataSourceWayland *source_primary =
+     g_object_new (META_TYPE_WAYLAND_DATA_SOURCE_PRIMARY, NULL);
+ 
+   source_primary->resource = resource;
+diff -Naurp mutter-3.34.1.orig/src/wayland/meta-wayland-data-device.h mutter-3.34.1/src/wayland/meta-wayland-data-device.h
+--- mutter-3.34.1.orig/src/wayland/meta-wayland-data-device.h	2019-10-08 12:15:10.000000000 -0500
++++ mutter-3.34.1/src/wayland/meta-wayland-data-device.h	2019-10-17 11:24:34.197501881 -0500
+@@ -111,6 +111,8 @@ gboolean meta_wayland_data_source_has_ta
+ void     meta_wayland_data_source_set_has_target (MetaWaylandDataSource *source,
+                                                   gboolean               has_target);
+ 
++void     meta_wayland_data_source_cancel         (MetaWaylandDataSource *source);
++
+ void     meta_wayland_data_source_send           (MetaWaylandDataSource *source,
+                                                   const gchar           *mime_type,
+                                                   gint                   fd);
+diff -Naurp mutter-3.34.1.orig/src/wayland/meta-wayland-surface.c mutter-3.34.1/src/wayland/meta-wayland-surface.c
+--- mutter-3.34.1.orig/src/wayland/meta-wayland-surface.c	2019-10-08 12:15:10.000000000 -0500
++++ mutter-3.34.1/src/wayland/meta-wayland-surface.c	2019-10-17 10:29:13.154909747 -0500
+@@ -972,8 +972,12 @@ wl_surface_frame (struct wl_client *clie
+ 
+   callback = g_slice_new0 (MetaWaylandFrameCallback);
+   callback->surface = surface;
+-  callback->resource = wl_resource_create (client, &wl_callback_interface, META_WL_CALLBACK_VERSION, callback_id);
+-  wl_resource_set_implementation (callback->resource, NULL, callback, destroy_frame_callback);
++  callback->resource = wl_resource_create (client,
++                                           &wl_callback_interface,
++                                           META_WL_CALLBACK_VERSION,
++                                           callback_id);
++  wl_resource_set_implementation (callback->resource, NULL, callback,
++                                  destroy_frame_callback);
+ 
+   wl_list_insert (surface->pending->frame_callback_list.prev, &callback->link);
+ }
+@@ -1370,7 +1374,9 @@ wl_surface_destructor (struct wl_resourc
+ 
+   meta_wayland_compositor_destroy_frame_callbacks (compositor, surface);
+ 
+-  g_hash_table_foreach (surface->outputs_to_destroy_notify_id, surface_output_disconnect_signal, surface);
++  g_hash_table_foreach (surface->outputs_to_destroy_notify_id,
++                        surface_output_disconnect_signal,
++                        surface);
+   g_hash_table_unref (surface->outputs_to_destroy_notify_id);
+ 
+   wl_list_for_each_safe (cb, next, &surface->pending_frame_callback_list, link)
+@@ -1419,12 +1425,20 @@ meta_wayland_surface_create (MetaWayland
+                              guint32                id)
+ {
+   MetaWaylandSurface *surface = g_object_new (META_TYPE_WAYLAND_SURFACE, NULL);
++  int surface_version;
+ 
+   surface->compositor = compositor;
+   surface->scale = 1;
+ 
+-  surface->resource = wl_resource_create (client, &wl_surface_interface, wl_resource_get_version (compositor_resource), id);
+-  wl_resource_set_implementation (surface->resource, &meta_wayland_wl_surface_interface, surface, wl_surface_destructor);
++  surface_version = wl_resource_get_version (compositor_resource);
++  surface->resource = wl_resource_create (client,
++                                          &wl_surface_interface,
++                                          surface_version,
++                                          id);
++  wl_resource_set_implementation (surface->resource,
++                                  &meta_wayland_wl_surface_interface,
++                                  surface,
++                                  wl_surface_destructor);
+ 
+   wl_list_init (&surface->pending_frame_callback_list);
+ 
+diff -Naurp mutter-3.34.1.orig/src/x11/meta-selection-source-x11.c mutter-3.34.1/src/x11/meta-selection-source-x11.c
+--- mutter-3.34.1.orig/src/x11/meta-selection-source-x11.c	2019-10-08 12:15:10.000000000 -0500
++++ mutter-3.34.1/src/x11/meta-selection-source-x11.c	2019-10-17 11:55:46.814027925 -0500
+@@ -82,6 +82,15 @@ meta_selection_source_x11_read_async (Me
+   task = g_task_new (source, cancellable, callback, user_data);
+   g_task_set_source_tag (task, meta_selection_source_x11_read_async);
+ 
++  if (strcmp (mimetype, "text/plain") == 0 &&
++      g_list_find_custom (source_x11->mimetypes, "STRING",
++                          (GCompareFunc) g_strcmp0))
++     mimetype = "STRING";
++  else if (strcmp (mimetype, "text/plain;charset=utf-8") == 0 &&
++           g_list_find_custom (source_x11->mimetypes, "UTF8_STRING",
++                               (GCompareFunc) g_strcmp0))
++     mimetype = "UTF8_STRING";
++
+   meta_x11_selection_input_stream_new_async (source_x11->x11_display,
+                                              source_x11->x11_display->selection.xwindow,
+                                              gdk_x11_get_xatom_name (source_x11->xselection),
+@@ -139,6 +148,8 @@ atoms_to_mimetypes (MetaX11Display *disp
+   const Atom *atoms;
+   gsize size;
+   guint i, n_atoms;
++  gboolean utf8_string_found = FALSE, utf8_text_plain_found = FALSE;
++  gboolean string_found = FALSE, text_plain_found = FALSE;
+ 
+   atoms = g_bytes_get_data (bytes, &size);
+   n_atoms = size / sizeof (Atom);
+@@ -149,8 +160,19 @@ atoms_to_mimetypes (MetaX11Display *disp
+ 
+       mimetype = gdk_x11_get_xatom_name (atoms[i]);
+       mimetypes = g_list_prepend (mimetypes, g_strdup (mimetype));
++
++      utf8_text_plain_found |= strcmp (mimetype, "text/plain;charset=utf-8") == 0;
++      text_plain_found |= strcmp (mimetype, "text/plain") == 0;
++      utf8_string_found |= strcmp (mimetype, "UTF8_STRING") == 0;
++      string_found |= strcmp (mimetype, "STRING") == 0;
+     }
+ 
++  /* Ensure non-x11 clients get well-known mimetypes too! */
++  if (string_found && !text_plain_found)
++     mimetypes = g_list_prepend (mimetypes, g_strdup ("text/plain"));
++  if (utf8_string_found && !utf8_text_plain_found)
++     mimetypes = g_list_prepend (mimetypes, g_strdup ("text/plain;charset=utf-8"));
++
+   return mimetypes;
+ }
+ 
