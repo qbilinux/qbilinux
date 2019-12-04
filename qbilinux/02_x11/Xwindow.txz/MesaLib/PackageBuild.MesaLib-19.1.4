@@ -9,13 +9,12 @@ build=2
 src=mesa-${vers}
 case $arch in
     armv7l | aarch64)
-	OPT_CONFIG='--enable-llvm-shared-libs
-         --enable-autotools
-         --enable-gles1  --enable-gles2 
-         --enable-osmesa --enable-xa --enable-gbm 
-         --enable-glx-tls 
-         --with-gallium-drivers=vc4
-	 --with-dri-drivers=swrast
+	OPT_CONFIG='-Dshared-llvm=true
+	 -Dgles1=true -Dgles2=true 
+         -Dosmesa=classic -Dgallium-xa=auto
+         -Dgallium-drivers=vc4
+	 -Ddri-drivers=swrast
+      	 -Dbuildtype=release
          ';;
     *)
 	OPT_CONFIG='-Dshared-llvm=true
