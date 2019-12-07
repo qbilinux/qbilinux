@@ -1,15 +1,15 @@
 #!/bin/sh
 ##############################################################
-pkgbase=konsole
-vers=19.08.2
-url='https://download.kde.org/stable/applications/19.08.2/src/konsole-19.08.2.tar.xz'
+pkgbase=kio_extras
+vers=19.08.3
+url='https://download.kde.org/stable/applications/19.08.3/src/kio-extras-19.08.3.tar.xz'
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=konsole-${vers}
+build=1
+src=kio-extras-${vers}
 OPT_CONFIG=''
-DOCS='COPYING COPYING.DOC COPYING.LIB COPYING.Unicode README'
+DOCS='about'
 patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
