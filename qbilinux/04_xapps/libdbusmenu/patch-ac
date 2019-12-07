@@ -1,0 +1,19 @@
+*** libdbusmenu-16.04.0/tools/Makefile.am.orig	2016-02-28 03:58:43.000000000 +0900
+--- libdbusmenu-16.04.0/tools/Makefile.am	2019-12-07 14:16:59.999248411 +0900
+***************
+*** 16,22 ****
+  	-I $(srcdir)/.. \
+  	$(DBUSMENUGLIB_CFLAGS) \
+  	$(DBUSMENUDUMPER_CFLAGS) \
+! 	-Wall -Werror
+  
+  dbusmenu_dumper_LDADD = \
+  	../libdbusmenu-glib/libdbusmenu-glib.la \
+--- 16,22 ----
+  	-I $(srcdir)/.. \
+  	$(DBUSMENUGLIB_CFLAGS) \
+  	$(DBUSMENUDUMPER_CFLAGS) \
+! 	-Wall
+  
+  dbusmenu_dumper_LDADD = \
+  	../libdbusmenu-glib/libdbusmenu-glib.la \

@@ -1,0 +1,19 @@
+*** libdbusmenu-16.04.0/libdbusmenu-gtk/Makefile.am.orig	2016-02-28 03:58:43.000000000 +0900
+--- libdbusmenu-16.04.0/libdbusmenu-gtk/Makefile.am	2019-12-07 14:15:11.234848610 +0900
+***************
+*** 66,72 ****
+  	$(DBUSMENUGTK_CFLAGS) \
+  	$(COVERAGE_CFLAGS) \
+  	-I$(top_srcdir) \
+! 	-Wall -Werror -Wno-error=deprecated-declarations \
+  	-DG_LOG_DOMAIN="\"LIBDBUSMENU-GTK\""
+  
+  libdbusmenu_gtk_la_LIBADD = \
+--- 66,72 ----
+  	$(DBUSMENUGTK_CFLAGS) \
+  	$(COVERAGE_CFLAGS) \
+  	-I$(top_srcdir) \
+! 	-Wall -Wno-error=deprecated-declarations \
+  	-DG_LOG_DOMAIN="\"LIBDBUSMENU-GTK\""
+  
+  libdbusmenu_gtk_la_LIBADD = \

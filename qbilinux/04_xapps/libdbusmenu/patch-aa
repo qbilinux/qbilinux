@@ -1,0 +1,19 @@
+*** libdbusmenu-16.04.0/libdbusmenu-glib/Makefile.am.orig	2016-02-28 03:58:43.000000000 +0900
+--- libdbusmenu-16.04.0/libdbusmenu-glib/Makefile.am	2019-12-07 14:13:11.177299849 +0900
+***************
+*** 66,72 ****
+  libdbusmenu_glib_la_CFLAGS = \
+  	$(DBUSMENUGLIB_CFLAGS) \
+  	$(COVERAGE_CFLAGS) \
+! 	-Wall -Werror -Wno-error=deprecated-declarations \
+  	-DG_LOG_DOMAIN="\"LIBDBUSMENU-GLIB\""
+  
+  libdbusmenu_glib_la_LIBADD = \
+--- 66,72 ----
+  libdbusmenu_glib_la_CFLAGS = \
+  	$(DBUSMENUGLIB_CFLAGS) \
+  	$(COVERAGE_CFLAGS) \
+! 	-Wall -Wno-error=deprecated-declarations \
+  	-DG_LOG_DOMAIN="\"LIBDBUSMENU-GLIB\""
+  
+  libdbusmenu_glib_la_LIBADD = \
