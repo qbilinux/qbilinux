@@ -3,14 +3,13 @@ unset LS_BLOCK_SIZE
 export LANG=C
 ##############################################################
 pkgbase=thunderbird
-vers=68.2.1
+vers=68.3.0
 url="http://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/${vers}/source/${pkgbase}-${vers}.source.tar.xz"
 #verify=$url.asc
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=3
+build=1
 src=thunderbird-${vers}
-thunderbird_tag=c5588898733c625b8673ff945e8420ef1e0f16a2
 OPT_CONFIG=''
 DOCS='mail/README.html'
 patchfiles='thunderbird.desktop.patch patch-ab'
@@ -27,12 +26,6 @@ do_prepare() {
 	patch -p1 < $W/$patch
     done
     rm -rf obj-x86_64-pc-linux-gnu
-    # if [ ! -d l10n ]; then
-    #   mkdir l10n
-    # fi
-    # pushd l10n
-    # hg -v clone -r $thunderbird_tag https://hg.mozilla.org/l10n-central/ja/
-    # popd
 }
 
 do_config() {
@@ -106,12 +99,14 @@ EOF
 export USE_ARCH=64
 EOF
     elif [ $arch = "armv7l" ]; then
+      cat >> mozconfig << EOF
 ac_add_options --host=armv7l-pc-linux-gnueabi
 mk_add_options CONFIG_GUESS=armv7l-pc-linux-gnueabi
 export USE_ARCH=32
 EOF
     else
       cat >> mozconfig << EOF
+mk_add_options MOZ_MAKE_FLAGS="-j1"
 ac_add_options --host=i686-pc-linux-gnu
 mk_add_options CONFIG_GUESS=i686-pc-linux-gnu
 export USE_ARCH=32
