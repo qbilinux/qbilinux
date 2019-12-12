@@ -1,13 +1,13 @@
 #!/bin/sh
 ##############################################################
 pkgbase=arm_userland
-vers=20180619
-url='https://github.com/raspberrypi/userland/archive/2448644657e5fbfd82299416d218396ee1115ece.zip'
+vers=20191211
+url='https://github.com/raspberrypi/userland/archive/13b33c8ee52521ac3c804ffa6d8e8b8a8cd30697.zip'
 commitid=
 apply_arch="armv7l aarch64"
 arch=`uname -m`
-build=2
-src=userland-2448644657e5fbfd82299416d218396ee1115ece
+build=1
+src=userland-13b33c8ee52521ac3c804ffa6d8e8b8a8cd30697
 OPT_CONFIG=''
 DOCS='README.md'
 patchfiles=''
@@ -64,9 +64,44 @@ do_install() {
 	exit 255
     fi
 
-    # add extra func
-    mkdir -p $docdir/$src
-    mv $P/usr/src $docdir/$src
+    mkdir -p $P/etc/profile.d
+    cat <<'EOF' > $P/etc/profile.d/vcfiled.csh
+# path for vcfiled
+if ($?PATH) then
+    set path = ( $path /opt/vc/bin )
+else
+    set path = ( /bin /usr/bin /opt/vc/bin )
+endif
+EOF
+    cat <<'EOF' > $P/etc/profile.d/vcfiled.sh
+# path for vcfiled
+if [ "$PATH.x" != ".x" ]; then
+    PATH=$PATH:/opt/vc/bin
+else
+    PATH=/bin:/usr/bin:/opt/vc/bin
+fi
+EOF
+
+    mkdir -p $P/install
+    cat <<"EOF" > $P/install/initpkg
+ldchk=`cat /etc/ld.so.conf | grep opt/vc`
+if [ "$ldchk.x" = ".x" ]; then
+    cat /etc/ld.so.conf >> /etc/ld.so.conf.vclib
+    mv /etc/ld.so.conf.vclib /etc/ld.so.conf
+    ldconfig
+fi
+if [ -f /etc/ld.so.conf.vclib ]; then
+    rm /etc/ld.so.conf.vclib
+fi
+EOF
+
+    cp -a $W/files/etc $P/
+    chown -R root.root $P/etc/
+    chmod +x $P/etc/rc.d/init.d/vcfiled
+
+    cat <<EOF > $P/etc/ld.so.conf.vclib
+/opt/vc/${libdir}
+EOF
 }
 
 do_package() {
