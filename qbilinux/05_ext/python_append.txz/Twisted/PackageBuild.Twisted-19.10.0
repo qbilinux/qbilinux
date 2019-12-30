@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=Twisted
-vers=17.5.0
-url="http://twistedmatrix.com/Releases/Twisted/17.5/Twisted-${vers}.tar.bz2"
+vers=19.10.0
+url="http://twistedmatrix.com/Releases/Twisted/${vers%.*}/Twisted-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=Twisted-${vers}
 OPT_CONFIG=''
 DOCS='INSTALL LICENSE NEWS README'
@@ -35,7 +35,7 @@ do_build() {
     # for libtirpc
     export CFLAGS="-I/usr/include/tirpc"
     if [ -f setup.py ] ; then
-	python ./setup.py build
+	python3 ./setup.py build
     fi
     if [ $? != 0 ]; then
 	echo "make error. $0 script stop"
@@ -46,8 +46,8 @@ do_build() {
 do_install() {
     cd ${B[$1]}
     if [ -f setup.py ] ; then
-	mkdir -p $P/usr/${libdir}/python2.7/site-packages/
-	python ./setup.py install --root=$P/
+	mkdir -p $P/usr/${libdir}/python3.8/site-packages/
+	python3 ./setup.py install --root=$P/
     fi
     if [ $? != 0 ]; then
 	echo "make install error. $0 script stop"
