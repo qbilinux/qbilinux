@@ -1,13 +1,13 @@
 #!/bin/sh
 ##############################################################
-#url='http://gdata-python-client.googlecode.com/files/gdata-2.0.17.tar.gz'
 pkgbase=gdata
-vers=1.6.2
-url='https://github.com/google/google-api-python-client/archive/v1.6.2.tar.gz'
+vers=1.7.11
+url="https://github.com/googleapis/google-api-python-client/archive/v${vers}.tar.gz"
+srcfile=$pkgbase-$vers.tar.gz
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=google-api-python-client-${vers}
+build=1
+src=google-api-python-client-1.7.11
 OPT_CONFIG=''
 DOCS='CHANGELOG LICENSE README.md'
 patchfiles=''
@@ -34,7 +34,7 @@ do_config() {
 do_build() {
     cd ${B[$1]}
     if [ -f setup.py ] ; then
-	python setup.py -v build
+	python3 setup.py -v build
     fi
     if [ $? != 0 ]; then
 	echo "make error. $0 script stop"
@@ -45,7 +45,7 @@ do_build() {
 do_install() {
     cd ${B[$1]}
     if [ -f setup.py ] ; then
-	python ./setup.py install --root=$P
+	python3 ./setup.py install --root=$P
     fi
     if [ $? != 0 ]; then
 	echo "make install error. $0 script stop"
