@@ -1,7 +1,8 @@
-intel_gpu_tools & y & y & y & y
+igt_gpu_tools & y & y & y & y
 &
-intel_gpu_tools
+igt_gpu_tools
 &
 Intel DRMドライバのテスト，開発に使うツール類
 &
+igt_gpu_tools
 &
