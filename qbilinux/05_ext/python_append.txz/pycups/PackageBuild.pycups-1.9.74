@@ -1,11 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=pycups
-vers=1.9.73
-url="https://pypi.python.org/packages/source/p/pycups/pycups-${vers}.tar.bz2"
+vers=1.9.74
+url="https://github.com/OpenPrinting/pycups/archive/${vers}.tar.gz"
+srcfile=$pkgbase-$vers.tar.gz
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=pycups-${vers}
 OPT_CONFIG=''
 DOCS='COPYING NEWS README TODO'
