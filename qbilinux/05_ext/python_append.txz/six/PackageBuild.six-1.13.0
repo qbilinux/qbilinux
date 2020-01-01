@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=six
-vers=1.11.0
-url="https://files.pythonhosted.org/packages/16/d8/bc6316cf98419719bd59c91742194c111b6f2e85abac88e496adefaf7afe/six-1.11.0.tar.gz"
+vers=1.13.0
+url="https://files.pythonhosted.org/packages/94/3e/edcf6fef41d89187df7e38e868b2dd2182677922b600e880baad7749c865/six-1.13.0.tar.gz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=six-${vers}
 OPT_CONFIG=''
 DOCS='CHANGES LICENSE README.rst'
