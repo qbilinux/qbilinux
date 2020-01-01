@@ -1,13 +1,13 @@
 #!/bin/sh
 
 ######################################################################
-url="http://github.com/haypo/python-ipy.git"
 pkgbase=python_ipy
-vers=git_20130501
+vers=1.00
+url="https://github.com/autocracy/python-ipy/archive/IPy-1.00.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=python-ipy
+build=1
+src=python-ipy-IPy-1.00
 OPT_CONFIG=""
 DOCS="AUTHORS COPYING ChangeLog README"
 compress=txz
