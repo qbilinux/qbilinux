@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='http://excess.org/urwid/urwid-0.9.9.1.tar.gz'
 pkgbase=urwid
-vers=0.9.9.1
+vers=2.1.0
+url="https://pypi.org/packages/source/u/urwid/urwid-2.1.0.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=urwid-0.9.9.1
+build=1
+src=urwid-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='CHANGELOG'
 patchfiles=''
