@@ -1,12 +1,13 @@
 #!/bin/sh
 ##############################################################
 pkgbase=python_setuptools
-vers=41.0.1
+vers=42.0.2
 url="https://github.com/pypa/setuptools/archive/v${vers}.tar.gz"
+srcfile=$pkgbase-$vers.tar.gz
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=setuptools-${vers}
 OPT_CONFIG=''
 DOCS='CHANGES.rst LICENSE README.rst'
