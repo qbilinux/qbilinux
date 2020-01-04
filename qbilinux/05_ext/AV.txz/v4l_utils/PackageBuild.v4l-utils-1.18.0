@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=v4l_utils
-vers=1.16.3
+vers=1.18.0
 url="https://linuxtv.org/downloads/v4l-utils/v4l-utils-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=v4l-utils-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='COPYING COPYING.LIB ChangeLog INSTALL README README.lib README.lib-multi-threading TODO'
