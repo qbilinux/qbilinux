@@ -67,7 +67,6 @@ do_config() {
     if [ $arch == armv7l -o $arch == aarch64 ] ; then
 	cat $W/$arm_patchfiles | patch -Np1 -i -
 	chmod 755 drivers/net/wireless/realtek/rtl8192cu/{clean,runwpa,wlan0dhcp}
-	chmod 755 scripts/{knlinfo,mkknlimg}
     fi
     cp -p $W/${configfile} .config
     case $arch in
