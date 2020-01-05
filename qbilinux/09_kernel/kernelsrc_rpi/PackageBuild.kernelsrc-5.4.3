@@ -5,7 +5,7 @@
 #    git://github.com/sfjro/aufs5-standalone.git"
 version=5.4.3
 url="https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-${version}.tar.xz"
-pkgbase=kernelsrc
+pkgbase=kernelsrc_rpi
 apply_arch="armv6l armv7l aarch64"
 arch=`uname -m`
 build=1
@@ -66,7 +66,6 @@ do_config() {
     if [ $arch == armv7l -o $arch == aarch64 ] ; then
 	cat $W/$arm_patchfiles | patch -Np1 -i -
 	chmod 755 drivers/net/wireless/realtek/rtl8192cu/{clean,runwpa,wlan0dhcp}
-	chmod 755 scripts/{knlinfo,mkknlimg}
     fi
     cp -p $W/${configfile} .config
 }
