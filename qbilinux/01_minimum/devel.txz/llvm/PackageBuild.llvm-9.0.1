@@ -1,10 +1,10 @@
 #!/bin/sh
 ##############################################################
 pkgbase=llvm
-vers=9.0.0
-url="http://releases.llvm.org/${vers}/llvm-${vers}.src.tar.xz
-http://releases.llvm.org/${vers}/cfe-${vers}.src.tar.xz
-http://releases.llvm.org/${vers}/compiler-rt-${vers}.src.tar.xz"
+vers=9.0.1
+url="https://github.com/llvm/llvm-project/releases/download/llvmorg-${vers}/llvm-${vers}.src.tar.xz
+	https://github.com/llvm/llvm-project/releases/download/llvmorg-${vers}/clang-${vers}.src.tar.xz
+	https://github.com/llvm/llvm-project/releases/download/llvmorg-${vers}/compiler-rt-${vers}.src.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
@@ -39,7 +39,7 @@ do_config() {
 
     cp -a ${S[$1]} ${B[$1]}
     cd ${B[$1]}
-    cp -a $W/source/cfe-${vers}.src tools/clang
+    cp -a $W/source/clang-${vers}.src tools/clang
 
     if [ "$arch" != "armv7l" -a "$arch" != "aarch64" ]; then
 	cp -a $W/source/compiler-rt-${vers}.src projects/compiler-rt
@@ -65,11 +65,11 @@ do_config() {
 	  CMAKE_FLAGS="-DLLVM_ENABLE_CXX1Y=ON -DLLVM_ENABLE_LIBCXX=ON -DCLANG_RESOURCE_DIR=../${libdir}/clang/${vers} -DBUILD_SHARED_LIBS=ON -DLLVM_LIBDIR_SUFFIX=${suffix} -DLLVM_REQUIRES_RTTI=ON -DLLVM_ENABLE_TIMESTAMPS=OFF -DLLVM_ENABLE_ASSERTIONS=OFF -DLLVM_ENABLE_PIC=ON -DLLVM_BINUTILS_INCDIR=/usr/include"
     elif [ "$arch" = "armv7l" ]; then
           HOST_TRIPLE='arm-pc-linux-gnueabihf'
-          TARGET_BUILD="ARM;AArch64"
+          TARGET_BUILD="ARM;AArch64;BPF"
 	  CMAKE_FLAGS='-DLLVM_BUILD_LLVM_DYLIB=ON -Wno-dev'
     else
           HOST_TRIPLE='aarch64-pc-linux-gnu'
-          TARGET_BUILD="ARM;AArch64"
+          TARGET_BUILD="ARM;AArch64;BPF"
 	  CMAKE_FLAGS='-DLLVM_BUILD_LLVM_DYLIB=ON -Wno-dev'
     fi 
 
