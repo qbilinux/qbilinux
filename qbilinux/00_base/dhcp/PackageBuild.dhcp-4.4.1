@@ -6,7 +6,7 @@ vers=4.4.1
 url="http://ftp.isc.org/isc/dhcp/${vers}/dhcp-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=3
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="LICENSE README RELNOTES"
@@ -75,7 +75,7 @@ do_install() {
 
     # add extra func
     install -d $P/sbin
-    install client/scripts/linux $P/sbin/dhclient-script
+    install ${S[$1]}/client/scripts/linux $P/sbin/dhclient-script
     install -d $P/var/db
     install -d $P/install
     cat <<- "EOF" > $P/install/doinst.sh
