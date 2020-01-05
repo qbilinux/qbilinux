@@ -1,8 +1,8 @@
 #!/bin/sh
 ##############################################################
 pkgbase=libcxxabi
-vers=9.0.0
-url="http://www.llvm.org/releases/${vers}/libcxxabi-${vers}.src.tar.xz"
+vers=9.0.1
+url="https://github.com/llvm/llvm-project/releases/download/llvmorg-${vers}/libcxxabi-${vers}.src.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
