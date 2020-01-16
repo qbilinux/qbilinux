@@ -104,7 +104,7 @@ OPT_CONFIG=''
 DOCS='%s'
 patchfiles='%s'
 compress=txz
-SRC_URL="http://circle2.org/pub/source/"
+SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ##############################################################
 
