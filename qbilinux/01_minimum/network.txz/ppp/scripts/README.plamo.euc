@@ -1,0 +1,92 @@
+1. 設定
+
+/etc/modules.conf には、
+
+  alias ppp0 ppp_generic
+  alias ppp1 ppp_generic
+
+の2行を追加しておいた方が、syslog に余計なエラーが出ずに済みます。
+# 2.4系 + modutils-2.4.25 の場合
+
+PPPoE を使う場合、カーネルの PPPoEドライバ (CONFIG_PPPOE) を追加してく
+ださい。組み込みにした場合はカーネル本体の再構築、モジュールにした場合
+はモジュールの作成・インストールを行なうことになります。
+
+同期PPPを使う場合、CONFIG_PPP_SYNC_TTY および CONFIG_N_HDLC も要求され
+るはずですが、現在カーネルモード PPPoE では未サポートですので、このあ
+たりは放っておいても構いません。
+
+ドライバをモジュール化した場合、/etc/modules.conf には、下記の設定を追
+加しておいてください。
+
+  alias net-pf-24 pppoe
+  alias tty-ldisc-13 n_hdlc       # ←今のところは不要
+
+
+2. 使い方
+
+pppsetup では、ダイアルアップPPP と PPPoE の設定のどちらでも行なえます。
+また、複数の設定を握ることができます。
+
+接続と切断には pon, poff を用い、
+
+  % pon       → default の設定を使用
+  % pon hoge  → 設定 hoge を使用
+  % pon -i    → 設定を選択 (tty上)
+  % pon -ix   → 設定を選択 (XのGUI / 要 GTK2, Python, PyGTK)
+  % poff      → 切断
+  % poff hoge → pon hoge で繋いだ接続を切断
+  % poff -a   → 全部切断
+
+みたいな感じで使えます (pon -i, pon -ix はオリジナルです)。
+
+/usr/sbin/pppd を setuid-root すれば、一般ユーザで接続/切断が可能です。
+例えば、
+
+  # chgrp tty /usr/sbin/pppd
+  # chmod 4554 /usr/sbin/pppd
+
+とすると、ttyグループに属しているユーザのみ接続/切断が可能になります。
+(PPxP のデフォルトと同様)
+
+その他の特徴は以下の通りです。
+
+・/etc/ppp/ip-up,ip-down で、/etc/resolv.conf の調整と planetplugin の
+  呼び出し(もしあれば)を行なうように設定済
+  (dnscache とかを使っている方はここを直接編集してください)
+・使う設定を選択するダイアログを出す pppselect/xpppselect を同梱
+  (pon -i, pon -ix が呼ぶ)
+・モデムモニタやランチャ等では、pon -ix と poff を指定しておくとよい
+  (GNOME 使用時には、/usr/share/doc/GNOME-*/README.gz も参照)
+
+
+3. 課題と確認事項
+
+・一応 Login 認証にも対応してるけど、この場合は setuid-root で動かせら
+  れない (今の pppd の実装の限界っぽいが、回避方法はないか?)
+・epppsetup と epppselect を書いてない
+
+
+4. 更新履歴のようなもの
+
+・xpppselect を Python-2.3 に対応
+・ppp-2.4.3 に更新
+・CVS Head からいくつかマージ (無限ループ問題と linkname ロック)
+・ダイアル中に poff すると、pppd が無限ループに陥るのを修正
+・ダイアル種別の初期値を修正
+・linkname を設定するようにした
+・linkname 設定時には、すぐに linkname でのロックファイルを作るように
+  した (モデムモニタで見張る場合に便利)
+・poff 内部での処理を修正
+・poff が待たされないように、バックグラウンドに落とすようにした
+・"HIDDEN" 属性を追加 ([x]pppselect の選択肢に出なくなる)
+・PPPoE の場合の tradnet の設定についても追記 (使っている方を自動判別)
+・PPPoE の場合の Planet の設定について追記
+・PPPoE まわりの修正
+・Newという名前で作るとはまっていたのを修正
+・新規登録ができなくなっていたのを修正
+・pppsetup で、接続設定を消したりコピーしたりできるようになった
+・Login 認証後に pppd をスタートさせる設定は可能になった
+・[x]pppselect で、設定が1つしかない場合は直ちに返るようにした
+・xpppselect のリスト領域サイズをきちんと計算してみた
+・xpppselect を、キーボードでも操作可能にした
