@@ -1,15 +1,15 @@
 #!/bin/sh
 ##############################################################
 pkgbase="elogind"
-vers=239.3
-url='https://github.com/elogind/elogind/archive/v239.3.tar.gz'
+vers=243.7
+url="https://github.com/elogind/elogind/archive/v${vers}/elogind-${vers}.tar.gz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=elogind-${vers}
-OPT_CONFIG=''
-DOCS='LICENSE.GPL2 LICENSE.LGPL2.1 NEWS README TODO meson_options.txt'
+OPT_CONFIG='-Dcgroup-controller=elogind -Ddbuspolicydir=/etc/dbus-1/system.d'
+DOCS='LICENSE.GPL2 LICENSE.LGPL2.1 README TODO meson_options.txt'
 patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
@@ -61,8 +61,36 @@ do_install() {
     fi
 
     # add extra func
-    # mkdir -p $P2/hoge
-    # cp hoge.txt $P2/hoge
+    ln -sfv  libelogind.pc $P/usr/${libdir}/pkgconfig/libsystemd.pc
+    ln -sfvn elogind $P/usr/include/systemd
+
+    cat >> $P/etc/pam.d/system-session << "EOF" &&
+# Begin elogind addition
+    
+session  required    pam_loginuid.so
+session  optional    pam_elogind.so
+
+# End elogind addition
+EOF
+
+    cat > $P/etc/pam.d/elogind-user << "EOF"
+# Begin /etc/pam.d/elogind-user
+
+account  required    pam_access.so
+account  include     system-account
+
+session  required    pam_env.so
+session  required    pam_limits.so
+session  required    pam_unix.so
+session  required    pam_loginuid.so
+session  optional    pam_keyinit.so force revoke
+session  optional    pam_elogind.so
+
+auth     required    pam_deny.so
+password required    pam_deny.so
+
+# End /etc/pam.d/elogind-user
+EOF
 }
 
 do_package() {
