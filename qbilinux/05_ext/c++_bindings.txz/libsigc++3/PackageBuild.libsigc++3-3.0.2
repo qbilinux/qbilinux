@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=libsigc++3
-vers=2.99.7
-url="https://download.gnome.org/sources/libsigc++/2.99/libsigc++-${vers}.tar.xz"
+vers=3.0.2
+url="https://download.gnome.org/sources/libsigc++/${vers%.*}/libsigc++-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=libsigc++-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README'
