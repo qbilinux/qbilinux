@@ -1,13 +1,13 @@
 #!/bin/sh
 ##############################################################
 pkgbase=totem
-vers=3.26.1
+vers=3.34.1
 url="http://ftp.gnome.org/pub/gnome/sources/totem/${vers%.*}/totem-${vers}.tar.xz"
 verify="http://ftp.gnome.org/pub/gnome/sources/totem/${vers%.*}/totem-${vers}.sha256sum"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=3
+build=1
 src=totem-${vers}
 OPT_CONFIG='--default-library shared -D enable-vala=no'
 DOCS='AUTHORS COPYING ChangeLog ChangeLog.pre-gitlog INSTALL MAINTAINERS NEWS README TODO license_change'
