@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=wayland
-vers=1.17.0
+vers=1.18.0
 url="https://wayland.freedesktop.org/releases/wayland-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=wayland-${vers}
 OPT_CONFIG='--disable-static --disable-documentation'
 DOCS='COPYING README TODO'
