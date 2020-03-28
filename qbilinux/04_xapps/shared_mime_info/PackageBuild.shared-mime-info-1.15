@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='http://freedesktop.org/~hadess/shared-mime-info-1.1.tar.xz'
 pkgbase=shared_mime_info
-vers=1.1
+vers=1.15
+url='https://gitlab.freedesktop.org/xdg/shared-mime-info/uploads/b27eb88e4155d8fccb8bb3cd12025d5b/shared-mime-info-1.15.tar.xz'
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=shared-mime-info-1.1
+build=1
+src=shared-mime-info-${vers}
 OPT_CONFIG=''
 DOCS='COPYING ChangeLog HACKING NEWS README'
 patchfiles=''
