@@ -1,0 +1,12 @@
+*** pipewire-0.3.1/src/tools/pw-cat.c~	2020-03-07 03:05:26.000000000 +0900
+--- pipewire-0.3.1/src/tools/pw-cat.c	2020-03-26 00:26:12.946014701 +0900
+***************
+*** 32,37 ****
+--- 32,38 ----
+  #include <fcntl.h>
+  #include <getopt.h>
+  #include <unistd.h>
++ #include <unistdio.h>
+  #include <assert.h>
+  #include <ctype.h>
+  
