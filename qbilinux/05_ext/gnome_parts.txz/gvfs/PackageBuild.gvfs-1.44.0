@@ -5,7 +5,7 @@ vers=1.44.0
 url="http://ftp.gnome.org/pub/gnome/sources/gvfs/${vers%.*}/gvfs-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=gvfs-${vers}
 OPT_CONFIG="-Dsystemduserunitdir=no -Dtmpfilesdir=no -Dgoa=false -Dcdda=false -Dgoogle=false -Dnfs=false -Dsmb=false"
 DOCS='AUTHORS COPYING ChangeLog.pre-1-2 MAINTAINERS NEWS README README.commits'
@@ -61,7 +61,7 @@ do_install() {
 /usr/bin/gio-querymodules /usr/${libdir}/gio/modules
 /usr/bin/glib-compile-schemas /usr/share/glib-2.0/schemas
 touch /usr/share/glib-2.0/schemas/gschemas.compiled
-/usr/bin/pgrep gvfsd > /dev/null
+/bin/pgrep gvfsd > /dev/null
 if [ \$? -eq 0 ]; then
   /bin/killall -USR1 gvfsd
 fi
