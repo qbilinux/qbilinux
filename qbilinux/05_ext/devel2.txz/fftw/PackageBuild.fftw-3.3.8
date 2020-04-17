@@ -6,18 +6,17 @@ vers=3.3.8
 url="http://www.fftw.org/fftw-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=3
+build=5
 src[0]=fftw-${vers}
 src[1]=fftw-${vers}
-if [ $arch != "armv7l" -a $arch != "aarch64" ]; then
-    src[2]=fftw-${vers}
-fi
+src[2]=fftw-${vers}
 OPT_CONFIG[0]="--enable-long-double"
 if [ $arch != "armv7l" -a $arch != "aarch64" ]; then
     OPT_CONFIG[1]="--enable-sse2"
     OPT_CONFIG[2]="--enable-float --enable-sse"
 else
     OPT_CONFIG[1]=""
+    OPT_CONFIG[2]="--enable-float"
 fi
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README TODO'
 patchfiles=''
