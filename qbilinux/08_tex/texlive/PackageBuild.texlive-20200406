@@ -1,17 +1,17 @@
 #!/bin/sh
 ##############################################################
 pkgbase=texlive
-vers=20190410
+vers=20200406
 #url="ftp://tug.org/texlive/historic/2018/texlive-${vers}-source.tar.xz"
 url="http://ftp.math.utah.edu/pub/tex/historic/systems/texlive/${vers:0:4}/texlive-${vers}-source.tar.xz"
 verify=$url.sha256
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=texlive-${vers}-source
 #
-PREFIX=/opt/texlive/2019
+PREFIX=/opt/texlive/2020
 TEXARCH=$(uname -m | sed -e 's/i.86/i386/' -e 's/$/-linux/')
 #
 OPT_CONFIG="--prefix=${PREFIX} \
