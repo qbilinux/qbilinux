@@ -1,15 +1,15 @@
 #!/bin/sh
 ##############################################################
-pkgbase=libstatgrab
-vers=0.91
-url='http://www.mirrorservice.org/sites/ftp.i-scream.org/pub/i-scream/libstatgrab/libstatgrab-0.91.tar.gz'
+pkgbase=pcmanfm_qt
+vers=0.15.0
+url="https://github.com/lxqt/pcmanfm-qt/releases/download/${vers}/pcmanfm-qt-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=libstatgrab-${vers}
-OPT_CONFIG=''
-DOCS='AUTHORS COPYING COPYING.LGPL ChangeLog INSTALL NEWS README'
+build=1
+src=pcmanfm-qt-${vers}
+OPT_CONFIG='-DPULL_TRANSLATIONS=no -DCMAKE_BUILD_TYPE=Release'
+DOCS='AUTHORS CHANGELOG LICENSE README.md'
 patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
@@ -19,7 +19,7 @@ SRC_DIR="/home/archives/source/"
 source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
-    cd ${S[$i]}
+    cd ${S[$1]}
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
@@ -30,10 +30,10 @@ do_config() {
 
     cp -a ${S[$1]} ${B[$1]}
     cd ${B[$1]}
-    if [ -x configure ] ; then
-	export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
+    if [ -f $S/CMakeLists.txt ]; then
+	export PKG_CONFIG_PATH=/opt/kde/${libdir}/pkgconfig:/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
 	export LDFLAGS='-Wl,--as-needed' 
-	./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$1]}
+	cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DLIB_INSTALL_DIR:PATH=/usr/${libdir} -DLIB_SUFFIX=$suffix ${OPT_CONFIG} $S
     fi
     if [ $? != 0 ]; then
 	echo "configure error. $0 script stop"
