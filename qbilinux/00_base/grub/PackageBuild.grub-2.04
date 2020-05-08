@@ -6,15 +6,19 @@ vers=2.04
 url="https://ftp.gnu.org/gnu/grub/grub-${vers}.tar.xz"
 apply_arch="x86_64 i686"
 arch=`uname -m`
-build=2
+build=3
 src[0]=$pkgbase-$vers
 src[1]=${src[0]}
+src[2]=${src[0]}
 patchfiles[0]=""
 patchfiles[1]=""
+patchfiles[2]=""
 OPT_CONFIG[0]="--disable-grub-mount --disable-werror"
-OPT_CONFIG[1]="${OPT_CONFIG[0]} --with-platform=efi"
-DOCS[0]="BUGS TODO THANKS COPYING ABOUT-NLS ChangeLog AUTHORS README NEWS INSTALL"
+OPT_CONFIG[1]="${OPT_CONFIG[0]} --with-platform=efi --target=x86_64"
+OPT_CONFIG[2]="${OPT_CONFIG[0]} --with-platform=efi --target=i386"
+DOCS[0]="ABOUT-NLS AUTHORS BUGS COPYING ChangeLog ChangeLog-2015 INSTALL NEWS README THANKS TODO"
 DOCS[1]=""
+DOCS[2]=""
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
