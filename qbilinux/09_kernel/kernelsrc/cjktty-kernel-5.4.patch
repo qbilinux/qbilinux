@@ -154,13 +154,13 @@ diff -Nrc linux-5.0/drivers/tty/vt/vt.c linux-cjktty-5.0-utf8/drivers/tty/vt/vt.
   	if (new_cols == vc->vc_cols && new_rows == vc->vc_rows)
   		return 0;
   
-  	if (new_screen_size > (4 << 20))
+  	if (new_screen_size > KMALLOC_MAX_SIZE)
   		return -EINVAL;
 ! 	newscreen = kzalloc(new_screen_size, GFP_USER);
   	if (!newscreen)
   		return -ENOMEM;
   
---- 1190,1205 ----
+--- 1226,1241 ----
   	new_rows = (lines ? lines : vc->vc_rows);
   	new_row_size = new_cols << 1;
   	new_screen_size = new_row_size * new_rows;
@@ -169,7 +169,7 @@ diff -Nrc linux-5.0/drivers/tty/vt/vt.c linux-cjktty-5.0-utf8/drivers/tty/vt/vt.
   	if (new_cols == vc->vc_cols && new_rows == vc->vc_rows)
   		return 0;
   
-  	if (new_screen_size > (4 << 20))
+  	if (new_screen_size > KMALLOC_MAX_SIZE)
   		return -EINVAL;
 ! 
 ! 	newscreen = kmalloc(new_screen_size * 2, GFP_USER);
