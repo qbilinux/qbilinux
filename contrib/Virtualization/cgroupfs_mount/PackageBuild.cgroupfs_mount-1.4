@@ -1,0 +1,97 @@
+#!/bin/sh
+##############################################################
+pkgbase='cgroupfs_mount'
+vers='1.4'
+url="https://github.com/tianon/cgroupfs-mount/archive/${vers}.tar.gz"
+srcfile=cgroupfs-mount-${vers}.tar.gz
+verify=""
+apply_arch="x86_64 i686 armv7l aarch64"
+arch=`uname -m`
+build=1
+src="cgroupfs-mount-${vers}"
+OPT_CONFIG=''
+DOCS='README.md'
+patchfiles=''
+compress=txz
+SRC_URL="http://circle2.org/pub/source/"
+SRC_DIR="/home/archives/source/"
+##############################################################
+
+source /usr/src/qbilinux/PackageBuild.def
+
+do_prepare() {
+    cd ${S[$i]}
+    for patch in $patchfiles ; do
+	patch -p1 < $W/$patch
+    done
+    sed -i -e 's/log_begin_msg/log_info_msg/g' \
+        -e 's/log_end_msg/evaluate_retval/g' $S/debian/cgroupfs-mount.init
+}
+
+do_config() {
+    if [ -d ${B[$1]} ] ; then rm -rf ${B[$1]} ; fi
+
+    cp -a ${S[$1]} ${B[$1]}
+    if [ $? != 0 ]; then
+	echo "configure error. $0 script stop"
+	exit 255
+    fi
+}
+
+do_build() {
+    cd ${B[$1]}
+    if [ -f Makefile ] ; then
+	export LDFLAGS='-Wl,--as-needed'
+	make
+    fi
+    if [ $? != 0 ]; then
+	echo "make error. $0 script stop"
+	exit 255
+    fi
+}
+
+do_install() {
+    cd ${B[$1]}
+    for mk in `find . -name "[Mm]akefile" ` ; do
+	sed -i -e 's|GCONFTOOL = /usr/bin/gconftool-2|GCONFTOOL = echo|' $mk
+    done
+    if [ -f Makefile ] ; then
+	export LDFLAGS='-Wl,--as-needed'
+	make install DESTDIR=$P
+    fi
+    if [ $? != 0 ]; then
+	echo "make install error. $0 script stop"
+	exit 255
+    fi
+
+    # add extra func
+    install -Dm755 -v $S/cgroupfs-mount  $P/usr/bin/cgroupfs-mount
+    install -Dm755 -v $S/cgroupfs-umount  $P/usr/bin/cgroupfs-umount
+    install -Dm644 -v $S/cgroupfs-mount.8 $P/usr/share/man/man8/cgroupfs-mount.8
+    install -Dm755 -v $S/debian/cgroupfs-mount.init $P/etc/rc.d/init.d/cgroupfs-mount
+
+    for i in $(seq 0 6)
+    do
+	install -dm755 -v $P/etc/rc.d/rc"$i".d
+	case $i in
+	    0|1|6)
+		ln -sfv ../init.d/cgroupfs-mount $P/etc/rc.d/rc"$i".d/K02cgroupfs-mount
+		;;
+	    2|3|4|5)
+		ln -sfv ../init.d/cgroupfs-mount $P/etc/rc.d/rc"$i".d/S98cgroupfs-mount
+		;;
+	esac
+    done
+}
+
+do_package() {
+    for i in $pkgbase ; do
+        cd $P
+        /sbin/makepkg $W/$pkg.$compress <<EOF
+y
+1
+EOF
+    done
+}
+
+source /usr/src/qbilinux/PackageBuild.func
