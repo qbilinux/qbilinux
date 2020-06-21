@@ -2,11 +2,11 @@
 
 ######################################################################
 pkgbase=libgpg_error
-vers=1.36
+vers=1.38
 url="https://www.gnupg.org/ftp/gcrypt/libgpg-error/libgpg-error-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=libgpg-error-$vers
 OPT_CONFIG=""
 DOCS="NEWS INSTALL ABOUT-NLS COPYING COPYING.LIB AUTHORS ChangeLog
