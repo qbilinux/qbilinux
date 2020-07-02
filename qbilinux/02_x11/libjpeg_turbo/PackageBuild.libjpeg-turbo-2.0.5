@@ -1,13 +1,13 @@
 #!/bin/sh
 ##############################################################
 pkgbase=libjpeg_turbo
-vers=1.5.2
-url="http://downloads.sourceforge.net/libjpeg-turbo/libjpeg-turbo-${vers}.tar.gz"
+vers=2.0.5
+url="https://sourceforge.net/projects/libjpeg-turbo/files/${vers}/libjpeg-turbo-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=libjpeg-turbo-${vers}
-OPT_CONFIG='--disable-static --with-jpeg8'
+OPT_CONFIG='-DWITH_JPEG8=true'
 DOCS='BUILDING.txt ChangeLog.txt README README-turbo.txt coderules.txt jconfig.txt libjpeg.txt release structure.txt usage.txt wizard.txt'
 patchfiles=
 compress=txz
@@ -29,11 +29,10 @@ do_config() {
 
     mkdir ${B[$1]}
     cd ${B[$1]}
-    if [ -x ${S[$1]}/configure ] ; then
-	export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
-	export LDFLAGS='-Wl,--as-needed' 
-	${S[$1]}/configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc \
-		--localstatedir=/var --infodir='${prefix}'/share/info --mandir='${prefix}'/share/man ${OPT_CONFIG[$1]}
+    if [ -f ${S[$1]}/CMakeLists.txt ]; then
+      export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
+      export LDFLAGS='-Wl,--as-needed' 
+      cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DLIB_INSTALL_DIR:PATH=/usr/${libdir} -DLIB_SUFFIX=$suffix ${OPT_CONFIG} ${S[$1]}
     fi
     if [ $? != 0 ]; then
 	echo "configure error. $0 script stop"
