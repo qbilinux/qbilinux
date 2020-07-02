@@ -1,12 +1,13 @@
 #!/bin/sh
 ##############################################################
 pkgbase=zstd
-vers=1.3.3
+vers=1.4.5
 url="https://github.com/facebook/zstd/archive/v${vers}.tar.gz"
+srcfile=zstd-${vers}.tar.gz
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=zstd-${vers}
 OPT_CONFIG=''
 DOCS='COPYING LICENSE NEWS README.md'
