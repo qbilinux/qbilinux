@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase=qtwebkit
-vers=5.212.0_alpha3
+vers=5.212.0_alpha4
 url="https://github.com/qtwebkit/qtwebkit/releases/download/qtwebkit-${vers/_/-}/qtwebkit-${vers/_/-}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
