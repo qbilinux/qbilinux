@@ -8,6 +8,7 @@ oxygen
 kinfocenter
 ksysguard
 kwin
+kwayland_server
 plasma_workspace
 kde_cli_tools
 systemsettings
