@@ -7,8 +7,8 @@ kscreenlocker
 oxygen
 kinfocenter
 ksysguard
-kwin
 kwayland_server
+kwin
 plasma_workspace
 kde_cli_tools
 systemsettings
