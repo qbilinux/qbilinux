@@ -2,7 +2,7 @@
 export LANG=C
 ##############################################################
 pkgbase=nss
-vers=3.48
+vers=3.54
 url="http://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_${vers//./_}_RTM/src/nss-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
@@ -11,7 +11,7 @@ src=${pkgbase}-${vers}
 OPT_CONFIG=''
 DOCS=''
 # http://www.linuxfromscratch.org/patches/blfs/svn/nss-3.26-standalone-1.patch
-patchfiles='nss-3.35-standalone-1.patch'
+patchfiles='nss-3.54-standalone-2.patch'
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -50,12 +50,14 @@ do_build() {
     export BUILD_OPT=1
     export NSS_USE_SYSTEM_SQLITE=1
     export NSPR_INCLUDE_DIR=/usr/include/nspr
-    export USE_SYSTEM_NSPR=1
     export USE_SYSTEM_ZLIB=1
+    export ZLIB_LIBS=-lz
+    export NSS_ENABLE_WERROR=0
+    export NSS_USE_SYSTEM_SQLITE=1
     if [ $arch = "x86_64" -o $arch = "aarch64" ]; then
 	export USE_64=1
     fi
-    cd nss && make -j1
+    cd nss && make
 }
 
 do_install() {
@@ -67,7 +69,7 @@ do_install() {
     install -v -m644 $NSS_LINUXDIR/lib/{*.chk,libcrmf.a} $P/usr/${libdir}
     install -v -m755 -d $P/usr/include/nss
     install -v -m755 -d $P/usr/bin
-    for file in certutil cmsutil crlutil modutil pk12util signtool signver ssltap nss-config; do
+    for file in certutil pk12util nss-config; do
         install -v -m755 $NSS_LINUXDIR/bin/${file} $P/usr/bin
     done 
     mkdir -p $P/usr/${libdir}/pkgconfig
