@@ -8,7 +8,7 @@ url="http://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/${vers}/source/
 #verify=$url.asc
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=thunderbird-${vers}
 OPT_CONFIG=''
 DOCS='mail/README.html'
@@ -98,6 +98,14 @@ EOF
       cat >> mozconfig << EOF
 export USE_ARCH=64
 EOF
+    elif [ $arch = "i686" ]; then
+      cat >> mozconfig << EOF
+mk_add_options MOZ_MAKE_FLAGS="-j1"
+ac_add_options --host=i686-pc-linux-gnu
+mk_add_options CONFIG_GUESS=i686-pc-linux-gnu
+ac_add_options --disable-webspeech
+export USE_ARCH=32
+EOF
     elif [ $arch = "armv7l" ]; then
       cat >> mozconfig << EOF
 ac_add_options --host=armv7l-pc-linux-gnueabi
@@ -106,10 +114,7 @@ export USE_ARCH=32
 EOF
     else
       cat >> mozconfig << EOF
-mk_add_options MOZ_MAKE_FLAGS="-j1"
-ac_add_options --host=i686-pc-linux-gnu
-mk_add_options CONFIG_GUESS=i686-pc-linux-gnu
-export USE_ARCH=32
+export USE_ARCH=64
 EOF
     fi
     sed -i -e '/#!\[deny(missing_docs)\]/d' servo/components/style/lib.rs
