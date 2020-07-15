@@ -5,9 +5,9 @@ vers=0.18.0
 url="https://github.com/krallin/tini/archive/v${vers}.tar.gz"
 srcfile=tini-${vers}.tar.gz
 commitid=
-apply_arch="x86_64 i686 armv7l aarch64"
+apply_arch="x86_64 aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=tini-${vers}
 OPT_CONFIG='-DPR_SET_CHILD_SUBREAPER=36 -DPR_GET_CHILD_SUBREAPER=37 -DCMAKE_BUILD_TYPE=Release'
 DOCS='LICENSE README.md'
