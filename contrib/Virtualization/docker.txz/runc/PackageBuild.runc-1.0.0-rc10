@@ -5,9 +5,10 @@ vers=1.0.0_rc10
 url="https://github.com/opencontainers/runc/archive/v${vers/_/-}.tar.gz"
 srcfile=runc-${vers/_/-}.tar.gz
 commitid=
-apply_arch="x86_64 i686 armv7l aarch64"
+GITHASH=${GITHASH:-dc9208a3303feef5b3839f4323d9beb36df0a9dd}
+apply_arch="x86_64 aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=runc-${vers/_/-}
 OPT_CONFIG=''
 DOCS='CONTRIBUTING.md LICENSE MAINTAINERS MAINTAINERS_GUIDE.md NOTICE PRINCIPLES.md README.md SECURITY.md VERSION'
@@ -42,7 +43,7 @@ do_config() {
 do_build() {
     cd ${B[$1]}
     export LDFLAGS='-Wl,--as-needed'
-    make COMMIT=${GITHASH:-dc9208a3303feef5b3839f4323d9beb36df0a9dd} GOPATH=${B[$1]}/build
+    make COMMIT=${GITHASH} GOPATH=${B[$1]}/build
     if [ $? != 0 ]; then
 	echo "make error. $0 script stop"
 	exit 255
