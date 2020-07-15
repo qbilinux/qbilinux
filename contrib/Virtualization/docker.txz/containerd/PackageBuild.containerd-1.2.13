@@ -5,9 +5,10 @@ vers=1.2.13
 url="https://github.com/containerd/containerd/archive/v1.2.13.tar.gz"
 srcfile=containerd-1.2.13.tar.gz
 commitid=
-apply_arch="x86_64 i686 armv7l aarch64"
+GITHASH=${GITHASH:-7ad184331fa3e55e52b890ea95e65ba581ae3429}
+apply_arch="x86_64 aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=containerd-${vers}
 OPT_CONFIG=''
 DOCS='LICENSE README.md RELEASES.md install.go install_opts.go releases'
@@ -42,7 +43,6 @@ do_config() {
 
 do_build() {
     cd ${B[$1]}
-    GITHASH=${GITHASH:-7ad184331fa3e55e52b890ea95e65ba581ae3429}
     export LDFLAGS='-Wl,--as-needed'
     mkdir build
     mv vendor build/src
