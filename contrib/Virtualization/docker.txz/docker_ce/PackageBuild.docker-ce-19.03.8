@@ -5,9 +5,10 @@ vers=19.03.8
 url="https://github.com/docker/docker-ce/archive/v19.03.8.tar.gz"
 srcfile=docker-ce-19.03.8.tar.gz
 commitid=
-apply_arch="x86_64 i686 armv7l aarch64"
+GITHASH=${GITHASH:-afacb8b}
+apply_arch="x86_64 aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=docker-ce-${vers}
 OPT_CONFIG=''
 DOCS='CHANGELOG.md README.md'
@@ -42,7 +43,6 @@ do_config() {
 
 do_build() {
     cd ${B[$1]}
-    GITHASH=${GITHASH:-afacb8b}
     
     # Build daemon.
     cd components/engine
@@ -71,7 +71,11 @@ do_install() {
 	    $P/usr/bin/dockerd
 
     # Build CLI.
-    install -D -m 0755 components/cli/build/docker-linux-amd64 $P/usr/bin/docker
+    if [ $arch = "x86_64" ]; then
+	install -D -m 0755 components/cli/build/docker-linux-amd64 $P/usr/bin/docker
+    elif [ $arch = "aarch64" ]; then
+	install -D -m 0755 components/cli/build/docker-linux-arm64 $P/usr/bin/docker
+    fi
 
     # Integrate required components.
     ln -s runc $P/usr/bin/docker-runc
