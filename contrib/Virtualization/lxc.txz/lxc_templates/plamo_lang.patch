@@ -1,0 +1,27 @@
+*** lxc-templates-lxc-templates-3.0.4/templates/lxc-plamo.in.orig	2020-07-16 04:44:02.573548382 +0900
+--- lxc-templates-lxc-templates-3.0.4/templates/lxc-plamo.in	2020-07-16 05:22:42.721451504 +0900
+***************
+*** 122,132 ****
+      # gid of files/directories.
+      echo "Installing 'installpkg' command into $dlcache/sbin..."
+  
+      if [ $majorver -ge 7 ]; then
+         pkgtool="pkgtools"
+      else
+         pkgtool="hdsetup"
+-        LANG=C
+      fi
+  
+      ( cd $dlcache ; tar xpJf "$pkgtool"-*.txz ; rm -rf tmp usr var )
+--- 122,132 ----
+      # gid of files/directories.
+      echo "Installing 'installpkg' command into $dlcache/sbin..."
+  
++     LANG=C
+      if [ $majorver -ge 7 ]; then
+         pkgtool="pkgtools"
+      else
+         pkgtool="hdsetup"
+      fi
+  
+      ( cd $dlcache ; tar xpJf "$pkgtool"-*.txz ; rm -rf tmp usr var )
