@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase="JDim"
-vers=v0.2.0
+vers=v0.3.0
 url="https://github.com/JDimproved/JDim/archive/JDim-${vers}.tar.gz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=JDim-JDim-${vers}
 OPT_CONFIG='-with-gtkmm3'
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README README.md TODO'
