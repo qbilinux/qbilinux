@@ -1,18 +1,15 @@
 #!/bin/sh -x
 
 ######################################################################
-#url="https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.12.2.tar.xz
-#    git://github.com/sfjro/aufs4-standalone.git"
-version=5.4.50
-url="https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-${version}.tar.xz
-	git://github.com/sfjro/aufs5-standalone.git"
 pkgbase=kernel
+version=5.4.52
+url="https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-${version%.*}.tar.xz
+	https://cdn.kernel.org/pub/linux/kernel/v5.x/patch-${version}.xz
+	git://github.com/sfjro/aufs5-standalone.git"
 apply_arch="x86_64 i686"
 arch=`uname -m`
 build=1
-#src=linux-${version//_/-}
-src=linux-${version}
-#src=linux-${version%.*}
+src=linux-${version%.*}
 #patchfiles="cjktty-kernel-5.3.patch cjktty-kernel-font-JP.patch overlayfs-allow_unprivileged_mounts.patch patch.Kconfig patch.Makefile"
 patchfiles="cjktty-kernel-5.4.patch cjktty-kernel-font-JP.patch overlayfs-allow_unprivileged_mounts.patch"
 patchfiles_not_used="tuxonice-5.4.8-20200116-f147d78.diff 4.8-morse_code_panics.patch 4.8-panic_beep.patch"
@@ -41,6 +38,7 @@ source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
     cd ${S[$1]}
+    xz -dc $W/patch-${version}.tar.xz | patch -p1
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
