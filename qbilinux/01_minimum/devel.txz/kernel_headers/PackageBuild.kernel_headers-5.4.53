@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=kernel_headers
-version=5.4.52
+version=5.4.53
 url="https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-${version%.*}.tar.xz
 	https://cdn.kernel.org/pub/linux/kernel/v5.x/patch-${version}.xz
 	git://github.com/sfjro/aufs5-standalone.git"
@@ -37,7 +37,7 @@ source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
     cd ${S[$1]}
-    xz -dc $W/patch-${version}.tar.xz | patch -p1
+    xz -dc $W/patch-${version}.xz | patch -p1
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
