@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
 pkgbase=emacs
-vers=26.3
+vers=27.1
 url="http://ftp.jaist.ac.jp/pub/GNU/emacs/emacs-${vers}.tar.xz"
 verify=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=${pkgbase}-${vers}
-OPT_CONFIG='--with-xim --with-x --with-x-toolkit=gtk3 --without-rsvg --without-gsettings --without-selinux'
+OPT_CONFIG='--with-xim --with-x --with-x-toolkit=gtk3 --without-rsvg --without-gsettings --without-selinux --with-dumping=unexec'
 DOCS='COPYING ChangeLog INSTALL README'
 patchfiles='emacs-24.2-add_txz.patch'
 file2='wb-line-number.el'
