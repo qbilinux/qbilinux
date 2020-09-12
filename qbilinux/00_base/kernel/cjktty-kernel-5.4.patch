@@ -1,9 +1,9 @@
-diff -Nrc linux-5.0/drivers/tty/vt/selection.c linux-cjktty-5.0-utf8/drivers/tty/vt/selection.c
-*** linux-5.0/drivers/tty/vt/selection.c	2019-03-04 08:21:29.000000000 +0900
---- linux-cjktty-5.0-utf8/drivers/tty/vt/selection.c	2019-03-10 00:53:55.000000000 +0900
+diff -Nrc linux-5.4/drivers/tty/vt/selection.c linux-cjktty-5.4-utf8/drivers/tty/vt/selection.c
+*** linux-5.4/drivers/tty/vt/selection.c	2019-11-25 09:32:01.000000000 +0900
+--- linux-cjktty-5.4-utf8/drivers/tty/vt/selection.c	2019-12-19 00:40:45.000000000 +0900
 ***************
-*** 318,323 ****
---- 318,325 ----
+*** 330,335 ****
+--- 330,337 ----
   			}
   			obp = bp;
   		}
@@ -12,9 +12,9 @@ diff -Nrc linux-5.0/drivers/tty/vt/selection.c linux-cjktty-5.0-utf8/drivers/tty
   	}
   	sel_buffer_lth = bp - sel_buffer;
   	return 0;
-diff -Nrc linux-5.0/drivers/tty/vt/vt.c linux-cjktty-5.0-utf8/drivers/tty/vt/vt.c
-*** linux-5.0/drivers/tty/vt/vt.c.orig	2020-08-16 20:04:23.348499993 +0900
---- linux-cjktty-5.0-utf8/drivers/tty/vt/vt.c	2020-08-16 20:10:17.182928844 +0900
+diff -Nrc linux-5.4/drivers/tty/vt/vt.c linux-cjktty-5.4-utf8/drivers/tty/vt/vt.c
+*** linux-5.4/drivers/tty/vt/vt.c	2019-11-25 09:32:01.000000000 +0900
+--- linux-cjktty-5.4-utf8/drivers/tty/vt/vt.c	2019-12-19 00:40:45.000000000 +0900
 ***************
 *** 304,309 ****
 --- 304,323 ----
@@ -136,7 +136,7 @@ diff -Nrc linux-5.0/drivers/tty/vt/vt.c linux-cjktty-5.0-utf8/drivers/tty/vt/vt.
 ! 	unsigned int old_rows, old_row_size, first_copied_row;
   	unsigned int new_cols, new_rows, new_row_size, new_screen_size;
   	unsigned int user;
-  	unsigned short *newscreen;
+  	unsigned short *oldscreen, *newscreen;
 --- 1216,1222 ----
   {
   	unsigned long old_origin, new_origin, new_scr_end, rlth, rrem, err = 0;
@@ -144,9 +144,15 @@ diff -Nrc linux-5.0/drivers/tty/vt/vt.c linux-cjktty-5.0-utf8/drivers/tty/vt/vt.
 ! 	unsigned int old_rows, old_row_size, first_copied_row, old_screen_size;
   	unsigned int new_cols, new_rows, new_row_size, new_screen_size;
   	unsigned int user;
-  	unsigned short *newscreen;
+  	unsigned short *oldscreen, *newscreen;
 ***************
-*** 1220,1226 ****
+*** 1214,1226 ****
+  	new_rows = (lines ? lines : vc->vc_rows);
+  	new_row_size = new_cols << 1;
+  	new_screen_size = new_row_size * new_rows;
+  
+  	if (new_cols == vc->vc_cols && new_rows == vc->vc_rows)
+  		return 0;
   
   	if (new_screen_size > KMALLOC_MAX_SIZE || !new_screen_size)
   		return -EINVAL;
@@ -154,24 +160,23 @@ diff -Nrc linux-5.0/drivers/tty/vt/vt.c linux-cjktty-5.0-utf8/drivers/tty/vt/vt.
   	if (!newscreen)
   		return -ENOMEM;
   
---- 1243,1249 ----
+--- 1237,1252 ----
+  	new_rows = (lines ? lines : vc->vc_rows);
+  	new_row_size = new_cols << 1;
+  	new_screen_size = new_row_size * new_rows;
++ 	old_screen_size = old_rows * old_row_size;
+  
+  	if (new_cols == vc->vc_cols && new_rows == vc->vc_rows)
+  		return 0;
   
   	if (new_screen_size > KMALLOC_MAX_SIZE || !new_screen_size)
   		return -EINVAL;
-! 	newscreen = kzalloc(new_screen_size * 2, GFP_USER);
+! 
+! 	newscreen = kmalloc(new_screen_size * 2, GFP_USER);
+! 
   	if (!newscreen)
   		return -ENOMEM;
   
-***************
-*** 1237,1242 ****
---- 1260,1266 ----
-  
-  	old_rows = vc->vc_rows;
-  	old_row_size = vc->vc_size_row;
-+ 	old_screen_size = old_rows * old_row_size;
-  
-  	err = resize_screen(vc, new_cols, new_rows, user);
-  	if (err) {
 ***************
 *** 1285,1299 ****
   	while (old_origin < end) {
@@ -186,10 +191,10 @@ diff -Nrc linux-5.0/drivers/tty/vt/vt.c linux-cjktty-5.0-utf8/drivers/tty/vt/vt.
 ! 	if (new_scr_end > new_origin)
   		scr_memsetw((void *)new_origin, vc->vc_video_erase_char,
   			    new_scr_end - new_origin);
-  	kfree(vc->vc_screenbuf);
+  	oldscreen = vc->vc_screenbuf;
   	vc->vc_screenbuf = newscreen;
   	vc->vc_screenbuf_size = new_screen_size;
---- 1309,1331 ----
+--- 1311,1333 ----
   	while (old_origin < end) {
   		scr_memcpyw((unsigned short *) new_origin,
   			    (unsigned short *) old_origin, rlth);
@@ -198,8 +203,8 @@ diff -Nrc linux-5.0/drivers/tty/vt/vt.c linux-cjktty-5.0-utf8/drivers/tty/vt/vt.
 ! 		if (rrem){
   			scr_memsetw((void *)(new_origin + rlth),
   				    vc->vc_video_erase_char, rrem);
-+  			scr_memsetw((void *)(new_origin + rlth + (new_screen_size)),
-+  				    vc->vc_video_erase_char, rrem);
++ 			scr_memsetw((void *)(new_origin + rlth + (new_screen_size)),
++ 				    vc->vc_video_erase_char, rrem);
 + 		}
   		old_origin += old_row_size;
   		new_origin += new_row_size;
@@ -207,15 +212,15 @@ diff -Nrc linux-5.0/drivers/tty/vt/vt.c linux-cjktty-5.0-utf8/drivers/tty/vt/vt.
 ! 	if (new_scr_end > new_origin){
   		scr_memsetw((void *)new_origin, vc->vc_video_erase_char,
   			    new_scr_end - new_origin);
-+  		scr_memsetw((void *)new_origin + (new_screen_size), vc->vc_video_erase_char,
-+  			    new_scr_end - new_origin);
++ 		scr_memsetw((void *)new_origin + (new_screen_size), vc->vc_video_erase_char,
++ 			    new_scr_end - new_origin);
 + 	}
-  	kfree(vc->vc_screenbuf);
+  	oldscreen = vc->vc_screenbuf;
   	vc->vc_screenbuf = newscreen;
   	vc->vc_screenbuf_size = new_screen_size;
 ***************
-*** 2637,2642 ****
---- 2669,2676 ----
+*** 2638,2643 ****
+--- 2672,2679 ----
   		rescan = 0;
   		inverse = 0;
   		width = 1;
@@ -225,7 +230,7 @@ diff -Nrc linux-5.0/drivers/tty/vt/vt.c linux-cjktty-5.0-utf8/drivers/tty/vt/vt.
   		/* Do no translation at all in control states */
   		if (vc->vc_state != ESnormal) {
 ***************
-*** 2704,2710 ****
+*** 2705,2711 ****
   				continue;
   			    }
   			}
@@ -233,7 +238,7 @@ diff -Nrc linux-5.0/drivers/tty/vt/vt.c linux-cjktty-5.0-utf8/drivers/tty/vt/vt.
   		    }
   		    /* End of UTF-8 decoding. */
   		    /* c is the received character, or U+FFFD for invalid sequences. */
---- 2738,2744 ----
+--- 2741,2747 ----
   				continue;
   			    }
   			}
@@ -242,7 +247,7 @@ diff -Nrc linux-5.0/drivers/tty/vt/vt.c linux-cjktty-5.0-utf8/drivers/tty/vt/vt.
   		    /* End of UTF-8 decoding. */
   		    /* c is the received character, or U+FFFD for invalid sequences. */
 ***************
-*** 2792,2802 ****
+*** 2793,2803 ****
   				}
   				if (vc->vc_decim)
   					insert_char(vc, 1);
@@ -254,7 +259,7 @@ diff -Nrc linux-5.0/drivers/tty/vt/vt.c linux-cjktty-5.0-utf8/drivers/tty/vt/vt.
   				if (con_should_update(vc) && draw_x < 0) {
   					draw_x = vc->vc_x;
   					draw_from = vc->vc_pos;
---- 2826,2855 ----
+--- 2829,2858 ----
   				}
   				if (vc->vc_decim)
   					insert_char(vc, 1);
@@ -286,7 +291,7 @@ diff -Nrc linux-5.0/drivers/tty/vt/vt.c linux-cjktty-5.0-utf8/drivers/tty/vt/vt.
   					draw_x = vc->vc_x;
   					draw_from = vc->vc_pos;
 ***************
-*** 2813,2826 ****
+*** 2814,2827 ****
   
   				tc = conv_uni_to_pc(vc, ' '); /* A space is printed in the second column */
   				if (tc < 0) tc = ' ';
@@ -301,7 +306,7 @@ diff -Nrc linux-5.0/drivers/tty/vt/vt.c linux-cjktty-5.0-utf8/drivers/tty/vt/vt.
   				rescan = 0;
   				inverse = 0;
   				width = 1;
---- 2866,2877 ----
+--- 2869,2880 ----
   
   				tc = conv_uni_to_pc(vc, ' '); /* A space is printed in the second column */
   				if (tc < 0) tc = ' ';
@@ -315,7 +320,7 @@ diff -Nrc linux-5.0/drivers/tty/vt/vt.c linux-cjktty-5.0-utf8/drivers/tty/vt/vt.
   				inverse = 0;
   				width = 1;
 ***************
-*** 3403,3409 ****
+*** 3404,3410 ****
   		tty_port_init(&vc->port);
   		visual_init(vc, currcons, 1);
   		/* Assuming vc->vc_{cols,rows,screenbuf_size} are sane here. */
@@ -323,7 +328,7 @@ diff -Nrc linux-5.0/drivers/tty/vt/vt.c linux-cjktty-5.0-utf8/drivers/tty/vt/vt.
   		vc_init(vc, vc->vc_rows, vc->vc_cols,
   			currcons || !vc->vc_sw->con_save_screen);
   	}
---- 3454,3460 ----
+--- 3457,3463 ----
   		tty_port_init(&vc->port);
   		visual_init(vc, currcons, 1);
   		/* Assuming vc->vc_{cols,rows,screenbuf_size} are sane here. */
@@ -332,8 +337,8 @@ diff -Nrc linux-5.0/drivers/tty/vt/vt.c linux-cjktty-5.0-utf8/drivers/tty/vt/vt.
   			currcons || !vc->vc_sw->con_save_screen);
   	}
 ***************
-*** 4642,4647 ****
---- 4693,4703 ----
+*** 4643,4648 ****
+--- 4696,4706 ----
   
   int con_font_op(struct vc_data *vc, struct console_font_op *op)
   {
@@ -346,7 +351,7 @@ diff -Nrc linux-5.0/drivers/tty/vt/vt.c linux-cjktty-5.0-utf8/drivers/tty/vt/vt.
   	case KD_FONT_OP_SET:
   		return con_font_set(vc, op);
 ***************
-*** 4665,4673 ****
+*** 4666,4674 ****
   	u16 w = scr_readw(screenpos(vc, offset, 1));
   	u16 c = w & 0xff;
   
@@ -356,7 +361,7 @@ diff -Nrc linux-5.0/drivers/tty/vt/vt.c linux-cjktty-5.0-utf8/drivers/tty/vt/vt.
   }
   EXPORT_SYMBOL_GPL(screen_glyph);
   
---- 4721,4735 ----
+--- 4724,4738 ----
   	u16 w = scr_readw(screenpos(vc, offset, 1));
   	u16 c = w & 0xff;
   
@@ -372,12 +377,12 @@ diff -Nrc linux-5.0/drivers/tty/vt/vt.c linux-cjktty-5.0-utf8/drivers/tty/vt/vt.
   }
   EXPORT_SYMBOL_GPL(screen_glyph);
   
-diff -Nrc linux-5.0/drivers/video/console/Kconfig linux-cjktty-5.0-utf8/drivers/video/console/Kconfig
-*** linux-5.0/drivers/video/console/Kconfig	2019-03-04 08:21:29.000000000 +0900
---- linux-cjktty-5.0-utf8/drivers/video/console/Kconfig	2019-03-10 00:53:55.000000000 +0900
+diff -Nrc linux-5.4/drivers/video/console/Kconfig linux-cjktty-5.4-utf8/drivers/video/console/Kconfig
+*** linux-5.4/drivers/video/console/Kconfig	2019-11-25 09:32:01.000000000 +0900
+--- linux-cjktty-5.4-utf8/drivers/video/console/Kconfig	2019-12-19 00:40:45.000000000 +0900
 ***************
-*** 143,148 ****
---- 143,149 ----
+*** 144,149 ****
+--- 144,150 ----
   config FRAMEBUFFER_CONSOLE_ROTATION
          bool "Framebuffer Console Rotation"
          depends on FRAMEBUFFER_CONSOLE
@@ -385,9 +390,9 @@ diff -Nrc linux-5.0/drivers/video/console/Kconfig linux-cjktty-5.0-utf8/drivers/
          help
            Enable display rotation for the framebuffer console.  This is done
            in software and may be significantly slower than a normally oriented
-diff -Nrc linux-5.0/drivers/video/console/Makefile linux-cjktty-5.0-utf8/drivers/video/console/Makefile
-*** linux-5.0/drivers/video/console/Makefile	2019-03-04 08:21:29.000000000 +0900
---- linux-cjktty-5.0-utf8/drivers/video/console/Makefile	2019-03-10 00:53:55.000000000 +0900
+diff -Nrc linux-5.4/drivers/video/console/Makefile linux-cjktty-5.4-utf8/drivers/video/console/Makefile
+*** linux-5.4/drivers/video/console/Makefile	2019-11-25 09:32:01.000000000 +0900
+--- linux-cjktty-5.4-utf8/drivers/video/console/Makefile	2019-12-19 00:40:45.000000000 +0900
 ***************
 *** 3,8 ****
 --- 3,9 ----
@@ -398,9 +403,9 @@ diff -Nrc linux-5.0/drivers/video/console/Makefile linux-cjktty-5.0-utf8/drivers
   obj-$(CONFIG_DUMMY_CONSOLE)       += dummycon.o
   obj-$(CONFIG_SGI_NEWPORT_CONSOLE) += newport_con.o
   obj-$(CONFIG_STI_CONSOLE)         += sticon.o sticore.o
-diff -Nrc linux-5.0/drivers/video/fbdev/core/bitblit.c linux-cjktty-5.0-utf8/drivers/video/fbdev/core/bitblit.c
-*** linux-5.0/drivers/video/fbdev/core/bitblit.c	2019-03-04 08:21:29.000000000 +0900
---- linux-cjktty-5.0-utf8/drivers/video/fbdev/core/bitblit.c	2019-03-10 00:53:55.000000000 +0900
+diff -Nrc linux-5.4/drivers/video/fbdev/core/bitblit.c linux-cjktty-5.4-utf8/drivers/video/fbdev/core/bitblit.c
+*** linux-5.4/drivers/video/fbdev/core/bitblit.c	2019-11-25 09:32:01.000000000 +0900
+--- linux-cjktty-5.4-utf8/drivers/video/fbdev/core/bitblit.c	2019-12-19 00:40:45.000000000 +0900
 ***************
 *** 10,15 ****
 --- 10,16 ----
@@ -557,11 +562,11 @@ diff -Nrc linux-5.0/drivers/video/fbdev/core/bitblit.c linux-cjktty-5.0-utf8/dri
   
   	if (ops->cursor_state.image.data != src ||
   	    ops->cursor_reset) {
-diff -Nrc linux-5.0/drivers/video/fbdev/core/fbcon.c linux-cjktty-5.0-utf8/drivers/video/fbdev/core/fbcon.c
-*** linux-5.0/drivers/video/fbdev/core/fbcon.c	2019-03-04 08:21:29.000000000 +0900
---- linux-cjktty-5.0-utf8/drivers/video/fbdev/core/fbcon.c	2019-03-10 00:53:55.000000000 +0900
+diff -Nrc linux-5.4/drivers/video/fbdev/core/fbcon.c linux-cjktty-5.4-utf8/drivers/video/fbdev/core/fbcon.c
+*** linux-5.4/drivers/video/fbdev/core/fbcon.c	2019-11-25 09:32:01.000000000 +0900
+--- linux-cjktty-5.4-utf8/drivers/video/fbdev/core/fbcon.c	2019-12-19 00:40:45.000000000 +0900
 ***************
-*** 103,109 ****
+*** 123,129 ****
      enums.  */
   static int logo_shown = FBCON_LOGO_CANSHOW;
   /* Software scrollback */
@@ -569,7 +574,7 @@ diff -Nrc linux-5.0/drivers/video/fbdev/core/fbcon.c linux-cjktty-5.0-utf8/drive
   static unsigned long softback_buf, softback_curr;
   static unsigned long softback_in;
   static unsigned long softback_top, softback_end;
---- 103,110 ----
+--- 123,130 ----
      enums.  */
   static int logo_shown = FBCON_LOGO_CANSHOW;
   /* Software scrollback */
@@ -579,8 +584,8 @@ diff -Nrc linux-5.0/drivers/video/fbdev/core/fbcon.c linux-cjktty-5.0-utf8/drive
   static unsigned long softback_in;
   static unsigned long softback_top, softback_end;
 ***************
-*** 197,202 ****
---- 198,211 ----
+*** 216,221 ****
+--- 217,230 ----
   static void fbcon_exit(void);
   static struct device *fbcon_device;
   
@@ -596,24 +601,27 @@ diff -Nrc linux-5.0/drivers/video/fbdev/core/fbcon.c linux-cjktty-5.0-utf8/drive
   static inline void fbcon_set_rotation(struct fb_info *info)
   {
 ***************
-*** 1002,1008 ****
+*** 1019,1028 ****
+  	if (info->fix.type != FB_TYPE_TEXT) {
+  		if (fbcon_softback_size) {
   			if (!softback_buf) {
-  				softback_buf =
-  				    (unsigned long)
+! 				softback_buf =
+! 				    (unsigned long)
 ! 				    kvmalloc(fbcon_softback_size,
-  					    GFP_KERNEL);
+! 					    GFP_KERNEL);
   				if (!softback_buf) {
   					fbcon_softback_size = 0;
---- 1011,1017 ----
+  					softback_top = 0;
+--- 1028,1034 ----
+  	if (info->fix.type != FB_TYPE_TEXT) {
+  		if (fbcon_softback_size) {
   			if (!softback_buf) {
-  				softback_buf =
-  				    (unsigned long)
-! 				    kvmalloc(fbcon_softback_size * 2,
-  					    GFP_KERNEL);
+! 				softback_buf = (unsigned long) kmalloc(fbcon_softback_size * 2, GFP_KERNEL);
   				if (!softback_buf) {
   					fbcon_softback_size = 0;
+  					softback_top = 0;
 ***************
-*** 1029,1035 ****
+*** 1051,1057 ****
   		vc->vc_font.width = font->width;
   		vc->vc_font.height = font->height;
   		vc->vc_font.data = (void *)(p->fontdata = font->data);
@@ -621,7 +629,7 @@ diff -Nrc linux-5.0/drivers/video/fbdev/core/fbcon.c linux-cjktty-5.0-utf8/drive
   	} else {
   		p->fontdata = vc->vc_font.data;
   	}
---- 1038,1045 ----
+--- 1057,1064 ----
   		vc->vc_font.width = font->width;
   		vc->vc_font.height = font->height;
   		vc->vc_font.data = (void *)(p->fontdata = font->data);
@@ -631,8 +639,8 @@ diff -Nrc linux-5.0/drivers/video/fbdev/core/fbcon.c linux-cjktty-5.0-utf8/drive
   		p->fontdata = vc->vc_font.data;
   	}
 ***************
-*** 1087,1092 ****
---- 1097,1103 ----
+*** 1115,1120 ****
+--- 1122,1128 ----
   						    fvc->vc_font.data);
   			vc->vc_font.width = fvc->vc_font.width;
   			vc->vc_font.height = fvc->vc_font.height;
@@ -641,7 +649,7 @@ diff -Nrc linux-5.0/drivers/video/fbdev/core/fbcon.c linux-cjktty-5.0-utf8/drive
   
   			if (p->userfont)
 ***************
-*** 1102,1109 ****
+*** 1130,1137 ****
   			vc->vc_font.width = font->width;
   			vc->vc_font.height = font->height;
   			vc->vc_font.data = (void *)(p->fontdata = font->data);
@@ -650,7 +658,7 @@ diff -Nrc linux-5.0/drivers/video/fbdev/core/fbcon.c linux-cjktty-5.0-utf8/drive
   		}
   	}
   
---- 1113,1120 ----
+--- 1138,1145 ----
   			vc->vc_font.width = font->width;
   			vc->vc_font.height = font->height;
   			vc->vc_font.data = (void *)(p->fontdata = font->data);
@@ -660,7 +668,7 @@ diff -Nrc linux-5.0/drivers/video/fbdev/core/fbcon.c linux-cjktty-5.0-utf8/drive
   	}
   
 ***************
-*** 1329,1338 ****
+*** 1357,1366 ****
   
   static void fbcon_putc(struct vc_data *vc, int c, int ypos, int xpos)
   {
@@ -671,7 +679,7 @@ diff -Nrc linux-5.0/drivers/video/fbdev/core/fbcon.c linux-cjktty-5.0-utf8/drive
   }
   
   static void fbcon_clear_margins(struct vc_data *vc, int bottom_only)
---- 1340,1346 ----
+--- 1365,1371 ----
   
   static void fbcon_putc(struct vc_data *vc, int c, int ypos, int xpos)
   {
@@ -680,8 +688,8 @@ diff -Nrc linux-5.0/drivers/video/fbdev/core/fbcon.c linux-cjktty-5.0-utf8/drive
   
   static void fbcon_clear_margins(struct vc_data *vc, int bottom_only)
 ***************
-*** 1406,1411 ****
---- 1414,1420 ----
+*** 1434,1439 ****
+--- 1439,1445 ----
   		vc->vc_font.data = (void *)(p->fontdata = t->fontdata);
   		vc->vc_font.width = (*default_mode)->vc_font.width;
   		vc->vc_font.height = (*default_mode)->vc_font.height;
@@ -690,9 +698,9 @@ diff -Nrc linux-5.0/drivers/video/fbdev/core/fbcon.c linux-cjktty-5.0-utf8/drive
   		if (p->userfont)
   			REFCOUNT(p->fontdata)++;
 ***************
-*** 1584,1589 ****
---- 1593,1599 ----
-  static void fbcon_redraw_softback(struct vc_data *vc, struct display *p,
+*** 1612,1617 ****
+--- 1618,1624 ----
+  static void fbcon_redraw_softback(struct vc_data *vc, struct fbcon_display *p,
   				  long delta)
   {
 + 	u16 charmask = vc->vc_hi_font_mask ? 0x1ff : 0xff;
@@ -700,8 +708,8 @@ diff -Nrc linux-5.0/drivers/video/fbdev/core/fbcon.c linux-cjktty-5.0-utf8/drive
   	unsigned short *d, *s;
   	unsigned long n;
 ***************
-*** 1646,1651 ****
---- 1656,1663 ----
+*** 1674,1679 ****
+--- 1681,1688 ----
   					start = s;
   				}
   			}
@@ -711,8 +719,8 @@ diff -Nrc linux-5.0/drivers/video/fbdev/core/fbcon.c linux-cjktty-5.0-utf8/drive
   				if (s > start) {
   					fbcon_putcs(vc, start, s - start,
 ***************
-*** 1657,1662 ****
---- 1669,1675 ----
+*** 1685,1690 ****
+--- 1694,1700 ----
   					start++;
   				}
   			}
@@ -721,8 +729,8 @@ diff -Nrc linux-5.0/drivers/video/fbdev/core/fbcon.c linux-cjktty-5.0-utf8/drive
   			d++;
   		} while (s < le);
 ***************
-*** 1739,1744 ****
---- 1752,1758 ----
+*** 1767,1772 ****
+--- 1777,1783 ----
   			}
   
   			scr_writew(c, d);
@@ -731,9 +739,9 @@ diff -Nrc linux-5.0/drivers/video/fbdev/core/fbcon.c linux-cjktty-5.0-utf8/drive
   			s++;
   			d++;
 ***************
-*** 1761,1766 ****
---- 1775,1781 ----
-  static void fbcon_redraw(struct vc_data *vc, struct display *p,
+*** 1789,1794 ****
+--- 1800,1806 ----
+  static void fbcon_redraw(struct vc_data *vc, struct fbcon_display *p,
   			 int line, int count, int offset)
   {
 + 	u16 charmask = vc->vc_hi_font_mask ? 0x1ff : 0xff;
@@ -741,7 +749,7 @@ diff -Nrc linux-5.0/drivers/video/fbdev/core/fbcon.c linux-cjktty-5.0-utf8/drive
   	    (vc->vc_origin + vc->vc_size_row * line);
   	unsigned short *s = d + offset;
 ***************
-*** 1783,1800 ****
+*** 1811,1828 ****
   					start = s;
   				}
   			}
@@ -760,7 +768,7 @@ diff -Nrc linux-5.0/drivers/video/fbdev/core/fbcon.c linux-cjktty-5.0-utf8/drive
   			console_conditional_schedule();
   			s++;
   			d++;
---- 1798,1819 ----
+--- 1823,1844 ----
   					start = s;
   				}
   			}
@@ -784,8 +792,8 @@ diff -Nrc linux-5.0/drivers/video/fbdev/core/fbcon.c linux-cjktty-5.0-utf8/drive
   			s++;
   			d++;
 ***************
-*** 1824,1829 ****
---- 1843,1849 ----
+*** 1852,1857 ****
+--- 1868,1874 ----
   
   	while (count) {
   		scr_memcpyw((u16 *) softback_in, p, vc->vc_size_row);
@@ -794,7 +802,7 @@ diff -Nrc linux-5.0/drivers/video/fbdev/core/fbcon.c linux-cjktty-5.0-utf8/drive
   		p = advance_row(p, 1);
   		softback_in += vc->vc_size_row;
 ***************
-*** 2438,2444 ****
+*** 2455,2461 ****
   
   	font->width = vc->vc_font.width;
   	font->height = vc->vc_font.height;
@@ -802,10 +810,10 @@ diff -Nrc linux-5.0/drivers/video/fbdev/core/fbcon.c linux-cjktty-5.0-utf8/drive
   	if (!font->data)
   		return 0;
   
---- 2458,2463 ----
+--- 2472,2477 ----
 ***************
-*** 2743,2748 ****
---- 2762,2780 ----
+*** 2760,2765 ****
+--- 2776,2794 ----
   	unsigned long p;
   	int line;
   	
@@ -826,8 +834,8 @@ diff -Nrc linux-5.0/drivers/video/fbdev/core/fbcon.c linux-cjktty-5.0-utf8/drive
   		return (u16 *) (vc->vc_origin + offset);
   	line = offset / vc->vc_size_row;
 ***************
-*** 2850,2855 ****
---- 2882,2889 ----
+*** 2867,2872 ****
+--- 2896,2903 ----
   					q -= vc->vc_size_row;
   					scr_memcpyw((u16 *) q, (u16 *) p,
   						    vc->vc_size_row);
@@ -836,9 +844,9 @@ diff -Nrc linux-5.0/drivers/video/fbdev/core/fbcon.c linux-cjktty-5.0-utf8/drive
   				}
   				softback_in = softback_curr = p;
   				update_region(vc, vc->vc_origin,
-diff -Nrc linux-5.0/drivers/video/fbdev/core/fbcon.h linux-cjktty-5.0-utf8/drivers/video/fbdev/core/fbcon.h
-*** linux-5.0/drivers/video/fbdev/core/fbcon.h	2019-03-04 08:21:29.000000000 +0900
---- linux-cjktty-5.0-utf8/drivers/video/fbdev/core/fbcon.h	2019-03-10 00:53:55.000000000 +0900
+diff -Nrc linux-5.4/drivers/video/fbdev/core/fbcon.h linux-cjktty-5.4-utf8/drivers/video/fbdev/core/fbcon.h
+*** linux-5.4/drivers/video/fbdev/core/fbcon.h	2019-11-25 09:32:01.000000000 +0900
+--- linux-cjktty-5.4-utf8/drivers/video/fbdev/core/fbcon.h	2019-12-19 00:40:45.000000000 +0900
 ***************
 *** 262,265 ****
 --- 262,274 ----
@@ -855,9 +863,9 @@ diff -Nrc linux-5.0/drivers/video/fbdev/core/fbcon.h linux-cjktty-5.0-utf8/drive
 + extern int fbcon_is_softback(const unsigned short *str);
 + 
   #endif /* _VIDEO_FBCON_H */
-diff -Nrc linux-5.0/drivers/video/fbdev/core/fbcon_ccw.c linux-cjktty-5.0-utf8/drivers/video/fbdev/core/fbcon_ccw.c
-*** linux-5.0/drivers/video/fbdev/core/fbcon_ccw.c	2019-03-04 08:21:29.000000000 +0900
---- linux-cjktty-5.0-utf8/drivers/video/fbdev/core/fbcon_ccw.c	2019-03-10 00:53:55.000000000 +0900
+diff -Nrc linux-5.4/drivers/video/fbdev/core/fbcon_ccw.c linux-cjktty-5.4-utf8/drivers/video/fbdev/core/fbcon_ccw.c
+*** linux-5.4/drivers/video/fbdev/core/fbcon_ccw.c	2019-11-25 09:32:01.000000000 +0900
+--- linux-cjktty-5.4-utf8/drivers/video/fbdev/core/fbcon_ccw.c	2019-12-19 00:40:45.000000000 +0900
 ***************
 *** 18,23 ****
 --- 18,25 ----
@@ -949,9 +957,9 @@ diff -Nrc linux-5.0/drivers/video/fbdev/core/fbcon_ccw.c linux-cjktty-5.0-utf8/d
   
   	if (ops->cursor_state.image.data != src ||
   	    ops->cursor_reset) {
-diff -Nrc linux-5.0/drivers/video/fbdev/core/fbcon_cw.c linux-cjktty-5.0-utf8/drivers/video/fbdev/core/fbcon_cw.c
-*** linux-5.0/drivers/video/fbdev/core/fbcon_cw.c	2019-03-04 08:21:29.000000000 +0900
---- linux-cjktty-5.0-utf8/drivers/video/fbdev/core/fbcon_cw.c	2019-03-10 00:53:55.000000000 +0900
+diff -Nrc linux-5.4/drivers/video/fbdev/core/fbcon_cw.c linux-cjktty-5.4-utf8/drivers/video/fbdev/core/fbcon_cw.c
+*** linux-5.4/drivers/video/fbdev/core/fbcon_cw.c	2019-11-25 09:32:01.000000000 +0900
+--- linux-cjktty-5.4-utf8/drivers/video/fbdev/core/fbcon_cw.c	2019-12-19 00:40:45.000000000 +0900
 ***************
 *** 18,23 ****
 --- 18,25 ----
@@ -1039,9 +1047,9 @@ diff -Nrc linux-5.0/drivers/video/fbdev/core/fbcon_cw.c linux-cjktty-5.0-utf8/dr
   
   	if (ops->cursor_state.image.data != src ||
   	    ops->cursor_reset) {
-diff -Nrc linux-5.0/drivers/video/fbdev/core/fbcon_ud.c linux-cjktty-5.0-utf8/drivers/video/fbdev/core/fbcon_ud.c
-*** linux-5.0/drivers/video/fbdev/core/fbcon_ud.c	2019-03-04 08:21:29.000000000 +0900
---- linux-cjktty-5.0-utf8/drivers/video/fbdev/core/fbcon_ud.c	2019-03-10 00:53:55.000000000 +0900
+diff -Nrc linux-5.4/drivers/video/fbdev/core/fbcon_ud.c linux-cjktty-5.4-utf8/drivers/video/fbdev/core/fbcon_ud.c
+*** linux-5.4/drivers/video/fbdev/core/fbcon_ud.c	2019-11-25 09:32:01.000000000 +0900
+--- linux-cjktty-5.4-utf8/drivers/video/fbdev/core/fbcon_ud.c	2019-12-19 00:40:45.000000000 +0900
 ***************
 *** 18,23 ****
 --- 18,25 ----
@@ -1164,9 +1172,9 @@ diff -Nrc linux-5.0/drivers/video/fbdev/core/fbcon_ud.c linux-cjktty-5.0-utf8/dr
   
   	if (ops->cursor_state.image.data != src ||
   	    ops->cursor_reset) {
-diff -Nrc linux-5.0/include/linux/font.h linux-cjktty-5.0-utf8/include/linux/font.h
-*** linux-5.0/include/linux/font.h	2019-03-04 08:21:29.000000000 +0900
---- linux-cjktty-5.0-utf8/include/linux/font.h	2019-03-10 00:53:55.000000000 +0900
+diff -Nrc linux-5.4/include/linux/font.h linux-cjktty-5.4-utf8/include/linux/font.h
+*** linux-5.4/include/linux/font.h	2019-11-25 09:32:01.000000000 +0900
+--- linux-cjktty-5.4-utf8/include/linux/font.h	2019-12-19 00:40:45.000000000 +0900
 ***************
 *** 19,24 ****
 --- 19,25 ----
@@ -1205,12 +1213,12 @@ diff -Nrc linux-5.0/include/linux/font.h linux-cjktty-5.0-utf8/include/linux/fon
   
   /* Find a font with a specific name */
   
-diff -Nrc linux-5.0/lib/fonts/Kconfig linux-cjktty-5.0-utf8/lib/fonts/Kconfig
-*** linux-5.0/lib/fonts/Kconfig	2019-03-04 08:21:29.000000000 +0900
---- linux-cjktty-5.0-utf8/lib/fonts/Kconfig	2019-03-10 00:53:55.000000000 +0900
+diff -Nrc linux-5.4/lib/fonts/Kconfig linux-cjktty-5.4-utf8/lib/fonts/Kconfig
+*** linux-5.4/lib/fonts/Kconfig	2019-11-25 09:32:01.000000000 +0900
+--- linux-cjktty-5.4-utf8/lib/fonts/Kconfig	2019-12-19 00:40:45.000000000 +0900
 ***************
-*** 118,125 ****
---- 118,136 ----
+*** 119,126 ****
+--- 119,137 ----
   	  This is the high resolution, large version for use with HiDPI screens.
   	  If the standard font is unreadable for you, say Y, otherwise say N.
   
@@ -1231,8 +1239,8 @@ diff -Nrc linux-5.0/lib/fonts/Kconfig linux-cjktty-5.0-utf8/lib/fonts/Kconfig
   	depends on !FONT_6x11
   	depends on !FONT_7x14
 ***************
-*** 131,136 ****
---- 142,148 ----
+*** 132,137 ****
+--- 143,149 ----
   	depends on !FONT_SUN12x22
   	depends on !FONT_10x18
   	depends on !FONT_TER16x32
@@ -1240,9 +1248,9 @@ diff -Nrc linux-5.0/lib/fonts/Kconfig linux-cjktty-5.0-utf8/lib/fonts/Kconfig
   	select FONT_8x16
   
   endif # FONT_SUPPORT
-diff -Nrc linux-5.0/lib/fonts/Makefile linux-cjktty-5.0-utf8/lib/fonts/Makefile
-*** linux-5.0/lib/fonts/Makefile	2019-03-04 08:21:29.000000000 +0900
---- linux-cjktty-5.0-utf8/lib/fonts/Makefile	2019-03-10 00:53:55.000000000 +0900
+diff -Nrc linux-5.4/lib/fonts/Makefile linux-cjktty-5.4-utf8/lib/fonts/Makefile
+*** linux-5.4/lib/fonts/Makefile	2019-11-25 09:32:01.000000000 +0900
+--- linux-cjktty-5.4-utf8/lib/fonts/Makefile	2019-12-19 00:40:45.000000000 +0900
 ***************
 *** 15,21 ****
 --- 15,23 ----
@@ -1255,9 +1263,9 @@ diff -Nrc linux-5.0/lib/fonts/Makefile linux-cjktty-5.0-utf8/lib/fonts/Makefile
   
   obj-$(CONFIG_FONT_SUPPORT)         += font.o
 + 
-diff -Nrc linux-5.0/lib/fonts/font_10x18.c linux-cjktty-5.0-utf8/lib/fonts/font_10x18.c
-*** linux-5.0/lib/fonts/font_10x18.c	2019-03-04 08:21:29.000000000 +0900
---- linux-cjktty-5.0-utf8/lib/fonts/font_10x18.c	2019-03-10 00:53:55.000000000 +0900
+diff -Nrc linux-5.4/lib/fonts/font_10x18.c linux-cjktty-5.4-utf8/lib/fonts/font_10x18.c
+*** linux-5.4/lib/fonts/font_10x18.c	2019-11-25 09:32:01.000000000 +0900
+--- linux-cjktty-5.4-utf8/lib/fonts/font_10x18.c	2019-12-19 00:40:45.000000000 +0900
 ***************
 *** 5144,5147 ****
 --- 5144,5148 ----
@@ -1266,9 +1274,9 @@ diff -Nrc linux-5.0/lib/fonts/font_10x18.c linux-cjktty-5.0-utf8/lib/fonts/font_
   #endif
 + 	.charcount = 255,
   };
-diff -Nrc linux-5.0/lib/fonts/font_16x16_cjk.c linux-cjktty-5.0-utf8/lib/fonts/font_16x16_cjk.c
-*** linux-5.0/lib/fonts/font_16x16_cjk.c	1970-01-01 09:00:00.000000000 +0900
---- linux-cjktty-5.0-utf8/lib/fonts/font_16x16_cjk.c	2019-03-10 00:53:55.000000000 +0900
+diff -Nrc linux-5.4/lib/fonts/font_16x16_cjk.c linux-cjktty-5.4-utf8/lib/fonts/font_16x16_cjk.c
+*** linux-5.4/lib/fonts/font_16x16_cjk.c	1970-01-01 09:00:00.000000000 +0900
+--- linux-cjktty-5.4-utf8/lib/fonts/font_16x16_cjk.c	2019-12-19 00:40:45.000000000 +0900
 ***************
 *** 0 ****
 --- 1,24 ----
@@ -1296,9 +1304,9 @@ diff -Nrc linux-5.0/lib/fonts/font_16x16_cjk.c linux-cjktty-5.0-utf8/lib/fonts/f
 + 	.pref	= 10, // make it big enough to be selected
 + 	.charcount = 65535,
 + };
-diff -Nrc linux-5.0/lib/fonts/font_6x11.c linux-cjktty-5.0-utf8/lib/fonts/font_6x11.c
-*** linux-5.0/lib/fonts/font_6x11.c	2019-03-04 08:21:29.000000000 +0900
---- linux-cjktty-5.0-utf8/lib/fonts/font_6x11.c	2019-03-10 00:53:55.000000000 +0900
+diff -Nrc linux-5.4/lib/fonts/font_6x11.c linux-cjktty-5.4-utf8/lib/fonts/font_6x11.c
+*** linux-5.4/lib/fonts/font_6x11.c	2019-11-25 09:32:01.000000000 +0900
+--- linux-cjktty-5.4-utf8/lib/fonts/font_6x11.c	2019-12-19 00:40:45.000000000 +0900
 ***************
 *** 3350,3353 ****
 --- 3350,3354 ----
@@ -1307,9 +1315,9 @@ diff -Nrc linux-5.0/lib/fonts/font_6x11.c linux-cjktty-5.0-utf8/lib/fonts/font_6
   	.pref	= -2000,
 + 	.charcount = 255,
   };
-diff -Nrc linux-5.0/lib/fonts/font_7x14.c linux-cjktty-5.0-utf8/lib/fonts/font_7x14.c
-*** linux-5.0/lib/fonts/font_7x14.c	2019-03-04 08:21:29.000000000 +0900
---- linux-cjktty-5.0-utf8/lib/fonts/font_7x14.c	2019-03-10 00:53:55.000000000 +0900
+diff -Nrc linux-5.4/lib/fonts/font_7x14.c linux-cjktty-5.4-utf8/lib/fonts/font_7x14.c
+*** linux-5.4/lib/fonts/font_7x14.c	2019-11-25 09:32:01.000000000 +0900
+--- linux-cjktty-5.4-utf8/lib/fonts/font_7x14.c	2019-12-19 00:40:45.000000000 +0900
 ***************
 *** 4116,4119 ****
 --- 4116,4120 ----
@@ -1318,9 +1326,9 @@ diff -Nrc linux-5.0/lib/fonts/font_7x14.c linux-cjktty-5.0-utf8/lib/fonts/font_7
   	.pref	= 0,
 + 	.charcount = 255,
   };
-diff -Nrc linux-5.0/lib/fonts/font_8x16.c linux-cjktty-5.0-utf8/lib/fonts/font_8x16.c
-*** linux-5.0/lib/fonts/font_8x16.c	2019-03-04 08:21:29.000000000 +0900
---- linux-cjktty-5.0-utf8/lib/fonts/font_8x16.c	2019-03-10 00:53:55.000000000 +0900
+diff -Nrc linux-5.4/lib/fonts/font_8x16.c linux-cjktty-5.4-utf8/lib/fonts/font_8x16.c
+*** linux-5.4/lib/fonts/font_8x16.c	2019-11-25 09:32:01.000000000 +0900
+--- linux-cjktty-5.4-utf8/lib/fonts/font_8x16.c	2019-12-19 00:40:45.000000000 +0900
 ***************
 *** 4630,4634 ****
 --- 4630,4635 ----
@@ -1330,9 +1338,9 @@ diff -Nrc linux-5.0/lib/fonts/font_8x16.c linux-cjktty-5.0-utf8/lib/fonts/font_8
 + 	.charcount = 255,
   };
   EXPORT_SYMBOL(font_vga_8x16);
-diff -Nrc linux-5.0/lib/fonts/font_8x8.c linux-cjktty-5.0-utf8/lib/fonts/font_8x8.c
-*** linux-5.0/lib/fonts/font_8x8.c	2019-03-04 08:21:29.000000000 +0900
---- linux-cjktty-5.0-utf8/lib/fonts/font_8x8.c	2019-03-10 00:53:55.000000000 +0900
+diff -Nrc linux-5.4/lib/fonts/font_8x8.c linux-cjktty-5.4-utf8/lib/fonts/font_8x8.c
+*** linux-5.4/lib/fonts/font_8x8.c	2019-11-25 09:32:01.000000000 +0900
+--- linux-cjktty-5.4-utf8/lib/fonts/font_8x8.c	2019-12-19 00:40:45.000000000 +0900
 ***************
 *** 2581,2584 ****
 --- 2581,2585 ----
@@ -1341,9 +1349,9 @@ diff -Nrc linux-5.0/lib/fonts/font_8x8.c linux-cjktty-5.0-utf8/lib/fonts/font_8x
   	.pref	= 0,
 + 	.charcount = 255,
   };
-diff -Nrc linux-5.0/lib/fonts/font_acorn_8x8.c linux-cjktty-5.0-utf8/lib/fonts/font_acorn_8x8.c
-*** linux-5.0/lib/fonts/font_acorn_8x8.c	2019-03-04 08:21:29.000000000 +0900
---- linux-cjktty-5.0-utf8/lib/fonts/font_acorn_8x8.c	2019-03-10 00:53:55.000000000 +0900
+diff -Nrc linux-5.4/lib/fonts/font_acorn_8x8.c linux-cjktty-5.4-utf8/lib/fonts/font_acorn_8x8.c
+*** linux-5.4/lib/fonts/font_acorn_8x8.c	2019-11-25 09:32:01.000000000 +0900
+--- linux-cjktty-5.4-utf8/lib/fonts/font_acorn_8x8.c	2019-12-19 00:40:45.000000000 +0900
 ***************
 *** 273,276 ****
 --- 273,277 ----
@@ -1352,9 +1360,9 @@ diff -Nrc linux-5.0/lib/fonts/font_acorn_8x8.c linux-cjktty-5.0-utf8/lib/fonts/f
   #endif
 + 	.charcount = 255,
   };
-diff -Nrc linux-5.0/lib/fonts/font_mini_4x6.c linux-cjktty-5.0-utf8/lib/fonts/font_mini_4x6.c
-*** linux-5.0/lib/fonts/font_mini_4x6.c	2019-03-04 08:21:29.000000000 +0900
---- linux-cjktty-5.0-utf8/lib/fonts/font_mini_4x6.c	2019-03-10 00:53:55.000000000 +0900
+diff -Nrc linux-5.4/lib/fonts/font_mini_4x6.c linux-cjktty-5.4-utf8/lib/fonts/font_mini_4x6.c
+*** linux-5.4/lib/fonts/font_mini_4x6.c	2019-11-25 09:32:01.000000000 +0900
+--- linux-cjktty-5.4-utf8/lib/fonts/font_mini_4x6.c	2019-12-19 00:40:45.000000000 +0900
 ***************
 *** 2154,2158 ****
 --- 2154,2159 ----
@@ -1364,9 +1372,9 @@ diff -Nrc linux-5.0/lib/fonts/font_mini_4x6.c linux-cjktty-5.0-utf8/lib/fonts/fo
 + 	.charcount = 255,
   };
   
-diff -Nrc linux-5.0/lib/fonts/font_pearl_8x8.c linux-cjktty-5.0-utf8/lib/fonts/font_pearl_8x8.c
-*** linux-5.0/lib/fonts/font_pearl_8x8.c	2019-03-04 08:21:29.000000000 +0900
---- linux-cjktty-5.0-utf8/lib/fonts/font_pearl_8x8.c	2019-03-10 00:53:55.000000000 +0900
+diff -Nrc linux-5.4/lib/fonts/font_pearl_8x8.c linux-cjktty-5.4-utf8/lib/fonts/font_pearl_8x8.c
+*** linux-5.4/lib/fonts/font_pearl_8x8.c	2019-11-25 09:32:01.000000000 +0900
+--- linux-cjktty-5.4-utf8/lib/fonts/font_pearl_8x8.c	2019-12-19 00:40:45.000000000 +0900
 ***************
 *** 2585,2588 ****
 --- 2585,2589 ----
@@ -1375,9 +1383,9 @@ diff -Nrc linux-5.0/lib/fonts/font_pearl_8x8.c linux-cjktty-5.0-utf8/lib/fonts/f
   	.pref	= 2,
 + 	.charcount = 255,
   };
-diff -Nrc linux-5.0/lib/fonts/font_sun12x22.c linux-cjktty-5.0-utf8/lib/fonts/font_sun12x22.c
-*** linux-5.0/lib/fonts/font_sun12x22.c	2019-03-04 08:21:29.000000000 +0900
---- linux-cjktty-5.0-utf8/lib/fonts/font_sun12x22.c	2019-03-10 00:53:55.000000000 +0900
+diff -Nrc linux-5.4/lib/fonts/font_sun12x22.c linux-cjktty-5.4-utf8/lib/fonts/font_sun12x22.c
+*** linux-5.4/lib/fonts/font_sun12x22.c	2019-11-25 09:32:01.000000000 +0900
+--- linux-cjktty-5.4-utf8/lib/fonts/font_sun12x22.c	2019-12-19 00:40:45.000000000 +0900
 ***************
 *** 6163,6166 ****
 --- 6163,6167 ----
@@ -1386,9 +1394,9 @@ diff -Nrc linux-5.0/lib/fonts/font_sun12x22.c linux-cjktty-5.0-utf8/lib/fonts/fo
   #endif
 + 	.charcount = 255,
   };
-diff -Nrc linux-5.0/lib/fonts/font_sun8x16.c linux-cjktty-5.0-utf8/lib/fonts/font_sun8x16.c
-*** linux-5.0/lib/fonts/font_sun8x16.c	2019-03-04 08:21:29.000000000 +0900
---- linux-cjktty-5.0-utf8/lib/fonts/font_sun8x16.c	2019-03-10 00:53:55.000000000 +0900
+diff -Nrc linux-5.4/lib/fonts/font_sun8x16.c linux-cjktty-5.4-utf8/lib/fonts/font_sun8x16.c
+*** linux-5.4/lib/fonts/font_sun8x16.c	2019-11-25 09:32:01.000000000 +0900
+--- linux-cjktty-5.4-utf8/lib/fonts/font_sun8x16.c	2019-12-19 00:40:45.000000000 +0900
 ***************
 *** 273,276 ****
 --- 273,277 ----
@@ -1397,18 +1405,19 @@ diff -Nrc linux-5.0/lib/fonts/font_sun8x16.c linux-cjktty-5.0-utf8/lib/fonts/fon
   #endif
 + 	.charcount = 255,
   };
-diff -Nrc linux-5.0/lib/fonts/fonts.c linux-cjktty-5.0-utf8/lib/fonts/fonts.c
-*** linux-5.0/lib/fonts/fonts.c	2019-03-04 08:21:29.000000000 +0900
---- linux-cjktty-5.0-utf8/lib/fonts/fonts.c	2019-03-10 00:53:55.000000000 +0900
+diff -Nrc linux-5.4/lib/fonts/fonts.c linux-cjktty-5.4-utf8/lib/fonts/fonts.c
+*** linux-5.4/lib/fonts/fonts.c	2019-11-25 09:32:01.000000000 +0900
+--- linux-cjktty-5.4-utf8/lib/fonts/fonts.c	2019-12-19 00:40:45.000000000 +0900
 ***************
-*** 56,61 ****
---- 56,64 ----
-  #endif
+*** 57,62 ****
+--- 57,66 ----
   #ifdef CONFIG_FONT_TER16x32
   	&font_ter_16x32,
-+ #endif    
-+ #ifdef CONFIG_FONT_16x16_CJK
-+ 	&font_16x16_cjk,
   #endif
++ #ifdef CONFIG_FONT_16x16_CJK
++ #undef NO_FONTS
++ 	&font_16x16_cjk,
++ #endif
   };
   
+  #define num_fonts ARRAY_SIZE(fonts)
