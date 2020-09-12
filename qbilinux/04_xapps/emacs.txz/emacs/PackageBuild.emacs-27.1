@@ -6,11 +6,11 @@ url="http://ftp.jaist.ac.jp/pub/GNU/emacs/emacs-${vers}.tar.xz"
 verify=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=${pkgbase}-${vers}
-OPT_CONFIG='--with-xim --with-x --with-x-toolkit=gtk3 --without-rsvg --without-gsettings --without-selinux --with-dumping=unexec'
+OPT_CONFIG='--with-xim --with-x --with-x-toolkit=gtk3 --without-rsvg --without-gsettings --without-selinux'
 DOCS='COPYING ChangeLog INSTALL README'
-patchfiles='emacs-24.2-add_txz.patch'
+patchfiles=''
 file2='wb-line-number.el'
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
@@ -78,13 +78,14 @@ do_package() {
     mkdir -p ${P}/usr/share/doc
     mv ${P}_lib/usr/bin/emacs-$vers ${P}/usr/bin/emacs-$vers
     mv ${P}_lib/usr/src ${P}/usr/src
+    mv ${P}_lib/usr/libexec ${P}/usr
     (cd ${P}_lib/usr/bin; rm emacs)
     (cd ${P}/usr/bin; ln -sf emacs-$vers emacs)
     mv ${P}_lib/usr/share/doc/$src ${P}/usr/share/doc/${pkgbase}-$vers
 
     #
     mkdir -p ${P}_bin/usr
-    mv ${P}_lib/usr/bin ${P}_lib/usr/libexec ${P}_bin/usr
+    mv ${P}_lib/usr/bin ${P}_bin/usr
     #   cd ${P}_bin
     #   /sbin/makepkg ../${pkgbin}.$compress <<EOF
     # y
