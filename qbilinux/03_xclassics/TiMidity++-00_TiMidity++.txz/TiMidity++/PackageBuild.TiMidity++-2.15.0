@@ -29,6 +29,7 @@ do_prepare() {
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
+    cp -p /usr/src/qbilinux/config.{guess,sub} autoconf
     cp -p timidity/timidity.h{,.orig}
     sed '/MAX_CHANNELS/s@32@80@g' timidity/timidity.h.orig > timidity/timidity.h
 }
