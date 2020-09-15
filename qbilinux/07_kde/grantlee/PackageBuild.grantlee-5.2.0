@@ -1,17 +1,17 @@
 #!/bin/sh
 ##############################################################
 pkgbase=grantlee
-vers=5.1.0
-url='https://github.com/steveire/grantlee/archive/v5.1.0.tar.gz'
+vers=5.2.0
+url="http://downloads.grantlee.org/grantlee-${vers}.tar.gz"
 srcfile=$pkgbase-$vers.tar.gz
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=3
+build=1
 src=grantlee-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS CHANGELOG COPYING.LIB README.md'
-patchfiles='grantlee-5.1.0-upstream_fixes-2.patch'
+patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
