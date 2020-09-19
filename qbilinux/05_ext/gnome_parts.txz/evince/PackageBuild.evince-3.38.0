@@ -1,13 +1,14 @@
 #!/bin/sh
 ##############################################################
 pkgbase=evince
-vers=3.36.0
+vers=3.38.0
 url="http://ftp.gnome.org/pub/GNOME/sources/evince/${vers%.*}/evince-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
 src=evince-${vers}
-OPT_CONFIG='--disable-nautilus --without-keyring --enable-pixbuf'
+OPT_CONFIG=''
+#OPT_CONFIG='--disable-nautilus --without-keyring --enable-pixbuf'
 DOCS='AUTHORS COPYING ChangeLog INSTALL MAINTAINERS NEWS README TODO'
 patchfiles=''
 compress=txz
@@ -29,11 +30,10 @@ do_config() {
 
     mkdir ${B[$1]}
     cd ${B[$1]}
-    if [ -x ${S[$1]}/configure ] ; then
-	export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
-	export LDFLAGS='-Wl,--as-needed' 
-	${S[$1]}/configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc \
-		--localstatedir=/var --infodir='${prefix}'/share/info --mandir='${prefix}'/share/man ${OPT_CONFIG[$1]}
+    if [ -f ${S[$1]}/meson.build ] ; then
+      export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
+      export LDFLAGS='-Wl,--as-needed' 
+      meson --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir=/usr/share/man ${OPT_CONFIG[$1]} ${S[$1]}
     fi
     if [ $? != 0 ]; then
 	echo "configure error. $0 script stop"
@@ -43,10 +43,8 @@ do_config() {
 
 do_build() {
     cd ${B[$1]}
-    if [ -f Makefile ] ; then
-	export LDFLAGS='-Wl,--as-needed'
-	make
-    fi
+    export LDFLAGS='-Wl,--as-needed'
+    ninja
     if [ $? != 0 ]; then
 	echo "make error. $0 script stop"
 	exit 255
@@ -55,10 +53,8 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}
-    if [ -f Makefile ] ; then
-	export LDFLAGS='-Wl,--as-needed'
-	make install DESTDIR=$P
-    fi
+    export LDFLAGS='-Wl,--as-needed'
+    DESTDIR=$P ninja install
     if [ $? != 0 ]; then
 	echo "make install error. $0 script stop"
 	exit 255
