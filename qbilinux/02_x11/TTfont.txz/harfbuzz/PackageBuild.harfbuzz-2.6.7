@@ -1,13 +1,13 @@
 #!/bin/sh
 ##############################################################
 pkgbase=harfbuzz
-vers=2.6.4
+vers=2.6.7
 url="http://www.freedesktop.org/software/harfbuzz/release/harfbuzz-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
 src=harfbuzz-${vers}
-OPT_CONFIG='--disable-static --with-graphite2=yes'
+OPT_CONFIG='--disable-static --with-graphite2=yes --with-gobject=yes'
 #OPT_CONFIG='--disable-static --with-graphite2=yes --with-freetype=no'
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README THANKS TODO'
 patchfiles=''
