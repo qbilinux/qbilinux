@@ -1,8 +1,8 @@
 #!/bin/sh
 ##############################################################
 pkgbase=gnome_terminal
-vers=3.36.0.1
-url="http://ftp.gnome.org/pub/GNOME/sources/gnome-terminal/${vers%.*.*}/gnome-terminal-${vers}.tar.xz"
+vers=3.38.0
+url="http://ftp.gnome.org/pub/GNOME/sources/gnome-terminal/${vers%.*}/gnome-terminal-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
