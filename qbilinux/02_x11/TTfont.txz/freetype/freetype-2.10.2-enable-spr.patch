@@ -1,0 +1,19 @@
+*** freetype-2.10.2/include/freetype/config/ftoption.h.orig	2020-09-19 01:36:34.512141452 +0900
+--- freetype-2.10.2/include/freetype/config/ftoption.h	2020-09-19 01:42:01.007126965 +0900
+***************
+*** 126,132 ****
+     * macro is not defined, FreeType offers alternative LCD rendering
+     * technology that produces excellent output without LCD filtering.
+     */
+! /* #define FT_CONFIG_OPTION_SUBPIXEL_RENDERING */
+  
+  
+    /**************************************************************************
+--- 126,132 ----
+     * macro is not defined, FreeType offers alternative LCD rendering
+     * technology that produces excellent output without LCD filtering.
+     */
+! #define FT_CONFIG_OPTION_SUBPIXEL_RENDERING
+  
+  
+    /**************************************************************************
