@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=udisks2
-vers=2.1.8
-url="http://udisks.freedesktop.org/releases/udisks-${vers}.tar.bz2"
+vers=2.9.1
+url="https://github.com/storaged-project/udisks/releases/download/udisks-${vers}/udisks-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=3
+build=1
 src=udisks-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING HACKING NEWS README'
