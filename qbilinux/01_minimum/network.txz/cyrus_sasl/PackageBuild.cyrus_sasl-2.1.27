@@ -6,7 +6,7 @@ vers=2.1.27
 url="ftp://ftp.cyrusimap.org/cyrus-sasl/cyrus-sasl-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=3
+build=4
 src=cyrus-sasl-$vers
 patchfiles="patch-aa"
 OPT_CONFIG="--with-dbpath=/var/lib/sasl/sasldb2
