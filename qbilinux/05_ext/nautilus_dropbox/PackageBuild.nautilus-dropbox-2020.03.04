@@ -1,8 +1,8 @@
 #!/bin/sh
 ##############################################################
 pkgbase="nautilus_dropbox"
-vers=2.10.0
-url='https://linux.dropbox.com/packages/nautilus-dropbox-2.10.0.tar.bz2'
+vers=2020.03.04
+url="https://linux.dropbox.com/packages/nautilus-dropbox-${vers}.tar.bz2"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
