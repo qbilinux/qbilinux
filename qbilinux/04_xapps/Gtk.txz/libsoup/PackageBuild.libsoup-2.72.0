@@ -9,7 +9,7 @@ apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
 src=libsoup-${vers}
-OPT_CONFIG=''
+OPT_CONFIG='-Dgssapi=disabled'
 DOCS='AUTHORS COPYING NEWS README'
 patchfiles=''
 compress=txz
