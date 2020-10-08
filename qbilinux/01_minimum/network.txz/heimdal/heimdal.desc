@@ -1,9 +1,0 @@
-heimdal & y & y & y & y
-&
-Kerberos5のフリーな実装 Heimdal
-&
-HeimdalはMITが開発したKerberos5の機能を，
-暗号に関する輸出規制が無いスェーデンで再実装した
-ソフトウェアです．
-&
-&
