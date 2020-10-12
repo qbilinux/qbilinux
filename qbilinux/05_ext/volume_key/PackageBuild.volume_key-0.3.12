@@ -1,6 +1,6 @@
 #!/bin/sh
 ##############################################################
-pkgbase="volume_key_volume_key"
+pkgbase="volume_key"
 vers=0.3.12
 url='https://github.com/felixonmars/volume_key/archive/volume_key-0.3.12.tar.gz'
 commitid=
