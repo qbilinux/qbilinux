@@ -6,11 +6,11 @@ url="https://github.com/libevent/libevent/releases/download/release-${vers}-stab
 apply_arch="x86_64 i686 armv7l aarch64"
 commitid=
 arch=`uname -m`
-build=1
+build=2
 src=libevent-${vers}-stable
 # for libressl
 # OPT_CONFIG='--disable-libevent-regress --disable-samples'
-OPT_CONFIG=''
+OPT_CONFIG='--disable-static'
 DOCS='ChangeLog ChangeLog-1.4 ChangeLog-2.0 LICENSE whatsnew-2.0.txt whatsnew-2.1.txt'
 patchfiles=''
 compress=txz
