@@ -1,0 +1,169 @@
+diff -urN a/Documentation/kernel-parameters.txt b/Documentation/kernel-parameters.txt
+--- a/Documentation/kernel-parameters.txt	2016-10-03 08:24:33.000000000 +0900
++++ b/Documentation/kernel-parameters.txt	2016-10-08 15:03:18.000000000 +0900
+@@ -2842,6 +2842,11 @@
+ 			timeout = 0: wait forever
+ 			timeout < 0: reboot immediately
+ 			Format: <timeout>
++	panic_output=	[KNL] Enable/disable the output devices of choice
++			panic_output=0: disable the signalling completely
++			panic_output=1: only blink the leds (the default)
++			panic_output=2: only beep
++			panic_output=3: do both
+ 
+ 	panic_on_warn	panic() instead of WARN().  Useful to cause kdump
+ 			on a WARN().
+diff -urN a/drivers/input/misc/pcspkr.c b/drivers/input/misc/pcspkr.c
+--- a/drivers/input/misc/pcspkr.c	2016-10-03 08:24:33.000000000 +0900
++++ b/drivers/input/misc/pcspkr.c	2016-10-08 15:03:18.000000000 +0900
+@@ -62,6 +62,34 @@
+ 	return 0;
+ }
+ 
++/*
++ * pcspkr_panic_beep() will beep the PC speaker on or off and is called
++ * when kernel panics. Beeping a speaker is useful for users running X
++ * who may not see the console and will help distingushing panics from
++ * "real" lockups.
++ */
++
++static void pcspkr_panic_beep(int value)
++{
++	unsigned int count = 0;
++
++	if (value > 20 && value < 32767)
++		count = PIT_TICK_RATE / value;
++
++	if (count) {
++		/* set command for counter 2, 2 byte write */
++		outb_p(0xB6, 0x43);
++		/* select desired HZ */
++		outb_p(count & 0xff, 0x42);
++		outb((count >> 8) & 0xff, 0x42);
++		/* enable counter 2 */
++		outb_p(inb_p(0x61) | 3, 0x61);
++	} else {
++		/* disable counter 2 */
++		outb(inb_p(0x61) & 0xFC, 0x61);
++	}
++}
++
+ static int pcspkr_probe(struct platform_device *dev)
+ {
+ 	struct input_dev *pcspkr_dev;
+@@ -89,6 +117,8 @@
+ 		return err;
+ 	}
+ 
++	panic_beep = pcspkr_panic_beep;
++
+ 	platform_set_drvdata(dev, pcspkr_dev);
+ 
+ 	return 0;
+@@ -102,6 +132,8 @@
+ 	/* turn off the speaker */
+ 	pcspkr_event(NULL, EV_SND, SND_BELL, 0);
+ 
++	panic_beep = NULL;
++
+ 	return 0;
+ }
+ 
+diff -urN a/include/linux/kernel.h b/include/linux/kernel.h
+--- a/include/linux/kernel.h	2016-10-03 08:24:33.000000000 +0900
++++ b/include/linux/kernel.h	2016-10-08 15:03:18.000000000 +0900
+@@ -258,6 +258,7 @@
+ 
+ extern struct atomic_notifier_head panic_notifier_list;
+ extern long (*panic_blink)(int state);
++extern void (*panic_beep)(int value);
+ __printf(1, 2)
+ void panic(const char *fmt, ...)
+ 	__noreturn __cold;
+diff -urN a/kernel/panic.c b/kernel/panic.c
+--- a/kernel/panic.c	2016-10-03 08:24:33.000000000 +0900
++++ b/kernel/panic.c	2016-10-08 15:03:18.000000000 +0900
+@@ -26,8 +26,11 @@
+ #include <linux/console.h>
+ #include <linux/bug.h>
+ 
++#define PANIC_OUTPUT_BLINK	(1 << 0)
++#define PANIC_OUTPUT_BEEP	(1 << 1)
+ #define PANIC_TIMER_STEP 100
+-#define PANIC_BLINK_SPD 18
++#define PANIC_BLINK_SPD 12
++#define PANIC_BEEP_HZ 880
+ 
+ int panic_on_oops = CONFIG_PANIC_ON_OOPS_VALUE;
+ static unsigned long tainted_mask;
+@@ -39,6 +42,7 @@
+ 
+ int panic_timeout = CONFIG_PANIC_TIMEOUT;
+ EXPORT_SYMBOL_GPL(panic_timeout);
++static int panic_output = PANIC_OUTPUT_BLINK;
+ 
+ ATOMIC_NOTIFIER_HEAD(panic_notifier_list);
+ 
+@@ -93,6 +97,13 @@
+ }
+ EXPORT_SYMBOL(nmi_panic);
+ 
++static void no_beep(int value)
++{
++}
++
++void (*panic_beep)(int value);
++EXPORT_SYMBOL(panic_beep);
++
+ /**
+  *	panic - halt the system
+  *	@fmt: The text string to print
+@@ -210,6 +221,8 @@
+ 
+ 	if (!panic_blink)
+ 		panic_blink = no_blink;
++	if (!panic_beep)
++		panic_beep = no_beep;
+ 
+ 	if (panic_timeout > 0) {
+ 		/*
+@@ -221,7 +234,11 @@
+ 		for (i = 0; i < panic_timeout * 1000; i += PANIC_TIMER_STEP) {
+ 			touch_nmi_watchdog();
+ 			if (i >= i_next) {
+-				i += panic_blink(state ^= 1);
++				state ^= 1;
++				if (panic_output & PANIC_OUTPUT_BLINK)
++					i += panic_blink(state);
++				if (panic_output & PANIC_OUTPUT_BEEP)
++					panic_beep((state) ? PANIC_BEEP_HZ : 0);
+ 				i_next = i + 3600 / PANIC_BLINK_SPD;
+ 			}
+ 			mdelay(PANIC_TIMER_STEP);
+@@ -256,7 +273,11 @@
+ 	for (i = 0; ; i += PANIC_TIMER_STEP) {
+ 		touch_softlockup_watchdog();
+ 		if (i >= i_next) {
+-			i += panic_blink(state ^= 1);
++			state ^= 1;
++			if (panic_output & PANIC_OUTPUT_BLINK)
++				i += panic_blink(state);
++			if (panic_output & PANIC_OUTPUT_BEEP)
++				panic_beep((state) ? PANIC_BEEP_HZ : 0);
+ 			i_next = i + 3600 / PANIC_BLINK_SPD;
+ 		}
+ 		mdelay(PANIC_TIMER_STEP);
+@@ -570,6 +591,13 @@
+ #endif
+ 
+ core_param(panic, panic_timeout, int, 0644);
++/*  "panic_output=0" disables the blinking as it caused problems with
++ *  certain console switches.
++ *
++ *  "panic_output | 1" does the show using kbd leds.
++ *  "panic_output | 2" throws in beeping via panic_beep().
++ */
++core_param(panic_output, panic_output, int, 0644);
+ core_param(pause_on_oops, pause_on_oops, int, 0644);
+ core_param(panic_on_warn, panic_on_warn, int, 0644);
+ core_param(crash_kexec_post_notifiers, crash_kexec_post_notifiers, bool, 0644);

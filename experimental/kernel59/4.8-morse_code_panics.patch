@@ -1,0 +1,373 @@
+diff -urN a/Documentation/kernel-parameters.txt b/Documentation/kernel-parameters.txt
+--- a/Documentation/kernel-parameters.txt	2016-10-08 15:03:18.000000000 +0900
++++ b/Documentation/kernel-parameters.txt	2016-10-08 15:03:18.000000000 +0900
+@@ -2843,10 +2843,13 @@
+ 			timeout < 0: reboot immediately
+ 			Format: <timeout>
+ 	panic_output=	[KNL] Enable/disable the output devices of choice
++			      and select the output form
+ 			panic_output=0: disable the signalling completely
+ 			panic_output=1: only blink the leds (the default)
+ 			panic_output=2: only beep
+ 			panic_output=3: do both
++			panic_output += 4 (i.e. panic_output=4, 5, 6 or 7)
++			will do with the morse output
+ 
+ 	panic_on_warn	panic() instead of WARN().  Useful to cause kdump
+ 			on a WARN().
+diff -urN a/include/linux/morseops.h b/include/linux/morseops.h
+--- a/include/linux/morseops.h	1970-01-01 09:00:00.000000000 +0900
++++ b/include/linux/morseops.h	2016-10-08 15:03:18.000000000 +0900
+@@ -0,0 +1,17 @@
++/*  Yes, it's morse code ops indeed.  */
++
++#ifndef _LINUX_MORSEOPS_H
++#define _LINUX_MORSEOPS_H
++
++#include <linux/ctype.h>
++
++extern const unsigned char morsetable[];	/* in kernel/morse.c */
++long panic_morseblink(long count, char *buf);	/* in kernel/morse.c */
++
++static inline unsigned char tomorse(char c)
++{
++	c = toupper(c);
++	return (c >= '!' && c <= '_') ? morsetable[c - '!'] : 0;
++}
++
++#endif	/* _LINUX_MORSEOPS_H */
+diff -urN a/kernel/Makefile b/kernel/Makefile
+--- a/kernel/Makefile	2016-10-03 08:24:33.000000000 +0900
++++ b/kernel/Makefile	2016-10-08 15:03:18.000000000 +0900
+@@ -2,7 +2,7 @@
+ # Makefile for the linux kernel.
+ #
+ 
+-obj-y     = fork.o exec_domain.o panic.o \
++obj-y     = fork.o exec_domain.o panic.o morse.o \
+ 	    cpu.o exit.o softirq.o resource.o \
+ 	    sysctl.o sysctl_binary.o capability.o ptrace.o user.o \
+ 	    signal.o sys.o kmod.o workqueue.o pid.o task_work.o \
+diff -urN a/kernel/morse.c b/kernel/morse.c
+--- a/kernel/morse.c	1970-01-01 09:00:00.000000000 +0900
++++ b/kernel/morse.c	2016-10-08 15:03:18.000000000 +0900
+@@ -0,0 +1,238 @@
++/*
++ *  kernel/morse.c
++ *
++ *  Copyright (C) 2002 Andrew Rodland <arodland@noln.com>
++ *  Copyright (C) 2003, 2009 Tomas Szepe <szepe@pinerecords.com>
++ *  Copyright (C) 2010 TAMUKI Shoichi <tamuki@linet.gr.jp>
++ *
++ *  Tell the user who may be running in X and not see the console that
++ *  we have panic'd.  This is to distingush panics from "real lockups."
++ *  Could in theory send the panic message as morse, but that is left
++ *  as an exercise for the reader.
++ *
++ *  And now it's done! LED and speaker morse code by Andrew Rodland
++ *  <arodland@noln.com>, with improvements based on suggestions from
++ *  linux@horizon.com and a host of others.
++ *
++ *  Initial 2.5 morsepanics port and cleanup by
++ *  Tomas Szepe <szepe@pinerecords.com>, January 2003.
++ *
++ *  Cryptic morse code table replaced with meticulous macrowork by
++ *  Jan-Benedict Glaw <jbglaw@lug-owl.de>, February 2003.
++ *
++ *  Updated for 2.6.29-rc1 by
++ *  Tomas Szepe <szepe@pinerecords.com>, January 2009.
++ *
++ *  Several morse codes fixed and tunable speed/freq. implemented by
++ *  TAMUKI Shoichi <tamuki@linet.gr.jp>, May 2010.
++ */
++
++#include <linux/morseops.h>
++#include <linux/module.h>
++#include <linux/init.h>
++
++#define PANIC_OUTPUT_BLINK	(1 << 0)
++#define PANIC_OUTPUT_BEEP	(1 << 1)
++#define PANIC_OUTPUT_MORSE	(1 << 2)
++#define PANIC_BLINK_SPD 12
++#define PANIC_BEEP_HZ 880
++
++static int panic_output = PANIC_OUTPUT_BLINK;
++
++/*  The following macros are used to make up the morse code table.  */
++
++#define	IS_DASH(letter, shift)					\
++	((letter) == '-' ? (1 << (shift)) : (0 << (shift)))
++#define	MORSE(shift, b1, b2, b3, b4, b5, b6, b7)		\
++	(1 << (shift)	| IS_DASH((b1), 6) | IS_DASH((b2), 5)	\
++			| IS_DASH((b3), 4) | IS_DASH((b4), 3)	\
++			| IS_DASH((b5), 2) | IS_DASH((b6), 1)	\
++			| IS_DASH((b7), 0))
++#define	MORSE0(letter)						\
++		(0)
++#define	MORSE1(letter, b1)					\
++		MORSE(1, '.', '.', '.', '.', '.', '.', (b1))
++#define	MORSE2(letter, b1, b2)					\
++		MORSE(2, '.', '.', '.', '.', '.', (b2), (b1))
++#define	MORSE3(letter, b1, b2, b3)				\
++		MORSE(3, '.', '.', '.', '.', (b3), (b2), (b1))
++#define	MORSE4(letter, b1, b2, b3, b4)				\
++		MORSE(4, '.', '.', '.', (b4), (b3), (b2), (b1))
++#define	MORSE5(letter, b1, b2, b3, b4, b5)			\
++		MORSE(5, '.', '.', (b5), (b4), (b3), (b2), (b1))
++#define	MORSE6(letter, b1, b2, b3, b4, b5, b6)			\
++		MORSE(6, '.', (b6), (b5), (b4), (b3), (b2), (b1))
++#define	MORSE7(letter, b1, b2, b3, b4, b5, b6, b7)		\
++		MORSE(7, (b7), (b6), (b5), (b4), (b3), (b2), (b1))
++
++/*  Do not shuffle things about in here, the order matters.  */
++const unsigned char morsetable[] = {
++
++	/*  0165, 0122, 0, 0310, 0, 042, 0136,			!"#$%&'  */
++	MORSE6('!', '-', '.', '-', '.', '-', '-'),
++	MORSE6('"', '.', '-', '.', '.', '-', '.'),
++	MORSE0('#'),
++	MORSE7('$', '.', '.', '.', '-', '.', '.', '-'),
++	MORSE0('%'),
++	MORSE5('&', '.', '-', '.', '.', '.'),
++	MORSE6('\'', '.', '-', '-', '-', '-', '.'),
++
++	/*  055, 0155, 0, 052, 0163, 0141, 0152, 051,		()*+,-./  */
++	MORSE5('(', '-', '.', '-', '-', '.'),
++	MORSE6(')', '-', '.', '-', '-', '.', '-'),
++	MORSE0('*'),
++	MORSE5('+', '.', '-', '.', '-', '.'),
++	MORSE6(',', '-', '-', '.', '.', '-', '-'),
++	MORSE6('-', '-', '.', '.', '.', '.', '-'),
++	MORSE6('.', '.', '-', '.', '-', '.', '-'),
++	MORSE5('/', '-', '.', '.', '-', '.'),
++
++	/*  077, 076, 074, 070, 060, 040, 041, 043, 047, 057,	0-9  */
++	MORSE5('0', '-', '-', '-', '-', '-'),
++	MORSE5('1', '.', '-', '-', '-', '-'),
++	MORSE5('2', '.', '.', '-', '-', '-'),
++	MORSE5('3', '.', '.', '.', '-', '-'),
++	MORSE5('4', '.', '.', '.', '.', '-'),
++	MORSE5('5', '.', '.', '.', '.', '.'),
++	MORSE5('6', '-', '.', '.', '.', '.'),
++	MORSE5('7', '-', '-', '.', '.', '.'),
++	MORSE5('8', '-', '-', '-', '.', '.'),
++	MORSE5('9', '-', '-', '-', '-', '.'),
++
++	/*  0107, 0125, 0, 061, 0, 0114, 0126,			:;<=>?@  */
++	MORSE6(':', '-', '-', '-', '.', '.', '.'),
++	MORSE6(';', '-', '.', '-', '.', '-', '.'),
++	MORSE0('<'),
++	MORSE5('=', '-', '.', '.', '.', '-'),
++	MORSE0('>'),
++	MORSE6('?', '.', '.', '-', '-', '.', '.'),
++	MORSE6('@', '.', '-', '-', '.', '-', '.'),
++
++	/*  006, 021, 025, 011, 002, 024, 013, 020, 004,	A-I  */
++	MORSE2('A', '.', '-'),
++	MORSE4('B', '-', '.', '.', '.'),
++	MORSE4('C', '-', '.', '-', '.'),
++	MORSE3('D', '-', '.', '.'),
++	MORSE1('E', '.'),
++	MORSE4('F', '.', '.', '-', '.'),
++	MORSE3('G', '-', '-', '.'),
++	MORSE4('H', '.', '.', '.', '.'),
++	MORSE2('I', '.', '.'),
++
++	/*  036, 015, 022, 007, 005, 017, 026, 033, 012,	J-R  */
++	MORSE4('J', '.', '-', '-', '-'),
++	MORSE3('K', '-', '.', '-'),
++	MORSE4('L', '.', '-', '.', '.'),
++	MORSE2('M', '-', '-'),
++	MORSE2('N', '-', '.'),
++	MORSE3('O', '-', '-', '-'),
++	MORSE4('P', '.', '-', '-', '.'),
++	MORSE4('Q', '-', '-', '.', '-'),
++	MORSE3('R', '.', '-', '.'),
++
++	/*  010, 003, 014, 030, 016, 031, 035, 023,		S-Z  */
++	MORSE3('S', '.', '.', '.'),
++	MORSE1('T', '-'),
++	MORSE3('U', '.', '.', '-'),
++	MORSE4('V', '.', '.', '.', '-'),
++	MORSE3('W', '.', '-', '-'),
++	MORSE4('X', '-', '.', '.', '-'),
++	MORSE4('Y', '-', '.', '-', '-'),
++	MORSE4('Z', '-', '-', '.', '.'),
++
++	/*  0, 0, 0, 0, 0154					[\]^_  */
++	MORSE0('['),
++	MORSE0('\\'),
++	MORSE0(']'),
++	MORSE0('^'),
++	MORSE6('_', '.', '.', '-', '-', '.', '-'),
++};
++
++long panic_morseblink(long count, char *buf)
++{
++	long delay = 0;
++	static long next_count;
++	static char *bufpos = 0;
++	static unsigned char morse = 0;
++	static char state = 1;
++	int ditlen, dahlen, spacelen, pauselen;
++
++	ditlen = 1200 / PANIC_BLINK_SPD;
++	dahlen = 3 * ditlen;
++	spacelen = 7 * ditlen;
++	pauselen = 15 * ditlen;
++
++	if (~panic_output & PANIC_OUTPUT_MORSE)
++		buf = "TTT";
++	else if (!buf)
++		buf = "Uh oh, we lost the panic msg.";
++
++	/*  Waiting for something?  */
++	if (bufpos && count - next_count < 0)
++		return 0;
++
++	if (state) {	/*  Coming off of a blink.  */
++		if (panic_output & PANIC_OUTPUT_BLINK)
++			delay += panic_blink(0);
++
++		if (panic_output & PANIC_OUTPUT_BEEP)
++			panic_beep(0);
++
++		state = 0;
++
++		if (morse > 1) {
++			/*  Not done yet, just a one-dit pause.  */
++			next_count = count + ditlen;
++		} else {
++			/*  Get a new char, figure out how much space.  */
++
++			/*  First time through.  */
++			if (!bufpos)
++				bufpos = buf;
++
++			if (!*bufpos) {
++				/*  Repeating.  */
++				bufpos = buf;
++				if (~panic_output & PANIC_OUTPUT_MORSE)
++					next_count = count + dahlen;
++				else
++					next_count = count + pauselen;
++			} else {
++				/*  Inter-letter space.  */
++				next_count = count + dahlen;
++			}
++
++			if (!(morse = tomorse(*bufpos))) {
++				next_count = count + spacelen;
++				state = 1;	/*  And get us back here.  */
++			}
++			bufpos++;
++		}
++	} else {
++		/*  Starting a new blink.  We have a valid code in morse.  */
++		int len;
++
++		len = (morse & 0x01) ? dahlen : ditlen;
++
++		if (panic_output & PANIC_OUTPUT_BLINK)
++			delay += panic_blink(1);
++
++		if (panic_output & PANIC_OUTPUT_BEEP)
++			panic_beep(PANIC_BEEP_HZ);
++
++		next_count = count + len;
++
++		state = 1;
++		morse >>= 1;
++	}
++	return delay;
++}
++
++/*  "panic_output=0" or "panic_output=4" disables the blinking as it
++ *  caused problems with certain console switches.
++ *
++ *  "panic_output | 1" does the show using kbd leds.
++ *  "panic_output | 2" throws in beeping via panic_beep().
++ *  "panic_output | 4" switches to the morse output.
++ */
++core_param(panic_output, panic_output, int, 0644);
+diff -urN a/kernel/panic.c b/kernel/panic.c
+--- a/kernel/panic.c	2016-10-08 15:03:18.000000000 +0900
++++ b/kernel/panic.c	2016-10-08 15:03:18.000000000 +0900
+@@ -25,12 +25,9 @@
+ #include <linux/nmi.h>
+ #include <linux/console.h>
+ #include <linux/bug.h>
++#include <linux/morseops.h>
+ 
+-#define PANIC_OUTPUT_BLINK	(1 << 0)
+-#define PANIC_OUTPUT_BEEP	(1 << 1)
+ #define PANIC_TIMER_STEP 100
+-#define PANIC_BLINK_SPD 12
+-#define PANIC_BEEP_HZ 880
+ 
+ int panic_on_oops = CONFIG_PANIC_ON_OOPS_VALUE;
+ static unsigned long tainted_mask;
+@@ -42,7 +39,6 @@
+ 
+ int panic_timeout = CONFIG_PANIC_TIMEOUT;
+ EXPORT_SYMBOL_GPL(panic_timeout);
+-static int panic_output = PANIC_OUTPUT_BLINK;
+ 
+ ATOMIC_NOTIFIER_HEAD(panic_notifier_list);
+ 
+@@ -116,8 +112,7 @@
+ {
+ 	static char buf[1024];
+ 	va_list args;
+-	long i, i_next = 0;
+-	int state = 0;
++	long i;
+ 	int old_cpu, this_cpu;
+ 	bool _crash_kexec_post_notifiers = crash_kexec_post_notifiers;
+ 
+@@ -233,14 +228,7 @@
+ 
+ 		for (i = 0; i < panic_timeout * 1000; i += PANIC_TIMER_STEP) {
+ 			touch_nmi_watchdog();
+-			if (i >= i_next) {
+-				state ^= 1;
+-				if (panic_output & PANIC_OUTPUT_BLINK)
+-					i += panic_blink(state);
+-				if (panic_output & PANIC_OUTPUT_BEEP)
+-					panic_beep((state) ? PANIC_BEEP_HZ : 0);
+-				i_next = i + 3600 / PANIC_BLINK_SPD;
+-			}
++			i += panic_morseblink(i, buf);
+ 			mdelay(PANIC_TIMER_STEP);
+ 		}
+ 	}
+@@ -272,14 +260,7 @@
+ 	local_irq_enable();
+ 	for (i = 0; ; i += PANIC_TIMER_STEP) {
+ 		touch_softlockup_watchdog();
+-		if (i >= i_next) {
+-			state ^= 1;
+-			if (panic_output & PANIC_OUTPUT_BLINK)
+-				i += panic_blink(state);
+-			if (panic_output & PANIC_OUTPUT_BEEP)
+-				panic_beep((state) ? PANIC_BEEP_HZ : 0);
+-			i_next = i + 3600 / PANIC_BLINK_SPD;
+-		}
++		i += panic_morseblink(i, buf);
+ 		mdelay(PANIC_TIMER_STEP);
+ 	}
+ }
+@@ -591,13 +572,6 @@
+ #endif
+ 
+ core_param(panic, panic_timeout, int, 0644);
+-/*  "panic_output=0" disables the blinking as it caused problems with
+- *  certain console switches.
+- *
+- *  "panic_output | 1" does the show using kbd leds.
+- *  "panic_output | 2" throws in beeping via panic_beep().
+- */
+-core_param(panic_output, panic_output, int, 0644);
+ core_param(pause_on_oops, pause_on_oops, int, 0644);
+ core_param(panic_on_warn, panic_on_warn, int, 0644);
+ core_param(crash_kexec_post_notifiers, crash_kexec_post_notifiers, bool, 0644);
