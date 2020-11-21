@@ -1,15 +1,16 @@
 #!/bin/sh
 ##############################################################
-url='http://sourceforge.net/projects/libexif/files/libexif/0.6.21/libexif-0.6.21.tar.bz2'
 pkgbase=libexif
-vers=0.6.21
+vers=0.6.22
+#url="http://sourceforge.net/projects/libexif/files/libexif/${vers/_/-}/libexif-${vers/_/-}.tar.bz2"
+url="https://github.com/libexif/libexif/releases/download/libexif-${vers//./_}-release/libexif-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=libexif-0.6.21
-OPT_CONFIG=''
+build=1
+src=libexif-${vers}
+OPT_CONFIG='--disable-static'
 DOCS='ABOUT-NLS AUTHORS COPYING ChangeLog INSTALL NEWS README README-Win32.txt'
-patchfiles=''
+patchfiles='libexif-0.6.22-security_fixes-1.patch'
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
