@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=mariadb
-vers=10.4.12
+vers=10.5.8
 url="https://downloads.mariadb.org/interstitial/mariadb-${vers}/source/mariadb-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=mariadb-${vers}
 OPT_CONFIG="-DWITH_EMBEDDED_SERVER:BOOL=ON -DPLUGIN_TOKUDB:STRING=NO -DPLUGIN_AUTH_GSSAPI:STRING=NO -DWITH_UNIT_TESTS=OFF"
 DOCS='COPYING COPYING.LESSER COPYING.thirdparty CREDITS EXCEPTIONS-CLIENT INSTALL-SOURCE INSTALL-WIN-SOURCE KNOWN_BUGS.txt README'
