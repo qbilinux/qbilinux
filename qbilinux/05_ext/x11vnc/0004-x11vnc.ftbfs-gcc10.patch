@@ -1,0 +1,33 @@
+Description: Fix build on GCC-10
+Author: Antoni Villalonga <antoni@friki.cat>
+Bug-Debian: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=957965
+Last-Update: 2020-04-17
+Forwarded: https://github.com/LibVNC/x11vnc/issues/128
+
+--- a/src/util.h
++++ b/src/util.h
+@@ -102,9 +102,9 @@
+ #ifdef LIBVNCSERVER_HAVE_LIBPTHREAD
+ extern MUTEX(x11Mutex);
+ extern MUTEX(scrollMutex);
+-MUTEX(clientMutex);
+-MUTEX(inputMutex);
+-MUTEX(pointerMutex);
++extern MUTEX(clientMutex);
++extern MUTEX(inputMutex);
++extern MUTEX(pointerMutex);
+ #endif
+ 
+ #define X_INIT INIT_MUTEX(x11Mutex)
+--- a/src/util.c
++++ b/src/util.c
+@@ -47,6 +47,9 @@
+ #ifdef LIBVNCSERVER_HAVE_LIBPTHREAD
+ MUTEX(x11Mutex);
+ MUTEX(scrollMutex);
++MUTEX(clientMutex);
++MUTEX(inputMutex);
++MUTEX(pointerMutex);
+ #endif
+ 
+ int nfix(int i, int n);
