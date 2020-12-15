@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=minidlna
-vers=1.2.1
+vers=1.3.0
 url="https://sourceforge.net/projects/minidlna/files/minidlna/${vers}/minidlna-${vers}.tar.gz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=minidlna-${vers}
 OPT_CONFIG=''
 DOCS='ABOUT-NLS AUTHORS COPYING ChangeLog INSTALL NEWS README TODO minidlna.conf'
