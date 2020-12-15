@@ -1,11 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=libproxy
-vers=0.4.10
-url="https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/libproxy/libproxy-${vers}.tar.gz"
+vers=0.4.16
+url="https://github.com/libproxy/libproxy/archive/0.4.16.tar.gz"
+srcfile=${pkgbase}-${vers}.tar.gz
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=libproxy-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README'
