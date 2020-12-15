@@ -2,28 +2,11 @@
 
 ######################################################################
 pkgbase=bash
-vers=5.0
-url="http://ftp.gnu.org/gnu/bash/bash-${vers}.tar.gz
-	http://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-001
-	http://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-002
-	http://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-003
-	http://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-004
-	http://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-005
-	http://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-006
-	http://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-007
-	http://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-008
-	http://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-009
-	http://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-010
-	http://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-011
-	http://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-012
-	http://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-013
-	http://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-014
-	http://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-015
-	http://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-016
-	http://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-017"
+vers=5.1
+url="http://ftp.gnu.org/gnu/bash/bash-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=4
+build=1
 src[0]=$pkgbase-${vers}
 src[1]=${src[0]}
 OPT_CONFIG[0]="--bindir=/bin --without-bash-malloc --with-installed-readline"
@@ -43,27 +26,6 @@ do_prepare() {
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
-    case $1 in
-	0)
-	    patch -p2 -i $W/bash50-001
-	    patch -p2 -i $W/bash50-002
-	    patch -p2 -i $W/bash50-003
-	    patch -p2 -i $W/bash50-004
-	    patch -p2 -i $W/bash50-005
-	    patch -p2 -i $W/bash50-006
-	    patch -p2 -i $W/bash50-007
-	    patch -p2 -i $W/bash50-008
-	    patch -p2 -i $W/bash50-009
-	    patch -p2 -i $W/bash50-010
-	    patch -p2 -i $W/bash50-011
-	    patch -p2 -i $W/bash50-012
-	    patch -p2 -i $W/bash50-013
-	    patch -p2 -i $W/bash50-014
-	    patch -p2 -i $W/bash50-015
-	    patch -p2 -i $W/bash50-016
-	    patch -p2 -i $W/bash50-017
-	    ;;
-    esac
 }
 
 do_config() {
