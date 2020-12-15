@@ -1,13 +1,13 @@
 #!/bin/sh
 ##############################################################
 pkgbase=brotli
-vers=1.0.1
-url='https://github.com/google/brotli/archive/v1.0.1.tar.gz'
+vers=1.0.9
+url="https://github.com/google/brotli/archive/v${vers}.tar.gz"
 srcfile=${pkgbase}-${vers}.tar.gz
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=brotli-${vers}
 OPT_CONFIG=''
 DOCS='LICENSE README.md'
@@ -64,6 +64,12 @@ do_install() {
 	echo "make install error. $0 script stop"
 	exit 255
     fi
+
+    #
+    #install -d $P/usr/$libdir
+    ( cd $P/usr/$libdir ; ln -sf libbrotlienc.so.1 libbrotlienc.so.1.0.1 )
+    ( cd $P/usr/$libdir ; ln -sf libbrotlidec.so.1 libbrotlidec.so.1.0.1 )
+    ( cd $P/usr/$libdir ; ln -sf libbrotlicommon.so.1 libbrotlicommon.so.1.0.1 )
 }
 
 do_package() {
