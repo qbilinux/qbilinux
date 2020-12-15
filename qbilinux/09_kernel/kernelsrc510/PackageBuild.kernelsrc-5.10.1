@@ -1,0 +1,133 @@
+#!/bin/sh -x
+
+######################################################################
+pkgbase=kernelsrc510
+version=5.10.1
+url="https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-${version%.*}.tar.xz
+	https://cdn.kernel.org/pub/linux/kernel/v5.x/patch-${version}.xz"
+#	git://github.com/sfjro/aufs5-standalone.git"
+apply_arch="x86_64 i686"
+arch=`uname -m`
+build=1
+src=linux-${version%.*}
+patchfiles="cjktty-kernel-5.10.patch cjktty-kernel-font-JP.patch overlayfs-allow_unprivileged_mounts.patch"
+patchfiles_not_used="tuxonice-5.4.8-20200116-f147d78.diff 4.8-morse_code_panics.patch 4.8-panic_beep.patch"
+configfile64="config-${version%.*}-x64"
+configfile32="config-${version%.*}-x86"
+case $arch in
+    x86_64)
+	vers=${version}_x64
+	configfile=$configfile64
+	;;
+    i?86)
+	vers=${version}_x86
+	configfile=$configfile32
+	;;
+esac
+#git_branch=aufs5.4
+#aufs_git_vers=5a1e53d
+OPT_CONFIG=""
+DOCS=""
+NOCOMPRESS=y
+compress=txz
+SRC_URL="https://qbilinux.org/pub/source/"
+SRC_DIR="/home/archives/source/"
+######################################################################
+
+source /usr/src/qbilinux/PackageBuild.def
+
+do_prepare() {
+    cd ${S[$1]}
+    xz -dc $W/patch-${version}.xz | patch -p1
+    for patch in $patchfiles ; do
+	patch -p1 < $W/$patch
+    done
+}
+
+do_config() {
+    if [ -d ${B[$1]} ] ; then rm -rf ${B[$1]} ; fi
+
+    cp -a ${S[$1]} ${B[$1]} 
+    cd ${B[$1]}
+
+    # patch -Np1 -i $W/source/aufs5-standalone/aufs5-kbuild.patch
+    # patch -Np1 -i $W/source/aufs5-standalone/aufs5-base.patch
+    # patch -Np1 -i $W/source/aufs5-standalone/aufs5-mmap.patch
+    # patch -Np1 -i $W/source/aufs5-standalone/aufs5-standalone.patch
+    # cp -av $W/source/aufs5-standalone/Documentation .
+    # cp -av $W/source/aufs5-standalone/fs .
+    # cp -pv $W/source/aufs5-standalone/include/uapi/linux/aufs_type.h include/uapi/linux
+    cp -p $W/${configfile} .config
+}
+
+do_build() {
+    cd ${B[$1]}
+
+    make prepare scripts
+    mv include/generated/bounds.h $W
+    make clean
+    mv $W/bounds.h include/generated
+}
+
+do_install() {
+    cd ${B[$1]}
+
+    install -d $P/usr/src
+    cp -dR . $P/usr/src/$src
+    find $P/usr/src/$src \( -name ".cocciconfig" \
+	 -o -name ".get_maintainer.ignore" -o -name ".gitignore" \
+	 -o -name ".mailmap" -o -name "*.orig" \) -exec rm {} \;
+    ln -s $src $P/usr/src/linux
+    install -d $P/sbin
+    cat <<- "EOF" > $P/sbin/installkernel
+	#!/bin/sh
+	#
+	# This file is subject to the terms and conditions of the GNU General Public
+	# License.  See the file "COPYING" in the main directory of this archive
+	# for more details.
+	#
+	# Copyright (C) 1995 by Linus Torvalds
+	#
+	# Adapted from code in arch/i386/boot/Makefile by H. Peter Anvin
+	#
+	# "make install" script for i386 architecture
+	#
+	# Arguments:
+	#   $1 - kernel version
+	#   $2 - kernel image file
+	#   $3 - kernel map file
+	#   $4 - default install path (blank if root directory)
+	#
+	
+	[ -f $4/config ] && mv $4/config $4/config.old
+	cp .config $4/config
+	[ -f $4/vmlinuz ] && mv $4/vmlinuz $4/vmlinuz.old
+	cat $2 > $4/vmlinuz
+	[ -f $4/System.map ] && mv $4/System.map $4/System.old
+	cp $3 $4/System.map
+	
+	if [ -x /sbin/lilo -a -f /etc/lilo.conf ] ; then
+	  /sbin/lilo
+	else
+	  sync
+	fi
+	EOF
+    chmod 755 $P/sbin/installkernel
+}
+
+do_package() {
+    for i in $configfile64 $configfile32 ; do
+	cp $W/$i $docdir/$src/$i
+	gzip $docdir/$src/$i
+    done
+    
+    for i in $pkgbase ; do
+        cd $P
+        /sbin/makepkg $W/$pkg.$compress <<EOF
+y
+1
+EOF
+    done
+}
+
+source /usr/src/qbilinux/PackageBuild.func
