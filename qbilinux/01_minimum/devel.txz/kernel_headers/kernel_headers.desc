@@ -1,4 +1,4 @@
-kernel510_headers & y & y & y & y
+kernel_headers & y & y & y & y
 &
 Linux カーネルヘッダ
 &
