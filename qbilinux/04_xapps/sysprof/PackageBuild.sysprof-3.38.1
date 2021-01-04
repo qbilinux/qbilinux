@@ -1,8 +1,8 @@
 #!/bin/sh
 ##############################################################
 pkgbase="sysprof"
-vers=3.38.0
-url='http://ftp.acc.umu.se/pub/GNOME/sources/sysprof/3.38/sysprof-3.38.0.tar.xz'
+vers=3.38.1
+url="http://ftp.acc.umu.se/pub/GNOME/sources/sysprof/${vers%.*}/sysprof-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
