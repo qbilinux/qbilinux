@@ -4,9 +4,10 @@
 pkgbase=mozc
 vers=20180226
 url="https://github.com/google/mozc.git"
+commitid=afb03dd
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=3
+build=4
 src=mozc
 OPT_CONFIG=""
 DOCS="AUTHORS CONTRIBUTING.md CONTRIBUTORS LICENSE README.md appveyor.yml"
