@@ -1,13 +1,13 @@
 #!/bin/sh
 ##############################################################
-url='http://downloads.sourceforge.net/project/sox/sox/14.4.2/sox-14.4.2.tar.bz2'
 pkgbase=sox
 vers=14.4.2
+url="https://sourceforge.net/projects/sox/files/sox/${vers}/sox-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=sox-14.4.2
-OPT_CONFIG='--with-distro=Plamo_Linux'
+build=3
+src=sox-${vers}
+OPT_CONFIG='--with-distro=Qbilinux'
 DOCS='AUTHORS COPYING ChangeLog INSTALL LICENSE.GPL LICENSE.LGPL NEWS README README.osx README.sh README.win32 libsox.txt sox.txt soxformat.txt soxi.txt'
 patchfiles=''
 compress=txz
