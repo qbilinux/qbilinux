@@ -19,7 +19,8 @@ SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ##############################################################
 
-source /usr/src/qbilinux/PackageBuild.def
+cmddir=`dirname $0`
+source $cmddir/PackageBuild.def
 
 do_prepare() {
     echo "nothing to do in prepare section.".
@@ -52,4 +53,4 @@ EOF
     done
 }
 
-source /usr/src/qbilinux/PackageBuild.func
+source $cmddir/PackageBuild.func
