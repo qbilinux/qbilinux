@@ -100,11 +100,6 @@ ac_add_options --disable-debug-symbols
 ac_add_options --prefix=/usr
 ac_add_options --enable-application=browser
 
-# The elf-hack is reported to cause failed installs (after successful builds)
-# on some machines. It is supposed to improve startup time and it shrinks
-# libxul.so by a few MB - comment this if you know your machine is not affected.
-ac_add_options --disable-elf-hack
-
 ac_add_options --disable-crashreporter
 ac_add_options --disable-updater
 # enabling the tests will use a lot more space and significantly
@@ -136,7 +131,14 @@ unset MOZ_TELEMETRY_REPORTING
 
 mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/firefox-build-dir
 EOF
-
+    if [ $arch = "x86_64" -o $arch = "i686" ]; then
+      cat >> mozconfig << EOF
+# The elf-hack is reported to cause failed installs (after successful builds)
+# on some machines. It is supposed to improve startup time and it shrinks
+# libxul.so by a few MB - comment this if you know your machine is not affected.
+ac_add_options --disable-elf-hack
+EOF
+      fi
 }
 
 do_build() {
