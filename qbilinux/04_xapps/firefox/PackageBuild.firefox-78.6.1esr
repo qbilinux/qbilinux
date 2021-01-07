@@ -3,7 +3,7 @@ unset LS_BLOCK_SIZE
 export LANG=C
 ##############################################################
 pkgbase=firefox
-vers=78.5.0esr
+vers=78.6.1esr
 url="https://archive.mozilla.org/pub/firefox/releases/${vers}/source/firefox-${vers}.source.tar.xz"
 #verify=$url.asc
 apply_arch="x86_64 i686 armv7l aarch64"
@@ -64,7 +64,7 @@ ac_add_options --disable-necko-wifi
 # Comment out following options if you have not installed
 # recommended dependencies:
 #ac_add_options --enable-system-sqlite
-ac_add_options --with-system-libevent
+#ac_add_options --with-system-libevent
 # firefox-65 understands webp and ships with an included copy
 ac_add_options --with-system-webp
 ac_add_options --with-system-nspr
