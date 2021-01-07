@@ -3,7 +3,7 @@ unset LS_BLOCK_SIZE
 export LANG=C
 ##############################################################
 pkgbase=thunderbird
-vers=78.5.1
+vers=78.6.0
 url="http://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/${vers}/source/${pkgbase}-${vers}.source.tar.xz"
 #verify=$url.asc
 apply_arch="x86_64 i686 armv7l aarch64"
@@ -62,7 +62,7 @@ ac_add_options --disable-pulseaudio
 # Comment out following options if you have not installed
 # recommended dependencies:
 #ac_add_options --enable-system-sqlite
-ac_add_options --with-system-libevent
+#ac_add_options --with-system-libevent
 ac_add_options --with-system-nspr
 ac_add_options --with-system-nss
 ac_add_options --with-system-icu
