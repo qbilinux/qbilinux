@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=openssl
-vers=1.1.1i
+vers=1.1.1j
 url="http://www.openssl.org/source/openssl-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
