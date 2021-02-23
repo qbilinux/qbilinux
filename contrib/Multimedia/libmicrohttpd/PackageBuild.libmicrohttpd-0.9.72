@@ -1,13 +1,13 @@
 #!/bin/sh
 ##############################################################
-url='http://ftp.gnu.org/gnu/libmicrohttpd/libmicrohttpd-0.9.39.tar.gz'
 pkgbase=libmicrohttpd
-vers=0.9.39
+vers=0.9.72
+url="http://ftp.gnu.org/gnu/libmicrohttpd/libmicrohttpd-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=libmicrohttpd-0.9.39
-OPT_CONFIG=''
+build=1
+src=libmicrohttpd-${vers}
+OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README'
 patchfiles=''
 compress=txz
