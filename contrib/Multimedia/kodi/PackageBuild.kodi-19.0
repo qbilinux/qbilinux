@@ -1,15 +1,14 @@
 #!/bin/sh
 ##############################################################
 pkgbase=kodi
-vers=18.9
-url="https://github.com/xbmc/xbmc/archive/${vers}-Leia.tar.gz"
+vers=19.0
+url="https://github.com/xbmc/xbmc/archive/${vers}-Matrix.tar.gz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=xbmc-${vers}-Leia
-OPT_CONFIG='-DENABLE_INTERNAL_FLATBUFFERS=ON -DENABLE_INTERNAL_FSTRCMP=ON -DENABLE_INTERNAL_RapidJSON=ON'
-#OPT_CONFIG='-DENABLE_INTERNAL_FLATBUFFERS=ON -DENABLE_INTERNAL_FMT=ON -DENABLE_INTERNAL_FSTRCMP=ON -DENABLE_INTERNAL_RapidJSON=ON'
+src=xbmc-${vers}-Matrix
+OPT_CONFIG='-DENABLE_INTERNAL_FLATBUFFERS=ON -DENABLE_INTERNAL_FSTRCMP=ON -DENABLE_INTERNAL_RapidJSON=ON -DAPP_RENDER_SYSTEM=gl -DENABLE_INTERNAL_GTEST=ON -DENABLE_DVDCSS=OFF'
 if [ $arch = 'armv7l' -o $arch = 'aarch64' ] ; then
     OPT_CONFIG="$OPT_CONFIG --disable-gl"
 fi
