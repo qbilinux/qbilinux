@@ -2,11 +2,11 @@
 
 ######################################################################
 pkgbase=shadow
-vers=4.5
-url="https://github.com/shadow-maint/shadow/releases/download/4.5/shadow-4.5.tar.xz"
+vers=4.8.1
+url="https://github.com/shadow-maint/shadow/releases/download/${vers}/shadow-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=3
+build=1
 src=$pkgbase-$vers
 OPT_CONFIG="--sysconfdir=/etc --enable-man --without-selinux --without-xml-catalog
     --with-libcrack"
@@ -46,7 +46,7 @@ do_prepare() {
 	> session		optional	pam_unix.so
 	> #session		required	pam_selinux.so open
 	> session		required	pam_lastlog.so
-	> session		optional	pam_ck_connector.so nox11
+	> session		optional	pam_elogind.so
 	EOF
   cp -p etc/pam.d/su etc/pam.d/su.orig
   cat <<- "EOF" | patch etc/pam.d/su
@@ -186,10 +186,6 @@ do_install() {
 
     # add extra func
     install $W/shadow-adduser-20160122 $P/usr/sbin/adduser
-    install -d $mandir/ja_JP.eucJP/man{1,5,8}
-    for i in `cd $mandir/ja ; find . -type f` ; do
-	nkf -We $mandir/ja/$i > $mandir/ja_JP.eucJP/$i
-    done
     install -d $P/install
     cat <<- EOF >> $P/install/doinst.sh
 	#%% begin initialize $pkg
