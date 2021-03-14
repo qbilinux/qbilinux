@@ -2,12 +2,12 @@
 
 ######################################################################
 pkgbase=pciutils
-vers=3.6.2
+vers=3.7.0
 url="http://www.kernel.org/pub/software/utils/pciutils/pciutils-${vers}.tar.xz
     http://pciids.sourceforge.net/v2.2/pci.ids"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="TODO README ChangeLog README.Windows COPYING"
