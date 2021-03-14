@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=screen
-vers=4.6.2
+vers=4.8.0
 url="http://ftp.jaist.ac.jp/pub/GNU/screen/screen-${vers}.tar.gz"
 verify=$url.sig
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=${pkgbase}-${vers}
 OPT_CONFIG='--with-sys-screenrc=/etc/screenrc'
 DOCS='COPYING ChangeLog INSTALL NEWS NEWS.3.5 NEWS.3.6 NEWS.3.7 NEWS.3.9 README TODO'
