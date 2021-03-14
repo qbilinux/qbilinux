@@ -1,14 +1,13 @@
 #!/bin/sh
 ##############################################################
 pkgbase=poppler
-vers=0.68.0
+vers=21.03.0
 url="https://poppler.freedesktop.org/poppler-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=poppler-${vers}
-#OPT_CONFIG='--enable-zlib --disable-static --enable-xpdf-headers --enable-libcurl'
-OPT_CONFIG='-DENABLE_LIBCURL=ON -DENABLE_ZLIB=ON -DENABLE_XPDF_HEADERS=ON'
+OPT_CONFIG='-DENABLE_LIBCURL=ON -DENABLE_ZLIB=ON -DENABLE_XPDF_HEADERS=ON -DENABLE_UNSTABLE_API_ABI_HEADERS=ON'
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README README-XPDF TODO'
 patchfiles=''
 compress=txz
