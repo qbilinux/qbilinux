@@ -1,16 +1,16 @@
 #!/bin/sh
 ##############################################################
-pkgbase=libfm_qt
-vers=0.15.0
-url="https://github.com/lxqt/libfm-qt/releases/download/${vers}/libfm-qt-${vers}.tar.xz"
+pkgbase="compton_conf"
+vers=0.16.0
+url="https://github.com/lxqt/compton-conf/releases/download/${vers}/compton-conf-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=libfm-qt-${vers}
-OPT_CONFIG='-DPULL_TRANSLATIONS=no -DCMAKE_BUILD_TYPE=Release'
-DOCS='AUTHORS CHANGELOG LICENSE README.md'
-patchfiles='patch-aa'
+src=compton-conf-${vers}
+OPT_CONFIG=''
+DOCS='AUTHORS CHANGELOG COPYING README.md'
+patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -30,10 +30,10 @@ do_config() {
 
     mkdir ${B[$1]}
     cd ${B[$1]}
-    if [ -f $S/CMakeLists.txt ]; then
-	export PKG_CONFIG_PATH=/opt/kde/${libdir}/pkgconfig:/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
-	export LDFLAGS='-Wl,--as-needed' 
-	cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DLIB_INSTALL_DIR:PATH=/usr/${libdir} -DLIB_SUFFIX=$suffix ${OPT_CONFIG} $S
+    if [ -f ${S[$1]}/CMakeLists.txt ]; then
+      export PKG_CONFIG_PATH=/opt/kde/${libdir}/pkgconfig:/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
+      export LDFLAGS='-Wl,--as-needed' 
+      cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DLIB_INSTALL_DIR:PATH=/usr/${libdir} -DLIB_SUFFIX=$suffix ${OPT_CONFIG} ${S[$1]}
     fi
     if [ $? != 0 ]; then
 	echo "configure error. $0 script stop"
