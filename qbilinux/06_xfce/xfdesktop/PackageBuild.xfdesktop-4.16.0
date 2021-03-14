@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=xfdesktop
-vers=4.14.1
+vers=4.16.0
 url="http://archive.xfce.org/xfce/${vers:0:4}/src/xfdesktop-${vers}.tar.bz2"
 verify=$url.sha1
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=3
+build=1
 src=xfdesktop-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README TODO'

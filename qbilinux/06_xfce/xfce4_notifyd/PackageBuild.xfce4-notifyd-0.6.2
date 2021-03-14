@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-pkgbase=tumbler
-vers=0.2.7
-url="http://archive.xfce.org/xfce/4.14/src/tumbler-${vers}.tar.bz2"
+pkgbase=xfce4_notifyd
+vers=0.6.2
+url="http://archive.xfce.org/src/apps/xfce4-notifyd/${vers%.*}/xfce4-notifyd-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=tumbler-${vers}
+build=1
+src=xfce4-notifyd-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README TODO'
 patchfiles=''

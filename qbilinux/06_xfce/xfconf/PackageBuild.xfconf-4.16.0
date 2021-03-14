@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-pkgbase=ristretto
-vers=0.8.3
-url="http://archive.xfce.org/src/apps/ristretto/${vers%.*}/ristretto-${vers}.tar.bz2"
+pkgbase=xfconf
+vers=4.16.0
+url="http://archive.xfce.org/xfce/${vers%.*}/src/xfconf-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=ristretto-${vers}
+build=1
+src=xfconf-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README TODO'
 patchfiles=''
@@ -18,7 +18,7 @@ SRC_DIR="/home/archives/source/"
 source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
-    cd ${S[$1]}
+    cd ${S[$i]}
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
