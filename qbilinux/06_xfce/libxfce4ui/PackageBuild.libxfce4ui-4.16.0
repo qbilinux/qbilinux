@@ -1,13 +1,13 @@
 #!/bin/sh
 ##############################################################
 pkgbase=libxfce4ui
-vers=4.14.1
+vers=4.16.0
 url="http://archive.xfce.org/src/xfce/libxfce4ui/${vers:0:4}/libxfce4ui-${vers}.tar.bz2"
 verify=$url.sha1
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=3
+build=1
 src=libxfce4ui-${vers}
 OPT_CONFIG="--disable-static --disable-debug --with-vendor-info='qbilinux'"
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README THANKS TODO xfce4-about'
