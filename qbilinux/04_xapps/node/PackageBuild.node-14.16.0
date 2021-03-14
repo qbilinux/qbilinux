@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=node
-vers=14.15.4
+vers=14.16.0
 url="https://nodejs.org/dist/v${vers}/node-v${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
