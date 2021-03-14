@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
-pkgbase=thunar_volman
-vers=0.9.5
-url="http://archive.xfce.org/xfce/4.14/src/thunar-volman-${vers}.tar.bz2"
+pkgbase=xfwm4
+vers=4.16.1
+url="http://archive.xfce.org/src/xfce/xfwm4/${vers%.*}/xfwm4-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=thunar-volman-${vers}
+build=0
+src=xfwm4-${vers}
 OPT_CONFIG=''
-DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README THANKS TODO'
+DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README TODO'
 patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"

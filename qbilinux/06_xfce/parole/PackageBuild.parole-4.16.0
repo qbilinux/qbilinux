@@ -1,14 +1,15 @@
 #!/bin/sh
 ##############################################################
-url='http://archive.xfce.org/src/apps/xfce4-taskmanager/1.1/xfce4-taskmanager-1.1.0.tar.bz2'
-pkgbase=xfce4_taskmanager
-vers=1.1.0
+pkgbase=parole
+vers=4.16.0
+url="http://archive.xfce.org/src/apps/parole/${vers%.*}/parole-${vers}.tar.bz2"
+verify=$url.md5
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=xfce4-taskmanager-1.1.0
-OPT_CONFIG=''
-DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README THANKS'
+build=4
+src=parole-${vers}
+OPT_CONFIG='--enable-taglib'
+DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README THANKS TODO'
 patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
