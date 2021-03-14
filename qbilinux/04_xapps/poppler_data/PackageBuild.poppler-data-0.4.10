@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=poppler_data
-vers=0.4.9
+vers=0.4.10
 url="http://poppler.freedesktop.org/poppler-data-${vers}.tar.gz"
 apply_arch="noarch"
 arch=noarch
-build=2
+build=1
 src=poppler-data-${vers}
 OPT_CONFIG=''
 DOCS='COPYING README'
