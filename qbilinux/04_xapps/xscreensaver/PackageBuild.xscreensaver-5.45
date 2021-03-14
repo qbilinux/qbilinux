@@ -1,13 +1,13 @@
 #!/bin/sh
 ##############################################################
 pkgbase=xscreensaver
-vers=5.43
+vers=5.45
 url="http://www.jwz.org/xscreensaver/xscreensaver-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
 src=xscreensaver-${vers}
-OPT_CONFIG='--with-pam --with-shadow --with-gtk --with-gl --with-pixbuf --with-xpm --with-jpeg'
+OPT_CONFIG='--with-pam --with-shadow --with-gtk --with-gl --with-pixbuf --with-xpm --with-jpeg --without-systemd'
 DOCS='INSTALL README README.VMS README.hacking'
 patchfiles=''
 compress=txz
