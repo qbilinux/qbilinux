@@ -2,11 +2,11 @@
 
 ######################################################################
 pkgbase=linux_pam
-vers=1.3.0
-url="http://www.linux-pam.org/library/Linux-PAM-${vers}.tar.bz2"
+vers=1.5.1
+url="https://github.com/linux-pam/linux-pam/releases/download/v${vers}/Linux-PAM-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=3
+build=1
 src=Linux-PAM-${vers}
 patchfiles=""
 OPT_CONFIG="--enable-shared --enable-read-both-confs --disable-nis"
