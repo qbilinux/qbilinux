@@ -2,13 +2,13 @@
 
 ######################################################################
 pkgbase=libusb
-vers=1.0.22
+vers=1.0.24
 url="http://downloads.sourceforge.net/libusb/libusb-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=$pkgbase-$vers
-OPT_CONFIG=""
+OPT_CONFIG="--disable-static"
 DOCS="COPYING ChangeLog README PORTING AUTHORS INSTALL NEWS TODO"
 patchfiles=""
 compress=txz
