@@ -1,18 +1,15 @@
 #!/bin/sh
 ##############################################################
 pkgbase=inkscape
-vers=0.92.3
-#url="https://media.inkscape.org/dl/resources/file/inkscape-0.92.3.tar.bz2"
-url="https://gitlab.com/inkscape/inkscape/-/archive/INKSCAPE_0_92_3/inkscape-INKSCAPE_0_92_3.tar.bz2"
-#url="https://inkscape.org/oen/gallery/item/12187/inkscape-${vers}.tar.bz2"
+vers=1.0.2
+url="https://inkscape.org/ja/gallery/item/23820/inkscape-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-#src=inkscape-${vers}
-src=inkscape-INKSCAPE_0_92_3
+build=1
+src=inkscape-${vers}_2021-01-15_e86c870879
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog GPL2.txt GPL3.txt INSTALL NEWS README README.ca.txt README.de.txt README.es.txt README.fr.txt README.it.txt README.osx.txt README.pt_BR.txt README.sk.txt README.sr.txt'
-patchfiles='inkscape-0.92.3-consolidated_fixes-1.patch'
+patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
