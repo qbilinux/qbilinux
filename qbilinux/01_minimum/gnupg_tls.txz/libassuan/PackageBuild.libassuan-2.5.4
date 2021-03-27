@@ -1,21 +1,20 @@
 #!/bin/sh
 
 ######################################################################
-pkgbase=gpgme
-vers=1.13.1
-url="https://www.gnupg.org/ftp/gcrypt/gpgme/gpgme-${vers}.tar.bz2"
+pkgbase=libassuan
+vers=2.5.4
+url="https://www.gnupg.org/ftp/gcrypt/libassuan/libassuan-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
 src=$pkgbase-$vers
 patchfiles=""
-OPT_CONFIG="--disable-gpg-test"
-DOCS="COPYING.LESSER NEWS README ChangeLog-2011 ChangeLog INSTALL
-    TODO AUTHORS THANKS COPYING"
+OPT_CONFIG=""
+DOCS="NEWS README COPYING.LIB ChangeLog-2011 ChangeLog INSTALL TODO
+    AUTHORS THANKS COPYING README.GIT"
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
-PYTHON=/usr/bin/python3
 ######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def
