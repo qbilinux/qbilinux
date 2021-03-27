@@ -1,17 +1,16 @@
 #!/bin/sh
 ##############################################################
-pkgbase="runc"
-vers=1.0.0_rc10
-url="https://github.com/opencontainers/runc/archive/v${vers/_/-}.tar.gz"
-srcfile=runc-${vers/_/-}.tar.gz
+pkgbase="libnetwork"
+vers=fa125a3512ee0f6187721c88582bf8c4378bd4d7
+url="https://github.com/moby/libnetwork/archive/${vers}.tar.gz"
+srcfile=libnetwork-${vers}.tar.gz
 commitid=
-GITHASH=${GITHASH:-dc9208a3303feef5b3839f4323d9beb36df0a9dd}
 apply_arch="x86_64 aarch64"
 arch=`uname -m`
-build=2
-src=runc-${vers/_/-}
+build=1
+src=libnetwork-${vers}
 OPT_CONFIG=''
-DOCS='CONTRIBUTING.md LICENSE MAINTAINERS MAINTAINERS_GUIDE.md NOTICE PRINCIPLES.md README.md SECURITY.md VERSION'
+DOCS='CHANGELOG.md LICENSE MAINTAINERS README.md'
 patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
@@ -36,14 +35,17 @@ do_config() {
     cd ${B[$1]}
     mkdir build
     mv vendor build/src
-    ln -sf ${B[$1]} build/src/github.com/opencontainers/runc
-    sed -i '/^COMMIT/d' Makefile
+    if [ $? != 0 ]; then
+	echo "configure error. $0 script stop"
+	exit 255
+    fi
 }
 
 do_build() {
     cd ${B[$1]}
     export LDFLAGS='-Wl,--as-needed'
-    make COMMIT=${GITHASH} GOPATH=${B[$1]}/build
+    GOPATH=`pwd`/build \
+	  go build -o `pwd`/pkg/docker-proxy ./cmd/proxy
     if [ $? != 0 ]; then
 	echo "make error. $0 script stop"
 	exit 255
@@ -52,13 +54,12 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}
-    export LDFLAGS='-Wl,--as-needed'
-    make install BINDIR=$P/usr/bin
-    make install-bash PREFIX=$P/usr
-    if [ $? != 0 ]; then
-	echo "make install error. $0 script stop"
-	exit 255
-    fi
+    mkdir -p $P/usr/bin/
+    cp pkg/docker-proxy $P/usr/bin/
+
+    # add extra func
+    # mkdir -p $P2/hoge
+    # cp hoge.txt $P2/hoge
 }
 
 do_package() {

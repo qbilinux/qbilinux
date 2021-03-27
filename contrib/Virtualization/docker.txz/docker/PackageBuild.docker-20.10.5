@@ -1,15 +1,15 @@
 #!/bin/sh
 ##############################################################
-pkgbase="docker_ce"
-vers=19.03.8
-url="https://github.com/docker/docker-ce/archive/v19.03.8.tar.gz"
-srcfile=docker-ce-19.03.8.tar.gz
+pkgbase="docker"
+vers=20.10.5
+url="https://github.com/moby/moby/archive/refs/tags/v${vers}.tar.gz"
+srcfile=docker-${vers}.tar.gz
 commitid=
-GITHASH=${GITHASH:-afacb8b}
+GITHASH=${GITHASH:-363e9a8}
 apply_arch="x86_64 aarch64"
 arch=`uname -m`
-build=2
-src=docker-ce-${vers}
+build=1
+src=moby-${vers}
 OPT_CONFIG=''
 DOCS='CHANGELOG.md README.md'
 patchfiles=''
@@ -34,48 +34,28 @@ do_config() {
 
     cp -a ${S[$1]} ${B[$1]}
     cd ${B[$1]}
-    mkdir -p build/src/github.com/docker
-    ( cd build/src/github.com/docker
-      ln -s ${B[$1]}/components/engine docker
-      ln -s ${B[$1]}/components/cli cli
-    )
+    mkdir build
+    mv vendor build/src
+    ln -s ${S[$1]} build/src/github.com/docker/docker
 }
 
 do_build() {
     cd ${B[$1]}
     
     # Build daemon.
-    cd components/engine
     DOCKER_GITCOMMIT=$GITHASH \
 		    DOCKER_BUILDTAGS="seccomp" \
-		    VERSION=$(cat ../../VERSION) \
+		    VERSION=${vers} \
 		    GOPATH=${B[$1]}/build \
 		    ./hack/make.sh dynbinary
-    cd -
-
-    # Build CLI.
-    cd components/cli
-    DISABLE_WARN_OUTSIDE_CONTAINER=1 \
-				  make dynbinary \
-				  GITCOMMIT=$GITHASH \
-				  VERSION=$(cat ../../VERSION) \
-				  GOPATH=${B[$1]}/build
-    cd -
 }
 
 do_install() {
     cd ${B[$1]}
 
     # daemon.
-    install -D -m 0755 components/engine/bundles/dynbinary-daemon/dockerd-$vers \
+    install -D -m 0755 bundles/dynbinary-daemon/dockerd-$vers \
 	    $P/usr/bin/dockerd
-
-    # Build CLI.
-    if [ $arch = "x86_64" ]; then
-	install -D -m 0755 components/cli/build/docker-linux-amd64 $P/usr/bin/docker
-    elif [ $arch = "aarch64" ]; then
-	install -D -m 0755 components/cli/build/docker-linux-arm64 $P/usr/bin/docker
-    fi
 
     # Integrate required components.
     ln -s runc $P/usr/bin/docker-runc
@@ -84,19 +64,12 @@ do_install() {
     ln -s ctr $P/usr/bin/docker-containerd-ctr
     ln -s tini-static $P/usr/bin/docker-init
 
-    # Completion.
-    ( cd components/cli/contrib/completion
-      install -D -m 0644 bash/docker $P/usr/share/bash-completion/completions/docker
-      install -D -m 0644 zsh/_docker $P/usr/share/zsh/site-functions/_docker
-      install -D -m 0644 fish/docker.fish $P/usr/share/fish/vendor_completions.d/docker.fish
-    )
-
     install -D -m 0644 $W/config/docker.default $P/etc/default/docker.new
     install -D -m 0644 $W/config/docker.logrotate $P/etc/logrotate.d/docker.new
     install -D -m 0644 $W/config/rc.docker $P/etc/rc.d/rc.docker.new
 
     # Install udev rules.
-    install -D -m 0644 components/engine/contrib/udev/80-docker.rules \
+    install -D -m 0644 contrib/udev/80-docker.rules \
 	    $P/lib/udev/rules.d/80-docker.rules
 
     mkdir -p $P/install
