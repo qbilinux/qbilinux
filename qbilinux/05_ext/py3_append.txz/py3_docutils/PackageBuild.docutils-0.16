@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=py3_docutils
-vers=0.15
+vers=0.16
 url="https://sourceforge.net/projects/docutils/files/docutils/${vers}/docutils-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
