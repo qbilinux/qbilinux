@@ -1,17 +1,17 @@
 #!/bin/sh
 
 ######################################################################
-pkgbase=libgpg_error
-vers=1.38
-url="https://www.gnupg.org/ftp/gcrypt/libgpg-error/libgpg-error-${vers}.tar.bz2"
+pkgbase=libgcrypt
+vers=1.9.2
+url="https://www.gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=libgpg-error-$vers
-OPT_CONFIG=""
-DOCS="NEWS INSTALL ABOUT-NLS COPYING COPYING.LIB AUTHORS ChangeLog
-    THANKS README ChangeLog-2011 VERSION"
+src=$pkgbase-$vers
 patchfiles=""
+OPT_CONFIG="--with-capabilities"
+DOCS="README ChangeLog-2011 COPYING ChangeLog TODO NEWS README.GIT
+    COPYING.LIB THANKS AUTHORS INSTALL"
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -24,7 +24,6 @@ do_prepare() {
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
-    sed -i 's/namespace/pkg_&/' src/Makefile.{am,in} src/mkstrtable.awk
 }
 
 do_config() {
