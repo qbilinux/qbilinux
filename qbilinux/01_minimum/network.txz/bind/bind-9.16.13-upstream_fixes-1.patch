@@ -1,0 +1,3676 @@
+Submitted By:            Douglas R. Reno <renodr at linuxfromscratch dot org>
+Date:                    2021-03-24  
+Initial Package Version: 9.16.13
+Origin:                  Upstream (PR #4819, #4832, #4811, and #4833)
+Upstream Status:         Applied
+Description:             Fixes several regressions in BIND 9.16.13.
+                         One of them, the TCP timeout regression,
+                         has been present since at least 9.16.11.
+                         This patch fixes those, but does introduce
+                         a couple of intermittent failures due to some queries
+                         sometimes taking a few milliseconds longer than
+                         expected. No regressions found during actual usage.
+
+diff -Naurp bind-9.16.13.orig/bin/named/server.c bind-9.16.13/bin/named/server.c
+--- bind-9.16.13.orig/bin/named/server.c	2021-03-11 07:20:59.000000000 -0600
++++ bind-9.16.13/bin/named/server.c	2021-03-24 18:58:13.105185509 -0500
+@@ -166,7 +166,18 @@
+ #define EXCLBUFFERS	       4096
+ #endif /* TUNE_LARGE */
+ 
+-#define MAX_TCP_TIMEOUT 65535
++/* RFC7828 defines timeout at a 16-bit value specified in units of 100
++ * milliseconds, so the maximum and minimum advertised and keepalive
++ * timeouts are capped by the data type (it's ~109 minutes).
++ */
++#define MIN_INITIAL_TIMEOUT    UINT32_C(2500)    /* 2.5 seconds */
++#define MAX_INITIAL_TIMEOUT    UINT32_C(120000)  /* 2 minutes */
++#define MIN_IDLE_TIMEOUT       UINT32_C(100)     /* 0.1 seconds */
++#define MAX_IDLE_TIMEOUT       UINT32_C(120000)  /* 2 minutes */
++#define MIN_KEEPALIVE_TIMEOUT  UINT32_C(100)     /* 0.1 seconds */
++#define MAX_KEEPALIVE_TIMEOUT  UINT32_C(UINT16_MAX * 100)
++#define MIN_ADVERTISED_TIMEOUT UINT32_C(0)       /* No minimum */
++#define MAX_ADVERTISED_TIMEOUT UINT32_C(UINT16_MAX * 100)
+ 
+ /*%
+  * Check an operation for failure.  Assumes that the function
+@@ -8315,7 +8326,7 @@ load_configuration(const char *filename,
+ 	unsigned int maxsocks;
+ 	uint32_t softquota = 0;
+ 	uint32_t max;
+-	unsigned int initial, idle, keepalive, advertised;
++	uint64_t initial, idle, keepalive, advertised;
+ 	dns_aclenv_t *env =
+ 		ns_interfacemgr_getaclenv(named_g_server->interfacemgr);
+ 
+@@ -8572,62 +8583,67 @@ load_configuration(const char *filename,
+ 	obj = NULL;
+ 	result = named_config_get(maps, "tcp-initial-timeout", &obj);
+ 	INSIST(result == ISC_R_SUCCESS);
+-	initial = cfg_obj_asuint32(obj);
+-	if (initial > 1200) {
++	initial = cfg_obj_asuint32(obj) * 100;
++	if (initial > MAX_INITIAL_TIMEOUT) {
+ 		cfg_obj_log(obj, named_g_lctx, ISC_LOG_WARNING,
+ 			    "tcp-initial-timeout value is out of range: "
+-			    "lowering to 1200");
+-		initial = 1200;
+-	} else if (initial < 25) {
++			    "lowering to %" PRIu32,
++             MAX_INITIAL_TIMEOUT / 100);
++      initial = MAX_INITIAL_TIMEOUT;
++   } else if (initial < MAX_INITIAL_TIMEOUT) {
+ 		cfg_obj_log(obj, named_g_lctx, ISC_LOG_WARNING,
+ 			    "tcp-initial-timeout value is out of range: "
+-			    "raising to 25");
+-		initial = 25;
++			    "raising to %" PRIu32,
++             MIN_INITIAL_TIMEOUT / 100);
++      initial = MIN_INITIAL_TIMEOUT;
+ 	}
+ 
+ 	obj = NULL;
+ 	result = named_config_get(maps, "tcp-idle-timeout", &obj);
+ 	INSIST(result == ISC_R_SUCCESS);
+-	idle = cfg_obj_asuint32(obj);
+-	if (idle > 1200) {
++	idle = cfg_obj_asuint32(obj) * 100;
++	if (idle > MAX_IDLE_TIMEOUT) {
+ 		cfg_obj_log(obj, named_g_lctx, ISC_LOG_WARNING,
+ 			    "tcp-idle-timeout value is out of range: "
+-			    "lowering to 1200");
+-		idle = 1200;
+-	} else if (idle < 1) {
++			    "lowering to %" PRIu32,
++             MAX_IDLE_TIMEOUT / 100);
++		idle = MAX_IDLE_TIMEOUT;
++	} else if (idle < MIN_IDLE_TIMEOUT) {
+ 		cfg_obj_log(obj, named_g_lctx, ISC_LOG_WARNING,
+ 			    "tcp-idle-timeout value is out of range: "
+-			    "raising to 1");
+-		idle = 1;
++			    "raising to %" PRIu32,
++             MIN_IDLE_TIMEOUT / 100);
++      idle = MIN_IDLE_TIMEOUT;
+ 	}
+ 
+ 	obj = NULL;
+ 	result = named_config_get(maps, "tcp-keepalive-timeout", &obj);
+ 	INSIST(result == ISC_R_SUCCESS);
+-	keepalive = cfg_obj_asuint32(obj);
+-	if (keepalive > MAX_TCP_TIMEOUT) {
++	keepalive = cfg_obj_asuint32(obj) * 100;
++	if (keepalive > MAX_KEEPALIVE_TIMEOUT) {
+ 		cfg_obj_log(obj, named_g_lctx, ISC_LOG_WARNING,
+ 			    "tcp-keepalive-timeout value is out of range: "
+-			    "lowering to %u",
+-			    MAX_TCP_TIMEOUT);
+-		keepalive = MAX_TCP_TIMEOUT;
+-	} else if (keepalive < 1) {
++			    "lowering to %", PRIu32,
++             MAX_KEEPALIVE_TIMEOUT / 100);
++      keepalive = MAX_KEEPALIVE_TIMEOUT;
++   } else if (keepalive < MIN_KEEPALIVE_TIMEOUT) {
+ 		cfg_obj_log(obj, named_g_lctx, ISC_LOG_WARNING,
+ 			    "tcp-keepalive-timeout value is out of range: "
+-			    "raising to 1");
+-		keepalive = 1;
++			    "raising to %" PRIu32,
++             MIN_KEEPALIVE_TIMEOUT / 100);
++		keepalive = MIN_KEEPALIVE_TIMEOUT;
+ 	}
+ 
+ 	obj = NULL;
+ 	result = named_config_get(maps, "tcp-advertised-timeout", &obj);
+ 	INSIST(result == ISC_R_SUCCESS);
+-	advertised = cfg_obj_asuint32(obj);
+-	if (advertised > MAX_TCP_TIMEOUT) {
++	advertised = cfg_obj_asuint32(obj) * 100;
++	if (advertised > MAX_ADVERTISED_TIMEOUT) {
+ 		cfg_obj_log(obj, named_g_lctx, ISC_LOG_WARNING,
+ 			    "tcp-advertized-timeout value is out of range: "
+-			    "lowering to %u",
+-			    MAX_TCP_TIMEOUT);
+-		advertised = MAX_TCP_TIMEOUT;
++			    "lowering to %" PRIu32,
++			    MAX_ADVERTISED_TIMEOUT / 100);
++		advertised = MAX_ADVERTISED_TIMEOUT;
+ 	}
+ 
+ 	isc_nm_settimeouts(named_g_nm, initial, idle, keepalive, advertised);
+@@ -14755,6 +14771,12 @@ named_server_dnssec(named_server_t *serv
+ 
+ 		switch (result) {
+ 		case ISC_R_SUCCESS:
++         /*
++          * Rekey after checkds command because the next key
++          * event may have changed.
++          */
++         dns_zone_rekey(zone, false);
++
+ 			if (use_keyid) {
+ 				char tagbuf[6];
+ 				snprintf(tagbuf, sizeof(tagbuf), "%u", keyid);
+@@ -14799,6 +14821,12 @@ named_server_dnssec(named_server_t *serv
+ 
+ 		switch (result) {
+ 		case ISC_R_SUCCESS:
++         /*
++          * Rekey after rollover command because the next key
++          * event may have changed.
++          */
++         dns_zone_rekey(zone, false);
++
+ 			if (use_keyid) {
+ 				char tagbuf[6];
+ 				snprintf(tagbuf, sizeof(tagbuf), "%u", keyid);
+@@ -15895,7 +15923,7 @@ isc_result_t
+ named_server_tcptimeouts(isc_lex_t *lex, isc_buffer_t **text) {
+ 	char *ptr;
+ 	isc_result_t result = ISC_R_SUCCESS;
+-	unsigned int initial, idle, keepalive, advertised;
++	uint32_t initial, idle, keepalive, advertised;
+ 	char msg[128];
+ 
+ 	/* Skip the command name. */
+@@ -15911,10 +15939,11 @@ named_server_tcptimeouts(isc_lex_t *lex,
+ 	ptr = next_token(lex, NULL);
+ 	if (ptr != NULL) {
+ 		CHECK(isc_parse_uint32(&initial, ptr, 10));
+-		if (initial > 1200) {
++      initial *= 100;
++		if (initial > MAX_INITIAL_TIMEOUT) {
+ 			CHECK(ISC_R_RANGE);
+ 		}
+-		if (initial < 25) {
++		if (initial < MIN_INITIAL_TIMEOUT) {
+ 			CHECK(ISC_R_RANGE);
+ 		}
+ 
+@@ -15923,10 +15952,11 @@ named_server_tcptimeouts(isc_lex_t *lex,
+ 			return (ISC_R_UNEXPECTEDEND);
+ 		}
+ 		CHECK(isc_parse_uint32(&idle, ptr, 10));
+-		if (idle > 1200) {
++      idle *= 100;
++		if (idle > MAX_IDLE_TIMEOUT) {
+ 			CHECK(ISC_R_RANGE);
+ 		}
+-		if (idle < 1) {
++		if (idle < MIN_IDLE_TIMEOUT) {
+ 			CHECK(ISC_R_RANGE);
+ 		}
+ 
+@@ -15935,10 +15965,11 @@ named_server_tcptimeouts(isc_lex_t *lex,
+ 			return (ISC_R_UNEXPECTEDEND);
+ 		}
+ 		CHECK(isc_parse_uint32(&keepalive, ptr, 10));
+-		if (keepalive > MAX_TCP_TIMEOUT) {
++      keepalive *= 100;
++		if (keepalive > MAX_KEEPALIVE_TIMEOUT) {
+ 			CHECK(ISC_R_RANGE);
+ 		}
+-		if (keepalive < 1) {
++		if (keepalive < MIN_KEEPALIVE_TIMEOUT) {
+ 			CHECK(ISC_R_RANGE);
+ 		}
+ 
+@@ -15947,7 +15978,8 @@ named_server_tcptimeouts(isc_lex_t *lex,
+ 			return (ISC_R_UNEXPECTEDEND);
+ 		}
+ 		CHECK(isc_parse_uint32(&advertised, ptr, 10));
+-		if (advertised > MAX_TCP_TIMEOUT) {
++      advertised *= 100;
++		if (advertised > MAX_ADVERTISED_TIMEOUT) {
+ 			CHECK(ISC_R_RANGE);
+ 		}
+ 
+@@ -15960,13 +15992,13 @@ named_server_tcptimeouts(isc_lex_t *lex,
+ 		isc_task_endexclusive(named_g_server->task);
+ 	}
+ 
+-	snprintf(msg, sizeof(msg), "tcp-initial-timeout=%u\n", initial);
++	snprintf(msg, sizeof(msg), "tcp-initial-timeout=%u\n", initial / 100);
+ 	CHECK(putstr(text, msg));
+-	snprintf(msg, sizeof(msg), "tcp-idle-timeout=%u\n", idle);
++	snprintf(msg, sizeof(msg), "tcp-idle-timeout=%u\n", idle / 100);
+ 	CHECK(putstr(text, msg));
+-	snprintf(msg, sizeof(msg), "tcp-keepalive-timeout=%u\n", keepalive);
++	snprintf(msg, sizeof(msg), "tcp-keepalive-timeout=%u\n", keepalive / 100);
+ 	CHECK(putstr(text, msg));
+-	snprintf(msg, sizeof(msg), "tcp-advertised-timeout=%u", advertised);
++	snprintf(msg, sizeof(msg), "tcp-advertised-timeout=%u", advertised / 100);
+ 	CHECK(putstr(text, msg));
+ 
+ cleanup:
+diff -Naurp bind-9.16.13.orig/bin/tests/system/checkzone/zones/good-cds-unsigned.db bind-9.16.13/bin/tests/system/checkzone/zones/good-cds-unsigned.db
+--- bind-9.16.13.orig/bin/tests/system/checkzone/zones/good-cds-unsigned.db	1969-12-31 18:00:00.000000000 -0600
++++ bind-9.16.13/bin/tests/system/checkzone/zones/good-cds-unsigned.db	2021-03-24 18:32:46.588860526 -0500
+@@ -0,0 +1,4 @@
++example.          0        SOA      . . 0 0 0 0 0
++example.          0        NS       .
++example.          0        CDS      0 0 0 00
++example.          0        CDNSKEY  0 3 0 AA==
+diff -Naurp bind-9.16.13.orig/bin/tests/system/conf.sh.common bind-9.16.13/bin/tests/system/conf.sh.common
+--- bind-9.16.13.orig/bin/tests/system/conf.sh.common	2021-03-11 07:20:59.000000000 -0600
++++ bind-9.16.13/bin/tests/system/conf.sh.common	2021-03-24 13:54:38.652733911 -0500
+@@ -129,6 +129,7 @@ statistics \
+ statschannel \
+ stub \
+ synthfromdnssec \
++timeouts \
+ tcp \
+ tools \
+ tsig \
+diff -Naurp bind-9.16.13.orig/bin/tests/system/kasp/ns3/template2.db.in bind-9.16.13/bin/tests/system/kasp/ns3/template2.db.in
+--- bind-9.16.13.orig/bin/tests/system/kasp/ns3/template2.db.in	2021-03-11 07:20:59.000000000 -0600
++++ bind-9.16.13/bin/tests/system/kasp/ns3/template2.db.in	2021-03-24 18:43:47.610400868 -0500
+@@ -20,6 +20,6 @@ $TTL 300
+ ns3			A	10.53.0.3
+ 
+ a			A	10.0.0.11
+-b			A	10.0.0.2
+-c			A	10.0.0.3
+-d			A	10.0.0.4
++b			A	10.0.0.22
++c			A	10.0.0.33
++d			A	10.0.0.44
+diff -Naurp bind-9.16.13.orig/bin/tests/system/kasp/tests.sh bind-9.16.13/bin/tests/system/kasp/tests.sh
+--- bind-9.16.13.orig/bin/tests/system/kasp/tests.sh	2021-03-11 07:20:59.000000000 -0600
++++ bind-9.16.13/bin/tests/system/kasp/tests.sh	2021-03-24 19:12:02.145796479 -0500
+@@ -1227,25 +1227,6 @@ check_cdslog() {
+ 	status=$((status+ret))
+ }
+ 
+-#
+-# Utility to call after 'rndc dnssec -checkds|-rollover'.
+-#
+-_loadkeys_on() {
+-	_server=$1
+-	_dir=$2
+-	_zone=$3
+-
+-	nextpart $_dir/named.run > /dev/null
+-	rndccmd $_server loadkeys $_zone in $_view > rndc.dnssec.loadkeys.out.$_zone.$n
+-
+-	if [ "${DYNAMIC}" = "yes" ]; then
+-		wait_for_log 20 "zone ${_zone}/IN: next key event" $_dir/named.run || return 1
+-	else
+-		# inline-signing zone adds "(signed)"
+-		wait_for_log 20 "zone ${_zone}/IN (signed): next key event" $_dir/named.run || return 1
+-	fi
+-}
+-
+ # Tell named that the DS for the key in given zone has been seen in the
+ # parent (this does not actually has to be true, we just issue the command
+ # to make named believe it can continue with the rollover).
+@@ -1275,10 +1256,6 @@ rndc_checkds() {
+ 
+ 	rndccmd $_server dnssec -checkds $_keycmd $_whencmd $_what $_zone in $_view > rndc.dnssec.checkds.out.$_zone.$n || log_error "rndc dnssec -checkds${_keycmd}${_whencmd} ${_what} zone ${_zone} failed"
+ 
+-	if [ "$ret" -eq 0 ]; then
+-		 _loadkeys_on $_server $_dir $_zone || log_error "loadkeys zone ${_zone} failed ($n)"
+-	fi
+-
+ 	test "$ret" -eq 0 || echo_i "failed"
+ 	status=$((status+ret))
+ }
+@@ -1303,8 +1280,6 @@ rndc_rollover() {
+ 
+ 	rndccmd $_server dnssec -rollover -key $_keyid $_whencmd $_zone in $_view > rndc.dnssec.rollover.out.$_zone.$n || log_error "rndc dnssec -rollover (key ${_keyid} when ${_when}) zone ${_zone} failed"
+ 
+-	_loadkeys_on $_server $_dir $_zone || log_error "loadkeys zone ${_zone} failed ($n)"
+-
+ 	test "$ret" -eq 0 || echo_i "failed"
+ 	status=$((status+ret))
+ }
+@@ -1358,22 +1333,29 @@ cp "${DIR}/template2.db.in" "${DIR}/${ZO
+ rndccmd 10.53.0.3 reload "$ZONE" > /dev/null || log_error "rndc reload zone ${ZONE} failed"
+ 
+ update_is_signed() {
+-	dig_with_opts "a.${ZONE}" "@${SERVER}" A > "dig.out.$DIR.test$n.a" || return 1
+-	grep "status: NOERROR" "dig.out.$DIR.test$n.a" > /dev/null || return 1
+-	grep "a.${ZONE}\..*${DEFAULT_TTL}.*IN.*A.*10\.0\.0\.11" "dig.out.$DIR.test$n.a" > /dev/null || return 1
+-	lines=$(get_keys_which_signed A "dig.out.$DIR.test$n.a" | wc -l)
+-	test "$lines" -eq 1 || return 1
+-	get_keys_which_signed A "dig.out.$DIR.test$n.a" | grep "^${KEY_ID}$" > /dev/null || return 1
++	ip_a = $1
++   ip_d = $2
+ 
+-	dig_with_opts "d.${ZONE}" "@${SERVER}" A > "dig.out.$DIR.test$n".d || return 1
+-	grep "status: NOERROR" "dig.out.$DIR.test$n".d > /dev/null || return 1
+-	grep "d.${ZONE}\..*${DEFAULT_TTL}.*IN.*A.*10\.0\.0\.4" "dig.out.$DIR.test$n".d > /dev/null || return 1
+-	lines=$(get_keys_which_signed A "dig.out.$DIR.test$n".d | wc -l)
+-	test "$lines" -eq 1 || return 1
+-	get_keys_which_signed A "dig.out.$DIR.test$n".d | grep "^${KEY_ID}$" > /dev/null || return 1
++   if [ "$ip_a" != "-" ]; then
++      dig_with_opts "a.${ZONE}" "@${SERVER}" A > "dig.out.$DIR.test$n.a" || return 1
++      grep "status: NOERROR" "dig.out.$DIR.test$n.a" > /dev/null || return 1
++      grep "a.${ZONE}\..*${DEFAULT_TTL}.*IN.*A.*${ip_a}" "dig.out.$DIR.test$n.a" > /dev/null | return 1
++      lines=$(get_keys_which_signed A "dig.out.$DIR.test$n.a" | wc -l)
++      test "$lines" -eq 1 || return 1
++      get_keys_which_signed A "dig.out.$DIR.test$n.a" | grep "^${KEY_ID}$" > /dev/null || return 1
++   fi
++
++	if [ "$ip_d" != "-" ]; then
++      dig_with_opts "d.${ZONE}" "@${SERVER}" A > "dig.out.$DIR.test$n.d" || return 1
++      grep "status: NOERROR" "dig.out.$DIR.test$n".d > /dev/null || return 1
++      grep "d.${ZONE}\..*${DEFAULT_TTL}.*IN.*A.*${ip_d}" "dig.out.$DIR.test$n".d > /dev/null || return 1
++      lines=$(get_keys_which_signed A "dig.out.$DIR.test$n".d | wc -l)
++      test "$lines" -eq 1 || return 1
++      get_keys_which_signed A "dig.out.$DIR.test$n".d | grep "^${KEY_ID}$" > /dev/null || return 1
++   fi
+ }
+ 
+-retry_quiet 10 update_is_signed || ret=1
++retry_quiet 10 update_is_signed "10.0.0.11" "10.0.0.44" || ret=1
+ test "$ret" -eq 0 || echo_i "failed"
+ status=$((status+ret))
+ 
+@@ -1401,12 +1383,42 @@ ret=0
+ echo zone ${ZONE}
+ echo server 10.53.0.3 "$PORT"
+ echo update del "a.${ZONE}" 300 A 10.0.0.1
+-echo update add "a.${ZONE}" 300 A 10.0.0.11
++echo update add "a.${ZONE}" 300 A 10.0.0.101
+ echo update add "d.${ZONE}" 300 A 10.0.0.4
+ echo send
+ ) | $NSUPDATE
+ 
+-retry_quiet 10 update_is_signed || ret=1
++retry_quiet 10 update_is_signed "10.0.0.101" "10.0.0.4" || ret=1
++test "$ret" -wq 0 || echo_i "failed"
++status=$((status+ret))
++
++# Update zone with nsupdate (reverting the above change)
++n=$((n+1))
++echo_i "nsupdate zone and check that new record is signed for ${ZONE} ($n)"
++ret=0
++(
++echo zone ${ZONE}
++echo server 10.53.0.3 "$PORT"
++echo update add "a.${ZONE}" 300 A 10.0.0.1
++echo update del "a.${ZONE}" 300 A 10.0.0.101
++echo update del "d.${ZONE}" 300 A 10.0.0.4
++echo send
++) | $NSUPDATE
++
++retry_quiet 10 update_is_signed "10.0.0.1" "-" || ret=1
++test "$ret" -eq 0 || echo_i "failed"
++status=$((status+ret))
++
++# Update zone with freeze/thaw
++n=$((n+1))
++echo_i "modify zone file and check that new record is signed for zone ${ZONE} ($n)"
++ret=0
++rndccmd 10.53.0.3 freeze "$ZONE" > /dev/null || log_error "rndc freeze zone ${ZONE} failed"
++sleep 1
++echo "d.${ZONE}. 300 A 10.0.0.44" >> "${DIR}/${ZONE}.db"
++rndccmd 10.53.0.3 thaw "$ZONE" > /dev/null || log_error "rndc thaw zone ${ZONE} failed"
++
++retry_quiet 10 update_is_signed "10.0.0.1" "10.0.0.44" || ret=1
+ test "$ret" -eq 0 || echo_i "failed"
+ status=$((status+ret))
+ 
+@@ -1495,17 +1507,24 @@ dnssec_verify
+ 
+ basefile=$(key_get KEY1 BASEFILE)
+ 
++_wait_for_metadata() {
++   _expr = $1
++   _file = $2
++   grep "$_expr" $_file > /dev/null || return 1
++   return 0
++}
++
+ n=$((n+1))
+ echo_i "checkds publish correctly sets DSPublish for zone $ZONE ($n)"
+ rndc_checkds "$SERVER" "$DIR" "-" "20190102121314" "published" "$ZONE"
+-grep "DSPublish: 20190102121314" "${basefile}.state" > /dev/null || log_error "DSPublish not set in ${basefile}"
++retry_quiet 3 _wait_for_metadata "DSPublish: 20190102121314" "${basefile}.state" || log_error "bad DSPublish in ${basefile}.state"
+ test "$ret" -eq 0 || echo_i "failed"
+ status=$((status+ret))
+ 
+ n=$((n+1))
+ echo_i "checkds withdraw correctly sets DSRemoved for zone $ZONE ($n)"
+ rndc_checkds "$SERVER" "$DIR" "-" "20200102121314" "withdrawn" "$ZONE"
+-grep "DSRemoved: 20200102121314" "${basefile}.state" > /dev/null || log_error "DSRemoved not set in ${basefile}"
++retry_quiet 3 _wait_for_metadata "DSRemoved: 20200102121314" "${basefile}.state" || log_error "bad DSRemoved in ${basefile}.state"
+ test "$ret" -eq 0 || echo_i "failed"
+ status=$((status+ret))
+ 
+@@ -1573,8 +1592,8 @@ status=$((status+ret))
+ n=$((n+1))
+ echo_i "checkds withdrawn does not set DSRemoved for zone $ZONE (multiple KSK) ($n)"
+ rndc_checkds "$SERVER" "$DIR" "-" "20190102121314" "withdrawn" "$ZONE"
+-grep "DSRemoved:" "${basefile1}.state" > /dev/null && log_error "DSPublish incorrectly set in ${basefile1}"
+-grep "DSRemoved:" "${basefile2}.state" > /dev/null && log_error "DSPublish incorrectly set in ${basefile2}"
++grep "DSRemoved:" "${basefile1}.state" > /dev/null && log_error "DSRemoved incorrectly set in ${basefile1}"
++grep "DSRemoved:" "${basefile2}.state" > /dev/null && log_error "DSRemoved incorrectly set in ${basefile2}"
+ test "$ret" -eq 0 || echo_i "failed"
+ status=$((status+ret))
+ 
+@@ -1597,7 +1616,7 @@ status=$((status+ret))
+ n=$((n+1))
+ echo_i "checkds published -key correctly sets DSPublish for key $(key_get KEY1 ID) zone $ZONE (multiple KSK) ($n)"
+ rndc_checkds "$SERVER" "$DIR" KEY1 "20190102121314" "published" "$ZONE"
+-grep "DSPublish: 20190102121314" "${basefile1}.state" > /dev/null || log_error "DSPublish not set in ${basefile1}"
++retry_quiet 3 _wait_for_metadata "DSPublish: 20190102121314" "${basefile1}.state" || log_error "bad DSPublish in ${basefile1}.state"
+ grep "DSPublish:" "${basefile2}.state" > /dev/null && log_error "DSPublish incorrectly set in ${basefile2}"
+ test "$ret" -eq 0 || echo_i "failed"
+ status=$((status+ret))
+@@ -1605,8 +1624,8 @@ status=$((status+ret))
+ n=$((n+1))
+ echo_i "checkds withdrawn -key correctly sets DSRemoved for key $(key_get KEY2 ID) zone $ZONE (multiple KSK) ($n)"
+ rndc_checkds "$SERVER" "$DIR" KEY2 "20200102121314" "withdrawn" "$ZONE"
+-grep "DSRemoved: 20200102121314" "${basefile2}.state" > /dev/null || log_error "DSRemoved not set in ${basefile2}"
+ grep "DSRemoved:" "${basefile1}.state" > /dev/null && log_error "DSPublish incorrectly set in ${basefile1}"
++retry_quiet 3 _wait_for_metadata "DSRemoved: 20200102121314" "${basefile2}.state" || log_error "bad DSRemoved in ${basefile2}.state"
+ test "$ret" -eq 0 || echo_i "failed"
+ status=$((status+ret))
+ 
+@@ -1645,14 +1664,14 @@ basefile=$(key_get KEY1 BASEFILE)
+ n=$((n+1))
+ echo_i "checkds publish correctly sets DSPublish for zone $ZONE ($n)"
+ rndc_checkds "$SERVER" "$DIR" "-" "20190102121314" "published" "$ZONE"
+-grep "DSPublish: 20190102121314" "${basefile}.state" > /dev/null || log_error "DSPublish not set in ${basefile}"
++retry_quiet 3 _wait_for_metadata "DSPublish: 20190102121314" "${basefile}.state" || log_error "bad DSPublish in ${basefile}.state"
+ test "$ret" -eq 0 || echo_i "failed"
+ status=$((status+ret))
+ 
+ n=$((n+1))
+ echo_i "checkds withdraw correctly sets DSRemoved for zone $ZONE ($n)"
+ rndc_checkds "$SERVER" "$DIR" "-" "20200102121314" "withdrawn" "$ZONE"
+-grep "DSRemoved: 20200102121314" "${basefile}.state" > /dev/null || log_error "DSRemoved not set in ${basefile}"
++retry_quiet 3 _wait_for_metadata "DSRemoved: 20200102121314" "${basefile}.state" || log_error "bad DSRemoved in ${basefile}.state"
+ test "$ret" -eq 0 || echo_i "failed"
+ status=$((status+ret))
+ 
+@@ -3045,13 +3064,10 @@ check_apex
+ check_subdomain
+ dnssec_verify
+ 
+-check_next_key_event() {
++_check_next_key_event() {
+ 	_expect=$1
+ 
+-	n=$((n+1))
+-	echo_i "check next key event for zone ${ZONE} ($n)"
+-	ret=0
+-	grep "zone ${ZONE}.*: next key event in .* seconds" "${DIR}/named.run" > "keyevent.out.$ZONE.test$n" || log_error "no next key event for zone ${ZONE}"
++	grep "zone ${ZONE}.*: next key event in .* seconds" "${DIR}/named.run" > "keyevent.out.$ZONE.test$n" || return 1
+ 
+ 	# Get the latest next key event.
+ 	if [ "${DYNAMIC}" = "yes" ]; then
+@@ -3066,11 +3082,21 @@ check_next_key_event() {
+ 	_expectmin=$((_expect-next_key_event_threshold))
+ 	_expectmax=$((_expect+next_key_event_threshold))
+ 
+-	test $_expectmin -le "$_time" || log_error "bad next key event time ${_time} for zone ${ZONE} (expect ${_expect})"
+-	test $_expectmax -ge "$_time" || log_error "bad next key event time ${_time} for zone ${ZONE} (expect ${_expect})"
++	test $_expectmin -le "$_time" || return 1
++	test $_expectmax -ge "$_time" || return 1
++
++   return 0
++}
++
++check_next_key_event() {
++   n=$((n+1))
++   echo_i "check next key event for zone ${ZONE} ($n)"
++   ret=0
+ 
++   retry_quiet 3 _check_next_key_event $1 || log_error "bad next key event time for zone ${ZONE} (expect ${_expect})"
+ 	test "$ret" -eq 0 || echo_i "failed"
+ 	status=$((status+ret))
++
+ }
+ 
+ # Next key event is when the DNSKEY RRset becomes OMNIPRESENT: DNSKEY TTL plus
+@@ -4825,8 +4851,6 @@ check_next_key_event 93600
+ set_zone "step2.going-insecure.kasp"
+ set_policy "none" "2" "7200"
+ set_server "ns6" "10.53.0.6"
+-# Expect a CDS/CDNSKEY Delete Record.
+-set_cdsdelete
+ 
+ # The DS is long enough removed from the zone to be considered HIDDEN.
+ # This means the DNSKEY and the KSK signatures can be removed.
+@@ -4895,8 +4919,6 @@ set_zone "step2.going-insecure-dynamic.k
+ set_dynamic
+ set_policy "none" "2" "7200"
+ set_server "ns6" "10.53.0.6"
+-# Expect a CDS/CDNSKEY Delete Record.
+-set_cdsdelete
+ 
+ # The DS is long enough removed from the zone to be considered HIDDEN.
+ # This means the DNSKEY and the KSK signatures can be removed.
+diff -Naurp bind-9.16.13.orig/bin/tests/system/timeouts/clean.sh bind-9.16.13/bin/tests/system/timeouts/clean.sh
+--- bind-9.16.13.orig/bin/tests/system/timeouts/clean.sh	1969-12-31 18:00:00.000000000 -0600
++++ bind-9.16.13/bin/tests/system/timeouts/clean.sh	2021-03-24 13:28:05.657322239 -0500
+@@ -0,0 +1,19 @@
++#!/bin/sh
++#
++# Copyright (C) Internet Systems Consortium, Inc. ("ISC")
++#
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, you can obtain one at https://mozilla.org/MPL/2.0/.
++#
++# See the COPYRIGHT file distributed with this work for additional
++# information regarding copyright ownership.
++
++rm -f ./ns*/managed-keys.bind*
++rm -f ./ns*/named.conf
++rm -f ./ns*/named.lock
++rm -f ./ns*/named.memstats
++rm -f ./ns*/named.run*
++rm -f ./ns*/named.stats
++rm -f ./.cache ./__pycache__
++rm -f ./ns*/large.db
+diff -Naurp bind-9.16.13.orig/bin/tests/system/timeouts/conftest.py bind-9.16.13/bin/tests/system/timeouts/conftest.py
+--- bind-9.16.13.orig/bin/tests/system/timeouts/conftest.py	1969-12-31 18:00:00.000000000 -0600
++++ bind-9.16.13/bin/tests/system/timeouts/conftest.py	2021-03-24 13:33:42.084634206 -0500
+@@ -0,0 +1,56 @@
++###############################################################################
++# Copyright (C) Internet Systems Consortium, Inc. ("ISC")
++#
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, you can obtain one at https://mozilla.org/MPL/2.0/.
++#
++# See the COPYRIGHT file distributed with this work for additional
++# information regarding copyright ownership.
++###############################################################################
++
++import os
++import pytest
++
++def pytest_configure(config):
++    config.addinivalue_line(
++            "markers", "dnspython: mark tests that need dnspython to function"
++            )
++    config.addinivalue_line(
++            "markers", "dnspython2: mark tests that need dnspython >= 2.0.0"
++            )
++
++def pytest_collection_modifyitems(config, items):
++    # pylint: disable=unused-argument,unused-import,too-many-branches
++    # pylint: disable=import-outside-toplevel
++
++    # Test for dnspython module
++    skip_dnspython = pytest.mark.skip(
++            reason="needs dnspython module to run")
++    try:
++        import dns.query # noqa: F401
++    except ModuleNotFoundError:
++        for item in items:
++            if "dnspython" in item.keywords:
++                item.add_marker(skip_dnspython)
++
++    # Test for dnspython >= 2.0.0 module
++    skip_dnspython2 = pytest.mark.skip(
++            reason="needs dnspython >= 2.0.0 module to run")
++    try:
++        from dns.query import send_tcp # noqa: F401
++    except ImportError:
++        for item in items:
++            if "dnspython2" in item.keywords:
++                item.add_marker(skip_dnspython2)
++
++@pytest.fixture
++def port(request):
++    # pylint: disable=unused-argument
++    env_port = os.getenv("PORT")
++    if port is None:
++        env_port = 5300
++    else:
++        env_port = int(env_port)
++
++    return env_port
+diff -Naurp bind-9.16.13.orig/bin/tests/system/timeouts/ns1/example.db bind-9.16.13/bin/tests/system/timeouts/ns1/example.db
+--- bind-9.16.13.orig/bin/tests/system/timeouts/ns1/example.db	1969-12-31 18:00:00.000000000 -0600
++++ bind-9.16.13/bin/tests/system/timeouts/ns1/example.db	2021-03-24 13:17:29.265376523 -0500
+@@ -0,0 +1,23 @@
++; Copyright (C) Internet Systems Consortium, Inc. ("ISC")
++;
++; This Source Code Form is subject to the terms of the Mozilla Public
++; License, v. 2.0. If a copy of the MPL was not distributed with this
++; file, you can obtain one at http://mozilla.org/MPL/2.0/.
++;
++; See the COPYRIGHT file distributed with this work for additional
++; information regarding copyright ownership.
++
++$TTL 300          ; 5 minutes
++@                         SOA    mname1. . (
++                                 2000062101 ; serial
++                                 20         ; refresh (20 seconds)
++                                 20         ; retry (20 seconds)
++                                 1814400    ; expire (3 weeks)
++                                 3600       ; minimum (1 hour)
++                                 )
++                          NS     ns1
++ns1                       A      10.53.0.1
++@                         A      10.53.0.1
++a                         A      10.53.0.1
++b                         A      10.53.0.1
++$INCLUDE large.db
+diff -Naurp bind-9.16.13.orig/bin/tests/system/timeouts/ns1/named.conf.in bind-9.16.13/bin/tests/system/timeouts/ns1/named.conf.in
+--- bind-9.16.13.orig/bin/tests/system/timeouts/ns1/named.conf.in	1969-12-31 18:00:00.000000000 -0600
++++ bind-9.16.13/bin/tests/system/timeouts/ns1/named.conf.in	2021-03-24 13:22:19.190784057 -0500
+@@ -0,0 +1,41 @@
++/*
++ * Copyright (C) Internet Systems Consortium, Inc. ("ISC")
++ * 
++ * This Source Code Form is subject to the terms of the Mozilla Public
++ * License, v. 2.0. If a copy of the MPL was not distributed with this
++ * file, you can obtain one at https://mozilla.org/MPL/2.0/.
++ *
++ * See the COPYRIGHT file distributed with this work for additional
++ * information regarding copyright ownership.
++ */
++
++include "../../common/rncd.key";
++
++controls {
++        inet 10.53.0.1 port @CONTROLPORT@ allow { any; } keys { rndc.key; };
++};
++
++options {
++        query-source address 10.53.0.1;
++        notify-source 10.53.0.1;
++        transfer-source 10.53.0.1;
++        port @PORT@;
++        pid-file "named.pid";
++        listen-on { 10.53.0.1; };
++        listen-on-v6 { none; };
++        recursion no;
++        notify no;
++        tcp-initial-timeout 20;
++        tcp-idle-timeout 50;
++};
++
++zone "." {
++        type primary;
++        file "root.db";
++};
++
++zone "example." {
++        type primary;
++        file "example.db";
++        check-integrity no;
++};
+diff -Naurp bind-9.16.13.orig/bin/tests/system/timeouts/ns1/root.db bind-9.16.13/bin/tests/system/timeouts/ns1/root.db
+--- bind-9.16.13.orig/bin/tests/system/timeouts/ns1/root.db	1969-12-31 18:00:00.000000000 -0600
++++ bind-9.16.13/bin/tests/system/timeouts/ns1/root.db	2021-03-24 13:26:22.050100676 -0500
+@@ -0,0 +1,22 @@
++; Copyright (C) Internet Systems Consortium, Inc. ("ISC")
++;
++; This Source Code Form is subject to the terms of the Mozilla Public
++; License, v. 2.0. If a copy of the MPL was not distributed with this
++; file, you can obtain one at http://mozilla.org/MPL/2.0/.
++;
++; See the COPYRIGHT file distributed with this work for additional
++; information regarding copyright ownership.
++
++$TTL 300
++.                       IN SOA gson.isc.org. a.root.servers.nil. (
++                               2000042100      ; serial
++                               600             ; refresh
++                               600             ; retry
++                               1200            ; expire
++                               600             ; minimum
++                               )
++.                       NS     a.root-servers.nil.
++a.root-servers.nil.     A      10.53.0.1
++
++example.                NS     ns1.example.
++ns1.example.            A      10.53.0.1
+diff -Naurp bind-9.16.13.orig/bin/tests/system/timeouts/prereq.sh bind-9.16.13/bin/tests/system/timeouts/prereq.sh
+--- bind-9.16.13.orig/bin/tests/system/timeouts/prereq.sh	1969-12-31 18:00:00.000000000 -0600
++++ bind-9.16.13/bin/tests/system/timeouts/prereq.sh	2021-03-24 13:36:29.588234047 -0500
+@@ -0,0 +1,29 @@
++#!/bin/sh
++#
++# Copyright (C) Internet Systems Consortium, Inc. ("ISC")
++#
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, you can obtain one at https://mozilla.org/MPL/2.0/.
++#
++# See the COPYRIGHT file distributed with this work for additional
++# information regarding copyright ownership.
++
++SYSTEMTESTTOP=..
++. $SYSTEMTESTTOP/conf.sh
++
++if test -n "$PYTHON"
++then
++   if $PYTHON -c "from dns.query import send_tcp" 2> /dev/null
++   then
++      :
++   else
++      echo_i "This test requres the dnspython >= 2.0.0 module." >&2
++      exit 1
++   fi
++else
++   echo_i "This test requires Python and the dnspython module." >&2
++   exit 1
++fi
++
++exit 0
+diff -Naurp bind-9.16.13.orig/bin/tests/system/timeouts/setup.sh bind-9.16.13/bin/tests/system/timeouts/setup.sh
+--- bind-9.16.13.orig/bin/tests/system/timeouts/setup.sh	1969-12-31 18:00:00.000000000 -0600
++++ bind-9.16.13/bin/tests/system/timeouts/setup.sh	2021-03-24 13:39:28.608708842 -0500
+@@ -0,0 +1,23 @@
++#!/bin/sh
++#
++# Copyright (C) Internet Systems Consortium, Inc. ("ISC")
++#
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, you can obtain one at https://mozilla.org/MPL/2.0/.
++#
++# See the COPYRIGHT file distributed with this work for additional
++# information regarding copyright ownership.
++
++. ../conf.sh
++
++copy_setports ns1/named.conf.in ns1/named.conf
++
++#
++# Generate a large enough zone, so that the transfer takes longer than the
++# tcp-initial-timeout interval.
++#
++$PYTHON -c "
++for a in range(150000):
++   print('%s IN NS a' & (a))
++   print('%s IN NS b' % (a))" > ns1/large.db
+diff -Naurp bind-9.16.13.orig/bin/tests/system/timeouts/tests-tcp.py bind-9.16.13/bin/tests/system/timeouts/tests-tcp.py
+--- bind-9.16.13.orig/bin/tests/system/timeouts/tests-tcp.py	1969-12-31 18:00:00.000000000 -0600
++++ bind-9.16.13/bin/tests/system/timeouts/tests-tcp.py	2021-03-24 13:54:23.057872113 -0500
+@@ -0,0 +1,142 @@
++#!/usr/bin/python3
++###############################################################################
++# Copyright (C) Internet Systems Consortium, Inc. ("ISC")
++#
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, you can obtain one at https://mozilla.org/MPL/2.0/.
++#
++# See the COPYRIGHT file distributed with this work for additional
++# information regarding copyright ownership.
++###############################################################################
++
++# pylint: disable=unused-variable
++
++import socket
++import time
++
++import pytest
++
++TIMEOUT = 10
++
++def create_msg(qname, qtype):
++    import dns.message
++    msg = dns.message.make_query(qname, qtype, want_dnssec=True,
++                                 use_edns=0, payload=4096)
++
++    return msg
++
++def timeout():
++    return time.time() + TIMEOUT
++
++@pytest.mark.dnspython
++@pytest.mark.dnspython2
++def test_initial_timeout(port):
++    # The initial timeout is 2.5 seconds, so this should timeout.
++    import dns.query
++
++    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
++        sock.connect(("10.53.0.1", port))
++
++        time.sleep(3)
++
++        msg = create_msg("example.", "A")
++
++        with pytest.raises(EOFError):
++            try:
++                (sbytes, stime) = dns.query.send_tcp(sock, msg, timeout())
++                (response, rtime) = dns.query.receive_tcp(sock, timeout())
++            except ConnectionResetError as e:
++                raise EOFError from e
++
++@pytest.mark.dnspython
++@pytest.mark.dnspython2
++def test_idle_timeout(port):
++    # The idle timeout is 5 seconds, so sending the second message must fail
++    import dns.rcode
++
++    msg = create_msg("example.", "A")
++    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
++        sock.connect(("10.53.0.1", port))
++
++        time.sleep(1)
++
++        (sbytes, stime) = dns.query.send_tcp(sock, msg, timeout())
++        (response, rtime) = dns.query.receive_tcp(sock, timeout())
++
++        time.sleep(3)
++
++        (sbytes, stime) = dns.query.send_tcp(sock, msg, timeout())
++        (response, rtime) = dns.query.receive_tcp(sock, timeout())
++
++        time.sleep(6)
++
++        with pytest.raises(EOFError):
++            try:
++                (sbytes, stime) = dns.query.send_tcp(sock, msg, timeout())
++                (response, rtime) = dns.query.receive_tcp(sock, timeout())
++            except ConnectionResetError as e:
++                raise EOFError from e
++
++@pytest.mark.dnspython
++@pytest.mark.dnspython2
++def test_pipelining_timeout(port):
++    # The pipelining should only timeout after the last message is received
++    import dns.query
++
++    msg = create_msg("example.", "A")
++    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
++        sock.connect(("10.53.0.1", port))
++
++        time.sleep(1)
++
++        # Send and receive 25 DNS queries
++        for n in range(25):
++            (sbytes, stime) = dns.query.send_tcp(sock, msg, timeout())
++        for n in range(25):
++            (response, rtime) = dns.query.receive_tcp(sock, timeout())
++
++        time.sleep(3)
++
++        # Send and receieve 25 more
++        for n in range(25):
++            (sbytes, stime) = dns.query.send_tcp(sock, msg, timeout())
++        for n in range(25):
++            (response, rtime) = dns.query.receive_tcp(sock, timeout())
++
++        time.sleep(6)
++
++        with pytest.raises(EOFError):
++            try:
++                (sbytes, stime) = dns.query.send_tcp(sock, msg, timeout())
++                (response, rtime) = dns.query.receive_tcp(sock, timeout())
++            except ConnectionResetError as e:
++                raise EOFError from e
++
++@pytest.mark.dnspython
++@pytest.mark.dnspython2
++def test_long_axfr(port):
++    # The timers should not fire during AXFR, thus the connection should not close abruptly.
++    import dns.query
++    import dns.rdataclass
++    import dns.rdatatype
++
++    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
++        sock.connect(("10.53.0.1", port))
++
++        name = dns.name.from_text("example.")
++        msg = create_msg("example.", "AXFR")
++        (sbytes, stime) = dns.query.send_tcp(sock, msg, timeout())
++
++        # Receive the initial DNS message with SOA
++        (respose, rtime) = dns.query.receive_tcp(sock, timeout(), one_rr_per_rrset=True)
++        soa = response.get_rrset(dns.message.ANSWER, name, dns.rdataclass.IN, dns.rdatatype.SOA)
++        assert soa is not None
++
++        # Pull DNS messages from the wire until the second SOA is received
++        while True:
++            (response, rtime) = dns.query.receive_tcp(sock, timeout(), one_rr_per_rrset=True)
++            soa = response.get_rrset(dns.message.ANSWER, name, dns.rdataclass.IN, dns.rdatatype.SOA)
++            if soa is not None:
++                break
++        assert soa is not None
+diff -Naurp bind-9.16.13.orig/lib/dns/zone.c bind-9.16.13/lib/dns/zone.c
+--- bind-9.16.13.orig/lib/dns/zone.c	2021-03-11 07:20:59.000000000 -0600
++++ bind-9.16.13/lib/dns/zone.c	2021-03-24 19:22:32.093569642 -0500
+@@ -1806,11 +1806,6 @@ dns_zone_isdynamic(dns_zone_t *zone, boo
+ 		return (true);
+ 	}
+ 
+-	/* Kasp zones are always dynamic. */
+-	if (dns_zone_use_kasp(zone)) {
+-		return (true);
+-	}
+-
+ 	/* If !ignore_freeze, we need check whether updates are disabled.  */
+ 	if (zone->type == dns_zone_master &&
+ 	    (!zone->update_disabled || ignore_freeze) &&
+@@ -2059,8 +2054,8 @@ zone_load(dns_zone_t *zone, unsigned int
+ 	is_dynamic = dns_zone_isdynamic(zone, false);
+ 	if (zone->db != NULL && is_dynamic) {
+ 		/*
+-		 * This is a slave, stub, dynamically updated, or kasp enabled
+-		 * zone being reloaded.  Do nothing - the database we already
++		 * This is a slave, stub, or dynamically updated zone being
++		 * reloaded.  Do nothing - the database we already
+ 		 * have is guaranteed to be up-to-date.
+ 		 */
+ 		if (zone->type == dns_zone_master && !hasraw) {
+@@ -2372,6 +2367,16 @@ dns_zone_loadandthaw(dns_zone_t *zone) {
+ 	if (inline_raw(zone)) {
+ 		result = zone_load(zone->secure, DNS_ZONELOADFLAG_THAW, false);
+ 	} else {
++      /*
++       * When thawing a zone, we don't know what changes
++       * have been made. If we do DNSSEC maintenance on this
++       * zone, schedule a full sign for this zone.
++       */
++      if (zone->type == dns_zone_master &&
++          DNS_ZONEKEY_OPTION(zone, DNS_ZONEKEY_MAINTAIN))
++      {
++         DNS_ZONEKEY_SETOPTION(zone, DNS_ZONEKEY_FULLSIGN);
++      }
+ 		result = zone_load(zone, DNS_ZONELOADFLAG_THAW, false);
+ 	}
+ 
+@@ -19942,7 +19947,12 @@ zone_rekey(dns_zone_t *zone) {
+ 	}
+ 
+ 	if (result == ISC_R_SUCCESS) {
+-		bool insecure = dns_zone_secure_to_insecure(zone, false);
++		/*
++       * Publish CDS/CDNSKEY DELETE records if the zone is
++       * transitioning from secure to insecure.
++       */
++      bool cds_delete = dns_zone_secure_to_insecure(zone, false);
++      isc_stdtime_t when;
+ 
+ 		/*
+ 		 * Only update DNSKEY TTL if we have a policy.
+@@ -19979,9 +19989,37 @@ zone_rekey(dns_zone_t *zone) {
+ 			goto failure;
+ 		}
+ 
++      if (cds_delete) {
++         /*
++          * Only publish CDS/CDNSKEY DELETE records if there is
++          * a KSK that can be used to verify the RRset. This
++          * means there must be a key with the KSK role that is
++          * published and is used for signing.
++          */
++         cds_delete = false;
++         for (key = ISC_LIST_HEAD(dnskeys); key != NULL;
++              key = ISC_LIST_NEXT(key, link)) {
++                  dst_key_t *dstk = key->key;
++                  bool ksk = false;
++                  (void)dst_key_getbool(dstk, DST_BOOL_KSK, &ksk);
++                  if (!ksk) {
++                     continue;
++                  }
++
++                  if (dst_key_haskasp(dstk) &&
++                      dst_key_is_published(dstk, now, &when) &&
++                      dst_key_is_signing(dstk, DST_BOOL_KSK, now,
++                                         &when))
++                  {
++                     cds_delete = true;
++                     break;
++                  }
++         }
++      }
++
+ 		result = dns_dnssec_syncdelete(&cdsset, &cdnskeyset,
+ 					       &zone->origin, zone->rdclass,
+-					       ttl, &diff, mctx, insecure);
++					       ttl, &diff, mctx, cds_delete);
+ 		if (result != ISC_R_SUCCESS) {
+ 			dnssec_log(zone, ISC_LOG_ERROR,
+ 				   "zone_rekey:couldn't update CDS/CDNSKEY "
+@@ -20343,6 +20381,7 @@ dns_zone_cdscheck(dns_zone_t *zone, dns_
+ 	unsigned char buffer[DNS_DS_BUFFERSIZE];
+ 	unsigned char algorithms[256];
+ 	unsigned int i;
++   bool empty = false;
+ 
+ 	enum { notexpected = 0, expected = 1, found = 2 };
+ 
+@@ -20378,14 +20417,8 @@ dns_zone_cdscheck(dns_zone_t *zone, dns_
+ 	result = dns_db_findrdataset(db, node, version, dns_rdatatype_dnskey,
+ 				     dns_rdatatype_none, 0, &dnskey, NULL);
+ 	if (result == ISC_R_NOTFOUND) {
+-		if (dns_rdataset_isassociated(&cds)) {
+-			result = DNS_R_BADCDS;
+-		} else {
+-			result = DNS_R_BADCDNSKEY;
+-		}
+-		goto failure;
+-	}
+-	if (result != ISC_R_SUCCESS) {
++		empty = true;
++   } else if (result != ISC_R_SUCCESS) {
+ 		goto failure;
+ 	}
+ 
+@@ -20415,6 +20448,11 @@ dns_zone_cdscheck(dns_zone_t *zone, dns_
+ 				delete = true;
+ 				continue;
+ 			}
++         if (empty) {
++            result = DNS_R_BADCDS;
++            goto failure;
++         }
++
+ 			CHECK(dns_rdata_tostruct(&crdata, &structcds, NULL));
+ 			if (algorithms[structcds.algorithm] == 0) {
+ 				algorithms[structcds.algorithm] = expected;
+@@ -20482,6 +20520,12 @@ dns_zone_cdscheck(dns_zone_t *zone, dns_
+ 				delete = true;
+ 				continue;
+ 			}
++
++         if (empty) {
++            result = DNS_R_BADCDNSKEY;
++            goto failure;
++         }
++
+ 			CHECK(dns_rdata_tostruct(&crdata, &structcdnskey,
+ 						 NULL));
+ 			if (algorithms[structcdnskey.algorithm] == 0) {
+diff -Naurp bind-9.16.13.orig/lib/isc/include/isc/netmgr.h bind-9.16.13/lib/isc/include/isc/netmgr.h
+--- bind-9.16.13.orig/lib/isc/include/isc/netmgr.h	2021-03-11 07:20:59.000000000 -0600
++++ bind-9.16.13/lib/isc/include/isc/netmgr.h	2021-03-24 13:56:31.852673248 -0500
+@@ -162,9 +162,11 @@ isc_nmhandle_setdata(isc_nmhandle_t *han
+ 
+ void
+ isc_nmhandle_settimeout(isc_nmhandle_t *handle, uint32_t timeout);
++void
++isc_nmhandle_cleartimeout(isc_nmhandle_t *handle);
+ /*%<
+- * Set the read/recv timeout for the socket connected to 'handle'
+- * to 'timeout', and reset the timer.
++ * Set/clear the read/recv timeout for the socket connected to 'handle'
++ * to 'timeout' (in milliseconds), and reset the timer.
+  *
+  * When this is called on a 'wrapper' socket handle (for example,
+  * a TCPDNS socket wrapping a TCP connection), the timer is set for
+@@ -431,10 +433,10 @@ void
+ isc_nm_settimeouts(isc_nm_t *mgr, uint32_t init, uint32_t idle,
+ 		   uint32_t keepalive, uint32_t advertised);
+ /*%<
+- * Sets the initial, idle, and keepalive timeout values to use for
+- * TCP connections, and the timeout value to advertise in responses using
++ * Sets the initial, idle, and keepalive timeout values (in milliseconds) to use
++ * for TCP connections, and the timeout value to advertise in responses using
+  * the EDNS TCP Keepalive option (which should ordinarily be the same
+- * as 'keepalive'), in tenths of seconds.
++ * as 'keepalive').
+  *
+  * Requires:
+  * \li	'mgr' is a valid netmgr.
+@@ -445,7 +447,7 @@ isc_nm_gettimeouts(isc_nm_t *mgr, uint32
+ 		   uint32_t *keepalive, uint32_t *advertised);
+ /*%<
+  * Gets the initial, idle, keepalive, or advertised timeout values,
+- * in tenths of seconds.
++ * in milliseconds.
+  *
+  * Any integer pointer parameter not set to NULL will be updated to
+  * contain the corresponding timeout value.
+diff -Naurp bind-9.16.13.orig/lib/isc/netmgr/netmgr.c bind-9.16.13/lib/isc/netmgr/netmgr.c
+--- bind-9.16.13.orig/lib/isc/netmgr/netmgr.c	2021-03-11 07:20:59.000000000 -0600
++++ bind-9.16.13/lib/isc/netmgr/netmgr.c	2021-03-24 19:17:56.338568481 -0500
+@@ -509,10 +509,10 @@ isc_nm_settimeouts(isc_nm_t *mgr, uint32
+ 		   uint32_t keepalive, uint32_t advertised) {
+ 	REQUIRE(VALID_NM(mgr));
+ 
+-	atomic_store(&mgr->init, init * 100);
+-	atomic_store(&mgr->idle, idle * 100);
+-	atomic_store(&mgr->keepalive, keepalive * 100);
+-	atomic_store(&mgr->advertised, advertised * 100);
++	atomic_store(&mgr->init, init);
++	atomic_store(&mgr->idle, idle);
++	atomic_store(&mgr->keepalive, keepalive);
++	atomic_store(&mgr->advertised, advertised);
+ }
+ 
+ void
+@@ -521,19 +521,19 @@ isc_nm_gettimeouts(isc_nm_t *mgr, uint32
+ 	REQUIRE(VALID_NM(mgr));
+ 
+ 	if (initial != NULL) {
+-		*initial = atomic_load(&mgr->init) / 100;
++		*initial = atomic_load(&mgr->init);
+ 	}
+ 
+ 	if (idle != NULL) {
+-		*idle = atomic_load(&mgr->idle) / 100;
++		*idle = atomic_load(&mgr->idle);
+ 	}
+ 
+ 	if (keepalive != NULL) {
+-		*keepalive = atomic_load(&mgr->keepalive) / 100;
++		*keepalive = atomic_load(&mgr->keepalive);
+ 	}
+ 
+ 	if (advertised != NULL) {
+-		*advertised = atomic_load(&mgr->advertised) / 100;
++		*advertised = atomic_load(&mgr->advertised);
+ 	}
+ }
+ 
+@@ -1537,26 +1537,388 @@ isc_nmhandle_setdata(isc_nmhandle_t *han
+ }
+ 
+ void
+-isc_nmhandle_settimeout(isc_nmhandle_t *handle, uint32_t timeout) {
+-	REQUIRE(VALID_NMHANDLE(handle));
++isc__nm_alloc_dnsbuf(isc_nmsocket_t *sock, size_t len) {
++   REQUIRE(len <= NM_BIG_BUF);
+ 
+-	switch (handle->sock->type) {
+-	case isc_nm_udpsocket:
+-		isc__nm_udp_settimeout(handle, timeout);
++   if (sock->buf == NULL) {
++      // We don't have the buffer at all!
++      size_t alloc_len = len < NM_REG_BUF ? NM_REG_BUF : NM_BIG_BUF;
++      sock->buf = isc_mem_allocate(sock->mgr->mctx, alloc_len);
++      sock->buf_size = alloc_len;
++   } else {
++      // We have the buffer but it's too small
++      sock->buf = isc_mem_reallocate(sock->mgr->mctx, sock->buf,
++                                     NM_BIG_BUF);
++      sock->buf_size = NM_BIG_BUF;
++   }
++}
++
++void
++isc__nm_failed_send_cb(isc_nmsocket_t *sock, isc__nm_uvreq_t *req,
++                       isc_result_t eresult) {
++   REQUIRE(VALID_NMSOCK(sock));
++   REQUIRE(VALID_UVREQ(req));
++
++   if (req->cb.send != NULL) {
++      isc__nm_sendcb(sock, req, eresult, true);
++   } else {
++      isc__nm_uvreq_put(&req, sock);
++   }
++}
++
++void
++isc__nm_failed_accept_cb(isc_nmsocket_t *sock, isc_result_t eresult) {
++   REQUIRE(sock->accepting);
++   REQUIRE(sock->server);
++
++   /*
++    * Detach the quota early to make room for other connections;
++    * otherwise it'd be detached later asynchronously, and clog
++    * the quota unnecessarily.
++    */
++   if (sock->quota != NULL) {
++      isc_quota_detach(&sock->quota);
++   }
++
++   isc__nmsocket_detach(&sock->server);
++
++   sock->accepting = false;
++
++   switch (eresult) {
++   case ISC_R_NOTCONNECTED:
++      // IGNORE: The client disconnected before we could accept.
+ 		break;
++   default:
++      isc_log_write(isc_lctx, ISC_LOGCATEGORY_GENERAL,
++                    ISC_LOGMODULE_NETMGR, ISC_LOG_ERROR,
++                    "Accepting TCP connection failed: %s",
++                    isc_result_totext(eresult));
++   }
++}
++
++void
++isc__nm_failed_connect_cb(isc_nmsocket_t *sock, isc__nm_uvreq_t *req,
++                               isc_result_t eresult) {
++   REQUIRE(VALID_NMSOCK(sock));
++   REQUIRE(VALID_UVREQ(req));
++   REQUIRE(sock->tid == isc_nm_tid());
++   REQUIRE(atomic_load(&sock->connecting));
++   REQUIRE(req->cb.connect != NULL);
++
++   atomic_store(&sock->connecting, false);
++
++   isc__nmsocket_clearcb(sock);
++
++   isc__nm_connectcb(sock, req, eresult);
++
++   isc__nmsocket_prep_destroy(sock);
++}
++
++void
++isc__nm_failed_read_cb(isc_nmsocket_t *sock, isc_result_t result) {
++   REQUIRE(VALID_NMSOCK(sock));
++   switch (sock->type) {
++   case isc_nm_udpsocket:
++      isc__nm_udp_failed_read_cb(sock, result);
++      return;
+ 	case isc_nm_tcpsocket:
+-		isc__nm_tcp_settimeout(handle, timeout);
+-		break;
++		isc__nm_tcp_failed_read_cb(sock, result);
++      return;
++   case isc_nm_tcpdnssocket:
++      isc__nm_tcpdns_failed_read_cb(sock, result);
++      return;
++   case isc_nm_tlsdnssocket:
++      isc__nm_tlsdns_failed_read_cb(sock, result);
++      return;
++   default:
++      INSIST(0);
++      ISC_UNREACHABLE();
++   }
++}
++
++static void
++isc__nmsocket_readtimeout_cb(uv_timer_t *timer) {
++   isc_nmsocket_t *sock = uv_handle_get_data((uv_handle_t *)timer);
++
++   REQUIRE(VALID_NMSOCK(sock));
++   REQUIRE(sock->tid == isc_nm_tid());
++   REQUIRE(sock->reading);
++
++   isc__nm_failed_read_cb(sock, ISC_R_TIMEDOUT);
++}
++
++void
++isc__nmsocket_timer_restart(isc_nmsocket_t *sock) {
++   REQUIRE(VALID_NMSOCK(sock));
++
++   if (sock->read_timeout == 0) {
++      return;
++   }
++
++   int r = uv_timer_start(&sock->timer, isc__nmsocket_readtimeout_cb,
++                          sock->read_timeout, 0);
++   RUNTIME_CHECK(r == 0);
++}
++
++void
++isc__nmsocket_timer_start(isc_nmsocket_t *sock) {
++   REQUIRE(VALID_NMSOCK(sock));
++
++   if (uv_is_active((uv_handle_t *)&sock->timer)) {
++      return;
++   }
++
++   isc__nmsocket_timer_restart(sock);
++}
++
++void
++isc__nmsocket_timer_stop(isc_nmsocket_t *sock) {
++   REQUIRE(VALID_NMSOCK(sock));
++
++   if (!uv_is_active((uv_handle_t *)&sock->timer)) {
++      return;
++   }
++
++   int r = uv_timer_stop(&sock->timer);
++   RUNTIME_CHECK(r == 0);
++}
++
++isc__nm_uvreq_t *
++isc__nm_get_read_req(isc_nmsocket_t *sock, isc_sockaddr_t *sockaddr) {
++   isc__nm_uvreq_t *req = NULL;
++
++   req = isc__nm_uvreq_get(sock->mgr, sock);
++   req->cb.recv = sock->recv_cb;
++   req->cbarg = sock->recv_cbarg;
++
++   if (atomic_load(&sock->client)) {
++      isc_nmhandle_attach(sock->statichandle, &req->handle);
++   } else {
++      req->handle = isc__nmhandle_get(sock, sockaddr, NULL);
++   }
++
++   return req;
++}
++
++/*%<
++ * Allocator for read operations. Limited to size 2^16.
++ *
++ * Note this doesn't actually allocate anything, it just assigns the
++ * worker's receive buffer to a socket, and marks it as "in use".
++ */
++void
++isc__nm_alloc_cb(uv_handle_t *handle, size_t size, uv_buf_t *buf) {
++   isc_nmsocket_t *sock = uv_handle_get_data(handle);
++   isc__networker_t *worker = NULL;
++
++   REQUIRE(VALID_NMSOCK(sock));
++   REQUIRE(isc__nm_in_netthread());
++
++   switch (sock->type) {
++   case isc_nm_udpsocket:
++      REQUIRE(size <= ISC_NETMGR_RECVBUF_SIZE);
++      size = ISC_NETMGR_RECVBUF_SIZE;
++      break;
+ 	case isc_nm_tcpdnssocket:
+-		isc__nm_tcpdns_settimeout(handle, timeout);
+ 		break;
+ 	case isc_nm_tlsdnssocket:
+-		isc__nm_tlsdns_settimeout(handle, timeout);
++		/*
++       * We need to limit the individual chunks to be read, so the
++       * BIO_write() will always succeed and the consumed before the
++       * next readcb is called.
++       */
++      if (size >= ISC_NETMGR_TLSBUF_SIZE) {
++         size = ISC_NETMGR_TLSBUF_SIZE;
++      }
+ 		break;
+ 	default:
+ 		INSIST(0);
+ 		ISC_UNREACHABLE();
+ 	}
++
++   worker = &sock->mgr->workers[sock->tid];
++   INSIST(!worker->recvbuf_inuse);
++
++   buf->base = worker->recvbuf;
++   buf->len = size;
++   worker->recvbuf_inuse = true;
++}
++
++void
++isc__nm_start_reading(isc_nmsocket_t *sock) {
++   int r;
++
++   if (sock->reading) {
++      return;
++   }
++
++   switch (sock->type) {
++   case isc_nm_udpsocket:
++      r = uv_udp_recv_start(&sock->uv_handle.udp, isc__nm_alloc_cb,
++                            isc__nm_udp_read_cb);
++      break;
++   case isc_nm_tcpdnssocket:
++      r = uv_read_start(&sock->uv_handle.stream, isc__nm_alloc_cb,
++                        isc__nm_tcpdns_read_cb);
++      break;
++   case isc_nm_tlsdnssocket:
++      r = uv_read_start(&sock->uv_handle.stream, isc__nm_alloc_cb,
++                        isc__nm_tlsdns_read_cb);
++      break;
++   default:
++      INSIST(0);
++      ISC_UNREACHABLE();
++   }
++   RUNTIME_CHECK(r == 0);
++   sock->reading = true;
++}
++
++void
++isc__nm_stop_reading(isc_nmsocket_t *sock) {
++   int r;
++
++   if (!sock->reading) {
++      return;
++   }
++
++   switch(sock->type) {
++   case isc_nm_udpsocket:
++      r = uv_udp_recv_stop(&sock->uv_handle.udp);
++      break;
++   case isc_nm_tcpdnssocket:
++   case isc_nm_tlsdnssocket:
++      r = uv_read_stop(&sock->uv_handle.stream);
++      break;
++   default:
++      INSIST(0);
++      ISC_UNREACHABLE();
++   }
++   RUNTIME_CHECK(r == 0);
++   sock->reading = false;
++}
++
++bool
++isc__nm_inactive(isc_nmsocket_t *sock) {
++   return(!isc__nmsocket_active(sock) || atomic_load(&sock->closing) ||
++         atomic_load(&sock->mgr->closing) ||
++         (sock->server != NULL && !isc__nmsocket_active(sock->server)));
++}
++
++static isc_result_t
++processbuffer(isc_nmsocket_t *sock) {
++   switch(sock->type) {
++   case isc_nm_tcpdnssocket:
++      return (isc__nm_tcpdns_processbuffer(sock));
++   case isc_nm_tlsdnssocket:
++      return (isc__nm_tcpdns_processbuffer(sock));
++   default:
++      INSIST(0);
++      ISC_UNREACHABLE();
++   }
++}
++
++/*
++ * Process a DNS message.
++ *
++ * If we only have an incomplete DNS message, we don't touch any
++ * timers. If we do have a full message, reset the timer.
++ *
++ * Stop reading if this is a client socket, or if the server socket
++ * has been set to sequential mode, or the number of queries we are
++ * processing simultaneously has reached the clients-per-connection
++ * limit. In this case, we'll be called again by resume_processing()
++ * later.
++ */
++void
++isc__nm_process_sock_buffer(isc_nmsocket_t *sock) {
++   for (;;) {
++      int_fast32_t ah = atomic_load(&sock->ah);
++      isc_result_t result = processbuffer(sock);
++      switch(result) {
++      case ISC_R_NOMORE:
++         /*
++          * Don't reset the timer until we have
++          * a full DNS message.
++          */
++         isc__nm_start_reading(sock);
++         /*
++          * Start the timer only if there are no externally used
++          * active handles, there's always one active handle
++          * attached internally to sock->recv_handle in
++          * accept_connection()
++          */
++         if (ah == 1) {
++            isc__nmsocket_timer_start(sock);
++         }
++         return;
++      case ISC_R_CANCELED:
++         isc__nmsocket_timer_stop(sock);
++         isc__nm_stop_reading(sock);
++         return;
++      case ISC_R_SUCCESS:
++         /*
++          * Stop the timer on the successful message read, this
++          * also allows to restart the timer when we have no more
++          * data.
++          */
++         isc__nmsocket_timer_stop(sock);
++
++         if (atomic_load(&sock->client) ||
++             atomic_load(&sock->sequential) ||
++             ah >= STREAM_CLIENTS_PER_CONN)
++         {
++            isc__nm_stop_reading(sock);
++            return;
++         }
++         break;
++      default:
++         INSIST(0);
++      }
++   }
++}
++
++void
++isc__nm_resume_processing(void *arg) {
++   isc_nmsocket_t *sock = (isc_nmsocket_t *)arg;
++
++   REQUIRE(VALID_NMSOCK(sock));
++   REQUIRE(sock->tid == isc_nm_tid());
++   REQUIRE(!atomic_load(&sock->client));
++
++   if (isc__nm_inactive(sock)) {
++      return;
++   }
++
++   isc__nm_process_sock_buffer(sock);
++}
++
++void
++isc_nmhandle_cleartimeout(isc_nmhandle_t *handle) {
++   REQUIRE(VALID_NMHANDLE(handle));
++   REQUIRE(VALID_NMSOCK(handle->sock));
++
++   switch (handle->sock->type) {
++   default:
++            handle->sock->read_timeout = 0;
++
++            if (uv_is_active((uv_handle_t *)&handle->sock->timer)) {
++               isc__nmsocket_timer_stop(handle->sock);
++            }
++   }
++}
++
++void
++isc_nmhandle_settimeout(isc_nmhandle_t *handle, uint32_t timeout) {
++   REQUIRE(VALID_NMHANDLE(handle));
++   REQUIRE(VALID_NMSOCK(handle->sock));
++
++   switch(handle->sock->type) {
++   default:
++      handle->sock->read_timeout = timeout;
++      if (uv_is_active((uv_handle_t *)&handle->sock->timer)) {
++         isc__nmsocket_timer_restart(handle->sock);
++      }
++   }
+ }
+ 
+ void *
+@@ -1865,22 +2227,23 @@ isc__nm_async_readcb(isc__networker_t *w
+ 
+ void
+ isc__nm_sendcb(isc_nmsocket_t *sock, isc__nm_uvreq_t *uvreq,
+-	       isc_result_t eresult) {
++	       isc_result_t eresult, bool async) {
+ 	REQUIRE(VALID_NMSOCK(sock));
+ 	REQUIRE(VALID_UVREQ(uvreq));
+ 	REQUIRE(VALID_NMHANDLE(uvreq->handle));
+ 
+-	if (eresult == ISC_R_SUCCESS) {
++	if (!async) {
+ 		isc__netievent_sendcb_t ievent = { .sock = sock,
+ 						   .req = uvreq,
+ 						   .result = eresult };
+ 		isc__nm_async_sendcb(NULL, (isc__netievent_t *)&ievent);
+-	} else {
+-		isc__netievent_sendcb_t *ievent = isc__nm_get_netievent_sendcb(
+-			sock->mgr, sock, uvreq, eresult);
+-		isc__nm_enqueue_ievent(&sock->mgr->workers[sock->tid],
+-				       (isc__netievent_t *)ievent);
++      return;
+ 	}
++
++   isc__netievent_sendcb_t *ievent =
++      isc__nm_get_netievent_sendcb(sock->mgr, sock, uvreq, eresult);
++   isc__nm_enqueue_ievent(&sock->mgr->workers[sock->tid],
++         (isc__netievent_t *)ievent);
+ }
+ 
+ void
+diff -Naurp bind-9.16.13.orig/lib/isc/netmgr/netmgr-int.h bind-9.16.13/lib/isc/netmgr/netmgr-int.h
+--- bind-9.16.13.orig/lib/isc/netmgr/netmgr-int.h	2021-03-11 07:20:59.000000000 -0600
++++ bind-9.16.13/lib/isc/netmgr/netmgr-int.h	2021-03-24 19:16:08.938294736 -0500
+@@ -39,6 +39,8 @@
+ 
+ #define ISC_NETMGR_TID_UNKNOWN -1
+ 
++#define ISC_NETMGR_TLSBUF_SIZE 65536
++
+ #if !defined(WIN32)
+ /*
+  * New versions of libuv support recvmmsg on unices.
+@@ -670,6 +672,12 @@ enum {
+ 	STATID_ACTIVE = 10
+ };
+ 
++typedef void (*isc_nm_closehandlecb_t)(void* arg);
++/*%<
++ * Opaque callback function, used for isc_nmhandle 'reset' and 'free'
++ * callbacks.
++ */
++
+ struct isc_nmsocket {
+ 	/*% Unlocked, RO */
+ 	int magic;
+@@ -892,7 +900,7 @@ struct isc_nmsocket {
+ 	 * as the argument whenever a handle's references drop
+ 	 * to zero, after its reset callback has been called.
+ 	 */
+-	isc_nm_opaquecb_t closehandle_cb;
++	isc_nm_closehandlecb_t closehandle_cb;
+ 
+ 	isc_nmhandle_t *recv_handle;
+ 	isc_nm_recv_cb_t recv_cb;
+@@ -1031,6 +1039,16 @@ isc__nmsocket_clearcb(isc_nmsocket_t *so
+  */
+ 
+ void
++isc__nmsocket_timer_stop(isc_nmsocket_t *sock);
++void
++isc__nmsocket_timer_start(isc_nmsocket_t *sock);
++void
++isc__nmsocket_timer_restart(isc_nmsocket_t *sock);
++/*%<
++ * Start/stop/restart the read timeout on the socket
++ */
++
++void
+ isc__nm_connectcb(isc_nmsocket_t *sock, isc__nm_uvreq_t *uvreq,
+ 		  isc_result_t eresult);
+ void
+@@ -1054,7 +1072,7 @@ isc__nm_async_readcb(isc__networker_t *w
+ 
+ void
+ isc__nm_sendcb(isc_nmsocket_t *sock, isc__nm_uvreq_t *uvreq,
+-	       isc_result_t eresult);
++	       isc_result_t eresult, bool async);
+ void
+ isc__nm_async_sendcb(isc__networker_t *worker, isc__netievent_t *ev0);
+ /*%<
+@@ -1110,7 +1128,7 @@ isc__nm_udp_stoplistening(isc_nmsocket_t
+ void
+ isc__nm_udp_settimeout(isc_nmhandle_t *handle, uint32_t timeout);
+ /*%<
+- * Set the recv timeout for the UDP socket associated with 'handle'.
++ * Set or clear the recv timeout for the UDP socket associated with 'handle'.
+  */
+ 
+ void
+@@ -1431,7 +1449,7 @@ isc__nm_socket_dontfrag(uv_os_sock_t fd,
+ isc_result_t
+ isc__nm_socket_connectiontimeout(uv_os_sock_t fd, int timeout_ms);
+ /*%<
+- * Set the connection timeout in miliseconds, on non-Linux platforms,
++ * Set the connection timeout in milliseconds, on non-Linux platforms,
+  * the minimum value must be at least 1000 (1 second).
+  */
+ 
+@@ -1542,3 +1560,59 @@ NETIEVENT_DECL(pause);
+ NETIEVENT_DECL(resume);
+ NETIEVENT_DECL(shutdown);
+ NETIEVENT_DECL(stop);
++
++void
++isc__nm_udp_failed_read_cb(isc_nmsocket_t *sock, isc_result_t result);
++void
++isc__nm_tcp_failed_read_cb(isc_nmsocket_t *sock, isc_result_t result);
++void
++isc__nm_tcpdns_failed_read_cb(isc_nmsocket_t *sock, isc_result_t result);
++void
++isc__nm_tlsdns_failed_read_cb(isc_nmsocket_t *sock, isc_result_t result);
++
++isc_result_t
++isc__nm_tcpdns_processbuffer(isc_nmsocket_t *sock);
++isc_result_t
++isc__nm_tlsdns_processbuffer(isc_nmsocket_t *sock);
++
++isc__nm_uvreq_t *
++isc__nm_get_read_req(isc_nmsocket_t *sock, isc_sockaddr_t *sockaddr);
++
++void
++isc__nm_alloc_cb(uv_handle_t *handle, size_t size, uv_buf_t *buf);
++
++void
++isc__nm_udp_read_cb(uv_udp_t *handle, ssize_t nrecv, const uv_buf_t *buf,
++                    const struct sockaddr *addr, unsigned flags);
++
++void
++isc__nm_tcpdns_read_cb(uv_stream_t *stream, ssize_t nread, const uv_buf_t *buf);
++void
++isc__nm_tlsdns_read_cb(uv_stream_t *stream, ssize_t nread, const uv_buf_t *buf);
++
++void
++isc__nm_start_reading(isc_nmsocket_t *sock);
++void
++isc__nm_stop_reading(isc_nmsocket_t *sock);
++void
++isc__nm_process_sock_buffer(isc_nmsocket_t *sock);
++void
++isc__nm_resume_processing(void *arg);
++bool
++isc__nm_inactive(isc_nmsocket_t *sock);
++
++void
++isc__nm_alloc_dnsbuf(isc_nmsocket_t *sock, size_t len);
++
++void
++isc__nm_failed_send_cb(isc_nmsocket_t *sock, isc__nm_uvreq_t *req,
++                       isc_result_t eresult);
++void
++isc__nm_failed_accept_cb(isc_nmsocket_t *sock, isc_result_t eresult);
++void
++isc__nm_failed_connect_cb(isc_nmsocket_t *sock, isc__nm_uvreq_t *req,
++                          isc_result_t eresult);
++void
++isc__nm_failed_read_cb(isc_nmsocket_t *sock, isc_result_t result);
++
++#define STREAM_CLIENTS_PER_CONN 23
+diff -Naurp bind-9.16.13.orig/lib/isc/netmgr/tcp.c bind-9.16.13/lib/isc/netmgr/tcp.c
+--- bind-9.16.13.orig/lib/isc/netmgr/tcp.c	2021-03-11 07:20:59.000000000 -0600
++++ bind-9.16.13/lib/isc/netmgr/tcp.c	2021-03-24 16:53:03.113961690 -0500
+@@ -87,9 +87,6 @@ static void
+ stop_tcp_child(isc_nmsocket_t *sock);
+ 
+ static void
+-start_sock_timer(isc_nmsocket_t *sock);
+-
+-static void
+ start_reading(isc_nmsocket_t *sock);
+ 
+ static void
+@@ -716,6 +713,11 @@ destroy:
+ 	}
+ }
+ 
++void
++isc__nm_tcp_failed_read_cb(isc_nmsocket_t *sock, isc_result_t result) {
++   failed_read_cb(sock, result);
++}
++
+ static void
+ failed_send_cb(isc_nmsocket_t *sock, isc__nm_uvreq_t *req,
+ 	       isc_result_t eresult) {
+@@ -723,7 +725,7 @@ failed_send_cb(isc_nmsocket_t *sock, isc
+ 	REQUIRE(VALID_UVREQ(req));
+ 
+ 	if (req->cb.send != NULL) {
+-		isc__nm_sendcb(sock, req, eresult);
++		isc__nm_sendcb(sock, req, eresult, true);
+ 	} else {
+ 		isc__nm_uvreq_put(&req, sock);
+ 	}
+@@ -742,35 +744,6 @@ get_read_req(isc_nmsocket_t *sock) {
+ }
+ 
+ static void
+-readtimeout_cb(uv_timer_t *timer) {
+-	isc_nmsocket_t *sock = uv_handle_get_data((uv_handle_t *)timer);
+-
+-	REQUIRE(VALID_NMSOCK(sock));
+-	REQUIRE(sock->tid == isc_nm_tid());
+-	REQUIRE(sock->reading);
+-
+-	/*
+-	 * Timeout; stop reading and process whatever we have.
+-	 */
+-	failed_read_cb(sock, ISC_R_TIMEDOUT);
+-}
+-
+-static void
+-start_sock_timer(isc_nmsocket_t *sock) {
+-	if (sock->read_timeout > 0) {
+-		int r = uv_timer_start(&sock->timer, readtimeout_cb,
+-				       sock->read_timeout, 0);
+-		REQUIRE(r == 0);
+-	}
+-}
+-
+-static void
+-stop_sock_timer(isc_nmsocket_t *sock) {
+-	int r = uv_timer_stop(&sock->timer);
+-	REQUIRE(r == 0);
+-}
+-
+-static void
+ start_reading(isc_nmsocket_t *sock) {
+ 	if (sock->reading) {
+ 		return;
+@@ -779,8 +752,6 @@ start_reading(isc_nmsocket_t *sock) {
+ 	int r = uv_read_start(&sock->uv_handle.stream, tcp_alloc_cb, read_cb);
+ 	REQUIRE(r == 0);
+ 	sock->reading = true;
+-
+-	start_sock_timer(sock);
+ }
+ 
+ static void
+@@ -793,7 +764,7 @@ stop_reading(isc_nmsocket_t *sock) {
+ 	REQUIRE(r == 0);
+ 	sock->reading = false;
+ 
+-	stop_sock_timer(sock);
++	isc__nmsocket_timer_stop(sock);
+ }
+ 
+ void
+@@ -876,6 +847,7 @@ isc__nm_async_tcpstartread(isc__networke
+ 	}
+ 
+ 	start_reading(sock);
++   isc__nmsocket_timer_start(sock);
+ }
+ 
+ void
+@@ -994,7 +966,7 @@ read_cb(uv_stream_t *stream, ssize_t nre
+ 	/* The readcb could have paused the reading */
+ 	if (sock->reading) {
+ 		/* The timer will be updated */
+-		start_sock_timer(sock);
++		isc__nmsocket_timer_restart(sock);
+ 	}
+ 
+ free:
+@@ -1196,7 +1168,7 @@ tcp_send_cb(uv_write_t *req, int status)
+ 		return;
+ 	}
+ 
+-	isc__nm_sendcb(sock, uvreq, ISC_R_SUCCESS);
++	isc__nm_sendcb(sock, uvreq, ISC_R_SUCCESS, false);
+ }
+ 
+ /*
+@@ -1476,20 +1448,6 @@ isc__nm_async_tcpcancel(isc__networker_t
+ 	failed_read_cb(sock, ISC_R_EOF);
+ }
+ 
+-void
+-isc__nm_tcp_settimeout(isc_nmhandle_t *handle, uint32_t timeout) {
+-	isc_nmsocket_t *sock = NULL;
+-
+-	REQUIRE(VALID_NMHANDLE(handle));
+-
+-	sock = handle->sock;
+-
+-	sock->read_timeout = timeout;
+-	if (uv_is_active((uv_handle_t *)&sock->timer)) {
+-		start_sock_timer(sock);
+-	}
+-}
+-
+ int_fast32_t
+ isc__nm_tcp_listener_nactive(isc_nmsocket_t *listener) {
+ 	int_fast32_t nactive;
+diff -Naurp bind-9.16.13.orig/lib/isc/netmgr/tcpdns.c bind-9.16.13/lib/isc/netmgr/tcpdns.c
+--- bind-9.16.13.orig/lib/isc/netmgr/tcpdns.c	2021-03-11 07:20:59.000000000 -0600
++++ bind-9.16.13/lib/isc/netmgr/tcpdns.c	2021-03-24 19:20:13.340595846 -0500
+@@ -34,7 +34,6 @@
+ #include "netmgr-int.h"
+ #include "uv-compat.h"
+ 
+-#define TCPDNS_CLIENTS_PER_CONN 23
+ /*%<
+  *
+  * Maximum number of simultaneous handles in flight supported for a single
+@@ -57,20 +56,12 @@ can_log_tcpdns_quota(void) {
+ 	return (false);
+ }
+ 
+-static void
+-tcpdns_alloc_cb(uv_handle_t *handle, size_t size, uv_buf_t *buf);
+-
+-static void
+-resume_processing(void *arg);
+-
+ static isc_result_t
+ tcpdns_connect_direct(isc_nmsocket_t *sock, isc__nm_uvreq_t *req);
+ 
+ static void
+ tcpdns_close_direct(isc_nmsocket_t *sock);
+ 
+-static isc_result_t
+-tcpdns_send_direct(isc_nmsocket_t *sock, isc__nm_uvreq_t *req);
+ static void
+ tcpdns_connect_cb(uv_connect_t *uvreq, int status);
+ 
+@@ -78,9 +69,6 @@ static void
+ tcpdns_connection_cb(uv_stream_t *server, int status);
+ 
+ static void
+-read_cb(uv_stream_t *stream, ssize_t nread, const uv_buf_t *buf);
+-
+-static void
+ tcpdns_close_cb(uv_handle_t *uvhandle);
+ 
+ static isc_result_t
+@@ -90,100 +78,10 @@ static void
+ quota_accept_cb(isc_quota_t *quota, void *sock0);
+ 
+ static void
+-failed_accept_cb(isc_nmsocket_t *sock, isc_result_t eresult);
+-
+-static void
+-failed_send_cb(isc_nmsocket_t *sock, isc__nm_uvreq_t *req,
+-	       isc_result_t eresult);
+-
+-static void
+ stop_tcpdns_parent(isc_nmsocket_t *sock);
+ static void
+ stop_tcpdns_child(isc_nmsocket_t *sock);
+ 
+-static void
+-start_sock_timer(isc_nmsocket_t *sock);
+-
+-static void
+-process_sock_buffer(isc_nmsocket_t *sock);
+-
+-static void
+-stop_reading(isc_nmsocket_t *sock);
+-
+-static isc__nm_uvreq_t *
+-get_read_req(isc_nmsocket_t *sock);
+-
+-static inline void
+-alloc_dnsbuf(isc_nmsocket_t *sock, size_t len) {
+-	REQUIRE(len <= NM_BIG_BUF);
+-
+-	if (sock->buf == NULL) {
+-		/* We don't have the buffer at all */
+-		size_t alloc_len = len < NM_REG_BUF ? NM_REG_BUF : NM_BIG_BUF;
+-		sock->buf = isc_mem_allocate(sock->mgr->mctx, alloc_len);
+-		sock->buf_size = alloc_len;
+-	} else {
+-		/* We have the buffer but it's too small */
+-		sock->buf = isc_mem_reallocate(sock->mgr->mctx, sock->buf,
+-					       NM_BIG_BUF);
+-		sock->buf_size = NM_BIG_BUF;
+-	}
+-}
+-
+-static bool
+-inactive(isc_nmsocket_t *sock) {
+-	return (!isc__nmsocket_active(sock) || atomic_load(&sock->closing) ||
+-		atomic_load(&sock->mgr->closing) ||
+-		(sock->server != NULL && !isc__nmsocket_active(sock->server)));
+-}
+-
+-static void
+-failed_accept_cb(isc_nmsocket_t *sock, isc_result_t eresult) {
+-	REQUIRE(sock->accepting);
+-	REQUIRE(sock->server);
+-
+-	/*
+-	 * Detach the quota early to make room for other connections;
+-	 * otherwise it'd be detached later asynchronously, and clog
+-	 * the quota unnecessarily.
+-	 */
+-	if (sock->quota != NULL) {
+-		isc_quota_detach(&sock->quota);
+-	}
+-
+-	isc__nmsocket_detach(&sock->server);
+-
+-	sock->accepting = false;
+-
+-	switch (eresult) {
+-	case ISC_R_NOTCONNECTED:
+-		/* IGNORE: The client disconnected before we could accept */
+-		break;
+-	default:
+-		isc_log_write(isc_lctx, ISC_LOGCATEGORY_GENERAL,
+-			      ISC_LOGMODULE_NETMGR, ISC_LOG_ERROR,
+-			      "Accepting TCP connection failed: %s",
+-			      isc_result_totext(eresult));
+-	}
+-}
+-
+-static void
+-failed_connect_cb(isc_nmsocket_t *sock, isc__nm_uvreq_t *req,
+-		  isc_result_t eresult) {
+-	REQUIRE(VALID_NMSOCK(sock));
+-	REQUIRE(VALID_UVREQ(req));
+-	REQUIRE(sock->tid == isc_nm_tid());
+-	REQUIRE(atomic_load(&sock->connecting));
+-	REQUIRE(req->cb.connect != NULL);
+-
+-	atomic_store(&sock->connecting, false);
+-
+-	isc__nmsocket_clearcb(sock);
+-	isc__nm_connectcb(sock, req, eresult);
+-
+-	isc__nmsocket_prep_destroy(sock);
+-}
+-
+ static isc_result_t
+ tcpdns_connect_direct(isc_nmsocket_t *sock, isc__nm_uvreq_t *req) {
+ 	isc__networker_t *worker = NULL;
+@@ -331,7 +229,7 @@ tcpdns_connect_cb(uv_connect_t *uvreq, i
+ 	return;
+ 
+ error:
+-	failed_connect_cb(sock, req, result);
++	isc__nm_failed_connect_cb(sock, req, result);
+ }
+ 
+ isc_result_t
+@@ -648,7 +546,7 @@ tcpdns_connection_cb(uv_stream_t *server
+ 	REQUIRE(VALID_NMSOCK(ssock));
+ 	REQUIRE(ssock->tid == isc_nm_tid());
+ 
+-	if (inactive(ssock)) {
++	if (isc__nm_inactive(ssock)) {
+ 		result = ISC_R_CANCELED;
+ 		goto done;
+ 	}
+@@ -725,12 +623,13 @@ isc__nm_async_tcpdnsstop(isc__networker_
+ 	}
+ }
+ 
+-static void
+-failed_read_cb(isc_nmsocket_t *sock, isc_result_t result) {
++void
++isc__nm_tcpdns_failed_read_cb(isc_nmsocket_t *sock, isc_result_t result) {
+ 	REQUIRE(VALID_NMSOCK(sock));
+ 	REQUIRE(result != ISC_R_SUCCESS);
+ 
+-	stop_reading(sock);
++	isc__nmsocket_timer_stop(sock);
++   isc__nm_stop_reading(sock);
+ 
+ 	if (!sock->recv_read) {
+ 		goto destroy;
+@@ -738,7 +637,7 @@ failed_read_cb(isc_nmsocket_t *sock, isc
+ 	sock->recv_read = false;
+ 
+ 	if (sock->recv_cb != NULL) {
+-		isc__nm_uvreq_t *req = get_read_req(sock);
++		isc__nm_uvreq_t *req = isc__nm_get_read_req(sock, NULL);
+ 		isc__nmsocket_clearcb(sock);
+ 		isc__nm_readcb(sock, req, result);
+ 	}
+@@ -753,96 +652,6 @@ destroy:
+ 	}
+ }
+ 
+-static void
+-failed_send_cb(isc_nmsocket_t *sock, isc__nm_uvreq_t *req,
+-	       isc_result_t eresult) {
+-	REQUIRE(VALID_NMSOCK(sock));
+-	REQUIRE(VALID_UVREQ(req));
+-
+-	if (req->cb.send != NULL) {
+-		isc__nm_sendcb(sock, req, eresult);
+-	} else {
+-		isc__nm_uvreq_put(&req, sock);
+-	}
+-}
+-
+-static isc__nm_uvreq_t *
+-get_read_req(isc_nmsocket_t *sock) {
+-	isc__nm_uvreq_t *req = NULL;
+-
+-	req = isc__nm_uvreq_get(sock->mgr, sock);
+-	req->cb.recv = sock->recv_cb;
+-	req->cbarg = sock->recv_cbarg;
+-
+-	if (atomic_load(&sock->client)) {
+-		isc_nmhandle_attach(sock->statichandle, &req->handle);
+-	} else {
+-		req->handle = isc__nmhandle_get(sock, NULL, NULL);
+-	}
+-
+-	return (req);
+-}
+-
+-static void
+-readtimeout_cb(uv_timer_t *timer) {
+-	isc_nmsocket_t *sock = uv_handle_get_data((uv_handle_t *)timer);
+-
+-	REQUIRE(VALID_NMSOCK(sock));
+-	REQUIRE(sock->tid == isc_nm_tid());
+-	REQUIRE(sock->reading);
+-
+-	/*
+-	 * Timeout; stop reading and process whatever we have.
+-	 */
+-
+-	failed_read_cb(sock, ISC_R_TIMEDOUT);
+-}
+-
+-static void
+-start_sock_timer(isc_nmsocket_t *sock) {
+-	if (sock->read_timeout > 0) {
+-		int r = uv_timer_start(&sock->timer, readtimeout_cb,
+-				       sock->read_timeout, 0);
+-		RUNTIME_CHECK(r == 0);
+-	}
+-}
+-
+-static void
+-stop_sock_timer(isc_nmsocket_t *sock) {
+-	int r = uv_timer_stop(&sock->timer);
+-	RUNTIME_CHECK(r == 0);
+-}
+-
+-static void
+-start_reading(isc_nmsocket_t *sock) {
+-	int r;
+-
+-	if (sock->reading) {
+-		return;
+-	}
+-
+-	r = uv_read_start(&sock->uv_handle.stream, tcpdns_alloc_cb, read_cb);
+-	RUNTIME_CHECK(r == 0);
+-	sock->reading = true;
+-
+-	start_sock_timer(sock);
+-}
+-
+-static void
+-stop_reading(isc_nmsocket_t *sock) {
+-	int r;
+-
+-	if (!sock->reading) {
+-		return;
+-	}
+-
+-	r = uv_read_stop(&sock->uv_handle.stream);
+-	RUNTIME_CHECK(r == 0);
+-	sock->reading = false;
+-
+-	stop_sock_timer(sock);
+-}
+-
+ void
+ isc__nm_tcpdns_read(isc_nmhandle_t *handle, isc_nm_recv_cb_t cb, void *cbarg) {
+ 	REQUIRE(VALID_NMHANDLE(handle));
+@@ -880,31 +689,6 @@ isc__nm_tcpdns_read(isc_nmhandle_t *hand
+ 	return;
+ }
+ 
+-/*%<
+- * Allocator for TCP read operations. Limited to size 2^16.
+- *
+- * Note this doesn't actually allocate anything, it just assigns the
+- * worker's receive buffer to a socket, and marks it as "in use".
+- */
+-static void
+-tcpdns_alloc_cb(uv_handle_t *handle, size_t size, uv_buf_t *buf) {
+-	isc_nmsocket_t *sock = uv_handle_get_data(handle);
+-	isc__networker_t *worker = NULL;
+-
+-	UNUSED(size);
+-
+-	REQUIRE(VALID_NMSOCK(sock));
+-	REQUIRE(sock->type == isc_nm_tcpdnssocket);
+-	REQUIRE(isc__nm_in_netthread());
+-
+-	worker = &sock->mgr->workers[sock->tid];
+-	INSIST(!worker->recvbuf_inuse);
+-
+-	buf->base = worker->recvbuf;
+-	buf->len = size;
+-	worker->recvbuf_inuse = true;
+-}
+-
+ void
+ isc__nm_async_tcpdnsread(isc__networker_t *worker, isc__netievent_t *ev0) {
+ 	isc__netievent_tcpdnsread_t *ievent =
+@@ -916,13 +700,13 @@ isc__nm_async_tcpdnsread(isc__networker_
+ 	REQUIRE(VALID_NMSOCK(sock));
+ 	REQUIRE(sock->tid == isc_nm_tid());
+ 
+-	if (inactive(sock)) {
++	if (isc__nm_inactive(sock)) {
+ 		sock->reading = true;
+-		failed_read_cb(sock, ISC_R_CANCELED);
++		isc__nm_failed_read_cb(sock, ISC_R_CANCELED);
+ 		return;
+ 	}
+ 
+-	process_sock_buffer(sock);
++	isc__nm_process_sock_buffer(sock);
+ }
+ 
+ /*
+@@ -934,8 +718,8 @@ isc__nm_async_tcpdnsread(isc__networker_
+  *
+  * The caller will need to unreference the handle.
+  */
+-static isc_result_t
+-processbuffer(isc_nmsocket_t *sock) {
++isc_result_t
++isc__nm_tcpdns_processbuffer(isc_nmsocket_t *sock) {
+ 	size_t len;
+ 	isc__nm_uvreq_t *req = NULL;
+ 	isc_nmhandle_t *handle = NULL;
+@@ -943,7 +727,7 @@ processbuffer(isc_nmsocket_t *sock) {
+ 	REQUIRE(VALID_NMSOCK(sock));
+ 	REQUIRE(sock->tid == isc_nm_tid());
+ 
+-	if (inactive(sock)) {
++	if (isc__nm_inactive(sock)) {
+ 		return (ISC_R_CANCELED);
+ 	}
+ 
+@@ -964,7 +748,7 @@ processbuffer(isc_nmsocket_t *sock) {
+ 		return (ISC_R_NOMORE);
+ 	}
+ 
+-	req = get_read_req(sock);
++	req = isc__nm_get_read_req(sock, NULL);
+ 	REQUIRE(VALID_UVREQ(req));
+ 
+ 	/*
+@@ -1008,8 +792,9 @@ processbuffer(isc_nmsocket_t *sock) {
+ 	return (ISC_R_SUCCESS);
+ }
+ 
+-static void
+-read_cb(uv_stream_t *stream, ssize_t nread, const uv_buf_t *buf) {
++void
++isc__nm_tcpdns_read_cb(uv_stream_t *stream, ssize_t nread,
++                       const uv_buf_t *buf) {
+ 	isc_nmsocket_t *sock = uv_handle_get_data((uv_handle_t *)stream);
+ 	uint8_t *base = NULL;
+ 	size_t len;
+@@ -1019,8 +804,8 @@ read_cb(uv_stream_t *stream, ssize_t nre
+ 	REQUIRE(sock->reading);
+ 	REQUIRE(buf != NULL);
+ 
+-	if (inactive(sock)) {
+-		failed_read_cb(sock, ISC_R_CANCELED);
++	if (isc__nm_inactive(sock)) {
++		isc__nm_failed_read_cb(sock, ISC_R_CANCELED);
+ 		goto free;
+ 	}
+ 
+@@ -1030,8 +815,7 @@ read_cb(uv_stream_t *stream, ssize_t nre
+ 					 sock->statsindex[STATID_RECVFAIL]);
+ 		}
+ 
+-		failed_read_cb(sock, isc__nm_uverr2result(nread));
+-
++		isc__nm_failed_read_cb(sock, isc__nm_uverr2result(nread));
+ 		goto free;
+ 	}
+ 
+@@ -1048,7 +832,7 @@ read_cb(uv_stream_t *stream, ssize_t nre
+ 	 */
+ 
+ 	if (sock->buf_len + len > sock->buf_size) {
+-		alloc_dnsbuf(sock, sock->buf_len + len);
++		isc__nm_alloc_dnsbuf(sock, sock->buf_len + len);
+ 	}
+ 	memmove(sock->buf + sock->buf_len, base, len);
+ 	sock->buf_len += len;
+@@ -1057,7 +841,7 @@ read_cb(uv_stream_t *stream, ssize_t nre
+ 		sock->read_timeout = atomic_load(&sock->mgr->idle);
+ 	}
+ 
+-	process_sock_buffer(sock);
++	isc__nm_process_sock_buffer(sock);
+ free:
+ 	isc__nm_free_uvbuf(sock, buf);
+ }
+@@ -1119,7 +903,7 @@ accept_connection(isc_nmsocket_t *ssock,
+ 	REQUIRE(VALID_NMSOCK(ssock));
+ 	REQUIRE(ssock->tid == isc_nm_tid());
+ 
+-	if (inactive(ssock)) {
++	if (isc__nm_inactive(ssock)) {
+ 		if (quota != NULL) {
+ 			isc_quota_detach(&quota);
+ 		}
+@@ -1201,7 +985,7 @@ accept_connection(isc_nmsocket_t *ssock,
+ 
+ 	csock->read_timeout = atomic_load(&csock->mgr->init);
+ 
+-	csock->closehandle_cb = resume_processing;
++	csock->closehandle_cb = isc__nm_resume_processing;
+ 
+ 	/*
+ 	 * We need to keep the handle alive until we fail to read or connection
+@@ -1209,7 +993,7 @@ accept_connection(isc_nmsocket_t *ssock,
+ 	 * prep_destroy()->tcpdns_close_direct().
+ 	 */
+ 	isc_nmhandle_attach(handle, &csock->recv_handle);
+-	start_reading(csock);
++	isc__nm_process_sock_buffer(csock);
+ 
+ 	/*
+ 	 * The initial timer has been set, update the read timeout for the next
+@@ -1232,7 +1016,7 @@ failure:
+ 
+ 	atomic_store(&csock->active, false);
+ 
+-	failed_accept_cb(csock, result);
++	isc__nm_failed_accept_cb(csock, result);
+ 
+ 	isc__nmsocket_prep_destroy(csock);
+ 
+@@ -1280,11 +1064,12 @@ tcpdns_send_cb(uv_write_t *req, int stat
+ 
+ 	if (status < 0) {
+ 		isc__nm_incstats(sock->mgr, sock->statsindex[STATID_SENDFAIL]);
+-		failed_send_cb(sock, uvreq, isc__nm_uverr2result(status));
++		isc__nm_failed_send_cb(sock, uvreq,
++                             isc__nm_uverr2result(status));
+ 		return;
+ 	}
+ 
+-	isc__nm_sendcb(sock, uvreq, ISC_R_SUCCESS);
++	isc__nm_sendcb(sock, uvreq, ISC_R_SUCCESS, false);
+ }
+ 
+ /*
+@@ -1292,48 +1077,70 @@ tcpdns_send_cb(uv_write_t *req, int stat
+  */
+ void
+ isc__nm_async_tcpdnssend(isc__networker_t *worker, isc__netievent_t *ev0) {
+-	isc_result_t result;
+ 	isc__netievent_tcpdnssend_t *ievent =
+ 		(isc__netievent_tcpdnssend_t *)ev0;
++
++   REQUIRE(ievent->sock->type == isc_nm_tcpdnssocket);
++   REQUIRE(ievent->sock->tid == isc_nm_tid());
++   REQUIRE(VALID_NMSOCK(ievent->sock));
++   REQUIRE(VALID_UVREQ(ievent->req));
++   REQUIRE(ievent->sock->tid == isc_nm_tid());
++
++   isc_result_t result;
+ 	isc_nmsocket_t *sock = ievent->sock;
+ 	isc__nm_uvreq_t *uvreq = ievent->req;
++   uv_buf_t bufs[2] = { { .base = uvreq->tcplen, .len = 2 },
++                        { .base = uvreq->uvbuf.base, 
++                          .len = uvreq->uvbuf.len } };
++   int nbufs = 2;
++   int r;
+ 
+ 	UNUSED(worker);
+ 
+-	REQUIRE(sock->type == isc_nm_tcpdnssocket);
+-	REQUIRE(sock->tid == isc_nm_tid());
+-
+-	result = tcpdns_send_direct(sock, uvreq);
+-	if (result != ISC_R_SUCCESS) {
+-		isc__nm_incstats(sock->mgr, sock->statsindex[STATID_SENDFAIL]);
+-		failed_send_cb(sock, uvreq, result);
+-	}
+-}
+-
+-static isc_result_t
+-tcpdns_send_direct(isc_nmsocket_t *sock, isc__nm_uvreq_t *req) {
+-	int r;
++	if (isc__nm_inactive(sock)) {
++      result = ISC_R_CANCELED;
++      goto fail;
++	}
++
++   r = uv_try_write(&sock->uv_handle.stream, bufs, nbufs);
++
++	if (r == (int)(bufs[0].len + bufs[1].len)) {
++      // Wrote everything
++      isc__nm_sendcb(sock, uvreq, ISC_R_SUCCESS, true);
++      return;
++   }
++
++	if (r == 1) {
++		// Partial write of DNSMSG length
++      bufs[0].base = uvreq->tcplen + 1;
++      bufs[0].len = 1;
++	} else if (r > 0) {
++      // Partial write of DNSMSG
++      nbufs = 1;
++      bufs[0].base = uvreq->uvbuf.base + (r - 2);
++      bufs[0].len = uvreq->uvbuf.len - (r - 2);
++   } else if (r == UV_ENOSYS || r == UV_EAGAIN) {
++      // uv_try_write not supported, send asynchronously
++   } else {
++      // Error sending data
++      result = isc__nm_uverr2result(r);
++      goto fail;
++   }
+ 
+-	REQUIRE(VALID_NMSOCK(sock));
+-	REQUIRE(VALID_UVREQ(req));
+-	REQUIRE(sock->tid == isc_nm_tid());
+-	REQUIRE(sock->type == isc_nm_tcpdnssocket);
+-
+-	uv_buf_t bufs[2] = { { .base = req->tcplen, .len = 2 },
+-			     { .base = req->uvbuf.base,
+-			       .len = req->uvbuf.len } };
+-
+-	if (inactive(sock)) {
+-		return (ISC_R_CANCELED);
+-	}
+-
+-	r = uv_write(&req->uv_req.write, &sock->uv_handle.stream, bufs, 2,
++	r = uv_write(&uvreq->uv_req.write, &sock->uv_handle.stream, bufs, nbufs,
+ 		     tcpdns_send_cb);
+ 	if (r < 0) {
+-		return (isc__nm_uverr2result(r));
++		result = isc__nm_uverr2result(r);
++      goto fail;
+ 	}
+ 
+-	return (ISC_R_SUCCESS);
++	return;
++
++fail:
++   if (result != ISC_R_SUCCESS) {
++      isc__nm_incstats(sock->mgr, sock->statsindex[STATID_SENDFAIL]);
++      isc__nm_failed_send_cb(sock, uvreq, result);
++   }
+ }
+ 
+ static void
+@@ -1462,7 +1269,8 @@ tcpdns_close_direct(isc_nmsocket_t *sock
+ 		isc_nmhandle_detach(&sock->recv_handle);
+ 	}
+ 
+-	stop_reading(sock);
++	isc__nmsocket_timer_stop(sock);
++   isc__nm_stop_reading(sock);
+ 	uv_close((uv_handle_t *)&sock->timer, timer_close_cb);
+ }
+ 
+@@ -1524,7 +1332,7 @@ isc__nm_tcpdns_shutdown(isc_nmsocket_t *
+ 	}
+ 
+ 	if (sock->statichandle) {
+-		failed_read_cb(sock, ISC_R_CANCELED);
++		isc__nm_failed_read_cb(sock, ISC_R_CANCELED);
+ 		return;
+ 	}
+ 
+@@ -1564,22 +1372,7 @@ isc__nm_async_tcpdnscancel(isc__networke
+ 	REQUIRE(VALID_NMSOCK(sock));
+ 	REQUIRE(sock->tid == isc_nm_tid());
+ 
+-	failed_read_cb(sock, ISC_R_EOF);
+-}
+-
+-void
+-isc__nm_tcpdns_settimeout(isc_nmhandle_t *handle, uint32_t timeout) {
+-	isc_nmsocket_t *sock = NULL;
+-
+-	REQUIRE(VALID_NMHANDLE(handle));
+-	REQUIRE(VALID_NMSOCK(handle->sock));
+-
+-	sock = handle->sock;
+-
+-	sock->read_timeout = timeout;
+-	if (uv_is_active((uv_handle_t *)&sock->timer)) {
+-		start_sock_timer(sock);
+-	}
++	isc__nm_failed_read_cb(sock, ISC_R_EOF);
+ }
+ 
+ void
+@@ -1601,7 +1394,8 @@ isc_nm_tcpdns_sequential(isc_nmhandle_t
+ 	 * is released.
+ 	 */
+ 
+-	stop_reading(sock);
++	isc__nmsocket_timer_stop(sock);
++   isc__nm_stop_reading(sock);
+ 	atomic_store(&sock->sequential, true);
+ }
+ 
+@@ -1617,65 +1411,3 @@ isc_nm_tcpdns_keepalive(isc_nmhandle_t *
+ 
+ 	atomic_store(&sock->keepalive, value);
+ }
+-
+-static void
+-process_sock_buffer(isc_nmsocket_t *sock) {
+-	/*
+-	 * 1. When process_buffer receives incomplete DNS message,
+-	 *    we don't touch any timers
+-	 *
+-	 * 2. When we receive at least one full DNS message, we stop the timers
+-	 *    until resume_processing calls this function again and restarts the
+-	 *    reading and the timers
+-	 */
+-
+-	/*
+-	 * Process a DNS messages.  Stop if this is client socket, or the server
+-	 * socket has been set to sequential mode or the number of queries we
+-	 * are processing simultaneously have reached the clients-per-connection
+-	 * limit.
+-	 */
+-	for (;;) {
+-		isc_result_t result = processbuffer(sock);
+-		switch (result) {
+-		case ISC_R_NOMORE:
+-			start_reading(sock);
+-			return;
+-		case ISC_R_CANCELED:
+-			stop_reading(sock);
+-			return;
+-		case ISC_R_SUCCESS:
+-			if (atomic_load(&sock->client) ||
+-			    atomic_load(&sock->sequential) ||
+-			    atomic_load(&sock->ah) >= TCPDNS_CLIENTS_PER_CONN)
+-			{
+-				stop_reading(sock);
+-				return;
+-			}
+-			break;
+-		default:
+-			INSIST(0);
+-		}
+-	}
+-}
+-
+-static void
+-resume_processing(void *arg) {
+-	isc_nmsocket_t *sock = (isc_nmsocket_t *)arg;
+-
+-	REQUIRE(VALID_NMSOCK(sock));
+-	REQUIRE(sock->tid == isc_nm_tid());
+-	REQUIRE(sock->type == isc_nm_tcpdnssocket);
+-	REQUIRE(!atomic_load(&sock->client));
+-
+-	if (inactive(sock)) {
+-		return;
+-	}
+-
+-	if (atomic_load(&sock->ah) == 0) {
+-		/* Nothing is active; sockets can timeout now */
+-		start_sock_timer(sock);
+-	}
+-
+-	process_sock_buffer(sock);
+-}
+diff -Naurp bind-9.16.13.orig/lib/isc/netmgr/tlsdns.c bind-9.16.13/lib/isc/netmgr/tlsdns.c
+--- bind-9.16.13.orig/lib/isc/netmgr/tlsdns.c	2021-03-11 07:20:59.000000000 -0600
++++ bind-9.16.13/lib/isc/netmgr/tlsdns.c	2021-03-24 18:19:35.695416811 -0500
+@@ -35,9 +35,6 @@
+ #include "openssl_shim.h"
+ #include "uv-compat.h"
+ 
+-#define TLS_BUF_SIZE 65536
+-
+-#define TLSDNS_CLIENTS_PER_CONN 23
+ /*%<
+  *
+  * Maximum number of simultaneous handles in flight supported for a single
+@@ -50,12 +47,6 @@ static atomic_uint_fast32_t last_tlsdnsq
+ static void
+ tls_error(isc_nmsocket_t *sock, isc_result_t result);
+ 
+-static void
+-tlsdns_alloc_cb(uv_handle_t *handle, size_t size, uv_buf_t *buf);
+-
+-static void
+-resume_processing(void *arg);
+-
+ static isc_result_t
+ tlsdns_connect_direct(isc_nmsocket_t *sock, isc__nm_uvreq_t *req);
+ 
+@@ -71,9 +62,6 @@ static void
+ tlsdns_connection_cb(uv_stream_t *server, int status);
+ 
+ static void
+-read_cb(uv_stream_t *stream, ssize_t nread, const uv_buf_t *buf);
+-
+-static void
+ tlsdns_close_cb(uv_handle_t *uvhandle);
+ 
+ static isc_result_t
+@@ -83,33 +71,11 @@ static void
+ quota_accept_cb(isc_quota_t *quota, void *sock0);
+ 
+ static void
+-failed_accept_cb(isc_nmsocket_t *sock, isc_result_t eresult);
+-
+-static void
+-failed_send_cb(isc_nmsocket_t *sock, isc__nm_uvreq_t *req,
+-	       isc_result_t eresult);
+-
+-static void
+ stop_tlsdns_parent(isc_nmsocket_t *sock);
+ static void
+ stop_tlsdns_child(isc_nmsocket_t *sock);
+ 
+ static void
+-start_reading(isc_nmsocket_t *sock);
+-
+-static void
+-stop_reading(isc_nmsocket_t *sock);
+-
+-static void
+-start_sock_timer(isc_nmsocket_t *sock);
+-
+-static void
+-process_sock_buffer(isc_nmsocket_t *sock);
+-
+-static isc__nm_uvreq_t *
+-get_read_req(isc_nmsocket_t *sock);
+-
+-static void
+ async_tlsdns_cycle(isc_nmsocket_t *sock) __attribute__((unused));
+ 
+ static isc_result_t
+@@ -128,78 +94,6 @@ can_log_tlsdns_quota(void) {
+ 	return (false);
+ }
+ 
+-static inline void
+-alloc_dnsbuf(isc_nmsocket_t *sock, size_t len) {
+-	REQUIRE(len <= NM_BIG_BUF);
+-
+-	if (sock->buf == NULL) {
+-		/* We don't have the buffer at all */
+-		size_t alloc_len = len < NM_REG_BUF ? NM_REG_BUF : NM_BIG_BUF;
+-		sock->buf = isc_mem_allocate(sock->mgr->mctx, alloc_len);
+-		sock->buf_size = alloc_len;
+-	} else {
+-		/* We have the buffer but it's too small */
+-		sock->buf = isc_mem_reallocate(sock->mgr->mctx, sock->buf,
+-					       NM_BIG_BUF);
+-		sock->buf_size = NM_BIG_BUF;
+-	}
+-}
+-
+-static bool
+-inactive(isc_nmsocket_t *sock) {
+-	return (!isc__nmsocket_active(sock) || atomic_load(&sock->closing) ||
+-		atomic_load(&sock->mgr->closing) ||
+-		(sock->server != NULL && !isc__nmsocket_active(sock->server)));
+-}
+-
+-static void
+-failed_accept_cb(isc_nmsocket_t *sock, isc_result_t eresult) {
+-	REQUIRE(sock->accepting);
+-	REQUIRE(sock->server);
+-
+-	/*
+-	 * Detach the quota early to make room for other connections;
+-	 * otherwise it'd be detached later asynchronously, and clog
+-	 * the quota unnecessarily.
+-	 */
+-	if (sock->quota != NULL) {
+-		isc_quota_detach(&sock->quota);
+-	}
+-
+-	isc__nmsocket_detach(&sock->server);
+-
+-	sock->accepting = false;
+-
+-	switch (eresult) {
+-	case ISC_R_NOTCONNECTED:
+-		/* IGNORE: The client disconnected before we could accept */
+-		break;
+-	default:
+-		isc_log_write(isc_lctx, ISC_LOGCATEGORY_GENERAL,
+-			      ISC_LOGMODULE_NETMGR, ISC_LOG_ERROR,
+-			      "Accepting TCP connection failed: %s",
+-			      isc_result_totext(eresult));
+-	}
+-}
+-
+-static void
+-failed_connect_cb(isc_nmsocket_t *sock, isc__nm_uvreq_t *req,
+-		  isc_result_t eresult) {
+-	REQUIRE(VALID_NMSOCK(sock));
+-	REQUIRE(VALID_UVREQ(req));
+-	REQUIRE(sock->tid == isc_nm_tid());
+-	REQUIRE(atomic_load(&sock->connecting));
+-	REQUIRE(req->cb.connect != NULL);
+-
+-	atomic_store(&sock->connecting, false);
+-
+-	isc__nmsocket_clearcb(sock);
+-
+-	isc__nm_connectcb(sock, req, eresult);
+-
+-	isc__nmsocket_prep_destroy(sock);
+-}
+-
+ static isc_result_t
+ tlsdns_connect_direct(isc_nmsocket_t *sock, isc__nm_uvreq_t *req) {
+ 	isc__networker_t *worker = NULL;
+@@ -344,12 +238,12 @@ tlsdns_connect_cb(uv_connect_t *uvreq, i
+ 	/*
+ 	 *
+ 	 */
+-	r = BIO_new_bio_pair(&sock->tls.ssl_wbio, TLS_BUF_SIZE,
+-			     &sock->tls.app_rbio, TLS_BUF_SIZE);
++	r = BIO_new_bio_pair(&sock->tls.ssl_wbio, ISC_NETMGR_TLSBUF_SIZE,
++			     &sock->tls.app_rbio, ISC_NETMGR_TLSBUF_SIZE);
+ 	RUNTIME_CHECK(r == 1);
+ 
+-	r = BIO_new_bio_pair(&sock->tls.ssl_rbio, TLS_BUF_SIZE,
+-			     &sock->tls.app_wbio, TLS_BUF_SIZE);
++	r = BIO_new_bio_pair(&sock->tls.ssl_rbio, ISC_NETMGR_TLSBUF_SIZE,
++			     &sock->tls.app_wbio, ISC_NETMGR_TLSBUF_SIZE);
+ 	RUNTIME_CHECK(r == 1);
+ 
+ #if HAVE_SSL_SET0_RBIO && HAVE_SSL_SET0_WBIO
+@@ -372,7 +266,8 @@ tlsdns_connect_cb(uv_connect_t *uvreq, i
+ 
+ 	sock->tls.pending_req = req;
+ 
+-	start_reading(sock);
++	isc__nm_process_sock_buffer(sock);
++
+ 	result = tls_cycle(sock);
+ 	if (result != ISC_R_SUCCESS) {
+ 		goto error;
+@@ -381,7 +276,7 @@ tlsdns_connect_cb(uv_connect_t *uvreq, i
+ 	return;
+ 
+ error:
+-	failed_connect_cb(sock, req, result);
++	isc__nm_failed_connect_cb(sock, req, result);
+ }
+ 
+ isc_result_t
+@@ -704,7 +599,7 @@ tlsdns_connection_cb(uv_stream_t *server
+ 	REQUIRE(VALID_NMSOCK(ssock));
+ 	REQUIRE(ssock->tid == isc_nm_tid());
+ 
+-	if (inactive(ssock)) {
++	if (isc__nm_inactive(ssock)) {
+ 		result = ISC_R_CANCELED;
+ 		goto done;
+ 	}
+@@ -856,17 +751,18 @@ isc__nm_async_tlsdnsstop(isc__networker_
+ 	}
+ }
+ 
+-static void
+-failed_read_cb(isc_nmsocket_t *sock, isc_result_t result) {
++void
++isc__nm_tlsdns_failed_read_cb(isc_nmsocket_t *sock, isc_result_t result) {
+ 	REQUIRE(VALID_NMSOCK(sock));
+ 	REQUIRE(result != ISC_R_SUCCESS);
+ 
+-	stop_reading(sock);
++	isc__nmsocket_timer_stop(sock);
++   isc__nm_stop_reading(sock);
+ 
+ 	if (sock->tls.pending_req) {
+ 		isc__nm_uvreq_t *req = sock->tls.pending_req;
+ 		sock->tls.pending_req = NULL;
+-		failed_connect_cb(sock, req, ISC_R_CANCELED);
++		isc__nm_failed_connect_cb(sock, req, ISC_R_CANCELED);
+ 	}
+ 
+ 	if (!sock->recv_read) {
+@@ -875,7 +771,7 @@ failed_read_cb(isc_nmsocket_t *sock, isc
+ 	sock->recv_read = false;
+ 
+ 	if (sock->recv_cb != NULL) {
+-		isc__nm_uvreq_t *req = get_read_req(sock);
++		isc__nm_uvreq_t *req = isc__nm_get_read_req(sock, NULL);
+ 		isc__nmsocket_clearcb(sock);
+ 		isc__nm_readcb(sock, req, result);
+ 	}
+@@ -890,96 +786,6 @@ destroy:
+ 	}
+ }
+ 
+-static void
+-failed_send_cb(isc_nmsocket_t *sock, isc__nm_uvreq_t *req,
+-	       isc_result_t eresult) {
+-	REQUIRE(VALID_NMSOCK(sock));
+-	REQUIRE(VALID_UVREQ(req));
+-
+-	if (req->cb.send != NULL) {
+-		isc__nm_sendcb(sock, req, eresult);
+-	} else {
+-		isc__nm_uvreq_put(&req, sock);
+-	}
+-}
+-
+-static isc__nm_uvreq_t *
+-get_read_req(isc_nmsocket_t *sock) {
+-	isc__nm_uvreq_t *req = NULL;
+-
+-	req = isc__nm_uvreq_get(sock->mgr, sock);
+-	req->cb.recv = sock->recv_cb;
+-	req->cbarg = sock->recv_cbarg;
+-
+-	if (atomic_load(&sock->client)) {
+-		isc_nmhandle_attach(sock->statichandle, &req->handle);
+-	} else {
+-		req->handle = isc__nmhandle_get(sock, NULL, NULL);
+-	}
+-
+-	return (req);
+-}
+-
+-static void
+-readtimeout_cb(uv_timer_t *timer) {
+-	isc_nmsocket_t *sock = uv_handle_get_data((uv_handle_t *)timer);
+-
+-	REQUIRE(VALID_NMSOCK(sock));
+-	REQUIRE(sock->tid == isc_nm_tid());
+-	REQUIRE(sock->reading);
+-
+-	/*
+-	 * Timeout; stop reading and process whatever we have.
+-	 */
+-
+-	failed_read_cb(sock, ISC_R_TIMEDOUT);
+-}
+-
+-static void
+-start_sock_timer(isc_nmsocket_t *sock) {
+-	if (sock->read_timeout > 0) {
+-		int r = uv_timer_start(&sock->timer, readtimeout_cb,
+-				       sock->read_timeout, 0);
+-		RUNTIME_CHECK(r == 0);
+-	}
+-}
+-
+-static void
+-stop_sock_timer(isc_nmsocket_t *sock) {
+-	int r = uv_timer_stop(&sock->timer);
+-	RUNTIME_CHECK(r == 0);
+-}
+-
+-static void
+-start_reading(isc_nmsocket_t *sock) {
+-	int r;
+-
+-	if (sock->reading) {
+-		return;
+-	}
+-
+-	r = uv_read_start(&sock->uv_handle.stream, tlsdns_alloc_cb, read_cb);
+-	RUNTIME_CHECK(r == 0);
+-	sock->reading = true;
+-
+-	start_sock_timer(sock);
+-}
+-
+-static void
+-stop_reading(isc_nmsocket_t *sock) {
+-	int r;
+-
+-	if (!sock->reading) {
+-		return;
+-	}
+-
+-	r = uv_read_stop(&sock->uv_handle.stream);
+-	RUNTIME_CHECK(r == 0);
+-	sock->reading = false;
+-
+-	stop_sock_timer(sock);
+-}
+-
+ void
+ isc__nm_tlsdns_read(isc_nmhandle_t *handle, isc_nm_recv_cb_t cb, void *cbarg) {
+ 	REQUIRE(VALID_NMHANDLE(handle));
+@@ -1017,38 +823,6 @@ isc__nm_tlsdns_read(isc_nmhandle_t *hand
+ 	return;
+ }
+ 
+-/*%<
+- * Allocator for TCP read operations. Limited to size 2^16.
+- *
+- * Note this doesn't actually allocate anything, it just assigns the
+- * worker's receive buffer to a socket, and marks it as "in use".
+- */
+-static void
+-tlsdns_alloc_cb(uv_handle_t *handle, size_t size, uv_buf_t *buf) {
+-	isc_nmsocket_t *sock = uv_handle_get_data(handle);
+-	isc__networker_t *worker = NULL;
+-
+-	REQUIRE(VALID_NMSOCK(sock));
+-	REQUIRE(sock->type == isc_nm_tlsdnssocket);
+-	REQUIRE(isc__nm_in_netthread());
+-
+-	/*
+-	 * We need to limit the individual chunks to be read, so the BIO_write()
+-	 * will always succeed and the consumed before the next readcb is
+-	 * called.
+-	 */
+-	if (size >= TLS_BUF_SIZE) {
+-		size = TLS_BUF_SIZE;
+-	}
+-
+-	worker = &sock->mgr->workers[sock->tid];
+-	INSIST(!worker->recvbuf_inuse);
+-
+-	buf->base = worker->recvbuf;
+-	buf->len = size;
+-	worker->recvbuf_inuse = true;
+-}
+-
+ void
+ isc__nm_async_tlsdnsread(isc__networker_t *worker, isc__netievent_t *ev0) {
+ 	isc__netievent_tlsdnsread_t *ievent =
+@@ -1061,16 +835,15 @@ isc__nm_async_tlsdnsread(isc__networker_
+ 	REQUIRE(VALID_NMSOCK(sock));
+ 	REQUIRE(sock->tid == isc_nm_tid());
+ 
+-	if (inactive(sock)) {
++	if (isc__nm_inactive(sock)) {
+ 		sock->reading = true;
+-		failed_read_cb(sock, ISC_R_CANCELED);
++		isc__nm_failed_read_cb(sock, ISC_R_CANCELED);
+ 		return;
+ 	}
+ 
+ 	result = tls_cycle(sock);
+ 	if (result != ISC_R_SUCCESS) {
+-		stop_reading(sock);
+-		failed_read_cb(sock, result);
++		isc__nm_failed_read_cb(sock, result);
+ 	}
+ }
+ 
+@@ -1083,8 +856,8 @@ isc__nm_async_tlsdnsread(isc__networker_
+  *
+  * The caller will need to unreference the handle.
+  */
+-static isc_result_t
+-processbuffer(isc_nmsocket_t *sock) {
++isc_result_t
++isc__nm_tlsdns_processbuffer(isc_nmsocket_t *sock) {
+ 	size_t len;
+ 	isc__nm_uvreq_t *req = NULL;
+ 	isc_nmhandle_t *handle = NULL;
+@@ -1092,7 +865,7 @@ processbuffer(isc_nmsocket_t *sock) {
+ 	REQUIRE(VALID_NMSOCK(sock));
+ 	REQUIRE(sock->tid == isc_nm_tid());
+ 
+-	if (inactive(sock)) {
++	if (isc__nm_inactive(sock)) {
+ 		return (ISC_R_CANCELED);
+ 	}
+ 
+@@ -1113,7 +886,7 @@ processbuffer(isc_nmsocket_t *sock) {
+ 		return (ISC_R_NOMORE);
+ 	}
+ 
+-	req = get_read_req(sock);
++	req = isc__nm_get_read_req(sock, NULL);
+ 	REQUIRE(VALID_UVREQ(req));
+ 
+ 	/*
+@@ -1170,12 +943,13 @@ tls_cycle_input(isc_nmsocket_t *sock) {
+ 			(void)SSL_peek(sock->tls.ssl, &(char){ '\0' }, 0);
+ 
+ 			int pending = SSL_pending(sock->tls.ssl);
+-			if (pending > TLS_BUF_SIZE) {
+-				pending = TLS_BUF_SIZE;
++			if (pending > ISC_NETMGR_TLSBUF_SIZE) {
++				pending = ISC_NETMGR_TLSBUF_SIZE;
+ 			}
+ 
+ 			if ((sock->buf_len + pending) > sock->buf_size) {
+-				alloc_dnsbuf(sock, sock->buf_len + pending);
++				isc__nm_alloc_dnsbuf(sock,
++                                 sock->buf_len + pending);
+ 			}
+ 
+ 			len = 0;
+@@ -1184,7 +958,7 @@ tls_cycle_input(isc_nmsocket_t *sock) {
+ 					 sock->buf_size - sock->buf_len, &len);
+ 			if (rv != 1) {
+ 				/* Process what's in the buffer so far */
+-				process_sock_buffer(sock);
++				isc__nm_process_sock_buffer(sock);
+ 
+ 				/* FIXME: Should we call failed_read_cb()? */
+ 				break;
+@@ -1194,7 +968,7 @@ tls_cycle_input(isc_nmsocket_t *sock) {
+ 
+ 			sock->buf_len += len;
+ 
+-			process_sock_buffer(sock);
++			isc__nm_process_sock_buffer(sock);
+ 		}
+ 	} else if (!SSL_is_init_finished(sock->tls.ssl)) {
+ 		if (SSL_is_server(sock->tls.ssl)) {
+@@ -1216,7 +990,7 @@ tls_cycle_input(isc_nmsocket_t *sock) {
+ 		if (sock->tls.state == TLS_STATE_NONE &&
+ 		    !SSL_is_init_finished(sock->tls.ssl)) {
+ 			sock->tls.state = TLS_STATE_HANDSHAKE;
+-			start_reading(sock);
++			isc__nm_process_sock_buffer(sock);
+ 		}
+ 		/* else continue reading */
+ 		break;
+@@ -1269,10 +1043,9 @@ static void
+ tls_error(isc_nmsocket_t *sock, isc_result_t result) {
+ 	switch (sock->tls.state) {
+ 	case TLS_STATE_HANDSHAKE:
+-		stop_reading(sock);
+-		break;
+ 	case TLS_STATE_IO:
+-		stop_reading(sock);
++		isc__nmsocket_timer_stop(sock);
++      isc__nm_stop_reading(sock);
+ 		break;
+ 	case TLS_STATE_ERROR:
+ 		return;
+@@ -1336,8 +1109,8 @@ tls_cycle_output(isc_nmsocket_t *sock) {
+ 			break;
+ 		}
+ 
+-		if (pending > TLS_BUF_SIZE) {
+-			pending = TLS_BUF_SIZE;
++		if (pending > ISC_NETMGR_TLSBUF_SIZE) {
++			pending = ISC_NETMGR_TLSBUF_SIZE;
+ 		}
+ 
+ 		sock->tls.senddata.base = isc_mem_get(sock->mgr->mctx, pending);
+@@ -1468,8 +1241,9 @@ isc__nm_async_tlsdnscycle(isc__networker
+ 	}
+ }
+ 
+-static void
+-read_cb(uv_stream_t *stream, ssize_t nread, const uv_buf_t *buf) {
++void
++isc__nm_tlsdns_read_cb(uv_stream_t *stream, ssize_t nread,
++                       const uv_buf_t *buf) {
+ 	isc_nmsocket_t *sock = uv_handle_get_data((uv_handle_t *)stream);
+ 	size_t len;
+ 	isc_result_t result;
+@@ -1480,8 +1254,8 @@ read_cb(uv_stream_t *stream, ssize_t nre
+ 	REQUIRE(sock->reading);
+ 	REQUIRE(buf != NULL);
+ 
+-	if (inactive(sock)) {
+-		failed_read_cb(sock, ISC_R_CANCELED);
++	if (isc__nm_inactive(sock)) {
++		isc__nm_failed_read_cb(sock, ISC_R_CANCELED);
+ 		goto free;
+ 	}
+ 
+@@ -1491,7 +1265,7 @@ read_cb(uv_stream_t *stream, ssize_t nre
+ 					 sock->statsindex[STATID_RECVFAIL]);
+ 		}
+ 
+-		failed_read_cb(sock, isc__nm_uverr2result(nread));
++		isc__nm_failed_read_cb(sock, isc__nm_uverr2result(nread));
+ 
+ 		goto free;
+ 	}
+@@ -1506,13 +1280,13 @@ read_cb(uv_stream_t *stream, ssize_t nre
+ 	rv = BIO_write_ex(sock->tls.app_wbio, buf->base, (size_t)nread, &len);
+ 
+ 	if (rv <= 0 || (size_t)nread != len) {
+-		failed_read_cb(sock, ISC_R_TLSERROR);
++		isc__nm_failed_read_cb(sock, ISC_R_TLSERROR);
+ 		goto free;
+ 	}
+ 
+ 	result = tls_cycle(sock);
+ 	if (result != ISC_R_SUCCESS) {
+-		failed_read_cb(sock, result);
++		isc__nm_failed_read_cb(sock, result);
+ 	}
+ free:
+ 	async_tlsdns_cycle(sock);
+@@ -1576,7 +1350,7 @@ accept_connection(isc_nmsocket_t *ssock,
+ 	REQUIRE(VALID_NMSOCK(ssock));
+ 	REQUIRE(ssock->tid == isc_nm_tid());
+ 
+-	if (inactive(ssock)) {
++	if (isc__nm_inactive(ssock)) {
+ 		if (quota != NULL) {
+ 			isc_quota_detach(&quota);
+ 		}
+@@ -1669,12 +1443,12 @@ accept_connection(isc_nmsocket_t *ssock,
+ 
+ 	RUNTIME_CHECK(csock->tls.ssl != NULL);
+ 
+-	r = BIO_new_bio_pair(&csock->tls.ssl_wbio, TLS_BUF_SIZE,
+-			     &csock->tls.app_rbio, TLS_BUF_SIZE);
++	r = BIO_new_bio_pair(&csock->tls.ssl_wbio, ISC_NETMGR_TLSBUF_SIZE,
++			     &csock->tls.app_rbio, ISC_NETMGR_TLSBUF_SIZE);
+ 	RUNTIME_CHECK(r == 1);
+ 
+-	r = BIO_new_bio_pair(&csock->tls.ssl_rbio, TLS_BUF_SIZE,
+-			     &csock->tls.app_wbio, TLS_BUF_SIZE);
++	r = BIO_new_bio_pair(&csock->tls.ssl_rbio, ISC_NETMGR_TLSBUF_SIZE,
++			     &csock->tls.app_wbio, ISC_NETMGR_TLSBUF_SIZE);
+ 	RUNTIME_CHECK(r == 1);
+ 
+ #if HAVE_SSL_SET0_RBIO && HAVE_SSL_SET0_WBIO
+@@ -1700,7 +1474,7 @@ accept_connection(isc_nmsocket_t *ssock,
+ 
+ 	csock->read_timeout = atomic_load(&csock->mgr->init);
+ 
+-	csock->closehandle_cb = resume_processing;
++	csock->closehandle_cb = isc__nm_resume_processing;
+ 
+ 	/*
+ 	 * We need to keep the handle alive until we fail to read or connection
+@@ -1719,7 +1493,7 @@ accept_connection(isc_nmsocket_t *ssock,
+ 
+ 	isc_nmhandle_detach(&handle);
+ 
+-	start_reading(csock);
++	isc__nm_process_sock_buffer(csock);
+ 
+ 	/*
+ 	 * sock is now attached to the handle.
+@@ -1731,7 +1505,7 @@ accept_connection(isc_nmsocket_t *ssock,
+ failure:
+ 	atomic_store(&csock->active, false);
+ 
+-	failed_accept_cb(csock, result);
++	isc__nm_failed_accept_cb(csock, result);
+ 
+ 	isc__nmsocket_prep_destroy(csock);
+ 
+@@ -1787,7 +1561,7 @@ isc__nm_async_tlsdnssend(isc__networker_
+ 	result = tlsdns_send_direct(sock, uvreq);
+ 	if (result != ISC_R_SUCCESS) {
+ 		isc__nm_incstats(sock->mgr, sock->statsindex[STATID_SENDFAIL]);
+-		failed_send_cb(sock, uvreq, result);
++		isc__nm_failed_send_cb(sock, uvreq, result);
+ 	}
+ }
+ 
+@@ -1818,7 +1592,7 @@ tlsdns_send_direct(isc_nmsocket_t *sock,
+ 		return (result);
+ 	}
+ 
+-	if (inactive(sock)) {
++	if (isc__nm_inactive(sock)) {
+ 		return (ISC_R_CANCELED);
+ 	}
+ 
+@@ -1842,7 +1616,7 @@ tlsdns_send_direct(isc_nmsocket_t *sock,
+ 		/* SSL_write_ex() doesn't do partial writes */
+ 		INSIST(sendlen == bytes);
+ 
+-		isc__nm_sendcb(sock, req, ISC_R_SUCCESS);
++		isc__nm_sendcb(sock, req, ISC_R_SUCCESS, true);
+ 		async_tlsdns_cycle(sock);
+ 		return (ISC_R_SUCCESS);
+ 	}
+@@ -2012,7 +1786,8 @@ tlsdns_close_direct(isc_nmsocket_t *sock
+ 		isc_nmhandle_detach(&sock->recv_handle);
+ 	}
+ 
+-	stop_reading(sock);
++	isc__nmsocket_timer_stop(sock);
++   isc__nm_stop_reading(sock);
+ 	uv_close((uv_handle_t *)&sock->timer, timer_close_cb);
+ }
+ 
+@@ -2076,11 +1851,11 @@ isc__nm_tlsdns_shutdown(isc_nmsocket_t *
+ 	if (sock->tls.pending_req) {
+ 		isc__nm_uvreq_t *req = sock->tls.pending_req;
+ 		sock->tls.pending_req = NULL;
+-		failed_connect_cb(sock, req, ISC_R_CANCELED);
++		isc__nm_failed_connect_cb(sock, req, ISC_R_CANCELED);
+ 	}
+ 
+ 	if (sock->statichandle) {
+-		failed_read_cb(sock, ISC_R_CANCELED);
++		isc__nm_failed_read_cb(sock, ISC_R_CANCELED);
+ 		return;
+ 	}
+ 
+@@ -2120,22 +1895,7 @@ isc__nm_async_tlsdnscancel(isc__networke
+ 	REQUIRE(VALID_NMSOCK(sock));
+ 	REQUIRE(sock->tid == isc_nm_tid());
+ 
+-	failed_read_cb(sock, ISC_R_EOF);
+-}
+-
+-void
+-isc__nm_tlsdns_settimeout(isc_nmhandle_t *handle, uint32_t timeout) {
+-	isc_nmsocket_t *sock = NULL;
+-
+-	REQUIRE(VALID_NMHANDLE(handle));
+-	REQUIRE(VALID_NMSOCK(handle->sock));
+-
+-	sock = handle->sock;
+-
+-	sock->read_timeout = timeout;
+-	if (uv_is_active((uv_handle_t *)&sock->timer)) {
+-		start_sock_timer(sock);
+-	}
++	isc__nm_failed_read_cb(sock, ISC_R_EOF);
+ }
+ 
+ void
+@@ -2157,7 +1917,8 @@ isc_nm_tlsdns_sequential(isc_nmhandle_t
+ 	 * is released.
+ 	 */
+ 
+-	stop_reading(sock);
++	isc__nmsocket_timer_stop(sock);
++   isc__nm_stop_reading(sock);
+ 	atomic_store(&sock->sequential, true);
+ }
+ 
+@@ -2173,65 +1934,3 @@ isc_nm_tlsdns_keepalive(isc_nmhandle_t *
+ 
+ 	atomic_store(&sock->keepalive, value);
+ }
+-
+-static void
+-process_sock_buffer(isc_nmsocket_t *sock) {
+-	/*
+-	 * 1. When process_buffer receives incomplete DNS message,
+-	 *    we don't touch any timers
+-	 *
+-	 * 2. When we receive at least one full DNS message, we stop the timers
+-	 *    until resume_processing calls this function again and restarts the
+-	 *    reading and the timers
+-	 */
+-
+-	/*
+-	 * Process a DNS messages.  Stop if this is client socket, or the server
+-	 * socket has been set to sequential mode or the number of queries we
+-	 * are processing simultaneously have reached the clients-per-connection
+-	 * limit.
+-	 */
+-	for (;;) {
+-		isc_result_t result = processbuffer(sock);
+-		switch (result) {
+-		case ISC_R_NOMORE:
+-			start_reading(sock);
+-			return;
+-		case ISC_R_CANCELED:
+-			stop_reading(sock);
+-			return;
+-		case ISC_R_SUCCESS:
+-			if (atomic_load(&sock->client) ||
+-			    atomic_load(&sock->sequential) ||
+-			    atomic_load(&sock->ah) >= TLSDNS_CLIENTS_PER_CONN)
+-			{
+-				stop_reading(sock);
+-				return;
+-			}
+-			break;
+-		default:
+-			INSIST(0);
+-		}
+-	}
+-}
+-
+-static void
+-resume_processing(void *arg) {
+-	isc_nmsocket_t *sock = (isc_nmsocket_t *)arg;
+-
+-	REQUIRE(VALID_NMSOCK(sock));
+-	REQUIRE(sock->tid == isc_nm_tid());
+-	REQUIRE(sock->type == isc_nm_tlsdnssocket);
+-	REQUIRE(!atomic_load(&sock->client));
+-
+-	if (inactive(sock)) {
+-		return;
+-	}
+-
+-	if (atomic_load(&sock->ah) == 0) {
+-		/* Nothing is active; sockets can timeout now */
+-		start_sock_timer(sock);
+-	}
+-
+-	process_sock_buffer(sock);
+-}
+diff -Naurp bind-9.16.13.orig/lib/isc/netmgr/udp.c bind-9.16.13/lib/isc/netmgr/udp.c
+--- bind-9.16.13.orig/lib/isc/netmgr/udp.c	2021-03-11 07:20:59.000000000 -0600
++++ bind-9.16.13/lib/isc/netmgr/udp.c	2021-03-24 19:19:28.001922739 -0500
+@@ -51,32 +51,10 @@ static void
+ udp_close_direct(isc_nmsocket_t *sock);
+ 
+ static void
+-failed_read_cb(isc_nmsocket_t *sock, isc_result_t result);
+-
+-static void
+-failed_send_cb(isc_nmsocket_t *sock, isc__nm_uvreq_t *req,
+-	       isc_result_t eresult);
+-
+-static void
+ stop_udp_parent(isc_nmsocket_t *sock);
+ static void
+ stop_udp_child(isc_nmsocket_t *sock);
+ 
+-static void
+-start_reading(isc_nmsocket_t *sock);
+-static void
+-stop_reading(isc_nmsocket_t *sock);
+-
+-static isc__nm_uvreq_t *
+-get_read_req(isc_nmsocket_t *sock, isc_sockaddr_t *sockaddr);
+-
+-static bool
+-inactive(isc_nmsocket_t *sock) {
+-	return (!isc__nmsocket_active(sock) ||
+-		atomic_load(&sock->mgr->closing) ||
+-		(sock->server != NULL && !isc__nmsocket_active(sock->server)));
+-}
+-
+ static uv_os_sock_t
+ isc__nm_udp_lb_socket(sa_family_t sa_family) {
+ 	isc_result_t result;
+@@ -192,32 +170,6 @@ isc_nm_listenudp(isc_nm_t *mgr, isc_nmif
+ 	return (result);
+ }
+ 
+-/*%<
+- * Allocator for UDP recv operations. Limited to size 20 * (2^16 + 2),
+- * which allows enough space for recvmmsg() to get multiple messages at
+- * a time.
+- *
+- * Note this doesn't actually allocate anything, it just assigns the
+- * worker's receive buffer to a socket, and marks it as "in use".
+- */
+-static void
+-udp_alloc_cb(uv_handle_t *handle, size_t size, uv_buf_t *buf) {
+-	isc_nmsocket_t *sock = uv_handle_get_data(handle);
+-	isc__networker_t *worker = NULL;
+-
+-	REQUIRE(VALID_NMSOCK(sock));
+-	REQUIRE(sock->type == isc_nm_udpsocket);
+-	REQUIRE(isc__nm_in_netthread());
+-	REQUIRE(size <= ISC_NETMGR_RECVBUF_SIZE);
+-
+-	worker = &sock->mgr->workers[sock->tid];
+-	INSIST(!worker->recvbuf_inuse);
+-
+-	buf->base = worker->recvbuf;
+-	buf->len = ISC_NETMGR_RECVBUF_SIZE;
+-	worker->recvbuf_inuse = true;
+-}
+-
+ /*
+  * Asynchronous 'udplisten' call handler: start listening on a UDP socket.
+  */
+@@ -306,7 +258,8 @@ isc__nm_async_udplisten(isc__networker_t
+ 	uv_send_buffer_size(&sock->uv_handle.handle,
+ 			    &(int){ ISC_SEND_BUFFER_SIZE });
+ #endif
+-	r = uv_udp_recv_start(&sock->uv_handle.udp, udp_alloc_cb, udp_recv_cb);
++	r = uv_udp_recv_start(&sock->uv_handle.udp, isc__nm_alloc_cb, 
++                         udp_recv_cb);
+ 	if (r != 0) {
+ 		isc__nm_incstats(sock->mgr, sock->statsindex[STATID_BINDFAIL]);
+ 		goto done;
+@@ -430,7 +383,7 @@ udp_recv_cb(uv_udp_t *handle, ssize_t nr
+ 	 *   we can free the buffer and bail.
+ 	 */
+ 	if (addr == NULL) {
+-		failed_read_cb(sock, ISC_R_EOF);
++		isc__nm_failed_read_cb(sock, ISC_R_EOF);
+ 		goto free;
+ 	}
+ 
+@@ -438,19 +391,19 @@ udp_recv_cb(uv_udp_t *handle, ssize_t nr
+ 	 * - If the socket is no longer active.
+ 	 */
+ 	if (!isc__nmsocket_active(sock)) {
+-		failed_read_cb(sock, ISC_R_CANCELED);
++		isc__nm_failed_read_cb(sock, ISC_R_CANCELED);
+ 		goto free;
+ 	}
+ 
+ 	if (nrecv < 0) {
+-		failed_read_cb(sock, isc__nm_uverr2result(nrecv));
++		isc__nm_failed_read_cb(sock, isc__nm_uverr2result(nrecv));
+ 		goto free;
+ 	}
+ 
+ 	result = isc_sockaddr_fromsockaddr(&sockaddr, addr);
+ 	RUNTIME_CHECK(result == ISC_R_SUCCESS);
+ 
+-	req = get_read_req(sock, &sockaddr);
++	req = isc__nm_get_read_req(sock, &sockaddr);
+ 
+ 	/*
+ 	 * The callback will be called synchronously, because result is
+@@ -570,15 +523,15 @@ isc__nm_async_udpsend(isc__networker_t *
+ 	REQUIRE(sock->tid == isc_nm_tid());
+ 	UNUSED(worker);
+ 
+-	if (inactive(sock)) {
+-		failed_send_cb(sock, uvreq, ISC_R_CANCELED);
++	if (isc__nm_inactive(sock)) {
++		isc__nm_failed_send_cb(sock, uvreq, ISC_R_CANCELED);
+ 		return;
+ 	}
+ 
+ 	result = udp_send_direct(sock, uvreq, &ievent->peer);
+ 	if (result != ISC_R_SUCCESS) {
+ 		isc__nm_incstats(sock->mgr, sock->statsindex[STATID_SENDFAIL]);
+-		failed_send_cb(sock, uvreq, result);
++		isc__nm_failed_send_cb(sock, uvreq, result);
+ 	}
+ }
+ 
+@@ -596,7 +549,7 @@ udp_send_cb(uv_udp_send_t *req, int stat
+ 		isc__nm_incstats(sock->mgr, sock->statsindex[STATID_SENDFAIL]);
+ 	}
+ 
+-	isc__nm_sendcb(sock, uvreq, result);
++	isc__nm_sendcb(sock, uvreq, result, false);
+ }
+ 
+ /*
+@@ -614,7 +567,7 @@ udp_send_direct(isc_nmsocket_t *sock, is
+ 	REQUIRE(sock->tid == isc_nm_tid());
+ 	REQUIRE(sock->type == isc_nm_udpsocket);
+ 
+-	if (inactive(sock)) {
++	if (isc__nm_inactive(sock)) {
+ 		return (ISC_R_CANCELED);
+ 	}
+ 
+@@ -839,9 +792,9 @@ isc_nm_udpconnect(isc_nm_t *mgr, isc_nmi
+ 	return (result);
+ }
+ 
+-static void
+-udp_read_cb(uv_udp_t *handle, ssize_t nrecv, const uv_buf_t *buf,
+-	    const struct sockaddr *addr, unsigned flags) {
++void
++isc__nm_udp_read_cb(uv_udp_t *handle, ssize_t nrecv, const uv_buf_t *buf,
++	                 const struct sockaddr *addr, unsigned flags) {
+ 	isc_nmsocket_t *sock = uv_handle_get_data((uv_handle_t *)handle);
+ 	REQUIRE(VALID_NMSOCK(sock));
+ 
+@@ -854,17 +807,17 @@ udp_read_cb(uv_udp_t *handle, ssize_t nr
+ 	 * does not.
+ 	 */
+ 	if (!sock->parent) {
+-		stop_reading(sock);
++		isc__nm_stop_reading(sock);
+ 	}
+ }
+ 
+-static void
+-failed_read_cb(isc_nmsocket_t *sock, isc_result_t result) {
++void
++isc__nm_udp_failed_read_cb(isc_nmsocket_t *sock, isc_result_t result) {
+ 	REQUIRE(VALID_NMSOCK(sock));
+ 	REQUIRE(result != ISC_R_SUCCESS);
+ 
+ 	if (atomic_load(&sock->client)) {
+-		stop_reading(sock);
++		isc__nm_stop_reading(sock);
+ 
+ 		if (!sock->recv_read) {
+ 			goto destroy;
+@@ -872,7 +825,7 @@ failed_read_cb(isc_nmsocket_t *sock, isc
+ 		sock->recv_read = false;
+ 
+ 		if (sock->recv_cb != NULL) {
+-			isc__nm_uvreq_t *req = get_read_req(sock, NULL);
++			isc__nm_uvreq_t *req = isc__nm_get_read_req(sock, NULL);
+ 			isc__nmsocket_clearcb(sock);
+ 			isc__nm_readcb(sock, req, result);
+ 		}
+@@ -895,55 +848,11 @@ failed_read_cb(isc_nmsocket_t *sock, isc
+ 	sock->recv_read = false;
+ 
+ 	if (sock->recv_cb != NULL) {
+-		isc__nm_uvreq_t *req = get_read_req(sock, NULL);
++		isc__nm_uvreq_t *req = isc__nm_get_read_req(sock, NULL);
+ 		isc__nm_readcb(sock, req, result);
+ 	}
+ }
+ 
+-static void
+-failed_send_cb(isc_nmsocket_t *sock, isc__nm_uvreq_t *req,
+-	       isc_result_t eresult) {
+-	REQUIRE(VALID_NMSOCK(sock));
+-	REQUIRE(VALID_UVREQ(req));
+-
+-	if (req->cb.send != NULL) {
+-		isc__nm_sendcb(sock, req, eresult);
+-	} else {
+-		isc__nm_uvreq_put(&req, sock);
+-	}
+-}
+-
+-static isc__nm_uvreq_t *
+-get_read_req(isc_nmsocket_t *sock, isc_sockaddr_t *sockaddr) {
+-	isc__nm_uvreq_t *req = NULL;
+-
+-	req = isc__nm_uvreq_get(sock->mgr, sock);
+-	req->cb.recv = sock->recv_cb;
+-	req->cbarg = sock->recv_cbarg;
+-
+-	if (atomic_load(&sock->client)) {
+-		isc_nmhandle_attach(sock->statichandle, &req->handle);
+-	} else {
+-		req->handle = isc__nmhandle_get(sock, sockaddr, NULL);
+-	}
+-
+-	return req;
+-}
+-
+-static void
+-readtimeout_cb(uv_timer_t *handle) {
+-	isc_nmsocket_t *sock = uv_handle_get_data((uv_handle_t *)handle);
+-
+-	REQUIRE(VALID_NMSOCK(sock));
+-	REQUIRE(sock->tid == isc_nm_tid());
+-	REQUIRE(sock->reading);
+-
+-	/*
+-	 * Timeout; stop reading and process whatever we have.
+-	 */
+-	failed_read_cb(sock, ISC_R_TIMEDOUT);
+-}
+-
+ /*
+  * Asynchronous 'udpread' call handler: start or resume reading on a
+  * socket; pause reading and call the 'recv' callback after each
+@@ -959,55 +868,14 @@ isc__nm_async_udpread(isc__networker_t *
+ 	REQUIRE(VALID_NMSOCK(sock));
+ 	REQUIRE(sock->tid == isc_nm_tid());
+ 
+-	if (inactive(sock)) {
++	if (isc__nm_inactive(sock)) {
+ 		sock->reading = true;
+-		failed_read_cb(sock, ISC_R_CANCELED);
++		isc__nm_failed_read_cb(sock, ISC_R_CANCELED);
+ 		return;
+ 	}
+ 
+-	start_reading(sock);
+-}
+-
+-static void
+-start_sock_timer(isc_nmsocket_t *sock) {
+-	if (sock->read_timeout > 0) {
+-		int r = uv_timer_start(&sock->timer, readtimeout_cb,
+-				       sock->read_timeout, 0);
+-		REQUIRE(r == 0);
+-	}
+-}
+-
+-static void
+-stop_sock_timer(isc_nmsocket_t *sock) {
+-	int r = uv_timer_stop(&sock->timer);
+-	REQUIRE(r == 0);
+-}
+-
+-static void
+-start_reading(isc_nmsocket_t *sock) {
+-	if (sock->reading) {
+-		return;
+-	}
+-
+-	int r = uv_udp_recv_start(&sock->uv_handle.udp, udp_alloc_cb,
+-				  udp_read_cb);
+-	REQUIRE(r == 0);
+-	sock->reading = true;
+-
+-	start_sock_timer(sock);
+-}
+-
+-static void
+-stop_reading(isc_nmsocket_t *sock) {
+-	if (!sock->reading) {
+-		return;
+-	}
+-
+-	int r = uv_udp_recv_stop(&sock->uv_handle.udp);
+-	REQUIRE(r == 0);
+-	sock->reading = false;
+-
+-	stop_sock_timer(sock);
++	isc__nm_start_reading(sock);
++   isc__nmsocket_timer_start(sock);
+ }
+ 
+ void
+@@ -1217,7 +1085,7 @@ isc__nm_udp_shutdown(isc_nmsocket_t *soc
+ 	 * interested in the callback.
+ 	 */
+ 	if (sock->statichandle) {
+-		failed_read_cb(sock, ISC_R_CANCELED);
++		isc__nm_failed_read_cb(sock, ISC_R_CANCELED);
+ 		return;
+ 	}
+ 
+@@ -1261,18 +1129,5 @@ isc__nm_async_udpcancel(isc__networker_t
+ 	REQUIRE(sock->tid == isc_nm_tid());
+ 	REQUIRE(atomic_load(&sock->client));
+ 
+-	failed_read_cb(sock, ISC_R_EOF);
+-}
+-
+-void
+-isc__nm_udp_settimeout(isc_nmhandle_t *handle, uint32_t timeout) {
+-	REQUIRE(VALID_NMHANDLE(handle));
+-	REQUIRE(VALID_NMSOCK(handle->sock));
+-
+-	isc_nmsocket_t *sock = handle->sock;
+-
+-	sock->read_timeout = timeout;
+-	if (uv_is_active((uv_handle_t *)&sock->timer)) {
+-		start_sock_timer(sock);
+-	}
++	isc__nm_failed_read_cb(sock, ISC_R_EOF);
+ }
+diff -Naurp bind-9.16.13.orig/lib/isc/tests/Kyuafile bind-9.16.13/lib/isc/tests/Kyuafile
+--- bind-9.16.13.orig/lib/isc/tests/Kyuafile	2021-03-11 07:20:59.000000000 -0600
++++ bind-9.16.13/lib/isc/tests/Kyuafile	2021-03-24 18:29:30.987855915 -0500
+@@ -29,4 +29,3 @@ tap_test_program{name='task_test'}
+ tap_test_program{name='taskpool_test'}
+ tap_test_program{name='time_test'}
+ tap_test_program{name='timer_test'}
+-tap_test_program{name='tlsdns_test'}
+diff -Naurp bind-9.16.13.orig/lib/isc/tests/tcpdns_test.c bind-9.16.13/lib/isc/tests/tcpdns_test.c
+--- bind-9.16.13.orig/lib/isc/tests/tcpdns_test.c	2021-03-11 07:20:59.000000000 -0600
++++ bind-9.16.13/lib/isc/tests/tcpdns_test.c	2021-03-24 18:29:48.070679159 -0500
+@@ -242,7 +242,6 @@ nm_setup(void **state) {
+ 	for (size_t i = 0; i < MAX_NM; i++) {
+ 		nm[i] = isc_nm_start(test_mctx, nworkers);
+ 		assert_non_null(nm[i]);
+-		isc_nm_settimeouts(nm[i], 1000, 1000, 1000, 1000);
+ 	}
+ 
+ 	*state = nm;
+diff -Naurp bind-9.16.13.orig/lib/isc/tests/tlsdns_test.c bind-9.16.13/lib/isc/tests/tlsdns_test.c
+--- bind-9.16.13.orig/lib/isc/tests/tlsdns_test.c	2021-03-11 07:20:59.000000000 -0600
++++ bind-9.16.13/lib/isc/tests/tlsdns_test.c	2021-03-24 18:30:00.226553698 -0500
+@@ -249,7 +249,6 @@ nm_setup(void **state) {
+ 	for (size_t i = 0; i < MAX_NM; i++) {
+ 		nm[i] = isc_nm_start(test_mctx, nworkers);
+ 		assert_non_null(nm[i]);
+-		isc_nm_settimeouts(nm[i], 1000, 1000, 1000, 1000);
+ 	}
+ 
+ 	*state = nm;
+diff -Naurp bind-9.16.13.orig/lib/isc/win32/libisc.def.in bind-9.16.13/lib/isc/win32/libisc.def.in
+--- bind-9.16.13.orig/lib/isc/win32/libisc.def.in	2021-03-11 07:20:59.000000000 -0600
++++ bind-9.16.13/lib/isc/win32/libisc.def.in	2021-03-24 18:30:19.265357737 -0500
+@@ -450,6 +450,7 @@ isc_netaddr_unspec
+ isc_netscope_pton
+ isc__nmhandle_attach
+ isc__nmhandle_detach
++isc_nmhandle_cleartimeout
+ isc_nmhandle_getdata
+ isc_nmhandle_getextra
+ isc_nmhandle_is_stream
+diff -Naurp bind-9.16.13.orig/lib/ns/client.c bind-9.16.13/lib/ns/client.c
+--- bind-9.16.13.orig/lib/ns/client.c	2021-03-11 07:20:59.000000000 -0600
++++ bind-9.16.13/lib/ns/client.c	2021-03-24 18:30:54.679994833 -0500
+@@ -1037,6 +1037,7 @@ no_nsid:
+ 
+ 		isc_nm_gettimeouts(isc_nmhandle_netmgr(client->handle), NULL,
+ 				   NULL, NULL, &adv);
++      adv /= 100; /* units of 100 milliseconds */
+ 		isc_buffer_init(&buf, advtimo, sizeof(advtimo));
+ 		isc_buffer_putuint16(&buf, (uint16_t)adv);
+ 		ednsopts[count].code = DNS_OPT_TCP_KEEPALIVE;
+diff -Naurp bind-9.16.13.orig/.pylintrc bind-9.16.13/.pylintrc
+--- bind-9.16.13.orig/.pylintrc	2021-03-11 07:20:59.000000000 -0600
++++ bind-9.16.13/.pylintrc	2021-03-24 18:31:23.344702559 -0500
+@@ -5,3 +5,4 @@ disable=
+     C0116, # missing-function-docstring
+     R0801, # duplicate-code
+     C0103, # invalid-name
++    C0415, # import-outside-toplevel
