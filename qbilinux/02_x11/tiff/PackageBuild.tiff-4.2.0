@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=tiff
-vers=4.1.0
-url="ftp://download.osgeo.org/libtiff/tiff-${vers}.tar.gz"
+vers=4.2.0
+url="https://download.osgeo.org/libtiff/tiff-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=tiff-${vers}
 OPT_CONFIG=''
 DOCS='ChangeLog HOWTO-RELEASE README README.vms RELEASE-DATE TODO'
