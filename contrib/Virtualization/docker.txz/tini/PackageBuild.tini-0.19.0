@@ -1,16 +1,16 @@
 #!/bin/sh
 ##############################################################
-pkgbase="libnetwork"
-vers=9fd385be8302dbe1071a3ce124891893ff27f90f
-url="https://github.com/moby/libnetwork/archive/9fd385be8302dbe1071a3ce124891893ff27f90f.tar.gz"
-srcfile=libnetwork-9fd385be8302dbe1071a3ce124891893ff27f90f.tar.gz
+pkgbase="tini"
+vers=0.19.0
+url="https://github.com/krallin/tini/archive/v${vers}.tar.gz"
+srcfile=tini-${vers}.tar.gz
 commitid=
 apply_arch="x86_64 aarch64"
 arch=`uname -m`
-build=2
-src=libnetwork-${vers}
-OPT_CONFIG=''
-DOCS='CHANGELOG.md LICENSE MAINTAINERS README.md'
+build=1
+src=tini-${vers}
+OPT_CONFIG='-DPR_SET_CHILD_SUBREAPER=36 -DPR_GET_CHILD_SUBREAPER=37 -DCMAKE_BUILD_TYPE=Release'
+DOCS='LICENSE README.md'
 patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
@@ -31,10 +31,13 @@ do_prepare() {
 do_config() {
     if [ -d ${B[$1]} ] ; then rm -rf ${B[$1]} ; fi
 
-    cp -a ${S[$1]} ${B[$1]}
+    mkdir ${B[$1]}
     cd ${B[$1]}
-    mkdir build
-    mv vendor build/src
+    if [ -f ${S[$1]}/CMakeLists.txt ]; then
+      export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
+      export LDFLAGS='-Wl,--as-needed' 
+      cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DLIB_INSTALL_DIR:PATH=/usr/${libdir} -DLIB_SUFFIX=$suffix ${OPT_CONFIG} ${S[$1]}
+    fi
     if [ $? != 0 ]; then
 	echo "configure error. $0 script stop"
 	exit 255
@@ -44,8 +47,7 @@ do_config() {
 do_build() {
     cd ${B[$1]}
     export LDFLAGS='-Wl,--as-needed'
-    GOPATH=`pwd`/build \
-	  go build -o `pwd`/pkg/docker-proxy ./cmd/proxy
+    make
     if [ $? != 0 ]; then
 	echo "make error. $0 script stop"
 	exit 255
@@ -54,8 +56,12 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}
-    mkdir -p $P/usr/bin/
-    cp pkg/docker-proxy $P/usr/bin/
+    export LDFLAGS='-Wl,--as-needed'
+    make install DESTDIR=$P
+    if [ $? != 0 ]; then
+	echo "make install error. $0 script stop"
+	exit 255
+    fi
 
     # add extra func
     # mkdir -p $P2/hoge

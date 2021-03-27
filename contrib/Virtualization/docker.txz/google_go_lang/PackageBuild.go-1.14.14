@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase="google_go_lang"
-vers=1.13.10
+vers=1.14.14
 url="https://golang.org/dl/go${vers}.src.tar.gz"
 commitid=
 apply_arch="x86_64 aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=go
 OPT_CONFIG='-DPR_SET_CHILD_SUBREAPER=36 -DPR_GET_CHILD_SUBREAPER=37 -DCMAKE_BUILD_TYPE=Release'
 DOCS='AUTHORS CONTRIBUTING.md CONTRIBUTORS LICENSE PATENTS README.md SECURITY.md VERSION'
