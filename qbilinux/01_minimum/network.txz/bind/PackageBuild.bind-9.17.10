@@ -60,6 +60,7 @@ do_install() {
     if [ -f Makefile ] ; then
 	export LDFLAGS='-Wl,--as-needed'
 	make install DESTDIR=$P
+	rm -rf $P/home
     fi
     if [ $? != 0 ]; then
 	echo "make install error. $0 script stop"
