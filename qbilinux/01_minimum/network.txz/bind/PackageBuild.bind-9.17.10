@@ -2,16 +2,16 @@
 
 ######################################################################
 pkgbase=bind
-vers=9.12.4_P2
-url="http://ftp.isc.org/isc/bind/${vers/_/-}/bind-${vers/_/-}.tar.gz
+vers=9.17.10
+url="http://ftp.isc.org/isc/bind/${vers/_/-}/bind-${vers/_/-}.tar.xz
     http://www.internic.net/domain/named.root"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=4
+build=1
 src=$pkgbase-${vers/_/-}
-patchfiles="1879.patch"
-OPT_CONFIG="--with-libxml2=no --with-libtool --with-python=/usr/bin/python3"
-DOCS="CHANGES COPYRIGHT FAQ HISTORY README"
+patchfiles=""
+OPT_CONFIG="--with-libtool --with-python=/usr/bin/python3 --enable-threads"
+DOCS="AUTHORS CHANGES CODE_OF_CONDUCT.md CONTRIBUTING.md COPYING COPYRIGHT ChangeLog HISTORY.md LICENSE NEWS OPTIONS.md PLATFORMS.md README.md"
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
