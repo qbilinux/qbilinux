@@ -1,15 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=openjdk15
-vers=15+36
-#url="http://hg.openjdk.java.net/jdk-updates/jdk15u/archive/jdk15u-jdk-${vers}.tar.bz2"
-#url="http://hg.openjdk.java.net/jdk-updates/jdk15u/archive/0dabbdfd97e6.tar.bz2"
-url="https://download.java.net/openjdk/jdk15/ri/openjdk-15+36_src.zip"
+vers=15.0.3+1
+url="https://github.com/openjdk/jdk15u/archive/refs/tags/jdk-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-#src=jdk15u-jdk-${vers}
-src=openjdk
+src=jdk15u-jdk-${vers/+/-}
 OPT_CONFIG='--enable-unlimited-crypto                   --disable-warnings-as-errors                --with-stdc++lib=dynamic                    --with-giflib=system                        --with-lcms=system                          --with-libjpeg=system                       --with-libpng=system                        --with-zlib=system                          --with-version-build=15                   --with-version-pre=""                       --with-version-opt=""                       '
 DOCS='ADDITIONAL_LICENSE_INFO LICENSE README'
 patchfiles=''
