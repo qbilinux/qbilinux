@@ -1,9 +1,0 @@
-libcxx & y & y & y & y
-&
-新しく開発されたC++用ライブラリ
-&
-LLVM/Clang++用のlibc++ライブラリ
-&
-new C++ library libc++
-&
-libc++ library for LLVM/Clang++
