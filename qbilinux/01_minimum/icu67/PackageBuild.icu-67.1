@@ -5,7 +5,7 @@ vers=67.1
 url="https://github.com/unicode-org/icu/releases/download/release-${vers//./-}/icu4c-${vers//./_}-src.tgz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=icu
 OPT_CONFIG=''
 DOCS='license.html readme.html unicode-license.txt'
@@ -69,6 +69,17 @@ do_install() {
     fi
 
     # add extra func
+    rm -rf $P/usr/bin $P/usr/include $P/usr/$libdir/pkgconfig
+    rm -rf $P/usr/sbin $P/usr/share/doc/icu $P/usr/share/man
+    rm -rf $P/usr/lib64/libicudata.so
+    rm -rf $P/usr/lib64/libicuuc.so
+    rm -rf $P/usr/lib64/libicui18n.so
+    rm -rf $P/usr/lib64/libicuio.so
+    rm -rf $P/usr/lib64/libicutu.so
+    rm -rf $P/usr/lib64/libicutest.so
+    rm -rf $P/usr/lib64/icu/current
+    rm -rf $P/usr/lib64/icu/Makefile.inc
+    rm -rf $P/usr/lib64/icu/pkgdata.inc
 }
 
 do_package() {
