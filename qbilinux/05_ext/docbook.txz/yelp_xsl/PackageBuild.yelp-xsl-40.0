@@ -1,8 +1,8 @@
 #!/bin/sh
 ##############################################################
 pkgbase=yelp_xsl
-vers=3.38.1
-url="ftp://ftp.gnome.org/pub/gnome/sources/yelp-xsl/${vers%.*}/yelp-xsl-${vers}.tar.xz"
+vers=40.0
+url="https://download.gnome.org/sources/yelp-xsl/${vers%.*}/yelp-xsl-${vers}.tar.xz"
 apply_arch="noarch"
 arch=noarch
 build=1
