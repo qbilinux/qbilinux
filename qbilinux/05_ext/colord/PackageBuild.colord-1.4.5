@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=colord
-vers=1.4.4
+vers=1.4.5
 url="https://www.freedesktop.org/software/colord/releases/colord-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=colord-${vers}
 OPT_CONFIG='-Dsystemd=false -Dbash_completion=false -Dargyllcms_sensor=false -Ddocs=false'
 DOCS='ABOUT-NLS AUTHORS COPYING ChangeLog INSTALL MAINTAINERS NEWS README TODO'
