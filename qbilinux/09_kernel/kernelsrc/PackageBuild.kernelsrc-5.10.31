@@ -2,13 +2,13 @@
 
 ######################################################################
 pkgbase=kernelsrc
-version=5.10.26
+version=5.10.31
 url="https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-${version%.*}.tar.xz
 	https://cdn.kernel.org/pub/linux/kernel/v5.x/patch-${version}.xz"
 #	git://github.com/sfjro/aufs5-standalone.git"
 apply_arch="x86_64 i686"
 arch=`uname -m`
-build=2
+build=1
 src=linux-${version%.*}
 patchfiles="cjktty-kernel-5.10.patch cjktty-kernel-font-JP.patch overlayfs-allow_unprivileged_mounts.patch"
 patchfiles_not_used="tuxonice-5.4.8-20200116-f147d78.diff 4.8-morse_code_panics.patch 4.8-panic_beep.patch"
