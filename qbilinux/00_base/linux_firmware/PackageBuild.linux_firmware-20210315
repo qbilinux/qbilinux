@@ -2,13 +2,12 @@
 
 ######################################################################
 pkgbase=linux_firmware
-vers=git_20201230
-commitid=f580dc2
-url="https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git"
+vers=20210315
+url="https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/snapshot/linux-firmware-${vers}.tar.gz"
 apply_arch="noarch"
 arch=noarch
 build=1
-src=linux-firmware
+src=linux-firmware-${vers}
 OPT_CONFIG=""
 DOCS="GPL-3 `echo LICENCE.{Abilis,IntcSST2,Marvell,OLPC}` LICENSE.radeon
     `echo LICENCE.{agere,atheros_firmware,broadcom_bcm43xx,ca0132}`
