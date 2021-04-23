@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
 pkgbase=texlive_texmf
-vers=20200406
+vers=20210325
 #url="ftp://tug.org/historic/systems/texlive/${vers:0:4}/texlive-${vers}-texmf.tar.xz"
 url="http://ftp.math.utah.edu/pub/tex/historic/systems/texlive/${vers:0:4}/texlive-${vers}-texmf.tar.xz"
 apply_arch="noarch"
 arch=noarch
 build=1
 src=texlive-${vers}-texmf
-prefix=/opt/texlive/2020
+prefix=/opt/texlive/2021
 OPT_CONFIG=''
 DOCS=''
 PKG1='README ls-R asymptote bibtex chktex context pbibtex psutils scripts source tex tex4ht texconfig texdoc texdoctk ttf2pk xdvi xindy'
