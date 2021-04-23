@@ -2,14 +2,14 @@
 ##############################################################
 pkgbase=efibootmgr
 vers=16
-url="https://github.com/rhboot/efibootmgr/releases/download/${vers}/efibootmgr-${vers}.tar.bz2"
+url="https://github.com/rhboot/efibootmgr/archive/${vers}.tar.gz"
+srcfile=${pkgbase}-${vers}.tar.gz
 apply_arch="x86_64 i686"
 arch=`uname -m`
-build=2
+build=1
 src=efibootmgr-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING INSTALL README TODO'
-#patchfiles='fix_const.patch'
 patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
