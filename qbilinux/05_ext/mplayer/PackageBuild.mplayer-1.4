@@ -6,7 +6,7 @@ vers=1.4
 url="ftp://ftp.mplayerhq.hu/MPlayer/releases/MPlayer-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=MPlayer-${vers}
 if [ $arch = "armv7l" -o $arch = "aarch64" ]; then
 OPT_CONFIG="--confdir=/etc/mplayer --enable-gui --enable-radio
