@@ -4,7 +4,7 @@
 # by Hrvoje Dogan <hdogan@student.math.hr>, Dec 1995.
 #
 # Japanese enhancements by kojima <isle@st.rim.or.jp> Aug 1997
-# Time-stamp: <2019-03-18 01:30:53 matsuki>
+# Time-stamp: <2021-04-29 11:35:16 matsuki>
 # Time-stamp: <2011-01-05 01:24:06 plamo>
 # Time-stamp: <2011-07-25 19:03:24 karma>
 # Time-stamp: <2011-10-08 13:32:46 tamuki>
@@ -108,13 +108,13 @@ msg_locale() {
   echo
   if [ "$LNG" == "JAPANESE" ] ; then
     echo "日本語 locale の設定"
-    echo "1 : ja_JP.eucJP(従来通り)"
-    echo "2 : ja_JP.UTF-8(今風)"
+    echo "1 : ja_JP.UTF-8"
+    echo "2 : ja_JP.eucJP"
     echo -n "$LOGIN はどちらの locale を使いますか？ [1]: "
   else
     echo "Japanese locale setting"
-    echo "1 : ja_JP.eucJP (traditional)"
-    echo "2 : ja_JP.UTF-8 (modern)"
+    echo "1 : ja_JP.UTF-8"
+    echo "2 : ja_JP.eucJP"
     echo -n "$LOGIN's locale? [1]: "
   fi
 }
