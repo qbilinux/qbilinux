@@ -8,7 +8,7 @@ commitid=
 GITHASH=${GITHASH:-7ad184331fa3e55e52b890ea95e65ba581ae3429}
 apply_arch="x86_64 aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=containerd-${vers}
 OPT_CONFIG=''
 DOCS='LICENSE README.md RELEASES.md install.go install_opts.go releases'
@@ -60,12 +60,7 @@ do_build() {
 do_install() {
     cd ${B[$1]}
     export LDFLAGS='-Wl,--as-needed'
-
-    install -D -m 0755 bin/containerd $P/usr/bin/containerd
-    install -D -m 0755 bin/containerd-shim $P/usr/bin/containerd-shim
-    install -D -m 0755 bin/containerd-shim-runc-v1 $P/usr/bin/containerd-shim-runc-v1
-    install -D -m 0755 bin/containerd-stress $P/usr/bin/containerd-stress
-    install -D -m 0755 bin/ctr $P/usr/bin/ctr
+    make install DESTDIR=$PKG/usr
 }
 
 do_package() {
