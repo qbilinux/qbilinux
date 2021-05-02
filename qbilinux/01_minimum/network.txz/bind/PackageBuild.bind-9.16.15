@@ -2,14 +2,14 @@
 
 ######################################################################
 pkgbase=bind
-vers=9.16.13
+vers=9.16.15
 url="http://ftp.isc.org/isc/bind/${vers/_/-}/bind-${vers/_/-}.tar.xz
     http://www.internic.net/domain/named.root"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
 src=$pkgbase-${vers/_/-}
-patchfiles="bind-9.16.13-upstream_fixes-1.patch"
+patchfiles=""
 OPT_CONFIG="--with-libtool --with-python=/usr/bin/python3 --enable-threads"
 DOCS="AUTHORS CHANGES CODE_OF_CONDUCT.md CONTRIBUTING.md COPYING COPYRIGHT ChangeLog HISTORY.md LICENSE NEWS OPTIONS.md PLATFORMS.md README.md"
 compress=txz
