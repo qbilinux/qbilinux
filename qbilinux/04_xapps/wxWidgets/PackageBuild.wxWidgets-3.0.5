@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=wxWidgets
-vers=3.0.4
-url='https://github.com/wxWidgets/wxWidgets/releases/download/v3.0.4/wxWidgets-3.0.4.tar.bz2'
+vers=3.0.5
+url="https://github.com/wxWidgets/wxWidgets/releases/download/v${vers}/wxWidgets-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=wxWidgets-${vers}
 OPT_CONFIG="--enable-unicode --enable-gui --with-sdl --enable-shared --enable-intl \
  --enable-config --enable-protocols --enable-ftp --enable-http --enable-fileproto \
