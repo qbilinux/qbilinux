@@ -55,7 +55,7 @@ def get_file_confs(conf_file):
 def url_completion(url):
     if not url.endswith("/"):
         url += "/"      # 念のため
-    current = "0.2"
+    current = "0.4.0"
     if os.path.isfile("/etc/qbilinux-release"):
         # format: qbilinux release x.y
         info = open("/etc/qbilinux-release", "r").readline()
@@ -68,7 +68,7 @@ def url_completion(url):
         print("Cannot find valid version tag.  "
                 "Suppose you use qbilinux current({})".format(current))
         version = current
-    #version = re.sub("\..*", ".x", version)
+    version = re.sub("\.\w+$", "", version)
     arch = subprocess.check_output("uname -m".split()).strip()
     arch = "x86" if arch == "i686" else arch
     try:
@@ -112,6 +112,7 @@ def get_confs():
     ローカルの qbilinux バージョンとアーキ名を取得し，URL を補完する．
     """
     confs["URL"] = url_completion(confs["URL"])
+    print("url: {}".format(confs["URL"]))
     """
     ローカルでブロックしたいパッケージは追加する方が便利だろう．
     """
