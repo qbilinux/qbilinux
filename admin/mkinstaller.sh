@@ -226,6 +226,13 @@ case $arch in
 	# 	}
 	# 	EOF
 
+	if [ $arch = x86 ] ; then
+	    mv $media/isolinux/efiboot.img.x86 $media/isolinux/efiboot.img
+	    rm $media/isolinux/efiboot.img.x86_64
+	else
+	    mv $media/isolinux/efiboot.img.x86_64 $media/isolinux/efiboot.img
+	    rm $media/isolinux/efiboot.img.x86
+	fi
 	# mkdir efiboot
 	# fallocate -l 1440K $K/efiboot.img
 	# mkfs.fat -F32 $K/efiboot.img
