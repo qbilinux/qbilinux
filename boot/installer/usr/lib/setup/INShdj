@@ -67,7 +67,7 @@ if mount | grep $SLACK_DEVICE 1> /dev/null 2> /dev/null ; then
  ln -sf $PREFIX /var/adm/mount 
 else
  SUCCESS=false
- for type in vfat ext2 ext3 btrfs reiserfs jfs xfs ntfs hpfs ; do
+ for type in vfat ext2 ext3 btrfs reiserfs jfs xfs ntfs hpfs iso9660 ; do
    mount -t $type $SLACK_DEVICE /var/adm/mount 1> /dev/null 2> /dev/null
    if [ $? = 0 ]; then # mounted successfully 
      SUCCESS=true
