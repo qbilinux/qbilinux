@@ -6,7 +6,7 @@ vers=20210315
 url="https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/snapshot/linux-firmware-${vers}.tar.gz"
 apply_arch="noarch"
 arch=noarch
-build=1
+build=2
 src=linux-firmware-${vers}
 OPT_CONFIG=""
 DOCS="GPL-3 `echo LICENCE.{Abilis,IntcSST2,Marvell,OLPC}` LICENSE.radeon
@@ -79,7 +79,8 @@ do_install() {
 	exit 255
     fi
 
-    # add extra func
+    # makepkg のバグ回避用 (本当は makepkg を修正したほうが良いけど影響範囲が大きいのでとりあえず..)
+    (cd $P/lib/firmware/brcm/; mv "brcmfmac43455-sdio.Raspberry Pi Foundation-Raspberry Pi 4 Model B.txt" "brcmfmac43455-sdio.Raspberry_Pi_Foundation-Raspberry_Pi_4_Model_B.txt")
 }
 
 do_package() {
