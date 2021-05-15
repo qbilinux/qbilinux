@@ -56,7 +56,8 @@ fi
 
 # make img file
 img=qbilinux-${ver}_${arch}_${dt}_sd.img
-size=3840 ; fallocate -l ${size}M $img
+#size=3840 ; fallocate -l ${size}M $img
+size=5200 ; fallocate -l ${size}M $img
 cat <<- EOF | sfdisk $img
 8192,$(((size - 4) * 2048)),c,*
 EOF
