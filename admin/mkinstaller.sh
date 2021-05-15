@@ -153,7 +153,23 @@ make_initrd() {
 	    inst_pkg qbilinux $i ;
 	done
     fi
-    inst_pkg qbilinux 00_base/kernel
+    case $arch in
+	x86_64 | x86)
+	    inst_pkg qbilinux 00_base/kernel
+	    ;;
+	armv7l)
+	    inst_pkg qbilinux 00_base/kernel7_rpi2
+	    inst_pkg qbilinux 00_base/kernel7l_rpi4
+	    ;;
+	aarch64)
+	    inst_pkg qbilinux 00_base/kernel8_rpi3
+	    inst_pkg qbilinux 00_base/kernel8_rpi4
+	    ;;
+	*)
+            echo "this arch is not supported: $arch" 1>&2
+	    echo
+	    ;;
+    esac
 
     cp -a ${bootdir}/installer/* initrd/
     (cd initrd/usr/lib/setup/; ln -sf setup2 setup)
