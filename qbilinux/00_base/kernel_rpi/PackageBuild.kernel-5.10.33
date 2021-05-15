@@ -7,8 +7,8 @@ version=5.10.33
 url="https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-${version%.*}.tar.xz
 	https://cdn.kernel.org/pub/linux/kernel/v5.x/patch-${version}.xz"
 #	git://github.com/sfjro/aufs5-standalone.git"
-pkgbase=kernel_rpi
-apply_arch="armv6l armv7l aarch64"
+pkgbase=kernel
+apply_arch="armv6l armv7l aarch64 rpi1 rpi2 rpi4 rpi3_64 rpi4_64"
 arch=`uname -m`
 # cat /proc/device-tree/model
 build=1
@@ -18,13 +18,33 @@ patchfiles="cjktty-kernel-5.10.patch cjktty-kernel-font-JP.patch overlayfs-allow
 arm_patchfiles="rpi-5.10.33-20210506-cbbca488b.diff"
 patchfiles_not_used="tuxonice-for-linux-5.0.18.patch 4.8-morse_code_panics.patch 4.8-panic_beep.patch"
 case $arch in
-    armv6l)	ext=armv6l_rpi1	 ;;
-    armv7l)	ext=armv7l_rpi2	 ;;
-    aarch64)	ext=aarch64_rpi4 ;;
-    *)		ext=aarch64_rpi3 ;;
+    armv6l | rpi1)
+	kernel=kernel
+	ext=rpi1
+	pkgarch=armv6l ;;
+    armv7l | rpi2)
+	kernel=kernel7
+	ext=rpi2
+	pkgarch=armv7l ;;
+    rpi4)
+	kernel=kernel7l
+	ext=rpi4
+	pkgarch=armv7l ;;
+    rpi3_64)
+	kernel=kernel8
+	ext=rpi3
+	pkgarch=aarch64 ;;
+    aarch64 | rpi4_64)
+	kernel=kernel8
+	ext=rpi4
+	pkgarch=aarch64 ;;
+    *)
+	kernel=kernel8
+	ext=rpi3
+	pkgarch=aarch64 ;;
 esac
-vers=${version}_${ext}
-configfile=config-${version%.*}-${ext}
+vers=${version}
+configfile=config-${version%.*}-${pkgarch}_${ext}
 #git_branch=aufs5.4
 #aufs_git_vers=5a1e53d
 OPT_CONFIG=""
@@ -66,7 +86,15 @@ do_config() {
 
 do_build() {
     cd ${B[$1]}
-    make
+    case $arch in
+    rpi1 | rpi2 | rpi4 )
+	MAKEOPT="ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf-" ;;
+    rpi3_64 | rpi4_64)
+	MAKEOPT="ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-" ;;
+    *)
+	MAKEOPT="" ;;
+    esac
+    make $MAKEOPT
     if [ $? != 0 ]; then
 	echo "make error. $0 script stop"
 	exit 255
@@ -76,8 +104,15 @@ do_build() {
 do_install() {
     cd ${B[$1]}
     install -d $P/boot
-    make modules_install INSTALL_MOD_PATH=$P
-
+    case $arch in
+    rpi1 | rpi2 | rpi4 )
+	MAKEOPT="ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf-" ;;
+    rpi3_64 | rpi4_64)
+	MAKEOPT="ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-" ;;
+    *)
+	MAKEOPT="" ;;
+    esac
+    make modules_install $MAKEOPT INSTALL_MOD_PATH=$P
     if [ $? != 0 ]; then
 	echo "make install error. $0 script stop"
 	exit 255
@@ -85,33 +120,26 @@ do_install() {
 
     krel=${vers//_/-}
     case $arch in
-	armv6l)
-	    make zinstall INSTALL_PATH=$P/boot
-	    cp -p $P/boot/config{-$krel,}
-	    cp -p $P/boot/kernel.img{-$krel,}
-	    cp -p $P/boot/System.map{-$krel,}
-	    install -m 644 $B/arch/arm/boot/dts/*.dtb $P/boot
-	    install -d $P/boot/overlays
-	    install -m 644 $B/arch/arm/boot/dts/overlays/README $P/boot/overlays
-	    install -m 644 $B/arch/arm/boot/dts/overlays/*.dtbo $P/boot/overlays
-	    ;;
-	armv7l)
-	    make zinstall INSTALL_PATH=$P/boot
-	    cp -p $P/boot/config{-$krel,}
-	    cp -p $P/boot/kernel7.img{-$krel,}
-	    cp -p $P/boot/System.map{-$krel,}
-	    install -m 644 $B/arch/arm/boot/dts/*.dtb $P/boot
-	    install -d $P/boot/overlays
-	    install -m 644 $B/arch/arm/boot/dts/overlays/README $P/boot/overlays
-	    install -m 644 $B/arch/arm/boot/dts/overlays/*.dtbo $P/boot/overlays
-	    ;;
-	aarch64)
-	    make install INSTALL_PATH=$P/boot
-	    mv $P/boot/vmlinuz $P/boot/kernel8.img-${krel}
+	armv6l | armv7l | rpi1 | rpi2 | rpi4 )
+	    make zinstall $MAKEOPT INSTALL_PATH=$P/boot
+	    mv $P/boot/vmlinuz $P/boot/$kernel.img-${krel}
 	    mv $P/boot/config $P/boot/config-${krel}
 	    mv $P/boot/System.map $P/boot/System.map-${krel}
 	    cp -p $P/boot/config{-$krel,}
-	    cp -p $P/boot/kernel8.img{-$krel,}
+	    cp -p $P/boot/$kernel.img{-$krel,}
+	    cp -p $P/boot/System.map{-$krel,}
+	    install -m 644 $B/arch/arm/boot/dts/*.dtb $P/boot
+	    install -d $P/boot/overlays
+	    install -m 644 $B/arch/arm/boot/dts/overlays/README $P/boot/overlays
+	    install -m 644 $B/arch/arm/boot/dts/overlays/*.dtbo $P/boot/overlays
+	    ;;
+	aarch64 | rpi3_64 | rpi4_64 )
+	    make install $MAKEOPT INSTALL_PATH=$P/boot
+	    mv $P/boot/vmlinuz $P/boot/$kernel.img-${krel}
+	    mv $P/boot/config $P/boot/config-${krel}
+	    mv $P/boot/System.map $P/boot/System.map-${krel}
+	    cp -p $P/boot/config{-$krel,}
+	    cp -p $P/boot/$kernel.img{-$krel,}
 	    cp -p $P/boot/System.map{-$krel,}
 	    install -m 644 $B/arch/arm64/boot/dts/broadcom/*.dtb $P/boot
 	    install -d $P/boot/overlays
@@ -124,13 +152,14 @@ do_install() {
 }
 
 do_package() {
-    for i in $configfile64 $configfile32 $configfileARMv6 $configfileARMv7 $configfileARM64 $arm_patchfiles ; do
+    for i in $W/config-${version%.*}-* $arm_patchfiles ; do
 	cp $W/$i $docdir/$src/$i
 	gzip $docdir/$src/$i
     done
     
-    for i in $pkgbase ; do
+    for i in $kernel ; do
         cd $P
+	pkg=$kernel_$ext-$vers-$pkgarch-$build
         /sbin/makepkg $W/$pkg.$compress <<EOF
 y
 1

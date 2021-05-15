@@ -1,0 +1,12 @@
+kernel7_rpi2 & y & y & y & y
+&
+Linux 5.x カーネル
+&
+Qbilinux 用のデフォルトカーネルです。構築時の設定は /boot/config にあ
+ります．このカーネルは Generic x86_64 CPU 用になっているので，お使いの
+マシンに合わせて再構築することをお勧めします。
+&
+Linux kernel 5.x
+&
+This is the kernel package for Qbilinux default setting.  Config file
+for kernel build was stored in /boot/config.
