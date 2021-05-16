@@ -6,7 +6,7 @@ vers=1.4
 url="http://downloads.sourceforge.net/lsb/lsb-release-${vers}.tar.gz"
 apply_arch="noarch"
 arch=noarch
-build=5
+build=6
 src=lsb-release-$vers
 OPT_CONFIG=""
 DOCS="ChangeLog INSTALL README lsb-release.template lsb_release.examples"
@@ -61,6 +61,13 @@ do_install() {
     install -d $P/etc
     cat <<- "EOF" > $P/etc/qbilinux-release
 	qbilinux release 0.4.0
+	EOF
+    cat <<- "EOF" > $P/etc/os-release
+	NAME="Qbilinux"
+	VERSION="0.4.0"
+	ID=qbilinux
+	PRETTY_NAME="Qbilinux 0.4.0"
+	VERSION_CODENAME=""
 	EOF
 }
 
