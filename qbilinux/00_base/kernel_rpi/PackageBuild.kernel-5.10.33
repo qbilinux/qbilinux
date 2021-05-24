@@ -118,7 +118,7 @@ do_install() {
 	exit 255
     fi
 
-    krel=${vers//_/-}
+    krel=${ext}-${pkgarch}-${vers}
     case $arch in
 	armv6l | armv7l | rpi1 | rpi2 | rpi4 )
 	    make zinstall $MAKEOPT INSTALL_PATH=$P/boot
