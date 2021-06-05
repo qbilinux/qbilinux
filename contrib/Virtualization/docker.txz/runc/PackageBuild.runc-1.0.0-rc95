@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase="runc"
-vers=1.0.0_rc92
+vers=1.0.0_rc95
 url="https://github.com/opencontainers/runc/archive/v${vers/_/-}.tar.gz"
 srcfile=runc-${vers/_/-}.tar.gz
 commitid=
-GITHASH=${GITHASH:-ff819c7e9184c13b7c2607fe6c30ae19403a7aff}
+GITHASH=${GITHASH:-b9ee9c6314599f1b4a7f497e1f1f856fe433d3b7}
 apply_arch="x86_64 aarch64"
 arch=`uname -m`
 build=1
