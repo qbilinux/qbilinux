@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
 pkgbase="containerd"
-vers=1.4.3
+vers=1.4.6
 url="https://github.com/containerd/containerd/archive/v${vers}.tar.gz"
 srcfile=containerd-${vers}.tar.gz
 commitid=
-GITHASH=${GITHASH:-7ad184331fa3e55e52b890ea95e65ba581ae3429}
+GITHASH=${GITHASH:-d71fcd7d8303cbf684402823e425e9dd2e99285d}
 apply_arch="x86_64 aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=containerd-${vers}
 OPT_CONFIG=''
 DOCS='LICENSE README.md RELEASES.md install.go install_opts.go releases'
@@ -60,7 +60,7 @@ do_build() {
 do_install() {
     cd ${B[$1]}
     export LDFLAGS='-Wl,--as-needed'
-    make install DESTDIR=$PKG/usr
+    make install DESTDIR=$P/usr
 }
 
 do_package() {
