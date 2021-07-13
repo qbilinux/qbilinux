@@ -3,7 +3,8 @@ export PATH=/sbin/installer
 
 chk_lang=`/usr/bin/env | grep LANG | grep -i utf`
 if [ -x /usr/bin/iconv ]; then
-    ICONV='/usr/bin/iconv -f EUC-JP -t UTF8'
+    ICONV='cat'
+    #ICONV='/usr/bin/iconv -f EUC-JP -t UTF8'
 else
     ICONV='cat'
 fi
@@ -340,7 +341,7 @@ for package in $* ; do
     elif [ "$compress" = "gzip" ]; then
 	( cd $TMP/scan$$ ; zcat -dc $package | $TAR xf - install ) 2> /dev/null
     elif [ "$compress" = "xz" ]; then
-	( cd $TMP/scan$$ ; xzcat -dc $package | $TAR xf - install ) 2> /dev/null
+	( cd $TMP/scan$$ ; xzcat --threads=0 -dc $package | $TAR xf - install ) 2> /dev/null
     fi
 
     if grep "^$packagebase:" "$TMP/scan$$/install/slack-desc" 1> /dev/null 2> /dev/null ; then
@@ -367,7 +368,7 @@ for package in $* ; do
   elif [ "$compress" = "gzip" ]; then
       gzip -l $package 1> /dev/null 2> /dev/null
   elif [ "$compress" = "xz" ]; then
-      xz -t $package 1> /dev/null 2> /dev/null
+      xz --threads=0 -t $package 1> /dev/null 2> /dev/null
   fi
 
   if [ ! "$?" = "0" ]; then
@@ -387,7 +388,7 @@ for package in $* ; do
   elif [ "$compress" = "gzip" ]; then
       UNCOMPRESSED=`gzip -l $package | grep -v uncompressed_name | crunch | cut -f 2 -d ' '`
   elif [ "$compress" = "xz" ]; then
-      UNCOMPRESSED=`xzcat $package | wc -c`
+      UNCOMPRESSED=`xzcat --threads=0 $package | wc -c`
   fi
 
   COMPRESSED="`expr $COMPRESSED / 1024` K"
@@ -489,7 +490,7 @@ EOF
   elif [ "$compress" = "gzip" ]; then
       $TAR tzf $package 1> $TMP/tmplist$$ 2> /dev/null
   elif [ "$compress" = "xz" ]; then
-      $TAR tJf $package 1> $TMP/tmplist$$ 2> /dev/null
+      $TAR -Ipixz -tf $package 1> $TMP/tmplist$$ 2> /dev/null
   fi
 
   TARERROR=$?
@@ -531,7 +532,7 @@ EOF
   elif [ "$compress" = "gzip" ]; then
       ( cd $ROOT/ ; $TAR -xhzvf - ) < $package >> $TMP/$packagebase 2> /dev/null
   elif [ "$compress" = "xz" ]; then
-      ( cd $ROOT/ ; $TAR -xhJvf - ) < $package >> $TMP/$packagebase 2> /dev/null
+      ( cd $ROOT/ ; $TAR -Ipixz -xhvf - ) < $package >> $TMP/$packagebase 2> /dev/null
   fi
 
   #if [ "`cat $TMP/$shortname | grep '^./' | wc -l | tr -d ' '`" = "1" ]; then
