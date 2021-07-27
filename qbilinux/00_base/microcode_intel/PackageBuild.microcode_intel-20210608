@@ -1,13 +1,13 @@
 #!/bin/sh
 ##############################################################
 pkgbase=microcode_intel
-vers=20180807a
-url='https://downloadmirror.intel.com/28087/eng/microcode-20180807a.tgz'
+vers=20210608
+url="https://github.com/intel/Intel-Linux-Processor-Microcode-Data-Files/archive/refs/tags/microcode-${vers}.tar.gz"
 commitid=
 apply_arch="x86_64 i686"
 arch=`uname -m`
-build=2
-src=microcode_intel-${vers}
+build=1
+src=Intel-Linux-Processor-Microcode-Data-Files-microcode-${vers}
 OPT_CONFIG=''
 DOCS='license releasenote'
 patchfiles=''
@@ -26,8 +26,8 @@ do_config() {
     if [ -d ${B[$1]} ] ; then rm -rf ${B[$1]} ; fi
 
     mkdir ${B[$1]}
-    cp -a $W/source/intel-ucode ${B[$1]}
-    cp -a $W/source/intel-ucode-with-caveats ${B[$1]}
+    cp -a ${S[$1]}/intel-ucode ${B[$1]}
+    cp -a ${S[$1]}/intel-ucode-with-caveats ${B[$1]}
 }
 
 do_build() {
