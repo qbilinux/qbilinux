@@ -2,11 +2,11 @@
 
 ######################################################################
 pkgbase=aspell6_en
-vers=2018.04.16_0
+vers=2020.12.07_0
 url="ftp://ftp.gnu.org/gnu/aspell/dict/en/aspell6-en-${vers/_/-}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=aspell6-en-${vers/_/-}
 OPT_CONFIG=""
 DOCS="`echo doc/{extra.txt,ChangeLog,SCOWL-README}` README README.iso"
