@@ -3,7 +3,7 @@ unset LS_BLOCK_SIZE
 export LANG=C
 ##############################################################
 pkgbase=thunderbird
-vers=78.12.0
+vers=91.0
 url="http://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/${vers}/source/${pkgbase}-${vers}.source.tar.xz"
 #verify=$url.asc
 apply_arch="x86_64 i686 armv7l aarch64"
@@ -34,6 +34,7 @@ do_config() {
     cp -a ${S[$1]} ${B[$1]}
     cd ${B[$1]}
 
+    ./mach create-mach-environment
     cat > mozconfig << EOF
 # If you have a multicore machine, the build may be faster if using parallel
 # jobs. The build system automatically adds -jN to the "make" flags, where N
@@ -133,6 +134,7 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}
+    ./mach create-mach-environment
     DESTDIR=$P ./mach install
     if [ $? != 0 ]; then
 	echo "make install error. $0 script stop"
