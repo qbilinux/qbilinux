@@ -2,11 +2,11 @@
 
 ######################################################################
 pkgbase=kmod
-vers=26
+vers=29
 url="https://www.kernel.org/pub/linux/utils/kernel/kmod/kmod-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=$pkgbase-$vers
 OPT_CONFIG="--bindir=/bin"
 DOCS="NEWS COPYING TODO README"
