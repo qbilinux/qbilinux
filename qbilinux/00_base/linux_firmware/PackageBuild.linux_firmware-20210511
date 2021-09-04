@@ -2,11 +2,11 @@
 
 ######################################################################
 pkgbase=linux_firmware
-vers=20210315
+vers=20210511
 url="https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/snapshot/linux-firmware-${vers}.tar.gz"
 apply_arch="noarch"
 arch=noarch
-build=2
+build=1
 src=linux-firmware-${vers}
 OPT_CONFIG=""
 DOCS="GPL-3 `echo LICENCE.{Abilis,IntcSST2,Marvell,OLPC}` LICENSE.radeon
