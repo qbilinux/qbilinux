@@ -2,15 +2,15 @@
 
 ######################################################################
 pkgbase=net_tools
-vers=1.60
-url="http://downloads.sourceforge.net/net-tools/net-tools-${vers}.tar.bz2"
+vers=2.10
+url="http://downloads.sourceforge.net/net-tools/net-tools-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=net-tools-$vers
 OPT_CONFIG=""
 DOCS="ABOUT-NLS COPYING INSTALLING README README.ipv6 TODO"
-patchfiles='net-tools_1.60-26.diff patch-ab'
+patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -22,9 +22,6 @@ do_prepare() {
     cd ${S[$i]}
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
-    done
-    for i in `cat debian/patches/series` ; do
-	patch -Np1 -i debian/patches/$i
     done
 }
 
@@ -40,12 +37,6 @@ do_config() {
 	< #define I18N 0
 	---
 	> #define I18N 1
-	52,53c52,53
-	< #define HAVE_HWSTRIP 1
-	< #define HAVE_HWTR 1
-	---
-	> #define HAVE_HWSTRIP 0
-	> #define HAVE_HWTR 0
 	EOF
     cp -p config.make{,.orig}
     cat <<- "EOF" | patch config.make
@@ -53,12 +44,6 @@ do_config() {
 	< # I18N=0
 	---
 	> I18N=1
-	19,20c19,20
-	< HAVE_HWSTRIP=1
-	< HAVE_HWTR=1
-	---
-	> # HAVE_HWSTRIP=0
-	> # HAVE_HWTR=0
 	EOF
 }
 
@@ -87,9 +72,9 @@ do_install() {
     fi
 
     # add extra func
-  install -d $P/usr/bin $P/usr/share/man/man8/
-  install -s ipmask $P/usr/bin
-  cat $W/ipmask.8 | gzip -9c > $P/usr/share/man/man8/ipmask.8.gz
+    install -d $P/usr/bin $P/usr/share/man/man8/
+    install -s ipmask $P/usr/bin
+    cat $W/ipmask.8 | gzip -9c > $P/usr/share/man/man8/ipmask.8.gz
 }
 
 do_package() {
