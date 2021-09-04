@@ -2,11 +2,11 @@
 
 ######################################################################
 pkgbase=acl
-vers=2.2.53
+vers=2.3.1
 url="http://download.savannah.gnu.org/releases/acl/acl-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="ABOUT-NLS README `echo doc/{{extensions,libacl}.txt,TODO,PORTING,CHANGES}`
