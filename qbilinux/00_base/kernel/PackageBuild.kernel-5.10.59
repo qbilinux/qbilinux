@@ -3,7 +3,7 @@
 ######################################################################
 #url="https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.12.2.tar.xz
 #    git://github.com/sfjro/aufs4-standalone.git"
-version=5.10.47
+version=5.10.59
 #url="https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-${version%.*}.tar.xz"
 #url="https://git.kernel.org/torvalds/t/linux-${version}.tar.gz
 url="https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-${version%.*}.tar.xz
