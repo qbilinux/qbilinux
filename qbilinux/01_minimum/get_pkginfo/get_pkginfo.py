@@ -1,8 +1,17 @@
-#!/usr/bin/python2
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-import argparse, os, re, subprocess, urllib2, sys, pickle
-import urllib, time, ftplib
+import argparse
+import os
+import re
+import subprocess
+import urllib.request
+import urllib.error
+import urllib.parse
+import sys
+import pickle
+import time
+import ftplib
 
 PKG_PATH = "/var/log/packages/"
 
@@ -65,20 +74,20 @@ def url_completion(url):
         info = sorted(os.listdir("/usr/lib/setup"))
         version = info[-1].split("-")[-1]
     else:
-        print("Cannot find valid version tag.  "
-                "Suppose you use qbilinux current({})".format(current))
+        print(("Cannot find valid version tag.  "
+                "Suppose you use qbilinux current({})".format(current)))
         version = current
     version = re.sub("\.\w+$", "", version)
-    arch = subprocess.check_output("uname -m".split()).strip()
-    arch = "x86" if arch == "i686" else arch
+    arch = subprocess.check_output(["uname", "-m"]).strip()
+    arch = "x86" if arch == "i686" else arch.decode()
     try:
-        urllib2.urlopen(url + "allpkgs.pickle").close()
+        urllib.request.urlopen(url + "allpkgs.pickle").close()
         return url
-    except urllib2.URLError:
+    except urllib.error.HTTPError:
         try:
-            urllib2.urlopen(url + arch + "/allpkgs.pickle").close()
+            urllib.request.urlopen(url + arch + "/allpkgs.pickle").close()
             return url + arch + "/"
-        except urllib2.URLError:
+        except urllib.error.HTTPError:
             return url + "qbilinux-" + version + "/" + arch + "/"
 
 def get_confs():
@@ -103,7 +112,7 @@ def get_confs():
     """
     loc_confs = get_file_confs(os.path.expanduser("~/.pkginfo"))
     sys_confs = get_file_confs("/etc/pkginfo.conf")
-    for i in confs.keys():
+    for i in list(confs.keys()):
         if i in loc_confs:
             confs[i] = loc_confs[i]
         elif i in sys_confs:
@@ -112,7 +121,7 @@ def get_confs():
     ローカルの qbilinux バージョンとアーキ名を取得し，URL を補完する．
     """
     confs["URL"] = url_completion(confs["URL"])
-    print("url: {}".format(confs["URL"]))
+    print(("url: {}".format(confs["URL"])))
     """
     ローカルでブロックしたいパッケージは追加する方が便利だろう．
     """
@@ -127,7 +136,7 @@ def get_confs():
     if confs["INSTALL"]:
         sys.stderr.write("You need sudo to install package(s).  "
                 "Are you sure? [y/N] ")
-        s = raw_input().lower()
+        s = input().lower()
         if not s or s[0] != "y":
             sys.stderr.write("Interrupted.\n")
             sys.exit()
@@ -147,10 +156,10 @@ def get_local_pkgs():
     return pkglist
 
 def get_ftp_pkgs(confs):
-    return pickle.load(urllib2.urlopen(confs["URL"] + "allpkgs.pickle"))
+    return pickle.load(urllib.request.urlopen(confs["URL"] + "allpkgs.pickle"))
 
 def check_replaces(orig_list, replaces):
-    for ck in replaces.keys():
+    for ck in list(replaces.keys()):
         if ck in orig_list:
             (ver, arch, build) = orig_list[ck]
             del(orig_list[ck])
@@ -159,7 +168,7 @@ def check_replaces(orig_list, replaces):
 
 def rev_replaces(replaces):
     rev_list = {}
-    for i in replaces.keys():
+    for i in list(replaces.keys()):
         rev_list[replaces[i]] = i
     return rev_list
 
@@ -197,7 +206,7 @@ def get_category(pkgs, confs):
     return category
 
 def download_file_url(url, file):
-    opener = urllib.FancyURLopener()
+    opener = urllib.request.FancyURLopener()
     fi = opener.open(url)
     for l in str(fi.info()).splitlines():
         if "content-length: " in l.lower():
@@ -244,7 +253,7 @@ def download_file_ftp(host, path, file):
     return time.strptime(mtime, "%Y%m%d%H%M%S")
 
 def download_file(urlbase, subpath, file):
-    print("downloading: {}".format(file))
+    print(("downloading: {}".format(file)))
     if urlbase.split(":")[0] == "ftp":
         path = "/".join(urlbase.split("/")[3:]) + "/".join(subpath.split("/"))
         st = download_file_ftp(urlbase.split("/")[2], path, file)
@@ -283,29 +292,29 @@ def download_pkg(urlbase, subpath, pkgname, confs):
 def install_pkg(pkgname, ftp_pkgs, rev_list, confs):
     base = pkgname.split("-")[0]
     if base in ftp_pkgs["__no_install"]:
-        print("{} needs some tweaks to install.  "
-                "Auto installation skipped.".format(base))
+        print(("{} needs some tweaks to install.  "
+                "Auto installation skipped.".format(base)))
         return False
     if base in rev_list:
         if confs["INSTALL"] == "manual":
             sys.stderr.write("Remove {}? [y/N] ".format(rev_list[base]))
-            s = raw_input().lower()
+            s = input().lower()
             if not s or s[0] != "y":
                 sys.stderr.write("Skipped.\n")
                 return False
-        print("removing {}".format(rev_list[base]))
+        print(("removing {}".format(rev_list[base])))
         cmd = "sudo /sbin/removepkg {}".format(rev_list[base])
-        print("invoking: {}".format(cmd))
-        print(subprocess.check_call(cmd.split()))
+        print(("invoking: {}".format(cmd)))
+        print((subprocess.check_call(cmd.split())))
     if confs["INSTALL"] == "manual":
         sys.stderr.write("Install {}? [y/N] ".format(base))
-        s = raw_input().lower()
+        s = input().lower()
         if not s or s[0] != "y":
             sys.stderr.write("Skipped.\n")
             return False
-    print("installing: {}".format(pkgname))
+    print(("installing: {}".format(pkgname)))
     cmd = "sudo /sbin/updatepkg -f {}".format(pkgname)
-    print("invoking: {}".format(cmd))
+    print(("invoking: {}".format(cmd)))
     return subprocess.check_call(cmd.split())
 
 def main():
@@ -353,10 +362,10 @@ def main():
     rev_list = rev_replaces(ftp_pkgs["__replaces"])
     if confs["REVERSE"]:
         not_installed = []
-        for i in ftp_pkgs.keys():
+        for i in list(ftp_pkgs.keys()):
             if i in ["__blockpkgs", "__replaces", "__no_install"]:
                 continue
-            if not check_pkgs.has_key(i):
+            if i not in check_pkgs:
                 (ver, p_arch, build, ext, path) = ftp_pkgs[i]
                 pkgname = "{}-{}-{}-{}.{}".format(i, ver, p_arch, build, ext)
                 path_list = "{}/{}".format(path, pkgname).split("/")[1:]
@@ -366,17 +375,17 @@ def main():
         カテゴリー別に，カテゴリー内のパッケージを qbilinux インストーラが
         インストールする順番にソートして表示する．
         """
-        print("category: {}".format(sorted(not_installed)[0][0][0]))
+        print(("category: {}".format(sorted(not_installed)[0][0][0])))
         ct_prev = sorted(not_installed)[0][0][0]
         for i in sorted(not_installed):
             if i[0][0] != ct_prev:
-                print("category: {}".format(i[0][0]))
+                print(("category: {}".format(i[0][0])))
             ct_prev = i[0][0]
-            print("\t{}".format("/".join(i[0][1:])))
+            print(("\t{}".format("/".join(i[0][1:]))))
         return
     category = get_category(local_pkgs, confs)
     need_install = []
-    for i in ftp_pkgs.keys():
+    for i in list(ftp_pkgs.keys()):
         if i in ["__blockpkgs", "__replaces", "__no_install"]:
             continue
         (ver, p_arch, build, ext, path) = ftp_pkgs[i]
@@ -384,40 +393,40 @@ def main():
             if path.split("/")[1] not in category:
                 continue
         else:
-            if not (path.split("/")[1] in category or check_pkgs.has_key(i)):
+            if not (path.split("/")[1] in category or i in check_pkgs):
                 continue
-        if not check_pkgs.has_key(i) or check_pkgs[i] != (ver, p_arch, build):
+        if i not in check_pkgs or check_pkgs[i] != (ver, p_arch, build):
             pkgname = "{}-{}-{}-{}.{}".format(i, ver, p_arch, build, ext)
             path_list = "{}/{}".format(path, pkgname).split("/")[1:]
             need_install.append((path_list, path, pkgname))
     for i in sorted(need_install):
         base = i[2].split("-")[0]
         (ver, p_arch, build, ext, path) = ftp_pkgs[base]
-        if not check_pkgs.has_key(base):
+        if base not in check_pkgs:
             pkgname = "{}-{}-{}-{}".format(base, ver, p_arch, build)
-            print("** {} should be a new package in {} category."
-                    .format(pkgname, path.split("/")[1]))
+            print(("** {} should be a new package in {} category."
+                    .format(pkgname, path.split("/")[1])))
         elif base in rev_list:
             (local_ver, local_arch, local_build) = check_pkgs[base]
-            print("** local package: {}-{}-{}-{} was renamed to"
-                    .format(rev_list[base], local_ver, local_arch, local_build))
-            print("** new   package: {}-{}-{}-{}".format(base, ver, p_arch,
-                    build))
-            print("** You should manually remove old package "
+            print(("** local package: {}-{}-{}-{} was renamed to"
+                    .format(rev_list[base], local_ver, local_arch, local_build)))
+            print(("** new   package: {}-{}-{}-{}".format(base, ver, p_arch,
+                    build)))
+            print(("** You should manually remove old package "
                     "(# removepkg {}) to update new one."
-                    .format(rev_list[base]))
+                    .format(rev_list[base])))
         else:
             (local_ver, local_arch, local_build) = check_pkgs[base]
-            print("local package: {}-{}-{}-{}"
-                    .format(base, local_ver, local_arch, local_build))
-            print("new   package: {}-{}-{}-{}"
-                    .format(base, ver, p_arch, build))
-        print("URL: {}{}/{}".format(confs["URL"], i[1], i[2]))
+            print(("local package: {}-{}-{}-{}"
+                    .format(base, local_ver, local_arch, local_build)))
+            print(("new   package: {}-{}-{}-{}"
+                    .format(base, ver, p_arch, build)))
+        print(("URL: {}{}/{}".format(confs["URL"], i[1], i[2])))
         if confs["DOWNLOAD"]:
             cwd = os.getcwd()
             mwd = download_pkg(confs["URL"], i[1], i[2], confs)
             if confs["INSTALL"]:
-                print(install_pkg(i[2], ftp_pkgs, rev_list, confs))
+                print((install_pkg(i[2], ftp_pkgs, rev_list, confs)))
             if mwd != cwd:
                 os.chdir(cwd)
         print("")
