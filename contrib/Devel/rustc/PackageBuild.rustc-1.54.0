@@ -1,11 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=rustc
-vers=1.52.1
+vers=1.54.0
 url="https://static.rust-lang.org/dist/rustc-${vers}-src.tar.gz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
+cpu_num=`nproc --all`
 build=1
 src=rustc-${vers}-src
 OPT_CONFIG=''
@@ -57,7 +58,7 @@ EOF
 
 do_build() {
     cd ${B[$1]}
-    python3 ./x.py build -j 4
+    python3 ./x.py build -j $cpu_num
     if [ $? != 0 ]; then
 	echo "make error. $0 script stop"
 	exit 255
