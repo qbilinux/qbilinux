@@ -1,0 +1,19 @@
+*** gpgme-1.16.0/src/posix-io.c.orig	2020-07-15 19:14:17.000000000 +0900
+--- gpgme-1.16.0/src/posix-io.c	2021-09-05 13:05:15.658780134 +0900
+***************
+*** 570,576 ****
+                if (fd_list[i].fd > fd)
+                  fd = fd_list[i].fd;
+              fd++;
+! #if defined(__sun) || defined(__FreeBSD__)
+              closefrom (fd);
+              max_fds = fd;
+  #else /*!__sun */
+--- 570,576 ----
+                if (fd_list[i].fd > fd)
+                  fd = fd_list[i].fd;
+              fd++;
+! #if defined(__sun) || defined(__FreeBSD__) || defined(__GLIBC__)
+              closefrom (fd);
+              max_fds = fd;
+  #else /*!__sun */
