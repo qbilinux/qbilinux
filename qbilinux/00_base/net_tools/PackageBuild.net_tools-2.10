@@ -6,7 +6,7 @@ vers=2.10
 url="http://downloads.sourceforge.net/net-tools/net-tools-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=net-tools-$vers
 OPT_CONFIG=""
 DOCS="ABOUT-NLS COPYING INSTALLING README README.ipv6 TODO"
@@ -75,6 +75,8 @@ do_install() {
     install -d $P/usr/bin $P/usr/share/man/man8/
     install -s ipmask $P/usr/bin
     cat $W/ipmask.8 | gzip -9c > $P/usr/share/man/man8/ipmask.8.gz
+    mv $W/bin/ifconfig $W/sbin/
+    mv $W/bin/route $W/sbin/
 }
 
 do_package() {
