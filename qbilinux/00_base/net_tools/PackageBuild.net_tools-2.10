@@ -75,8 +75,8 @@ do_install() {
     install -d $P/usr/bin $P/usr/share/man/man8/
     install -s ipmask $P/usr/bin
     cat $W/ipmask.8 | gzip -9c > $P/usr/share/man/man8/ipmask.8.gz
-    mv $W/bin/ifconfig $W/sbin/
-    mv $W/bin/route $W/sbin/
+    mv $P/bin/ifconfig $P/sbin/
+    mv $P/bin/route $P/sbin/
 }
 
 do_package() {
