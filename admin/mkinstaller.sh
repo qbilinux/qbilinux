@@ -14,7 +14,8 @@ dest=.
 pkg="
 	busybox
 	dosfstools
-	udev"
+	udev
+	pixz"
 dist_pkg="
 	00_base/btrfs_progs
 	00_base/attr
