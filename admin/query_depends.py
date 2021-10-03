@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#! /usr/bin/python3
 # -*- coding: utf-8 -*-;
 
 '''
@@ -17,7 +17,7 @@ import sqlite3, os, getopt, sys
 
 def usage():
     print("Usage:")
-    print(" {0} [-b name] [-p path ] [-s soname ] [-r realname]".format(sys.argv[0]))
+    print((" {0} [-b name] [-p path ] [-s soname ] [-r realname]".format(sys.argv[0])))
     print("   ./depends.sql3 データベースを用いて，ライブラリの依存関係を調べる．")
     print("   -b name: name が含まれるELF形式のバイナリファイルが使う共有ライブラリを表示する")
     print("      -b cat とすれば /bin/cat だけでなく，bdftruncate や fc-cat もマッチする")
@@ -68,9 +68,9 @@ def query(db, cmd, arg):
     # print tgt
     for i in tgt:
         if cmd == 'base' or cmd == 'path' :
-            print("{0} needs these libraries".format(i))
+            print(("{0} needs these libraries".format(i)))
         else:
-            print("{0} used by these binaries".format(i))
+            print(("{0} used by these binaries".format(i)))
 
         sql = 'select * from depends where {0}="{1}";'.format(cmd, i)
         # print sql
@@ -78,14 +78,14 @@ def query(db, cmd, arg):
         for row in cur:
             (base, path, soname, realname) = row
             if cmd == 'base' or cmd == 'path' :
-                print("  {0}({1})".format(soname, realname))
+                print(("  {0}({1})".format(soname, realname)))
             else:
-                print("  {0}({1})".format(base, path))
-        print
+                print(("  {0}({1})".format(base, path)))
+        print()
 def main():
     dbname = './depends.sql3'
     if os.access(dbname, os.R_OK) == False:
-        print("cannot open database:{0}".format(dbname))
+        print(("cannot open database:{0}".format(dbname)))
 
     (cmd, arg) = get_opts()
     query(dbname, cmd, arg)

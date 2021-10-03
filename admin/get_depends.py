@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#! /usr/bin/python3
 # -*- coding: euc-jp -*-;
 
 '''
@@ -36,11 +36,11 @@ def init_db(dbname):
 def insert_db(dbname, t):
     conn = sqlite3.connect(dbname)
     try:
-        print("inserting ", t)
+        print(("inserting ", t))
         conn.execute('insert into depends values(?, ?, ?, ?)', t)
         conn.commit()
-    except sqlite3.Error, e:
-        print("An error occurred:", e.args[0])
+    except sqlite3.Error as e:
+        print(("An error occurred:", e.args[0]))
         conn.rollback()
 
 def get_elfs(path):
@@ -59,12 +59,12 @@ def get_elfs(path):
                 path = os.path.join(root,i)
                 if os.path.islink(path) == False:
                     if check_elf(path) :
-                        print("{0} is ELF".format(path))
+                        print(("{0} is ELF".format(path)))
                         elfs.append(path)
     return elfs
 
 def check_elf(file):
-    res = subprocess.check_output(['file', file])
+    res = subprocess.check_output(['file', file]).decode()
     if res.find('ELF') > 0 and res.find('dynamically linked') > 0 and res.find('32-bit') == -1: 
         return True
     else:
@@ -79,11 +79,12 @@ def get_depends(file):
             list.append(i.lstrip())
 
     except subprocess.CalledProcessError:
-        print("error occured to ldd {0}. maybe different archs?".format(file))
+        print(("error occured to ldd {0}. maybe different archs?".format(file)))
 
     return list
 
 def split_parts(l):
+    l = l.decode()
     (soname, sep, last) = l.partition(' => ')
     if soname == 'linux-vdso.so.1' :
         realname = 'none'
@@ -110,7 +111,7 @@ def main():
     search_dirs = ['/bin',  '/lib', '/lib64', '/sbin', '/usr', '/opt']
 
     for dir in search_dirs:
-        print("searching {0}".format(dir))
+        print(("searching {0}".format(dir)))
         files = get_elfs(dir)
         list = []
         for file in files:
@@ -118,7 +119,7 @@ def main():
             tmp = get_depends(file)
             for i in tmp:
                 (soname, realname) = split_parts(i)
-                print("{0}, {1}, {2}, {3}".format(base, file, soname, realname))
+                print(("{0}, {1}, {2}, {3}".format(base, file, soname, realname)))
                 t = (base, file, soname, realname)
                 list.append(t)
             
