@@ -2,11 +2,11 @@
 
 ######################################################################
 pkgbase=gzip
-vers=1.10
+vers=1.11
 url="http://ftp.gnu.org/gnu/gzip/gzip-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=$pkgbase-$vers
 OPT_CONFIG="--bindir=/bin"
 DOCS="INSTALL NEWS README AUTHORS COPYING THANKS TODO ChangeLog-2007 ChangeLog"
