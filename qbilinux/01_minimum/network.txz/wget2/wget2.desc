@@ -1,0 +1,11 @@
+wget2 & y & y & y & y
+&
+ファイルダウンロードコマンド wget2
+&
+wget2 は，ncftp 等の FTP クライアントとは異なり，非対話的に FTP/HTTP サ
+ーバに接続するためのプログラムです。FTP だけではなく HTTP プロトコルも
+理解するので Web サーバからデータをダウンロードする際にも利用できます。
+&
+wget2
+&
+wget2 is a comand line program to retrieve URL.
