@@ -2,11 +2,11 @@
 
 ######################################################################
 pkgbase=stunnel
-vers=5.55
+vers=5.59
 url="https://www.stunnel.org/downloads/stunnel-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="README ChangeLog COPYING CREDITS INSTALL.FIPS COPYRIGHT.GPL
