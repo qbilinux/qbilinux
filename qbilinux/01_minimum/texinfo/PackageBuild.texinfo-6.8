@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase=texinfo
-vers=6.7
+vers=6.8
 url="http://ftp.gnu.org/gnu/texinfo/texinfo-${vers}.tar.xz"
 verify="http://ftp.gnu.org/gnu/texinfo/texinfo-${vers}.tar.xz.sig"
 commitid=
@@ -24,6 +24,8 @@ do_prepare() {
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
+    sed -e 's/__attribute_nonnull__/__nonnull/' \
+	-i gnulib/lib/malloc/dynarray-skeleton.c
 }
 
 do_config() {
