@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase=llvm
-vers=12.0.1
+vers=13.0.0
 url="https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
@@ -30,6 +30,7 @@ do_prepare() {
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
+    grep -rl '#!.*python' | xargs sed -i '1s/python$/python3/'
 }
 
 do_config() {
@@ -59,7 +60,13 @@ do_config() {
     if [ "$arch" = "x86_64" -o "$arch" = "i686" ]; then
           HOST_TRIPLE="${arch}-pc-linux-gnu"
           TARGET_BUILD="host;AMDGPU;BPF"
-	  CMAKE_FLAGS="-DLLVM_ENABLE_CXX1Y=ON -DLLVM_ENABLE_LIBCXX=ON -DCLANG_RESOURCE_DIR=../${libdir}/clang/${vers} -DBUILD_SHARED_LIBS=ON -DLLVM_LIBDIR_SUFFIX=${suffix} -DLLVM_REQUIRES_RTTI=ON -DLLVM_ENABLE_TIMESTAMPS=OFF -DLLVM_ENABLE_ASSERTIONS=OFF -DLLVM_ENABLE_PIC=ON -DLLVM_BINUTILS_INCDIR=/usr/include"
+	  #CMAKE_FLAGS="-DLLVM_ENABLE_CXX1Y=ON -DLLVM_ENABLE_LIBCXX=ON -DCLANG_RESOURCE_DIR=../${libdir}/clang/${vers} -DBUILD_SHARED_LIBS=ON -DLLVM_LIBDIR_SUFFIX=${suffix} -DLLVM_REQUIRES_RTTI=ON -DLLVM_ENABLE_TIMESTAMPS=OFF -DLLVM_ENABLE_ASSERTIONS=OFF -DLLVM_ENABLE_PIC=ON -DLLVM_BINUTILS_INCDIR=/usr/include"
+	  CMAKE_FLAGS="-DLLVM_ENABLE_FFI=ON
+		-DLLVM_BUILD_LLVM_DYLIB=ON
+	        -DLLVM_LINK_LLVM_DYLIB=ON
+		-DLLVM_ENABLE_RTTI=ON
+		-DLLVM_LIBDIR_SUFFIX=${suffix}
+		-DLLVM_BINUTILS_INCDIR=/usr/include"
 	  BUILD_PROJECTS="clang;compiler-rt;libcxx;libcxxabi"
     elif [ "$arch" = "armv7l" ]; then
           HOST_TRIPLE='arm-pc-linux-gnueabihf'
