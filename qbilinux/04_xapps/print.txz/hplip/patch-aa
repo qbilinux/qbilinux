@@ -1,0 +1,19 @@
+*** hplip-3.19.12/configure.in.orig	2021-10-15 15:59:41.753602771 +0900
+--- hplip-3.19.12/configure.in	2021-10-15 16:00:49.268612386 +0900
+***************
+*** 28,34 ****
+  #AC_PREREQ(2.59)
+  AC_INIT([HP Linux Imaging and Printing], [3.19.12], [3.19.12], [hplip])
+  #AM_INIT_AUTOMAKE([1.9 foreign])
+! AM_INIT_AUTOMAKE
+  AC_DISABLE_STATIC
+  
+  # Checks for programs.
+--- 28,34 ----
+  #AC_PREREQ(2.59)
+  AC_INIT([HP Linux Imaging and Printing], [3.19.12], [3.19.12], [hplip])
+  #AM_INIT_AUTOMAKE([1.9 foreign])
+! AM_INIT_AUTOMAKE([1.9 foreign subdir-objects])
+  AC_DISABLE_STATIC
+  
+  # Checks for programs.
