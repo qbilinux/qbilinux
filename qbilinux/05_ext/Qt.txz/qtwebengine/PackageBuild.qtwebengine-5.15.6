@@ -1,16 +1,16 @@
 #!/bin/sh
 ##############################################################
 pkgbase=qtwebengine
-vers=5.15.1
-url="https://download.qt.io/archive/qt/${vers%.*}/${vers}/submodules/qtwebengine-everywhere-src-${vers}.tar.xz"
+vers=5.15.6
+url="https://anduin.linuxfromscratch.org/BLFS/qtwebengine/qtwebengine-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=qtwebengine-everywhere-src-${vers}
+src=qtwebengine-${vers}
 OPT_CONFIG='-- -webengine-ffmpeg -webengine-icu'
 DOCS='LICENSE.GPL2 LICENSE.GPL3 LICENSE.GPL3-EXCEPT LICENSE.GPLv3 LICENSE.LGPL3'
-patchfiles='qtwebengine-everywhere-src-5.11.3-aarch64-new-stat.patch'
+patchfiles='qtwebengine-5.15.6-build_fixes-1.patch'
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -23,6 +23,12 @@ do_prepare() {
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
+    mkdir -pv .git src/3rdparty/chromium/.git
+    sed -e '/^MODULE_VERSION/s/5.*/5.15.2/' -i .qmake.conf
+    find -type f -name "*.pr[io]" |
+	xargs sed -i -e 's|INCLUDEPATH += |&$$QTWEBENGINE_ROOT/include |'
+    sed -e '/link_pulseaudio/s/false/true/' \
+	-i src/3rdparty/chromium/media/media_options.gni
     sed -i 's/NINJAJOBS/NINJA_JOBS/' src/core/gn_run.pro
 }
 
@@ -40,10 +46,8 @@ do_config() {
 
 do_build() {
     cd ${B[$1]}
-    if [ -f Makefile ] ; then
-	export LDFLAGS='-Wl,--as-needed'
-	make
-    fi
+    export LDFLAGS='-Wl,--as-needed'
+    make
     if [ $? != 0 ]; then
 	echo "make error. $0 script stop"
 	exit 255
@@ -52,10 +56,8 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}
-    if [ -f Makefile ] ; then
-	export LDFLAGS='-Wl,--as-needed'
-	make install INSTALL_ROOT=$P
-    fi
+    export LDFLAGS='-Wl,--as-needed'
+    make install INSTALL_ROOT=$P
     if [ $? != 0 ]; then
 	echo "make install error. $0 script stop"
 	exit 255
