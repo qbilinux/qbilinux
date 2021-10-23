@@ -1,16 +1,16 @@
 #!/bin/sh
 ##############################################################
-pkgbase=qterminal
-vers=0.16.1
-url="https://github.com/lxqt/qterminal/releases/download/${vers}/qterminal-${vers}.tar.xz"
+pkgbase=libfm_qt
+vers=0.17.1
+url="https://github.com/lxqt/libfm-qt/releases/download/${vers}/libfm-qt-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=qterminal-${vers}
+src=libfm-qt-${vers}
 OPT_CONFIG='-DPULL_TRANSLATIONS=no -DCMAKE_BUILD_TYPE=Release'
 DOCS='AUTHORS CHANGELOG LICENSE README.md'
-patchfiles=''
+patchfiles='patch-aa'
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"

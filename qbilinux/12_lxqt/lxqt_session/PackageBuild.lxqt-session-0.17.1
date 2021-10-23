@@ -1,13 +1,13 @@
 #!/bin/sh
 ##############################################################
-pkgbase=lxqt_openssh_askpass
-vers=0.16.0
-url="https://github.com/lxqt/lxqt-openssh-askpass/releases/download/${vers}/lxqt-openssh-askpass-${vers}.tar.xz"
+pkgbase=lxqt_session
+vers=0.17.1
+url="https://github.com/lxqt/lxqt-session/releases/download/${vers}/lxqt-session-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=lxqt-openssh-askpass-${vers}
+src=lxqt-session-${vers}
 OPT_CONFIG='-DPULL_TRANSLATIONS=no -DCMAKE_BUILD_TYPE=Release'
 DOCS='AUTHORS CHANGELOG LICENSE README.md'
 patchfiles=''

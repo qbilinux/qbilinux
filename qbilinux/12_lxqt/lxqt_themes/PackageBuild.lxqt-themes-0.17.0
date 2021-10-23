@@ -1,15 +1,15 @@
 #!/bin/sh
 ##############################################################
-pkgbase=lxqt_notificationd
-vers=0.16.0
-url="https://github.com/lxqt/lxqt-notificationd/releases/download/${vers}/lxqt-notificationd-${vers}.tar.xz"
+pkgbase=lxqt_themes
+vers=0.17.0
+url="https://github.com/lxqt/lxqt-themes/releases/download/${vers}/lxqt-themes-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=lxqt-notificationd-${vers}
-OPT_CONFIG='-DPULL_TRANSLATIONS=no -DCMAKE_BUILD_TYPE=Release'
-DOCS='AUTHORS CHANGELOG LICENSE README.md'
+src=lxqt-themes-${vers}
+OPT_CONFIG='-DCMAKE_BUILD_TYPE=Release'
+DOCS='AUTHORS CHANGELOG COPYING README.md'
 patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"

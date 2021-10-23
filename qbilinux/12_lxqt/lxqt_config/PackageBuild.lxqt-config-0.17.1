@@ -1,13 +1,13 @@
 #!/bin/sh
 ##############################################################
-pkgbase=lxqt_panel
-vers=0.16.1
-url="https://github.com/lxqt/lxqt-panel/releases/download/${vers}/lxqt-panel-${vers}.tar.xz"
+pkgbase=lxqt_config
+vers=0.17.1
+url="https://github.com/lxqt/lxqt-config/releases/download/${vers}/lxqt-config-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=lxqt-panel-${vers}
+src=lxqt-config-${vers}
 OPT_CONFIG='-DPULL_TRANSLATIONS=no -DCMAKE_BUILD_TYPE=Release'
 DOCS='AUTHORS CHANGELOG LICENSE README.md'
 patchfiles=''

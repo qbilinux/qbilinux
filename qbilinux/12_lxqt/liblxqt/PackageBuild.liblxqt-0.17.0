@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
-pkgbase="screengrab"
-vers=2.1.0
-url="https://github.com/lxqt/screengrab/releases/download/${vers}/screengrab-${vers}.tar.xz"
+pkgbase=liblxqt
+vers=0.17.0
+url="https://github.com/lxqt/liblxqt/releases/download/${vers}/liblxqt-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=screengrab-${vers}
-OPT_CONFIG=''
+src=liblxqt-${vers}
+OPT_CONFIG='-DPULL_TRANSLATIONS=no -DCMAKE_BUILD_TYPE=Release'
 DOCS='AUTHORS CHANGELOG COPYING README.md'
 patchfiles=''
 compress=txz
@@ -28,7 +28,7 @@ do_prepare() {
 do_config() {
     if [ -d ${B[$1]} ] ; then rm -rf ${B[$1]} ; fi
 
-    cp -a ${S[$1]} ${B[$1]}
+    mkdir ${B[$1]}
     cd ${B[$1]}
     if [ -f $S/CMakeLists.txt ]; then
 	export PKG_CONFIG_PATH=/opt/kde/${libdir}/pkgconfig:/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
