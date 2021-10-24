@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=libXpm
-vers=3.5.12
-url="https://www.x.org/releases/individual/lib/libXpm-${vers}.tar.bz2"
+vers=3.5.13
+url="http://xorg.freedesktop.org/archive/individual/lib/libXpm-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=libXpm-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS.old README'
