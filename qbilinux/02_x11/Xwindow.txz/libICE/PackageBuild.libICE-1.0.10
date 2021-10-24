@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='https://www.x.org/releases/individual/lib/libICE-1.0.9.tar.bz2'
 pkgbase=libICE
-vers=1.0.9
+vers=1.0.10
+url="http://xorg.freedesktop.org/archive/individual/lib/libICE-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=libICE-1.0.9
+build=1
+src=libICE-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING ChangeLog INSTALL README'
 patchfiles=''
