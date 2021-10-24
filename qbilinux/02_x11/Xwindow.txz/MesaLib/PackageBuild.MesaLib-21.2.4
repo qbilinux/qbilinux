@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=MesaLib
-vers=20.1.2
+vers=21.2.4
 url="ftp://ftp.freedesktop.org/pub/mesa/mesa-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=mesa-${vers}
 case $arch in
     armv7l | aarch64)
@@ -17,11 +17,19 @@ case $arch in
       	 -Dbuildtype=release
          ';;
     *)
-	OPT_CONFIG='-Dshared-llvm=true
-         -Dgles1=true -Dgles2=true 
-         -Dosmesa=gallium -Dgallium-xa=true -Dgbm=true 
-      	 -Dbuildtype=release
-         ';;
+	# OPT_CONFIG='-Dshared-llvm=true
+        #  -Dgles1=true -Dgles2=true 
+        #  -Dosmesa=gallium -Dgallium-xa=true -Dgbm=true 
+      	#  -Dbuildtype=release
+        #  ';;
+	OPT_CONFIG='--buildtype=release
+         -Ddri-drivers=i965,nouveau
+         -Dgallium-drivers=i915,iris,nouveau,r600,radeonsi,svga,swrast,virgl
+	 -Dosmesa=true
+	 -Dglvnd=true
+         -Dglx=dri';;
+         #-Dvalgrind=disabled
+         #-Dlibunwind=disabled';;
 esac
 DOCS='docs/*'
 
@@ -40,6 +48,7 @@ do_prepare() {
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
+    sed '1s/python/&3/' -i bin/symbols-check.py
 }
 
 do_config() {
