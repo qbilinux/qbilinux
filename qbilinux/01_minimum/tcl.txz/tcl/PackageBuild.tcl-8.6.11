@@ -2,11 +2,11 @@
 
 ######################################################################
 pkgbase=tcl
-vers=8.6.9
+vers=8.6.11
 url="http://jaist.dl.sourceforge.net/sourceforge/tcl/tcl${vers}-src.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=tcl$vers
 OPT_CONFIG="--enable-threads"
 DOCS="changes ChangeLog.2000 ChangeLog.1999 ChangeLog.2002
