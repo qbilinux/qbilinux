@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=libXft
-vers=2.3.3
-url="https://www.x.org/releases/individual/lib/libXft-${vers}.tar.bz2"
+vers=2.3.4
+url="http://xorg.freedesktop.org/archive/individual/lib/libXft-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=libXft-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README'
