@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=libxcb
-vers=1.13
-url="https://www.x.org/releases/individual/xcb/libxcb-${vers}.tar.bz2"
+vers=1.14
+url="https://xorg.freedesktop.org/archive/individual/xcb/libxcb-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=libxcb-${vers}
 OPT_CONFIG='--disable-static --enable-xinput --enable-xkb'
 DOCS='COPYING INSTALL NEWS README'
