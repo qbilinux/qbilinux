@@ -1,8 +1,8 @@
 #!/bin/sh
 ##############################################################
 pkgbase=php8
-vers=8.0.5
-url="https://www.php.net/distributions/php-${vers}.tar.gz"
+vers=8.0.11
+url="https://www.php.net/distributions/php-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
