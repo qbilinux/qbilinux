@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase=polkit
-vers=0.118
+vers=0.119
 url="http://www.freedesktop.org/software/polkit/releases/polkit-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
