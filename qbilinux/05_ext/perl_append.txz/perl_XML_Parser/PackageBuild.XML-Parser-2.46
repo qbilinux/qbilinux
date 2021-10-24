@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=perl_XML_Parser
-vers=2.44_01
+vers=2.46
 url="http://search.cpan.org/CPAN/authors/id/T/TO/TODDR/XML-Parser-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=XML-Parser-${vers}
 OPT_CONFIG=''
 DOCS='README'
