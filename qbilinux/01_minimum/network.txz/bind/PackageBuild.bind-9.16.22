@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=bind
-vers=9.16.15
+vers=9.16.22
 url="http://ftp.isc.org/isc/bind/${vers/_/-}/bind-${vers/_/-}.tar.xz
     http://www.internic.net/domain/named.root"
 apply_arch="x86_64 i686 armv7l aarch64"
