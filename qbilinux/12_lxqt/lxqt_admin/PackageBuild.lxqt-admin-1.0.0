@@ -1,13 +1,13 @@
 #!/bin/sh
 ##############################################################
 pkgbase=lxqt_admin
-vers=0.4.0
-url="https://github.com/lxqt/lxqt-archiver/releases/download/${vers}/lxqt-archiver-${vers}.tar.xz"
+vers=1.0.0
+url="https://github.com/lxqt/lxqt-admin/releases/download/${vers}/lxqt-admin-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=lxqt-archiver-${vers}
+src=lxqt-admin-${vers}
 OPT_CONFIG='-DPULL_TRANSLATIONS=no -DCMAKE_BUILD_TYPE=Release'
 DOCS='AUTHORS CHANGELOG COPYING README.md'
 patchfiles=''
