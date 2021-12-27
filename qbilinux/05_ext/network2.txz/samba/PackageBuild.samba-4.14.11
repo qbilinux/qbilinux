@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=samba
-vers=4.11.4
+vers=4.14.11
 url="http://www.samba.org/samba/ftp/stable/samba-${vers}.tar.gz"
 verify=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=${pkgbase}-${vers}
 if [ $arch = "x86_64" -o $arch = "aarch64" ]; then
     libdir="lib64"
