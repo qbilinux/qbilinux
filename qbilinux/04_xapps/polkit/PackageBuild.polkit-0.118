@@ -5,11 +5,11 @@ vers=0.118
 url="http://www.freedesktop.org/software/polkit/releases/polkit-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=${pkgbase}-${vers}
 OPT_CONFIG='--disable-static --with-polkitd-user=polkituser --enable-introspection --disable-libsystemd-login'
 DOCS='AUTHORS COPYING ChangeLog HACKING INSTALL NEWS README'
-patchfiles='polkit-0.118-fix_elogind_detection-1.patch'
+patchfiles='polkit-0.118-fix_elogind_detection-1.patch CVW-2021-4034.diff'
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
