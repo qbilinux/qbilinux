@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=dialog
-vers=1.3_20210530
+vers=1.3_20220117
 url="ftp://ftp.invisible-island.net/dialog/dialog-${vers/_/-}.tgz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
