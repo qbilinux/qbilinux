@@ -2,6 +2,8 @@ libaio & y & y & y & y
 &
 libaio
 &
+Linux-native asynchronous I/O access library
 &
 libaio
 &
+Linux-native asynchronous I/O access library
