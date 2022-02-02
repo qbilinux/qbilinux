@@ -2,11 +2,11 @@
 
 ######################################################################
 pkgbase=btrfs_progs
-vers=v5.2.2
+vers=v5.16
 url="https://www.kernel.org/pub/linux/kernel/people/kdave/btrfs-progs/btrfs-progs-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=btrfs-progs-$vers
 OPT_CONFIG="--bindir=/sbin --disable-documentation"
 DOCS="COPYING INSTALL README.md"
