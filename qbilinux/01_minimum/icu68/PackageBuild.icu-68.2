@@ -69,6 +69,17 @@ do_install() {
     fi
 
     # add extra func
+    rm -rf $P/usr/bin $P/usr/include $P/usr/$libdir/pkgconfig
+    rm -rf $P/usr/sbin $P/usr/share/doc/icu $P/usr/share/man
+    rm -rf $P/usr/$libdir/libicudata.so
+    rm -rf $P/usr/$libdir/libicuuc.so
+    rm -rf $P/usr/$libdir/libicui18n.so
+    rm -rf $P/usr/$libdir/libicuio.so
+    rm -rf $P/usr/$libdir/libicutu.so
+    rm -rf $P/usr/$libdir/libicutest.so
+    rm -rf $P/usr/$libdir/icu/current
+    rm -rf $P/usr/$libdir/icu/Makefile.inc
+    rm -rf $P/usr/$libdir/icu/pkgdata.inc
 }
 
 do_package() {
