@@ -11,10 +11,18 @@ url="http://ftp.gnu.org/gnu/bash/bash-${vers}.tar.gz
 	http://ftp.gnu.org/gnu/bash/bash-5.1-patches/bash51-005
 	http://ftp.gnu.org/gnu/bash/bash-5.1-patches/bash51-006
 	http://ftp.gnu.org/gnu/bash/bash-5.1-patches/bash51-007
-	http://ftp.gnu.org/gnu/bash/bash-5.1-patches/bash51-008"
+	http://ftp.gnu.org/gnu/bash/bash-5.1-patches/bash51-008
+	http://ftp.gnu.org/gnu/bash/bash-5.1-patches/bash51-009
+	http://ftp.gnu.org/gnu/bash/bash-5.1-patches/bash51-010
+	http://ftp.gnu.org/gnu/bash/bash-5.1-patches/bash51-011
+	http://ftp.gnu.org/gnu/bash/bash-5.1-patches/bash51-012
+	http://ftp.gnu.org/gnu/bash/bash-5.1-patches/bash51-013
+	http://ftp.gnu.org/gnu/bash/bash-5.1-patches/bash51-014
+	http://ftp.gnu.org/gnu/bash/bash-5.1-patches/bash51-015
+	http://ftp.gnu.org/gnu/bash/bash-5.1-patches/bash51-016"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=3
 src[0]=$pkgbase-${vers}
 src[1]=${src[0]}
 OPT_CONFIG[0]="--bindir=/bin --without-bash-malloc --with-installed-readline"
@@ -41,6 +49,14 @@ do_prepare() {
 	    patch -p2 < $W/bash51-006
 	    patch -p2 < $W/bash51-007
 	    patch -p2 < $W/bash51-008
+	    patch -p2 < $W/bash51-009
+	    patch -p2 < $W/bash51-010
+	    patch -p2 < $W/bash51-011
+	    patch -p2 < $W/bash51-012
+	    patch -p2 < $W/bash51-013
+	    patch -p2 < $W/bash51-014
+	    patch -p2 < $W/bash51-015
+	    patch -p2 < $W/bash51-016
 	    ;;
     esac
     for patch in $patchfiles ; do
