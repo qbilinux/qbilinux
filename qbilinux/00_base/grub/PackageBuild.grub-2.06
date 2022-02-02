@@ -2,11 +2,11 @@
 
 ######################################################################
 pkgbase=grub
-vers=2.04
+vers=2.06
 url="https://ftp.gnu.org/gnu/grub/grub-${vers}.tar.xz"
 apply_arch="x86_64 i686"
 arch=`uname -m`
-build=3
+build=1
 src[0]=$pkgbase-$vers
 src[1]=${src[0]}
 src[2]=${src[0]}
