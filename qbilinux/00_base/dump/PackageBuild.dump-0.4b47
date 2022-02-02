@@ -2,14 +2,14 @@
 
 ######################################################################
 pkgbase=dump
-vers=0.4b46
-url="http://jaist.dl.sourceforge.net/sourceforge/dump/dump-${vers}.tar.gz"
+vers=0.4b47
+url="https://sourceforge.net/projects/dump/files/dump/${vers}/dump-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=$pkgbase-$vers
 OPT_CONFIG="--disable-transselinux"
-patchfiles="dump-0.4b46-openssl-1.1.patch"
+patchfiles=""
 DOCS="AUTHORS COPYING ChangeLog INSTALL KNOWNBUGS MAINTAINERS NEWS README
     REPORTING-BUGS TODO"
 compress=txz
