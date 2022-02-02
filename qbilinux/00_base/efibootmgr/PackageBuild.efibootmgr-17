@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase=efibootmgr
-vers=16
+vers=17
 url="https://github.com/rhboot/efibootmgr/archive/${vers}.tar.gz"
 srcfile=${pkgbase}-${vers}.tar.gz
 apply_arch="x86_64 i686"
@@ -23,6 +23,7 @@ do_prepare() {
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
+    sed -e '/extern int efi_set_verbose/d' -i src/efibootmgr.c
 }
 
 do_config() {
