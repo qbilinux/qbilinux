@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=iputils
-vers=20210202
+vers=20211215
 url="https://github.com/iputils/iputils/archive/${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
@@ -14,6 +14,7 @@ patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
+PATH=/sbin:$PATH
 ######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def
