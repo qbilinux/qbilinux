@@ -1,17 +1,17 @@
 #!/bin/sh
 ##############################################################
 pkgbase=gptfdisk
-vers=1.0.4
+vers=1.0.8
 url="http://sourceforge.net/projects/gptfdisk/files/gptfdisk/${vers}/gptfdisk-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 verify=
 commitid=
 arch=`uname -m`
-build=2
+build=1
 src=gptfdisk-${vers}
 OPT_CONFIG=''
 DOCS='COPYING NEWS README'
-patchfiles='patch-a'
+patchfiles='gptfdisk-1.0.8-convenience-1.patch'
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -24,6 +24,8 @@ do_prepare() {
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
+    sed -i 's|ncursesw/||' gptcurses.cc
+    sed -i 's|sbin|usr/sbin|' Makefile
 }
 
 do_config() {
