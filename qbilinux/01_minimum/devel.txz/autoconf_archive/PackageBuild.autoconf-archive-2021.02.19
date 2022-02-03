@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase="autoconf_archive"
-vers=2019.01.06
+vers=2021.02.19
 url="http://ftp.jaist.ac.jp/pub/GNU/autoconf-archive/autoconf-archive-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=autoconf-archive-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING COPYING.EXCEPTION ChangeLog INSTALL NEWS README TODO'
