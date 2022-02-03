@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=time
-vers=1.7
+vers=1.9
 url="http://ftp.gnu.org/pub/gnu/time/time-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=time-1.7
+build=1
+src=time-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README'
 patchfiles=''
