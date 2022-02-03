@@ -96,6 +96,7 @@ do_package() {
     cp -a $W/etc $P
     chown -R root.root $P/etc
     touch -r etc/rc.d $P/etc/rc.d
+    mkdir -p $P/install
     cat <<- EOF >> $P/install/doinst.sh
 	#%% begin initialize $src
 	EOF
