@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=xf86_input_wacom
-vers=0.36.0
-url="http://downloads.sourceforge.net/linuxwacom/xf86-input-wacom-${vers}.tar.bz2"
+vers=0.40.0
+url="https://github.com/linuxwacom/xf86-input-wacom/releases/download/xf86-input-wacom-${vers}/xf86-input-wacom-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=xf86-input-wacom-${vers}
 OPT_CONFIG='--with-systemd-unit-dir=no'
 DOCS='AUTHORS ChangeLog INSTALL README'
