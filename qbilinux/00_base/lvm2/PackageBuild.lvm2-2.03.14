@@ -2,18 +2,18 @@
 
 ######################################################################
 pkgbase=lvm2
-vers=2.02.183
-url="ftp://sources.redhat.com/pub/lvm2/LVM2.${vers}.tgz"
+vers=2.03.14
+url="http://mirrors.kernel.org/sourceware/lvm2/LVM2.${vers}.tgz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=LVM2.$vers
 OPT_CONFIG="--exec-prefix= --enable-static_link --enable-applib
     --enable-cmdlib --enable-pkgconfig --enable-dmeventd
     --with-thin=internal"
 DOCS="COPYING.LIB COPYING INSTALL VERSION_DM README VERSION WHATS_NEW
     WHATS_NEW_DM"
-patchfiles='patch-a patch-b'
+patchfiles=''
 #patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
