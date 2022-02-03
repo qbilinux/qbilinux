@@ -1,13 +1,13 @@
 #!/bin/sh
 ##############################################################
 pkgbase="libfprint"
-vers=0.99.0
-url='https://gitlab.freedesktop.org/libfprint/libfprint/uploads/82ba3cef5bdf72997df711eacdb13c0f/libfprint-0.99.0.tar.xz'
+vers=1.94.2
+url="https://gitlab.freedesktop.org/libfprint/libfprint/-/archive/v${vers}/libfprint-v${vers}.tar.gz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=libfprint-${vers}
+build=1
+src=libfprint-v${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING HACKING.md INSTALL NEWS README THANKS TODO meson_options.txt'
 patchfiles=''
