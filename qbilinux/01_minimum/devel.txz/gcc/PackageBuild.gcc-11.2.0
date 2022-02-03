@@ -5,7 +5,7 @@ vers=11.2.0
 url="http://ftp.jaist.ac.jp/pub/GNU/gcc/gcc-${vers}/gcc-${vers}.tar.xz ftp://sourceware.org/pub/java/ecj-latest.jar"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=4
 src=gcc-${vers}
 if [ $arch = "armv7l" ]; then
     build_arch=arm-pc-linux-gnueabihf
@@ -25,7 +25,7 @@ else
     ARCH_CONFIG='--enable-libmpx'
 fi
 OPT_CONFIG="--build=${build_arch} --host=${build_arch} --libexecdir=/usr/${libdir}
-   --enable-languages=c,c++,fortran,go,lto 
+   --enable-languages=c,c++,fortran,lto 
    --enable-shared --enable-threads=posix --with-system-zlib --with-isl --enable-__cxa_atexit 
    --disable-libunwind-exceptions  --disable-libstdcxx-pch --enable-clocale=gnu --enable-gnu-unique-object 
    --enable-linker-build-id --enable-lto --enable-plugin --enable-install-libiberty --with-linker-hash-style=gnu 
@@ -35,6 +35,8 @@ patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
+export CC=clang
+export CXX=clang
 ##############################################################'
 
 source /usr/src/qbilinux/PackageBuild.def
@@ -212,29 +214,29 @@ y
 1
 EOF
 
-    # for GCC GO
-    echo "building gcc-go"
-    popd
-    pkgbase=gcc_go
-    pkg=$pkgbase-$vers-$arch-$build
-    if [ -d $P ]; then rm -rf $P ; fi
-    mkdir -p $P/usr/bin $P/usr/${libdir} $P/usr/share/man/man1 $P/usr/share/info
-    mv $P2/usr/bin/{gccgo,${build_arch}-gccgo} $P/usr/bin
-    mv $P2/usr/bin/{go,gofmt} $P/usr/bin
-    mv $P2/usr/${libdir}/libgo* $P/usr/${libdir}/
-    mv $P2/usr/${libdir}/libnetgo* $P/usr/${libdir}/
-    mv $P2/usr/${libdir}/go $P/usr/${libdir}/
-    mv $P2/usr/share/info/gccgo.info.gz $P/usr/share/info/
-    mv $P2/usr/share/man/man1/gccgo.1.gz $P/usr/share/man/man1
-    mv $P2/usr/share/man/man1/{go,gofmt}.1.gz $P/usr/share/man/man1
+#     # for GCC GO
+#     echo "building gcc-go"
+#     popd
+#     pkgbase=gcc_go
+#     pkg=$pkgbase-$vers-$arch-$build
+#     if [ -d $P ]; then rm -rf $P ; fi
+#     mkdir -p $P/usr/bin $P/usr/${libdir} $P/usr/share/man/man1 $P/usr/share/info
+#     mv $P2/usr/bin/{gccgo,${build_arch}-gccgo} $P/usr/bin
+#     mv $P2/usr/bin/{go,gofmt} $P/usr/bin
+#     mv $P2/usr/${libdir}/libgo* $P/usr/${libdir}/
+#     mv $P2/usr/${libdir}/libnetgo* $P/usr/${libdir}/
+#     mv $P2/usr/${libdir}/go $P/usr/${libdir}/
+#     mv $P2/usr/share/info/gccgo.info.gz $P/usr/share/info/
+#     mv $P2/usr/share/man/man1/gccgo.1.gz $P/usr/share/man/man1
+#     mv $P2/usr/share/man/man1/{go,gofmt}.1.gz $P/usr/share/man/man1
 
 
-    convert
-    pushd $P
-    /sbin/makepkg $W/$pkg.$compress <<EOF
-y
-1
-EOF
+#     convert
+#     pushd $P
+#     /sbin/makepkg $W/$pkg.$compress <<EOF
+# y
+# 1
+# EOF
 }
 
 source /usr/src/qbilinux/PackageBuild.func
