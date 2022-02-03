@@ -2,13 +2,13 @@
 
 ######################################################################
 pkgbase=autofs
-vers=5.1.5
+vers=5.1.8
 url="https://www.kernel.org/pub/linux/daemons/autofs/v5/autofs-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=$pkgbase-$vers
-OPT_CONFIG="--with-confdir=/etc --without-openldap"
+OPT_CONFIG="--with-confdir=/etc --without-openldap --with-libtirpc"
 DOCS="CHANGELOG COPYING COPYRIGHT CREDITS INSTALL README*"
 patchfiles='autofs_init_sleep.patch'
 compress=txz
