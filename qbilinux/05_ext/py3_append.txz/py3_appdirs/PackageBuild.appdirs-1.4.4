@@ -1,14 +1,16 @@
 #!/bin/sh
 ##############################################################
-pkgbase=py3_pygobject
-vers=3.40.0
-url="http://ftp.gnome.org/pub/GNOME/sources/pygobject/${vers%.*}/pygobject-${vers}.tar.xz"
+pkgbase=py3_appdirs
+vers=1.4.4
+url="https://github.com/ActiveState/appdirs/archive/refs/tags/${vers}.tar.gz"
+srcfile=appdirs-${vers}.tar.gz
+commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=pygobject-${vers}
+build=1
+src=appdirs-${vers}
 OPT_CONFIG=''
-DOCS='COPYING ChangeLog NEWS README.rst'
+DOCS='CHANGES.rst LICENSE.txt README.rst'
 patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
@@ -36,8 +38,9 @@ do_config() {
 
 do_build() {
     cd ${B[$1]}
+    PYTHON=/usr/bin/python3
     python3 ./setup.py build
-    
+
     if [ $? != 0 ]; then
 	echo "make error. $0 script stop"
 	exit 255
@@ -46,7 +49,8 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}
-    python3 setup.py install --root $P
+    PYTHON=/usr/bin/python3
+    python3 ./setup.py install --root=$P
 
     if [ $? != 0 ]; then
 	echo "make install error. $0 script stop"

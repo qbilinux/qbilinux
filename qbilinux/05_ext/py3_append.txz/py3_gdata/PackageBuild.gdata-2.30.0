@@ -1,13 +1,13 @@
 #!/bin/sh
 ##############################################################
 pkgbase=py3_gdata
-vers=1.7.11
+vers=2.30.0
 url="https://github.com/googleapis/google-api-python-client/archive/v${vers}.tar.gz"
 srcfile=gdata-$vers.tar.gz
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=google-api-python-client-1.7.11
+src=google-api-python-client-${vers}
 OPT_CONFIG=''
 DOCS='CHANGELOG LICENSE README.md'
 patchfiles=''

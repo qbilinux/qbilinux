@@ -1,32 +1,30 @@
 #!/bin/sh
 ##############################################################
-pkgbase="py3_cython"
-vers=0.29.14
-url="https://github.com/cython/cython/archive/${vers}.tar.gz"
-srcfile=cython-$vers.tar.gz
-commitid=
+pkgbase=py3_pycurl
+vers=7.44.1
+url="https://files.pythonhosted.org/packages/47/f9/c41d6830f7bd4e70d5726d26f8564538d08ca3a7ac3db98b325f94cdcb7f/pycurl-${vers}.tar.gz"
+#url="https://github.com/pycurl/pycurl/archive/refs/tags/REL_${vers/./_}.tar.gz"
+#srcfile=pycurl-${vers}.tar.gz
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=cython-${vers}
+src=pycurl-${vers}
 OPT_CONFIG=''
-DOCS='COPYING.txt INSTALL.txt LICENSE.txt README.rst ToDo.txt USAGE.txt test-requirements-cpython.txt test-requirements.txt'
+DOCS='AUTHORS COPYING-LGPL COPYING-MIT ChangeLog INSTALL.rst README.rst RELEASE-NOTES.rst'
 patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
 ##############################################################
 
-
 source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
-    cd ${S[$1]}
+    cd ${S[$i]}
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
 }
-
 
 do_config() {
     if [ -d ${B[$1]} ] ; then rm -rf ${B[$1]} ; fi
@@ -40,7 +38,8 @@ do_config() {
 
 do_build() {
     cd ${B[$1]}
-    python3 setup.py build
+    python3 ./setup.py build
+
     if [ $? != 0 ]; then
 	echo "make error. $0 script stop"
 	exit 255
@@ -49,11 +48,14 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}
-    python3 setup.py install --root=$P
+    python3 setup.py install --root $P
+
     if [ $? != 0 ]; then
 	echo "make install error. $0 script stop"
 	exit 255
     fi
+
+    # add extra func
 }
 
 do_package() {

@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=py3_mutagen
-vers=1.43.0
-url="https://files.pythonhosted.org/packages/aa/fd/ed738775442e3614849fefdf41417d7bff3ccb010d49c8f729432cc3c1e5/mutagen-$vers.tar.gz"
+vers=1.45.1
+url="https://github.com/quodlibet/mutagen/releases/download/release-${vers}/mutagen-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=mutagen-$vers
+src=mutagen-${vers}
 OPT_CONFIG=''
 DOCS='COPYING NEWS README TODO'
 patchfiles=''

@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
-pkgbase=py3_Twisted
-vers=19.10.0
-url="http://twistedmatrix.com/Releases/Twisted/${vers%.*}/Twisted-${vers}.tar.bz2"
+pkgbase=py3_numpy
+vers=1.21.4
+url="https://github.com/numpy/numpy/releases/download/v${vers}/numpy-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=Twisted-${vers}
-OPT_CONFIG=''
-DOCS='INSTALL LICENSE NEWS README'
+src=numpy-$vers
+OPT_CONFIG='--disable-static'
+DOCS='INSTALL.rst.txt LICENSE.txt PKG-INFO THANKS.txt'
 patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
@@ -32,8 +32,6 @@ do_config() {
 
 do_build() {
     cd ${B[$1]}
-    # for libtirpc
-    export CFLAGS="-I/usr/include/tirpc"
     if [ -f setup.py ] ; then
 	python3 ./setup.py build
     fi
@@ -46,8 +44,7 @@ do_build() {
 do_install() {
     cd ${B[$1]}
     if [ -f setup.py ] ; then
-	mkdir -p $P/usr/${libdir}/python3.8/site-packages/
-	python3 ./setup.py install --root=$P/
+      python3 ./setup.py install --root $P
     fi
     if [ $? != 0 ]; then
 	echo "make install error. $0 script stop"
