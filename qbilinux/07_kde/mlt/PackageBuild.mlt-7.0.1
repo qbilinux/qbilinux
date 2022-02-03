@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
 pkgbase="mlt"
-vers=6.22.1
+vers=7.0.1
 url="https://github.com/mltframework/mlt/releases/download/v${vers}/mlt-${vers}.tar.gz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
 src=mlt-${vers}
-OPT_CONFIG='--enable-gpl'
+OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog NEWS README'
 patchfiles=''
 compress=txz
@@ -32,9 +32,11 @@ do_config() {
 
     cp -a ${S[$1]} ${B[$1]}
     cd ${B[$1]}
-    export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
-    export LDFLAGS='-Wl,--as-needed' 
-    ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$1]}
+    if [ -f ${S[$1]}/CMakeLists.txt ]; then
+      export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
+      export LDFLAGS='-Wl,--as-needed' 
+      cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DLIB_INSTALL_DIR:PATH=/usr/${libdir} -DLIB_SUFFIX=$suffix ${OPT_CONFIG} ${S[$1]}
+    fi
     if [ $? != 0 ]; then
 	echo "configure error. $0 script stop"
 	exit 255
