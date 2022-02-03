@@ -1,15 +1,16 @@
 #!/bin/sh
 ##############################################################
 pkgbase=itstool
-vers=2.0.6
+vers=2.0.7
 url="http://files.itstool.org/itstool/itstool-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=itstool-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING COPYING.GPL3 ChangeLog INSTALL NEWS README'
-patchfiles='fix_crash_912099.patch fix_crash_918953.patch'
+#patchfiles='fix_crash_912099.patch fix_crash_918953.patch'
+patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
