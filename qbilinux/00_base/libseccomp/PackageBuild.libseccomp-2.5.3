@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=libseccomp
-vers=2.3.2
-url='https://github.com/seccomp/libseccomp/releases/download/v2.3.2/libseccomp-2.3.2.tar.gz'
+vers=2.5.3
+url="https://github.com/seccomp/libseccomp/releases/download/v${vers}/libseccomp-${vers}.tar.gz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=libseccomp-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='CHANGELOG LICENSE README.md'
