@@ -2,14 +2,14 @@
 
 ######################################################################
 pkgbase=man_pages
-vers=4.16
+vers=5.13
 url="https://www.kernel.org/pub/linux/docs/man-pages/Archive/man-pages-${vers}.tar.xz"
 apply_arch="noarch"
 arch=noarch
-build=2
+build=1
 src=man-pages-$vers
 OPT_CONFIG=""
-DOCS="Changes.old README man-pages-4.11.Announce Changes"
+DOCS="Changes.old README man-pages-${vers}.Announce Changes"
 patchfiles=""
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
@@ -35,7 +35,7 @@ do_build() {
     cd ${B[$1]}
     false && if [ -f Makefile ] ; then
 	export LDFLAGS='-Wl,--as-needed'
-	make
+	make prefix=/usr
     fi
     if [ $? != 0 ]; then
 	echo "make error. $0 script stop"
@@ -47,7 +47,7 @@ do_install() {
     cd ${B[$1]}
     if [ -f Makefile ] ; then
 	export LDFLAGS='-Wl,--as-needed'
-	make install DESTDIR=$P
+	make install DESTDIR=$P prefix=/usr
     fi
     if [ $? != 0 ]; then
 	echo "make install error. $0 script stop"
