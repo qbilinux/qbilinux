@@ -2,11 +2,11 @@
 
 ######################################################################
 pkgbase=man_pages_ja
-vers=20180615
+vers=20220115
 url="https://linuxjm.osdn.jp/man-pages-ja-${vers}.tar.gz"
 apply_arch="noarch"
 arch=noarch
-build=2
+build=1
 src=man-pages-ja-$vers
 OPT_CONFIG=""
 DOCS="manual/LDP_man-pages/translation_list README INSTALL"
