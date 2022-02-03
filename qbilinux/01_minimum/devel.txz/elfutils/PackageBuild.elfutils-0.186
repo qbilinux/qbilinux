@@ -8,7 +8,7 @@ apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
 src=$pkgbase-$vers
-OPT_CONFIG="--program-prefix=eu-"
+OPT_CONFIG="--program-prefix=eu- --disable-debuginfod"
 DOCS="COPYING THANKS NOTES AUTHORS ABOUT-NLS COPYING-GPLV2 NEWS
     COPYING-LGPLV3 CONTRIBUTING INSTALL TODO README ChangeLog"
 patchfiles=""
