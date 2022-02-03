@@ -2,14 +2,14 @@
 
 ######################################################################
 pkgbase=rsync
-vers=3.1.3
-url="http://rsync.samba.org/ftp/rsync/src/rsync-${vers}.tar.gz"
+vers=3.2.3
+url="https://download.samba.org/pub/rsync/rsync-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=$pkgbase-$vers
 patchfiles=""
-OPT_CONFIG=""
+OPT_CONFIG="--disable-xxhash --disable-lz4"
 DOCS="TODO INSTALL COPYING rsyncsh.txt csprotocol.txt rsync3.txt
     OLDNEWS NEWS README tech_report.tex"
 compress=txz
