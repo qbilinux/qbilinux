@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
-pkgbase=py3_dbus_python
-vers=1.2.16
-url="http://dbus.freedesktop.org/releases/dbus-python/dbus-python-${vers}.tar.gz"
+pkgbase=py3_gyp
+vers=20210831
+url="https://chromium.googlesource.com/external/gyp.git"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=dbus-python-${vers}
+src=gyp
 OPT_CONFIG=''
-DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README'
+DOCS='AUTHORS LICENSE README.md'
 patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
@@ -27,40 +27,20 @@ do_prepare() {
 do_config() {
     if [ -d ${B[$1]} ] ; then rm -rf ${B[$1]} ; fi
 
-    mkdir ${B[$1]}
-    cd ${B[$1]}
-    export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
-    export PYTHON=/usr/bin/python3
-    ${S[$1]}/configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
-    
-    if [ $? != 0 ]; then
-	echo "configure error. $0 script stop"
-	exit 255
-    fi
+    cp -a ${S[$1]} ${B[$1]}
 }
 
 do_build() {
     cd ${B[$1]}
-    export PYTHON=/usr/bin/python3
-    make
-
-    if [ $? != 0 ]; then
-	echo "make error. $0 script stop"
-	exit 255
-    fi
 }
 
 do_install() {
     cd ${B[$1]}
-    export PYTHON=/usr/bin/python3
-    make install DESTDIR=$P
-
+    python3 setup.py install --root $P
     if [ $? != 0 ]; then
 	echo "make install error. $0 script stop"
 	exit 255
     fi
-
-    # add extra func
 }
 
 do_package() {

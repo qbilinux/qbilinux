@@ -1,15 +1,14 @@
 #!/bin/sh
 ##############################################################
-pkgbase=py3_packaging
-vers=19.2
-url="https://github.com/pypa/packaging/releases/download/${vers}/packaging-${vers}.tar.gz"
-commitid=
+pkgbase=py3_pycups
+vers=2.0.1
+url="https://github.com/OpenPrinting/pycups/releases/download/v2.0.1/pycups-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=packaging-${vers}
+src=pycups-${vers}
 OPT_CONFIG=''
-DOCS='CHANGELOG.rst CONTRIBUTING.rst LICENSE LICENSE.APACHE LICENSE.BSD README.rst'
+DOCS='COPYING NEWS README TODO'
 patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
