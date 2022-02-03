@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=linux_firmware
-vers=20210511
+vers=20211216
 url="https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/snapshot/linux-firmware-${vers}.tar.gz"
 apply_arch="noarch"
 arch=noarch
