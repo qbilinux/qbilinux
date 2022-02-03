@@ -2,11 +2,11 @@
 
 ######################################################################
 pkgbase=cpio
-vers=2.12
+vers=2.13
 url="http://ftp.gnu.org/gnu/cpio/cpio-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="README ABOUT-NLS AUTHORS COPYING ChangeLog INSTALL NEWS THANKS TODO"
@@ -23,6 +23,7 @@ do_prepare() {
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
+    sed -i '/The name/,+2 d' src/global.c
 }
 
 do_config() {
