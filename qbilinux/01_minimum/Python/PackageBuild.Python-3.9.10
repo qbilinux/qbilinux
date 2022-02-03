@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=Python
-vers=3.9.7
+vers=3.9.10
 url="https://www.python.org/ftp/python/${vers}/Python-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
