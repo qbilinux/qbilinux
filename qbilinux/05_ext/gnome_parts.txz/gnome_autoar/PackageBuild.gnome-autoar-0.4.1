@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
 pkgbase="gnome_autoar"
-vers=0.3.1
-url="http://ftp.gnome.org/pub/gnome/sources/gnome-autoar/${vers%.*}/gnome-autoar-${vers}.tar.xz"
+vers=0.4.1
+url="https://download.gnome.org/sources/gnome-autoar/${vers%.*}/gnome-autoar-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
 src=gnome-autoar-${vers}
-OPT_CONFIG='--disable-static'
+OPT_CONFIG=''
 DOCS='COPYING NEWS'
 patchfiles=''
 compress=txz
@@ -32,10 +32,10 @@ do_config() {
 
     mkdir ${B[$1]}
     cd ${B[$1]}
-    if [ -x ${S[$1]}/configure ] ; then
-      export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
+    if [ -f ${S[$1]}/meson.build ] ; then
+      export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
       export LDFLAGS='-Wl,--as-needed' 
-      ${S[$1]}/configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$1]}
+      meson --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir=/usr/share/man ${OPT_CONFIG[$1]} ${S[$1]}
     fi
     if [ $? != 0 ]; then
 	echo "configure error. $0 script stop"
@@ -46,7 +46,7 @@ do_config() {
 do_build() {
     cd ${B[$1]}
     export LDFLAGS='-Wl,--as-needed'
-    make
+    ninja
     if [ $? != 0 ]; then
 	echo "make error. $0 script stop"
 	exit 255
@@ -56,7 +56,7 @@ do_build() {
 do_install() {
     cd ${B[$1]}
     export LDFLAGS='-Wl,--as-needed'
-    make install DESTDIR=$P
+    DESTDIR=$P ninja install
     if [ $? != 0 ]; then
 	echo "make install error. $0 script stop"
 	exit 255
