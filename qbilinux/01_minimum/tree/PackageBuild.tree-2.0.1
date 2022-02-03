@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=tree
-vers=1.7.0
+vers=2.0.1
 url="ftp://mama.indstate.edu/linux/tree/tree-${vers}.tgz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=tree-${vers}
 OPT_CONFIG=''
 DOCS='INSTALL LICENSE README TODO'
@@ -46,7 +46,7 @@ do_install() {
     cd ${B[$1]}
     if [ -f Makefile ] ; then
 	export LDFLAGS='-Wl,--as-needed'
-	make install prefix=$P/usr MANDIR=$P/usr/share/man/man1
+	make install PREFIX=$P/usr MANDIR=$P/usr/share/man/man1
     fi
     if [ $? != 0 ]; then
 	echo "make install error. $0 script stop"
