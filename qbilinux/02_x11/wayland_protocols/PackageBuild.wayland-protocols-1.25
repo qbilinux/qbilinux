@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase="wayland_protocols"
-vers=1.23
+vers=1.25
 url="https://wayland.freedesktop.org/releases/wayland-protocols-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
