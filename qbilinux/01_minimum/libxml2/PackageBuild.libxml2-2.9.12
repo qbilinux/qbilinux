@@ -2,11 +2,11 @@
 
 ######################################################################
 pkgbase=libxml2
-vers=2.9.10
+vers=2.9.12
 url="http://xmlsoft.org/sources/libxml2-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=$pkgbase-$vers
 OPT_CONFIG="--with-history --disable-static --with-python=/usr/bin/python3 --with-icu"
 DOCS="AUTHORS COPYING ChangeLog Copyright INSTALL NEWS README README.tests TODO TODO_SCHEMAS"
