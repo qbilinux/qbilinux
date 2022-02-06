@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='ftp://ftp.iij.ad.jp/pub/X11/x.org/pub/individual/data/xcursor-themes-1.0.4.tar.bz2'
 pkgbase=xcursor_themes
-vers=1.0.4
+vers=1.0.6
+url="ftp://ftp.iij.ad.jp/pub/X11/x.org/pub/individual/data/xcursor-themes-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=xcursor-themes-1.0.4
+build=1
+src=xcursor-themes-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='COPYING ChangeLog INSTALL README'
 patchfiles=''
