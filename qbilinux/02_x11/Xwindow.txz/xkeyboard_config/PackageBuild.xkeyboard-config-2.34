@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=xkeyboard_config
-vers=2.27
+vers=2.34
 url="ftp://ftp.x.org/pub/individual/data/xkeyboard-config/xkeyboard-config-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=xkeyboard-config-${vers}
 OPT_CONFIG='--with-xkb-rules-symlink=xorg'
 DOCS='ABOUT-NLS AUTHORS COPYING ChangeLog NEWS README TODO'
