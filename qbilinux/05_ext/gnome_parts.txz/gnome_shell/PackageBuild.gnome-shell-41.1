@@ -8,7 +8,7 @@ apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
 src=gnome-shell-${vers}
-OPT_CONFIG='-Dsystemd=false'
+OPT_CONFIG='-Dsystemd=false -Dtests=false '
 DOCS='AUTHORS COPYING HACKING MAINTAINERS NEWS README meson_options.txt'
 patchfiles=''
 compress=txz
