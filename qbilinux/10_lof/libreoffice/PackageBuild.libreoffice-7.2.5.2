@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase=libreoffice
-vers=7.2.5.1
+vers=7.2.5.2
 extlib="https://dev-www.libreoffice.org/src/0168229624cfac409e766913506961a8-ucpp-1.3.2.tar.gz
 https://dev-www.libreoffice.org/src/1725634df4bb3dcb1b2c91a6175f8789-GentiumBasic_1102.zip
 https://dev-www.libreoffice.org/src/1f5def51ca0026cd192958ef07228b52-rasqal-0.9.33.tar.gz
@@ -42,6 +42,7 @@ https://dev-www.libreoffice.org/src/liberation-fonts-ttf-2.1.4.tar.gz
 https://dev-www.libreoffice.org/src/liberation-narrow-fonts-ttf-1.07.6.tar.gz
 https://dev-www.libreoffice.org/src/libetonyek-0.1.10.tar.xz
 https://dev-www.libreoffice.org/src/libexttextcat-3.4.5.tar.xz
+http://download.documentfoundation.org/libreoffice/src/${vers%.*}/libreoffice-translations-${vers}.tar.xz
 https://dev-www.libreoffice.org/src/libfreehand-0.1.2.tar.xz
 https://dev-www.libreoffice.org/src/libgpg-error-1.37.tar.bz2
 https://dev-www.libreoffice.org/src/libmspub-0.1.4.tar.xz
@@ -52,7 +53,6 @@ https://dev-www.libreoffice.org/src/liborcus-0.16.1.tar.bz2
 https://dev-www.libreoffice.org/src/libpagemaker-0.0.4.tar.xz
 https://dev-www.libreoffice.org/src/libqxp-0.0.2.tar.xz
 https://dev-www.libreoffice.org/src/libre-hebrew-1.0.tar.gz
-https://dev-www.libreoffice.org/src/libreoffice-translations-7.2.5.1.tar.xz
 https://dev-www.libreoffice.org/src/librevenge-0.0.4.tar.bz2
 https://dev-www.libreoffice.org/src/libstaroffice-0.0.7.tar.xz
 https://dev-www.libreoffice.org/src/libvisio-0.1.7.tar.xz
@@ -75,14 +75,13 @@ https://dev-www.libreoffice.org/src/zxing-cpp-1.1.1.tar.gz"
 url="http://download.documentfoundation.org/libreoffice/src/${vers%.*}/libreoffice-${vers}.tar.xz
 	http://download.documentfoundation.org/libreoffice/src/${vers%.*}/libreoffice-dictionaries-${vers}.tar.xz
 	http://download.documentfoundation.org/libreoffice/src/${vers%.*}/libreoffice-help-${vers}.tar.xz
-	http://ftp.tsukuba.wide.ad.jp/software/apache//ant/binaries/apache-ant-1.10.8-bin.zip $extlib"
-#http://download.documentfoundation.org/libreoffice/src/${vers%.*}/libreoffice-translations-${vers}.tar.xz
+	http://ftp.tsukuba.wide.ad.jp/software/apache//ant/binaries/apache-ant-1.10.12-bin.zip $extlib"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
 src=libreoffice-${vers}
-OPT_CONFIG="--with-ant-home=$W/source/apache-ant-1.10.8/ --without-junit --without-java --with-lang=ja --with-system-boost --with-system-curl --with-system-icu --with-system-harfbuzz --with-system-libxml --with-system-xmlsec --with-system-liblangtag --with-system-nss --with-system-libpng --with-system-epoxy --with-system-jpeg --with-system-expat --with-system-lcms2 --with-system-openldap --with-system-sane --with-system-graphite --with-system-neon --with-system-openssl"
+OPT_CONFIG="--with-ant-home=$W/source/apache-ant-1.10.12/ --without-junit --without-java --with-lang=ja --with-system-boost --with-system-curl --with-system-icu --with-system-harfbuzz --with-system-libxml --with-system-xmlsec --with-system-liblangtag --with-system-nss --with-system-libpng --with-system-epoxy --with-system-jpeg --with-system-expat --with-system-lcms2 --with-system-openldap --with-system-sane --with-system-graphite --with-system-neon --with-system-openssl"
 DOCS='COPYING COPYING.LGPL COPYING.MPL ChangeLog README.Solaris README.cross README.md leak-suppress.txt readlicense_oo unusedcode.README'
 patchfiles=''
 compress=txz
