@@ -58,9 +58,9 @@ do_install() {
 	echo "make install error. $0 script stop"
 	exit 255
     fi
+    mkdir -p $P/etc/rc.d/init.d
     cp -p $W/rc.networkmanager $P/etc/rc.d/rc.networkmanager
     chmod -x $P/etc/rc.d/rc.networkmanager
-    mkdir -p $P/etc/rc.d/init.d
     ( cd $P/etc/rc.d/init.d ; ln -sf ../rc.networkmanager networkmanager )
 }
 
