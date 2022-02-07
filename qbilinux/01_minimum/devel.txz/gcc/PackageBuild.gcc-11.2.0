@@ -5,7 +5,7 @@ vers=11.2.0
 url="http://ftp.jaist.ac.jp/pub/GNU/gcc/gcc-${vers}/gcc-${vers}.tar.xz ftp://sourceware.org/pub/java/ecj-latest.jar"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=4
+build=5
 src=gcc-${vers}
 if [ $arch = "armv7l" ]; then
     build_arch=arm-pc-linux-gnueabihf
@@ -28,7 +28,7 @@ OPT_CONFIG="--build=${build_arch} --host=${build_arch} --libexecdir=/usr/${libdi
    --enable-languages=c,c++,fortran,lto 
    --enable-shared --enable-threads=posix --with-system-zlib --with-isl --enable-__cxa_atexit 
    --disable-libunwind-exceptions  --disable-libstdcxx-pch --enable-clocale=gnu --enable-gnu-unique-object 
-   --enable-linker-build-id --enable-lto --enable-plugin --enable-install-libiberty --with-linker-hash-style=gnu 
+   --enable-linker-build-id --enable-lto --enable-plugin --with-linker-hash-style=gnu 
    --enable-gnu-indirect-function --disable-multilib --disable-werror --enable-checking=release ${ARCH_CONFIG}"
 DOCS='ABOUT-NLS COPYING COPYING.LIB COPYING.RUNTIME COPYING3 COPYING3.LIB ChangeLog ChangeLog.tree-ssa INSTALL MAINTAINERS NEWS README'
 patchfiles=''
