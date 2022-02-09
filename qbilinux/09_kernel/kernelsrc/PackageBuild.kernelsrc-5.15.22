@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=kernelsrc
-version=5.15.15
+version=5.15.22
 url="https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-${version%.*}.tar.xz
 	https://cdn.kernel.org/pub/linux/kernel/v5.x/patch-${version}.xz"
 #	git://github.com/sfjro/aufs5-standalone.git"
@@ -73,11 +73,11 @@ do_install() {
     cd ${B[$1]}
 
     install -d $P/usr/src
-    cp -dR . $P/usr/src/$src
+    cp -dR . $P/usr/src/linux-${version}
     find $P/usr/src/$src \( -name ".cocciconfig" \
 	 -o -name ".get_maintainer.ignore" -o -name ".gitignore" \
 	 -o -name ".mailmap" -o -name "*.orig" \) -exec rm {} \;
-    ln -s $src $P/usr/src/linux
+    ln -s linux-${version} $P/usr/src/linux
     install -d $P/sbin
     cat <<- "EOF" > $P/sbin/installkernel
 	#!/bin/sh
