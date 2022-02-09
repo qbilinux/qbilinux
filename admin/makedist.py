@@ -29,7 +29,7 @@ def usage():
     print("")
     print("copy pakege file and make tagfile form qbilinux distrobution.")
     print("")
-    print("Usage: "+args[0]+" buildir destdie arch")
+    print("Usage: "+args[0]+" buildir destdir arch")
     print("")
     print("   buildir: directory contains package and desc file.")
     print("   destdir: direcotry for qbilinux distrobution")
