@@ -2,11 +2,11 @@
 
 ######################################################################
 pkgbase=rpcbind
-vers=0.2.4
-url="http://downloads.sourceforge.net/rpcbind/rpcbind-${vers}.tar.bz2"
+vers=1.2.6
+url="https://sourceforge.net/projects/rpcbind/files/rpcbind/${vers}/rpcbind-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=$pkgbase-$vers
 OPT_CONFIG="--bindir=/sbin --with-rpcuser=root --enable-warmstarts --without-systemdsystemunitdir"
 DOCS="README NEWS ChangeLog INSTALL COPYING AUTHORS"
