@@ -2,12 +2,12 @@
 
 ######################################################################
 pkgbase=lm_sensors
-vers=3.4.0
-url="http://repository.timesys.com/buildsources/l/lm_sensors/lm_sensors-${vers}/lm_sensors-${vers}.tar.bz2"
+vers=3.6.0
+url="https://github.com/lm-sensors/lm-sensors/archive/V${vers//./-}/lm-sensors-${vers//./-}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=$pkgbase-$vers
+build=1
+src=${pkgbase/_/-}-${vers//./-}
 OPT_CONFIG=""
 DOCS="README INSTALL COPYING COPYING.LGPL CONTRIBUTORS CHANGES"
 patchfiles=""
