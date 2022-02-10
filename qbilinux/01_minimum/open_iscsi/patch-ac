@@ -1,0 +1,19 @@
+*** a/libopeniscsiusr/idbm.c	2021-09-06 08:32:54.000000000 +0900
+--- b/libopeniscsiusr/idbm.c	2022-02-10 17:14:12.122687332 +0900
+***************
+*** 996,1002 ****
+  
+  	/* use the interface name passed in, if any */
+  	if (iface_name)
+! 		strncpy((*node).iface.name, iface_name, ISCSI_MAX_IFACE_LEN);
+  
+  	/*
+  	 * Note: because we do not add the iface.iscsi_ifacename to
+--- 996,1002 ----
+  
+  	/* use the interface name passed in, if any */
+  	if (iface_name)
+! 		strncpy((*node).iface.name, iface_name, ISCSI_MAX_IFACE_LEN-1);
+  
+  	/*
+  	 * Note: because we do not add the iface.iscsi_ifacename to
