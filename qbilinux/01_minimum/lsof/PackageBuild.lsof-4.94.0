@@ -2,12 +2,12 @@
 
 ######################################################################
 pkgbase=lsof
-vers=4.89+dfsg
-url="http://ftp.uni-erlangen.de/ubuntu/pool/main/l/lsof/lsof_${vers}.orig.tar.gz"
+vers=4.94.0
+url="https://github.com/lsof-org/lsof/releases/download/${vers}/lsof_${vers}.linux.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=$pkgbase-${vers}.orig
+build=1
+src=${pkgbase}_${vers}.linux
 OPT_CONFIG=""
 DOCS="00.README.FIRST 00CREDITS 00DCACHE 00DIALECTS 00DIST 00FAQ 00LSOF-L 00MANIFEST 00PORTING 00QUICKSTART 00README 00TEST 00XCONFIG ChangeLog"
 patchfiles=""
@@ -30,7 +30,7 @@ do_config() {
 
     cp -a ${S[$1]} ${B[$1]}
     cd ${B[$1]}
-    yes "" | ./Configure linux
+    ./Configure -n linux
     if [ $? != 0 ]; then
 	echo "configure error. $0 script stop"
 	exit 255
