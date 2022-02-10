@@ -2,13 +2,13 @@
 
 ######################################################################
 pkgbase=gpgme
-vers=1.15.1
+vers=1.17.0
 url="https://www.gnupg.org/ftp/gcrypt/gpgme/gpgme-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=$pkgbase-$vers
-patchfiles="patch-aa"
+patchfiles=""
 OPT_CONFIG="--disable-gpg-test"
 DOCS="COPYING.LESSER NEWS README ChangeLog-2011 ChangeLog INSTALL
     TODO AUTHORS THANKS COPYING"
