@@ -2,8 +2,8 @@
 
 ######################################################################
 pkgbase=postfix
-vers=3.4.7
-url="ftp://ftp.riken.jp/net/postfix/postfix-release/official/postfix-${vers}.tar.gz"
+vers=3.7.0
+url="https://ghostarchive.org/postfix/postfix-release/official/postfix-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
@@ -11,7 +11,7 @@ src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="AAAREADME COMPATIBILITY COPYRIGHT HISTORY INSTALL IPv6-ChangeLog
     LICENSE PORTING RELEASE_NOTES* TLS_* US_PATENT_6321267"
-patchfiles="postfix-3.4.7-glibc230_fix-1.patch"
+patchfiles=""
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -31,15 +31,15 @@ do_config() {
 
     cp -a ${S[$1]} ${B[$1]}
     cd ${B[$1]}
-  cp -p conf/postfix-files{,.orig}
-  cat <<- "EOF" >> conf/postfix-files
+    cp -p conf/postfix-files{,.orig}
+    cat <<- "EOF" >> conf/postfix-files
 	$command_directory/smtp-source:f:root:root:-:755
 	$command_directory/smtp-sink:f:root:root:-:755
 	$command_directory/qmqp-source:f:root:root:-:755
 	$command_directory/qmqp-sink:f:root:root:-:755
 EOF
-  make makefiles CCARGS="-DNO_NIS -DUSE_SASL_AUTH -DUSE_CYRUS_SASL \
-      -DUSE_TLS -I/usr/include/sasl" AUXLIBS="-lsasl2 -lssl -lcrypto"
+    make makefiles CCARGS="-DNO_NIS -DUSE_SASL_AUTH -DUSE_CYRUS_SASL \
+    	 -DUSE_TLS -I/usr/include/sasl" AUXLIBS="-lsasl2 -lssl -lcrypto"
 }
 
 do_build() {
@@ -58,27 +58,27 @@ do_install() {
     cd ${B[$1]}
 
     # add extra func
-  sh postfix-install -non-interactive -package install_root=$P \
-      html_directory=/usr/share/doc/postfix/html \
-      manpage_directory=/usr/share/man \
-      readme_directory=/usr/share/doc/postfix/README_FILES
-  install -d $P/usr/lib
-  ln -s /usr/sbin/sendmail $P/usr/lib
-  for i in access aliases canonical generic \
-      header_checks main.cf master.cf relocated transport virtual ; do
-    mv $P/etc/postfix/$i{,.new}
-  done
-  mv $P/etc/postfix/{{access,aliases}.new,bounce.cf.default,canonical.new} $C
-  mv $P/etc/postfix/{{generic,header_checks}.new,main.cf.default} $C
-  mv $P/etc/postfix/{main.cf.new,makedefs.out,{master.cf,relocated}.new} $C
-  mv $P/etc/postfix/{transport,virtual}.new $C
-  mv $C/{{access,aliases}.new,bounce.cf.default,canonical.new} $P/etc/postfix
-  mv $C/{{generic,header_checks}.new,main.cf.default} $P/etc/postfix
-  mv $C/{main.cf.new,makedefs.out,{master.cf,relocated}.new} $P/etc/postfix
-  mv $C/{transport,virtual}.new $P/etc/postfix
-  sed -i "/^\(html\|readme\)_directory/s@postfix@$src@" \
-      $P/etc/postfix/main.cf.new
-  cat <<- "EOF" >> $P/etc/postfix/main.cf.new
+    sh postfix-install -non-interactive -package install_root=$P \
+       html_directory=/usr/share/doc/postfix/html \
+       manpage_directory=/usr/share/man \
+       readme_directory=/usr/share/doc/postfix/README_FILES
+    install -d $P/usr/lib
+    ln -s /usr/sbin/sendmail $P/usr/lib
+    for i in access aliases canonical generic \
+		    header_checks main.cf master.cf relocated transport virtual ; do
+	mv $P/etc/postfix/$i{,.new}
+    done
+    mv $P/etc/postfix/{{access,aliases}.new,bounce.cf.default,canonical.new} $C
+    mv $P/etc/postfix/{{generic,header_checks}.new,main.cf.default} $C
+    mv $P/etc/postfix/{main.cf.new,makedefs.out,{master.cf,relocated}.new} $C
+    mv $P/etc/postfix/{transport,virtual}.new $C
+    mv $C/{{access,aliases}.new,bounce.cf.default,canonical.new} $P/etc/postfix
+    mv $C/{{generic,header_checks}.new,main.cf.default} $P/etc/postfix
+    mv $C/{main.cf.new,makedefs.out,{master.cf,relocated}.new} $P/etc/postfix
+    mv $C/{transport,virtual}.new $P/etc/postfix
+    sed -i "/^\(html\|readme\)_directory/s@postfix@$src@" \
+	$P/etc/postfix/main.cf.new
+    cat <<- "EOF" >> $P/etc/postfix/main.cf.new
 	
 	# Plamo local configurations (for fml and SMTP auth with SASL2)
 	alias_maps = hash:/etc/aliases
@@ -99,17 +99,17 @@ do_install() {
 	#smtpd_sasl_type = dovecot
 	#data_directory = /var/lib/postfix
 EOF
-  sed -i 's@^#\(submission\)@\1@' $P/etc/postfix/master.cf.new
-  install -m 644 proto/aliases0 $P/etc/aliases.new
-  install -d $P/etc/rc.d/init.d
-  ln -s /usr/sbin/postfix $P/etc/rc.d/init.d
-  for i in active bounce corrupt defer deferred flush \
-      hold incoming private maildrop public saved trace ; do
-    chown postfix $P/var/spool/postfix/$i
-  done
-  chgrp postdrop $P/var/spool/postfix/{maildrop,public}
-  install -d $P/install
-  cat <<- "EOF" >> $P/install/doinst.sh
+    sed -i 's@^#\(submission\)@\1@' $P/etc/postfix/master.cf.new
+    install -m 644 proto/aliases0 $P/etc/aliases.new
+    install -d $P/etc/rc.d/init.d
+    ln -s /usr/sbin/postfix $P/etc/rc.d/init.d
+    for i in active bounce corrupt defer deferred flush \
+		    hold incoming private maildrop public saved trace ; do
+	chown postfix $P/var/spool/postfix/$i
+    done
+    chgrp postdrop $P/var/spool/postfix/{maildrop,public}
+    install -d $P/install
+    cat <<- "EOF" >> $P/install/doinst.sh
 	
 	postfix_config() {
 	  mv etc/postfix/$1.new /tmp
@@ -131,7 +131,7 @@ EOF
 	  mv /tmp/aliases.new etc/aliases
 	fi
 EOF
-  cat <<- EOF | sed 's/^|//' >> $P/install/doinst.sh
+    cat <<- EOF | sed 's/^|//' >> $P/install/doinst.sh
 	|#%% begin initialize $pkg
 	|if ! grep -q submission /etc/services ; then
 	|  cat <<- "EOF" >> /etc/services
@@ -150,12 +150,12 @@ EOF
 }
 
 do_package() {
-  mv $docdir/postfix/html $docdir/$src
-  mv $docdir/postfix/README_FILES $docdir/$src
-  mv $docdir/$src/{README_FILES,{RELEASE_NOTES*,TLS_*}.gz} $C
-  mv $docdir/$src/{US_PATENT_6321267.gz,html,$myname.gz} $C
-  mv $C/{README_FILES,{RELEASE_NOTES*,TLS_*}.gz} $docdir/$src
-  mv $C/{US_PATENT_6321267.gz,html,$myname.gz} $docdir/$src
+    mv $docdir/postfix/html $docdir/$src
+    mv $docdir/postfix/README_FILES $docdir/$src
+    mv $docdir/$src/{README_FILES,{RELEASE_NOTES*,TLS_*}.gz} $C
+    mv $docdir/$src/{US_PATENT_6321267.gz,html,$myname.gz} $C
+    mv $C/{README_FILES,{RELEASE_NOTES*,TLS_*}.gz} $docdir/$src
+    mv $C/{US_PATENT_6321267.gz,html,$myname.gz} $docdir/$src
     for i in $pkgbase ; do
         cd $P
         /sbin/makepkg $W/$pkg.$compress <<EOF
