@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=ppp
-vers=2.4.8
+vers=2.4.9
 url="https://github.com/paulusmack/ppp/archive/ppp-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
@@ -36,7 +36,6 @@ do_config() {
     fi
     sed -i -e 's@#\(USE_PAM\)@\1@g' -e 's@#\(CBCP\)@\1@g' \
 	-e 's@pppusers@tty@g' pppd/Makefile.linux
-    sed -i 's/@DESTDIR@/$(INSTROOT)&/g' pppd/plugins/pppol2tp/Makefile.linux
     if [ -x ${S[$1]}/configure ] ; then
 	export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
 	export LDFLAGS='-Wl,--as-needed' 
