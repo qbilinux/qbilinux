@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=sg3_utils
-vers=1.42
+vers=1.47
 url="http://sg.danny.cz/sg/p/sg3_utils-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=sg3_utils-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS BSD_LICENSE COPYING ChangeLog INSTALL NEWS README README.freebsd README.iscsi README.sg_start README.solaris README.tru64 README.win32 TODO'
