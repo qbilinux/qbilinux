@@ -2,11 +2,11 @@
 
 ######################################################################
 pkgbase=dnsmasq
-vers=2.80
+vers=2.86
 url="http://www.thekelleys.org.uk/dnsmasq/dnsmasq-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="FAQ COPYING setup.html CHANGELOG COPYING-v3 CHANGELOG.archive
