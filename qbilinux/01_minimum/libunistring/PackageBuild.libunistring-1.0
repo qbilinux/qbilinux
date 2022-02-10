@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=libunistring
-vers=0.9.10
+vers=1.0
 url="http://ftp.gnu.org/gnu/libunistring/libunistring-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=libunistring-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS BUGS COPYING COPYING.LIB ChangeLog HACKING INSTALL NEWS README THANKS'
