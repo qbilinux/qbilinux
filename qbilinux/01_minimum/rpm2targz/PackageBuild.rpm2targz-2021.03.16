@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=rpm2targz
-vers=9.0.0.5g
+vers=2021.03.16
 url="https://cgit.gentoo.org/proj/rpm2targz.git/snapshot/rpm2targz-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=rpm2targz-${vers}
 OPT_CONFIG=''
 DOCS='rpm2targz.README rpm2targz.README.Gentoo'
