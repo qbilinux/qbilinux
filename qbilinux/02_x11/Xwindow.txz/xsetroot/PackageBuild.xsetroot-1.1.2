@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='ftp://ftp.iij.ad.jp/pub/X11/x.org/pub/individual/app/xsetroot-1.1.1.tar.bz2'
 pkgbase=xsetroot
-vers=1.1.1
+vers=1.1.2
+url="ftp://ftp.iij.ad.jp/pub/X11/x.org/pub/individual/app/xsetroot-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=3
-src=xsetroot-1.1.1
+build=1
+src=xsetroot-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='COPYING ChangeLog INSTALL README'
 patchfiles=''
