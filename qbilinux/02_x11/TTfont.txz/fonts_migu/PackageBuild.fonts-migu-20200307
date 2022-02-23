@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
 pkgbase=fonts_migu
-vers=20150712
-url="http://jaist.dl.sourceforge.jp/mix-mplus-ipa/63545/migu-1p-${vers}.zip
-     http://jaist.dl.sourceforge.jp/mix-mplus-ipa/63545/migu-1c-${vers}.zip
-     http://jaist.dl.sourceforge.jp/mix-mplus-ipa/63545/migu-1m-${vers}.zip
-     http://jaist.dl.sourceforge.jp/mix-mplus-ipa/63545/migu-2m-${vers}.zip"
+vers=20200307
+url="http://jaist.dl.sourceforge.jp/mix-mplus-ipa/72511/migu-1p-${vers}.zip
+     http://jaist.dl.sourceforge.jp/mix-mplus-ipa/72511/migu-1c-${vers}.zip
+     http://jaist.dl.sourceforge.jp/mix-mplus-ipa/72511/migu-1m-${vers}.zip
+     http://jaist.dl.sourceforge.jp/mix-mplus-ipa/72511/migu-2m-${vers}.zip"
 apply_arch="noarch"
 arch=noarch
-build=2
+build=1
 src=migu-1p-${vers}
 OPT_CONFIG=''
 DOCS='migu-README.txt ipag00303/*'
