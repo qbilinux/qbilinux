@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='ftp://ftp.iij.ad.jp/pub/X11/x.org/pub/individual/app/xrefresh-1.0.5.tar.bz2'
 pkgbase=xrefresh
-vers=1.0.5
+vers=1.0.6
+url="ftp://ftp.iij.ad.jp/pub/X11/x.org/pub/individual/app/xrefresh-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=xrefresh-1.0.5
+build=1
+src=xrefresh-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='COPYING ChangeLog INSTALL README'
 patchfiles=''
