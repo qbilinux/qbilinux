@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='https://www.x.org/archive/individual/app/xinput-1.6.1.tar.bz2'
 pkgbase=xinput
-vers=1.6.1
+vers=1.6.3
+url="https://www.x.org/archive/individual/app/xinput-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=xinput-1.6.1
+build=1
+src=xinput-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README'
 patchfiles=''
