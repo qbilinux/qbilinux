@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='https://www.x.org/archive/individual/app/xev-1.2.1.tar.bz2'
 pkgbase=xev
-vers=1.2.1
+vers=1.2.4
+url="https://www.x.org/archive/individual/app/xev-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=xev-1.2.1
+build=1
+src=xev-${vers}
 OPT_CONFIG=''
 DOCS='COPYING ChangeLog INSTALL README'
 patchfiles=''
