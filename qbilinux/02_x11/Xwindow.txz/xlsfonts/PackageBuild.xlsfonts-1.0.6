@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='http://www.x.org/releases/individual/app/xlsfonts-1.0.3.tar.bz2'
 pkgbase=xlsfonts
-vers=1.0.3
+vers=1.0.6
+url="http://www.x.org/releases/individual/app/xlsfonts-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=3
-src=xlsfonts-1.0.3
+build=1
+src=xlsfonts-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='COPYING ChangeLog INSTALL README'
 patchfiles=''
