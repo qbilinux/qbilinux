@@ -1,13 +1,13 @@
 #!/bin/sh
 
 ######################################################################
-url="http://ftp.x.org/pub/individual/app/xbiff-1.0.3.tar.bz2"
 pkgbase=xbiff
-vers=1.0.3
+vers=1.0.4
+url="http://ftp.x.org/pub/individual/app/xbiff-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=3
-src=$pkgbase-$vers
+build=1
+src=$pkgbase-${vers}
 OPT_CONFIG=""
 DOCS="ChangeLog COPYING README INSTALL"
 compress=txz
