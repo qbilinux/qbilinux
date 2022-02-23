@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='https://www.x.org/archive/individual/app/xpr-1.0.4.tar.bz2'
 pkgbase=xpr
-vers=1.0.4
+vers=1.0.5
+url="https://www.x.org/archive/individual/app/xpr-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=3
-src=xpr-1.0.4
+build=1
+src=xpr-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README'
 patchfiles=''
