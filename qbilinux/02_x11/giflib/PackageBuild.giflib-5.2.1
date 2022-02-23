@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=giflib
-vers=5.1.4
-url="http://downloads.sourceforge.net/giflib/giflib-${vers}.tar.bz2"
+vers=5.2.1
+url="http://downloads.sourceforge.net/giflib/giflib-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=giflib-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS BUGS COPYING ChangeLog INSTALL NEWS README TODO build.asc history.asc'
@@ -27,14 +27,8 @@ do_prepare() {
 do_config() {
     if [ -d ${B[$1]} ] ; then rm -rf ${B[$1]} ; fi
 
-    mkdir ${B[$1]}
+    cp -a ${S[$1]} ${B[$1]}
     cd ${B[$1]}
-    if [ -x ${S[$1]}/configure ] ; then
-	export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
-	export LDFLAGS='-Wl,--as-needed' 
-	${S[$1]}/configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc \
-		--localstatedir=/var --infodir='${prefix}'/share/info --mandir='${prefix}'/share/man ${OPT_CONFIG[$1]}
-    fi
     if [ $? != 0 ]; then
 	echo "configure error. $0 script stop"
 	exit 255
@@ -45,7 +39,7 @@ do_build() {
     cd ${B[$1]}
     if [ -f Makefile ] ; then
 	export LDFLAGS='-Wl,--as-needed'
-	make
+	make PREFIX=/usr LIBDIR=/usr/${libdir}
     fi
     if [ $? != 0 ]; then
 	echo "make error. $0 script stop"
@@ -57,7 +51,7 @@ do_install() {
     cd ${B[$1]}
     if [ -f Makefile ] ; then
 	export LDFLAGS='-Wl,--as-needed'
-	make install DESTDIR=$P
+	make install PREFIX=/usr LIBDIR=/usr/${libdir} DESTDIR=$P
     fi
     if [ $? != 0 ]; then
 	echo "make install error. $0 script stop"
