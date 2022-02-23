@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=libxklavier
-vers=5.3
-url='http://ftp.gnome.org/pub/gnome/sources/libxklavier/5.3/libxklavier-5.3.tar.xz'
+vers=5.4
+url="https://people.freedesktop.org/~svu/libxklavier-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=3
-src=libxklavier-5.3
+build=1
+src=libxklavier-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='ABOUT-NLS AUTHORS COPYING.LIB ChangeLog INSTALL NEWS README'
 patchfiles=''
