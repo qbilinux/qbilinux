@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
 pkgbase="SPIRV_Headers"
-vers=1.5.3.reservations1
-url='https://github.com/KhronosGroup/SPIRV-Headers/archive/1.5.3.reservations1.tar.gz'
-srcfile=${pkgbase}-${vers}.tar.gz
+vers=1.3.204.0
+url="https://github.com/KhronosGroup/SPIRV-Headers/archive/refs/tags/sdk-${vers}.tar.gz"
+srcfile=${pkgbase/_/-}-${vers}.tar.gz
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=SPIRV-Headers-${vers}
+src=SPIRV-Headers-sdk-${vers}
 OPT_CONFIG=''
 DOCS='LICENSE README.md'
 patchfiles=''
