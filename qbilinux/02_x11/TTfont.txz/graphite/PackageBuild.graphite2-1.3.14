@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase="graphite2"
-vers=1.3.13
-url=https://github.com/silnrsi/graphite/releases/download/1.3.13/graphite2-1.3.13.tgz
+vers=1.3.14
+url="https://github.com/silnrsi/graphite/releases/download/${vers}/graphite2-${vers}.tgz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=3
+build=1
 src=graphite2-${vers}
 OPT_CONFIG=''
 DOCS='COPYING ChangeLog LICENSE README.md Todo.txt'
