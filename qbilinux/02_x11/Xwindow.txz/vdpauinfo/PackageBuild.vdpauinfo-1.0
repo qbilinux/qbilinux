@@ -1,12 +1,12 @@
 #!/bin/sh
 
 ######################################################################
-url="http://people.freedesktop.org/~aplattner/vdpau/vdpauinfo-0.9.tar.gz"
 pkgbase=vdpauinfo
-vers=0.9
+vers=1.0
+url="http://people.freedesktop.org/~aplattner/vdpau/vdpauinfo-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="COPYING ChangeLog INSTALL"
