@@ -1,16 +1,15 @@
 #!/bin/sh
 ##############################################################
 pkgbase=fonts_migmix
-vers=20150712
-url="http://jaist.dl.sourceforge.jp/mix-mplus-ipa/63544/migmix-1p-${vers}.zip
-     http://jaist.dl.sourceforge.jp/mix-mplus-ipa/63544/migmix-2p-${vers}.zip
-     http://jaist.dl.sourceforge.jp/mix-mplus-ipa/63544/migmix-1m-${vers}.zip
-     http://jaist.dl.sourceforge.jp/mix-mplus-ipa/63544/migmix-2m-${vers}.zip"
+vers=20200307
+url="http://jaist.dl.sourceforge.jp/mix-mplus-ipa/72510/migmix-1p-${vers}.zip
+     http://jaist.dl.sourceforge.jp/mix-mplus-ipa/72510/migmix-2p-${vers}.zip
+     http://jaist.dl.sourceforge.jp/mix-mplus-ipa/72510/migmix-1m-${vers}.zip
+     http://jaist.dl.sourceforge.jp/mix-mplus-ipa/72510/migmix-2m-${vers}.zip"
 apply_arch="noarch"
 arch=noarch
-build=2
-src=migmix-1p-20150712
-#src='migmix-1p-20150712 migmix-2p-20150712 migmix-1m-20150712 migmix-2m-20150712'
+build=1
+src=migmix-1p-${vers}
 OPT_CONFIG=''
 DOCS='migmix-README.txt ipag00303/*'
 patchfiles=''
