@@ -1,0 +1,11 @@
+rxvt_unicode & y & y & y & y
+&
+X 用ターミナルソフト
+&
+日本語の表示が可能な X 上のターミナルソフト rxvt です。通
+常あまり使わない機能は削られており、メモリの消費量を抑えることが
+できます。背景に XPM を貼り付けたりメニューバーを付けたりできます。
+&
+rxvt terminal software for X
+&
+rxvt is anoter terminal software which can handle Japanese.
