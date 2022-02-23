@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='https://www.x.org/archive/individual/app/smproxy-1.0.5.tar.bz2'
 pkgbase=smproxy
-vers=1.0.5
+vers=1.0.6
+url="https://www.x.org/archive/individual/app/smproxy-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=3
-src=smproxy-1.0.5
+build=1
+src=smproxy-${vers}
 OPT_CONFIG=''
 DOCS='COPYING ChangeLog INSTALL README'
 patchfiles=''
