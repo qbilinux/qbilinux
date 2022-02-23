@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
 pkgbase="SPIRV_Tools"
-vers=2020.5
-url='https://github.com/KhronosGroup/SPIRV-Tools/archive/v2020.5.tar.gz'
-srcfile=${pkgbase}-${vers}.tar.gz
+vers=1.3.204.0
+url="https://github.com/KhronosGroup/SPIRV-Tools/archive/refs/tags/sdk-${vers}.tar.gz"
+srcfile=${pkgbase/_/-}-${vers}.tar.gz
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=SPIRV-Tools-${vers}
+src=SPIRV-Tools-sdk-${vers}
 OPT_CONFIG='-DSPIRV-Headers_SOURCE_DIR=/usr'
 DOCS='LICENSE README.md'
 patchfiles=''
