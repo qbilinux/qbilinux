@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='ftp://ftp.x.org/pub/individual/app/xcursorgen-1.0.6.tar.bz2'
 pkgbase=xcursorgen
-vers=1.0.6
+vers=1.0.7
+url="ftp://ftp.x.org/pub/individual/app/xcursorgen-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=xcursorgen-1.0.6
+build=1
+src=xcursorgen-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog INSTALL README'
 patchfiles=''
