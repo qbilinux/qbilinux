@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='https://www.x.org/archive/individual/app/xprop-1.2.2.tar.bz2'
 pkgbase=xprop
-vers=1.2.2
+vers=1.2.5
+url="https://www.x.org/archive/individual/app/xprop-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=xprop-1.2.2
+build=1
+src=xprop-${vers}
 OPT_CONFIG=''
 DOCS='COPYING ChangeLog INSTALL README'
 patchfiles=''
