@@ -1,13 +1,13 @@
 #!/bin/sh
 
 ######################################################################
-url="http://ftp.x.org/pub/individual/app/xclipboard-1.1.1.tar.bz2"
 pkgbase=xclipboard
-vers=1.1.1
+vers=1.1.3
+url="http://ftp.x.org/pub/individual/app/xclipboard-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=3
-src=$pkgbase-$vers
+build=1
+src=$pkgbase-${vers}
 OPT_CONFIG="--with-appdefaultdir=/usr/share/X11/app-defaults"
 DOCS="ChangeLog README INSTALL COPYING"
 compress=txz
