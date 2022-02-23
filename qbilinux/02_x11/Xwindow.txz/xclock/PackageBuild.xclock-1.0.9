@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='https://www.x.org/archive/individual/app/xclock-1.0.7.tar.bz2'
 pkgbase=xclock
-vers=1.0.7
+vers=1.0.9
+url="https://www.x.org/archive/individual/app/xclock-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=xclock-1.0.7
+build=1
+src=xclock-${vers}
 OPT_CONFIG=''
 DOCS='COPYING ChangeLog INSTALL README'
 patchfiles=''
