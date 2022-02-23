@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='https://www.x.org/archive/individual/util/makedepend-1.0.5.tar.bz2'
 pkgbase=makedepend
-vers=1.0.5
+vers=1.0.6
+url="https://www.x.org/archive/individual/util/makedepend-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=makedepend-1.0.5
+build=1
+src=makedepend-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog README'
 patchfiles=''
