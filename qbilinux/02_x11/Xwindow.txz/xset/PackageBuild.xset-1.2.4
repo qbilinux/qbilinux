@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='https://www.x.org/archive/individual/app/xset-1.2.3.tar.bz2'
 pkgbase=xset
-vers=1.2.3
+vers=1.2.4
+url="https://www.x.org/archive/individual/app/xset-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=xset-1.2.3
+build=1
+src=xset-${vers}
 OPT_CONFIG=''
 DOCS='COPYING ChangeLog INSTALL README'
 patchfiles=''
