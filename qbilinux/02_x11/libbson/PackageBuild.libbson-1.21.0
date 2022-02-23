@@ -1,13 +1,13 @@
 #!/bin/sh
 ##############################################################
 pkgbase="libbson"
-vers=1.17.3
-url='https://github.com/mongodb/mongo-c-driver/releases/download/1.17.3/mongo-c-driver-1.17.3.tar.gz'
+vers=1.21.0
+url="https://github.com/mongodb/mongo-c-driver/releases/download/${vers}/mongo-c-driver-${vers}.tar.gz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=mongo-c-driver-1.17.3
+src=mongo-c-driver-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog NEWS README VERSION_RELEASED'
 patchfiles=''
