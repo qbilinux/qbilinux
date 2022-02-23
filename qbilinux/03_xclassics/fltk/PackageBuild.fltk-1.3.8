@@ -2,12 +2,12 @@
 
 ######################################################################
 pkgbase=fltk
-vers=1.3.4_2
-url="https://www.fltk.org/pub/fltk/1.3.4/fltk-1.3.4-2-source.tar.gz"
+vers=1.3.8
+url="https://www.fltk.org/pub/fltk/${vers}/fltk-${vers}-source.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=$pkgbase-${vers/_/-}
+build=1
+src=$pkgbase-${vers}
 OPT_CONFIG="--enable-shared"
 DOCS="ANNOUNCEMENT CHANGES CHANGES_1.0 CHANGES_1.1 KNOWN_BUGS.html README README.CMake.txt README.Cairo.txt README.MSWindows.txt README.OSX.txt README.Unix.txt README.abi-version.txt VERSION"
 compress=txz
