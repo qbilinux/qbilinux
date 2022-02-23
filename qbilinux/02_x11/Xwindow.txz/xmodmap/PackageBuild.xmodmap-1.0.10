@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='https://www.x.org/archive/individual/app/xmodmap-1.0.8.tar.bz2'
 pkgbase=xmodmap
-vers=1.0.8
+vers=1.0.10
+url="https://www.x.org/archive/individual/app/xmodmap-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=xmodmap-1.0.8
+build=1
+src=xmodmap-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog INSTALL README'
 patchfiles=''
