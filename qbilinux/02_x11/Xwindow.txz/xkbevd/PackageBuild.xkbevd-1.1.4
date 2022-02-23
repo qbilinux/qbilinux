@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='https://www.x.org/archive/individual/app/xkbevd-1.1.3.tar.bz2'
 pkgbase=xkbevd
-vers=1.1.3
+vers=1.1.4
+url="https://www.x.org/archive/individual/app/xkbevd-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=3
-src=xkbevd-1.1.3
+build=1
+src=xkbevd-${vers}
 OPT_CONFIG=''
 DOCS='COPYING ChangeLog INSTALL README'
 patchfiles=''
