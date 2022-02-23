@@ -1,14 +1,13 @@
 #!/bin/sh
 ##############################################################
-pkgbase="glslang_master"
-vers=tot
-url='https://github.com/KhronosGroup/glslang/archive/master-tot.tar.gz'
-srcfile=${pkgbase}-${vers}.tar.gz
+pkgbase="glslang"
+vers=11.1.0
+url="https://github.com/KhronosGroup/glslang/archive/${vers}/glslang-${vers}.tar.gz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=glslang-master-${vers}
+src=glslang-${vers}
 OPT_CONFIG=''
 DOCS='LICENSE.txt README-spirv-remap.txt README.md license-checker.cfg'
 patchfiles=''
