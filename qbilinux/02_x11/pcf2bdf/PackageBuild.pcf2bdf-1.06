@@ -1,15 +1,16 @@
 #!/bin/sh
 ##############################################################
 pkgbase=pcf2bdf
-vers=1.04
-url='ftp://ftp.mirrorservice.org/sites/ftp.netbsd.org/pub/pkgsrc/distfiles/pcf2bdf-1.04.tgz'
+vers=1.06
+url="https://github.com/ganaware/pcf2bdf/archive/refs/tags/${vers}.tar.gz"
+srcfile=${pkgbase}-${vers}.tar.gz
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=pcf2bdf-${vers}
 OPT_CONFIG=''
 DOCS='README.txt pcf.txt'
-patchfiles='pcf2bdf_1.04-2.diff'
+patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -24,9 +25,6 @@ do_prepare() {
     cd ${S[$i]}
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
-    done
-    for patch in `cat debian/patches/series` ; do
-	patch -p1 < ./debian/patches/$patch
     done
 }
 
