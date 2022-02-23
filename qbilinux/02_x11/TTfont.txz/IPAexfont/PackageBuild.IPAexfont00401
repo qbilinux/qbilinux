@@ -1,15 +1,15 @@
 #!/bin/sh
 ##############################################################
 pkgbase="IPAexfont"
-vers=00301
-url='https://dforest.watch.impress.co.jp/library/i/ipaexfont/10821/IPAexfont00301.zip'
+vers=00401
+url="https://moji.or.jp/wp-content/ipafont/IPAexfont/IPAexfont${vers}.zip"
 commitid=
 apply_arch="noarch"
 arch="noarch"
-build=2
+build=1
 src=IPAexfont${vers}
 OPT_CONFIG=''
-DOCS='IPA_Font_License_Agreement_v1.0.txt Readme_IPAexfont00301.txt'
+DOCS="IPA_Font_License_Agreement_v1.0.txt Readme_IPAexfont${vers}.txt"
 patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
