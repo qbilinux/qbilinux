@@ -1,13 +1,13 @@
 #!/bin/sh
 
 ######################################################################
-url="http://ftp.x.org/pub/individual/app/xeyes-1.1.1.tar.bz2"
 pkgbase=xeyes
-vers=1.1.1
+vers=1.2.0
+url="http://ftp.x.org/pub/individual/app/xeyes-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=3
-src=$pkgbase-$vers
+build=1
+src=$pkgbase-${vers}
 OPT_CONFIG=""
 DOCS="INSTALL ChangeLog README COPYING"
 compress=txz
