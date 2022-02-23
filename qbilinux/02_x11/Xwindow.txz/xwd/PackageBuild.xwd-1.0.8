@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='https://www.x.org/archive/individual/app/xwd-1.0.6.tar.bz2'
 pkgbase=xwd
-vers=1.0.6
+vers=1.0.8
+url="https://www.x.org/archive/individual/app/xwd-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=xwd-1.0.6
+build=1
+src=xwd-${vers}
 OPT_CONFIG=''
 DOCS='COPYING ChangeLog INSTALL README'
 patchfiles=''
