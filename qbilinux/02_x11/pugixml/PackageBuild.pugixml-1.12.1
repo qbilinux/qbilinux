@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
 pkgbase="pugixml"
-vers=1.11
+vers=1.12.1
 url="http://github.com/zeux/pugixml/releases/download/v${vers}/pugixml-${vers}.tar.gz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=pugixml-${vers}
-OPT_CONFIG=''
+src=pugixml-${vers%.*}
+OPT_CONFIG='-DBUILD_SHARED_LIBS=ON'
 DOCS='LICENSE.md readme.txt'
 patchfiles=''
 compress=txz
