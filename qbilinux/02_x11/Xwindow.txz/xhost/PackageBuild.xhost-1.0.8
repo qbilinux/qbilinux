@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='https://www.x.org/archive/individual/app/xhost-1.0.6.tar.bz2'
 pkgbase=xhost
-vers=1.0.6
+vers=1.0.8
+url="https://www.x.org/archive/individual/app/xhost-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=xhost-1.0.6
+build=1
+src=xhost-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog INSTALL README'
 patchfiles=''
