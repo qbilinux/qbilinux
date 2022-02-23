@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='https://www.x.org/archive/individual/app/xkbcomp-1.2.4.tar.bz2'
 pkgbase=xkbcomp
-vers=1.2.4
+vers=1.4.5
+url="https://www.x.org/archive/individual/app/xkbcomp-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=3
-src=xkbcomp-1.2.4
+build=1
+src=xkbcomp-${vers}
 OPT_CONFIG=''
 DOCS='COPYING ChangeLog INSTALL README'
 patchfiles=''
