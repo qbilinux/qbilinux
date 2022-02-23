@@ -1,12 +1,12 @@
 #!/bin/sh
 
 ######################################################################
-url="http://ftp.x.org/pub/individual/app/oclock-1.0.2.tar.bz2"
 pkgbase=oclock
-vers=1.0.2
+vers=1.0.4
+url="http://ftp.x.org/pub/individual/app/oclock-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=3
+build=1
 src=$pkgbase-$vers
 OPT_CONFIG="--with-appdefaultdir=/usr/share/X11/app-defaults"
 DOCS="COPYING ChangeLog README INSTALL"
