@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='https://www.x.org/archive/individual/app/xrandr-1.4.2.tar.bz2'
 pkgbase=xrandr
-vers=1.4.2
+vers=1.5.1
+url="https://www.x.org/archive/individual/app/xrandr-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=xrandr-1.4.2
+build=1
+src=xrandr-${vers}
 OPT_CONFIG=''
 DOCS='COPYING ChangeLog INSTALL README'
 patchfiles=''
