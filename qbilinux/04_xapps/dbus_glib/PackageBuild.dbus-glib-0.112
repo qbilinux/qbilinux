@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=dbus_glib
-vers=0.110
+vers=0.112
 url="http://dbus.freedesktop.org/releases/dbus-glib/dbus-glib-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=4
+build=1
 src=dbus-glib-${vers}
 OPT_CONFIG='--disable-static --with-xml=libxml'
 DOCS='AUTHORS COPYING ChangeLog HACKING INSTALL NEWS README'
