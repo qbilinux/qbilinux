@@ -1,12 +1,13 @@
 #!/bin/sh
 ##############################################################
-url="svn://svn.icculus.org/smpeg/tags/release_2_0_0.svn"
 pkgbase=smpeg
 vers=2.0.0
+url="https://github.com/icculus/smpeg/archive/refs/tags/release_2_0_0.tar.gz"
+srcfile=${pkgbase}-${vers}.tar.gz
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=release_2_0_0
+build=3
+src=smpeg-release_2_0_0
 OPT_CONFIG='--disable-static'
 DOCS='COPYING README README.SDL_mixer TODO'
 patchfiles='gcc6.patch'
