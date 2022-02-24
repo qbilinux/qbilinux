@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=dbus
-vers=1.12.16
+vers=1.12.20
 url="http://dbus.freedesktop.org/releases/dbus/dbus-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=dbus-${vers}
 OPT_CONFIG='--with-console-auth-dir=/var/run/console --disable-static  --with-xml=expat --without-systemdsystemunitdir --disable-systemd '
 DOCS='AUTHORS COPYING ChangeLog ChangeLog.pre-1-0 ChangeLog.pre-1-2 HACKING INSTALL NEWS NEWS.pre-1-0 NEWS.pre-1-2 README README.cygwin README.launchd README.win README.wince'
