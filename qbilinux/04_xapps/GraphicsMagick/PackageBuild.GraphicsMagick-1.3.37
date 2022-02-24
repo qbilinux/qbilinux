@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase=GraphicsMagick
-vers=1.3.35
+vers=1.3.37
 url="http://sourceforge.net/projects/graphicsmagick/files/graphicsmagick/${vers}/GraphicsMagick-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
