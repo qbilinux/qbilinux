@@ -2,11 +2,11 @@
 
 ######################################################################
 pkgbase=xosview
-vers=1.19
+vers=1.23
 url="http://www.pogo.org.uk/~mark/xosview/releases/xosview-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="CHANGES COPYING* README* TODO"
