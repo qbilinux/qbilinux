@@ -1,9 +1,9 @@
 #!/bin/sh
 ##############################################################
 pkgbase="filezilla"
-vers=3.53.1
+vers=3.58.0
+#url="https://dl1.cdn.filezilla-project.org/client/FileZilla_3.58.0_src.tar.bz2?h=f8hs3BbR-NikSTObK18u9A&x=1645603933"
 url="https://dl4.cdn.filezilla-project.org/client/FileZilla_${vers}_src.tar.bz2"
-#url="https://filezilla-project.org/download.php?details=FileZilla_3.41.1_src.tar.bz2"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
