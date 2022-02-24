@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase=gegl
-vers=0.4.34
+vers=0.4.36
 url="https://download.gimp.org/pub/gegl/0.4/gegl-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
