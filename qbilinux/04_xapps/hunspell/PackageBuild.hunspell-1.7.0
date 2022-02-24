@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=hunspell
-vers=1.6.1
-url='https://github.com/hunspell/hunspell/archive/v1.6.1.tar.gz'
+vers=1.7.0
+url="https://github.com/hunspell/hunspell/files/2573619/hunspell-${vers}.tar.gz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=hunspell-${vers}
 OPT_CONFIG=''
 DOCS='ABOUT-NLS AUTHORS AUTHORS.myspell COPYING COPYING.LESSER COPYING.MPL ChangeLog ChangeLog.O HACKING INSTALL NEWS README README.md README.myspell THANKS TODO license.hunspell license.myspell'
