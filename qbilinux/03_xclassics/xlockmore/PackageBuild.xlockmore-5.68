@@ -2,12 +2,12 @@
 
 ######################################################################
 pkgbase=xlockmore
-vers=5.41
-url="http://www.tux.org/~bagleyd/xlock/xlockmore-5.41/xlockmore-5.41.tar.bz2"
+vers=5.68
+url="http://sillycycle.com/xlock/xlockmore-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=3
-src=$pkgbase-$vers
+build=1
+src=$pkgbase-${vers}
 OPT_CONFIG="--enable-pam --enable-use-mb --with-esound --with-lang=ja --without-magick"
 DOCS="`echo docs/{3d.howto,cell_automata,HACKERS.GUIDE{,.fr}}`
     `echo docs/{Purify{,.sunos{4,5}},Revisions,TODO}` README"
@@ -96,25 +96,25 @@ do_install() {
 	< XLock.invalid: Invalid login.
 	---
 	> !! Japanese by: YOKOTA Hiroshi <yokota@netlab.is.tsukuba.ac.jp>
-	> XLock.username: ¥í¥°¥¤¥óÌ¾:
-	> XLock.password: ¥Ñ¥¹¥ï¡¼¥É:
-	> XLock.info: Enter ¥Ñ¥¹¥ï¡¼¥É¤òÆşÎÏ¤·¤Æ²¼¤µ¤¤¡£¥¢¥¤¥³¥ó¤ò¥¯¥ê¥Ã¥¯¤¹¤ë¤ÈºÆ¥í¥Ã¥¯¤·¤Ş¤¹¡£
-	> XLock.validate: ¥Ñ¥¹¥ï¡¼¥É¸¡ººÃæ...
-	> XLock.invalid: ¥Ñ¥¹¥ï¡¼¥É¤¬°ã¤¤¤Ş¤¹¡£
+	> XLock.username: ãƒ­ã‚°ã‚¤ãƒ³å:
+	> XLock.password: ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰:
+	> XLock.info: Enter ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’å…¥åŠ›ã—ã¦ä¸‹ã•ã„ã€‚ã‚¢ã‚¤ã‚³ãƒ³ã‚’ã‚¯ãƒªãƒƒã‚¯ã™ã‚‹ã¨å†ãƒ­ãƒƒã‚¯ã—ã¾ã™ã€‚
+	> XLock.validate: ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰æ¤œæŸ»ä¸­...
+	> XLock.invalid: ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ãŒé•ã„ã¾ã™ã€‚
 	101c102
 	< XLock.logoutButtonLabel: Click here to logout
 	---
-	> XLock.logoutButtonLabel: ¤³¤³¤ò²¡¤¹¤È¥í¥°¥¢¥¦¥È¤·¤Ş¤¹
+	> XLock.logoutButtonLabel: ã“ã“ã‚’æŠ¼ã™ã¨ãƒ­ã‚°ã‚¢ã‚¦ãƒˆã—ã¾ã™
 	103,106c104,107
 	< You may log out this session if no terminals are available.\n\
 	< WARNING: This will crash any open applications that the user\n\
 	< has running. You should try to contact the user if possible\n\
 	< before logging them out.
 	---
-	> ¥¿¡¼¥ß¥Ê¥ë¤«¤é X ¤òµ¯Æ°¤·¤Æ¤¤¤Ê¤¤¾ì¹ç¤Ï¥»¥Ã¥·¥ç¥ó¤Î½ªÎ»¤¬½ĞÍè¤Ş¤¹¡£
+	> ã‚¿ãƒ¼ãƒŸãƒŠãƒ«ã‹ã‚‰ X ã‚’èµ·å‹•ã—ã¦ã„ãªã„å ´åˆã¯ã‚»ãƒƒã‚·ãƒ§ãƒ³ã®çµ‚äº†ãŒå‡ºæ¥ã¾ã™ã€‚
 	> XLock.logoutFailedString: \
-	> ¥í¥°¥¢¥¦¥È¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£\n\
-	> ¤³¤Î¥æ¡¼¥¶¡¼¤Ï¼«Æ°¥í¥°¥¢¥¦¥È½ĞÍè¤Ş¤»¤ó¡£
+	> ãƒ­ã‚°ã‚¢ã‚¦ãƒˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚\n\
+	> ã“ã®ãƒ¦ãƒ¼ã‚¶ãƒ¼ã¯è‡ªå‹•ãƒ­ã‚°ã‚¢ã‚¦ãƒˆå‡ºæ¥ã¾ã›ã‚“ã€‚
 	EOF
     install -m 644 xmlock/XmLock-jp.ad $P/usr/${libdir}/X11/app-defaults/XmLock
     install -d $P/usr/${libdir}/X11/xlock/sounds
