@@ -6,11 +6,11 @@ vers=9.0
 url="http://ftp.gnu.org/gnu/coreutils/coreutils-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=$pkgbase-$vers
-patchfiles="restore-ls-behavior-8.31.patch"
+patchfiles=""
 OPT_CONFIG="--enable-install-program=arch
-    --enable-no-install-program=uptime,kill --without-gmp"
+    --enable-no-install-program=uptime,kill"
 DOCS="COPYING TODO INSTALL THANKS ChangeLog-2006 ChangeLog-2008 NEWS
     ChangeLog ChangeLog-2007 README ChangeLog-2005 AUTHORS ABOUT-NLS
     THANKS-to-translators"
