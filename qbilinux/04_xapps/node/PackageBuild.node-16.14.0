@@ -1,14 +1,15 @@
 #!/bin/sh
 
 ######################################################################
+ulimit -n 2048
 pkgbase=node
-vers=14.17.6
+vers=16.14.0
 url="https://nodejs.org/dist/v${vers}/node-v${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
 src=$pkgbase-v${vers}
-OPT_CONFIG="--shared-openssl --shared-nghttp2 --shared-zlib --with-intl=system-icu"
+OPT_CONFIG="--shared-openssl --shared-nghttp2 --shared-zlib --with-intl=system-icu --shared-libuv"
 DOCS=""
 patchfiles='atomic.patch'
 compress=txz
