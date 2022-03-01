@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=foomatic_db
-vers=4.0_20180705
-url='http://www.openprinting.org/download/foomatic/foomatic-db-4.0-20180705.tar.xz'
+vers=4.0_20220223
+url='http://www.openprinting.org/download/foomatic/foomatic-db-4.0-20220223.tar.xz'
 apply_arch="noarch"
 arch=noarch
-build=2
-src=foomatic-db-20180705
+build=1
+src=foomatic-db-20220223
 OPT_CONFIG=''
 DOCS='COPYING ChangeLog README USAGE'
 patchfiles=''
