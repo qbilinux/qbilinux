@@ -4,20 +4,20 @@
 pkgbase=hdsetup
 vers=current
 url="https://www.busybox.net/downloads/busybox-1.32.1.tar.bz2
-    ftp://ftp.invisible-island.net/dialog/dialog-1.3-20210530.tgz
-    http://ftp.gnu.org/gnu/coreutils/coreutils-8.32.tar.xz
-    http://ftp.gnu.org/gnu/gzip/gzip-1.10.tar.gz
+    ftp://ftp.invisible-island.net/dialog/dialog-1.3-20220117.tgz
+    http://ftp.gnu.org/gnu/coreutils/coreutils-9.0.tar.xz
+    http://ftp.gnu.org/gnu/gzip/gzip-1.11.tar.gz
     http://www.bzip.org/1.0.6/bzip2-1.0.8.tar.gz
     http://tukaani.org/xz/xz-5.2.5.tar.xz
     http://ftp.gnu.org/gnu/tar/tar-1.34.tar.gz
     https://github.com/vasi/pixz/releases/download/v1.0.7/pixz-1.0.7.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src[0]=busybox-1.32.1
-src[1]=dialog-1.3-20210530
-src[2]=coreutils-8.32
-src[3]=gzip-1.10
+src[1]=dialog-1.3-20220117
+src[2]=coreutils-9.0
+src[3]=gzip-1.11
 src[4]=bzip2-1.0.8
 src[5]=xz-5.2.5
 src[6]=tar-1.34
