@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=cups
-vers=2.2.10
+vers=2.3.3
 url="https://github.com/apple/cups/releases/download/v${vers}/cups-${vers}-source.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=3
+build=1
 src=cups-${vers}
 OPT_CONFIG='--disable-systemd --with-rcdir=/etc/rc.d'
 DOCS='CHANGES-1.0.txt CHANGES-1.1.txt CHANGES-1.2.txt CHANGES-1.3.txt CHANGES-1.4.txt CHANGES-1.5.txt CHANGES-1.6.txt CHANGES-1.7.txt CHANGES-IPPTOOL.txt CHANGES.txt CREDITS.txt INSTALL.txt IPPTOOL.txt LICENSE.txt README.txt'
