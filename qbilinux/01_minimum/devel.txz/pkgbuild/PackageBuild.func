@@ -10,9 +10,9 @@ if  ! `echo ${apply_arch[@]} | grep -q "$arch"`  ; then
 fi
 
 if [ $# -eq 0 ] ; then
-    opt_download=0 ; opt_prepare=1 ; opt_config=1 ; opt_build=1 ; opt_package=1
+    opt_download=0 ; opt_prepare=1 ; opt_config=1 ; opt_build=1 ; opt_package=1 ; opt_pkgname=0
 else
-    opt_download=0 ; opt_prepare=0 ; opt_config=0 ; opt_build=0 ; opt_package=0
+    opt_download=0 ; opt_prepare=0 ; opt_config=0 ; opt_build=0 ; opt_package=0 ; opt_pkgname=0
     for i in $@ ; do
 	case $i in
 	    download) opt_download=1 ;;
@@ -20,8 +20,13 @@ else
 	    config) opt_config=1 ;;
 	    build) opt_build=1 ;;
 	    package) opt_package=1 ;;
+	    pkgname) opt_pkgname=1 ;;
 	esac
     done
+fi
+
+if [ $opt_pkgname -eq 1 ] ; then
+    echo $pkg.$compress
 fi
 
 if [ $opt_download -eq 1 ] ; then

@@ -11,6 +11,7 @@ mandir=$P/usr/share/man
 xmandir=$P/usr/X11R7/share/man
 docdir=$P/usr/share/doc
 myname=`basename $0`
+
 pkg=$pkgbase-$vers-$arch-$build
 
 case $arch in
