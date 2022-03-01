@@ -31,8 +31,19 @@ seek_dir () {
 	fi
 	
     # check Packagebuild script and make log.
-    elif [ $opt_force -eq 1 ] || [ ! -f 00.make.log ] || [ 00.make.log -ot $SCN ] ; then
+    else
     
+	if [ $opt_force -eq 0 ] ; then
+	    pkgname=`./$SCN pkgname`
+	    for i in $pkgname ; do
+		if [ -f $i ] ; then
+		    echo "*** skip: Exists package file already. If you want to build, use -f option."
+		    popd
+		    exit 1
+		fi
+	    done
+	fi
+
 	# backup log file
 	if [ -f 01.make.log ] ; then
 	    mv 01.make.log 02.make.log
@@ -59,8 +70,12 @@ seek_dir () {
 	    pkg=`ls -1 *.desc`
 	    for i in $pkg ; do
 		pkgname=${i%.desc}
-		mv -f ${pkgname}-*-${arch}-*.txz old
-		mv -f ${pkgname}-*-noarch-*.txz old
+		if [ -f ${pkgname}-*-${arch}-*.txz ] ; then
+		    mv -f ${pkgname}-*-${arch}-*.txz old
+		fi
+		if [ -f ${pkgname}-*-noarch-*.txz ] ; then
+		    mv -f ${pkgname}-*-noarch-*.txz old
+		fi
 	    done
 	fi
 	    
@@ -117,9 +132,6 @@ seek_dir () {
 		fi
 	    done
 	fi
-
-    else
-	echo "*** skip: make.log newer than PackageBuild. If you want to build, use -f option."
     fi
 
     popd
