@@ -1,17 +1,17 @@
 #!/bin/sh
 ##############################################################
 pkgbase=libmtp
-vers=1.1.15
+vers=1.1.19
 url="http://jaist.dl.sourceforge.net/project/libmtp/libmtp/${vers}/libmtp-${vers}.tar.gz"
 verify=
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=libmtp-${vers}
 OPT_CONFIG='--with-udev=/lib/udev'
 DOCS='AUTHORS COPYING ChangeLog INSTALL README README.windows.txt TODO'
-patchfiles='libmtp-group-permission.patch xperia-zl2.patch'
+patchfiles='xperia-zl2.patch'
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
