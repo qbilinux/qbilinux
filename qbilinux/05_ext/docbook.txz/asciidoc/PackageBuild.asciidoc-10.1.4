@@ -1,13 +1,13 @@
 #!/bin/sh
 ##############################################################
 pkgbase=asciidoc
-vers=8.6.10
+vers=10.1.4
 url="https://github.com/asciidoc/asciidoc/archive/${vers}.zip"
 srcfile=asciidoc-${vers}.zip
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=3
-src=asciidoc-${vers}
+build=1
+src=asciidoc-py-${vers}
 OPT_CONFIG=''
 DOCS='BUGS.txt CHANGELOG.txt COPYING COPYRIGHT INSTALL.txt README.asciidoc'
 patchfiles=''
