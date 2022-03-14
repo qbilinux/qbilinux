@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=qwt
-vers=6.1.3
+vers=6.2.0
 url="http://downloads.sourceforge.net/project/qwt/qwt/${vers}/qwt-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=qwt-${vers}
 OPT_CONFIG=''
 DOCS='COPYING INSTALL README'
