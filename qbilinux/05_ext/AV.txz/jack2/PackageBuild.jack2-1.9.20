@@ -1,8 +1,8 @@
 #!/bin/sh
 ##############################################################
 pkgbase=jack2
-vers=1.9.14
-url="https://github.com/jackaudio/jack2/releases/download/v${vers}/v${vers}.tar.gz"
+vers=1.9.20
+url="https://github.com/jackaudio/jack2/archive/refs/tags/v${vers}.tar.gz"
 srcfile=$pkgbase-$vers.tar.gz
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
