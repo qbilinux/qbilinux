@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='http://downloads.sourceforge.net/project/opencore-amr/vo-amrwbenc/vo-amrwbenc-0.1.2.tar.gz'
 pkgbase=vo_amrwbenc
-vers=0.1.2
+vers=0.1.3
+url="http://downloads.sourceforge.net/project/opencore-amr/vo-amrwbenc/vo-amrwbenc-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=vo-amrwbenc-0.1.2
+build=1
+src=vo-amrwbenc-${vers}
 OPT_CONFIG='--disable-static --enable-example'
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README'
 patchfiles=''
