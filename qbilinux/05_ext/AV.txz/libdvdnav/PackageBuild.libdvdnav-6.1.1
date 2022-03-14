@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='http://dvdnav.mplayerhq.hu/releases/libdvdnav-4.2.0.tar.bz2'
 pkgbase=libdvdnav
-vers=4.2.0
+vers=6.1.1
+url="https://download.videolan.org/pub/videolan/libdvdnav/${vers}/libdvdnav-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=libdvdnav-4.2.0
+build=1
+src=libdvdnav-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog DEVELOPMENT-POLICY.txt INSTALL NEWS README TODO'
 patchfiles=''
