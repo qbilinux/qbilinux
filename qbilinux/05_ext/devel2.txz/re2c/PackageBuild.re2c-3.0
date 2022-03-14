@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=re2c
-vers=0.16
-url="https://github.com/skvadrik/re2c/releases/download/${vers}/re2c-${vers}.tar.gz"
+vers=3.0
+url="https://github.com/skvadrik/re2c/releases/download/${vers}/re2c-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=re2c-${vers}
 OPT_CONFIG=''
 DOCS='CHANGELOG README'
