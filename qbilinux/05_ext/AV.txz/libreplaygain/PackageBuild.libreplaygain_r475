@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='http://files.musepack.net/source/libreplaygain_r453.tar.gz'
 pkgbase=libreplaygain
-vers=4.53
+vers=4.75
+url='http://files.musepack.net/source/libreplaygain_r475.tar.gz'
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=libreplaygain_r453
+build=1
+src=libreplaygain_r475
 OPT_CONFIG=''
 DOCS=''
 patchfiles=''
