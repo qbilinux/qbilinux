@@ -1,16 +1,14 @@
 #!/bin/sh
 ##############################################################
 pkgbase=emoji
-vers=11.0
-url='http://www.unicode.org/Public/emoji/11.0/ReadMe.txt
-http://www.unicode.org/Public/emoji/11.0/emoji-data.txt
-http://www.unicode.org/Public/emoji/11.0/emoji-sequences.txt
-http://www.unicode.org/Public/emoji/11.0/emoji-test.txt
-http://www.unicode.org/Public/emoji/11.0/emoji-variation-sequences.txt
-http://www.unicode.org/Public/emoji/11.0/emoji-zwj-sequences.txt'
+vers=14.0
+url='http://www.unicode.org/Public/emoji/14.0/ReadMe.txt
+http://www.unicode.org/Public/emoji/14.0/emoji-sequences.txt
+http://www.unicode.org/Public/emoji/14.0/emoji-test.txt
+http://www.unicode.org/Public/emoji/14.0/emoji-zwj-sequences.txt'
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=$pkgbase-$vers
 OPT_CONFIG=''
 DOCS=''
@@ -44,10 +42,8 @@ do_install() {
 
     mkdir -p $P/usr/share/unicode/emoji
     mkdir -p $docdir/$src
-    cp $W/emoji-data.txt $P/usr/share/unicode/emoji
     cp $W/emoji-sequences.txt $P/usr/share/unicode/emoji
     cp $W/emoji-test.txt $P/usr/share/unicode/emoji
-    cp $W/emoji-variation-sequences.txt $P/usr/share/unicode/emoji
     cp $W/emoji-zwj-sequences.txt $P/usr/share/unicode/emoji
     cp $W/ReadMe.txt $P/usr/share/doc/$docdir/$src
 }
