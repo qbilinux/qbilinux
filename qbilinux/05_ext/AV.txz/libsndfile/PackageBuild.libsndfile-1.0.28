@@ -1,13 +1,13 @@
 #!/bin/sh
 
 ######################################################################
-url="http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.25.tar.gz"
 pkgbase=libsndfile
-vers=1.0.25
+vers=1.0.28
+url="http://www.mega-nerd.com/libsndfile/files/libsndfile-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=$pkgbase-$vers
+build=1
+src=$pkgbase-${vers}
 OPT_CONFIG=""
 DOCS="NEWS README AUTHORS INSTALL ChangeLog COPYING"
 compress=txz
