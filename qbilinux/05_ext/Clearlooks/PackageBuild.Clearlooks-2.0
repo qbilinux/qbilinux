@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://www.mplayerhq.hu/MPlayer/skins/Clearlooks-1.7.tar.bz2'
 pkgbase=Clearlooks
-vers=1.7
+vers=2.0
+url="http://www.mplayerhq.hu/MPlayer/skins/Clearlooks-${vers}.tar.bz2"
 apply_arch="noarch"
 arch=noarch
-build=2
+build=1
 src=Clearlooks
 OPT_CONFIG='--disable-static'
 DOCS='README'
