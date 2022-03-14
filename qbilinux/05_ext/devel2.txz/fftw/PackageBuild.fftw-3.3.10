@@ -2,11 +2,11 @@
 
 ##############################################################
 pkgbase=fftw
-vers=3.3.8
+vers=3.3.10
 url="http://www.fftw.org/fftw-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=5
+build=1
 src[0]=fftw-${vers}
 src[1]=fftw-${vers}
 src[2]=fftw-${vers}
