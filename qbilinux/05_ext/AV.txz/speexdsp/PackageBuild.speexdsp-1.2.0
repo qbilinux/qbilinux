@@ -1,13 +1,13 @@
 #!/bin/sh
 
 ######################################################################
-url="http://downloads.xiph.org/releases/speex/speexdsp-1.2rc3.tar.gz"
 pkgbase=speexdsp
-vers=1.2rc3
+vers=1.2.0
+url="http://downloads.xiph.org/releases/speex/speexdsp-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=$pkgbase-$vers
+build=1
+src=$pkgbase-${vers}
 OPT_CONFIG=""
 DOCS="README INSTALL AUTHORS TODO ChangeLog COPYING README.blackfin NEWS"
 compress=txz
