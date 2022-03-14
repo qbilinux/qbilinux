@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='http://downloads.sourceforge.net/project/opencore-amr/opencore-amr/opencore-amr-0.1.3.tar.gz'
 pkgbase=opencore_amr
-vers=0.1.3
+vers=0.1.5
+url="http://downloads.sourceforge.net/project/opencore-amr/opencore-amr/opencore-amr-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=opencore-amr-0.1.3
+build=1
+src=opencore-amr-${vers}
 OPT_CONFIG='--disable-static --enable-examples'
 DOCS='AUTHORS COPYING ChangeLog INSTALL LICENSE NEWS README'
 patchfiles='opencore-amr-0.1.3-pkgconfig.patch'
