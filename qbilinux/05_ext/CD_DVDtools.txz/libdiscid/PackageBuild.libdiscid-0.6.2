@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='http://users.musicbrainz.org/~matt/libdiscid-0.2.2.tar.gz'
 pkgbase=libdiscid
-vers=0.2.2
+vers=0.6.2
+url="http://ftp.musicbrainz.org/pub/musicbrainz/libdiscid/libdiscid-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=libdiscid-0.2.2
+build=1
+src=libdiscid-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING ChangeLog README'
 patchfiles=''
