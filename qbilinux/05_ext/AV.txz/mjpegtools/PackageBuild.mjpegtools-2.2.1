@@ -2,17 +2,17 @@
 
 ######################################################################
 pkgbase=mjpegtools
-vers=2.1.0
-url="http://jaist.dl.sourceforge.net/sourceforge/mjpeg/mjpegtools-${vers}.tar.gz"
+vers=2.2.1
+url="https://sourceforge.net/projects/mjpeg/files/mjpegtools/${vers}/mjpegtools-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=3
-src=$pkgbase-$vers
+build=1
+src=$pkgbase-${vers}
 OPT_CONFIG=""
 DOCS="README.avilib TODO INSTALL AUTHORS INSTALL.real README.lavpipe
     CHANGES README.transist COPYING PLANS BUGS HINTS mjpeg_howto.txt
     README.glav README README.AltiVec README.DV ChangeLog NEWS"
-patchfiles='03_disable_optimization.patch'
+patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
