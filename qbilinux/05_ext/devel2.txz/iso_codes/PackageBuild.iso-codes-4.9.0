@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='https://blueprints.launchpad.net/debian/+archive/primary/+files/iso-codes_3.32.1.orig.tar.bz2'
 pkgbase=iso_codes
-vers=3.32.1
+vers=4.9.0
+url="https://salsa.debian.org/iso-codes-team/iso-codes/-/archive/v${vers}/iso-codes-v${vers}.tar.bz2"
 apply_arch="noarch"
 arch=noarch
-build=2
-src=iso-codes-3.32.1
+build=1
+src=iso-codes-v${vers}
 OPT_CONFIG=''
 DOCS='ChangeLog INSTALL LICENSE README TODO'
 patchfiles=''
