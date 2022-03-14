@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='http://ftp.jaist.ac.jp/pub/GNU/gsl/gsl-1.15.tar.gz'
 pkgbase=gsl
-vers=1.15
+vers=2.7.1
+url="http://ftp.jaist.ac.jp/pub/GNU/gsl/gsl-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=3
-src=gsl-1.15
+build=1
+src=gsl-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README THANKS TODO'
 patchfiles=''
