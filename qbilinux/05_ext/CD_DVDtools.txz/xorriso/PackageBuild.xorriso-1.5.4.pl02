@@ -1,13 +1,13 @@
 #!/bin/sh
 ##############################################################
 pkgbase=xorriso
-vers=1.5.1
+vers=1.5.4.pl02
 url="https://www.gnu.org/software/xorriso/xorriso-${vers}.tar.gz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=xorriso-${vers}
+build=1
+src=xorriso-${vers%.*}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog INSTALL README'
 patchfiles=''
