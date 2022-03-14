@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=sbc
-vers=1.3
-url='http://www.kernel.org/pub/linux/bluetooth/sbc-1.3.tar.gz'
+vers=1.5
+url="http://www.kernel.org/pub/linux/bluetooth/sbc-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=sbc-1.3
+build=1
+src=sbc-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING COPYING.LIB ChangeLog INSTALL NEWS README TODO'
 patchfiles=''
