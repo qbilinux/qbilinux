@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=avahi
-vers=0.6.32
+vers=0.8
 url="https://github.com/lathiat/avahi/releases/download/v${vers}/avahi-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=5
+build=1
 src=avahi-${vers}
 OPT_CONFIG='--disable-static --disable-qt3 --disable-qt4 --disable-mono --with-distro=slackware --disable-python'
 DOCS='ABOUT-NLS ChangeLog LICENSE README'
