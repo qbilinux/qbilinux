@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='http://downloads.sourceforge.net/project/twolame/twolame/0.3.13/twolame-0.3.13.tar.gz'
 pkgbase=twolame
-vers=0.3.13
+vers=0.4.0
+url="http://downloads.sourceforge.net/project/twolame/twolame/${vers}/twolame-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=twolame-0.3.13
+build=1
+src=twolame-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING ChangeLog README TODO'
 patchfiles=''
