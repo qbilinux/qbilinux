@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='http://www.freedesktop.org/software/media-player-info/media-player-info-17.tar.gz'
 pkgbase=media_player_info
-vers=17
+vers=24
+url="http://www.freedesktop.org/software/media-player-info/media-player-info-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=media-player-info-17
+build=1
+src=media-player-info-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README'
 patchfiles=''
