@@ -2,16 +2,16 @@
 
 ######################################################################
 pkgbase=mozc
-vers=20180226
+vers=20220313
 url="https://github.com/google/mozc.git"
-commitid=afb03dd
+commitid=140ccd7
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=4
+build=1
 src=mozc
 OPT_CONFIG=""
 DOCS="AUTHORS CONTRIBUTING.md CONTRIBUTORS LICENSE README.md appveyor.yml"
-patchfiles="uim-mozc.patch uim-mozc-namespace.patch mozc-gcc8.patch mozc-dict.patch"
+patchfiles="uim-mozc.patch"
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
@@ -31,7 +31,7 @@ do_config() {
 
     cp -a ${S[$1]} ${B[$1]}
     cd ${B[$1]}/src
-    python build_mozc.py gyp --target_platform=Linux
+    python3 build_mozc.py gyp --target_platform=Linux
     if [ $? != 0 ]; then
 	echo "configure error. $0 script stop"
 	exit 255
@@ -40,7 +40,12 @@ do_config() {
 
 do_build() {
     cd ${B[$1]}/src
-    python build_mozc.py build -c Release unix/uim/uim.gyp:uim-mozc unix/ibus/ibus.gyp:ibus_mozc unix/emacs/emacs.gyp:mozc_emacs_helper server/server.gyp:mozc_server gui/gui.gyp:mozc_tool renderer/renderer.gyp:mozc_renderer
+    python3 build_mozc.py build -c Release \
+	    unix/uim/uim.gyp:uim-mozc \
+	    gui/gui.gyp:mozc_tool unix/ibus/ibus.gyp:ibus_mozc \
+	    unix/emacs/emacs.gyp:mozc_emacs_helper \
+	    server/server.gyp:mozc_server \
+	    renderer/renderer.gyp:mozc_renderer 
     if [ $? != 0 ]; then
 	echo "make error. $0 script stop"
 	exit 255
@@ -54,15 +59,18 @@ do_install() {
     install -d $P/usr/${libdir}/ibus-mozc
     cp ibus_mozc $P/usr/${libdir}/ibus-mozc
 
-    install -d $P/usr/${libdir}/mozc 
-    cp gen_collocation_data_main \
+    install -d $P/usr/${libdir}/mozc
+    cp dataset_writer_main \
+       gen_collocation_data_main \
        gen_collocation_suppression_data_main \
-       gen_mock_segmenter_bitarray_main \
-       gen_oss_segmenter_bitarray_main \
+       gen_emoticon_rewriter_data_main \
+       gen_single_kanji_noun_prefix_data_main \
        gen_suggestion_filter_main \
        gen_symbol_rewriter_dictionary_main \
        gen_system_dictionary_data_main \
        gen_usage_rewriter_dictionary_main \
+       gen_oss_sbm \
+       ibus_mozc \
        mozc_renderer \
        mozc_server \
        mozc_tool \

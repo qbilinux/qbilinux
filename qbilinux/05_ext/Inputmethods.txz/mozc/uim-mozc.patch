@@ -1,39 +1,9 @@
-Description: Support uim framework
-Origin: macuim project: https://github.com/e-kato/macuim.git 3ea28b1f6c16a5ad624f137302ab9ed060a84db7
-Forwarded: http://code.google.com/p/mozc/issues/detail?id=13
-Author: uim Project http://code.google.com/p/uim/
-Last-Update: 2016-08-24
-
-Signed-off-by: Nobuhiro Iwamatsu <iwamatsu@debian.org>
-From 126b3e3a0e79000297575d871d3e34d261b3f858 Mon Sep 17 00:00:00 2001
-From: Nobuhiro Iwamatsu <iwamatsu@debian.org>
-Date: Wed, 24 Aug 2016 08:39:50 +0900
-Subject: [PATCH] Update uim-mozc to i3ea28b1f6c16a5ad624f137302ab9ed060a84db7
-
-Signed-off-by: Nobuhiro Iwamatsu <iwamatsu@debian.org>
----
- src/unix/uim/key_translator.cc       |  436 ++++++++++++
- src/unix/uim/key_translator.h        |  111 ++++
- src/unix/uim/mozc.cc                 | 1219 ++++++++++++++++++++++++++++++++++
- src/unix/uim/scm/mozc-custom.scm     |  396 +++++++++++
- src/unix/uim/scm/mozc-key-custom.scm |   74 +++
- src/unix/uim/scm/mozc.scm            |  566 ++++++++++++++++
- src/unix/uim/uim.gyp                 |   85 +++
- 7 files changed, 2887 insertions(+)
- create mode 100644 src/unix/uim/key_translator.cc
- create mode 100644 src/unix/uim/key_translator.h
- create mode 100644 src/unix/uim/mozc.cc
- create mode 100644 src/unix/uim/scm/mozc-custom.scm
- create mode 100644 src/unix/uim/scm/mozc-key-custom.scm
- create mode 100644 src/unix/uim/scm/mozc.scm
- create mode 100644 src/unix/uim/uim.gyp
-
 diff --git a/src/unix/uim/key_translator.cc b/src/unix/uim/key_translator.cc
 new file mode 100644
-index 0000000..c7c4c4a
+index 00000000..b1c9be85
 --- /dev/null
 +++ b/src/unix/uim/key_translator.cc
-@@ -0,0 +1,436 @@
+@@ -0,0 +1,441 @@
 +// Copyright 2010, Google Inc.
 +// Copyright (c) 2010-2012 uim Project http://code.google.com/p/uim/
 +// All rights reserved.
@@ -361,7 +331,7 @@ index 0000000..c7c4c4a
 +  DCHECK(out_event) << "out_event is NULL";
 +  out_event->Clear();
 +
-+  string kana_key_string;
++  std::string kana_key_string;
 +  if ((method == config::Config::KANA) && IsKanaAvailable(
 +          keyval, keycode, modifiers, layout_is_jp, &kana_key_string)) {
 +    out_event->set_key_code(keyval);
@@ -404,26 +374,31 @@ index 0000000..c7c4c4a
 +
 +void KeyTranslator::Init() {
 +  for (int i = 0; i < arraysize(special_key_map); ++i) {
-+    CHECK(special_key_map_.insert(make_pair(special_key_map[i].from,
-+                                            special_key_map[i].to)).second);
++    CHECK(special_key_map_.insert(
++        std::make_pair(special_key_map[i].from,
++                       special_key_map[i].to)).second);
 +  }
 +  for (int i = 0; i < arraysize(modifier_key_map); ++i) {
-+    CHECK(modifier_key_map_.insert(make_pair(modifier_key_map[i].from,
-+                                             modifier_key_map[i].to)).second);
++    CHECK(modifier_key_map_.insert(
++        std::make_pair(modifier_key_map[i].from,
++                       modifier_key_map[i].to)).second);
 +  }
 +  for (int i = 0; i < arraysize(modifier_mask_map); ++i) {
-+    CHECK(modifier_mask_map_.insert(make_pair(modifier_mask_map[i].from,
-+                                              modifier_mask_map[i].to)).second);
++    CHECK(modifier_mask_map_.insert(
++        std::make_pair(modifier_mask_map[i].from,
++                       modifier_mask_map[i].to)).second);
 +  }
 +  for (int i = 0; i < arraysize(kana_map_jp); ++i) {
 +    CHECK(kana_map_jp_.insert(
-+        make_pair(kana_map_jp[i].code, make_pair(
-+            kana_map_jp[i].no_shift, kana_map_jp[i].shift))).second);
++        std::make_pair(kana_map_jp[i].code,
++                       std::make_pair(kana_map_jp[i].no_shift,    
++                                      kana_map_jp[i].shift))).second);
 +  }
 +  for (int i = 0; i < arraysize(kana_map_us); ++i) {
 +    CHECK(kana_map_us_.insert(
-+        make_pair(kana_map_us[i].code, make_pair(
-+            kana_map_us[i].no_shift, kana_map_us[i].shift))).second);
++        std::make_pair(kana_map_us[i].code,
++                       std::make_pair(kana_map_us[i].no_shift,
++                                      kana_map_us[i].shift))).second);
 +  }
 +}
 +
@@ -443,7 +418,7 @@ index 0000000..c7c4c4a
 +                                    unsigned int keycode,
 +                                    unsigned int modifiers,
 +                                    bool layout_is_jp,
-+                                    string *out) const {
++                                    std::string *out) const {
 +  if ((modifiers & UMod_Control) || (modifiers & UMod_Alt)) {
 +    return false;
 +  }
@@ -472,7 +447,7 @@ index 0000000..c7c4c4a
 +}  // namespace mozc
 diff --git a/src/unix/uim/key_translator.h b/src/unix/uim/key_translator.h
 new file mode 100644
-index 0000000..e8a4f08
+index 00000000..2649cc5e
 --- /dev/null
 +++ b/src/unix/uim/key_translator.h
 @@ -0,0 +1,111 @@
@@ -540,8 +515,8 @@ index 0000000..e8a4f08
 +
 + private:
 +  typedef hash_map<unsigned int, commands::KeyEvent::SpecialKey> SpecialKeyMap;
-+  typedef map<unsigned int, commands::KeyEvent::ModifierKey> ModifierKeyMap;
-+  typedef map<unsigned int, pair<string, string> > KanaMap;
++  typedef std::map<unsigned int, commands::KeyEvent::ModifierKey> ModifierKeyMap;
++  typedef std::map<unsigned int, std::pair<std::string, std::string> > KanaMap;
 +
 +  // Returns true iff key is modifier key such as SHIFT, ALT, or CAPSLOCK.
 +  bool IsModifierKey(unsigned int keyval,
@@ -557,7 +532,7 @@ index 0000000..e8a4f08
 +                       unsigned int keycode,
 +                       unsigned int modifiers,
 +                       bool layout_is_jp,
-+                       string *out) const;
++                       std::string *out) const;
 +
 +
 +  // Returns true iff key is ASCII such as '0', 'A', or '!'.
@@ -589,7 +564,7 @@ index 0000000..e8a4f08
 +#endif  // MOZC_UNIX_UIM_KEY_TRANSLATOR_H_
 diff --git a/src/unix/uim/mozc.cc b/src/unix/uim/mozc.cc
 new file mode 100644
-index 0000000..a609abc
+index 00000000..ceb16bd8
 --- /dev/null
 +++ b/src/unix/uim/mozc.cc
 @@ -0,0 +1,1219 @@
@@ -768,8 +743,8 @@ index 0000000..a609abc
 +{
 +  size_t len = segment.value_length();
 +
-+  string former = Util::SubString(segment.value(), 0, pos);
-+  string latter = Util::SubString(segment.value(), pos, len);
++  auto former = std::string(Util::Utf8SubString(segment.value(), 0, pos));
++  auto latter = std::string(Util::Utf8SubString(segment.value(), pos, len));
 +
 +  uim_lisp seg_f, seg_c, seg_l;
 +  if (pos == 0) {
@@ -975,7 +950,7 @@ index 0000000..a609abc
 +	  !NULLP(latter = uim_scm_callf("ustr-latter-seq", "o", ustr))) {
 +	  uim_lisp str = CAR(latter);
 +
-+          string text = REFER_C_STR(str);
++          std::string text = REFER_C_STR(str);
 +          session_command.set_text(text);
 +      } else {
 +#if 0
@@ -984,7 +959,7 @@ index 0000000..a609abc
 +        ustr = uim_scm_callf("im-acquire-text", "oyyyi", mc_, "primary", "cursor", "line", 0);
 +	if (TRUEP(ustr) && !NULLP(former = uim_scm_callf("ustr-former-seq", "o", ustr))) {
 +	  uim_lisp str = CAR(former);
-+	  string text = REFER_C_STR(str);
++	  std::string text = REFER_C_STR(str);
 +	  session_command.set_text(text);
 +	  use_primary_text = 1;
 +	} else
@@ -1500,7 +1475,7 @@ index 0000000..a609abc
 +  int i;
 +
 +  for (i = 0; key_tab[i].key; i++)
-+    key_map.insert(make_pair(key_tab[i].str, key_tab[i].key));
++    key_map.insert(std::make_pair(key_tab[i].str, key_tab[i].key));
 +}
 +
 +static uim_lisp
@@ -1721,14 +1696,14 @@ index 0000000..a609abc
 +      !NULLP(latter = uim_scm_callf("ustr-latter-seq", "o", ustr))) {
 +    uim_lisp str = CAR(latter);
 +
-+    string text = REFER_C_STR(str);
++    std::string text = REFER_C_STR(str);
 +    session_command.set_text(text);
 +  } else {
 +    ustr = uim_scm_callf("im-acquire-text", "oyyyi", mc_, "primary", "cursor", "line", 0);
 +    if (TRUEP(ustr) &&
 +	!NULLP(former = uim_scm_callf("ustr-former-seq", "o", ustr))) {
 +      uim_lisp str = CAR(former);
-+      string text = REFER_C_STR(str);
++      std::string text = REFER_C_STR(str);
 +      session_command.set_text(text);
 +      use_primary_text = 1;
 +    } else
@@ -1794,7 +1769,7 @@ index 0000000..a609abc
 +  argv[0] = (char *)name;
 +  argv[1] =  NULL;
 +
-+  mozc::InitMozc((const char *)argv[0], &argc, (char ***)&argv, true);
++  mozc::InitMozc((const char *)argv[0], &argc, (char ***)&argv);
 +  mozc::uim::install_keymap();
 +}
 +
@@ -1814,7 +1789,7 @@ index 0000000..a609abc
 +}
 diff --git a/src/unix/uim/scm/mozc-custom.scm b/src/unix/uim/scm/mozc-custom.scm
 new file mode 100644
-index 0000000..adfd65b
+index 00000000..adfd65bd
 --- /dev/null
 +++ b/src/unix/uim/scm/mozc-custom.scm
 @@ -0,0 +1,396 @@
@@ -2216,7 +2191,7 @@ index 0000000..adfd65b
 +               (N_ "long description will be here."))
 diff --git a/src/unix/uim/scm/mozc-key-custom.scm b/src/unix/uim/scm/mozc-key-custom.scm
 new file mode 100644
-index 0000000..bcf8528
+index 00000000..bcf85287
 --- /dev/null
 +++ b/src/unix/uim/scm/mozc-key-custom.scm
 @@ -0,0 +1,74 @@
@@ -2296,7 +2271,7 @@ index 0000000..bcf8528
 +	       (_ "long description will be here"))
 diff --git a/src/unix/uim/scm/mozc.scm b/src/unix/uim/scm/mozc.scm
 new file mode 100644
-index 0000000..9938ec4
+index 00000000..9938ec47
 --- /dev/null
 +++ b/src/unix/uim/scm/mozc.scm
 @@ -0,0 +1,566 @@
@@ -2868,7 +2843,7 @@ index 0000000..9938ec4
 +)
 diff --git a/src/unix/uim/uim.gyp b/src/unix/uim/uim.gyp
 new file mode 100644
-index 0000000..bb1c602
+index 00000000..bb1c602f
 --- /dev/null
 +++ b/src/unix/uim/uim.gyp
 @@ -0,0 +1,85 @@
@@ -2958,5 +2933,5 @@ index 0000000..bb1c602
 +  ],
 +}
 -- 
-2.9.3
+2.30.0.rc2
 
