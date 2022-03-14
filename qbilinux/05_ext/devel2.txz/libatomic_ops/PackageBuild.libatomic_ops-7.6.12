@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=libatomic_ops
-vers=7.4.8
+vers=7.6.12
 url="https://github.com/ivmai/libatomic_ops/releases/download/v${vers}/libatomic_ops-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=libatomic_ops-${vers}
 OPT_CONFIG="--enable-shared --disable-static --docdir=/usr/share/doc/${src}"
 DOCS='AUTHORS COPYING ChangeLog README.md'
