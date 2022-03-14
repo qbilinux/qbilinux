@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='http://www.wavpack.com/wavpack-4.60.1.tar.bz2'
 pkgbase=wavpack
-vers=4.60.1
+vers=5.4.0
+url="http://www.wavpack.com/wavpack-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=wavpack-4.60.1
+build=1
+src=wavpack-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS ChangeLog NEWS README license.txt'
 patchfiles=''
