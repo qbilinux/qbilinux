@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase="double_conversion"
-vers=3.1.5
+vers=3.2.0
 url="https://github.com/google/double-conversion/archive/v${vers}/double-conversion-${vers}.tar.gz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
