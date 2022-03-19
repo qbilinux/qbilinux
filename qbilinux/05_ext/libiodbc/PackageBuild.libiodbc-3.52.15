@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=libiodbc
-vers=3.52.12
+vers=3.52.15
 url="http://downloads.sourceforge.net/project/iodbc/iodbc/${vers}/libiodbc-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=5
+build=1
 src=libiodbc-${vers}
 OPT_CONFIG='--disable-static --with-iodbc-inidir=/etc/iodbc'
 DOCS='AUTHORS COPYING ChangeLog INSTALL LICENSE LICENSE.BSD LICENSE.LGPL NEWS README README.CVS README.MACOSX'
