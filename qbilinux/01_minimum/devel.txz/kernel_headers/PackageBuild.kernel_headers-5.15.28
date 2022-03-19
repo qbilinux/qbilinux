@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=kernel_headers
-version=5.15.22
+version=5.15.28
 url="https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-${version%.*}.tar.xz
 	https://cdn.kernel.org/pub/linux/kernel/v5.x/patch-${version}.xz"
 #	git://github.com/sfjro/aufs5-standalone.git"
