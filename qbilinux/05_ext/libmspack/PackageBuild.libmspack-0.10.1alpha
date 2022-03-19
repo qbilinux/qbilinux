@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='http://www.cabextract.org.uk/libmspack/libmspack-0.3alpha.tar.gz'
 pkgbase=libmspack
-vers=0.3alpha
+vers=0.10.1alpha
+url="http://www.cabextract.org.uk/libmspack/libmspack-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=libmspack-0.3alpha
+build=1
+src=libmspack-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING.LIB ChangeLog INSTALL NEWS README TODO'
 patchfiles=''
