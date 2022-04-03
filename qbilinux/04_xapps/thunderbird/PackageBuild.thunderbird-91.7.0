@@ -3,7 +3,7 @@ unset LS_BLOCK_SIZE
 export LANG=C
 ##############################################################
 pkgbase=thunderbird
-vers=91.5.1
+vers=91.7.0
 url="http://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/${vers}/source/${pkgbase}-${vers}.source.tar.xz"
 #verify=$url.asc
 apply_arch="x86_64 i686 armv7l aarch64"
