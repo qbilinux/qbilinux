@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='http://sourceforge.net/projects/quvi/files/0.4/libquvi-scripts/libquvi-scripts-0.4.8.tar.xz'
 pkgbase=libquvi_scripts
-vers=0.4.8
+vers=0.9.20131130
+url="http://sourceforge.net/projects/quvi/files/${vers%.*}/libquvi-scripts/libquvi-scripts-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=libquvi-scripts-0.4.8
+build=1
+src=libquvi-scripts-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README'
 patchfiles=''
