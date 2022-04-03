@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='http://sourceforge.net/projects/quvi/files/0.4/libquvi/libquvi-0.4.1.tar.xz'
 pkgbase=libquvi
-vers=0.4.1
+vers=0.9.4
+url="http://sourceforge.net/projects/quvi/files/${vers%.*}/libquvi/libquvi-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=3
-src=libquvi-0.4.1
+build=1
+src=libquvi-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README'
 patchfiles=''
