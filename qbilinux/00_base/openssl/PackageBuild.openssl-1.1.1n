@@ -2,11 +2,11 @@
 
 ######################################################################
 pkgbase=openssl
-vers=1.1.1m
+vers=1.1.1n
 url="http://www.openssl.org/source/openssl-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=openssl-$vers
 OPT_CONFIG=""
 DOCS="ACKNOWLEDGEMENTS AUTHORS CHANGES CONTRIBUTING FAQ INSTALL
@@ -24,11 +24,11 @@ do_prepare() {
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
-    cd $W
-    if [ ! -f ca-bundle.crt ] ; then
-	chmod +x mkcabundle.pl
-	./mkcabundle.pl > ca-bundle.crt
-    fi
+    # cd $W
+    # if [ ! -f ca-bundle.crt ] ; then
+    # 	chmod +x mkcabundle.pl
+    # 	./mkcabundle.pl > ca-bundle.crt
+    # fi
 }
 
 do_config() {
@@ -73,10 +73,15 @@ do_install() {
     fi
 
     # add extra func
-    install $W/mkcabundle.pl $P/etc/ssl
-    cp -r certs $P/etc/ssl
-    install -m 644 $W/ca-bundle.crt $P/etc/ssl/certs
-    ln -s /etc/ssl $P/usr/share
+    # install $W/mkcabundle.pl $P/etc/ssl
+    # cp -r certs $P/etc/ssl
+    # install -m 644 $W/ca-bundle.crt $P/etc/ssl/certs
+    # ln -s /etc/ssl $P/usr/share
+
+    rm -rf $P/etc
+    rm -rf $P/usr/{bin,include,share}
+    rm -rf $P/usr/${libdir}/{engines-1.1,libcrypto.a,libssl.a,pkgconfig}
+    rm -rf $P/usr/${libdir}/{libcrypto.so,libssl.so}
 }
 
 do_package() {
