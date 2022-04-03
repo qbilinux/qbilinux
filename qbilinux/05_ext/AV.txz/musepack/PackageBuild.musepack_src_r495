@@ -1,12 +1,13 @@
 #!/bin/sh
 ##############################################################
-url='http://files.musepack.net/source/musepack_src_r435.tar.gz'
 pkgbase=musepack
-vers=4.35
+vers=4.95
+#url='http://files.musepack.net/source/musepack_src_r495.tar.gz'
+url="http://deb.debian.org/debian/pool/main/libm/libmpc/libmpc_0.1~r495.orig.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=musepack_src_r435
+build=1
+src=musepack_src_r495
 OPT_CONFIG=''
 DOCS=''
 patchfiles=''
