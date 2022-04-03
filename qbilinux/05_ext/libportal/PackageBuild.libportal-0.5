@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
 pkgbase="libportal"
-vers=0.3
-url='https://github.com/flatpak/libportal/releases/download/0.3/libportal-0.3.tar.xz'
+vers=0.5
+url="https://github.com/flatpak/libportal/releases/download/${vers}/libportal-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
 src=libportal-${vers}
-OPT_CONFIG=''
+OPT_CONFIG='-Ddocs=false'
 DOCS='COPYING NEWS README.md meson_options.txt'
 patchfiles=''
 compress=txz
