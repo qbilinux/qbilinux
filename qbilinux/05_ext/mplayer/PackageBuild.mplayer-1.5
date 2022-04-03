@@ -2,11 +2,11 @@
 
 ######################################################################
 pkgbase=mplayer
-vers=1.4
+vers=1.5
 url="ftp://ftp.mplayerhq.hu/MPlayer/releases/MPlayer-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=MPlayer-${vers}
 if [ $arch = "armv7l" -o $arch = "aarch64" ]; then
 OPT_CONFIG="--confdir=/etc/mplayer --enable-gui --enable-radio
@@ -14,10 +14,10 @@ OPT_CONFIG="--confdir=/etc/mplayer --enable-gui --enable-radio
 else
 OPT_CONFIG="--confdir=/etc/mplayer --enable-gui --enable-radio
     --disable-inet6 --disable-ossaudio --disable-esd --language=ja
-    --enable-runtime-cpudetection"
+    --enable-runtime-cpudetection --disable-ffmpeg_a"
 fi
 DOCS="snapshot_version LICENSE README Copyright AUTHORS Changelog"
-patchfiles='0003-configure-armv8.patch'
+patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
