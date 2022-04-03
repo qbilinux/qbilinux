@@ -1,15 +1,15 @@
 #!/bin/sh
 ##############################################################
 pkgbase="network_manager_applet"
-vers=1.8.22
-url="https://download.gnome.org/sources/network-manager-applet/1.8/network-manager-applet-${vers}.tar.xz"
+vers=1.24.0
+url="https://download.gnome.org/sources/network-manager-applet/${vers%.*}/network-manager-applet-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=network-manager-applet-${vers}
 #OPT_CONFIG='--without-libnm-gtk --without-wwan --without-selinux'
-OPT_CONFIG='-Dselinux=false -Dteam=false -Dmobile_broadband_provider_info=false -Dwwan=false'
+OPT_CONFIG='-Dselinux=false -Dteam=false -Dmobile_broadband_provider_info=false -Dwwan=false -Dappindicator=no'
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README libnma-overrides.txt libnma-sections.txt meson_options.txt meson_post_install.py'
 patchfiles=''
 compress=txz
