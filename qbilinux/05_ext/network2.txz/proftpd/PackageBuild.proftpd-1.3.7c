@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=proftpd
-vers=1.3.6
+vers=1.3.7c
 url="ftp://ftp.proftpd.org/distrib/source/proftpd-${vers}.tar.gz"
 verify=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=${pkgbase}-${vers}
 OPT_CONFIG='--enable-dso --enable-ipv6 --enable-openssl --with-modules=mod_tls:mod_auth_pam --with-shared=mod_sftp:mod_sftp_pam'
 DOCS='COPYING CREDITS ChangeLog INSTALL NEWS README.AIX README.DSO README.FreeBSD README.IPv6 README.LDAP README.PAM README.Solaris2.5x README.Unixware README.capabilities README.classes README.controls README.cygwin README.facl README.modules README.ports RELEASE_NOTES'
