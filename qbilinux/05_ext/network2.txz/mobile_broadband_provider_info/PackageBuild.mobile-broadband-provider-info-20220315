@@ -1,8 +1,8 @@
 #!/bin/sh
 ##############################################################
 pkgbase="mobile_broadband_provider_info"
-vers=20190618
-url='http://ftp.acc.umu.se/pub/GNOME/sources/mobile-broadband-provider-info/20190618/mobile-broadband-provider-info-20190618.tar.xz'
+vers=20220315
+url="http://ftp.acc.umu.se/pub/GNOME/sources/mobile-broadband-provider-info/${vers}/mobile-broadband-provider-info-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
