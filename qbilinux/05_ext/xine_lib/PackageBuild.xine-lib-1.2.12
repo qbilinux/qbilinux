@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=xine_lib
-vers=1.2.9
+vers=1.2.12
 url="http://sourceforge.net/projects/xine/files/xine-lib/${vers}/xine-lib-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=3
+build=1
 src=xine-lib-${vers}
 OPT_CONFIG='--without-imagemagick'
 DOCS='ABOUT-NLS AUTHORS COPYING COPYING.LIB ChangeLog INSTALL NEWS README TODO'
