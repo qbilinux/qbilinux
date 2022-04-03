@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=smplayer_themes
-vers=18.6.0
+vers=20.11.0
 url="https://sourceforge.net/projects/smplayer/files/SMPlayer-themes/${vers}/smplayer-themes-${vers}.tar.bz2"
 apply_arch="noarch"
 arch=noarch
-build=2
+build=1
 src=smplayer-themes-${vers}
 OPT_CONFIG=''
 DOCS='COPYING_CC-BY-2.5.txt COPYING_CC-BY-SA-2.5.txt COPYING_CC-BY-SA-3.0.txt COPYING_GPL.txt COPYING_LGPL.txt Changelog README.txt'
