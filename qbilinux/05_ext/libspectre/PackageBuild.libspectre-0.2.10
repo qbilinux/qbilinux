@@ -1,13 +1,13 @@
 #!/bin/sh
 ##############################################################
 pkgbase=libspectre
-vers=0.2.8
+vers=0.2.10
 url="http://libspectre.freedesktop.org/releases/libspectre-${vers}.tar.gz"
 verify=
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=libspectre-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README TODO'
