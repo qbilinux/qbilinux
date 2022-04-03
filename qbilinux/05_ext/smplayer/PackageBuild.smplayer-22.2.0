@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=smplayer
-vers=19.10.0
-url="http://downloads.sourceforge.net/smplayer/smplayer-${vers}.tar.bz2"
+vers=22.2.0
+url="https://sourceforge.net/projects/smplayer/files/SMPlayer/${vers}/smplayer-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=smplayer-${vers}
 OPT_CONFIG=''
 DOCS='Changelog *.txt'
