@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=lftp
-vers=4.7.8
+vers=4.9.2
 url="http://lftp.yar.ru/ftp/lftp-${vers}.tar.xz"
 verify=$url
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=${pkgbase}-${vers}
 OPT_CONFIG='--with-gnutls --without-openssl --disable-static --with-readline=/usr'
 DOCS='ABOUT-NLS AUTHORS BUGS COPYING ChangeLog INSTALL MIRRORS NEWS README README.debug-levels README.dnssec README.modules THANKS TODO'
