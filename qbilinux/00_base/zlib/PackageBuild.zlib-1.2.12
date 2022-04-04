@@ -2,11 +2,11 @@
 
 ######################################################################
 pkgbase=zlib
-vers=1.2.11
+vers=1.2.12
 url="http://zlib.net/zlib-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="ChangeLog `echo doc/{algorithm,rfc195{0,1,2},txtvsbin}.txt`
