@@ -1,7 +1,8 @@
-diff -Nru a/drivers/tty/vt/selection.c b/drivers/tty/vt/selection.c
---- a/drivers/tty/vt/selection.c	2020-12-14 07:41:30.000000000 +0900
-+++ b/drivers/tty/vt/selection.c	2020-12-16 01:32:47.541558044 +0900
-@@ -220,6 +220,8 @@
+diff --git a/drivers/tty/vt/selection.c b/drivers/tty/vt/selection.c
+index f245a5acf..7c9ed7658 100644
+--- a/drivers/tty/vt/selection.c
++++ b/drivers/tty/vt/selection.c
+@@ -220,6 +220,8 @@ static int vc_selection_store_chars(struct vc_data *vc, bool unicode)
  			}
  			obp = bp;
  		}
@@ -10,10 +11,11 @@ diff -Nru a/drivers/tty/vt/selection.c b/drivers/tty/vt/selection.c
  	}
  	vc_sel.buf_len = bp - vc_sel.buffer;
  
-diff -Nru a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
---- a/drivers/tty/vt/vt.c	2020-12-14 07:41:30.000000000 +0900
-+++ b/drivers/tty/vt/vt.c	2020-12-16 01:34:00.120338776 +0900
-@@ -297,6 +297,19 @@
+diff --git a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
+index a7ee1171e..179fd5e1c 100644
+--- a/drivers/tty/vt/vt.c
++++ b/drivers/tty/vt/vt.c
+@@ -297,6 +297,19 @@ static inline unsigned short *screenpos(const struct vc_data *vc, int offset,
  	return p;
  }
  
@@ -33,7 +35,7 @@ diff -Nru a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
  /* Called  from the keyboard irq path.. */
  static inline void scrolldelta(int lines)
  {
-@@ -639,6 +652,11 @@
+@@ -639,6 +652,11 @@ static void con_scroll(struct vc_data *vc, unsigned int t, unsigned int b,
  	}
  	scr_memmovew(d, s, (b - t - nr) * vc->vc_size_row);
  	scr_memsetw(clear, vc->vc_video_erase_char, vc->vc_size_row * nr);
@@ -45,7 +47,7 @@ diff -Nru a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
  }
  
  static void do_update_region(struct vc_data *vc, unsigned long start, int count)
-@@ -807,6 +825,8 @@
+@@ -807,6 +825,8 @@ void complement_pos(struct vc_data *vc, int offset)
  	static int old_offset = -1;
  	static unsigned short old;
  	static unsigned short oldx, oldy;
@@ -54,7 +56,7 @@ diff -Nru a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
  
  	WARN_CONSOLE_UNLOCKED();
  
-@@ -814,7 +834,7 @@
+@@ -814,7 +834,7 @@ void complement_pos(struct vc_data *vc, int offset)
  	    old_offset < vc->vc_screenbuf_size) {
  		scr_writew(old, screenpos(vc, old_offset, true));
  		if (con_should_update(vc))
@@ -63,7 +65,7 @@ diff -Nru a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
  		notify_update(vc);
  	}
  
-@@ -825,13 +845,15 @@
+@@ -825,13 +845,15 @@ void complement_pos(struct vc_data *vc, int offset)
  		unsigned short new;
  		unsigned short *p;
  		p = screenpos(vc, offset, true);
@@ -80,7 +82,7 @@ diff -Nru a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
  		}
  		notify_update(vc);
  	}
-@@ -1145,7 +1167,7 @@
+@@ -1145,7 +1167,7 @@ int vc_allocate(unsigned int currcons)	/* return 0 on success */
  	    vc->vc_screenbuf_size > KMALLOC_MAX_SIZE || !vc->vc_screenbuf_size)
  		goto err_free;
  	err = -ENOMEM;
@@ -89,7 +91,7 @@ diff -Nru a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
  	if (!vc->vc_screenbuf)
  		goto err_free;
  
-@@ -1199,6 +1221,7 @@
+@@ -1199,6 +1221,7 @@ static int vc_do_resize(struct tty_struct *tty, struct vc_data *vc,
  	unsigned long old_origin, new_origin, new_scr_end, rlth, rrem, err = 0;
  	unsigned long end;
  	unsigned int old_rows, old_row_size, first_copied_row;
@@ -97,7 +99,7 @@ diff -Nru a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
  	unsigned int new_cols, new_rows, new_row_size, new_screen_size;
  	unsigned int user;
  	unsigned short *oldscreen, *newscreen;
-@@ -1225,7 +1248,7 @@
+@@ -1242,7 +1265,7 @@ static int vc_do_resize(struct tty_struct *tty, struct vc_data *vc,
  
  	if (new_screen_size > KMALLOC_MAX_SIZE || !new_screen_size)
  		return -EINVAL;
@@ -106,7 +108,7 @@ diff -Nru a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
  	if (!newscreen)
  		return -ENOMEM;
  
-@@ -1242,6 +1265,7 @@
+@@ -1259,6 +1282,7 @@ static int vc_do_resize(struct tty_struct *tty, struct vc_data *vc,
  
  	old_rows = vc->vc_rows;
  	old_row_size = vc->vc_size_row;
@@ -114,7 +116,7 @@ diff -Nru a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
  
  	err = resize_screen(vc, new_cols, new_rows, user);
  	if (err) {
-@@ -1290,15 +1314,23 @@
+@@ -1307,15 +1331,23 @@ static int vc_do_resize(struct tty_struct *tty, struct vc_data *vc,
  	while (old_origin < end) {
  		scr_memcpyw((unsigned short *) new_origin,
  			    (unsigned short *) old_origin, rlth);
@@ -140,7 +142,7 @@ diff -Nru a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
  	oldscreen = vc->vc_screenbuf;
  	vc->vc_screenbuf = newscreen;
  	vc->vc_screenbuf_size = new_screen_size;
-@@ -2814,12 +2846,16 @@
+@@ -2855,12 +2887,16 @@ static int vc_con_write_normal(struct vc_data *vc, int tc, int c,
  			insert_char(vc, 1);
  		vc_uniscr_putc(vc, next_c);
  
@@ -157,7 +159,7 @@ diff -Nru a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
  
  		if (con_should_update(vc) && draw->x < 0) {
  			draw->x = vc->state.x;
-@@ -2841,11 +2877,12 @@
+@@ -2882,11 +2918,12 @@ static int vc_con_write_normal(struct vc_data *vc, int tc, int c,
  		if (tc < 0)
  			tc = ' ';
  		next_c = ' ';
@@ -174,7 +176,7 @@ diff -Nru a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
  
  	return 0;
  }
-@@ -2886,6 +2923,8 @@
+@@ -2927,6 +2964,8 @@ static int do_con_write(struct tty_struct *tty, const unsigned char *buf, int co
  	if (con_is_fg(vc))
  		hide_cursor(vc);
  
@@ -183,7 +185,7 @@ diff -Nru a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
  	param.vc = vc;
  
  	while (!tty->stopped && count) {
-@@ -3490,7 +3529,7 @@
+@@ -3531,7 +3570,7 @@ static int __init con_init(void)
  		tty_port_init(&vc->port);
  		visual_init(vc, currcons, 1);
  		/* Assuming vc->vc_{cols,rows,screenbuf_size} are sane here. */
@@ -192,7 +194,7 @@ diff -Nru a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
  		vc_init(vc, vc->vc_rows, vc->vc_cols,
  			currcons || !vc->vc_sw->con_save_screen);
  	}
-@@ -4706,6 +4745,11 @@
+@@ -4747,6 +4786,11 @@ static int con_font_default(struct vc_data *vc, struct console_font_op *op)
  
  int con_font_op(struct vc_data *vc, struct console_font_op *op)
  {
@@ -204,7 +206,7 @@ diff -Nru a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
  	switch (op->op) {
  	case KD_FONT_OP_SET:
  		return con_font_set(vc, op);
-@@ -4730,9 +4774,14 @@
+@@ -4771,9 +4815,14 @@ u16 screen_glyph(const struct vc_data *vc, int offset)
  	u16 w = scr_readw(screenpos(vc, offset, true));
  	u16 c = w & 0xff;
  
@@ -222,10 +224,11 @@ diff -Nru a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
  }
  EXPORT_SYMBOL_GPL(screen_glyph);
  
-diff -Nru a/drivers/video/console/Kconfig b/drivers/video/console/Kconfig
---- a/drivers/video/console/Kconfig	2020-12-14 07:41:30.000000000 +0900
-+++ b/drivers/video/console/Kconfig	2020-12-16 01:32:47.542558068 +0900
-@@ -97,6 +97,7 @@
+diff --git a/drivers/video/console/Kconfig b/drivers/video/console/Kconfig
+index 47c493957..4f536cd1c 100644
+--- a/drivers/video/console/Kconfig
++++ b/drivers/video/console/Kconfig
+@@ -117,6 +117,7 @@ config FRAMEBUFFER_CONSOLE_DETECT_PRIMARY
  config FRAMEBUFFER_CONSOLE_ROTATION
         bool "Framebuffer Console Rotation"
         depends on FRAMEBUFFER_CONSOLE
@@ -233,9 +236,10 @@ diff -Nru a/drivers/video/console/Kconfig b/drivers/video/console/Kconfig
         help
  	 Enable display rotation for the framebuffer console.  This is done
  	 in software and may be significantly slower than a normally oriented
-diff -Nru a/drivers/video/fbdev/core/bitblit.c b/drivers/video/fbdev/core/bitblit.c
---- a/drivers/video/fbdev/core/bitblit.c	2020-12-14 07:41:30.000000000 +0900
-+++ b/drivers/video/fbdev/core/bitblit.c	2020-12-16 01:32:47.542558068 +0900
+diff --git a/drivers/video/fbdev/core/bitblit.c b/drivers/video/fbdev/core/bitblit.c
+index 9725ecd12..db33ef728 100644
+--- a/drivers/video/fbdev/core/bitblit.c
++++ b/drivers/video/fbdev/core/bitblit.c
 @@ -10,6 +10,7 @@
   *  more details.
   */
@@ -244,7 +248,7 @@ diff -Nru a/drivers/video/fbdev/core/bitblit.c b/drivers/video/fbdev/core/bitbli
  #include <linux/module.h>
  #include <linux/slab.h>
  #include <linux/string.h>
-@@ -43,6 +44,19 @@
+@@ -43,6 +44,19 @@ static void update_attr(u8 *dst, u8 *src, int attribute,
  	}
  }
  
@@ -264,7 +268,7 @@ diff -Nru a/drivers/video/fbdev/core/bitblit.c b/drivers/video/fbdev/core/bitbli
  static void bit_bmove(struct vc_data *vc, struct fb_info *info, int sy,
  		      int sx, int dy, int dx, int height, int width)
  {
-@@ -74,6 +88,34 @@
+@@ -74,6 +88,34 @@ static void bit_clear(struct vc_data *vc, struct fb_info *info, int sy,
  	info->fbops->fb_fillrect(info, &region);
  }
  
@@ -299,7 +303,7 @@ diff -Nru a/drivers/video/fbdev/core/bitblit.c b/drivers/video/fbdev/core/bitbli
  static inline void bit_putcs_aligned(struct vc_data *vc, struct fb_info *info,
  				     const u16 *s, u32 attr, u32 cnt,
  				     u32 d_pitch, u32 s_pitch, u32 cellsize,
-@@ -84,8 +126,7 @@
+@@ -84,8 +126,7 @@ static inline void bit_putcs_aligned(struct vc_data *vc, struct fb_info *info,
  	u8 *src;
  
  	while (cnt--) {
@@ -309,7 +313,7 @@ diff -Nru a/drivers/video/fbdev/core/bitblit.c b/drivers/video/fbdev/core/bitbli
  
  		if (attr) {
  			update_attr(buf, src, attr, vc);
-@@ -119,8 +160,7 @@
+@@ -119,8 +160,7 @@ static inline void bit_putcs_unaligned(struct vc_data *vc,
  	u8 *src;
  
  	while (cnt--) {
@@ -319,7 +323,7 @@ diff -Nru a/drivers/video/fbdev/core/bitblit.c b/drivers/video/fbdev/core/bitbli
  
  		if (attr) {
  			update_attr(buf, src, attr, vc);
-@@ -245,11 +285,13 @@
+@@ -245,11 +285,13 @@ static void bit_cursor(struct vc_data *vc, struct fb_info *info, int mode,
  	int err = 1;
  	char *src;
  
@@ -334,10 +338,11 @@ diff -Nru a/drivers/video/fbdev/core/bitblit.c b/drivers/video/fbdev/core/bitbli
  
  	if (ops->cursor_state.image.data != src ||
  	    ops->cursor_reset) {
-diff -Nru a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
---- a/drivers/video/fbdev/core/fbcon.c	2020-12-14 07:41:30.000000000 +0900
-+++ b/drivers/video/fbdev/core/fbcon.c	2020-12-16 01:32:47.542558068 +0900
-@@ -1004,7 +1004,8 @@
+diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+index f102519cc..29c56a37e 100644
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -1004,7 +1004,8 @@ static const char *fbcon_startup(void)
  		vc->vc_font.width = font->width;
  		vc->vc_font.height = font->height;
  		vc->vc_font.data = (void *)(p->fontdata = font->data);
@@ -347,7 +352,7 @@ diff -Nru a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
  	} else {
  		p->fontdata = vc->vc_font.data;
  	}
-@@ -1068,6 +1069,7 @@
+@@ -1068,6 +1069,7 @@ static void fbcon_init(struct vc_data *vc, int init)
  						    fvc->vc_font.data);
  			vc->vc_font.width = fvc->vc_font.width;
  			vc->vc_font.height = fvc->vc_font.height;
@@ -355,7 +360,7 @@ diff -Nru a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
  			p->userfont = t->userfont;
  
  			if (p->userfont)
-@@ -1083,8 +1085,8 @@
+@@ -1083,8 +1085,8 @@ static void fbcon_init(struct vc_data *vc, int init)
  			vc->vc_font.width = font->width;
  			vc->vc_font.height = font->height;
  			vc->vc_font.data = (void *)(p->fontdata = font->data);
@@ -366,7 +371,7 @@ diff -Nru a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
  		}
  	}
  
-@@ -1310,10 +1312,7 @@
+@@ -1312,10 +1314,7 @@ static void fbcon_putcs(struct vc_data *vc, const unsigned short *s,
  
  static void fbcon_putc(struct vc_data *vc, int c, int ypos, int xpos)
  {
@@ -378,7 +383,7 @@ diff -Nru a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
  }
  
  static void fbcon_clear_margins(struct vc_data *vc, int bottom_only)
-@@ -1378,6 +1377,7 @@
+@@ -1383,6 +1382,7 @@ static void fbcon_set_disp(struct fb_info *info, struct fb_var_screeninfo *var,
  		vc->vc_font.data = (void *)(p->fontdata = t->fontdata);
  		vc->vc_font.width = (*default_mode)->vc_font.width;
  		vc->vc_font.height = (*default_mode)->vc_font.height;
@@ -386,7 +391,7 @@ diff -Nru a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
  		p->userfont = t->userfont;
  		if (p->userfont)
  			REFCOUNT(p->fontdata)++;
-@@ -1616,6 +1616,7 @@
+@@ -1621,6 +1621,7 @@ static void fbcon_redraw_blit(struct vc_data *vc, struct fb_info *info,
  			}
  
  			scr_writew(c, d);
@@ -394,7 +399,7 @@ diff -Nru a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
  			console_conditional_schedule();
  			s++;
  			d++;
-@@ -1638,6 +1639,7 @@
+@@ -1643,6 +1644,7 @@ static void fbcon_redraw_blit(struct vc_data *vc, struct fb_info *info,
  static void fbcon_redraw(struct vc_data *vc, struct fbcon_display *p,
  			 int line, int count, int offset)
  {
@@ -402,7 +407,7 @@ diff -Nru a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
  	unsigned short *d = (unsigned short *)
  	    (vc->vc_origin + vc->vc_size_row * line);
  	unsigned short *s = d + offset;
-@@ -1660,18 +1662,24 @@
+@@ -1665,18 +1667,24 @@ static void fbcon_redraw(struct vc_data *vc, struct fbcon_display *p,
  					start = s;
  				}
  			}
@@ -436,7 +441,7 @@ diff -Nru a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
  			console_conditional_schedule();
  			s++;
  			d++;
-@@ -2289,7 +2297,6 @@
+@@ -2309,7 +2317,6 @@ static int fbcon_get_font(struct vc_data *vc, struct console_font *font)
  
  	font->width = vc->vc_font.width;
  	font->height = vc->vc_font.height;
@@ -444,10 +449,11 @@ diff -Nru a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
  	if (!font->data)
  		return 0;
  
-diff -Nru a/drivers/video/fbdev/core/fbcon.h b/drivers/video/fbdev/core/fbcon.h
---- a/drivers/video/fbdev/core/fbcon.h	2020-12-14 07:41:30.000000000 +0900
-+++ b/drivers/video/fbdev/core/fbcon.h	2020-12-16 01:32:47.542558068 +0900
-@@ -255,4 +255,10 @@
+diff --git a/drivers/video/fbdev/core/fbcon.h b/drivers/video/fbdev/core/fbcon.h
+index 0f16cbc99..cbd026825 100644
+--- a/drivers/video/fbdev/core/fbcon.h
++++ b/drivers/video/fbdev/core/fbcon.h
+@@ -268,4 +268,10 @@ extern void fbcon_set_rotate(struct fbcon_ops *ops);
  #define fbcon_set_rotate(x) do {} while(0)
  #endif /* CONFIG_FRAMEBUFFER_CONSOLE_ROTATION */
  
@@ -458,9 +464,10 @@ diff -Nru a/drivers/video/fbdev/core/fbcon.h b/drivers/video/fbdev/core/fbcon.h
 +#endif /* CONFIG_DMI */
 +
  #endif /* _VIDEO_FBCON_H */
-diff -Nru a/drivers/video/fbdev/core/fbcon_ccw.c b/drivers/video/fbdev/core/fbcon_ccw.c
---- a/drivers/video/fbdev/core/fbcon_ccw.c	2020-12-14 07:41:30.000000000 +0900
-+++ b/drivers/video/fbdev/core/fbcon_ccw.c	2020-12-16 01:32:47.542558068 +0900
+diff --git a/drivers/video/fbdev/core/fbcon_ccw.c b/drivers/video/fbdev/core/fbcon_ccw.c
+index f75b24c32..8ac73b796 100644
+--- a/drivers/video/fbdev/core/fbcon_ccw.c
++++ b/drivers/video/fbdev/core/fbcon_ccw.c
 @@ -18,6 +18,8 @@
  #include "fbcon.h"
  #include "fbcon_rotate.h"
@@ -470,7 +477,7 @@ diff -Nru a/drivers/video/fbdev/core/fbcon_ccw.c b/drivers/video/fbdev/core/fbco
  /*
   * Rotation 270 degrees
   */
-@@ -106,12 +108,22 @@
+@@ -106,12 +108,22 @@ static inline void ccw_putcs_aligned(struct vc_data *vc, struct fb_info *info,
  	u8 *src;
  
  	while (cnt--) {
@@ -494,15 +501,15 @@ diff -Nru a/drivers/video/fbdev/core/fbcon_ccw.c b/drivers/video/fbdev/core/fbco
  
  		if (likely(idx == 1))
  			__fb_pad_aligned_buffer(dst, d_pitch, src, idx,
-@@ -230,6 +242,7 @@
+@@ -230,6 +242,7 @@ static void ccw_cursor(struct vc_data *vc, struct fb_info *info, int mode,
  	int err = 1, dx, dy;
  	char *src;
- 	u32 vyres = GETVYRES(ops->p->scrollmode, info);
+ 	u32 vyres = GETVYRES(ops->p, info);
 +	int cellsize = DIV_ROUND_UP(vc->vc_font.width,8) * vc->vc_font.height;
  
  	if (!ops->fontbuffer)
  		return;
-@@ -238,7 +251,16 @@
+@@ -238,7 +251,16 @@ static void ccw_cursor(struct vc_data *vc, struct fb_info *info, int mode,
  
   	c = scr_readw((u16 *) vc->vc_pos);
  	attribute = get_attribute(info, c);
@@ -520,9 +527,10 @@ diff -Nru a/drivers/video/fbdev/core/fbcon_ccw.c b/drivers/video/fbdev/core/fbco
  
  	if (ops->cursor_state.image.data != src ||
  	    ops->cursor_reset) {
-diff -Nru a/drivers/video/fbdev/core/fbcon_cw.c b/drivers/video/fbdev/core/fbcon_cw.c
---- a/drivers/video/fbdev/core/fbcon_cw.c	2020-12-14 07:41:30.000000000 +0900
-+++ b/drivers/video/fbdev/core/fbcon_cw.c	2020-12-16 01:32:47.542558068 +0900
+diff --git a/drivers/video/fbdev/core/fbcon_cw.c b/drivers/video/fbdev/core/fbcon_cw.c
+index cf03dc62f..308857e60 100644
+--- a/drivers/video/fbdev/core/fbcon_cw.c
++++ b/drivers/video/fbdev/core/fbcon_cw.c
 @@ -18,6 +18,8 @@
  #include "fbcon.h"
  #include "fbcon_rotate.h"
@@ -532,7 +540,7 @@ diff -Nru a/drivers/video/fbdev/core/fbcon_cw.c b/drivers/video/fbdev/core/fbcon
  /*
   * Rotation 90 degrees
   */
-@@ -91,12 +93,22 @@
+@@ -91,12 +93,22 @@ static inline void cw_putcs_aligned(struct vc_data *vc, struct fb_info *info,
  	u8 *src;
  
  	while (cnt--) {
@@ -556,15 +564,15 @@ diff -Nru a/drivers/video/fbdev/core/fbcon_cw.c b/drivers/video/fbdev/core/fbcon
  
  		if (likely(idx == 1))
  			__fb_pad_aligned_buffer(dst, d_pitch, src, idx,
-@@ -213,6 +225,7 @@
+@@ -213,6 +225,7 @@ static void cw_cursor(struct vc_data *vc, struct fb_info *info, int mode,
  	int err = 1, dx, dy;
  	char *src;
- 	u32 vxres = GETVXRES(ops->p->scrollmode, info);
+ 	u32 vxres = GETVXRES(ops->p, info);
 +	int cellsize = DIV_ROUND_UP(vc->vc_font.width,8) * vc->vc_font.height;
  
  	if (!ops->fontbuffer)
  		return;
-@@ -221,7 +234,16 @@
+@@ -221,7 +234,16 @@ static void cw_cursor(struct vc_data *vc, struct fb_info *info, int mode,
  
   	c = scr_readw((u16 *) vc->vc_pos);
  	attribute = get_attribute(info, c);
@@ -582,9 +590,10 @@ diff -Nru a/drivers/video/fbdev/core/fbcon_cw.c b/drivers/video/fbdev/core/fbcon
  
  	if (ops->cursor_state.image.data != src ||
  	    ops->cursor_reset) {
-diff -Nru a/drivers/video/fbdev/core/fbcon_ud.c b/drivers/video/fbdev/core/fbcon_ud.c
---- a/drivers/video/fbdev/core/fbcon_ud.c	2020-12-14 07:41:30.000000000 +0900
-+++ b/drivers/video/fbdev/core/fbcon_ud.c	2020-12-16 01:32:47.542558068 +0900
+diff --git a/drivers/video/fbdev/core/fbcon_ud.c b/drivers/video/fbdev/core/fbcon_ud.c
+index c5d2da731..9d8194c6c 100644
+--- a/drivers/video/fbdev/core/fbcon_ud.c
++++ b/drivers/video/fbdev/core/fbcon_ud.c
 @@ -18,6 +18,8 @@
  #include "fbcon.h"
  #include "fbcon_rotate.h"
@@ -594,7 +603,7 @@ diff -Nru a/drivers/video/fbdev/core/fbcon_ud.c b/drivers/video/fbdev/core/fbcon
  /*
   * Rotation 180 degrees
   */
-@@ -93,12 +95,22 @@
+@@ -93,12 +95,22 @@ static inline void ud_putcs_aligned(struct vc_data *vc, struct fb_info *info,
  	u8 *src;
  
  	while (cnt--) {
@@ -618,7 +627,7 @@ diff -Nru a/drivers/video/fbdev/core/fbcon_ud.c b/drivers/video/fbdev/core/fbcon
  
  		if (likely(idx == 1))
  			__fb_pad_aligned_buffer(dst, d_pitch, src, idx,
-@@ -128,12 +140,21 @@
+@@ -128,12 +140,21 @@ static inline void ud_putcs_unaligned(struct vc_data *vc,
  	u8 *src;
  
  	while (cnt--) {
@@ -642,15 +651,15 @@ diff -Nru a/drivers/video/fbdev/core/fbcon_ud.c b/drivers/video/fbdev/core/fbcon
  
  		fb_pad_unaligned_buffer(dst, d_pitch, src, idx,
  					image->height, shift_high,
-@@ -261,6 +282,7 @@
+@@ -261,6 +282,7 @@ static void ud_cursor(struct vc_data *vc, struct fb_info *info, int mode,
  	char *src;
- 	u32 vyres = GETVYRES(ops->p->scrollmode, info);
- 	u32 vxres = GETVXRES(ops->p->scrollmode, info);
+ 	u32 vyres = GETVYRES(ops->p, info);
+ 	u32 vxres = GETVXRES(ops->p, info);
 +	int cellsize = DIV_ROUND_UP(vc->vc_font.width,8) * vc->vc_font.height;
  
  	if (!ops->fontbuffer)
  		return;
-@@ -269,7 +291,16 @@
+@@ -269,7 +291,16 @@ static void ud_cursor(struct vc_data *vc, struct fb_info *info, int mode,
  
   	c = scr_readw((u16 *) vc->vc_pos);
  	attribute = get_attribute(info, c);
@@ -668,10 +677,11 @@ diff -Nru a/drivers/video/fbdev/core/fbcon_ud.c b/drivers/video/fbdev/core/fbcon
  
  	if (ops->cursor_state.image.data != src ||
  	    ops->cursor_reset) {
-diff -Nru a/include/linux/font.h b/include/linux/font.h
---- a/include/linux/font.h	2020-12-14 07:41:30.000000000 +0900
-+++ b/include/linux/font.h	2020-12-16 01:35:18.090250641 +0900
-@@ -19,6 +19,7 @@
+diff --git a/include/linux/font.h b/include/linux/font.h
+index b5b312c19..0a7315b0c 100644
+--- a/include/linux/font.h
++++ b/include/linux/font.h
+@@ -19,6 +19,7 @@ struct font_desc {
      int width, height;
      const void *data;
      int pref;
@@ -679,7 +689,7 @@ diff -Nru a/include/linux/font.h b/include/linux/font.h
  };
  
  #define VGA8x8_IDX	0
-@@ -34,6 +35,7 @@
+@@ -34,6 +35,7 @@ struct font_desc {
  #define FONT6x10_IDX	10
  #define TER16x32_IDX	11
  #define FONT6x8_IDX	12
@@ -687,7 +697,7 @@ diff -Nru a/include/linux/font.h b/include/linux/font.h
  
  extern const struct font_desc	font_vga_8x8,
  			font_vga_8x16,
-@@ -47,7 +49,8 @@
+@@ -47,7 +49,8 @@ extern const struct font_desc	font_vga_8x8,
  			font_mini_4x6,
  			font_6x10,
  			font_ter_16x32,
@@ -697,10 +707,11 @@ diff -Nru a/include/linux/font.h b/include/linux/font.h
  
  /* Find a font with a specific name */
  
-diff -Nru a/lib/fonts/Kconfig b/lib/fonts/Kconfig
---- a/lib/fonts/Kconfig	2020-12-14 07:41:30.000000000 +0900
-+++ b/lib/fonts/Kconfig	2020-12-16 01:35:50.587047135 +0900
-@@ -125,8 +125,19 @@
+diff --git a/lib/fonts/Kconfig b/lib/fonts/Kconfig
+index c035fde66..e5cea555a 100644
+--- a/lib/fonts/Kconfig
++++ b/lib/fonts/Kconfig
+@@ -125,8 +125,19 @@ config FONT_6x8
  	help
  	  This font is useful for small displays (OLED).
  
@@ -720,7 +731,7 @@ diff -Nru a/lib/fonts/Kconfig b/lib/fonts/Kconfig
  	depends on !FONT_8x8
  	depends on !FONT_6x11
  	depends on !FONT_7x14
-@@ -139,6 +150,7 @@
+@@ -139,6 +150,7 @@ config FONT_AUTOSELECT
  	depends on !FONT_10x18
  	depends on !FONT_TER16x32
  	depends on !FONT_6x8
@@ -728,10 +739,11 @@ diff -Nru a/lib/fonts/Kconfig b/lib/fonts/Kconfig
  	select FONT_8x16
  
  endif # FONT_SUPPORT
-diff -Nru a/lib/fonts/Makefile b/lib/fonts/Makefile
---- a/lib/fonts/Makefile	2020-12-14 07:41:30.000000000 +0900
-+++ b/lib/fonts/Makefile	2020-12-16 01:36:14.131624087 +0900
-@@ -16,6 +16,7 @@
+diff --git a/lib/fonts/Makefile b/lib/fonts/Makefile
+index e16f68492..f7d8dcadb 100644
+--- a/lib/fonts/Makefile
++++ b/lib/fonts/Makefile
+@@ -16,6 +16,7 @@ font-objs-$(CONFIG_FONT_MINI_4x6)  += font_mini_4x6.o
  font-objs-$(CONFIG_FONT_6x10)      += font_6x10.o
  font-objs-$(CONFIG_FONT_TER16x32)  += font_ter16x32.o
  font-objs-$(CONFIG_FONT_6x8)       += font_6x8.o
@@ -739,18 +751,21 @@ diff -Nru a/lib/fonts/Makefile b/lib/fonts/Makefile
  
  font-objs += $(font-objs-y)
  
-diff -Nru a/lib/fonts/font_10x18.c b/lib/fonts/font_10x18.c
---- a/lib/fonts/font_10x18.c	2020-12-14 07:41:30.000000000 +0900
-+++ b/lib/fonts/font_10x18.c	2020-12-16 01:32:47.543558093 +0900
-@@ -5143,4 +5143,5 @@
+diff --git a/lib/fonts/font_10x18.c b/lib/fonts/font_10x18.c
+index e02f9df24..4e7ba920b 100644
+--- a/lib/fonts/font_10x18.c
++++ b/lib/fonts/font_10x18.c
+@@ -5143,4 +5143,5 @@ const struct font_desc font_10x18 = {
  #else
  	.pref	= -1,
  #endif
 +	.charcount = 255,
  };
-diff -Nru a/lib/fonts/font_16x16_cjk.c b/lib/fonts/font_16x16_cjk.c
---- a/lib/fonts/font_16x16_cjk.c	1970-01-01 09:00:00.000000000 +0900
-+++ b/lib/fonts/font_16x16_cjk.c	2020-12-16 01:32:47.543558093 +0900
+diff --git a/lib/fonts/font_16x16_cjk.c b/lib/fonts/font_16x16_cjk.c
+new file mode 100644
+index 000000000..e9a5fc011
+--- /dev/null
++++ b/lib/fonts/font_16x16_cjk.c
 @@ -0,0 +1,27 @@
 +/**************************************************************/
 +/*                                                            */
@@ -779,93 +794,103 @@ diff -Nru a/lib/fonts/font_16x16_cjk.c b/lib/fonts/font_16x16_cjk.c
 +	.pref	= 10, // make it big enough to be selected
 +	.charcount = 65535,
 +};
-diff -Nru a/lib/fonts/font_6x11.c b/lib/fonts/font_6x11.c
---- a/lib/fonts/font_6x11.c	2020-12-14 07:41:30.000000000 +0900
-+++ b/lib/fonts/font_6x11.c	2020-12-16 01:32:47.543558093 +0900
-@@ -3349,4 +3349,5 @@
+diff --git a/lib/fonts/font_6x11.c b/lib/fonts/font_6x11.c
+index 2d22a24e8..d5c4c7ef0 100644
+--- a/lib/fonts/font_6x11.c
++++ b/lib/fonts/font_6x11.c
+@@ -3349,4 +3349,5 @@ const struct font_desc font_vga_6x11 = {
  	.data	= fontdata_6x11.data,
  	/* Try avoiding this font if possible unless on MAC */
  	.pref	= -2000,
 +	.charcount = 255,
  };
-diff -Nru a/lib/fonts/font_7x14.c b/lib/fonts/font_7x14.c
---- a/lib/fonts/font_7x14.c	2020-12-14 07:41:30.000000000 +0900
-+++ b/lib/fonts/font_7x14.c	2020-12-16 01:32:47.543558093 +0900
-@@ -4115,4 +4115,5 @@
+diff --git a/lib/fonts/font_7x14.c b/lib/fonts/font_7x14.c
+index 9cc7ae2e0..28f2050ad 100644
+--- a/lib/fonts/font_7x14.c
++++ b/lib/fonts/font_7x14.c
+@@ -4115,4 +4115,5 @@ const struct font_desc font_7x14 = {
  	.height	= 14,
  	.data	= fontdata_7x14.data,
  	.pref	= 0,
 +	.charcount = 255,
  };
-diff -Nru a/lib/fonts/font_8x16.c b/lib/fonts/font_8x16.c
---- a/lib/fonts/font_8x16.c	2020-12-14 07:41:30.000000000 +0900
-+++ b/lib/fonts/font_8x16.c	2020-12-16 01:32:47.543558093 +0900
-@@ -4629,5 +4629,6 @@
+diff --git a/lib/fonts/font_8x16.c b/lib/fonts/font_8x16.c
+index bab25dc59..19e8790c9 100644
+--- a/lib/fonts/font_8x16.c
++++ b/lib/fonts/font_8x16.c
+@@ -4629,5 +4629,6 @@ const struct font_desc font_vga_8x16 = {
  	.height	= 16,
  	.data	= fontdata_8x16.data,
  	.pref	= 0,
 +	.charcount = 255,
  };
  EXPORT_SYMBOL(font_vga_8x16);
-diff -Nru a/lib/fonts/font_8x8.c b/lib/fonts/font_8x8.c
---- a/lib/fonts/font_8x8.c	2020-12-14 07:41:30.000000000 +0900
-+++ b/lib/fonts/font_8x8.c	2020-12-16 01:32:47.544558117 +0900
-@@ -2580,4 +2580,5 @@
+diff --git a/lib/fonts/font_8x8.c b/lib/fonts/font_8x8.c
+index 109d05723..5a7f5a3f8 100644
+--- a/lib/fonts/font_8x8.c
++++ b/lib/fonts/font_8x8.c
+@@ -2580,4 +2580,5 @@ const struct font_desc font_vga_8x8 = {
  	.height	= 8,
  	.data	= fontdata_8x8.data,
  	.pref	= 0,
 +	.charcount = 255,
  };
-diff -Nru a/lib/fonts/font_acorn_8x8.c b/lib/fonts/font_acorn_8x8.c
---- a/lib/fonts/font_acorn_8x8.c	2020-12-14 07:41:30.000000000 +0900
-+++ b/lib/fonts/font_acorn_8x8.c	2020-12-16 01:32:47.544558117 +0900
-@@ -276,4 +276,5 @@
+diff --git a/lib/fonts/font_acorn_8x8.c b/lib/fonts/font_acorn_8x8.c
+index fb395f0d4..d5d0072d6 100644
+--- a/lib/fonts/font_acorn_8x8.c
++++ b/lib/fonts/font_acorn_8x8.c
+@@ -276,4 +276,5 @@ const struct font_desc font_acorn_8x8 = {
  #else
  	.pref	= 0,
  #endif
 +	.charcount = 255,
  };
-diff -Nru a/lib/fonts/font_mini_4x6.c b/lib/fonts/font_mini_4x6.c
---- a/lib/fonts/font_mini_4x6.c	2020-12-14 07:41:30.000000000 +0900
-+++ b/lib/fonts/font_mini_4x6.c	2020-12-16 01:32:47.544558117 +0900
-@@ -2154,5 +2154,6 @@
+diff --git a/lib/fonts/font_mini_4x6.c b/lib/fonts/font_mini_4x6.c
+index 592774a90..ced249ba3 100644
+--- a/lib/fonts/font_mini_4x6.c
++++ b/lib/fonts/font_mini_4x6.c
+@@ -2154,5 +2154,6 @@ const struct font_desc font_mini_4x6 = {
  	.height	= 6,
  	.data	= fontdata_mini_4x6.data,
  	.pref	= 3,
 +	.charcount = 255,
  };
  
-diff -Nru a/lib/fonts/font_pearl_8x8.c b/lib/fonts/font_pearl_8x8.c
---- a/lib/fonts/font_pearl_8x8.c	2020-12-14 07:41:30.000000000 +0900
-+++ b/lib/fonts/font_pearl_8x8.c	2020-12-16 01:32:47.544558117 +0900
-@@ -2584,4 +2584,5 @@
+diff --git a/lib/fonts/font_pearl_8x8.c b/lib/fonts/font_pearl_8x8.c
+index a6f95ebce..a33bd9af9 100644
+--- a/lib/fonts/font_pearl_8x8.c
++++ b/lib/fonts/font_pearl_8x8.c
+@@ -2584,4 +2584,5 @@ const struct font_desc font_pearl_8x8 = {
  	.height	= 8,
  	.data	= fontdata_pearl8x8.data,
  	.pref	= 2,
 +	.charcount = 255,
  };
-diff -Nru a/lib/fonts/font_sun12x22.c b/lib/fonts/font_sun12x22.c
---- a/lib/fonts/font_sun12x22.c	2020-12-14 07:41:30.000000000 +0900
-+++ b/lib/fonts/font_sun12x22.c	2020-12-16 01:32:47.544558117 +0900
-@@ -6162,4 +6162,5 @@
+diff --git a/lib/fonts/font_sun12x22.c b/lib/fonts/font_sun12x22.c
+index a5b65bd49..fb16c5abe 100644
+--- a/lib/fonts/font_sun12x22.c
++++ b/lib/fonts/font_sun12x22.c
+@@ -6162,4 +6162,5 @@ const struct font_desc font_sun_12x22 = {
  #else
  	.pref	= -1,
  #endif
 +	.charcount = 255,
  };
-diff -Nru a/lib/fonts/font_sun8x16.c b/lib/fonts/font_sun8x16.c
---- a/lib/fonts/font_sun8x16.c	2020-12-14 07:41:30.000000000 +0900
-+++ b/lib/fonts/font_sun8x16.c	2020-12-16 01:32:47.544558117 +0900
-@@ -274,4 +274,5 @@
+diff --git a/lib/fonts/font_sun8x16.c b/lib/fonts/font_sun8x16.c
+index e577e76a6..e0ad93d86 100644
+--- a/lib/fonts/font_sun8x16.c
++++ b/lib/fonts/font_sun8x16.c
+@@ -274,4 +274,5 @@ const struct font_desc font_sun_8x16 = {
  #else
  	.pref	= -1,
  #endif
 +	.charcount = 255,
  };
-diff -Nru a/lib/fonts/fonts.c b/lib/fonts/fonts.c
---- a/lib/fonts/fonts.c	2020-12-14 07:41:30.000000000 +0900
-+++ b/lib/fonts/fonts.c	2020-12-16 01:32:47.544558117 +0900
-@@ -60,6 +60,9 @@
+diff --git a/lib/fonts/fonts.c b/lib/fonts/fonts.c
+index 5f4b07b56..54c78d8d4 100644
+--- a/lib/fonts/fonts.c
++++ b/lib/fonts/fonts.c
+@@ -60,6 +60,9 @@ static const struct font_desc *fonts[] = {
  #ifdef CONFIG_FONT_6x8
  	&font_6x8,
  #endif
