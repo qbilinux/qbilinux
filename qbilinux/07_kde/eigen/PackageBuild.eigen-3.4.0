@@ -1,14 +1,13 @@
 #!/bin/sh
 ##############################################################
 pkgbase="eigen"
-vers=3.3.7
-url="http://bitbucket.org/eigen/eigen/get/${vers}.tar.bz2"
-srcfile=eigen-${vers}.tar.bz2
+vers=3.4.0
+url="https://gitlab.com/libeigen/eigen/-/archive/${vers}/eigen-${vers}.tar.bz2"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=eigen-eigen-323c052e1731
+build=1
+src=eigen-${vers}
 OPT_CONFIG=''
 DOCS='COPYING.BSD COPYING.GPL COPYING.LGPL COPYING.MINPACK COPYING.MPL2 COPYING.README INSTALL README.md'
 patchfiles=''
