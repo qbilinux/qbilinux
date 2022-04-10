@@ -1,8 +1,8 @@
 #!/bin/sh
 ##############################################################
 pkgbase=xfce4_settings
-vers=4.16.0
-url="http://archive.xfce.org/xfce/${vers:0:4}/src/xfce4-settings-${vers}.tar.bz2"
+vers=4.16.2
+url="https://archive.xfce.org/src/xfce/xfce4-settings/${vers%.*}/xfce4-settings-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
