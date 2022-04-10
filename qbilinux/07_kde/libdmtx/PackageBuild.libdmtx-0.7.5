@@ -1,12 +1,13 @@
 #!/bin/sh
 ##############################################################
 pkgbase=libdmtx
-vers=0.7.4
-url="https://sourceforge.net/projects/libdmtx/files/libdmtx/${vers}/libdmtx-${vers}.tar.gz"
+vers=0.7.5
+url="https://github.com/dmtx/libdmtx/archive/refs/tags/v${vers}.tar.gz"
+srcfile=$pkgbase-$vers.tar.gz
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=3
+build=1
 src=libdmtx-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS ChangeLog LICENSE NEWS README README.cygwin README.freebsd README.linux README.mingw README.osx README.unix TODO dmtxtime.c'
@@ -24,6 +25,7 @@ do_prepare() {
 	patch -p1 < $W/$patch
     done
     cp -f /usr/src/qbilinux/config.{guess,sub} .
+    sh ./autogen.sh
 }
 
 do_config() {
