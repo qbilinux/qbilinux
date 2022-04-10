@@ -1,13 +1,13 @@
 #!/bin/sh
 
 ######################################################################
-url="http://www.lua.org/ftp/lua-5.1.5.tar.gz"
 pkgbase=lua
-vers=5.1.5
+vers=5.4.4
+url="http://www.lua.org/ftp/lua-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=$pkgbase-$vers
+build=1
+src=$pkgbase-${vers}
 OPT_CONFIG="--disable-static"
 DOCS="COPYRIGHT INSTALL README HISTORY"
 compress=txz
