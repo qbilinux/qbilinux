@@ -1,8 +1,8 @@
 #!/bin/sh
 ##############################################################
 pkgbase="kdsoap"
-vers=1.9.0
-url='https://github.com/KDAB/KDSoap/releases/download/kdsoap-1.9.0/kdsoap-1.9.0.tar.gz'
+vers=2.0.0
+url="https://github.com/KDAB/KDSoap/releases/download/kdsoap-${vers}/kdsoap-${vers}.tar.gz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
