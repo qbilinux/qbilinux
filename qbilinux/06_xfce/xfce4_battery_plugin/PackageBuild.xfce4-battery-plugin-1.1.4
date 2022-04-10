@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='http://archive.xfce.org/src/panel-plugins/xfce4-battery-plugin/1.0/xfce4-battery-plugin-1.0.5.tar.bz2'
 pkgbase=xfce4_battery_plugin
-vers=1.0.5
+vers=1.1.4
+url="http://archive.xfce.org/src/panel-plugins/xfce4-battery-plugin/${vers%.*}/xfce4-battery-plugin-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=5
-src=xfce4-battery-plugin-1.0.5
+build=1
+src=xfce4-battery-plugin-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING COPYING.LIB ChangeLog INSTALL NEWS README'
 patchfiles=''
