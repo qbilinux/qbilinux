@@ -1,15 +1,15 @@
 #!/bin/sh
 ##############################################################
-url='http://prdownloads.sourceforge.net/xine/xine-ui-0.99.9.tar.xz'
 pkgbase=xine_ui
-vers=0.99.9
+vers=0.99.13
+url="http://prdownloads.sourceforge.net/xine/xine-ui-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=3
-src=xine-ui-0.99.9
-OPT_CONFIG='--disable-lirc'
+build=1
+src=xine-ui-${vers}
+OPT_CONFIG=''
 DOCS='ABOUT-NLS AUTHORS COPYING ChangeLog INSTALL NEWS README'
-patchfiles='xine-ui-0.99.6-xitk-common.h.patch xine-ui-0.99.6-xitk-toolkit-font.h.patch xine-ui-0.99.6-xitk-toolkit-test.c.patch xine-ui-0.99.6-curl-deprecated-headers.patch xine-ui-0.99.9-libpng16.patch'
+patchfiles=''
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
