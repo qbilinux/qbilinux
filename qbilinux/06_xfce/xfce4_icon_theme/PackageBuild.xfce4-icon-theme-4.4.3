@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='http://archive.xfce.org/xfce/4.4.3/src/xfce4-icon-theme-4.4.3.tar.bz2'
 pkgbase=xfce4_icon_theme
 vers=4.4.3
+url="https://archive.xfce.org/src/art/xfce4-icon-theme/${vers%.*}/xfce4-icon-theme-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=2
-src=xfce4-icon-theme-4.4.3
+src=xfce4-icon-theme-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README TODO'
 patchfiles=''
