@@ -2,7 +2,7 @@
 ##############################################################
 pkgbase=xfdesktop
 vers=4.16.0
-url="http://archive.xfce.org/xfce/${vers:0:4}/src/xfdesktop-${vers}.tar.bz2"
+url="https://archive.xfce.org/src/xfce/xfdesktop/${vers%.*}/xfdesktop-${vers}.tar.bz2"
 verify=$url.sha1
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
