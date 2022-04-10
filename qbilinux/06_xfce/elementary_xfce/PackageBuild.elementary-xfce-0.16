@@ -1,13 +1,14 @@
 #!/bin/sh -x
 ##############################################################
 pkgbase=elementary_xfce
-vers=0.13.1
+vers=0.16
 url="https://github.com/shimmerproject/elementary-xfce/archive/v${vers}.tar.gz"
+srcfile=${pkgbase/_/-}-${vers}.tar.gz
 verify=
 commitid=
 apply_arch="noarch"
 arch=noarch
-build=2
+build=1
 src=elementary-xfce-${vers}
 OPT_CONFIG=''
 DOCS='README.md'
