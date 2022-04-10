@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='http://archive.xfce.org/src/panel-plugins/xfce4-systemload-plugin/1.1/xfce4-systemload-plugin-1.1.2.tar.bz2'
 pkgbase=xfce4_systemload_plugin
-vers=1.1.2
+vers=1.3.1
+url="http://archive.xfce.org/src/panel-plugins/xfce4-systemload-plugin/${vers%.*}/xfce4-systemload-plugin-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=4
-src=xfce4-systemload-plugin-1.1.2
+build=1
+src=xfce4-systemload-plugin-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README'
 patchfiles=''
