@@ -2,12 +2,12 @@
 PATH=$PATH:`pwd`
 ##############################################################
 pkgbase=unifont
-vers=12.1.03
+vers=14.0.02
 url="https://ftp.gnu.org/gnu/unifont/unifont-${vers}/unifont-${vers}.tar.gz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=unifont-${vers}
 OPT_CONFIG=''
 DOCS='COPYING ChangeLog INSTALL NEWS README'
