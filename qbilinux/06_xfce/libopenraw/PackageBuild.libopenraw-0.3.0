@@ -1,15 +1,15 @@
 #!/bin/sh
 ##############################################################
 pkgbase=libopenraw
-vers=0.1.3
-url="http://libopenraw.freedesktop.org/download/libopenraw-${vers}.tar.bz2"
+vers=0.3.0
+url="https://libopenraw.freedesktop.org/download/libopenraw-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=4
+build=1
 src=libopenraw-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING COPYING.LESSER ChangeLog INSTALL NEWS README TODO'
-patchfiles=''
+patchfiles='patch-aa'
 compress=txz
 SRC_URL="https://qbilinux.org/pub/source/"
 SRC_DIR="/home/archives/source/"
