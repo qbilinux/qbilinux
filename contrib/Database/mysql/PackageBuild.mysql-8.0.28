@@ -1,15 +1,16 @@
 #!/bin/sh
 ##############################################################
 pkgbase=mysql
-vers=8.0.18
-url="http://ftp.jaist.ac.jp/pub/mysql/Downloads/MySQL-${vers%.*}/mysql-${vers}.tar.gz"
+vers=8.0.28
+url="http://ftp.jaist.ac.jp/pub/mysql/Downloads/MySQL-${vers%.*}/mysql-${vers}.tar.gz
+	https://boostorg.jfrog.io/artifactory/main/release/1.73.0/source/boost_1_73_0.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
 src=mysql-${vers}
 W=`pwd`
-OPT_CONFIG="-DWITH_EMBEDDED_SERVER:BOOL=ON -DUSING_SYSTEM_BOOST=1"
-#OPT_CONFIG="-DWITH_EMBEDDED_SERVER:BOOL=ON -DDOWNLOAD_BOOST=1 -DWITH_BOOST=$W/source/boost"
+#OPT_CONFIG="-DWITH_EMBEDDED_SERVER:BOOL=ON -DUSING_SYSTEM_BOOST=1"
+OPT_CONFIG="-DWITH_EMBEDDED_SERVER:BOOL=ON -DDOWNLOAD_BOOST=1 -DWITH_BOOST=$W/source"
 DOCS='COPYING INSTALL README VERSION'
 patchfiles=''
 compress=txz
