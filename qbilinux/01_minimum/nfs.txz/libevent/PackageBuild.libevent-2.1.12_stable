@@ -6,7 +6,7 @@ url="https://github.com/libevent/libevent/releases/download/release-${vers}-stab
 apply_arch="x86_64 i686 armv7l aarch64"
 commitid=
 arch=`uname -m`
-build=1
+build=3
 src=libevent-${vers}-stable
 # for libressl
 # OPT_CONFIG='--disable-libevent-regress --disable-samples'
@@ -25,6 +25,7 @@ do_prepare() {
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
+    sed -i 's/python/&3/' event_rpcgen.py
 }
 
 do_config() {
@@ -68,6 +69,7 @@ do_install() {
     fi
 
     # add extra func
+    (cd $P/usr/${libdir}; ln -fs libevent-2.1.so.7 libevent-2.1.so.6)
 }
 
 do_package() {
