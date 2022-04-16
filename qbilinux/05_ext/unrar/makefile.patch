@@ -1,8 +1,26 @@
-*** unrar/makefile.orig	2022-03-19 18:13:32.924467976 +0900
---- unrar/makefile	2022-03-19 18:16:27.301477188 +0900
+diff -Nrc unrar.orig/makefile unrar/makefile
+*** unrar.orig/makefile	2014-01-31 23:50:15.000000000 +0900
+--- unrar/makefile	2016-02-05 04:34:34.614452279 +0900
 ***************
-*** 161,174 ****
-  	$(AR) rcs libunrar.a $(OBJECTS) $(LIB_OBJ)
+*** 3,9 ****
+  
+  # Linux using GCC
+  CXX=g++
+! CXXFLAGS=-O2
+  LIBFLAGS=-fPIC
+  DEFINES=-D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -DRAR_SMP
+  STRIP=strip
+--- 3,9 ----
+  
+  # Linux using GCC
+  CXX=g++
+! CXXFLAGS=$(target) -O2 -fPIC
+  LIBFLAGS=-fPIC
+  DEFINES=-D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -DRAR_SMP
+  STRIP=strip
+***************
+*** 136,148 ****
+  	$(LINK) -shared -o libunrar.so $(LDFLAGS) $(OBJECTS) $(LIB_OBJ)
   
   install-unrar:
 ! 			install -D unrar $(DESTDIR)/bin/unrar
@@ -12,12 +30,11 @@
   
   install-lib:
 ! 		install libunrar.so $(DESTDIR)/lib
-! 		install libunrar.a $(DESTDIR)/lib
   
   uninstall-lib:
-! 		rm -f $(DESTDIR)/lib/libunrar.so
---- 161,174 ----
-  	$(AR) rcs libunrar.a $(OBJECTS) $(LIB_OBJ)
+  		rm -f $(DESTDIR)/lib/libunrar.so
+--- 136,149 ----
+  	$(LINK) -shared -o libunrar.so $(LDFLAGS) $(OBJECTS) $(LIB_OBJ)
   
   install-unrar:
 ! 			install -D unrar $(DESTDIR)/usr/bin/unrar
@@ -26,8 +43,8 @@
 ! 			rm -f $(DESTDIR)/usr/bin/unrar
   
   install-lib:
+! 		mkdir -p $(DESTDIR)/usr/$(libdir)
 ! 		install libunrar.so $(DESTDIR)/usr/$(libdir)
-! 		install libunrar.a $(DESTDIR)/usr/$(libdir)
   
   uninstall-lib:
-! 		rm -f $(DESTDIR)/usr/$(libdir)/libunrar.so
+  		rm -f $(DESTDIR)/lib/libunrar.so
