@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase=py3_setuptools
-vers=58.5.3
+vers=62.1.0
 url="https://github.com/pypa/setuptools/archive/v${vers}.tar.gz"
 srcfile=setuptools-$vers.tar.gz
 commitid=
