@@ -1,0 +1,79 @@
+*** build/Makefile.orig	2021-11-05 01:25:27.000000000 +0900
+--- build/Makefile	2022-04-17 04:17:37.327159990 +0900
+***************
+*** 13,22 ****
+  INSTALL_TOP= /usr/local
+  INSTALL_BIN= $(INSTALL_TOP)/bin
+  INSTALL_INC= $(INSTALL_TOP)/include
+! INSTALL_LIB= $(INSTALL_TOP)/lib
+  INSTALL_MAN= $(INSTALL_TOP)/man/man1
+  INSTALL_LMOD= $(INSTALL_TOP)/share/lua/$V
+! INSTALL_CMOD= $(INSTALL_TOP)/lib/lua/$V
+  
+  # How to install. If your install program does not support "-p", then
+  # you may have to run ranlib on the installed liblua.a.
+--- 13,22 ----
+  INSTALL_TOP= /usr/local
+  INSTALL_BIN= $(INSTALL_TOP)/bin
+  INSTALL_INC= $(INSTALL_TOP)/include
+! INSTALL_LIB= $(INSTALL_TOP)/lib64
+  INSTALL_MAN= $(INSTALL_TOP)/man/man1
+  INSTALL_LMOD= $(INSTALL_TOP)/share/lua/$V
+! INSTALL_CMOD= $(INSTALL_TOP)/lib64/lua/$V
+  
+  # How to install. If your install program does not support "-p", then
+  # you may have to run ranlib on the installed liblua.a.
+***************
+*** 41,47 ****
+  # What to install.
+  TO_BIN= lua luac
+  TO_INC= lua.h luaconf.h lualib.h lauxlib.h lua.hpp
+! TO_LIB= liblua.a
+  TO_MAN= lua.1 luac.1
+  
+  # Lua version and release.
+--- 41,47 ----
+  # What to install.
+  TO_BIN= lua luac
+  TO_INC= lua.h luaconf.h lualib.h lauxlib.h lua.hpp
+! TO_LIB= liblua.a lublua.so.5.4.4
+  TO_MAN= lua.1 luac.1
+  
+  # Lua version and release.
+***************
+*** 55,71 ****
+  	@cd src && $(MAKE) $@
+  
+  install: dummy
+! 	cd src && $(MKDIR) $(INSTALL_BIN) $(INSTALL_INC) $(INSTALL_LIB) $(INSTALL_MAN) $(INSTALL_LMOD) $(INSTALL_CMOD)
+! 	cd src && $(INSTALL_EXEC) $(TO_BIN) $(INSTALL_BIN)
+! 	cd src && $(INSTALL_DATA) $(TO_INC) $(INSTALL_INC)
+! 	cd src && $(INSTALL_DATA) $(TO_LIB) $(INSTALL_LIB)
+! 	cd doc && $(INSTALL_DATA) $(TO_MAN) $(INSTALL_MAN)
+  
+  uninstall:
+! 	cd src && cd $(INSTALL_BIN) && $(RM) $(TO_BIN)
+! 	cd src && cd $(INSTALL_INC) && $(RM) $(TO_INC)
+! 	cd src && cd $(INSTALL_LIB) && $(RM) $(TO_LIB)
+! 	cd doc && cd $(INSTALL_MAN) && $(RM) $(TO_MAN)
+  
+  local:
+  	$(MAKE) install INSTALL_TOP=../install
+--- 55,71 ----
+  	@cd src && $(MAKE) $@
+  
+  install: dummy
+! 	cd src && $(MKDIR) $(DESTDIR)$(INSTALL_BIN) $(DESTDIR)$(INSTALL_INC) $(DESTDIR)$(INSTALL_LIB) $(DESTDIR)$(INSTALL_MAN) $(DESTDIR)$(INSTALL_LMOD) $(DESTDIR)$(INSTALL_CMOD)
+! 	cd src && $(INSTALL_EXEC) $(TO_BIN) $(DESTDIR)$(INSTALL_BIN)
+! 	cd src && $(INSTALL_DATA) $(TO_INC) $(DESTDIR)$(INSTALL_INC)
+! 	cd src && $(INSTALL_DATA) $(TO_LIB) $(DESTDIR)$(INSTALL_LIB)
+! 	cd doc && $(INSTALL_DATA) $(TO_MAN) $(DESTDIR)$(INSTALL_MAN)
+  
+  uninstall:
+! 	cd src && cd $(DESTDIR)$(INSTALL_BIN) && $(RM) $(TO_BIN)
+! 	cd src && cd $(DESTDIR)$(INSTALL_INC) && $(RM) $(TO_INC)
+! 	cd src && cd $(DESTDIR)$(INSTALL_LIB) && $(RM) $(TO_LIB)
+! 	cd doc && cd $(DESTDIR)$(INSTALL_MAN) && $(RM) $(TO_MAN)
+  
+  local:
+  	$(MAKE) install INSTALL_TOP=../install
