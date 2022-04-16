@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://libgsm.sourcearchive.com/downloads/1.0.13-4/libgsm_1.0.13.orig.tar.gz'
 pkgbase=gsm
-vers=1.0_pl13
+vers=1.0.13
+url='http://libgsm.sourcearchive.com/downloads/1.0.13-4/libgsm_1.0.13.orig.tar.gz'
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=3
 src=gsm-1.0-pl13
 OPT_CONFIG=''
 DOCS='ChangeLog INSTALL README'
