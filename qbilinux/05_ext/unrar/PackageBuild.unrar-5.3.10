@@ -1,13 +1,13 @@
 #!/bin/sh
 ##############################################################
 pkgbase=unrar
-vers=6.1.6
-url="https://www.rarlab.com/rar/unrarsrc-${vers}.tar.gz"
+vers=5.3.10
+url='http://www.rarlab.com/rar/unrarsrc-5.3.10.tar.gz'
 verify=
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=3
 src=unrar
 OPT_CONFIG=''
 DOCS='acknow.txt license.txt readme.txt'
