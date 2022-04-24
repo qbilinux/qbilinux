@@ -9,13 +9,15 @@ arch=`uname -m`
 build=1
 src[0]=$pkgbase-$vers
 src[1]=${src[0]}
-src[2]=${src[0]}
 patchfiles[0]=""
 patchfiles[1]=""
-patchfiles[2]=""
 OPT_CONFIG[0]="--disable-grub-mount --disable-werror"
-OPT_CONFIG[1]="${OPT_CONFIG[0]} --with-platform=efi --target=x86_64"
-OPT_CONFIG[2]="${OPT_CONFIG[0]} --with-platform=efi --target=i386"
+OPT_CONFIG[1]="${OPT_CONFIG[0]} --with-platform=efi --target=i386"
+if [ $arch = "x86_64" ]; then
+    src[2]=${src[0]}
+    patchfiles[2]=""
+    OPT_CONFIG[2]="${OPT_CONFIG[0]} --with-platform=efi --target=x86_64"
+fi
 DOCS[0]="ABOUT-NLS AUTHORS BUGS COPYING ChangeLog ChangeLog-2015 INSTALL NEWS README THANKS TODO"
 DOCS[1]=""
 DOCS[2]=""
