@@ -15,8 +15,8 @@ DOCS="CREDITS INSTALL LICENCE OVERVIEW PROTOCOL PROTOCOL.agent
     `echo PROTOCOL.{certkeys,chacha20poly1305,key,krl,mux}`
     README `echo README.{dns,platform,privsep,tun}` TODO ChangeLog"
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def

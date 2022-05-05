@@ -11,8 +11,8 @@ OPT_CONFIG="-DWITH_EMBEDDED_SERVER:BOOL=ON -DPLUGIN_TOKUDB:STRING=NO -DPLUGIN_AU
 DOCS='COPYING COPYING.LESSER COPYING.thirdparty CREDITS EXCEPTIONS-CLIENT INSTALL-SOURCE INSTALL-WIN-SOURCE KNOWN_BUGS.txt README'
 patchfiles='0001-libatomic.patch'
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################
 
 source /usr/src/qbilinux/PackageBuild.def

@@ -12,8 +12,8 @@ OPT_CONFIG=""
 DOCS="README INSTALL COPYING ChangeLog NEWS ChangeLog-2011 AUTHORS"
 patchfiles="CVE-2019-13636.patch"
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def

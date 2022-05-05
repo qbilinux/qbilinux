@@ -33,8 +33,8 @@ OPT_CONFIG="--build=${build_arch} --host=${build_arch} --libexecdir=/usr/${libdi
 DOCS='ABOUT-NLS COPYING COPYING.LIB COPYING.RUNTIME COPYING3 COPYING3.LIB ChangeLog ChangeLog.tree-ssa INSTALL MAINTAINERS NEWS README'
 patchfiles=''
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################'
 
 source /usr/src/qbilinux/PackageBuild.def

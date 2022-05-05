@@ -14,8 +14,8 @@ DOCS='ChangeLog ChangeLog.20 ChangeLog.21 ChangeLog.22 ChangeLog.23 README READM
 patchfiles='freetype-2.10.2-enable-spr.patch freetype-2.10.2-enable-valid.patch'
 no_apply_patchfiles=''
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################
 
 source /usr/src/qbilinux/PackageBuild.def

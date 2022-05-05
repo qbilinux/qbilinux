@@ -12,8 +12,8 @@ DOCS='ABOUT-NLS AUTHORS COPYING ChangeLog INSTALL NEWS README TODO'
 #patchfiles='libquicktime-backport.patch libav10.patch fmpeg_2.9.patch libquicktime-1.2.4-ffmpeg4-1.patch'
 patchfiles='libquicktime-1.2.4-ffmpeg4-1.patch'
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################
 
 source /usr/src/qbilinux/PackageBuild.def

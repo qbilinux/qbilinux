@@ -11,8 +11,8 @@ OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README TODO'
 patchfiles='docbook-utils-0.6.14-grep_fix-1.patch'
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################
 
 source /usr/src/qbilinux/PackageBuild.def

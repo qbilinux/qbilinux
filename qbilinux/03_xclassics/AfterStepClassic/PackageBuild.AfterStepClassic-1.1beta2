@@ -25,8 +25,8 @@ DOCS[2]="LICENSE README INSTALL CHANGES"
 DOCS[3]="README LICENSE INSTALL CHANGES"
 patchfiles="AfterStepClassic-1.1beta2-linux.patch AfterStepClassic-1.1beta2-fontset.patch AfterStepClassic-1.1beta2-hide.patch AfterStepClassic-1.1beta2-iconanim.patch AfterStepClassic-1.1beta2-min_height.patch AfterStepClassic-1.1beta2-asclock.patch"
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def

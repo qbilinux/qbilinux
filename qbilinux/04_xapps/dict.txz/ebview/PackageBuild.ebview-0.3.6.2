@@ -12,8 +12,8 @@ OPT_CONFIG=''
 DOCS='ABOUT-NLS AUTHORS COPYING ChangeLog INSTALL INSTALL.win32 NEWS README'
 patchfiles='fix-string-format-error.patch dont-use-pangox.patch link-ebview.diff isjisp-undefined.patch'
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################
 
 source /usr/src/qbilinux/PackageBuild.def

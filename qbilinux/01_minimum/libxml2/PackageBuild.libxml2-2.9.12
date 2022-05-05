@@ -12,8 +12,8 @@ OPT_CONFIG="--with-history --disable-static --with-python=/usr/bin/python3 --wit
 DOCS="AUTHORS COPYING ChangeLog Copyright INSTALL NEWS README README.tests TODO TODO_SCHEMAS"
 patchfiles=""
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def

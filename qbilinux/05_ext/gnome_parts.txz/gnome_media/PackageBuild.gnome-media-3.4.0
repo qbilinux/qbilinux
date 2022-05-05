@@ -11,8 +11,8 @@ OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING COPYING-DOCS COPYING.grecord COPYING.gst-mixer COPYING.profiles ChangeLog.pre-2-26 INSTALL MAINTAINERS NEWS README'
 patchfiles=''
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################
 
 source /usr/src/qbilinux/PackageBuild.def

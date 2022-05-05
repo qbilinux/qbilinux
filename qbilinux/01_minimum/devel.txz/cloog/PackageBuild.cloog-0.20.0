@@ -12,8 +12,8 @@ patchfiles=""
 compress=txz
 OPT_CONFIG="--with-isl=system"
 DOCS="README ChangeLog"
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 export TEXI2DVI=echo
 ######################################################################
 

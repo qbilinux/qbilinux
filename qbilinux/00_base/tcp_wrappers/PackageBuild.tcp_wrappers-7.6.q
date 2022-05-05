@@ -12,8 +12,8 @@ src=tcp_wrappers_7.6
 OPT_CONFIG=""
 DOCS="README BLURB DISCLAIMER CHANGES README.IRIX README.NIS"
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def
