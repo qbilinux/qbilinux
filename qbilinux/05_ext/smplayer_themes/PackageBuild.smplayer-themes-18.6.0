@@ -11,8 +11,8 @@ OPT_CONFIG=''
 DOCS='COPYING_CC-BY-2.5.txt COPYING_CC-BY-SA-2.5.txt COPYING_CC-BY-SA-3.0.txt COPYING_GPL.txt COPYING_LGPL.txt Changelog README.txt'
 patchfiles=''
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################
 
 source /usr/src/qbilinux/PackageBuild.def

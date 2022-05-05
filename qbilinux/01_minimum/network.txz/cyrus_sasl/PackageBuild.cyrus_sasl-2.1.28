@@ -13,8 +13,8 @@ OPT_CONFIG="--with-dbpath=/var/lib/sasl/sasldb2
     --with-saslauthd=/var/run/saslauthd"
 DOCS="AUTHORS COPYING ChangeLog INSTALL INSTALL.TXT NEWS README"
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def

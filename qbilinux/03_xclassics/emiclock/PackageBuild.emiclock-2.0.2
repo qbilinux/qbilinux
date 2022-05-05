@@ -12,8 +12,8 @@ OPT_CONFIG=""
 DOCS="00.README COPYRIGHT* ChangeLog INSTALL.ja MANIFEST README.ja
     `echo doc/{README-OS,TECH-NOTE}.ja doc/Original/README.{mac,win}.ja`"
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def

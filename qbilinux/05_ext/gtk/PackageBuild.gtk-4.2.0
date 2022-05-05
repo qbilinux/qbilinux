@@ -12,8 +12,8 @@ OPT_CONFIG=''
 DOCS='AUTHORS COPYING NEWS NEWS.pre-1.0 NEWS.pre-2.0 NEWS.pre-3.0 NEWS.pre-4.0 README.md make-release.sh meson_options.txt'
 patchfiles=''
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################
 
 

@@ -14,8 +14,8 @@ DOCS="CONTRIBUTORS COPYING.LIB COPYRIGHT COPYRIGHT-j ChangeLog ChangeLog.en
     `echo olddoc/{00README,README{,.sun},Wnn-{FAQ,READ.ME{,.j}}}`"
 patchfiles='egrep-a.patch'
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def

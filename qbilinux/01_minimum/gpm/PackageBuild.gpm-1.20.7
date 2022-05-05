@@ -15,8 +15,8 @@ DOCS="COPYING MANIFEST README* TODO
     doc/specs/synaptics/www.synaptics.com/decaf/utilities/*
     doc/support/* doc/todo/*"
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def

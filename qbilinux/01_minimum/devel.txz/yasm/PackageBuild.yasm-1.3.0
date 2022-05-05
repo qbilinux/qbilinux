@@ -13,8 +13,8 @@ OPT_CONFIG=""
 DOCS="INSTALL NEWS GNU_LGPL-2.0 ChangeLog AUTHORS README COPYING
     GNU_GPL-2.0 BSD.txt Artistic.txt ABOUT-NLS"
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def

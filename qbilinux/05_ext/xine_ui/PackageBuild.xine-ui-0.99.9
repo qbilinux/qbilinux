@@ -11,8 +11,8 @@ OPT_CONFIG='--disable-lirc'
 DOCS='ABOUT-NLS AUTHORS COPYING ChangeLog INSTALL NEWS README'
 patchfiles='xine-ui-0.99.6-xitk-common.h.patch xine-ui-0.99.6-xitk-toolkit-font.h.patch xine-ui-0.99.6-xitk-toolkit-test.c.patch xine-ui-0.99.6-curl-deprecated-headers.patch xine-ui-0.99.9-libpng16.patch'
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################
 
 source /usr/src/qbilinux/PackageBuild.def

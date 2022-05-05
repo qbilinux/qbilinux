@@ -13,8 +13,8 @@ OPT_CONFIG='--with-udev=/lib/udev'
 DOCS='AUTHORS COPYING ChangeLog INSTALL README README.windows.txt TODO'
 patchfiles='libmtp-group-permission.patch xperia-zl2.patch'
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################
 
 source /usr/src/qbilinux/PackageBuild.def

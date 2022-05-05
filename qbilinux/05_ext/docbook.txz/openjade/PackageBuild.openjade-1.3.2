@@ -12,8 +12,8 @@ DOCS='COPYING ChangeLog NEWS README releasenotes.html releasenotes.pdf releaseno
 patchfiles='openjade-1.3.2-upstream-1.patch msggen.pl.patch'
 #patchfiles='msggen.pl.patch openjade-1.3.2-upstream-1.patch'
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################
 
 source /usr/src/qbilinux/PackageBuild.def

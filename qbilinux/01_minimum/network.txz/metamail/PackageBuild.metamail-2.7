@@ -12,8 +12,8 @@ patchfiles="metamail_2.7-54.diff.gz metamail-2.7-uue.c_getline.patch.gz"
 OPT_CONFIG=""
 DOCS="CREDITS README mailers.txt"
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def

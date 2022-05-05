@@ -11,8 +11,8 @@ src=aspell6-en-${vers/_/-}
 OPT_CONFIG=""
 DOCS="`echo doc/{extra.txt,ChangeLog,SCOWL-README}` README README.iso"
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def

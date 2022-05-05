@@ -13,8 +13,8 @@ DOCS="FAQ COPYING setup.html CHANGELOG COPYING-v3 CHANGELOG.archive
     doc.html"
 patchfiles="siocgstamp.patch"
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def

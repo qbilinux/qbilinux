@@ -11,8 +11,8 @@ OPT_CONFIG='--disable-static --enable-xrandr --enable-xcursor --enable-libnotify
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README TODO'
 patchfiles='xfce4-settings-xml-4.12.0.patch'
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################
 
 source /usr/src/qbilinux/PackageBuild.def

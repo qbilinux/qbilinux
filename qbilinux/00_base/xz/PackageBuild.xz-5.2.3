@@ -13,8 +13,8 @@ DOCS="PACKAGERS INSTALL.generic COPYING.LGPLv2.1 COPYING.GPLv3 INSTALL
     ChangeLog ABOUT-NLS TODO THANKS README NEWS COPYING.GPLv2 COPYING
     AUTHORS"
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def

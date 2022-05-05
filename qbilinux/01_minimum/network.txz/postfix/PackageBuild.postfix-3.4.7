@@ -13,8 +13,8 @@ DOCS="AAAREADME COMPATIBILITY COPYRIGHT HISTORY INSTALL IPv6-ChangeLog
     LICENSE PORTING RELEASE_NOTES* TLS_* US_PATENT_6321267"
 patchfiles="postfix-3.4.7-glibc230_fix-1.patch"
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def

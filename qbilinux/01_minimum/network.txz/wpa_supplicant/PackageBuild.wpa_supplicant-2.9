@@ -14,8 +14,8 @@ DOCS="`echo wpa_supplicant/{README-HS20,eap_testing.txt,README-Windows.txt}`
     `echo wpa_supplicant/{ChangeLog,README-WPS,todo.txt,README-P2P,README}`
     CONTRIBUTIONS COPYING README"
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def

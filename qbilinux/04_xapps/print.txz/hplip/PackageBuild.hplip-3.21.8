@@ -11,8 +11,8 @@ OPT_CONFIG='--disable-static --disable-imageProcessor-build'
 DOCS='COPYING hplip-install installer'
 patchfiles='patch-aa 0028-Remove-ImageProcessor-binary-installs.patch'
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################
 
 source /usr/src/qbilinux/PackageBuild.def

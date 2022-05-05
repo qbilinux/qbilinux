@@ -14,8 +14,8 @@ OPT_CONFIG='--disable-static'
 DOCS='ChangeLog ChangeLog-1.4 ChangeLog-2.0 LICENSE whatsnew-2.0.txt whatsnew-2.1.txt'
 patchfiles=''
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################
 
 source /usr/src/qbilinux/PackageBuild.def

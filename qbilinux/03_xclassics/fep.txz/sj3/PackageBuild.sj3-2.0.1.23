@@ -12,8 +12,8 @@ OPT_CONFIG="--sysconfdir=/usr/share --localstatedir=/var/lib/sj3
     --docdir=/usr/share/sj3/doc --with-user=bin --with-group=bin"
 DOCS="README CHANGES.eucJP README.eucJP"
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def

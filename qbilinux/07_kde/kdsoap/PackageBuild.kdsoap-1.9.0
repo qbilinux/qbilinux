@@ -12,8 +12,8 @@ OPT_CONFIG=''
 DOCS='CPackIgnores.txt INSTALL-cmake.txt INSTALL.txt LICENSE.AGPL3-modified.txt LICENSE.GPL.txt LICENSE.LGPL.txt LICENSE.txt README.txt ReadMe.md add_license_blurb.sh debian.changelog'
 patchfiles=''
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################
 
 

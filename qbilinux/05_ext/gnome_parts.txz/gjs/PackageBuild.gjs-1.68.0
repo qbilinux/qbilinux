@@ -12,8 +12,8 @@ OPT_CONFIG=''
 DOCS='AUTHORS COPYING COPYING.LGPL ChangeLog INSTALL NEWS README installed-tests'
 patchfiles=''
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################
 
 source /usr/src/qbilinux/PackageBuild.def

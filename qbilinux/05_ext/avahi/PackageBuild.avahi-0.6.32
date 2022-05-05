@@ -11,8 +11,8 @@ OPT_CONFIG='--disable-static --disable-qt3 --disable-qt4 --disable-mono --with-d
 DOCS='ABOUT-NLS ChangeLog LICENSE README'
 patchfiles=''
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################
 
 source /usr/src/qbilinux/PackageBuild.def

@@ -11,8 +11,8 @@ OPT_CONFIG='--enable-esd=no'
 DOCS='AUTHORS COPYING.LIB ChangeLog ChangeLog.pre-git MAINTAINERS NEWS README'
 patchfiles='libgnome-2.32.1_g_thread_init.patch patch-libgnome-Makefile.am.diff patch-libgnome-Makefile.in.diff 05_glib-2.54-ftbfs.patch'
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################
 
 source /usr/src/qbilinux/PackageBuild.def

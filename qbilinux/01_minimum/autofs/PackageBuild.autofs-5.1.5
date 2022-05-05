@@ -12,8 +12,8 @@ OPT_CONFIG="--with-confdir=/etc --without-openldap"
 DOCS="CHANGELOG COPYING COPYRIGHT CREDITS INSTALL README*"
 patchfiles='autofs_init_sleep.patch'
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def

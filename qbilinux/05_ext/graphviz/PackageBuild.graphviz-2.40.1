@@ -12,8 +12,8 @@ OPT_CONFIG="--disable-php"
 DOCS="NEWS cpl1.0.txt INSTALL ChangeLog README AUTHORS COPYING"
 patchfiles='graphviz-2.40.1-qt5-1.patch patch-aa'
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def

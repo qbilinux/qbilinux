@@ -13,8 +13,8 @@ OPT_CONFIG=""
 DOCS="AUTHORS CONTRIBUTING.md CONTRIBUTORS LICENSE README.md appveyor.yml"
 patchfiles="uim-mozc.patch uim-mozc-namespace.patch mozc-gcc8.patch mozc-dict.patch"
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def

@@ -13,8 +13,8 @@ DOCS="NEWS INSTALL ABOUT-NLS COPYING COPYING.LIB AUTHORS ChangeLog
     THANKS README ChangeLog-2011 VERSION"
 patchfiles=""
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def

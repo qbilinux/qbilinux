@@ -13,8 +13,8 @@ DOCS="COPYING THANKS NOTES AUTHORS ABOUT-NLS COPYING-GPLV2 NEWS
     COPYING-LGPLV3 CONTRIBUTING INSTALL TODO README ChangeLog"
 patchfiles=""
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def

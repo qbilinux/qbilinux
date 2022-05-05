@@ -11,8 +11,8 @@ OPT_CONFIG='--disable-static'
 DOCS='AUTHORS BSD_LICENSE COPYING ChangeLog INSTALL NEWS README README.freebsd README.iscsi README.sg_start README.solaris README.tru64 README.win32 TODO'
 patchfiles='glibc.patch'
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################
 
 source /usr/src/qbilinux/PackageBuild.def
