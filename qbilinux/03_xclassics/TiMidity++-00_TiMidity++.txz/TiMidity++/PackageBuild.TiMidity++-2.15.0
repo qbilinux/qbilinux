@@ -18,8 +18,8 @@ DOCS="README AUTHORS COPYING ChangeLog INSTALL NEWS TODO ChangeLog.[123]
     `echo doc/ja_JP.eucJP/README.{dl,sf,tk,xskin,xaw,alsaseq,m2m,mts,w32}`"
 patchfiles=''
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def

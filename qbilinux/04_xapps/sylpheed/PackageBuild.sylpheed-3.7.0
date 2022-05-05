@@ -14,8 +14,8 @@ DOCS="README ABOUT-NLS AUTHORS COPYING COPYING.LIB ChangeLog INSTALL
     ChangeLog-1.0 ChangeLog-1.0.ja NEWS-1.0 NEWS-2.0 LICENSE
     PLUGIN.txt PLUGIN.ja.txt"
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def

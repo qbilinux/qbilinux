@@ -12,8 +12,8 @@ DOCS='ABOUT-NLS AUTHORS COPYING INSTALL NEWS README THANKS'
 #patchfiles='epdfview-0.18-gmacros.h.patch changeset_trunk_367.diff'
 patchfiles='epdfview-0.1.8-fixes-2.patch'
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################
 
 source /usr/src/qbilinux/PackageBuild.def

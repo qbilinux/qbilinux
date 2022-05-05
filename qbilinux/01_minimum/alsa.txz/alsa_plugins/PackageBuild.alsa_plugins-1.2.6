@@ -13,8 +13,8 @@ DOCS="`echo doc/{{samplerate,a52}.txt,README-{pcm-oss,maemo,jack}}`
     `echo doc/{{speex{dsp,rate},lavcrate,vdownmix}.txt,README-pulse}`
     `echo doc/{upmix.txt,README-arcam-av}` COPYING COPYING.GPL"
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def

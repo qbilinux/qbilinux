@@ -13,8 +13,8 @@ OPT_CONFIG="--disable-static --sysconfdir=/etc --docdir=/usr/share/esound/doc
 DOCS="README AUTHORS COPYING.LIB ChangeLog INSTALL NEWS TODO TIPS MAINTAINERS"
 patchfiles="no_html.patch"
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def

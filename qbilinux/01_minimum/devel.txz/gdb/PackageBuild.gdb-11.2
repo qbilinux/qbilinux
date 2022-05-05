@@ -13,8 +13,8 @@ DOCS="ChangeLog COPYING.LIB README MAINTAINERS COPYING COPYING3.LIB
     COPYING3 README-maintainer-mode"
 patchfiles=""
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def

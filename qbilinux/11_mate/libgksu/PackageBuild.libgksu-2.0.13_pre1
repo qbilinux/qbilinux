@@ -12,8 +12,8 @@ DOCS='ABOUT-NLS AUTHORS COPYING ChangeLog INSTALL'
 patchfiles='02_format-security.patch 28_ld_no_as_needed.patch'
 # http://ftp.de.debian.org/debian/pool/main/libg/libgksu/libgksu_2.0.13~pre1-6.debian.tar.gz
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################
 
 source /usr/src/qbilinux/PackageBuild.def

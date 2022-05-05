@@ -13,8 +13,8 @@ DOCS="ACKNOWLEDGEMENTS AUTHORS CHANGES CONTRIBUTING FAQ INSTALL
     LICENSE NEWS NOTES.ANDROID NOTES.DJGPP NOTES.PERL NOTES.UNIX
     NOTES.VMS NOTES.WIN README README.ENGINE README.FIPS"
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def

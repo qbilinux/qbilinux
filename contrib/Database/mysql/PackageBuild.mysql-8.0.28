@@ -14,8 +14,8 @@ OPT_CONFIG="-DWITH_EMBEDDED_SERVER:BOOL=ON -DDOWNLOAD_BOOST=1 -DWITH_BOOST=$W/so
 DOCS='COPYING INSTALL README VERSION'
 patchfiles=''
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################
 
 source /usr/src/qbilinux/PackageBuild.def

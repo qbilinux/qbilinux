@@ -11,8 +11,8 @@ OPT_CONFIG='--disable-static --enable-cdda'
 DOCS='AUTHORS COPYING COPYING.LIB ChangeLog HACKING INSTALL MAINTAINERS NEWS README TODO'
 patchfiles='patch-port-glib2-2.6.31-and-up.diff gnome_vfs2-g_memmove-no-more.patch openssl1.1.patch'
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################
 
 source /usr/src/qbilinux/PackageBuild.def

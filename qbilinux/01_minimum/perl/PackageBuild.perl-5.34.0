@@ -12,8 +12,8 @@ patchfiles="perl-5.12.1-Configure_multilib-1.patch"
 OPT_CONFIG=""
 DOCS="AUTHORS Artistic Changes Copying INSTALL MANIFEST README README.aix README.amiga README.android README.bs2000 README.ce README.cn README.cygwin README.dos README.freebsd README.haiku README.hpux README.hurd README.irix README.jp README.ko README.linux README.macos README.macosx README.micro README.netware README.openbsd README.os2 README.os390 README.os400 README.plan9 README.qnx README.riscos README.solaris README.symbian README.synology README.tru64 README.tw README.vms README.vos README.win32"
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def

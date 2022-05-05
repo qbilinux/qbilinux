@@ -12,8 +12,8 @@ OPT_CONFIG=''
 DOCS='AUTHORS COPYING COPYING.DOCS FAQ.txt NEWS NEWS.old README README.aarch64 README.android README.android_emulator README.mips README.s390 README.solaris README_DEVELOPERS README_MISSING_SYSCALL_OR_IOCTL README_PACKAGERS'
 patchfiles=''
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################
 
 source /usr/src/qbilinux/PackageBuild.def

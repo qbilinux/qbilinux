@@ -13,8 +13,8 @@ DOCS="`echo doc/{English,Japanese}/{extipl,scorpius,techical}.txt`
     COPYING README"
 patchfiles="extipl-5.04-syscall.patch extipl-5.04-x86_64.patch"
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def

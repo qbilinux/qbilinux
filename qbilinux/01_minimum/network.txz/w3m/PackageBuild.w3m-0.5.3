@@ -20,8 +20,8 @@ DOCS="`echo doc-jp/{FAQ.html,HISTORY,MANUAL.html,README}`
 #patchfiles="w3m-0.5.3-GC_fix.patch libressl.patch"
 patchfiles="w3m-0.5.3-GC_fix.patch undef_use_egd.patch"
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def

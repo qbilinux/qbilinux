@@ -14,8 +14,8 @@ DOCS="README AUTHORS COPYING ChangeLog INSTALL NEWS TODO
     README.FreeBSD README.OpenBSD README.Solaris README.win95
     README.winNT README.VC6"
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def

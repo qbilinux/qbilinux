@@ -12,8 +12,8 @@ patchfiles=""
 OPT_CONFIG="--enable-compat185 --enable-dbm --disable-static --enable-cxx --enable-o_direct"
 DOCS="LICENSE README"
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def
