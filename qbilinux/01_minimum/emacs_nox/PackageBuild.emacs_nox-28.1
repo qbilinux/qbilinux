@@ -1,13 +1,15 @@
 #!/bin/sh
 ##############################################################
-pkgbase=emacs
+pkgbase[0]=emacs_bin
+pkgbase[1]=emacs_lib
+pkgbase[2]=emacs_nox
 vers=28.1
 url="http://ftp.jaist.ac.jp/pub/GNU/emacs/emacs-${vers}.tar.xz"
 verify=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=${pkgbase}-${vers}
+src=emacs-${vers}
 OPT_CONFIG='--without-all --without-x --with-dumping=unexec'
 DOCS='COPYING ChangeLog INSTALL README'
 patchfiles=''
@@ -83,15 +85,16 @@ do_package() {
 
     cp -pr $P ${P}_lib
   
-    mkdir -p ${P}_mini/usr/bin
-    mkdir -p ${P}_mini/usr/share/doc
-    mv ${P}_lib/usr/bin/emacs-$vers ${P}_mini/usr/bin/emacs_mini-$vers
+    mkdir -p ${P}_nox/usr/bin
+    mkdir -p ${P}_nox/usr/share/doc
+    mv ${P}_lib/usr/bin/emacs-$vers ${P}_nox/usr/bin/emacs_nox-$vers
     (cd ${P}_lib/usr/bin; rm emacs)
-    (cd ${P}_mini/usr/bin; ln -sf emacs_mini-$vers emacs_mini)
-    mv ${P}_lib/usr/share/doc/$src ${P}_mini/usr/share/doc/${pkgbase}_mini-$vers
-    pkgmini=${pkgbase}_mini-$vers-$arch-$build
-    pkgbin=${pkgbase}_bin-$vers-$arch-$build
-    pkglib=${pkgbase}_lib-$vers-noarch-$build
+    (cd ${P}_nox/usr/bin; ln -sf emacs_nox-$vers emacs_nox)
+    (cd ${P}_nox/usr/bin; ln -sf emacs_nox emacs)
+    mv ${P}_lib/usr/share/doc/$src ${P}_nox/usr/share/doc/${pkgbase}_nox-$vers
+    pkgbin=${pkg[0]}
+    pkglib=${pkg[1]}
+    pkgnox=${pkg[2]}
 
     #
     mkdir -p ${P}_bin/usr
@@ -107,8 +110,8 @@ y
 1
 EOF
   
-    cd ${P}_mini
-    /sbin/makepkg $W/${pkgmini}.$compress <<EOF
+    cd ${P}_nox
+    /sbin/makepkg $W/${pkgnox}.$compress <<EOF
 y
 1
 EOF
