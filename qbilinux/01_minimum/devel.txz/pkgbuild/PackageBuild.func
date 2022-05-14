@@ -26,7 +26,9 @@ else
 fi
 
 if [ $opt_pkgname -eq 1 ] ; then
-    echo $pkg.$compress
+    for i in `seq 0 $((${#pkgbase[@]} - 1))` ; do
+	echo ${pkg[$i]}.$compress
+    done
 fi
 
 if [ $opt_download -eq 1 ] ; then

@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase="pkgbuild"
-vers=0.4
+vers=0.5.0
 url=""
 #file=${url##*/}
 #http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD
@@ -9,7 +9,7 @@ url=""
 commitid=
 apply_arch=noarch
 arch=noarch
-build=4
+build=1
 src=pkgbuild-${vers}
 OPT_CONFIG=''
 DOCS=''
