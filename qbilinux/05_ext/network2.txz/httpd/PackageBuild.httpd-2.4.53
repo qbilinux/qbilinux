@@ -12,8 +12,8 @@ OPT_CONFIG="--enable-layout=Slackware-FHS --enable-mods-shared=all --enable-mods
 DOCS='ABOUT_APACHE INSTALL InstallBin.dsp LICENSE README README.platforms'
 patchfiles='httpdlogrotate_plamo.patch mod_ssl.patch'
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################
 
 source /usr/src/qbilinux/PackageBuild.def

@@ -11,8 +11,8 @@ OPT_CONFIG=''
 DOCS='ABOUT CDDL.Schily.txt COPYING Changelog Changelog.1 GPL-2.0.txt INSTALL LGPL-2.1.txt README README.BSDi README.FreeBSD README.NetBSD README.OpenBSD README.QNX README.SSPM README.apple README.compile README.linux-shm README.mkisofs README.next README.openserver README.os2 README.sgi README.unixware README.vms README.xxxBSD READMEs'
 patchfiles=''
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################
 
 source /usr/src/qbilinux/PackageBuild.def

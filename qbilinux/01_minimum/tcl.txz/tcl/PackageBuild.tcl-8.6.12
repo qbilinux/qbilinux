@@ -13,8 +13,8 @@ DOCS="changes ChangeLog.2000 ChangeLog.1999 ChangeLog.2002
     ChangeLog.2003 ChangeLog.2005 README ChangeLog ChangeLog.2001
     license.terms ChangeLog.2004"
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def

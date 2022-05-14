@@ -15,8 +15,8 @@ DOCS="README-WORDS README-DAWG NEWS AUTHORS INSTALL ABOUT-NLS
 #patchfiles="cracklib-${vers}-heimdal.patch"
 patchfiles=""
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def

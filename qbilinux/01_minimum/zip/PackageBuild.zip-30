@@ -11,8 +11,8 @@ OPT_CONFIG=''
 DOCS='Betas_Readme.txt INSTALL LICENSE README README.CR TODO zip.txt zipcloak.txt zipnote.txt zipsplit.txt'
 patchfiles=''
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################
 
 source /usr/src/qbilinux/PackageBuild.def

@@ -11,8 +11,8 @@ OPT_CONFIG='--with-apr=/usr/bin/apr-1-config'
 DOCS='AUTHORS COPYING LICENSE README'
 patchfiles='apr-iconv-1.2.1-libpath.patch'
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################
 
 source /usr/src/qbilinux/PackageBuild.def

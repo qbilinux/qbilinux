@@ -14,8 +14,8 @@ patchfiles=''
 # https://git.gnome.org/browse/gegl/patch/?id=97067622352e58f86a24851dacb1f5daa0762897
 # https://projects.archlinux.org/svntogit/packages.git/plain/trunk/gegl-0.2.0-remove-src-over-op.patch?h=packages/gegl
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################
 
 source /usr/src/qbilinux/PackageBuild.def

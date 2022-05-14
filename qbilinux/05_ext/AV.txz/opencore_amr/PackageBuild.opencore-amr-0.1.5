@@ -11,8 +11,8 @@ OPT_CONFIG='--disable-static --enable-examples'
 DOCS='AUTHORS COPYING ChangeLog INSTALL LICENSE NEWS README'
 patchfiles='opencore-amr-0.1.3-pkgconfig.patch'
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################
 
 source /usr/src/qbilinux/PackageBuild.def

@@ -15,8 +15,8 @@ DOCS="COPYING TODO INSTALL THANKS ChangeLog-2006 ChangeLog-2008 NEWS
     ChangeLog ChangeLog-2007 README ChangeLog-2005 AUTHORS ABOUT-NLS
     THANKS-to-translators"
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def

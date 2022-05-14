@@ -11,8 +11,8 @@ OPT_CONFIG='-DBUILD_STATIC_LIBS=false'
 DOCS='LICENSE README README.autoconf README.config README.contrib README.dll README.examples README.footprint README.packaging'
 patchfiles=''
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################
 
 source /usr/src/qbilinux/PackageBuild.def

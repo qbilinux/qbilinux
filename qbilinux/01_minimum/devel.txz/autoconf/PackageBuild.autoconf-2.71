@@ -14,8 +14,8 @@ DOCS="THANKS NEWS ChangeLog.2 ChangeLog COPYING ChangeLog.3 README
     AUTHORS COPYINGv3 BUGS ChangeLog.0 ChangeLog.1 TODO
     COPYING.EXCEPTION INSTALL"
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def

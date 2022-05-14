@@ -11,8 +11,8 @@ OPT_CONFIG='--disable-static'
 DOCS='COPYING README'
 patchfiles='sdl-ttf-2.0.11-freetype_pkgconfig.patch'
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################
 
 source /usr/src/qbilinux/PackageBuild.def

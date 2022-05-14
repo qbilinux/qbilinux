@@ -12,8 +12,8 @@ OPT_CONFIG=''
 DOCS='ABOUT-NLS AUTHORS AUTHORS.myspell COPYING COPYING.LESSER COPYING.MPL ChangeLog ChangeLog.O HACKING INSTALL NEWS README README.md README.myspell THANKS TODO license.hunspell license.myspell'
 patchfiles=''
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################
 
 source /usr/src/qbilinux/PackageBuild.def
