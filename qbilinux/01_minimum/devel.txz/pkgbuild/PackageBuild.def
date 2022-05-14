@@ -12,8 +12,11 @@ xmandir=$P/usr/X11R7/share/man
 docdir=$P/usr/share/doc
 myname=`basename $0`
 
-pkg=$pkgbase-$vers-$arch-$build
-
+pkg=()
+for i in `seq 0 $((${#pkgbase[@]} - 1))` ; do
+    pkg[$i]=${pkgbase[$i]}-$vers-$arch-$build
+done
+    
 case $arch in
     x86_64 | aarch64)
 	libdir="lib64";
