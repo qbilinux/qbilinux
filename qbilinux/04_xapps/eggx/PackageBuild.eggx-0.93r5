@@ -11,8 +11,8 @@ OPT_CONFIG=''
 DOCS='00README.1st 00README.1st.ja.EUC ChangeLog.ja INSTALL INSTALL.ja LICENSE README README.ja TECHNICAL.ja TODO.ja eggx_procall.ja.pdf eggx_procall.pdf examples.euc/*  examples_academic/* examples_academic/simulations-20110310/* examples_game/* examples_tutorial/*'
 patchfiles='Makefile-plamo.patch'
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################
 
 source /usr/src/qbilinux/PackageBuild.def

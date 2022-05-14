@@ -13,8 +13,8 @@ DOCS="NEWS TODO README.ja README AUTHORS INSTALL ABOUT-NLS ChangeLog
     COPYING"
 patchfiles='gtk.patch scim-skk-0.5.2-not_declared.patch'
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def

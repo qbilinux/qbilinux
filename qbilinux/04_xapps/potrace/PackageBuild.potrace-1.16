@@ -11,8 +11,8 @@ OPT_CONFIG='--enable-a4 --with-libpotrace --disable-static'
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README README-WIN'
 patchfiles=''
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################
 
 source /usr/src/qbilinux/PackageBuild.def

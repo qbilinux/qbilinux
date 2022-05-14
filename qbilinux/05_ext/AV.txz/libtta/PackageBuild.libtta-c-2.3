@@ -12,8 +12,8 @@ DOCS='COPYING README'
 #patchfiles='libtta-c-2.0-shared-library.patch libtta-c-2.0-set-permission.patch'
 patchfiles='libtta-c-2.3-shared-library.patch'
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################
 
 source /usr/src/qbilinux/PackageBuild.def

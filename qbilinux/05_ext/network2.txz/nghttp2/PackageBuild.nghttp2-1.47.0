@@ -12,8 +12,8 @@ OPT_CONFIG='--enable-asio-lib --disable-static --disable-examples --enable-app  
 DOCS='AUTHORS CMakeOptions.txt COPYING ChangeLog INSTALL NEWS README README.rst'
 patchfiles=''
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################
 
 source /usr/src/qbilinux/PackageBuild.def

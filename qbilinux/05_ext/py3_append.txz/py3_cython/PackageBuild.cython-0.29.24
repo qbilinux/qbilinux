@@ -13,8 +13,8 @@ OPT_CONFIG=''
 DOCS='COPYING.txt INSTALL.txt LICENSE.txt README.rst ToDo.txt USAGE.txt test-requirements-cpython.txt test-requirements.txt'
 patchfiles=''
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################
 
 

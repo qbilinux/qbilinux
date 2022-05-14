@@ -14,8 +14,8 @@ DOCS="NEWS FAQ COPYING.LESSERv2 THANKS ABOUT-NLS README AUTHORS
     COPYINGv2 TODO COPYING.LESSERv3 COPYING INSTALL COPYINGv3
     HACKING ChangeLog"
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def

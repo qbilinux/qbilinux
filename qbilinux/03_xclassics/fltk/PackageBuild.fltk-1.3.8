@@ -11,8 +11,8 @@ src=$pkgbase-${vers}
 OPT_CONFIG="--enable-shared"
 DOCS="ANNOUNCEMENT CHANGES CHANGES_1.0 CHANGES_1.1 KNOWN_BUGS.html README README.CMake.txt README.Cairo.txt README.MSWindows.txt README.OSX.txt README.Unix.txt README.abi-version.txt VERSION"
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def

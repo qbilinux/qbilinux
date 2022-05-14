@@ -11,8 +11,8 @@ OPT_CONFIG='--disable-static'
 DOCS='COPYING INSTALL README README-SDL.txt README.AmigaOS README.BeOS README.DC README.HG README.MacOS README.MacOSX README.MiNT README.NDS README.NanoX README.OS2 README.PS3 README.PicoGUI README.Porting README.QNX README.Qtopia README.RISCOS README.Symbian README.Watcom README.WinCE README.wscons TODO'
 patchfiles='sdl_x11sym.patch'
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################
 
 source /usr/src/qbilinux/PackageBuild.def

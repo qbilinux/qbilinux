@@ -20,8 +20,8 @@ DOCS="Mailbox-Names-UTF7.txt ABOUT-NLS fetchmail-EN-2010-03.txt
     fetchmail-SA-2008-01.txt README README.NTLM fetchmail-SA-2010-01.txt
     README.packaging NEWS OLDNEWS COPYING"
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 export PYTHON=python3
 ######################################################################
 
