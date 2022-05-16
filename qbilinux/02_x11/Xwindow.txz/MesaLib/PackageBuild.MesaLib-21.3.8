@@ -10,10 +10,10 @@ src=mesa-${vers}
 case $arch in
     armv7l | aarch64)
 	OPT_CONFIG='-Dshared-llvm=true
-	 -Dgles1=true -Dgles2=true 
-         -Dosmesa=classic -Dgallium-xa=auto
-         -Dgallium-drivers=vc4
-	 -Ddri-drivers=swrast
+	 -Dgles1=enabled -Dgles2=enabled
+         -Dosmesa=true -Dgallium-xa=auto
+         -Dgallium-drivers=auto
+	 -Ddri-drivers=auto
       	 -Dbuildtype=release
          ';;
     *)
