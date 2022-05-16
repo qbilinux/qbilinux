@@ -104,8 +104,8 @@ OPT_CONFIG=''
 DOCS='%s'
 patchfiles='%s'
 compress=txz
-SRC_URL="https://qbilinux.org/pub/source/"
-SRC_DIR="/home/archives/source/"
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################
 
 ''' % (pkgname, vers, url, filename, docs, patchs)
