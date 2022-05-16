@@ -7,7 +7,7 @@ srcfile=assimp-${vers}.tar.gz
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=3
 src=assimp-${vers}
 OPT_CONFIG=''
 DOCS='CMakeCache.txt INSTALL LICENSE README Readme.md assimpTargets-release.cmake cmake_install.cmake cmake_uninstall.cmake'
@@ -64,8 +64,7 @@ do_install() {
     fi
 
     # add extra func
-    # mkdir -p $P2/hoge
-    # cp hoge.txt $P2/hoge
+    sed -i -e "s/\/lib\//\/${libdir}\//g" $P/usr/lib64/cmake/assimp-5.0/assimpTargets-release.cmake
 }
 
 do_package() {
