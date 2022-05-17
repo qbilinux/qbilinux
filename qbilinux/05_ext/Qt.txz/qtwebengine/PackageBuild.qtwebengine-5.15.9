@@ -1,16 +1,16 @@
 #!/bin/sh
 ##############################################################
 pkgbase=qtwebengine
-vers=5.15.8
+vers=5.15.9
 url="https://anduin.linuxfromscratch.org/BLFS/qtwebengine/qtwebengine-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
 src=qtwebengine-${vers}
-OPT_CONFIG='-- -system-ffmpeg -webengine-icu'
+OPT_CONFIG='-- -system-ffmpeg -webengine-icu -no-feature-webengine-system-libevent'
 DOCS='LICENSE.GPL2 LICENSE.GPL3 LICENSE.GPL3-EXCEPT LICENSE.GPLv3 LICENSE.LGPL3'
-patchfiles='qtwebengine-5.15.8-build_fixes-1.patch'
+patchfiles='qtwebengine-5.15.9-build_fixes-1.patch'
 compress=txz
 SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
 SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
@@ -24,7 +24,7 @@ do_prepare() {
 	patch -p1 < $W/$patch
     done
     mkdir -pv .git src/3rdparty/chromium/.git
-    sed -e '/^MODULE_VERSION/s/5.*/5.15.3/' -i .qmake.conf
+    sed -e '/^MODULE_VERSION/s/5.*/5.15.4/' -i .qmake.conf
     find -type f -name "*.pr[io]" |
 	xargs sed -i -e 's|INCLUDEPATH += |&$$QTWEBENGINE_ROOT/include |'
     sed -e '/link_pulseaudio/s/false/true/' \
