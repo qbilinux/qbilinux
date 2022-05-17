@@ -6,13 +6,14 @@ vers=5.2.5
 url="http://tukaani.org/xz/xz-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="PACKAGERS INSTALL.generic COPYING.LGPLv2.1 COPYING.GPLv3 INSTALL
     ChangeLog ABOUT-NLS TODO THANKS README NEWS COPYING.GPLv2 COPYING
     AUTHORS"
 compress=txz
+patchfiles="xzgrep-ZDI-CAN-16587.patch"
 SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
 SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ######################################################################
