@@ -1,8 +1,8 @@
 #!/bin/sh
 ##############################################################
 pkgbase=openjdk17
-vers=17.0.2+ga
-url="https://github.com/openjdk/jdk17u/archive/refs/tags/jdk-${vers/+/-}.tar.gz"
+vers=17.0.4+2
+url="https://github.com/openjdk/jdk17u/archive/refs/tags/jdk-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
