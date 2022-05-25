@@ -83,8 +83,10 @@ do_package() {
 	gzip $docdir/$src/$patch
     done
 
+    rm -rf ${P}_nox ${P}_lib ${P}_bin
+
     cp -pr $P ${P}_lib
-  
+
     mkdir -p ${P}_nox/usr/bin
     mkdir -p ${P}_nox/usr/share/doc
     mv ${P}_lib/usr/bin/emacs-$vers ${P}_nox/usr/bin/emacs_nox-$vers

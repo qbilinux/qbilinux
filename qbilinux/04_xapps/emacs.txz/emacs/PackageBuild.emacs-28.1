@@ -72,6 +72,9 @@ do_package() {
     for patch in $file2 ; do
 	cp $W/$patch $srcdir/$patch
     done
+
+    rm -rf ${P}_lib
+
     mv $P ${P}_lib
   
     mkdir -p ${P}/usr/bin
@@ -83,20 +86,6 @@ do_package() {
     (cd ${P}/usr/bin; ln -sf emacs-$vers emacs)
     mv ${P}_lib/usr/share/doc/$src ${P}/usr/share/doc/${pkgbase}-$vers
 
-    #
-    mkdir -p ${P}_bin/usr
-    mv ${P}_lib/usr/bin ${P}_bin/usr
-    #   cd ${P}_bin
-    #   /sbin/makepkg ../${pkgbin}.$compress <<EOF
-    # y
-    # 1
-    # EOF
-    #   cd ${P}_lib
-    #   /sbin/makepkg ../${pkglib}.$compress <<EOF
-    # y
-    # 1
-    # EOF
-  
     cd ${P}
     /sbin/makepkg $W/${pkg}.$compress <<EOF
 y
