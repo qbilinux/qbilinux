@@ -7,7 +7,22 @@ apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
 src=qt-everywhere-src-${vers}
-if [ $arch = "armv7l" ]; then
+if [ $arch = "aarch64" ]; then
+OPT_CONFIG="-sysconfdir     /etc/xdg   \
+            -confirm-license           \
+            -opensource                \
+            -dbus-linked               \
+            -openssl-linked            \
+            -system-harfbuzz           \
+            -system-sqlite             \
+            -nomake examples           \
+            -no-rpath                  \
+            -no-assimp                 \
+	    -headerdir /usr/include/qt5 \
+	    -docdir /usr/share/doc/${src} \
+	    -ssl -icu -release -qpa xcb -pulseaudio \
+            -skip qtwebengine"
+elif [ $arch = "armv7l" ]; then
 OPT_CONFIG="-sysconfdir     /etc/xdg   \
             -confirm-license           \
             -opensource                \
