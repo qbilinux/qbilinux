@@ -2,11 +2,12 @@
 
 ######################################################################
 pkgbase=rsyslog
-vers=6.3.6
-url="http://download.rsyslog.com/rsyslog/rsyslog-${vers}.tar.gz"
+vers=8.2206.0
+url="https://github.com/rsyslog/rsyslog/archive/refs/tags/v${vers}.tar.gz"
+srcfile=$pkgbase-$vers.tar.gz
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=3
+build=1
 src=$pkgbase-$vers
 OPT_CONFIG="--sbindir=/sbin"
 DOCS="COPYING README AUTHORS INSTALL COPYING.LESSER NEWS ChangeLog"
@@ -30,10 +31,10 @@ do_config() {
 
     mkdir ${B[$1]}
     cd ${B[$1]}
-    if [ -x ${S[$1]}/configure ] ; then
+    if [ -x ${S[$1]}/autogen.sh ] ; then
 	export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
 	export LDFLAGS='-Wl,--as-needed' 
-	${S[$1]}/configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc \
+	${S[$1]}/autogen.sh --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc \
 		--localstatedir=/var --infodir='${prefix}'/share/info --mandir='${prefix}'/share/man ${OPT_CONFIG[$1]}
     fi
     if [ $? != 0 ]; then
