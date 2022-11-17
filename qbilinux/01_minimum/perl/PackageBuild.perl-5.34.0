@@ -6,7 +6,7 @@ vers=5.34.0
 url="https://www.cpan.org/src/5.0/perl-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=3
 src=$pkgbase-$vers
 patchfiles="perl-5.12.1-Configure_multilib-1.patch"
 OPT_CONFIG=""
@@ -48,12 +48,12 @@ do_config() {
        -Dman1dir=/usr/share/man/man1 \
        -Dman3dir=/usr/share/man/man3 \
        -Dpager="/usr/bin/less -isR"  \
-       -Dcc='gcc -isystem /usr/include' \
-       -Dlddlflags="-shared ${LDFLAGS}" \
-       -Uldflags="${LDFLAGS}" \
        -Dusethreads \
-       ${arch_opts} \
        -Duseshrplib
+#       -Dcc='gcc -isystem /usr/include' \
+#       -Dlddlflags="-shared ${LDFLAGS}" \
+#       -Uldflags="${LDFLAGS}" \
+#       ${arch_opts} \
     if [ $? != 0 ]; then
 	echo "configure error. $0 script stop"
 	exit 255
