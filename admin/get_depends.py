@@ -33,6 +33,12 @@ def init_db(dbname):
        (base text, path text, soname text, realname text)''')
     conn.close
 
+def clear_table(dbname):
+    conn = sqlite3.connect(dbname)
+    conn.execute('''drop table if exists depends''')
+    conn.close
+    init_db(dbname)
+
 def insert_db(dbname, t):
     conn = sqlite3.connect(dbname)
     try:
@@ -102,6 +108,8 @@ def main():
     dbname = './depends.sql3'
     if os.access(dbname, os.R_OK) == False:
         c = init_db(dbname)
+    else:
+        c = clear_table(dbname)
 
     # lastflag = './lastchecked'
     # last_checked = get_lastchecked(lastflag)
@@ -119,7 +127,7 @@ def main():
             tmp = get_depends(file)
             for i in tmp:
                 (soname, realname) = split_parts(i)
-                print(("{0}, {1}, {2}, {3}".format(base, file, soname, realname)))
+                #print(("{0}, {1}, {2}, {3}".format(base, file, soname, realname)))
                 t = (base, file, soname, realname)
                 list.append(t)
             
