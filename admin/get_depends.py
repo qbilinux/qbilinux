@@ -21,8 +21,7 @@
  cat|/bin/cat|libc.so.6|/lib64/libc.so.6
  cat|/bin/cat|/lib64/ld-linux-x86-64.so.2|/lib64/ld-linux-x86-64.so.2
 
-ファイルの更新(古いライブラリの削除)を追跡する方法が無いので，データベースを更新するには
-古いファイル(./depends.sql3)を削除して，再度このコマンドを実行すること．
+データベースを更新するには再度このコマンドを実行すればよい．
 '''
 
 import sqlite3, os, subprocess, sys, time
