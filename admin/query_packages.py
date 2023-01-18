@@ -2,15 +2,12 @@
 # -*- coding: utf-8 -*-;
 
 '''
-get_depends.pyで作成した ~/depends.sql3 データベースを元に，
-ELF形式のバイナリファイルが必要とする共有ライブラリを検索(正引き)したり，
-共有ライブラリを使っているバイナリファイルを検索(逆引き)したりする．
--b, -p が正引きで，-b はファイルのベース名(例えば cat)のみを検索対象にする．
-一方，-p ではファイルのパス名(/bin/cat)も検索対象にする．
+get_depends.py, get_packages.py で作成した ~/depends.sql3 データベースを元に，
+ELF形式のバイナリファイルが必要とするパッケージ(共有ライブラリ)を検索したり，
+共有ライブラリを使っているパッケージを検索(逆引き)したりする．
 
--s, -r が逆引きで，-s が共有ライブラリのsoname(libuuid.so.1)から，
-その共有ライブラリを使っているファイルを調べる．-r を指定すると
-が共有ライブラリへのパス名(/usr/lib64/libuuid.so.1)も検索対象にする．
+-b が正引きでファイル名(例えば cat)のみを検索対象にする．
+-s が逆引きでその共有ライブラリを使っているパッケージを調べる．
 '''
 
 import sqlite3, os, getopt, sys
@@ -62,9 +59,9 @@ def query(db, cmd, sql, arg):
         for row in tgt:
             (base, path, soname, realname, pkgname, pkgfile, pkgpath) = row
             if pkgname in result:
-                result[pkgname].append((soname, pkgpath))
+                result[pkgname].append((soname, realname))
             else:
-                result[pkgname] = [(soname, pkgpath)]
+                result[pkgname] = [(soname, realname)]
 
         # print tgt
         for k, v in result.items():
@@ -78,9 +75,9 @@ def query(db, cmd, sql, arg):
         for row in tgt:
             (pkgname, pkgfile, pkgpath, base, path, soname, realname) = row
             if pkgname in result:
-                result[pkgname].append(pkgpath)
+                result[pkgname].append(path)
             else:
-                result[pkgname] = [pkgpath]
+                result[pkgname] = [path]
 
         # print tgt
         for k, v in result.items():
