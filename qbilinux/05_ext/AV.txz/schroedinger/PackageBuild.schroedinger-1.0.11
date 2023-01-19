@@ -5,7 +5,7 @@ vers=1.0.11
 url='https://download.videolan.org/contrib/schroedinger/schroedinger-1.0.11.tar.gz'
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=3
 src=schroedinger-1.0.11
 OPT_CONFIG='--disable-static --with-opengl=/usr/${libdir}'
 DOCS='AUTHORS COPYING COPYING.GPL COPYING.LGPL COPYING.MIT COPYING.MPL NEWS README TODO'
