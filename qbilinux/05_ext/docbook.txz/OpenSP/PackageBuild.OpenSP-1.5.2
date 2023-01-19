@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
-url='http://downloads.sourceforge.net/openjade/OpenSP-1.5.2.tar.gz'
 pkgbase=OpenSP
 vers=1.5.2
+url='http://downloads.sourceforge.net/openjade/OpenSP-1.5.2.tar.gz'
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=3
+build=4
 src=OpenSP-1.5.2
 OPT_CONFIG='--disable-static --disable-doc-build --enable-default-catalog=/etc/sgml/catalog --enable-http --enable-default-search-path=/usr/share/sgml'
 DOCS='ABOUT-NLS AUTHORS COPYING ChangeLog INSTALL NEWS README'
