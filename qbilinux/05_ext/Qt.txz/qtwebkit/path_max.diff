@@ -1,0 +1,21 @@
+Author: Pino Toscano <pino@debian.org>
+Description: Locally define PATH_MAX is not available
+ The code unconditionally uses PATH_MAX, which is POSIX-optional.
+ .
+ This fixes the build on platforms without it, such as GNU/Hurd.
+Forwarded: no
+Last-Update: 2017-11-20
+
+--- a/Source/WebCore/platform/text/hyphen/HyphenationLibHyphen.cpp
++++ b/Source/WebCore/platform/text/hyphen/HyphenationLibHyphen.cpp
+@@ -45,6 +45,10 @@
+ #include <wtf/glib/GUniquePtr.h>
+ #endif
+ 
++#if !defined(PATH_MAX)
++#define PATH_MAX 4096
++#endif
++
+ namespace WebCore {
+ 
+ static const char* const gDictionaryDirectories[] = {

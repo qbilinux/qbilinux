@@ -1,0 +1,18 @@
+Description: remove invalid g_object declarations to fix build with glib ≥ 2.68
+Origin: https://build.opensuse.org/package/view_file/KDE:Qt5/libqt5-qtwebkit/0001-Remove-invalid-g_object-declarations-to-fix-build-wi.patch
+Forwarded: https://github.com/qtwebkit/qtwebkit/pull/1058
+Last-Update: 2021-04-07
+
+--- a/Source/WTF/wtf/glib/GRefPtr.h
++++ b/Source/WTF/wtf/glib/GRefPtr.h
+@@ -28,9 +28,7 @@
+ #include <wtf/GetPtr.h>
+ #include <wtf/RefPtr.h>
+ #include <algorithm>
+-
+-extern "C" void g_object_unref(gpointer);
+-extern "C" gpointer g_object_ref_sink(gpointer);
++#include <glib.h>
+ 
+ namespace WTF {
+ 
