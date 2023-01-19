@@ -2,13 +2,13 @@
 
 ######################################################################
 pkgbase=libxml2
-vers=2.9.14
+vers=2.10.3
 url="https://gitlab.gnome.org/GNOME/libxml2/-/archive/v${vers}/libxml2-v${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=$pkgbase-v$vers
-OPT_CONFIG="--with-history --disable-static --with-python=/usr/bin/python3 --with-icu"
+OPT_CONFIG="--with-history --disable-static PYTHON=/usr/bin/python3 --with-icu"
 DOCS="AUTHORS COPYING ChangeLog Copyright INSTALL NEWS README README.tests TODO TODO_SCHEMAS"
 patchfiles=""
 compress=txz
