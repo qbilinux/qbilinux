@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
-pkgbase=py3_pyqt
-vers=5.11.3
-url="https://sourceforge.net/projects/pyqt/files/PyQt5/PyQt-${vers}/PyQt5_gpl-${vers}.tar.gz"
+pkgbase=py3_dbus_python
+vers=1.3.2
+url="http://dbus.freedesktop.org/releases/dbus-python/dbus-python-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=5
-src=PyQt5_gpl-${vers}
-OPT_CONFIG='--disable-static'
-DOCS='ChangeLog LICENSE NEWS README'
+build=1
+src=dbus-python-${vers}
+OPT_CONFIG=''
+DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README'
 patchfiles=''
 compress=txz
 SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
@@ -27,17 +27,12 @@ do_prepare() {
 do_config() {
     if [ -d ${B[$1]} ] ; then rm -rf ${B[$1]} ; fi
 
-    cp -a ${S[$1]} ${B[$1]}
+    mkdir ${B[$1]}
     cd ${B[$1]}
-    python3 ./configure.py --confirm-license
-
-    # Thanks Gerardo for the rpath fix
-    if [ "$arch" = "x86_64" -o "$arch" = "aarch64" ]; then
-	find -name 'Makefile' | xargs sed -i 's|-Wl,-rpath,/usr/lib64||g;s|-Wl,-rpath,.* ||g'
-    else
-    	find -name 'Makefile' | xargs sed -i 's|-Wl,-rpath,/usr/lib||g;s|-Wl,-rpath,.* ||g'
-    fi
-
+    export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
+    export PYTHON=/usr/bin/python3
+    ${S[$1]}/configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$i]}
+    
     if [ $? != 0 ]; then
 	echo "configure error. $0 script stop"
 	exit 255
@@ -46,8 +41,9 @@ do_config() {
 
 do_build() {
     cd ${B[$1]}
+    export PYTHON=/usr/bin/python3
     make
-    
+
     if [ $? != 0 ]; then
 	echo "make error. $0 script stop"
 	exit 255
@@ -56,7 +52,8 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}
-    make install DESTDIR=$P INSTALL_ROOT=$P
+    export PYTHON=/usr/bin/python3
+    make install DESTDIR=$P
 
     if [ $? != 0 ]; then
 	echo "make install error. $0 script stop"
