@@ -1,16 +1,16 @@
 #!/bin/sh
 ##############################################################
-url='http://downloads.sourceforge.net/project/libquicktime/libquicktime/1.2.4/libquicktime-1.2.4.tar.gz'
 pkgbase=libquicktime
 vers=1.2.4
+url="http://downloads.sourceforge.net/project/libquicktime/libquicktime/${vers}/libquicktime-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=libquicktime-1.2.4
-OPT_CONFIG='--disable-static --with-libdv --enable-gpl'
+build=3
+src=libquicktime-${vers}
+OPT_CONFIG='--disable-static --with-libdv --enable-gpl --without-ffmpeg'
 DOCS='ABOUT-NLS AUTHORS COPYING ChangeLog INSTALL NEWS README TODO'
 #patchfiles='libquicktime-backport.patch libav10.patch fmpeg_2.9.patch libquicktime-1.2.4-ffmpeg4-1.patch'
-patchfiles='libquicktime-1.2.4-ffmpeg4-1.patch'
+patchfiles=''
 compress=txz
 SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
 SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
