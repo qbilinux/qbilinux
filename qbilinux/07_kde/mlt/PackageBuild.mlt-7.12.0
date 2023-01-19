@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase="mlt"
-vers=7.0.1
+vers=7.12.0
 url="https://github.com/mltframework/mlt/releases/download/v${vers}/mlt-${vers}.tar.gz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=mlt-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog NEWS README'
@@ -46,7 +46,7 @@ do_config() {
 do_build() {
     cd ${B[$1]}
     export LDFLAGS='-Wl,--as-needed'
-    make
+    cmake --build .
     if [ $? != 0 ]; then
 	echo "make error. $0 script stop"
 	exit 255
@@ -56,7 +56,7 @@ do_build() {
 do_install() {
     cd ${B[$1]}
     export LDFLAGS='-Wl,--as-needed'
-    make install DESTDIR=$P
+    env DESTDIR=$P cmake --install . 
     if [ $? != 0 ]; then
 	echo "make install error. $0 script stop"
 	exit 255
