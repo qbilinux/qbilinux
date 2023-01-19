@@ -3,7 +3,7 @@ unset LS_BLOCK_SIZE
 export LANG=C
 ##############################################################
 pkgbase=thunderbird
-vers=102.4.2
+vers=102.6.1
 url="http://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/${vers}/source/${pkgbase}-${vers}.source.tar.xz"
 #verify=$url.asc
 apply_arch="x86_64 i686 armv7l aarch64"
@@ -33,8 +33,12 @@ do_config() {
 
     cp -a ${S[$1]} ${B[$1]}
     cd ${B[$1]}
+    grep -rl \"rU\" | xargs sed -i 's/"rU"/"r"/'
+    sed -e 's/?s)\./?s:.)/'               \
+	-e '/?m)/{s/?m)/?m:/;s/\$"/$)"/}' \
+	-e '/?s)%/{s/?s)/?s:/;s/?"/?)"/}' \
+	-i xpcom/idl-parser/xpidl/xpidl.py
 
-    ./mach create-mach-environment
     cat > mozconfig << EOF
 # If you have a multicore machine, the build may be faster if using parallel
 # jobs. The build system automatically adds -jN to the "make" flags, where N
@@ -120,13 +124,13 @@ EOF
 export USE_ARCH=64
 EOF
     fi
-    sed -i -e '/#!\[deny(missing_docs)\]/d' servo/components/style/lib.rs
-    sed -i -e 's/#!\[deny(unsafe_code, missing_docs)\]/#!\[deny(unsafe_code)\]/g' servo/components/style_traits/lib.rs
-    sed -i -e '/pid_t gettid/s@^@//@' tools/profiler/core/platform.h
+    export MACH_BUILD_PYTHON_NATIVE_PACKAGE_SOURCE=none
+    ./mach configure  
 }
 
 do_build() {
     cd ${B[$1]}
+    export MACH_BUILD_PYTHON_NATIVE_PACKAGE_SOURCE=none
     ./mach build
     if [ $? != 0 ]; then
 	echo "make error. $0 script stop"
@@ -136,7 +140,7 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}
-    ./mach create-mach-environment
+    export MACH_BUILD_PYTHON_NATIVE_PACKAGE_SOURCE=none
     DESTDIR=$P ./mach install
     if [ $? != 0 ]; then
 	echo "make install error. $0 script stop"
@@ -145,7 +149,9 @@ do_install() {
 
     # add extra func
     install2 thunderbird.desktop $P/usr/share/applications/
-    ( cd $P/usr/$libdir ; ln -sf thunderbird-$vers thunderbird )
+
+    install -d $P/usr/share/pixmaps/
+    (cd $P/usr/share/pixmaps/; ln -sf /usr/lib/thunderbird/chrome/icons/default/default128.png thunderbird.png)
 }
 
 do_package() {
