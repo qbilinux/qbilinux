@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=tcsh
-vers=6.23.02
+vers=6.24.07
 url="http://ftp.osuosl.org/pub/blfs/conglomeration/tcsh/tcsh-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
