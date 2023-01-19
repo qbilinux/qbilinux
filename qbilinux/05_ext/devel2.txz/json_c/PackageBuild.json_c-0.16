@@ -2,13 +2,13 @@
 
 ######################################################################
 pkgbase=json_c
-vers=0.15_20200726
-url="https://github.com/json-c/json-c/archive/refs/tags/json-c-${vers/_/-}.tar.gz"
+vers=0.16
+url="https://s3.amazonaws.com/json-c_releases/releases/json-c-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=json-c-json-c-${vers/_/-}
-OPT_CONFIG=""
+src=json-c-${vers}
+OPT_CONFIG="-DBUILD_STATIC_LIBS=OFF"
 DOCS="AUTHORS COPYING ChangeLog NEWS README README-WIN32.html
     README.html RELEASE_CHECKLIST.txt INSTALL"
 compress=txz
