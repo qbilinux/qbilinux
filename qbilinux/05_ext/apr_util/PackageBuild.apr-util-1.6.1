@@ -6,7 +6,7 @@ url="http://archive.apache.org/dist/apr/apr-util-${vers}.tar.bz2"
 verify=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=3
 src=apr-util-${vers}
 OPT_CONFIG="--with-apr=/usr/bin/apr-1-config --with-berkeley-db=/usr --with-openssl=/usr --with-nss=/usr --with-crypto --with-mysql=/opt/mariadb --with-ldap-include=/usr/include --with-ldap-lib=/usr/${libdir}"
 DOCS='LICENSE README'
