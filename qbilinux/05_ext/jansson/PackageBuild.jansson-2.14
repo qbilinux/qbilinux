@@ -1,8 +1,8 @@
 #!/bin/sh
 ##############################################################
 pkgbase=jansson
-vers=2.13.1
-url="http://www.digip.org/jansson/releases/jansson-${vers}.tar.bz2"
+vers=2.14
+url="https://github.com/akheron/jansson/releases/download/v${vers}/jansson-${vers}.tar.bz2"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
