@@ -5,7 +5,7 @@ vers=0.4.36
 url="https://download.gimp.org/pub/gegl/0.4/gegl-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=gegl-${vers}
 OPT_CONFIG='--buildtype=release -Ddocs=false'
 DOCS='AUTHORS COPYING COPYING.LESSER ChangeLog INSTALL NEWS README'
