@@ -3,7 +3,7 @@ unset LS_BLOCK_SIZE
 export LANG=C
 ##############################################################
 pkgbase=firefox
-vers=102.4.0esr
+vers=102.7.0esr
 url="https://archive.mozilla.org/pub/firefox/releases/${vers}/source/firefox-${vers}.source.tar.xz"
 #verify=$url.asc
 apply_arch="x86_64 i686 armv7l aarch64"
@@ -31,8 +31,11 @@ do_config() {
 
     cp -a ${S[$1]} ${B[$1]}
     cd ${B[$1]}
-    # configure script misdetects the preprocessor without an optimization level
-    sed -i '/ac_cpp=/s/$CPPFLAGS/& -O2/' configure
+    grep -rl \"rU\" | xargs sed -i 's/"rU"/"r"/'
+    sed -e 's/?s)\./?s:.)/'               \
+	-e '/?m)/{s/?m)/?m:/;s/\$"/$)"/}' \
+	-e '/?s)%/{s/?s)/?s:/;s/?"/?)"/}' \
+	-i xpcom/idl-parser/xpidl/xpidl.py
 
     cat > mozconfig <<EOF
 # If you have a multicore machine, all cores will be used by default.
@@ -140,12 +143,14 @@ EOF
 ac_add_options --disable-elf-hack
 EOF
       fi
+    export MACH_BUILD_PYTHON_NATIVE_PACKAGE_SOURCE=none
+    ./mach configure
 }
 
 do_build() {
     cd ${B[$1]}
     export BINDGEN_CFLAGS=$(pkg-config --cflags nspr pixman-1)
-    export MACH_USE_SYSTEM_PYTHON=1
+    export MACH_BUILD_PYTHON_NATIVE_PACKAGE_SOURCE=none
     ./mach build
     if [ $? != 0 ]; then
 	echo "make error. $0 script stop"
@@ -155,7 +160,7 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}
-    export MACH_USE_SYSTEM_PYTHON=1
+    export MACH_BUILD_PYTHON_NATIVE_PACKAGE_SOURCE=none
     DESTDIR=$P ./mach install
     install -v -m755 -d $P/usr/${libdir}/mozilla/plugins
     if [ $? != 0 ]; then
@@ -166,14 +171,13 @@ do_install() {
     # add extra func
     install -d $P/usr/share/applications/
     install firefox.desktop $P/usr/share/applications/
+
+    install -d $P/usr/share/pixmaps/
+    (cd $P/usr/share/pixmaps/; ln -sf /usr/lib/firefox/browser/chrome/icons/default/default128.png firefox.png)
 }
 
 do_package() {
     mv $docdir/$src $docdir/$pkgbase-$vers
-    mkdir -p $P/install
-    cat << EOF >> $P/install/initpkg
-ln -sf /usr/${libdir}/$pkgbase-$vers /usr/${libdir}/$pkgbase
-EOF
     for i in $pkgbase ; do
         cd $P
         /sbin/makepkg $W/$pkg.$compress <<EOF
