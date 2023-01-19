@@ -1,0 +1,32 @@
+From: Balint Reczey <balint.reczey@canonical.com>
+Date: Sat, 10 Oct 2020 21:21:48 +0200
+Subject: [PATCH 2/2] Honor system's LDFLAGS in librarian.sh
+Fixes #228.
+
+Forwarded: https://github.com/Orc/discount/pull/230
+---
+ configure.inc | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/configure.inc b/configure.inc
+index d297685..7139f67 100755
+--- a/configure.inc
++++ b/configure.inc
+@@ -1428,7 +1428,7 @@ LIBNAME=\$LIBRARY.dylib
+ FULLNAME=\$LIBNAME
+ 
+ case "\$ACTION" in
+-make)   FLAGS="$AC_CFLAGS -dynamiclib"
++make)   FLAGS="$AC_CFLAGS $AC_LDFLAGS -dynamiclib"
+ 	VFLAGS="-current_version \$VERSION -compatibility_version \$MAJOR"
+ 
+ 	rm -f \$LIBRARY
+@@ -1484,7 +1484,7 @@ LIBNAME=\$LIBRARY.so
+ FULLNAME=\$LIBNAME.\$VERSION
+ 
+ case "\$ACTION" in
+-make)   FLAGS="$AC_CFLAGS -shared"
++make)   FLAGS="$AC_CFLAGS $AC_LDFLAGS -shared"
+ 	unset VFLAGS
+ 	test "$USE_SONAME" && VFLAGS="-Wl,-soname,\$LIBNAME.\$MAJOR"
+ 
