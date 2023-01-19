@@ -1,0 +1,29 @@
+Description: Fix typos
+Origin: vendor
+Forwarded: no
+Author: Alessandro Ghedini <ghedo@debian.org>
+Reviewed-by: Alessandro Ghedini <ghedo@debian.org>
+Last-Update: 2017-09-20
+
+--- a/markdown.7
++++ b/markdown.7
+@@ -306,7 +306,7 @@
+ .Nm
+ supports ordered (numbered) and unordered (bulleted) lists.
+ .Pp
+-Unordered lists use asterisks, pluses, and hyphens -- interchangably
++Unordered lists use asterisks, pluses, and hyphens -- interchangeably
+ \-- as list markers:
+ .Bd -literal -offset indent
+     *   Red
+--- a/mkd2html.c
++++ b/mkd2html.c
+@@ -74,7 +74,7 @@
+ struct h_opt opts[] = {
+     { GFM,           "gfm",'G', 0,       "Github style markdown" },
+     { ADD_CSS,       "css", 0, "url",    "Additional css for this page" },
+-    { ADD_HEADER, "header", 0, "header", "Additonal headers for this page" },
++    { ADD_HEADER, "header", 0, "header", "Additional headers for this page" },
+     { ADD_FOOTER, "footer", 0, "footer", "Additional footers for this page" },
+ };
+ #define NROPTS (sizeof opts/sizeof opts[0])
