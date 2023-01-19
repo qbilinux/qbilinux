@@ -6,7 +6,7 @@ url="http://www.apache.org/dist/httpd/httpd-${vers}.tar.gz"
 verify=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=${pkgbase}-${vers}
 OPT_CONFIG="--enable-layout=Slackware-FHS --enable-mods-shared=all --enable-mods-shared=cgi --enable-mpms-shared=all --mandir=/usr/share/man --enable-ssl --with-ssl=/usr"
 DOCS='ABOUT_APACHE INSTALL InstallBin.dsp LICENSE README README.platforms'
