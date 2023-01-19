@@ -1,37 +1,49 @@
 #!/bin/sh
 ##############################################################
-pkgbase=py3_numpy
-vers=1.21.4
-url="https://github.com/numpy/numpy/releases/download/v${vers}/numpy-${vers}.tar.gz"
+pkgbase="py3_Mako"
+vers=1.2.4
+url="https://files.pythonhosted.org/packages/source/M/Mako/Mako-${vers}.tar.gz"
+commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=numpy-$vers
-OPT_CONFIG='--disable-static'
-DOCS='INSTALL.rst.txt LICENSE.txt PKG-INFO THANKS.txt'
+src=Mako-${vers}
+OPT_CONFIG=''
+DOCS='AUTHORS LICENSE README.rst'
 patchfiles=''
 compress=txz
 SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
 SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################
 
+
 source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
-    cd ${S[$i]}
+    cd ${S[$1]}
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
 }
 
+
 do_config() {
     if [ -d ${B[$1]} ] ; then rm -rf ${B[$1]} ; fi
 
     cp -a ${S[$1]} ${B[$1]}
+    cd ${B[$1]}
+    if [ -f setup.py ] ; then
+	python3 ./setup.py config
+    fi
+    if [ $? != 0 ]; then
+	echo "configure error. $0 script stop"
+	exit 255
+    fi
 }
 
 do_build() {
     cd ${B[$1]}
+    export LDFLAGS='-Wl,--as-needed'
     if [ -f setup.py ] ; then
 	python3 ./setup.py build
     fi
@@ -43,13 +55,20 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}
-    if [ -f setup.py ] ; then
-      python3 ./setup.py install --root $P
-    fi
+    export LDFLAGS='-Wl,--as-needed'
+    python3 ./setup.py install --root=$P
+    # if [ -f setup.py ] ; then
+    # 	python3 ./setup.py bdist --format=xztar
+    # 	(cd $P ; tar xvf ${B[$1]}/dist/${pkgbase}-${vers}.linux-${arch}.tar.xz)
+    # fi
     if [ $? != 0 ]; then
 	echo "make install error. $0 script stop"
 	exit 255
     fi
+
+    # add extra func
+    # mkdir -p $P2/hoge
+    # cp hoge.txt $P2/hoge
 }
 
 do_package() {
