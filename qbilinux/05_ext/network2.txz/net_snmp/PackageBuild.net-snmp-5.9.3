@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=net_snmp
-vers=5.9.1
+vers=5.9.3
 url="https://downloads.sourceforge.net/project/net-snmp/net-snmp/${vers}/net-snmp-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=net-snmp-${vers}
 OPT_CONFIG='--disable-static --with-krb5=/usr/heimdal --with-defaults --with-python-modules'
 DOCS='AGENT.txt COPYING ChangeLog INSTALL NEWS README README.Panasonic_AM3X.txt README.agent-mibs README.agentx README.aix README.hpux11 README.irix README.krb5 README.osX README.snmpv3 README.solaris README.sql README.thread README.tru64 README.win32 TODO'
