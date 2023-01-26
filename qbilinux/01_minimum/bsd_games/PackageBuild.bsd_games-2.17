@@ -11,7 +11,7 @@ url="http://www.ibiblio.org/pub/linux/games/bsd-games-${vers}.tar.gz
     https://qbilinux.org/pub/source/hangman-words.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=3
+build=4
 src=bsd-games-$vers
 patchfiles=""
 OPT_CONFIG=""
