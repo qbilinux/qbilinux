@@ -1,0 +1,211 @@
+#!/bin/sh
+##############################################################
+pkgbase="krb5"
+vers=1.20.1
+url="https://kerberos.org/dist/krb5/${vers%.*}/krb5-${vers}.tar.gz"
+commitid=
+apply_arch="x86_64 i686 armv7l aarch64"
+arch=`uname -m`
+build=1
+src=krb5-${vers}
+OPT_CONFIG='--with-system-et --with-system-ss --with-system-verto=no --enable-dns-for-realm'
+DOCS='README'
+patchfiles=''
+compress=txz
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
+##############################################################
+
+
+source /usr/src/qbilinux/PackageBuild.def
+
+do_prepare() {
+    cd ${S[$1]}
+    for patch in $patchfiles ; do
+	patch -p1 < $W/$patch
+    done
+    sed -i '210a if (sprinc == NULL) {\
+       status = "NULL_SERVER";\
+       errcode = KRB5KDC_ERR_S_PRINCIPAL_UNKNOWN;\
+       goto cleanup;\
+       }' src/kdc/do_tgs_req.c
+}
+
+
+do_config() {
+    if [ -d ${B[$1]} ] ; then rm -rf ${B[$1]} ; fi
+
+    mkdir ${B[$1]}
+    cd ${B[$1]}
+    if [ -x ${S[$1]}/src/configure ] ; then
+      export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
+      export LDFLAGS='-Wl,--as-needed' 
+      ${S[$1]}/src/configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir='${prefix}'/share/man ${OPT_CONFIG[$1]}
+    fi
+    if [ $? != 0 ]; then
+	echo "configure error. $0 script stop"
+	exit 255
+    fi
+}
+
+do_build() {
+    cd ${B[$1]}
+    export LDFLAGS='-Wl,--as-needed'
+    make
+    if [ $? != 0 ]; then
+	echo "make error. $0 script stop"
+	exit 255
+    fi
+}
+
+do_install() {
+    cd ${B[$1]}
+    export LDFLAGS='-Wl,--as-needed'
+    make install DESTDIR=$P
+    if [ $? != 0 ]; then
+	echo "make install error. $0 script stop"
+	exit 255
+    fi
+
+    # add extra func
+    ln -sf mech.5 $mandir/man5/qop.5
+    install -d $P/etc
+    install -m 644 $S/krb5.conf $P/etc
+    install -m 644 $S/etc/services.append $P/etc/services.append-kerberos
+    install -d $P/etc/rc.d/init.d
+    cat <<- "EOF" > $P/etc/rc.d/init.d/heimdal
+	#!/bin/sh -f
+	#
+	# description: The Heimdal Kerberos5 KDC Master server and its administration
+	#              daemons.
+	# processname: heimdal
+	# chkconfig: 2345 11 89
+	#
+	# Creation:	1997-04-10
+	# Auther:	JuK
+	# HISTORY
+	# 2006-01-02	JuK	port to Heimdal on Plamo Linux
+	# 2001-10-01	JuK	port to RH7.1
+	#
+	KDC=/usr/libexec/kdc
+	kdcdaemon="heimdal (Kerberos 5 KDC)"
+	KADMIND=/usr/libexec/kadmind
+	kdmdaemon="kadmind (Kerberos DB admin. daemon)"
+	KPASSWDD=/usr/libexec/kpasswdd
+	kpwdaemon="kpasswdd (Kerberos password daemon)"
+	
+	kdcpid=`ps ax | grep $KDC | grep -v grep | sed -e 's/^  *//' -e 's/ .*//'`
+	kdmpid=`ps ax | grep $KADMIND | grep -v grep | sed -e 's/^  *//' -e 's/ .*//'`
+	kpwpid=`ps ax | grep $KPASSWDD | grep -v grep | sed -e 's/^  *//' -e 's/ .*//'`
+	
+	#
+	# start or stop kdc (KDC)
+	# start or stop kadmind (Kerberos DB admin. daemon)
+	# start or stop kpasswdd (Kerberos password daemon)
+	#
+	case $1 in
+	start)
+	  if [ -f $KDC ] ; then
+	    if [ -z "$kdcpid" ] ; then
+	      $KDC &
+	      echo "$0: $kdcdaemon started."
+	      kdcpid=`ps ax | grep $KDC | grep -v grep | sed -e 's/^  *//' -e 's/ .*//'`
+	      echo "$0: Proccess ID = $kdcpid"
+	    else
+	      echo "$0: $kdcdaemon is ALREADY running (PID = $kdcpid)."
+	    fi
+	  else
+	    echo "$0: $KDC does NOT exist."
+	    exit 1
+	  fi
+	  if [ -f $KADMIND ] ; then
+	    if [ -z "$kdmpid" ] ; then
+	      $KADMIND &
+	      echo "$0: $kdmdaemon started."
+	      kdmpid=`ps ax | grep $KADMIND | grep -v grep | sed -e 's/^  *//' -e 's/ .*//'`
+	      echo "$0: Proccess ID = $kdmpid"
+	    else
+	      echo "$0: $kdmdaemon is ALREADY running (PID = $kdmpid)."
+	    fi
+	  else
+	    echo "$0: $KADMIND does NOT exist."
+	    exit 1
+	  fi
+	  if [ -f $KPASSWDD ] ; then
+	    if [ -z "$kpwpid" ] ; then
+	      $KPASSWDD &
+	      echo "$0: $kpwdaemon started."
+	      kpwpid=`ps ax | grep $KPASSWDD | grep -v grep | sed -e 's/^  *//' -e 's/ .*//'`
+	      echo "$0: Proccess ID = $kpwpid"
+	    else
+	      echo "$0: $kpwdaemon is ALREADY running (PID = $kpwpid)."
+	    fi
+	  else
+	    echo "$0: $KPASSWDD does NOT exist."
+	    exit 1
+	  fi
+	  ;;
+	stop)
+	  if [ -f $KDC ] ; then
+	    if [ -n "$kdcpid" ] ; then
+	      kill $kdcpid
+	      echo "$0: $kdcdaemon has been killed."
+	    else
+	      echo "$0: $kdcdaemon is NOT running."
+	    fi
+	  fi
+	  if [ -f $KADMIND ] ; then
+	    if [ -n "$kdmpid" ] ; then
+	      kill $kdmpid
+	      echo "$0: $kdmdaemon has been killed."
+	    else
+	      echo "$0: $kdmdaemon is NOT running."
+	    fi
+	  fi
+	  if [ -f $KPASSWDD ] ; then
+	    if [ -n "$kpwpid" ] ; then
+	      kill $kpwpid
+	      echo "$0: $kpwdaemon has been killed."
+	    else
+	      echo "$0: $kpwdaemon is NOT running."
+	    fi
+	  fi
+	  ;;
+	*)
+	  echo "usage: $0 {start|stop}"
+	  # check kdc
+	  if [ -n "$kdcpid" ] ; then
+	    echo "$0: $kdcdaemon is ALREADY running (PID = $kdcpid)."
+	  else
+	    echo "$0: $kdcdaemon is NOT running."
+	  fi
+	  # check kadmind
+	  if [ -n "$kdmpid" ] ; then
+	    echo "$0: $kdmdaemon is ALREADY running (PID = $kdmpid)."
+	  else
+	    echo "$0: $kdmdaemon is NOT running."
+	  fi
+	  # check kpasswdd
+	  if [ -n "$kpwpid" ] ; then
+	    echo "$0: $kpwdaemon is ALREADY running (PID = $kpwpid)."
+	  else
+	    echo "$0: $kpwdaemon is NOT running."
+	  fi
+	  exit 1
+	  ;;
+	esac
+	exit 0
+	EOF
+}
+
+do_package() {
+    for i in $pkgbase ; do
+        cd $P
+        /sbin/makepkg $W/$pkg.$compress <<EOF
+y
+1
+EOF
+    done
+}
+
+source /usr/src/qbilinux/PackageBuild.func

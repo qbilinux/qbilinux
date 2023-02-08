@@ -6,7 +6,7 @@ vers=2.1.28
 url="https://github.com/cyrusimap/cyrus-sasl/releases/download/cyrus-sasl-${vers}/cyrus-sasl-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=cyrus-sasl-$vers
 patchfiles=""
 OPT_CONFIG="--with-dbpath=/var/lib/sasl/sasldb2

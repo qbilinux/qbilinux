@@ -1,0 +1,99 @@
+#!/bin/sh
+
+######################################################################
+pkgbase=ncurses
+vers=6.3
+url="http://ftp.gnu.org/gnu/ncurses/ncurses-${vers}.tar.gz"
+apply_arch="x86_64 i686 armv7l aarch64"
+arch=`uname -m`
+build=1
+src=$pkgbase-$vers
+OPT_CONFIG="--with-shared --without-debug --enable-widec
+    --with-manpage-format=normal --disable-ext-colors"
+DOCS="README.MinGW README README.emx NEWS ANNOUNCE COPYING INSTALL
+    TO-DO AUTHORS"
+patchfiles='ncurses-6.0-Charable.patch'
+compress=txz
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
+######################################################################
+
+source /usr/src/qbilinux/PackageBuild.def
+
+do_prepare() {
+    cd ${S[$i]}
+    for patch in $patchfiles ; do
+	patch -p1 < $W/$patch
+    done
+}
+
+do_config() {
+    if [ -d ${B[$1]} ] ; then rm -rf ${B[$1]} ; fi
+
+    cp -a ${S[$1]} ${B[$1]}
+    cd ${B[$1]}
+    if [ $arch == x86_64 -o $arch == aarch64 ] ; then
+	cp -p misc/run_tic.in{,.orig}
+	sed -i 's@\<lib\>@lib64@g' misc/run_tic.in
+    fi
+    if [ -x ./configure ] ; then
+	export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
+	export LDFLAGS='-Wl,--as-needed' 
+	./configure --prefix=/usr --libdir=/${libdir} --sysconfdir=/etc \
+		--localstatedir=/var --infodir='${prefix}'/share/info --mandir='${prefix}'/share/man ${OPT_CONFIG[$1]}
+    fi
+    if [ $? != 0 ]; then
+	echo "configure error. $0 script stop"
+	exit 255
+    fi
+}
+
+do_build() {
+    cd ${B[$1]}
+    if [ -f Makefile ] ; then
+	export LDFLAGS='-Wl,--as-needed'
+	make
+    fi
+    if [ $? != 0 ]; then
+	echo "make error. $0 script stop"
+	exit 255
+    fi
+}
+
+do_install() {
+    cd ${B[$1]}
+    if [ -f Makefile ] ; then
+	export LDFLAGS='-Wl,--as-needed'
+	make install DESTDIR=$P
+    fi
+    if [ $? != 0 ]; then
+	echo "make install error. $0 script stop"
+	exit 255
+    fi
+
+    # add extra func
+    ln -s ncursesw6-config $P/usr/bin/ncurses6-config
+    ln -s libncursesw.so.$vers $P/$libdir/libncurses.so.6
+    ln -s libncurses.so.6 $P/$libdir/libncurses.so
+    ln -s libncursesw.so.$vers $P/$libdir/libcurses.so.6
+    ln -s libncursesw.a $P/$libdir/libcurses.a
+    ln -s libcurses.so.6 $P/$libdir/libcurses.so
+    ln -s libncursesw.so.$vers $P/$libdir/libncursesw.so.5
+    ln -s libpanelw.so.$vers $P/$libdir/libpanelw.so.5
+    ln -s libmenuw.so.$vers $P/$libdir/libmenuw.so.5
+    ln -s libformw.so.$vers $P/$libdir/libformw.so.5
+    install -d $P/usr/$libdir
+    ln -s /usr/share/terminfo $P/usr/$libdir
+}
+
+do_package() {
+    for i in $pkgbase ; do
+        cd $P
+        /sbin/makepkg $W/$pkg.$compress <<EOF
+y
+1
+EOF
+    done
+}
+
+source /usr/src/qbilinux/PackageBuild.func

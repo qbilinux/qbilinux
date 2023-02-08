@@ -1,0 +1,94 @@
+#!/bin/sh
+##############################################################
+pkgbase=cups
+vers=2.3.6
+url="https://github.com/apple/cups/archive/refs/tags/v${vers}.tar.gz"
+srcfile=cups-${vers}.tar.gz
+apply_arch="x86_64 i686 armv7l aarch64"
+arch=`uname -m`
+build=2
+src=cups-${vers}
+OPT_CONFIG='--disable-systemd --with-rcdir=/etc/rc.d'
+DOCS='CHANGES-1.0.txt CHANGES-1.1.txt CHANGES-1.2.txt CHANGES-1.3.txt CHANGES-1.4.txt CHANGES-1.5.txt CHANGES-1.6.txt CHANGES-1.7.txt CHANGES-IPPTOOL.txt CHANGES.txt CREDITS.txt INSTALL.txt IPPTOOL.txt LICENSE.txt README.txt'
+patchfiles=''
+compress=txz
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
+##############################################################
+
+source /usr/src/qbilinux/PackageBuild.def
+
+do_prepare() {
+    cd ${S[$i]}
+    for patch in $patchfiles ; do
+	patch -p1 < $W/$patch
+    done
+
+    # BLFS setup
+    sed -i 's:555:755:g;s:444:644:g' Makedefs.in 
+    sed -i '/MAN.*.EXT/s:.gz::g' \
+	configure config-scripts/cups-manpages.m4
+    sed -i '/LIBGCRYPTCONFIG/d' config-scripts/cups-ssl.m4
+}
+
+do_config() {
+    if [ -d ${B[$1]} ] ; then rm -rf ${B[$1]} ; fi
+
+    cp -a ${S[$1]} ${B[$1]}
+    cd ${B[$1]}
+
+    # Dirty hack .. X-<
+    if [ "$arch" = "x86_64" -o "$arch" = "aarch64" ]; then
+	sed -i "s|/lib/security/|/lib64/security/|" config-scripts/cups-pam.m4
+    fi
+
+    aclocal  -I config-scripts
+    autoconf -I config-scripts
+
+    if [ -x ${S[$1]}/configure ] ; then
+	export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
+	export LDFLAGS='-Wl,--as-needed' 
+	${S[$1]}/configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc \
+		--localstatedir=/var --infodir='${prefix}'/share/info --mandir='${prefix}'/share/man ${OPT_CONFIG[$1]}
+    fi
+    if [ $? != 0 ]; then
+	echo "configure error. $0 script stop"
+	exit 255
+    fi
+}
+
+do_build() {
+    cd ${B[$1]}
+    if [ -f Makefile ] ; then
+	export LDFLAGS='-Wl,--as-needed'
+	make
+    fi
+    if [ $? != 0 ]; then
+	echo "make error. $0 script stop"
+	exit 255
+    fi
+}
+
+do_install() {
+    cd ${B[$1]}
+    if [ -f Makefile ] ; then
+	export LDFLAGS='-Wl,--as-needed'
+	make install DSTROOT=$P
+    fi
+    if [ $? != 0 ]; then
+	echo "make install error. $0 script stop"
+	exit 255
+    fi
+}
+
+do_package() {
+    for i in $pkgbase ; do
+        cd $P
+        /sbin/makepkg $W/$pkg.$compress <<EOF
+y
+1
+EOF
+    done
+}
+
+source /usr/src/qbilinux/PackageBuild.func

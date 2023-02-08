@@ -1,0 +1,18 @@
+Description: Do not add "iconv" to pkg-config unless it is needed
+Forwarded: https://github.com/libarchive/libarchive/pull/1825
+Author: Peter Pentchev <roam@ringlet.net>
+Last-Update: 2022-12-24
+
+--- a/configure.ac
++++ b/configure.ac
+@@ -378,7 +378,9 @@
+     AC_CHECK_HEADERS([localcharset.h])
+     am_save_LIBS="$LIBS"
+     LIBS="${LIBS} ${LIBICONV}"
+-    LIBSREQUIRED="$LIBSREQUIRED${LIBSREQUIRED:+ }iconv"
++    if test -n "$LIBICONV"; then
++      LIBSREQUIRED="$LIBSREQUIRED${LIBSREQUIRED:+ }iconv"
++    fi
+     AC_CHECK_FUNCS([locale_charset])
+     LIBS="${am_save_LIBS}"
+     if test "x$ac_cv_func_locale_charset" != "xyes"; then

@@ -1,0 +1,180 @@
+#!/bin/sh
+##############################################################
+pkgbase=qt5
+vers=5.15.7
+url="http://download.qt.io/archive/qt/${vers%.*}/${vers}/single/qt-everywhere-opensource-src-${vers}.tar.xz"
+apply_arch="x86_64 i686 armv7l aarch64"
+arch=`uname -m`
+build=1
+src=qt-everywhere-src-${vers}
+if [ $arch = "aarch64" ]; then
+OPT_CONFIG="-sysconfdir     /etc/xdg   \
+            -confirm-license           \
+            -opensource                \
+            -dbus-linked               \
+            -openssl-linked            \
+            -system-harfbuzz           \
+            -system-sqlite             \
+            -nomake examples           \
+            -no-rpath                  \
+            -no-assimp                 \
+	    -headerdir /usr/include/qt5 \
+	    -docdir /usr/share/doc/${src} \
+	    -ssl -icu -release -qpa xcb -pulseaudio \
+            -skip qtwebengine"
+elif [ $arch = "armv7l" ]; then
+OPT_CONFIG="-sysconfdir     /etc/xdg   \
+            -confirm-license           \
+            -opensource                \
+            -dbus-linked               \
+            -openssl-linked            \
+            -system-harfbuzz           \
+            -system-sqlite             \
+            -nomake examples           \
+            -no-rpath                  \
+	    -headerdir /usr/include/qt5 \
+	    -docdir /usr/share/doc/${src} \
+	    -ssl -icu -release -qpa xcb -pulseaudio \
+            -skip qtwebengine"
+else
+OPT_CONFIG="-sysconfdir     /etc/xdg   \
+            -confirm-license           \
+            -opensource                \
+            -dbus-linked               \
+            -openssl-linked            \
+            -system-harfbuzz           \
+            -system-sqlite             \
+            -nomake examples           \
+            -no-rpath                  \
+	    -headerdir /usr/include/qt5 \
+	    -docdir /usr/share/doc/${src} \
+	    -ssl -icu -release -qpa xcb -pulseaudio \
+            -skip qtwebengine"
+fi
+DOCS='LGPL_EXCEPTION.txt LICENSE.FDL LICENSE.GPLv2 LICENSE.GPLv3 LICENSE.LGPLv21 LICENSE.LGPLv3 LICENSE.PREVIEW.COMMERCIAL README'
+patchfiles='socketcanbackend.patch'
+compress=txz
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
+##############################################################
+
+source /usr/src/qbilinux/PackageBuild.def
+
+do_prepare() {
+    cd ${S[$1]}
+    for patch in $patchfiles ; do
+	patch -p1 < $W/$patch
+    done
+    sed -i '/utility/a #include <limits>'     qtbase/src/corelib/global/qglobal.h         &&
+	sed -i '/string/a #include <limits>'      qtbase/src/corelib/global/qfloat16.h        &&
+	sed -i '/qbytearray/a #include <limits>'  qtbase/src/corelib/text/qbytearraymatcher.h &&
+	sed -i '/type_traits/a #include <limits>' qtdeclarative/src/qmldebug/qqmlprofilerevent_p.h
+}
+
+do_config() {
+    if [ -d ${B[$1]} ] ; then rm -rf ${B[$1]} ; fi
+
+    mkdir ${B[$1]}
+    cd ${B[$1]}
+    export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
+    export LDFLAGS='-Wl,--as-needed' 
+    export CXXFLAGS=-std=c++11
+    ${S[$i]}/configure -prefix /usr/${libdir}/qt5 -libdir /usr/${libdir} -L /opt/mariadb/${libdir} \
+	    -plugindir /usr/${libdir}/qt5/plugins -importdir /usr/${libdir}/qt5/imports $OPT_CONFIG
+    if [ $? != 0 ]; then
+	echo "configure error. $0 script stop"
+	exit 255
+    fi
+}
+
+do_build() {
+    cd ${B[$1]}
+    export LDFLAGS='-Wl,--as-needed'
+    export CXXFLAGS=-std=c++11
+    make
+    if [ $? != 0 ]; then
+	echo "make error. $0 script stop"
+	exit 255
+    fi
+}
+
+do_install() {
+    cd ${B[$1]}
+    export LDFLAGS='-Wl,--as-needed'
+    export CXXFLAGS=-std=c++11
+    make install INSTALL_ROOT=$P
+    if [ $? != 0 ]; then
+	echo "make install error. $0 script stop"
+	exit 255
+    fi
+
+    # add extra func
+    mkdir -p $P/usr/bin
+    for BIN in $P/usr/lib${suffix}/qt5/bin/*; do
+	TMP_FILE=$(echo $BIN | sed -e "s|$P||")
+	case $(basename $BIN) in
+	    syncqt.pl)
+		ln -s $TMP_FILE $P/usr/bin/$(basename $BIN)
+		;;
+	    *)
+		ln -s $TMP_FILE $P/usr/bin/$(basename $BIN)-qt5
+		;;
+	esac
+    done
+
+    cat > $P/usr/lib${suffix}/pkgconfig/Qt5.pc << EOF
+prefix=/usr/lib${suffix}/qt5
+bindir=\${prefix}/bin
+datadir=\${prefix}
+docdir=/usr/share/doc/qt-${vers}
+archdatadir=\${prefix}
+examplesdir=\${prefix}/examples
+headerdir=/usr/include/qt5
+importdir=\${prefix}/imports
+qmldir=\${prefix}/qml
+libdir=/usr/lib${suffix}
+libexec=\${prefix}/libexec
+moc=\${bindir}/moc
+plugindir=\${prefix}/plugins
+qmake=\${bindir}/qmake
+sysconfdir=/etc/xdg
+translationdir=\${prefix}/translations
+
+Name: Qt5
+Description: Qt5 Configuration
+Version: $VERSION
+EOF
+
+    # While we are at it, there isn't any reason to keep references to $PKG in the *.prl files.
+    for PRL in $(find $P -name "*\.prl"); do
+	sed -i '/^QMAKE_PRL_BUILD_DIR/d' $PRL
+    done
+
+    for i in $W/*.desktop; do
+	install -D -m 0644 $i $P/usr/share/applications/$(basename $i)
+    done
+    sed -i "s|@LIBDIR@|$suffix|" $P/usr/share/applications/*
+
+    # Remove executable bits from files.
+    #find $P \( -name "*.qml" -o -name "*.app" \) -perm 755 -exec chmod 644 '{}' \;
+
+    mkdir -p $P/etc/profile.d
+    sed -e "s|@LIBDIRSUFFIX@|${suffix}|g" $W/qt5.sh  > $P/etc/profile.d/qt5.sh
+    sed -e "s|@LIBDIRSUFFIX@|${suffix}|g" $W/qt5.csh > $P/etc/profile.d/qt5.csh
+    chmod 0755 $PKG/etc/profile.d/*
+
+    # application configurations from BLFS
+    install -dm755 $P/usr/share/applications
+}
+
+do_package() {
+    for i in $pkgbase ; do
+        cd $P
+        /sbin/makepkg $W/$pkg.$compress <<EOF
+y
+1
+EOF
+    done
+}
+
+source /usr/src/qbilinux/PackageBuild.func
