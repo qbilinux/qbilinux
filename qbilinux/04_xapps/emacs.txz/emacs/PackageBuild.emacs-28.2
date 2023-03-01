@@ -6,11 +6,11 @@ url="http://ftp.jaist.ac.jp/pub/GNU/emacs/emacs-${vers}.tar.xz"
 verify=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=4
 src=${pkgbase}-${vers}
 OPT_CONFIG='--with-xim --with-x --with-x-toolkit=gtk3 --without-rsvg --without-gsettings --without-selinux'
 DOCS='COPYING ChangeLog INSTALL README'
-patchfiles=''
+patchfiles='patch-a patch-b'
 file2='wb-line-number.el'
 compress=txz
 SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
