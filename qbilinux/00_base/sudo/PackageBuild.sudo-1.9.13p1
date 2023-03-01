@@ -1,58 +1,21 @@
 #!/bin/sh
-##############################################################
-pkgbase=curl
-vers=7.86.0
-url="http://curl.haxx.se/download/curl-${vers}.tar.bz2"
-commitid=
+
+######################################################################
+pkgbase=sudo
+vers=1.9.13p1
+url="http://www.sudo.ws/sudo/dist/sudo-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=curl-${vers}
-OPT_CONFIG='--disable-ldap --disable-rtsp --disable-static
-    --with-gssapi-includes=/usr/include --without-librtmp --with-libssh2 --with-gnutls'
-DOCS='docs/BINDINGS.md 
-docs/BUGS
-docs/CHECKSRC.md
-docs/CIPHERS.md
-docs/CODE_OF_CONDUCT.md
-docs/CODE_STYLE.md
-docs/CONTRIBUTE.md
-docs/DEPRECATE.md
-docs/FAQ
-docs/FEATURES
-docs/GOVERNANCE.md
-docs/HELP-US.md
-docs/HISTORY.md
-docs/HTTP-COOKIES.md
-docs/HTTP2.md
-docs/INSTALL
-docs/INSTALL.cmake
-docs/INSTALL.md
-docs/INTERNALS.md
-docs/KNOWN_BUGS
-docs/LICENSE-MIXING.md
-docs/MAIL-ETIQUETTE
-docs/MANUAL
-docs/README.cmake
-docs/README.md
-docs/README.netware
-docs/README.win32
-docs/RELEASE-PROCEDURE.md
-docs/RESOURCES
-docs/ROADMAP.md
-docs/SECURITY-PROCESS.md
-docs/SSL-PROBLEMS.md
-docs/SSLCERTS.md
-docs/THANKS
-docs/TODO
-docs/TheArtOfHttpScripting
-docs/VERSIONS
-COPYING README RELEASE-NOTES'
-patchfiles=''
+build=1
+src=$pkgbase-$vers
+OPT_CONFIG="--with-pam --without-sendmail --with-env-editor
+    --with-all-insults --with-hal-insults --with-secure-path"
+DOCS="ABOUT-NLS ChangeLog INSTALL* MANIFEST NEWS README*
+    `echo doc/{CONTRIBUTORS,HISTORY,LICENSE,TROUBLESHOOTING,UPGRADE}`"
 compress=txz
 SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
 SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
-##############################################################
+######################################################################
 
 source /usr/src/qbilinux/PackageBuild.def
 
@@ -104,9 +67,33 @@ do_install() {
     fi
 
     # add extra func
+    mv $P/etc/sudoers $C
+    mv $C/sudoers $P/etc/sudoers.new
+    install -d $P/etc/pam.d
+    cat <<- "EOF" > $P/etc/pam.d/sudo
+	#%PAM-1.0
+	auth		include		qbilinux-default
+	account		include		qbilinux-default
+	password	include		qbilinux-default
+	session		include		qbilinux-default
+	EOF
+    install -d $P/install
+    cat <<- "EOF" >> $P/install/doinst.sh
+	
+	mv etc/sudoers.new /tmp
+	if [ -f etc/sudoers ] ; then
+	  mv /tmp/sudoers.new etc/sudoers.dist
+	else
+	  mv /tmp/sudoers.new etc/sudoers
+	fi
+	EOF
 }
 
 do_package() {
+    mv $docdir/sudo/examples $docdir/$src
+    mv $docdir/$src/{examples,$myname.gz} $C
+    mv $C/{examples,$myname.gz} $docdir/$src
+
     for i in $pkgbase ; do
         cd $P
         /sbin/makepkg $W/$pkg.$compress <<EOF

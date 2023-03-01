@@ -1,21 +1,19 @@
 #!/bin/sh
-
-######################################################################
-ulimit -n 2048
-pkgbase=node
-vers=18.13.0
-url="https://nodejs.org/dist/v${vers}/node-v${vers}.tar.gz"
+##############################################################
+pkgbase=tiff
+vers=4.5.0
+url="https://download.osgeo.org/libtiff/tiff-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=$pkgbase-v${vers}
-OPT_CONFIG="--shared-openssl --shared-nghttp2 --shared-zlib --with-intl=system-icu --shared-libuv --shared-cares"
-DOCS=""
-patchfiles='atomic.patch'
+src=tiff-${vers}
+OPT_CONFIG=''
+DOCS='ChangeLog HOWTO-RELEASE README README.vms RELEASE-DATE TODO'
+patchfiles=""
 compress=txz
 SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
 SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
-######################################################################
+##############################################################
 
 source /usr/src/qbilinux/PackageBuild.def
 
@@ -24,17 +22,18 @@ do_prepare() {
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
+    cp /usr/src/qbilinux/{config.guess,config.sub} config
 }
 
 do_config() {
     if [ -d ${B[$1]} ] ; then rm -rf ${B[$1]} ; fi
 
-    cp -a ${S[$1]} ${B[$1]}
+    mkdir ${B[$1]}
     cd ${B[$1]}
-    if [ -x ./configure ] ; then
-	export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
-	export LDFLAGS='-Wl,--as-needed' 
-	./configure --prefix=/usr ${OPT_CONFIG[$1]}
+    if [ -f ${S[$1]}/CMakeLists.txt ]; then
+      export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
+      export LDFLAGS='-Wl,--as-needed' 
+      cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DLIB_INSTALL_DIR:PATH=/usr/${libdir} -DLIB_SUFFIX=$suffix ${OPT_CONFIG} ${S[$1]}
     fi
     if [ $? != 0 ]; then
 	echo "configure error. $0 script stop"
@@ -64,8 +63,6 @@ do_install() {
 	echo "make install error. $0 script stop"
 	exit 255
     fi
-
-    # add extra func
 }
 
 do_package() {

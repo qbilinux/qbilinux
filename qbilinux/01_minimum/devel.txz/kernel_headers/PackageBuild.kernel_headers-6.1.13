@@ -1,10 +1,10 @@
 #!/bin/sh -x
 
 ######################################################################
-pkgbase=kernelsrc
-version=5.15.85
-url="https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-${version%.*}.tar.xz
-	https://cdn.kernel.org/pub/linux/kernel/v5.x/patch-${version}.xz"
+pkgbase=kernel_headers
+version=6.1.13
+url="https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-${version%.*}.tar.xz
+	https://cdn.kernel.org/pub/linux/kernel/v6.x/patch-${version}.xz"
 #	git://github.com/sfjro/aufs5-standalone.git"
 apply_arch="x86_64 i686"
 arch=`uname -m`
@@ -28,7 +28,6 @@ esac
 #aufs_git_vers=5a1e53d
 OPT_CONFIG=""
 DOCS=""
-NOCOMPRESS=y
 compress=txz
 SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
 SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
@@ -62,57 +61,19 @@ do_config() {
 
 do_build() {
     cd ${B[$1]}
-
-    make prepare scripts
-    mv include/generated/bounds.h $W
-    make clean
-    mv $W/bounds.h include/generated
 }
 
 do_install() {
     cd ${B[$1]}
+    make headers_install INSTALL_HDR_PATH=$P/usr
 
-    install -d $P/usr/src
-    cp -dR . $P/usr/src/linux-${version}
-    find $P/usr/src/$src \( -name ".cocciconfig" \
-	 -o -name ".get_maintainer.ignore" -o -name ".gitignore" \
-	 -o -name ".mailmap" -o -name "*.orig" \) -exec rm {} \;
-    ln -s linux-${version} $P/usr/src/linux
-    install -d $P/sbin
-    cat <<- "EOF" > $P/sbin/installkernel
-	#!/bin/sh
-	#
-	# This file is subject to the terms and conditions of the GNU General Public
-	# License.  See the file "COPYING" in the main directory of this archive
-	# for more details.
-	#
-	# Copyright (C) 1995 by Linus Torvalds
-	#
-	# Adapted from code in arch/i386/boot/Makefile by H. Peter Anvin
-	#
-	# "make install" script for i386 architecture
-	#
-	# Arguments:
-	#   $1 - kernel version
-	#   $2 - kernel image file
-	#   $3 - kernel map file
-	#   $4 - default install path (blank if root directory)
-	#
-	
-	[ -f $4/config ] && mv $4/config $4/config.old
-	cp .config $4/config
-	[ -f $4/vmlinuz ] && mv $4/vmlinuz $4/vmlinuz.old
-	cat $2 > $4/vmlinuz
-	[ -f $4/System.map ] && mv $4/System.map $4/System.old
-	cp $3 $4/System.map
-	
-	if [ -x /sbin/lilo -a -f /etc/lilo.conf ] ; then
-	  /sbin/lilo
-	else
-	  sync
-	fi
-	EOF
-    chmod 755 $P/sbin/installkernel
+    if [ $? != 0 ]; then
+	echo "make install error. $0 script stop"
+	exit 255
+    fi
+
+    find $P/usr/include \( -name ".install" -o -name "..install.cmd" \) \
+	 -exec rm {} \;
 }
 
 do_package() {

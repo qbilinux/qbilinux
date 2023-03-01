@@ -1,16 +1,14 @@
 #!/bin/sh
 ##############################################################
-pkgbase=webkitgtk4
-vers=2.38.2
-url="http://webkitgtk.org/releases/webkitgtk-${vers}.tar.xz"
-verify=
-commitid=
+pkgbase=xorg_server
+vers=21.1.7
+url="http://www.x.org/releases/individual/xserver/xorg-server-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=webkitgtk-${vers}
-OPT_CONFIG='-DPORT=GTK -DCMAKE_BUILD_TYPE=Release -DUSE_LIBHYPHEN=OFF -DENABLE_MINIBROWSER=ON -DENABLE_BUBBLEWRAP_SANDBOX=OFF -DUSE_SYSTEMD=OFF -DENABLE_GAMEPAD=OFF -DUSE_SOUP2=ON'
-DOCS='NEWS'
+build=1
+src=xorg-server-${vers}
+OPT_CONFIG='-Dsystemd_logind=false -Dlisten_tcp=true'
+DOCS='COPYING ChangeLog INSTALL README.md'
 patchfiles=''
 compress=txz
 SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
@@ -20,7 +18,7 @@ SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
-    cd ${S[$1]}
+    cd ${S[$i]}
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
@@ -31,9 +29,11 @@ do_config() {
 
     mkdir ${B[$1]}
     cd ${B[$1]}
-    export PKG_CONFIG_PATH=/opt/kde/${libdir}/pkgconfig:/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
-    export LDFLAGS='-Wl,--as-needed' 
-    cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DLIB_INSTALL_DIR:PATH=/usr/${libdir} -DLIB_SUFFIX=$suffix ${OPT_CONFIG} $S
+    if [ -f ${S[$1]}/meson.build ] ; then
+      export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
+      export LDFLAGS='-Wl,--as-needed' 
+      meson --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir=/usr/share/man ${OPT_CONFIG[$1]} ${S[$1]}
+    fi
     if [ $? != 0 ]; then
 	echo "configure error. $0 script stop"
 	exit 255
@@ -43,7 +43,7 @@ do_config() {
 do_build() {
     cd ${B[$1]}
     export LDFLAGS='-Wl,--as-needed'
-    make Programs_DumpRenderTree_LDFLAGS="-no-fast-install -no-install -lfontconfig"
+    ninja
     if [ $? != 0 ]; then
 	echo "make error. $0 script stop"
 	exit 255
@@ -53,13 +53,14 @@ do_build() {
 do_install() {
     cd ${B[$1]}
     export LDFLAGS='-Wl,--as-needed'
-    make install DESTDIR=$P
+    DESTDIR=$P ninja install
     if [ $? != 0 ]; then
 	echo "make install error. $0 script stop"
 	exit 255
     fi
 
     # add extra func
+    chmod +s $P/usr/bin/Xorg
 }
 
 do_package() {

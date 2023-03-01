@@ -1,15 +1,20 @@
 #!/bin/sh -x
 
 ######################################################################
-pkgbase=kernel_headers
-version=5.15.85
-url="https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-${version%.*}.tar.xz
-	https://cdn.kernel.org/pub/linux/kernel/v5.x/patch-${version}.xz"
+#url="https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.12.2.tar.xz
+#    git://github.com/sfjro/aufs4-standalone.git"
+version=6.1.13
+#url="https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-${version%.*}.tar.xz"
+#url="https://git.kernel.org/torvalds/t/linux-${version}.tar.gz
+url="https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-${version%.*}.tar.xz
+	https://cdn.kernel.org/pub/linux/kernel/v6.x/patch-${version}.xz"
 #	git://github.com/sfjro/aufs5-standalone.git"
+pkgbase=kernel
 apply_arch="x86_64 i686"
 arch=`uname -m`
 build=1
 src=linux-${version%.*}
+#src=linux-${version}
 patchfiles="cjktty-kernel-5.15.patch cjktty-kernel-font-JP.patch overlayfs-allow_unprivileged_mounts.patch"
 patchfiles_not_used="tuxonice-5.4.8-20200116-f147d78.diff 4.8-morse_code_panics.patch 4.8-panic_beep.patch"
 configfile64="config-${version%.*}-x64"
@@ -24,8 +29,8 @@ case $arch in
 	configfile=$configfile32
 	;;
 esac
-#git_branch=aufs5.4
-#aufs_git_vers=5a1e53d
+#git_branch=aufs5.x-rcN
+#aufs_git_vers=ac34d21
 OPT_CONFIG=""
 DOCS=""
 compress=txz
@@ -57,23 +62,54 @@ do_config() {
     # cp -av $W/source/aufs5-standalone/fs .
     # cp -pv $W/source/aufs5-standalone/include/uapi/linux/aufs_type.h include/uapi/linux
     cp -p $W/${configfile} .config
+    case $arch in
+	x86_64 | i?86)
+	    cp -p arch/x86/boot/install.sh{,.orig}
+	    head -n-9 arch/x86/boot/install.sh.orig > arch/x86/boot/install.sh
+	    sed -i '/INSTALLKERNEL/s@^@#@g' arch/x86/boot/install.sh
+	    cat <<- "EOF" | patch arch/x86/boot/install.sh
+	48a49
+	> cp .config $4/config-$1
+	EOF
+	    sed -i '/\(vmlinuz\|System.map\)$/s@$@-\$1@g' arch/x86/boot/install.sh
+	    ;;
+    esac
 }
 
 do_build() {
     cd ${B[$1]}
+    make
+    if [ $? != 0 ]; then
+	echo "make error. $0 script stop"
+	exit 255
+    fi
 }
 
 do_install() {
     cd ${B[$1]}
-    make headers_install INSTALL_HDR_PATH=$P/usr
+    install -d $P/boot
+    make install INSTALL_PATH=$P/boot
+    make modules_install INSTALL_MOD_PATH=$P
 
     if [ $? != 0 ]; then
 	echo "make install error. $0 script stop"
 	exit 255
     fi
 
-    find $P/usr/include \( -name ".install" -o -name "..install.cmd" \) \
-	 -exec rm {} \;
+    krel=${vers//_/-}
+    case $arch in
+	i?86 | x86_64)
+	    ln -s config-$krel $P/boot/config
+	    ln -s vmlinuz-$krel $P/boot/vmlinuz
+	    ln -s System.map-$krel $P/boot/System.map
+	    ;;
+    esac
+    (rm $P/lib/modules/$krel/source; ln -s /usr/src/linux $P/lib/modules/$krel/source)
+    (rm $P/lib/modules/$krel/build; ln -s /usr/src/linux $P/lib/modules/$krel/build)
+
+    install -d $P/usr/src/linux-${version}/scripts
+    cp Module.symvers $P/usr/src/linux-${version}/
+    cp scripts/module.lds $P/usr/src/linux-${version}/scripts/
 }
 
 do_package() {

@@ -1,0 +1,20 @@
+From: "Barak A. Pearlmutter" <barak+git@pearlmutter.net>
+Date: Tue, 20 Sep 2022 17:19:03 +0100
+Subject: C++ includes
+
+---
+ src/drvpptx.cpp | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/drvpptx.cpp b/src/drvpptx.cpp
+index d3b37b3..1623c26 100644
+--- a/src/drvpptx.cpp
++++ b/src/drvpptx.cpp
+@@ -39,6 +39,7 @@
+ 
+ #include <errno.h>
+ #include <algorithm>
++#include <memory>
+ 
+ #ifdef _MSC_VER
+ // MS VC++ Windows
