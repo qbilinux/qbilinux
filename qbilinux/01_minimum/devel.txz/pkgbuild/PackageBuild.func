@@ -260,7 +260,7 @@ EOF
 
     chk_me=`whoami | grep root`
     if [ "$chk_me.x" != ".x" ]; then
-	chown -R root.root $P/usr/share/doc
+	chown -R root:root $P/usr/share/doc
     fi
 
     ######################################################################
