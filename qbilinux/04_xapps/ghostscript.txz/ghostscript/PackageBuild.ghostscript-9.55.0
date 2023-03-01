@@ -5,7 +5,7 @@ vers=9.55.0
 url="https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs${vers//./}/ghostscript-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=ghostscript-${vers}
 OPT_CONFIG="--x-includes=/usr/include/X11 --x-libraries=/usr/lib64 --disable-compile-inits --with-system-libtiff --with-ijs --with-jbig2dec --with-jasper --with-x --with-drivers=ALL --enable-contrib"
 DOCS='LICENSE'
