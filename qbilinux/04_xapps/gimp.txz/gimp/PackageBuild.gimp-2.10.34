@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=gimp
-vers=2.10.30
+vers=2.10.34
 url="http://download.gimp.org/pub/gimp/v${vers%.*}/gimp-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=gimp-${vers}
 OPT_CONFIG='--disable-python'
 DOCS='AUTHORS COPYING ChangeLog ChangeLog.pre-1-0 ChangeLog.pre-1-2 ChangeLog.pre-2-0 ChangeLog.pre-2-2 ChangeLog.pre-2-4 ChangeLog.pre-2-6 HACKING INSTALL LICENSE NEWS NEWS.pre-2-0 NEWS.pre-2-2 NEWS.pre-2-4 NEWS.pre-2-6 README README.i18n authors.dtd authors.xml authors.xsl'
