@@ -2,13 +2,14 @@
 
 ######################################################################
 pkgbase=iputils
-vers=20211215
+vers=20221126
 url="https://github.com/iputils/iputils/archive/${vers}.tar.gz"
+srcfile=iputils-${vers}.tar.gz
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
 src=$pkgbase-$vers
-OPT_CONFIG="-DBUILD_TRACEROUTE6=true"
+OPT_CONFIG=""
 DOCS="CHANGES LICENSE README.md"
 patchfiles=''
 compress=txz
