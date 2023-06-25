@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=iproute2
-vers=5.16.0
+vers=6.2.0
 url="https://www.kernel.org/pub/linux/utils/net/iproute2/iproute2-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
