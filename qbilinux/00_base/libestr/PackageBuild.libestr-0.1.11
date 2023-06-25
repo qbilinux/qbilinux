@@ -2,7 +2,8 @@
 ##############################################################
 pkgbase=libestr
 vers=0.1.11
-url="http://libestr.adiscon.com/files/download/libestr-${vers}.tar.gz"
+url="https://github.com/rsyslog/libestr/archive/refs/tags/v${vers}.tar.gz"
+srcfile=libestr-${vers}.tar.gz
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
