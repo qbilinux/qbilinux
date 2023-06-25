@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase=eudev
-vers=3.2.9
+vers=3.2.10
 url="https://dev.gentoo.org/~blueness/eudev/eudev-${vers}.tar.gz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
