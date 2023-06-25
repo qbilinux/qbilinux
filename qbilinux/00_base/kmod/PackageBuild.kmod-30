@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=kmod
-vers=29
+vers=30
 url="https://www.kernel.org/pub/linux/utils/kernel/kmod/kmod-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
