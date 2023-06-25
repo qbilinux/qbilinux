@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=elfutils
-vers=0.186
+vers=0.189
 url="https://fedorahosted.org/releases/e/l/elfutils/${vers}/elfutils-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
