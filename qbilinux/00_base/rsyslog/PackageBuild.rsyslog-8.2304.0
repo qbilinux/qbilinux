@@ -2,12 +2,12 @@
 
 ######################################################################
 pkgbase=rsyslog
-vers=8.2206.0
+vers=8.2304.0
 url="https://github.com/rsyslog/rsyslog/archive/refs/tags/v${vers}.tar.gz"
 srcfile=$pkgbase-$vers.tar.gz
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=$pkgbase-$vers
 OPT_CONFIG="--sbindir=/sbin"
 DOCS="COPYING README AUTHORS INSTALL COPYING.LESSER NEWS ChangeLog"
