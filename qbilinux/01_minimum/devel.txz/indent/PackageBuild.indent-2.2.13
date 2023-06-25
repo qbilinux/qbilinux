@@ -2,11 +2,11 @@
 
 ######################################################################
 pkgbase=indent
-vers=2.2.12
+vers=2.2.13
 url="ftp://ftp.gnu.org/gnu/indent/indent-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=3
+build=1
 src=$pkgbase-$vers
 patchfiles=""
 OPT_CONFIG=""
