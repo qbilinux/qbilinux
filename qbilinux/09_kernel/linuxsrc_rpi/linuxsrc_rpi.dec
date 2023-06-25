@@ -1,4 +1,4 @@
-kernelsrc_rpi & y & y & y & y
+linuxsrc_rpi & y & y & y & y
 &
 Linux kernel ソースコード
 &
