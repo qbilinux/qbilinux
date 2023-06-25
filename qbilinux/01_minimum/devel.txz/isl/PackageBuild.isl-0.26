@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase=isl
-vers=0.24
+vers=0.26
 url="https://libisl.sourceforge.io/isl-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
