@@ -2,8 +2,8 @@
 
 ######################################################################
 pkgbase=hdparm
-vers=9.63
-url="https://downloads.sourceforge.net/hdparm/hdparm-${vers}.tar.gz"
+vers=9.65
+url="https://sourceforge.net/projects/hdparm/files/hdparm/hdparm-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
