@@ -2,11 +2,11 @@
 
 ######################################################################
 pkgbase=libssh2
-vers=1.10.0
+vers=1.11.0
 url="https://www.libssh2.org/download/libssh2-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=$pkgbase-$vers
 patchfiles=""
 OPT_CONFIG=""
