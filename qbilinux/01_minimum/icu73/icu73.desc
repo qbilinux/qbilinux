@@ -1,0 +1,9 @@
+icu73 & y & y & y & y
+&
+ユニコード用ライブラリ集
+&
+ICU(International Compornents for Unicode)ライブラリは
+ユニコードに関するさまざまな機能を提供するためのライブラリです．
+C++ 用のライブラリ Boost はこのライブラリを必要とします．
+&
+&
