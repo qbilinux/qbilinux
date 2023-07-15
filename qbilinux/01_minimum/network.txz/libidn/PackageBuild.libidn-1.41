@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=libidn
-vers=1.38
+vers=1.41
 url="http://ftp.gnu.org/gnu/libidn/libidn-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
