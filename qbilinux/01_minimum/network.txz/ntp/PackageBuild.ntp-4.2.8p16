@@ -2,11 +2,11 @@
 
 ######################################################################
 pkgbase=ntp
-vers=4.2.8p15
+vers=4.2.8p16
 url="http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/ntp-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=$pkgbase-$vers
 OPT_CONFIG=""
 DOCS="README.hackers README.bk NEWS WHERE-TO-START README.leapsmear
