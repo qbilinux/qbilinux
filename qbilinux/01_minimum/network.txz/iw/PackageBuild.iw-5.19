@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=iw
-vers=5.16
+vers=5.19
 url="https://www.kernel.org/pub/software/network/iw/iw-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
