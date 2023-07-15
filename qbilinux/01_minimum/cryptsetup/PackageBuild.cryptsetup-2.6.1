@@ -2,13 +2,13 @@
 
 ######################################################################
 pkgbase=cryptsetup
-vers=2.4.3
-url="https://www.kernel.org/pub/linux/utils/cryptsetup/v2.4/cryptsetup-${vers}.tar.xz"
+vers=2.6.1
+url="https://www.kernel.org/pub/linux/utils/cryptsetup/v2.6/cryptsetup-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=3
+build=1
 src=$pkgbase-$vers
-OPT_CONFIG=""
+OPT_CONFIG="--disable-asciidoc"
 DOCS="FAQ ChangeLog COPYING NEWS COPYING.LGPL AUTHORS ABOUT-NLS README
     INSTALL TODO"
 patchfiles=""
