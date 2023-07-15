@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=man_pages_ja
-vers=20220115
+vers=20230515
 url="https://linuxjm.osdn.jp/man-pages-ja-${vers}.tar.gz"
 apply_arch="noarch"
 arch=noarch
