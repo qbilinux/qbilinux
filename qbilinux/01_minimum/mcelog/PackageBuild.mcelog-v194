@@ -2,9 +2,8 @@
 
 ######################################################################
 pkgbase=mcelog
-vers=180
-url="https://github.com/andikleen/mcelog/archive/v${vers}.tar.gz"
-srcfile=mcelog-${vers}.tar.gz
+vers=194
+url="https://github.com/andikleen/mcelog/archive/v${vers}/mcelog-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
