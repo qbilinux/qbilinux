@@ -1,15 +1,16 @@
 #!/bin/sh
 ##############################################################
-pkgbase=py3_jinja2
-vers=3.1.2
-url="https://github.com/pallets/jinja/archive/refs/tags/${vers}.tar.gz"
-srcfile=jinja-${vers}.tar.gz
+pkgbase=py3_smartypants
+vers=2.0.1
+url="https://github.com/leohemsted/smartypants.py/archive/refs/tags/v${vers}.tar.gz"
+srcfile=smartypants-${vers}.tar.gz
+commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=3
-src=jinja-${vers}
-OPT_CONFIG='--disable-static'
-DOCS='COPYING COPYING-LGPL-2.1 COPYING-MPL-1.1 NEWS README.rst'
+build=1
+src=smartypants.py-${vers}
+OPT_CONFIG=''
+DOCS='CHANGES LICENSE README.rst'
 patchfiles=''
 compress=txz
 SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
@@ -70,3 +71,4 @@ EOF
 }
 
 source /usr/src/qbilinux/PackageBuild.func
+
