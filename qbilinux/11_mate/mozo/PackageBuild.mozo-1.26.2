@@ -1,15 +1,15 @@
 #!/bin/sh
 ##############################################################
-pkgbase=mate_session_manager
-vers=1.24.3
-url="http://pub.mate-desktop.org/releases/${vers%.*}/mate-session-manager-${vers}.tar.xz"
+pkgbase=mozo
+vers=1.26.2
+url="http://pub.mate-desktop.org/releases/${vers%.*}/mozo-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=mate-session-manager-${vers}
-OPT_CONFIG='--enable-upower --without-systemd --disable-docbook-docs'
-DOCS='AUTHORS COPYING ChangeLog HACKING INSTALL NEWS README'
-patchfiles=''
+src=mozo-${vers}
+OPT_CONFIG=''
+DOCS='AUTHORS COPYING ChangeLog HACKING NEWS README rationales.txt'
+patchfiles='mozo-ja_po.patch'
 compress=txz
 SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
 SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
@@ -63,12 +63,6 @@ do_install() {
 	echo "make install error. $0 script stop"
 	exit 255
     fi
-    mkdir -p $P/etc/X11/xinit
-    install -m 0755 $W/xinitrc.mate-session $P/etc/X11/xinit/xinitrc.mate-session
-    mkdir -p $P/usr/share/apps/kdm/sessions
-    if [ -f $P/usr/share/xsessions/mate.desktop ];then
-	cp $P/usr/share/xsessions/mate.desktop $P/usr/share/apps/kdm/sessions/
-    fi
     mkdir -p $P/install
     cat << EOF >> $P/install/initpkg
 glib-compile-schemas /usr/share/glib-2.0/schemas > /dev/null 2>&1
@@ -83,8 +77,6 @@ EOF
 }
 
 do_package() {
-    cp $W/xinitrc.mate-session $docdir/$src/xinitrc.mate-session
-    gzip_one $docdir/$src/xinitrc.mate-session
     for i in $pkgbase ; do
         cd $P
         /sbin/makepkg $W/$pkg.$compress <<EOF

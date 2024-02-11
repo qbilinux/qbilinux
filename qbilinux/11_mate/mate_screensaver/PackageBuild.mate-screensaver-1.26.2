@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
-pkgbase=mate_panel
-vers=1.26.0
-url="http://pub.mate-desktop.org/releases/${vers%.*}/mate-panel-${vers}.tar.xz"
+pkgbase=mate_screensaver
+vers=1.26.2
+url="http://pub.mate-desktop.org/releases/${vers%.*}/mate-screensaver-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=mate-panel-${vers}
-OPT_CONFIG=''
-DOCS='AUTHORS COPYING COPYING-DOCS COPYING.LIB ChangeLog HACKING NEWS README'
+src=mate-screensaver-${vers}
+OPT_CONFIG='--without-systemd --disable-static'
+DOCS='AUTHORS COPYING COPYING.LIB ChangeLog NEWS README'
 patchfiles=''
 compress=txz
 SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}

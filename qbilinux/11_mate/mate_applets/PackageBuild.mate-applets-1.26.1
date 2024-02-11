@@ -1,15 +1,15 @@
 #!/bin/sh
 ##############################################################
-pkgbase=mozo
-vers=1.26.0
-url="http://pub.mate-desktop.org/releases/${vers%.*}/mozo-${vers}.tar.xz"
+pkgbase=mate_applets
+vers=1.26.1
+url="http://pub.mate-desktop.org/releases/${vers%.*}/mate-applets-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=mozo-${vers}
-OPT_CONFIG=''
-DOCS='AUTHORS COPYING ChangeLog HACKING NEWS README rationales.txt'
-patchfiles='mozo-ja_po.patch'
+build=1
+src=mate-applets-${vers}
+OPT_CONFIG='--disable-cpufreq --enable-frequency-selector=no --enable-suid=no --enable-polkit=no'
+DOCS='AUTHORS COPYING COPYING-DOCS ChangeLog INSTALL NEWS NEWS.GNOME README'
+patchfiles=''
 compress=txz
 SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
 SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
