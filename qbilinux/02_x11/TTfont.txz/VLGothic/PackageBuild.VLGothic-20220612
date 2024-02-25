@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=VLGothic
-vers=20141206
-url='https://sourceforge.jp/projects/vlgothic/downloads/62375/VLGothic-20141206.tar.xz'
+vers=20220612
+url="https://osdn.net/projects/vlgothic/downloads/77450/VLGothic-${vers}.tar.xz"
 apply_arch="noarch"
 arch=noarch
-build=2
+build=1
 src=VLGothic
 OPT_CONFIG=''
 DOCS='Changelog LICENSE LICENSE.en LICENSE_E.mplus LICENSE_J.mplus README README.sazanami'
