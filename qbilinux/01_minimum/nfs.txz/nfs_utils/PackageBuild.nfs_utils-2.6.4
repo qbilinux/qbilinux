@@ -2,16 +2,15 @@
 
 ######################################################################
 pkgbase=nfs_utils
-vers=2.6.1
+vers=2.6.4
 url="https://www.kernel.org/pub/linux/utils/nfs-utils/${vers}/nfs-utils-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
 src=nfs-utils-$vers
-OPT_CONFIG="--disable-nfsv4 --disable-gss --with-krb5=/usr/heimdal"
+OPT_CONFIG="--disable-nfsv4 --disable-gss"
 DOCS="README NEWS INSTALL COPYING"
-#https://raw.githubusercontent.com/pld-linux/nfs-utils/master/nfs-utils-heimdal.patch
-patchfiles="nfs-utils-heimdal.patch"
+patchfiles=""
 compress=txz
 SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
 SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
@@ -24,13 +23,6 @@ do_prepare() {
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
-    cp -p configure{,.orig}
-    cat <<- "EOF" | patch configure
-	18769c18769
-	<                 -f $dir/lib/libroken.a; then
-	---
-	>                 \( -f $dir/lib/libroken.so -o -f $dir/lib64/libroken.so \); then
-	EOF
 }
 
 do_config() {
@@ -40,7 +32,8 @@ do_config() {
     cd ${B[$1]}
     if [ -x ./configure ] ; then
 	export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
-	export LDFLAGS='-Wl,--as-needed' 
+	export LDFLAGS='-Wl,--as-needed'
+	export LIBS="-lsqlite3 -levent_core"
 	./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc \
 		--localstatedir=/var --infodir='${prefix}'/share/info --mandir='${prefix}'/share/man ${OPT_CONFIG[$1]}
     fi
