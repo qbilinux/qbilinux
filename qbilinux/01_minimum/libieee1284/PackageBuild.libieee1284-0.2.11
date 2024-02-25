@@ -6,10 +6,10 @@ vers=0.2.11
 url="http://downloads.sourceforge.net/libieee1284/libieee1284-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=3
+build=4
 src=$pkgbase-$vers
 patchfiles=""
-OPT_CONFIG=""
+OPT_CONFIG="--without-python"
 DOCS="README AUTHORS COPYING ChangeLog INSTALL NEWS TODO
     README.FreeBSD README.OpenBSD README.Solaris README.win95
     README.winNT README.VC6"
