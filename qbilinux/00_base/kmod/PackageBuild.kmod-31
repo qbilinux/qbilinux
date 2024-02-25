@@ -2,11 +2,11 @@
 
 ######################################################################
 pkgbase=kmod
-vers=30
+vers=31
 url="https://www.kernel.org/pub/linux/utils/kernel/kmod/kmod-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=$pkgbase-$vers
 OPT_CONFIG="--bindir=/bin"
 DOCS="NEWS COPYING TODO README"
@@ -66,7 +66,7 @@ do_install() {
 
     # add extra func
     install -d $P/sbin
-    for i in {dep,ins,rm}mod mod{probe,info} ; do
+    for i in {dep,ins,rm,ls}mod mod{probe,info} ; do
 	ln -s /bin/kmod $P/sbin/$i
     done
     install -d $P/usr/bin
