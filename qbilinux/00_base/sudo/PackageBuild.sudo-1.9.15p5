@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=sudo
-vers=1.9.13p3
+vers=1.9.15p5
 url="http://www.sudo.ws/sudo/dist/sudo-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
