@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=bash
-vers=5.2.15
+vers=5.2.21
 url="http://ftp.gnu.org/gnu/bash/bash-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
