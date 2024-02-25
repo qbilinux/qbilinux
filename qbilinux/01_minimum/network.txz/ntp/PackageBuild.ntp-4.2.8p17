@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=ntp
-vers=4.2.8p16
+vers=4.2.8p17
 url="http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/ntp-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
