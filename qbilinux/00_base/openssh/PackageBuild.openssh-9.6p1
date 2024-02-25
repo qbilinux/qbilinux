@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=openssh
-vers=9.3p1
+vers=9.6p1
 url="http://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
