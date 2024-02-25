@@ -1,8 +1,8 @@
 #!/bin/sh
 ##############################################################
 pkgbase=curl
-vers=8.1.2
-url="http://curl.haxx.se/download/curl-${vers}.tar.bz2"
+vers=8.6.0
+url="https://curl.haxx.se/download/curl-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
