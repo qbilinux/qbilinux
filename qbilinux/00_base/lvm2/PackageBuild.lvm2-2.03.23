@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=lvm2
-vers=2.03.20
+vers=2.03.23
 url="http://mirrors.kernel.org/sourceware/lvm2/LVM2.${vers}.tgz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
