@@ -1,8 +1,8 @@
 #!/bin/sh
 ##############################################################
 pkgbase=psmisc
-vers=23.4
-url="http://downloads.sourceforge.net/project/psmisc/psmisc/psmisc-${vers}.tar.xz"
+vers=23.6
+url="https://sourceforge.net/projects/psmisc/files/psmisc/psmisc-${vers}.tar.xz"
 verify=
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
@@ -10,7 +10,7 @@ arch=`uname -m`
 build=1
 src=psmisc-${vers}
 OPT_CONFIG='--exec-prefix=/'
-DOCS='ABOUT-NLS AUTHORS COPYING ChangeLog INSTALL NEWS README'
+DOCS='ABOUT-NLS AUTHORS COPYING ChangeLog NEWS README README.md'
 patchfiles=''
 compress=txz
 SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
