@@ -7,7 +7,7 @@ url="https://github.com/cracklib/cracklib/releases/download/v${vers}/cracklib-${
 	https://github.com/cracklib/cracklib/releases/download/v${vers}/cracklib-words-${vers}.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=$pkgbase-$vers
 OPT_CONFIG="--with-default-dict=/lib/cracklib/pw_dict"
 DOCS="README-WORDS README-DAWG NEWS AUTHORS INSTALL ABOUT-NLS
