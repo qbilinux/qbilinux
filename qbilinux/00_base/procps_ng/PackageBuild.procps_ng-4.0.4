@@ -2,12 +2,12 @@
 
 ######################################################################
 pkgbase=procps_ng
-vers=3.3.17
+vers=4.0.4
 url="https://sourceforge.net/projects/procps-ng/files/Production/procps-ng-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=procps-${vers}
+src=procps-ng-${vers}
 OPT_CONFIG="--exec-prefix= --disable-kill --enable-skill --disable-static"
 DOCS="AUTHORS NEWS COPYING ABOUT-NLS ChangeLog COPYING.LIB
     `echo Documentation/{CodingStyle.md,FAQ,TODO,bugs.md}`"
