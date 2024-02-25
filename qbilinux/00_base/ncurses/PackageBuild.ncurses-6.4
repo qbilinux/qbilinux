@@ -8,8 +8,8 @@ apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
 src=$pkgbase-$vers
-OPT_CONFIG="--with-shared --without-debug --enable-widec
-    --with-manpage-format=normal --disable-ext-colors"
+OPT_CONFIG="--with-shared --with-cxx-shared --without-debug --enable-widec
+    --with-manpage-format=normal --disable-ext-colors --enable-pc-files"
 DOCS="README.MinGW README README.emx NEWS ANNOUNCE COPYING INSTALL
     TO-DO AUTHORS"
 patchfiles='ncurses-6.0-Charable.patch'
@@ -39,7 +39,7 @@ do_config() {
     if [ -x ./configure ] ; then
 	export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
 	export LDFLAGS='-Wl,--as-needed' 
-	./configure --prefix=/usr --libdir=/${libdir} --sysconfdir=/etc \
+	./configure --prefix=/usr --libdir=/${libdir} --sysconfdir=/etc --with-pkg-config-libdir=/usr/${libdir}/pkgconfig \
 		--localstatedir=/var --infodir='${prefix}'/share/info --mandir='${prefix}'/share/man ${OPT_CONFIG[$1]}
     fi
     if [ $? != 0 ]; then
@@ -72,18 +72,12 @@ do_install() {
     fi
 
     # add extra func
-    ln -s ncursesw6-config $P/usr/bin/ncurses6-config
-    ln -s libncursesw.so.$vers $P/$libdir/libncurses.so.6
-    ln -s libncurses.so.6 $P/$libdir/libncurses.so
-    ln -s libncursesw.so.$vers $P/$libdir/libcurses.so.6
-    ln -s libncursesw.a $P/$libdir/libcurses.a
-    ln -s libcurses.so.6 $P/$libdir/libcurses.so
-    ln -s libncursesw.so.$vers $P/$libdir/libncursesw.so.5
-    ln -s libpanelw.so.$vers $P/$libdir/libpanelw.so.5
-    ln -s libmenuw.so.$vers $P/$libdir/libmenuw.so.5
-    ln -s libformw.so.$vers $P/$libdir/libformw.so.5
-    install -d $P/usr/$libdir
-    ln -s /usr/share/terminfo $P/usr/$libdir
+    for lib in ncurses form panel menu ; do
+	echo "INPUT(-l${lib}w)" > $P/$libdir/lib${lib}.so
+	ln -sf ${lib}w.pc         $P/usr/$libdir/pkgconfig/${lib}.pc
+    done
+    echo "INPUT(-lncursesw)" > $P/$libdir/libcursesw.so
+    ln -sf libncurses.so       $P/$libdir/libcurses.so
 }
 
 do_package() {
