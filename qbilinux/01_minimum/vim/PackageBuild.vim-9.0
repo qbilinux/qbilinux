@@ -1,16 +1,13 @@
 #!/bin/sh
 ##############################################################
 pkgbase=vim
-vers=8.2
-url="http://ftp2.jp.vim.org/pub/vim/unix/vim-${vers}.tar.bz2"
-#url="https://ftp.nluug.nl/pub/vim/unix/vim-${vers}.tar.bz2"
-#url="https://github.com/vim/vim/archive/v${vers}.tar.gz"
-#srcfile=${pkgbase}-${vers}.tar.gz
+vers=9.0
+url="https://ftp.nluug.nl/pub/vim/unix/vim-${vers}.tar.bz2"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=vim82
+src=vim${vers/./}
 OPT_CONFIG=''
 DOCS='README.md README.txt READMEdir uninstal.txt'
 patchfiles=''
