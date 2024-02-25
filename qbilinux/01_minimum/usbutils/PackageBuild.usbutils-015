@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase=usbutils
-vers=014
+vers=015
 url="https://www.kernel.org/pub/linux/utils/usb/usbutils/usbutils-${vers}.tar.xz
 	http://www.linux-usb.org/usb.ids"
 apply_arch="x86_64 i686 armv7l aarch64"
