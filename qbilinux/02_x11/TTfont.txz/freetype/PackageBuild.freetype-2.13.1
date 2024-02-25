@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase=freetype
-vers=2.11.1
+vers=2.13.1
 url="https://sourceforge.net/projects/freetype/files/freetype2/${vers}/freetype-${vers}.tar.xz"
 verify=$url.sig
 apply_arch="x86_64 i686 armv7l aarch64"
@@ -10,7 +10,7 @@ build=1
 src=${pkgbase}-${vers}
 OPT_CONFIG='--disable-static'
 #OPT_CONFIG='--disable-static --with-harfbuzz=no'
-DOCS='ChangeLog ChangeLog.20 ChangeLog.21 ChangeLog.22 ChangeLog.23 README README.git'
+DOCS='ChangeLog LICENSE.TXT README README.git'
 patchfiles='freetype-2.10.2-enable-spr.patch freetype-2.10.2-enable-valid.patch'
 no_apply_patchfiles=''
 compress=txz
