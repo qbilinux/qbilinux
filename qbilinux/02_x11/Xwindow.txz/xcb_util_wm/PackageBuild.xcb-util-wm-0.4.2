@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='http://xcb.freedesktop.org/dist/xcb-util-wm-0.4.1.tar.bz2'
 pkgbase=xcb_util_wm
-vers=0.4.1
+vers=0.4.2
+url="https://www.x.org/releases/individual/xcb/xcb-util-wm-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=xcb-util-wm-0.4.1
+build=1
+src=xcb-util-wm-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='ChangeLog INSTALL NEWS README'
 patchfiles=''
