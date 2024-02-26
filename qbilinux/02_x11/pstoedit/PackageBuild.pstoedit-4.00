@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=pstoedit
-vers=3.78
+vers=4.00
 url="https://sourceforge.net/projects/pstoedit/files/pstoedit/${vers}/pstoedit-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=pstoedit-${vers}
 OPT_CONFIG='--disable-docs'
 DOCS='copying'
