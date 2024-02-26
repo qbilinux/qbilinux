@@ -55,13 +55,13 @@ diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
 index 9473e79..50890c2 100644
 --- a/fs/overlayfs/super.c
 +++ b/fs/overlayfs/super.c
-@@ -668,6 +668,7 @@ static struct file_system_type ovl_fs_type = {
- 	.name		= "overlayfs",
- 	.mount		= ovl_mount,
- 	.kill_sb	= kill_anon_super,
-+	.fs_flags	= FS_USERNS_MOUNT,
+@@ -1515,6 +1515,7 @@
+ 	.parameters		= ovl_parameter_spec,
+ 	.fs_flags		= FS_USERNS_MOUNT,
+ 	.kill_sb		= kill_anon_super,
++	.fs_flags		= FS_USERNS_MOUNT,
  };
- MODULE_ALIAS_FS("overlayfs");
+ MODULE_ALIAS_FS("overlay");
  
 -- 
 1.9.rc1
