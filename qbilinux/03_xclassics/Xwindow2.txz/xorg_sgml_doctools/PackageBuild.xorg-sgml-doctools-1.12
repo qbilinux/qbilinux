@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='https://www.x.org/archive/individual/doc/xorg-sgml-doctools-1.11.tar.bz2'
 pkgbase=xorg_sgml_doctools
-vers=1.11
+vers=1.12
+url="https://www.x.org/archive/individual/doc/xorg-sgml-doctools-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=xorg-sgml-doctools-1.11
+build=1
+src=xorg-sgml-doctools-${vers}
 OPT_CONFIG=''
 DOCS='COPYING ChangeLog INSTALL README'
 patchfiles=''
