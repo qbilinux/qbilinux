@@ -1,15 +1,15 @@
 #!/bin/sh
 ##############################################################
 pkgbase="libbson"
-vers=1.21.1
+vers=1.24.2
 url="https://github.com/mongodb/mongo-c-driver/releases/download/${vers}/mongo-c-driver-${vers}.tar.gz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=mongo-c-driver-${vers}
 OPT_CONFIG=''
-DOCS='AUTHORS COPYING ChangeLog NEWS README VERSION_RELEASED'
+DOCS='CONTRIBUTING.md COPYING NEWS README.rst THIRD_PARTY_NOTICES'
 patchfiles=''
 compress=txz
 SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
