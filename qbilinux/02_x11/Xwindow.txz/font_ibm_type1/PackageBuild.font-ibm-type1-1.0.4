@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=font_ibm_type1
-vers=1.0.3
-url='ftp://ftp.iij.ad.jp/pub/X11/x.org/pub/X11R7.6/src/font/font-ibm-type1-1.0.3.tar.bz2'
+vers=1.0.4
+url="https://www.x.org/releases/individual/font/font-ibm-type1-${vers}.tar.xz"
 apply_arch="noarch"
 arch=noarch
-build=3
-src=font-ibm-type1-1.0.3
+build=1
+src=font-ibm-type1-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='COPYING ChangeLog INSTALL README'
 patchfiles=''
