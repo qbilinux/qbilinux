@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=font_adobe_utopia_75dpi
-vers=1.0.4
-url='ftp://ftp.iij.ad.jp/pub/X11/x.org/pub/X11R7.6/src/font/font-adobe-utopia-75dpi-1.0.4.tar.bz2'
+vers=1.0.5
+url="https://www.x.org/releases/individual/font/font-adobe-utopia-75dpi-${vers}.tar.xz"
 apply_arch="noarch"
 arch=noarch
-build=3
-src=font-adobe-utopia-75dpi-1.0.4
+build=1
+src=font-adobe-utopia-75dpi-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='COPYING ChangeLog INSTALL README'
 patchfiles=''
