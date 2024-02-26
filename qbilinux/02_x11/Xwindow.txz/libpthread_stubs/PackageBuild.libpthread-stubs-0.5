@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=libpthread_stubs
-vers=0.4
-url="https://www.x.org/releases/individual/xcb/libpthread-stubs-${vers}.tar.bz2"
+vers=0.5
+url="https://www.x.org/releases/individual/xcb/libpthread-stubs-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=libpthread-stubs-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='COPYING README'
