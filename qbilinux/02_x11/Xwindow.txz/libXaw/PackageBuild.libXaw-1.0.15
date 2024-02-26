@@ -1,8 +1,8 @@
 #!/bin/sh
 ##############################################################
 pkgbase=libXaw
-vers=1.0.14
-url="http://xorg.freedesktop.org/archive/individual/lib/libXaw-${vers}.tar.bz2"
+vers=1.0.15
+url="https://www.x.org/releases/individual/lib/libXaw-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
