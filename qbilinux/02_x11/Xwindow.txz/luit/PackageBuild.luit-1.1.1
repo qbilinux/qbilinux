@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='https://www.x.org/archive/individual/app/luit-1.1.1.tar.bz2'
 pkgbase=luit
 vers=1.1.1
+url="https://www.x.org/releases/individual/app/luit-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=3
-src=luit-1.1.1
+src=luit-${vers}
 OPT_CONFIG=''
 DOCS='COPYING ChangeLog INSTALL README'
 patchfiles='patch-a'
