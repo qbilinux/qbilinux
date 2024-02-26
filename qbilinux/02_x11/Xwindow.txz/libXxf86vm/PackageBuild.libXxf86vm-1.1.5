@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='https://www.x.org/releases/individual/lib/libXxf86vm-1.1.4.tar.bz2'
 pkgbase=libXxf86vm
-vers=1.1.4
+vers=1.1.5
+url="https://www.x.org/releases/individual/lib/libXxf86vm-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=libXxf86vm-1.1.4
+build=1
+src=libXxf86vm-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='COPYING ChangeLog INSTALL README'
 patchfiles=''
