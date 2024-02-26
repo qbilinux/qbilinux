@@ -1,9 +1,0 @@
-py2_py_notify & y & y & y & y
-&
-Py-notify
-&
-PythonにObserver programming patternと
-呼ばれる，プログラム内のオブジェクトが発生する
-イベントを観察するためのクラスを追加するモジュール
-&
-&
