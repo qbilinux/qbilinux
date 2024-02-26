@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='https://www.x.org/archive/individual/app/mkfontdir-1.0.7.tar.bz2'
 pkgbase=mkfontdir
 vers=1.0.7
+url="https://www.x.org/releases/individual/app/mkfontdir-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=3
-src=mkfontdir-1.0.7
+src=mkfontdir-${vers}
 OPT_CONFIG=''
 DOCS='COPYING ChangeLog INSTALL README'
 patchfiles=''
