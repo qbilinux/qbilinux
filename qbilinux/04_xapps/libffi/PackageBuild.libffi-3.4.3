@@ -1,8 +1,8 @@
 #!/bin/sh
 ##############################################################
 pkgbase=libffi
-vers=3.4.2
-url="ftp://sourceware.org/pub/libffi/libffi-${vers}.tar.gz"
+vers=3.4.3
+url="https://gcc.gnu.org/pub/libffi/libffi-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
@@ -63,7 +63,6 @@ do_install() {
 	echo "make install error. $0 script stop"
 	exit 255
     fi
-    ( cd $P/usr/${libdir} ; ln -s libffi.so.8 libffi.so.6 )
 }
 
 do_package() {
