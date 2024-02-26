@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=ImageMagick7
-vers=7.1.0_57
+vers=7.1.1_28
 url="https://www.imagemagick.org/download/ImageMagick-${vers/_/-}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=ImageMagick-${vers/_/-}
 OPT_CONFIG=''
 DOCS='AUTHORS.txt ChangeLog Install-mac.txt Install-unix.txt Install-vms.txt Install-windows.txt LICENSE NEWS.txt Platforms.txt QuickStart.txt README.txt'
