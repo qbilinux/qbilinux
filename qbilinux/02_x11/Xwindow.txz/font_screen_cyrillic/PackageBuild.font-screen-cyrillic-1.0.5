@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=font_screen_cyrillic
-vers=1.0.4
-url='ftp://ftp.iij.ad.jp/pub/X11/x.org/pub/X11R7.6/src/font/font-screen-cyrillic-1.0.4.tar.bz2'
+vers=1.0.5
+url="https://www.x.org/releases/individual/font/font-screen-cyrillic-${vers}.tar.xz"
 apply_arch="noarch"
 arch=noarch
-build=3
-src=font-screen-cyrillic-1.0.4
+build=1
+src=font-screen-cyrillic-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='COPYING ChangeLog INSTALL README'
 patchfiles=''
