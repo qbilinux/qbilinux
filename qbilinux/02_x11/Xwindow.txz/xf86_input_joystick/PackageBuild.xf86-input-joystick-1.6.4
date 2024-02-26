@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=xf86_input_joystick
-vers=1.6.3
-url="ftp://ftp.x.org/pub/individual/driver/xf86-input-joystick-${vers}.tar.bz2"
+vers=1.6.4
+url="https://www.x.org/releases/individual/driver/xf86-input-joystick-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=xf86-input-joystick-${vers}
 OPT_CONFIG=''
 DOCS='COPYING ChangeLog INSTALL README'
