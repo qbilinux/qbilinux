@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='https://www.x.org/archive/individual/doc/xorg-docs-1.7.tar.bz2'
 pkgbase=xorg_docs
-vers=1.7
+vers=1.7.2
+url="https://www.x.org/archive/individual/doc/xorg-docs-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=3
-src=xorg-docs-1.7
+build=1
+src=xorg-docs-${vers}
 OPT_CONFIG=''
 DOCS='ChangeLog INSTALL MAINTAINERS README'
 patchfiles=''
