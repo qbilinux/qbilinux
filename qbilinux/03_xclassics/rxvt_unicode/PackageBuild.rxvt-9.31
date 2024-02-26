@@ -2,11 +2,11 @@
 
 ######################################################################
 pkgbase=rxvt_unicode
-vers=9.30
+vers=9.31
 url="http://dist.schmorp.de/rxvt-unicode/rxvt-unicode-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=rxvt-unicode-${vers}
 OPT_CONFIG="--enable-languages --enable-utmp --enable-wtmp
     --enable-xpm-background --enable-transparency --enable-menubar
@@ -29,7 +29,6 @@ do_prepare() {
 	patch -p1 < $W/$patch
     done
 
-    gunzip -c $W/rxvt-2.7.10-utempter.patch.gz | patch -Np1 -i -
     cp -p src/feature.h{,.orig}
     sed 's@/X11R6/lib@/share@g' src/feature.h.orig > src/feature.h
     cp -f /usr/src/qbilinux/{config.guess,config.sub} autoconf
