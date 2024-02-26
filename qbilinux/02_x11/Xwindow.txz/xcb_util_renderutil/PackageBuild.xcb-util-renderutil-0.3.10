@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-url='http://xcb.freedesktop.org/dist/xcb-util-renderutil-0.3.9.tar.bz2'
 pkgbase=xcb_util_renderutil
-vers=0.3.9
+vers=0.3.10
+url="https://www.x.org/releases/individual/xcb/xcb-util-renderutil-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=xcb-util-renderutil-0.3.9
+build=1
+src=xcb-util-renderutil-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='ChangeLog INSTALL NEWS README'
 patchfiles=''
