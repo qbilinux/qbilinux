@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase=pcf2bdf
-vers=1.06
+vers=1.07
 url="https://github.com/ganaware/pcf2bdf/archive/refs/tags/${vers}.tar.gz"
 srcfile=${pkgbase}-${vers}.tar.gz
 apply_arch="x86_64 i686 armv7l aarch64"
