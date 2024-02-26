@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
 pkgbase=expat
-vers=2.4.5
-url="http://downloads.sourceforge.net/project/expat/expat/${vers}/expat-${vers}.tar.bz2"
+vers=2.5.0
+url="https://sourceforge.net/projects/expat/files/expat/${vers}/expat-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
 src=expat-${vers}
 OPT_CONFIG='--disable-static'
-DOCS='COPYING README'
+DOCS='AUTHORS COPYING Changes README.md'
 patchfiles=''
 compress=txz
 SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
