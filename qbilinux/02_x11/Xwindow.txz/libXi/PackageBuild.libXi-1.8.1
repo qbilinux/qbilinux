@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=libXi
-vers=1.8
-url="https://www.x.org/releases/individual/lib/libXi-${vers}.tar.bz2"
+vers=1.8.1
+url="https://www.x.org/releases/individual/lib/libXi-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=libXi-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='COPYING ChangeLog INSTALL README'
