@@ -1,8 +1,8 @@
 #!/bin/sh
 ##############################################################
 pkgbase=libXt
-vers=1.2.1
-url="http://xorg.freedesktop.org/archive/individual/lib/libXt-${vers}.tar.bz2"
+vers=1.3.0
+url="https://www.x.org/releases/individual/lib/libXt-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
