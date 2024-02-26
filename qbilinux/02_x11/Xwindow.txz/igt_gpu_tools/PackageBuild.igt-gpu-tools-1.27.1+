@@ -1,13 +1,15 @@
 #!/bin/sh
 ##############################################################
 pkgbase="igt_gpu_tools"
-vers=1.26
-url="https://github.com/freedesktop/xorg-intel-gpu-tools/archive/refs/tags/igt-gpu-tools-${vers}.tar.gz"
+vers=1.27.1+
+#url="https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/archive/v${vers}/igt-gpu-tools-v${vers}.tar.gz"
+url="https://qbilinux.org/pub/source/igt-gpu-tools-20230824.tar.gz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=xorg-intel-gpu-tools-igt-gpu-tools-${vers}
+#src=igt-gpu-tools-v${vers}
+src=igt-gpu-tools-master
 OPT_CONFIG=''
 DOCS='COPYING MAINTAINERS NEWS README.md TODO.rst meson-cross-arm64.txt meson-cross-armhf.txt meson_options.txt'
 patchfiles=''
