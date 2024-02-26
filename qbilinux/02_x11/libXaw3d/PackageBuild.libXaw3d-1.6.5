@@ -2,11 +2,11 @@
 
 ######################################################################
 pkgbase=libXaw3d
-vers=1.6.3
-url="https://www.x.org/releases/individual/lib/libXaw3d-${vers}.tar.bz2"
+vers=1.6.5
+url="https://www.x.org/releases/individual/lib/libXaw3d-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=$pkgbase-${vers}
 OPT_CONFIG="--enable-arrow-scrollbars --disable-static --enable-shared"
 DOCS="COPYING ChangeLog INSTALL README"
