@@ -3,8 +3,8 @@ unset LS_BLOCK_SIZE
 export LANG=C
 ##############################################################
 pkgbase=thunderbird
-vers=102.8.0
-url="http://ftp.mozilla.org/pub/mozilla.org/thunderbird/releases/${vers}/source/${pkgbase}-${vers}.source.tar.xz"
+vers=115.8.0
+url="https://archive.mozilla.org/pub/thunderbird/releases/${vers}/source/${pkgbase}-${vers}.source.tar.xz"
 #verify=$url.asc
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
@@ -26,6 +26,9 @@ do_prepare() {
 	patch -p1 < $W/$patch
     done
     rm -rf obj-x86_64-pc-linux-gnu
+    (for i in {43..47}; do
+	 sed '/ZWJ/s/}/,CLASS_CHARACTER&/' -i intl/lwbrk/LineBreaker.cpp || exit $?
+     done)
 }
 
 do_config() {
