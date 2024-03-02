@@ -1,5 +1,5 @@
-Submitted By: Ken Moffat <ken at linuxfromscratch dot org>
-Date: 2022-06-22
+Not yet Submitted By: Ken Moffat <ken at linuxfromscratch dot org>
+Date: 2023-03-01
 Initial Package Version: From git 5.15 branch.
 Upstream Status: Not applied
 Origin: upstreams and gentoo, Douglas, fedora, self, Arch.
@@ -12,6 +12,7 @@ Updated on 2022-01-13: reduced to what still applies to 5.15.8.
 Updated on 2022-06-22: patches from Arch via gentoo to use python3, one modified for BLFS.
 The lingering arm and mips patches from an earlier fedora patchset have been dropped.
 Include a patch for gcc12.
+Updated on 2023-03-01: rework Doug's patch for upstream changes.
 
 References to old patches, in the order they were applied, are retained to
 assist people wishing to review what has changed compared to previous versions.
@@ -40,6 +41,8 @@ Second was a patch from fedora to make some web pages render when glibc-2.33
 is used. Upstream fixed qtwebengine-5.15.6 slightly differently
 
 Third, a patch from Douglas R. Reno (renodr at linuxfromscratch dot org):
+Updated 2023-03-01, context diff in first hunk (now uses private headers),
+third hunk dropped - TRUE was changed to 1 upstream.
 
 When building qtwebengine where libxml2 has been built before ICU has been 
 installed, a build failure will occur because QtWebEngine will attempt to use
@@ -52,19 +55,18 @@ is older than ours, it's not a problem when building with the internal version
 of ICU. Users who have installed ICU before libxml2 are exempt from running into
 this issue. 
 
-diff -Naurp qtwebengine-everywhere-src-5.15.2.orig/src/3rdparty/chromium/third_party/libxml/src/encoding.c qtwebengine-everywhere-src-5.15.2/src/3rdparty/chromium/third_party/libxml/src/encoding.c
---- qtwebengine-everywhere-src-5.15.2.orig/src/3rdparty/chromium/third_party/libxml/src/encoding.c 2020-11-06 19:22:36.000000000 -0600
-+++ qtwebengine-everywhere-src-5.15.2/src/3rdparty/chromium/third_party/libxml/src/encoding.c 2020-12-08 19:39:00.607894718 -0600
-@@ -44,7 +44,7 @@
- #endif
+diff -Naur a/src/3rdparty/chromium/third_party/libxml/src/encoding.c b/src/3rdparty/chromium/third_party/libxml/src/encoding.c
+--- a/src/3rdparty/chromium/third_party/libxml/src/encoding.c	2023-02-27 18:32:59.000000000 +0000
++++ b/src/3rdparty/chromium/third_party/libxml/src/encoding.c	2023-03-01 20:18:44.974589362 +0000
+@@ -40,6 +40,7 @@
  #include <libxml/globals.h>
  #include <libxml/xmlerror.h>
--
+ 
 +#include <stdbool.h>
- #include "buf.h"
- #include "enc.h"
-
-@@ -1893,7 +1893,7 @@ xmlUconvWrapper(uconv_t *cd, int toUnico
+ #include "private/buf.h"
+ #include "private/enc.h"
+ #include "private/error.h"
+@@ -1938,7 +1939,7 @@
      *inlen = ucv_in - (const char*) in;
      *outlen = ucv_out - (char *) out;
      if (U_SUCCESS(err)) {
@@ -73,15 +75,6 @@ diff -Naurp qtwebengine-everywhere-src-5.15.2.orig/src/3rdparty/chromium/third_p
          if (flush)
              cd->pivot_source = cd->pivot_target = cd->pivot_buf;
          return 0;
-@@ -1958,7 +1958,7 @@ xmlEncOutputChunk(xmlCharEncodingHandler
- #ifdef LIBXML_ICU_ENABLED
-     else if (handler->uconv_out != NULL) {
-         ret = xmlUconvWrapper(handler->uconv_out, 0, out, outlen, in, inlen,
--                              TRUE);
-+                              true);
-     }
- #endif /* LIBXML_ICU_ENABLED */
-     else { 
 
 Fourth, patch from gentoo to allow it to build with gcc-11 where some
 less-used headers such as <limits> have been removed from the C++
