@@ -7,9 +7,9 @@ srcfile=$pkgbase-$vers.tar.gz
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=grantlee-${vers}
-OPT_CONFIG=''
+OPT_CONFIG='-DGRANTLEE_BUILD_WITH_QT6=TRUE'
 DOCS='AUTHORS CHANGELOG COPYING.LIB README.md'
 patchfiles=''
 compress=txz
