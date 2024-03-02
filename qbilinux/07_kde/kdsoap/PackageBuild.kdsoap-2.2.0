@@ -1,16 +1,20 @@
 #!/bin/sh
 ##############################################################
 pkgbase="kdsoap"
-vers=2.0.0
+vers=2.2.0
 url="https://github.com/KDAB/KDSoap/releases/download/kdsoap-${vers}/kdsoap-${vers}.tar.gz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=kdsoap-${vers}
-OPT_CONFIG=''
-DOCS='CPackIgnores.txt INSTALL-cmake.txt INSTALL.txt LICENSE.AGPL3-modified.txt LICENSE.GPL.txt LICENSE.LGPL.txt LICENSE.txt README.txt ReadMe.md add_license_blurb.sh debian.changelog'
-patchfiles=''
+src[0]=kdsoap-${vers}
+src[1]=kdsoap-${vers}
+OPT_CONFIG[0]=''
+OPT_CONFIG[1]='-DKDSoap_QT6=true'
+DOCS[0]='CPackIgnores.txt INSTALL-cmake.txt INSTALL.txt LICENSE.AGPL3-modified.txt LICENSE.GPL.txt LICENSE.LGPL.txt LICENSE.txt README.txt ReadMe.md add_license_blurb.sh debian.changelog'
+DOCS[1]=''
+patchfiles[0]=''
+patchfiles[1]=''
 compress=txz
 SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
 SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
@@ -35,7 +39,7 @@ do_config() {
     if [ -f ${S[$1]}/CMakeLists.txt ]; then
       export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
       export LDFLAGS='-Wl,--as-needed' 
-      cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DLIB_INSTALL_DIR:PATH=/usr/${libdir} -DLIB_SUFFIX=$suffix ${OPT_CONFIG} ${S[$1]}
+      cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DLIB_INSTALL_DIR:PATH=/usr/${libdir} -DLIB_SUFFIX=$suffix ${OPT_CONFIG[$1]} ${S[$1]}
     fi
     if [ $? != 0 ]; then
 	echo "configure error. $0 script stop"
