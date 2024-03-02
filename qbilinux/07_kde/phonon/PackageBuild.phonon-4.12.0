@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase=phonon
-vers=4.11.1
+vers=4.12.0
 url="http://download.kde.org/stable/phonon/${vers}/phonon-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
