@@ -1,11 +1,11 @@
 #!/bin/sh
 ##############################################################
 pkgbase=qt5
-vers=5.15.7
+vers=5.15.12
 url="http://download.qt.io/archive/qt/${vers%.*}/${vers}/single/qt-everywhere-opensource-src-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=qt-everywhere-src-${vers}
 if [ $arch = "aarch64" ]; then
 OPT_CONFIG="-sysconfdir     /etc/xdg   \
@@ -52,7 +52,7 @@ OPT_CONFIG="-sysconfdir     /etc/xdg   \
             -skip qtwebengine"
 fi
 DOCS='LGPL_EXCEPTION.txt LICENSE.FDL LICENSE.GPLv2 LICENSE.GPLv3 LICENSE.LGPLv21 LICENSE.LGPLv3 LICENSE.PREVIEW.COMMERCIAL README'
-patchfiles='socketcanbackend.patch'
+patchfiles='socketcanbackend.patch qt-everywhere-opensource-src-5.15.12-security_fix-1.patch'
 compress=txz
 SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
 SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
@@ -65,10 +65,10 @@ do_prepare() {
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
-    sed -i '/utility/a #include <limits>'     qtbase/src/corelib/global/qglobal.h         &&
-	sed -i '/string/a #include <limits>'      qtbase/src/corelib/global/qfloat16.h        &&
-	sed -i '/qbytearray/a #include <limits>'  qtbase/src/corelib/text/qbytearraymatcher.h &&
-	sed -i '/type_traits/a #include <limits>' qtdeclarative/src/qmldebug/qqmlprofilerevent_p.h
+    sed -e "/pragma once/a#include <cstdint>"                                      \
+	-i qtlocation/src/3rdparty/mapbox-gl-native/include/mbgl/util/geometry.hpp \
+	qtlocation/src/3rdparty/mapbox-gl-native/include/mbgl/util/string.hpp   \
+	qtlocation/src/3rdparty/mapbox-gl-native/src/mbgl/gl/stencil_mode.hpp
 }
 
 do_config() {
