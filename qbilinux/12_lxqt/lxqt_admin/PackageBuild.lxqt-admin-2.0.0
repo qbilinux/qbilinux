@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
-pkgbase=qtxdg_tools
-vers=3.12.0
-url="https://github.com/lxqt/qtxdg-tools/releases/download/${vers}/qtxdg-tools-${vers}.tar.xz"
+pkgbase=lxqt_admin
+vers=2.0.0
+url="https://github.com/lxqt/lxqt-admin/releases/download/${vers}/lxqt-admin-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=qtxdg-tools-${vers}
-OPT_CONFIG=''
+src=lxqt-admin-${vers}
+OPT_CONFIG='-DPULL_TRANSLATIONS=no -DCMAKE_BUILD_TYPE=Release'
 DOCS='AUTHORS CHANGELOG COPYING README.md'
 patchfiles=''
 compress=txz
