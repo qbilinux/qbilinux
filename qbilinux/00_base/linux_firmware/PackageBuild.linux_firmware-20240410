@@ -2,13 +2,13 @@
 
 ######################################################################
 pkgbase=linux_firmware
-vers=20230404
+vers=20240410
 url="https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/snapshot/linux-firmware-${vers}.tar.gz"
 apply_arch="noarch"
 arch=noarch
 build=1
 src=linux-firmware-${vers}
-OPT_CONFIG=""
+OPT_CONFIG="--ignore-duplicates"
 DOCS="GPL-3 `echo LICENCE.{Abilis,IntcSST2,Marvell,OLPC}` LICENSE.radeon
     `echo LICENCE.{agere,atheros_firmware,broadcom_bcm43xx,ca0132}`
     `echo LICENCE.{chelsio_firmware,cw1200}` README LICENCE.ene_firmware
@@ -72,7 +72,7 @@ do_install() {
     cd ${B[$1]}
     if [ -f Makefile ] ; then
 	export LDFLAGS='-Wl,--as-needed'
-	make install DESTDIR=$P
+	make install-nodedup DESTDIR=$P
     fi
     if [ $? != 0 ]; then
 	echo "make install error. $0 script stop"
