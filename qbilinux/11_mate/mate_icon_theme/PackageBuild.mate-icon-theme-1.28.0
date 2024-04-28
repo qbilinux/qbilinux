@@ -1,16 +1,15 @@
 #!/bin/sh
 ##############################################################
-pkgbase=libindicator
-vers=12.10.1
-url="https://launchpad.net/libindicator/12.10/${vers}/+download/libindicator-${vers}.tar.gz"
-commitid=
-apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
-build=7
-src=libindicator-${vers}
+pkgbase=mate_icon_theme
+vers=1.28.0
+url="http://pub.mate-desktop.org/releases/${vers%.*}/mate-icon-theme-${vers}.tar.xz"
+apply_arch="noarch"
+arch=noarch
+build=1
+src=mate-icon-theme-${vers}
 OPT_CONFIG=''
-DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README'
-patchfiles='gtk_icon_info_free.patch config.patch patch-aa'
+DOCS='AUTHORS COPYING ChangeLog NEWS README TODO'
+patchfiles=''
 compress=txz
 SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
 SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
@@ -19,11 +18,10 @@ SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
-    cd ${S[$i]}
+    cd ${S[$1]}
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
-    autoreconf -vif .
 }
 
 do_config() {
@@ -33,7 +31,6 @@ do_config() {
     cd ${B[$1]}
     if [ -x ${S[$1]}/configure ] ; then
 	export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
-	export CFLAGS="-Wno-error=deprecated-declarations"
 	export LDFLAGS='-Wl,--as-needed' 
 	${S[$1]}/configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc \
 		--localstatedir=/var --infodir='${prefix}'/share/info --mandir='${prefix}'/share/man ${OPT_CONFIG[$1]}
@@ -48,7 +45,6 @@ do_build() {
     cd ${B[$1]}
     if [ -f Makefile ] ; then
 	export LDFLAGS='-Wl,--as-needed'
-	export CFLAGS="-Wno-error=deprecated-declarations"
 	make
     fi
     if [ $? != 0 ]; then
@@ -61,13 +57,19 @@ do_install() {
     cd ${B[$1]}
     if [ -f Makefile ] ; then
 	export LDFLAGS='-Wl,--as-needed'
-	export CFLAGS="-Wno-error=deprecated-declarations"
 	make install DESTDIR=$P
     fi
     if [ $? != 0 ]; then
 	echo "make install error. $0 script stop"
 	exit 255
     fi
+    mkdir -p $P/install
+    cat << EOF >> $P/install/initpkg
+gtk-update-icon-cache -f /usr/share/icons/mate > /dev/null 2>&1
+touch /usr/share/icons/mate/icon-theme.cache
+gtk-update-icon-cache -f /usr/share/icons/menta > /dev/null 2>&1
+touch /usr/share/icons/menta/icon-theme.cache
+EOF
 }
 
 do_package() {
