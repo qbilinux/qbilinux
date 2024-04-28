@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
-pkgbase=thunar
-vers=4.16.9
-url="http://archive.xfce.org/src/xfce/thunar/${vers%.*}/thunar-${vers}.tar.bz2"
+pkgbase=libxfce4util
+vers=4.18.0
+url="http://archive.xfce.org/xfce/${vers%.*}/src/libxfce4util-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=thunar-${vers}
+src=libxfce4util-${vers}
 OPT_CONFIG=''
-DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README THANKS TODO'
+DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README README.Kiosk THANKS TODO'
 patchfiles=''
 compress=txz
 SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}

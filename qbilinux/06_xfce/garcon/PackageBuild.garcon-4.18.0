@@ -1,14 +1,14 @@
 #!/bin/sh
 ##############################################################
-pkgbase=xfce4_panel
-vers=4.16.3
-url="http://archive.xfce.org/src/xfce/xfce4-panel/${vers%.*}/xfce4-panel-${vers}.tar.bz2"
+pkgbase=garcon
+vers=4.18.0
+url="http://archive.xfce.org/src/xfce/garcon/${vers%.*}/garcon-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
-src=xfce4-panel-${vers}
-OPT_CONFIG='--enable-gtk3 --disable-vala'
-DOCS='AUTHORS COPYING COPYING.LIB ChangeLog INSTALL NEWS README THANKS TODO'
+build=2
+src=garcon-${vers}
+OPT_CONFIG=''
+DOCS='AUTHORS COPYING ChangeLog HACKING INSTALL NEWS README THANKS TODO'
 patchfiles=''
 compress=txz
 SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
@@ -18,7 +18,7 @@ SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 source /usr/src/qbilinux/PackageBuild.def
 
 do_prepare() {
-    cd ${S[$i]}
+    cd ${S[$1]}
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
@@ -27,12 +27,12 @@ do_prepare() {
 do_config() {
     if [ -d ${B[$1]} ] ; then rm -rf ${B[$1]} ; fi
 
-    cp -a ${S[$1]} ${B[$1]}
+    mkdir ${B[$1]}
     cd ${B[$1]}
-    if [ -x ./configure ] ; then
+    if [ -x ${S[$1]}/configure ] ; then
 	export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
 	export LDFLAGS='-Wl,--as-needed' 
-	./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc \
+	${S[$1]}/configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc \
 		--localstatedir=/var --infodir='${prefix}'/share/info --mandir='${prefix}'/share/man ${OPT_CONFIG[$1]}
     fi
     if [ $? != 0 ]; then

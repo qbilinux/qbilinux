@@ -1,15 +1,16 @@
 #!/bin/sh
 ##############################################################
-pkgbase=xfce4_appfinder
-vers=4.16.1
-url="http://archive.xfce.org/src/xfce/xfce4-appfinder/${vers%.*}/xfce4-appfinder-${vers}.tar.bz2"
+pkgbase=xfdesktop
+vers=4.18.0
+url="https://archive.xfce.org/src/xfce/xfdesktop/${vers%.*}/xfdesktop-${vers}.tar.bz2"
+verify=$url.sha1
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=xfce4-appfinder-${vers}
+src=xfdesktop-${vers}
 OPT_CONFIG=''
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README TODO'
-patchfiles=''
+patchfiles='xfdesktop-4.12.0-file-utils-strftime.patch'
 compress=txz
 SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
 SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
