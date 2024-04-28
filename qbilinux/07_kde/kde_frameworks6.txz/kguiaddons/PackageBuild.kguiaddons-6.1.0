@@ -1,0 +1,80 @@
+#!/bin/sh
+##############################################################
+pkgbase=kguiaddons
+vers=6.1.0
+url="https://download.kde.org/stable/frameworks/${vers%.*}/kguiaddons-${vers}.tar.xz"
+commitid=
+apply_arch="x86_64 i686 armv7l aarch64"
+arch=`uname -m`
+build=1
+src=kguiaddons-${vers}
+OPT_CONFIG=''
+DOCS='COPYING COPYING.LIB README.md'
+patchfiles=''
+compress=txz
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
+##############################################################
+
+source /usr/src/qbilinux/PackageBuild.def
+
+do_prepare() {
+    cd ${S[$i]}
+    for patch in $patchfiles ; do
+	patch -p1 < $W/$patch
+    done
+}
+
+do_config() {
+    if [ -d ${B[$1]} ] ; then rm -rf ${B[$1]} ; fi
+
+    mkdir ${B[$1]}
+    cd ${B[$1]}
+    if [ -f $S/CMakeLists.txt ]; then
+      export PKG_CONFIG_PATH=/opt/kde/${libdir}/pkgconfig:/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
+      export LDFLAGS='-Wl,--as-needed' 
+      cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DLIB_INSTALL_DIR:PATH=/usr/${libdir} -DLIB_SUFFIX=$suffix ${OPT_CONFIG} $S
+    fi
+    if [ $? != 0 ]; then
+	echo "configure error. $0 script stop"
+	exit 255
+    fi
+}
+
+do_build() {
+    cd ${B[$1]}
+    if [ -f Makefile ] ; then
+	export LDFLAGS='-Wl,--as-needed'
+	make
+    fi
+    if [ $? != 0 ]; then
+	echo "make error. $0 script stop"
+	exit 255
+    fi
+}
+
+do_install() {
+    cd ${B[$1]}
+    if [ -f Makefile ] ; then
+	export LDFLAGS='-Wl,--as-needed'
+	make install DESTDIR=$P
+    fi
+    if [ $? != 0 ]; then
+	echo "make install error. $0 script stop"
+	exit 255
+    fi
+
+    # add extra func
+}
+
+do_package() {
+    for i in $pkgbase ; do
+        cd $P
+        /sbin/makepkg $W/$pkg.$compress <<EOF
+y
+1
+EOF
+    done
+}
+
+source /usr/src/qbilinux/PackageBuild.func
