@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase=polkit_qt_1_qt6
-vers=0.175.0
+vers=0.200.0
 url="https://invent.kde.org/libraries/polkit-qt-1/-/archive/v${vers}/polkit-qt-1-v${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
