@@ -1,15 +1,18 @@
 #!/bin/sh
 ##############################################################
-pkgbase=libplist
-vers=2.2.0
-url="https://github.com/libimobiledevice/libplist/releases/download/${vers}/libplist-${vers}.tar.bz2"
-commitid=
+pkgbase=gnome_keyring
+vers=42.1
+url="http://ftp.gnome.org/pub/GNOME/sources/gnome-keyring/${vers%.*}/gnome-keyring-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=libplist-${vers}
-OPT_CONFIG=''
-DOCS='AUTHORS COPYING COPYING.LESSER NEWS README'
+build=1
+src=gnome-keyring-${vers}
+if [ $arch = "x86_64" ]; then
+    OPT_CONFIG='--disable-static --with-pam-dir=/lib64/security'
+else
+    OPT_CONFIG='--disable-static --with-pam-dir=/lib/security'
+fi
+DOCS='AUTHORS COPYING COPYING.LIB ChangeLog ChangeLog.old HACKING INSTALL NEWS README'
 patchfiles=''
 compress=txz
 SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}

@@ -1,15 +1,16 @@
 #!/bin/sh
 ##############################################################
-pkgbase=libplist
-vers=2.2.0
-url="https://github.com/libimobiledevice/libplist/releases/download/${vers}/libplist-${vers}.tar.bz2"
+pkgbase=yelp
+vers=42.2
+url="http://ftp.acc.umu.se/pub/gnome/sources/yelp/${vers%.*}/yelp-${vers}.tar.xz"
+verify=
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
-src=libplist-${vers}
-OPT_CONFIG=''
-DOCS='AUTHORS COPYING COPYING.LESSER NEWS README'
+build=3
+src=yelp-${vers}
+OPT_CONFIG='--disable-gtk-doc --disable-gtk-doc-html --disable-static'
+DOCS='AUTHORS COPYING ChangeLog INSTALL MAINTAINERS NEWS README TODO'
 patchfiles=''
 compress=txz
 SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
@@ -64,6 +65,17 @@ do_install() {
 	echo "make install error. $0 script stop"
 	exit 255
     fi
+    mkdir -p $P/install
+    cat << EOF >> $P/install/initpkg
+glib-compile-schemas /usr/share/glib-2.0/schemas > /dev/null 2>&1
+touch /usr/share/glib-2.0/schemas/gschemas.compiled
+update-mime-database /usr/share/mime > /dev/null 2>&1
+touch /usr/share/mime/mime.cache
+update-desktop-database /usr/share/applications > /dev/null 2>&1
+touch /usr/share/applications/mimeinfo.cache
+gtk-update-icon-cache -f /usr/share/icons/hicolor > /dev/null 2>&1
+touch /usr/share/icons/hicolor/icon-theme.cache
+EOF
 }
 
 do_package() {
