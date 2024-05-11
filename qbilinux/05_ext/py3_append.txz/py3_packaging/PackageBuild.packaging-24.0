@@ -1,13 +1,12 @@
 #!/bin/sh
 ##############################################################
 pkgbase=py3_packaging
-vers=21.2
-url="https://github.com/pypa/packaging/archive/refs/tags/${vers}.tar.gz"
-srcfile=packaging-${vers}.tar.gz
+vers=24.0
+url="https://github.com/pypa/packaging/archive/refs/tags/${vers}/packaging-${vers}.tar.gz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=3
+build=1
 src=packaging-${vers}
 OPT_CONFIG=''
 DOCS='CHANGELOG.rst CONTRIBUTING.rst LICENSE LICENSE.APACHE LICENSE.BSD README.rst'
@@ -39,7 +38,8 @@ do_config() {
 do_build() {
     cd ${B[$1]}
     PYTHON=/usr/bin/python3
-    python3 ./setup.py build
+    #python3 ./setup.py build
+    python3 -m build
 
     if [ $? != 0 ]; then
 	echo "make error. $0 script stop"
@@ -50,14 +50,13 @@ do_build() {
 do_install() {
     cd ${B[$1]}
     PYTHON=/usr/bin/python3
-    python3 ./setup.py install --root=$P
+    #python3 ./setup.py install --root=$P
+    python3 -m installer --destdir=$P dist/*.whl
 
     if [ $? != 0 ]; then
 	echo "make install error. $0 script stop"
 	exit 255
     fi
-
-    # add extra func
 }
 
 do_package() {
