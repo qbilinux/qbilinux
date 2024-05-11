@@ -2,8 +2,7 @@
 ##############################################################
 pkgbase=py3_pyqt
 vers=5.15.10
-url="https://files.pythonhosted.org/packages/4d/5d/b8b6e26956ec113ad3f566e02abd12ac3a56b103fcc7e0735e27ee4a1df3/PyQt5-${vers}.tar.gz"
-#url="https://sourceforge.net/projects/pyqt/files/PyQt5/PyQt-${vers}/PyQt5_gpl-${vers}.tar.gz"
+url="https://pypi.python.org/packages/source/P/PyQt5/PyQt5-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
@@ -30,15 +29,7 @@ do_config() {
 
     cp -a ${S[$1]} ${B[$1]}
     cd ${B[$1]}
-    python3 ./configure.py --confirm-license
-
-    # Thanks Gerardo for the rpath fix
-    if [ "$arch" = "x86_64" -o "$arch" = "aarch64" ]; then
-	find -name 'Makefile' | xargs sed -i 's|-Wl,-rpath,/usr/lib64||g;s|-Wl,-rpath,.* ||g'
-    else
-    	find -name 'Makefile' | xargs sed -i 's|-Wl,-rpath,/usr/lib||g;s|-Wl,-rpath,.* ||g'
-    fi
-
+    sip-build --confirm-license --no-make --pep484-pyi
     if [ $? != 0 ]; then
 	echo "configure error. $0 script stop"
 	exit 255
@@ -47,6 +38,7 @@ do_config() {
 
 do_build() {
     cd ${B[$1]}
+    cd build
     make
     
     if [ $? != 0 ]; then
@@ -57,7 +49,9 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}
-    make install DESTDIR=$P INSTALL_ROOT=$P
+    cd build
+    mkdir -p $P/usr
+    make install INSTALL_ROOT=$P
 
     if [ $? != 0 ]; then
 	echo "make install error. $0 script stop"
