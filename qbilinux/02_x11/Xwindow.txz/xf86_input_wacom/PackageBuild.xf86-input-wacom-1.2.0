@@ -5,9 +5,9 @@ vers=1.2.0
 url="https://github.com/linuxwacom/xf86-input-wacom/releases/download/xf86-input-wacom-${vers}/xf86-input-wacom-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=xf86-input-wacom-${vers}
-OPT_CONFIG='--with-systemd-unit-dir=no'
+OPT_CONFIG='--with-systemd-unit-dir=no --with-udev-rules-dir=/lib/udev/rules.d'
 DOCS='AUTHORS ChangeLog INSTALL README'
 patchfiles=''
 compress=txz
