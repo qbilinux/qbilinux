@@ -1,15 +1,15 @@
 #!/bin/sh
 ##############################################################
 pkgbase=eudev
-vers=3.2.10
-url="https://dev.gentoo.org/~blueness/eudev/eudev-${vers}.tar.gz"
+vers=3.2.14
+url="https://github.com/eudev-project/eudev/releases/download/v${vers}/eudev-${vers}.tar.gz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=eudev-${vers}
 OPT_CONFIG='--bindir=/sbin --sbindir=/sbin --libexecdir=/lib --with-rootprefix=
-     --with-rootlibexecdir=/lib/udev --enable-manpages'
+     --with-rootlibdir=/lib --enable-manpages'
 DOCS='COPYING'
 patchfiles=''
 compress=txz
