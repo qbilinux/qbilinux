@@ -2,9 +2,8 @@
 
 ######################################################################
 pkgbase=rsyslog
-vers=8.2304.0
-url="https://github.com/rsyslog/rsyslog/archive/refs/tags/v${vers}.tar.gz"
-srcfile=$pkgbase-$vers.tar.gz
+vers=8.2404.0
+url="https://github.com/rsyslog/rsyslog/archive/refs/tags/v${vers}/$pkgbase-$vers.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=2
@@ -23,7 +22,7 @@ do_prepare() {
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
-    cp /usr/src/qbilinux/{config.guess,config.sub} .
+    #cp /usr/src/qbilinux/{config.guess,config.sub} .
 }
 
 do_config() {
@@ -125,7 +124,7 @@ do_install() {
 	        mail,news.none		-/var/log/messages
 	
 	# Emergencies are shown to everyone
-	*.emerg				*
+	*.emerg				:omusrmsg:*
 	
 	# End /etc/rsyslog.conf
 	EOF
