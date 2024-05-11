@@ -2,7 +2,7 @@
 
 ######################################################################
 pkgbase=linux_pam
-vers=1.5.2
+vers=1.5.3
 url="https://github.com/linux-pam/linux-pam/releases/download/v${vers}/Linux-PAM-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
