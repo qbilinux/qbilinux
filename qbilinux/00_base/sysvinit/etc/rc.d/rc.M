@@ -98,7 +98,7 @@ if [ -f /bootlog ] ; then
 fi
 if [ -x /sbin/rsyslogd ] ; then
   echo "Starting syslogd..."
-  rsyslogd -m 0
+  rsyslogd
 fi
 
 # Initialize the NET subsystem.
