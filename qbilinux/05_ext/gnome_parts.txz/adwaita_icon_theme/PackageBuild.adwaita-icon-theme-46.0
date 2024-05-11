@@ -1,8 +1,8 @@
 #!/bin/sh
 ##############################################################
 pkgbase=adwaita_icon_theme
-vers=45.0
-gnome_vers=45.0
+vers=46.0
+gnome_vers=46.0
 url="https://download.gnome.org/sources/adwaita-icon-theme/${vers%.*}/adwaita-icon-theme-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
