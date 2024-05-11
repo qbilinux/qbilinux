@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase="sysprof"
-vers=45.1
+vers=46.0
 url="http://ftp.acc.umu.se/pub/GNOME/sources/sysprof/${vers%.*}/sysprof-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
