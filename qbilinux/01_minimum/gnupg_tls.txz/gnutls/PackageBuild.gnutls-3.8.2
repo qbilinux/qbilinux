@@ -6,9 +6,9 @@ vers=3.8.2
 url="https://www.gnupg.org/ftp/gcrypt/gnutls/v${vers%.*}/gnutls-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=$pkgbase-${vers}
-OPT_CONFIG=""
+OPT_CONFIG="--with-default-trust-store-file=/etc/ssl/certs/ca-bundle.crt"
 DOCS="THANKS ChangeLog COPYING INSTALL AUTHORS TODO ABOUT-NLS NEWS
     README"
 patchfiles=""
