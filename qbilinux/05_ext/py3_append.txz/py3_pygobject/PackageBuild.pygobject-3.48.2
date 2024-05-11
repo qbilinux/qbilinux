@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase=py3_pygobject
-vers=3.46.0
+vers=3.48.2
 url="http://ftp.gnome.org/pub/GNOME/sources/pygobject/${vers%.*}/pygobject-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
@@ -27,7 +27,13 @@ do_prepare() {
 do_config() {
     if [ -d ${B[$1]} ] ; then rm -rf ${B[$1]} ; fi
 
-    cp -a ${S[$1]} ${B[$1]}
+    mkdir ${B[$1]}
+    cd ${B[$1]}
+    if [ -f ${S[$1]}/meson.build ] ; then
+      export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
+      export LDFLAGS='-Wl,--as-needed' 
+      meson setup --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir=/usr/share/man ${OPT_CONFIG[$1]} ${S[$1]}
+    fi
     if [ $? != 0 ]; then
 	echo "configure error. $0 script stop"
 	exit 255
@@ -36,8 +42,8 @@ do_config() {
 
 do_build() {
     cd ${B[$1]}
-    python3 ./setup.py build
-    
+    export LDFLAGS='-Wl,--as-needed'
+    ninja
     if [ $? != 0 ]; then
 	echo "make error. $0 script stop"
 	exit 255
@@ -46,8 +52,8 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}
-    python3 setup.py install --root $P
-
+    export LDFLAGS='-Wl,--as-needed'
+    DESTDIR=$P ninja install
     if [ $? != 0 ]; then
 	echo "make install error. $0 script stop"
 	exit 255
