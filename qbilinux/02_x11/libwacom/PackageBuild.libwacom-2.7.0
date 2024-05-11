@@ -6,9 +6,9 @@ url="https://github.com/linuxwacom/libwacom/archive/refs/tags/libwacom-${vers}.t
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=libwacom-libwacom-${vers}
-OPT_CONFIG='--buildtype=release -Dtests=disabled'
+OPT_CONFIG='--buildtype=release -Dtests=disabled -Dudev-dir=/lib/udev'
 DOCS='COPYING NEWS README'
 patchfiles=''
 compress=txz
