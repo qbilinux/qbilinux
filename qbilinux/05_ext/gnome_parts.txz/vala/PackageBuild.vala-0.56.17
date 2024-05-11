@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase=vala
-vers=0.56.14
+vers=0.56.17
 url="http://ftp.gnome.org/pub/gnome/sources/${pkgbase}/${vers%.*}/${pkgbase}-${vers}.tar.xz"
 verify="http://ftp.gnome.org/pub/gnome/sources/${pkgbase}/${vers%.*}/${pkgbase}-${vers}.sha256sum"
 commitid=
