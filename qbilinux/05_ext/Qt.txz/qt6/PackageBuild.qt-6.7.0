@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase=qt6
-vers=6.6.3
+vers=6.7.0
 url="http://download.qt.io/archive/qt/${vers%.*}/${vers}/single/qt-everywhere-src-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
@@ -30,7 +30,7 @@ OPT_CONFIG="-confirm-license           \
             -skip qtquick3d -skip qtquick3dphysics -skip qtgraphs"
 fi
 DOCS='LGPL_EXCEPTION.txt LICENSE.FDL LICENSE.GPLv2 LICENSE.GPLv3 LICENSE.LGPLv21 LICENSE.LGPLv3 LICENSE.PREVIEW.COMMERCIAL README'
-patchfiles=''
+patchfiles='CVE-2024-33861-qtbase-6.7.diff'
 compress=txz
 SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
 SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
