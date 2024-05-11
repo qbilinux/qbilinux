@@ -1,7 +1,7 @@
 #!/bin/sh
 ##############################################################
 pkgbase="gnome_bluetooth"
-vers=42.7
+vers=46.0
 url="http://ftp.gnome.org/pub/gnome/sources/gnome-bluetooth/${vers%.*}/gnome-bluetooth-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
