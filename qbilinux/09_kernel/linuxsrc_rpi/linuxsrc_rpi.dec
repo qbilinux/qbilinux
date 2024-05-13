@@ -1,0 +1,11 @@
+linuxsrc_rpi & y & y & y & y
+&
+Linux kernel ソースコード
+&
+Linux カーネルのソースコードです。元々のカーネルソースに cjk パッチ，
+aufs パッチなどを当てて，パッケージ化しています。
+&
+Linux kernel source code
+&
+Linux kernel source patched with unicon-patch, aufs-patch, tuxonice-
+patch, etc. and configured for a default kernel.

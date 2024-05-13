@@ -1,0 +1,38 @@
+*** nfs-utils-2.6.4/tools/nfsrahead/Makefile.am.orig	2023-11-17 17:32:39.000000000 -0000
+--- nfs-utils-2.6.4/tools/nfsrahead/Makefile.am	2024-03-07 12:18:40.458384072 -0000
+***************
+*** 6,12 ****
+  man5_MANS = nfsrahead.man
+  EXTRA_DIST = $(man5_MANS)
+  
+! udev_rulesdir = /usr/lib/udev/rules.d/
+  udev_rules_DATA = 99-nfs.rules
+  
+  99-nfs.rules: 99-nfs.rules.in $(builddefs)
+--- 6,12 ----
+  man5_MANS = nfsrahead.man
+  EXTRA_DIST = $(man5_MANS)
+  
+! udev_rulesdir = /lib/udev/rules.d/
+  udev_rules_DATA = 99-nfs.rules
+  
+  99-nfs.rules: 99-nfs.rules.in $(builddefs)
+*** nfs-utils-2.6.4/tools/nfsrahead/Makefile.in.orig	2023-11-17 17:34:38.000000000 -0000
+--- nfs-utils-2.6.4/tools/nfsrahead/Makefile.in	2024-03-07 12:18:53.763247032 -0000
+***************
+*** 424,430 ****
+  nfsrahead_LDADD = ../../support/nfs/libnfsconf.la
+  man5_MANS = nfsrahead.man
+  EXTRA_DIST = $(man5_MANS)
+! udev_rulesdir = /usr/lib/udev/rules.d/
+  udev_rules_DATA = 99-nfs.rules
+  all: all-am
+  
+--- 424,430 ----
+  nfsrahead_LDADD = ../../support/nfs/libnfsconf.la
+  man5_MANS = nfsrahead.man
+  EXTRA_DIST = $(man5_MANS)
+! udev_rulesdir = /lib/udev/rules.d/
+  udev_rules_DATA = 99-nfs.rules
+  all: all-am
+  

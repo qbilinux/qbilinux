@@ -1,7 +1,0 @@
-utempter & y & y & y & y
-&
-utmp操作ツール
-&
-xtermやscreenがroot権限無しでもutmp/wtmpを操作できるようにするツール
-&
-&

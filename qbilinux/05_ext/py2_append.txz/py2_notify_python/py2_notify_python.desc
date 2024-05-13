@@ -1,8 +1,0 @@
-py2_notify_python & y & y & y & y
-&
-libnotify用Pythonバインディング
-&
-Pythonからデスクトップ通知機能
-(libnotify)を使うためのバインディング
-&
-&

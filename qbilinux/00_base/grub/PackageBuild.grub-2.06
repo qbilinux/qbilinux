@@ -6,12 +6,12 @@ vers=2.06
 url="https://ftp.gnu.org/gnu/grub/grub-${vers}.tar.xz"
 apply_arch="x86_64 i686"
 arch=`uname -m`
-build=1
+build=2
 src[0]=$pkgbase-$vers
 src[1]=${src[0]}
 patchfiles[0]=""
 patchfiles[1]=""
-OPT_CONFIG[0]="--disable-grub-mount --disable-werror"
+OPT_CONFIG[0]="--disable-werror"
 OPT_CONFIG[1]="${OPT_CONFIG[0]} --with-platform=efi --target=i386"
 if [ $arch = "x86_64" ]; then
     src[2]=${src[0]}

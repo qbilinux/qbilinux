@@ -1,0 +1,58 @@
+#!/bin/sh
+##############################################################
+pkgbase=microcode_intel
+vers=20230808
+url="https://github.com/intel/Intel-Linux-Processor-Microcode-Data-Files/archive/refs/tags/microcode-${vers}.tar.gz"
+commitid=
+apply_arch="x86_64 i686"
+arch=`uname -m`
+build=1
+src=Intel-Linux-Processor-Microcode-Data-Files-microcode-${vers}
+OPT_CONFIG=''
+DOCS='license releasenote'
+patchfiles=''
+compress=txz
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
+##############################################################
+
+source /usr/src/qbilinux/PackageBuild.def
+
+do_prepare() {
+    cd ${S[$i]}
+}
+
+do_config() {
+    if [ -d ${B[$1]} ] ; then rm -rf ${B[$1]} ; fi
+
+    mkdir ${B[$1]}
+    cp -a $S/intel-ucode ${B[$1]}
+    cp -a $S/intel-ucode-with-caveats ${B[$1]}
+}
+
+do_build() {
+    cd ${B[$1]}
+}
+
+do_install() {
+    cd ${B[$1]}
+
+    # add extra func
+    mkdir $docdir/$src
+    install -dm755 -v $P/lib/firmware
+    cp -pr $B/intel-ucode $P/lib/firmware
+    cp -pr $B/intel-ucode-with-caveats $P/lib/firmware
+    chown -R root.root $P/lib/firmware
+}
+
+do_package() {
+    for i in $pkgbase ; do
+        cd $P
+        /sbin/makepkg $W/$pkg.$compress <<EOF
+y
+1
+EOF
+    done
+}
+
+source /usr/src/qbilinux/PackageBuild.func

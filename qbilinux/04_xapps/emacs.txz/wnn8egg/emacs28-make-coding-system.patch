@@ -1,0 +1,14 @@
+--- wnn7/elisp/emacs20/wnn7egg-com.el.orig	2023-06-25 18:49:17.922808643 -0000
++++ wnn7/elisp/emacs20/wnn7egg-com.el	2023-06-25 18:49:58.828300784 -0000
+@@ -170,8 +170,9 @@
+       (write-read-repeat r0))))))
+ 
+ (if (not (coding-system-p 'egg-binary))
+-    (make-coding-system 'egg-binary 4 ?W "Coding System for binary data"
+-		    (cons ccl-decode-egg-binary ccl-encode-egg-binary)))
++    (define-coding-system 'egg-binary "Coding System for binary data"
++      :mnemonic ?W :coding-type 'ccl :ccl-decoder ccl-decode-egg-binary
++      :ccl-encoder ccl-encode-egg-binary))
+ 
+ 
+ (defun comm-format-u32c (uint32c)

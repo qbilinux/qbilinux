@@ -6,7 +6,7 @@ url="http://openbox.org/dist/openbox/openbox-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=7
+build=9
 src=openbox-${vers}
 OPT_CONFIG=''
 DOCS='ABOUT-NLS AUTHORS CHANGELOG COPYING README'
@@ -24,6 +24,8 @@ do_prepare() {
 	patch -p1 < $W/$patch
     done
     cp -f /usr/src/qbilinux/config.{guess,sub} .
+    2to3-3.11 -w data/autostart/openbox-xdg-autostart
+    sed 's/python/python3/' -i data/autostart/openbox-xdg-autostart
 }
 
 do_config() {

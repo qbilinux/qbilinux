@@ -1,0 +1,129 @@
+#!/bin/sh
+
+######################################################################
+pkgbase=nfs_utils
+vers=2.6.4
+url="https://www.kernel.org/pub/linux/utils/nfs-utils/${vers}/nfs-utils-${vers}.tar.xz"
+apply_arch="x86_64 i686 armv7l aarch64"
+arch=`uname -m`
+build=2
+src=nfs-utils-$vers
+OPT_CONFIG="--disable-nfsv4 --disable-gss"
+DOCS="README NEWS INSTALL COPYING"
+patchfiles="patch-aa"
+compress=txz
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
+######################################################################
+
+source /usr/src/qbilinux/PackageBuild.def
+
+do_prepare() {
+    cd ${S[$1]}
+    for patch in $patchfiles ; do
+	patch -p1 < $W/$patch
+    done
+}
+
+do_config() {
+    if [ -d ${B[$1]} ] ; then rm -rf ${B[$1]} ; fi
+
+    cp -a ${S[$1]} ${B[$1]}
+    cd ${B[$1]}
+    if [ -x ./configure ] ; then
+	export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
+	export LDFLAGS='-Wl,--as-needed'
+	export LIBS="-lsqlite3 -levent_core"
+	./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc \
+		--localstatedir=/var --infodir='${prefix}'/share/info --mandir='${prefix}'/share/man ${OPT_CONFIG[$1]}
+    fi
+    if [ $? != 0 ]; then
+	echo "configure error. $0 script stop"
+	exit 255
+    fi
+}
+
+do_build() {
+    cd ${B[$1]}
+    if [ -f Makefile ] ; then
+	export LDFLAGS='-Wl,--as-needed'
+	make
+    fi
+    if [ $? != 0 ]; then
+	echo "make error. $0 script stop"
+	exit 255
+    fi
+}
+
+do_install() {
+    cd ${B[$1]}
+    if [ -f Makefile ] ; then
+	export LDFLAGS='-Wl,--as-needed'
+	make install DESTDIR=$P
+    fi
+    if [ $? != 0 ]; then
+	echo "make install error. $0 script stop"
+	exit 255
+    fi
+
+    # add extra func
+    cat <<- "EOF" > $P/sbin/nfs4_setup.sh
+	#!/bin/sh
+	#
+	# Simple NFSv4 setup scripts for NFS mount by hands
+	# If you don't invoke rpc.idmapd, NFSv4's UID/username mapping
+	# function doesn't work and cannot chown files on NFS
+	
+	modprobe sunrpc
+	mount -t rpc_pipefs rpc_pipefs /var/lib/nfs/rpc_pipefs
+	/usr/bin/rpcbind
+	/usr/sbin/rpc.nfsd 4
+	/usr/sbin/rpc.mountd
+	/usr/sbin/rpc.idmapd
+	/usr/sbin/rpc.statd
+	EOF
+    chmod 755 $P/sbin/nfs4_setup.sh
+    mv $P/usr/sbin/{sm-notify,rpc.statd} $C
+    mv $C/{sm-notify,rpc.statd} $P/usr/sbin
+    ln -s /bin/ture $P/usr/sbin/rpc.gssd
+    mkdir -m 700 $P/var/lib/nfs/{rpc_pipefs,v4recovery}
+    chown nobody $P/var/lib/nfs/{rpc_pipefs,v4recovery}
+    mkdir $P/etc
+    cat <<- "EOF" > $P/etc/idmapd.conf
+	[General]
+	Verbosity = 1
+	Pipefs-Directory = /var/lib/nfs/rpc_pipefs
+	Domain = localdomain
+	
+	[Mapping]
+	
+	Nobody-User = nobody
+	Nobody-Group = nogroup
+	EOF
+    install -d $P/install
+    cat <<- EOF >> $P/install/doinst.sh
+	#%% begin initialize $pkg
+	EOF
+    cat <<- "EOF" | unexpand >> $P/install/doinst.sh
+	if [ -z `grep "^nfs" etc/services` ] ; then
+	  echo "adding nfs service into /etc/services"
+	  cat <<- "EOF" >> etc/services
+	        nfs		2049/tcp
+	        nfs		2049/udp
+	        EOF
+	fi
+	#%% end
+	EOF
+}
+
+do_package() {
+    for i in $pkgbase ; do
+        cd $P
+        /sbin/makepkg $W/$pkg.$compress <<EOF
+y
+1
+EOF
+    done
+}
+
+source /usr/src/qbilinux/PackageBuild.func

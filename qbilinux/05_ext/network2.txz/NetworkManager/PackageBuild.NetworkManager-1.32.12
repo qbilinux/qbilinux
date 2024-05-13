@@ -5,7 +5,7 @@ vers=1.32.12
 url="https://download.gnome.org/sources/NetworkManager/${vers%.*}/NetworkManager-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=3
 src=NetworkManager-${vers}
 OPT_CONFIG='-Dsystemdsystemunitdir=no -Dsystemd_journal=false -Dselinux=false -Dsession_tracking=elogind -Dlibaudit=no -Dqt=false'
 DOCS='ABOUT-NLS AUTHORS COPYING ChangeLog INSTALL NEWS README TODO'

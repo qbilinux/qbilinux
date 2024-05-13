@@ -6,7 +6,7 @@ vers=3.3.10
 url="http://www.fftw.org/fftw-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src[0]=fftw-${vers}
 src[1]=fftw-${vers}
 src[2]=fftw-${vers}
@@ -32,6 +32,9 @@ do_prepare() {
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
+
+    # make FFTW3LibraryDepends.cmake
+    cmake     -D CMAKE_INSTALL_PREFIX=/usr     -D CMAKE_BUILD_TYPE=None     -D ENABLE_OPENMP=ON     -D ENABLE_THREADS=ON     -D ENABLE_FLOAT=ON     -D ENABLE_LONG_DOUBLE=ON     -D ENABLE_QUAD_PRECISION=ON     -D ENABLE_SSE=ON     -D ENABLE_SSE2=ON     -D ENABLE_AVX=ON     -D ENABLE_AVX2=ON
 }
 
 do_config() {
@@ -78,7 +81,7 @@ do_install() {
 	exit 255
     fi
 
-    # add extra func
+    install -vDm 644 ${S[$1]}/FFTW3LibraryDepends.cmake -t $P/usr/${libdir}/cmake/fftw3/
 }
 
 do_package() {

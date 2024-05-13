@@ -6,7 +6,7 @@ url="https://github.com/libevent/libevent/releases/download/release-${vers}-stab
 apply_arch="x86_64 i686 armv7l aarch64"
 commitid=
 arch=`uname -m`
-build=3
+build=4
 src=libevent-${vers}-stable
 # for libressl
 # OPT_CONFIG='--disable-libevent-regress --disable-samples'
@@ -69,7 +69,7 @@ do_install() {
     fi
 
     # add extra func
-    (cd $P/usr/${libdir}; ln -fs libevent-2.1.so.7 libevent-2.1.so.6)
+    #(cd $P/usr/${libdir}; ln -fs libevent-2.1.so.7 libevent-2.1.so.6)
 }
 
 do_package() {

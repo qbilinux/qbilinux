@@ -1,0 +1,80 @@
+#!/bin/sh
+##############################################################
+pkgbase="xorgproto"
+vers=2023.2
+url="https://www.x.org/releases/individual/proto/xorgproto-${vers}.tar.xz"
+commitid=
+apply_arch="x86_64 i686 armv7l aarch64"
+arch=`uname -m`
+build=1
+src=xorgproto-${vers}
+OPT_CONFIG=''
+DOCS='AUTHORS COPYING-applewmproto COPYING-bigreqsproto COPYING-compositeproto COPYING-damageproto COPYING-dmxproto COPYING-dri2proto COPYING-dri3proto COPYING-evieproto COPYING-fixesproto COPYING-fontcacheproto COPYING-fontsproto COPYING-glproto COPYING-inputproto COPYING-kbproto COPYING-lg3dproto COPYING-pmproto COPYING-presentproto COPYING-printproto COPYING-randrproto COPYING-recordproto COPYING-renderproto COPYING-resourceproto COPYING-scrnsaverproto COPYING-trapproto COPYING-videoproto COPYING-windowswmproto COPYING-x11proto COPYING-xcmiscproto COPYING-xextproto COPYING-xf86bigfontproto COPYING-xf86dgaproto COPYING-xf86driproto COPYING-xf86miscproto COPYING-xf86rushproto COPYING-xf86vidmodeproto COPYING-xineramaproto INSTALL README.md compositeproto.txt damageproto.txt dri2proto.txt dri3proto.txt fixesproto.txt meson_options.txt presentproto.txt randrproto.txt renderproto.txt resproto.txt xv-protocol-v2.txt'
+patchfiles=''
+compress=txz
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
+##############################################################
+
+
+source /usr/src/qbilinux/PackageBuild.def
+
+do_prepare() {
+    cd ${S[$1]}
+    for patch in $patchfiles ; do
+	patch -p1 < $W/$patch
+    done
+}
+
+
+do_config() {
+    if [ -d ${B[$1]} ] ; then rm -rf ${B[$1]} ; fi
+
+    mkdir ${B[$1]}
+    cd ${B[$1]}
+    if [ -f ${S[$1]}/meson.build ] ; then
+      export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig:/opt/kde/${libdir}/pkgconfig
+      export LDFLAGS='-Wl,--as-needed' 
+      meson --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc --localstatedir=/var --mandir=/usr/share/man ${OPT_CONFIG[$1]} ${S[$1]}
+    fi
+    if [ $? != 0 ]; then
+	echo "configure error. $0 script stop"
+	exit 255
+    fi
+}
+
+do_build() {
+    cd ${B[$1]}
+    export LDFLAGS='-Wl,--as-needed'
+    ninja
+    if [ $? != 0 ]; then
+	echo "make error. $0 script stop"
+	exit 255
+    fi
+}
+
+do_install() {
+    cd ${B[$1]}
+    export LDFLAGS='-Wl,--as-needed'
+    DESTDIR=$P ninja install
+    if [ $? != 0 ]; then
+	echo "make install error. $0 script stop"
+	exit 255
+    fi
+
+    # add extra func
+    # mkdir -p $P2/hoge
+    # cp hoge.txt $P2/hoge
+}
+
+do_package() {
+    for i in $pkgbase ; do
+        cd $P
+        /sbin/makepkg $W/$pkg.$compress <<EOF
+y
+1
+EOF
+    done
+}
+
+source /usr/src/qbilinux/PackageBuild.func

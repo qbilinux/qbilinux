@@ -1,0 +1,88 @@
+#!/bin/sh
+
+######################################################################
+pkgbase=rxvt_unicode
+vers=9.31
+url="http://dist.schmorp.de/rxvt-unicode/rxvt-unicode-${vers}.tar.bz2"
+apply_arch="x86_64 i686 armv7l aarch64"
+arch=`uname -m`
+build=2
+src=rxvt-unicode-${vers}
+OPT_CONFIG="--enable-languages --enable-utmp --enable-wtmp
+    --enable-xpm-background --enable-transparency --enable-menubar
+    --enable-graphics --enable-rxvt-scroll --enable-next-scroll
+    --enable-xterm-scroll --enable-xim --enable-xgetdefault
+    --enable-frills --enable-linespace --enable-24bit
+    --enable-keepscrolling --enable-mousewheel --enable-slipwheeling
+    --enable-old-selection"
+DOCS="ChangeLog README.configure INSTALL"
+compress=txz
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
+######################################################################
+
+source /usr/src/qbilinux/PackageBuild.def
+
+do_prepare() {
+    cd ${S[$i]}
+    for patch in $patchfiles ; do
+	patch -p1 < $W/$patch
+    done
+
+    cp -p src/feature.h{,.orig}
+    sed 's@/X11R6/lib@/share@g' src/feature.h.orig > src/feature.h
+    cp -f /usr/src/qbilinux/{config.guess,config.sub} autoconf
+}
+
+do_config() {
+    if [ -d ${B[$1]} ] ; then rm -rf ${B[$1]} ; fi
+
+    mkdir ${B[$1]}
+    cd ${B[$1]}
+    if [ -x ${S[$1]}/configure ] ; then
+	export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
+	export LDFLAGS='-Wl,--as-needed' 
+	${S[$1]}/configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc \
+		--localstatedir=/var --infodir='${prefix}'/share/info --mandir='${prefix}'/share/man ${OPT_CONFIG[$1]}
+    fi
+    if [ $? != 0 ]; then
+	echo "configure error. $0 script stop"
+	exit 255
+    fi
+}
+
+do_build() {
+    cd ${B[$1]}
+    if [ -f Makefile ] ; then
+	export LDFLAGS='-Wl,--as-needed'
+	make
+    fi
+    if [ $? != 0 ]; then
+	echo "make error. $0 script stop"
+	exit 255
+    fi
+}
+
+do_install() {
+    cd ${B[$1]}
+    if [ -f Makefile ] ; then
+	export LDFLAGS='-Wl,--as-needed'
+	make install DESTDIR=$P
+    fi
+    if [ $? != 0 ]; then
+	echo "make install error. $0 script stop"
+	exit 255
+    fi
+}
+
+do_package() {
+    for i in $pkgbase ; do
+        cd $P
+        /sbin/makepkg $W/$pkg.$compress <<EOF
+y
+1
+EOF
+    done
+}
+
+source /usr/src/qbilinux/PackageBuild.func
