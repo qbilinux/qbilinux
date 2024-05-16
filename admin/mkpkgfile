@@ -122,7 +122,8 @@ seek_dir () {
 		if [ $opt_install -eq 1 ] ; then
 		    # move package file
 		    if [ -f /var/log/packages/${pkgname} ] ; then
-			sudo mv /var/log/packages/${pkgname} /var/log/packages/${pkgname}_pre
+			ext=`date +%Y%m%d%H%M%S`
+			sudo mv /var/log/packages/${pkgname} /var/log/packages/${pkgname}_${ext}
 		    fi
 		    # install
 		    sudo installpkg ${pkgname}-*-*-*.txz
