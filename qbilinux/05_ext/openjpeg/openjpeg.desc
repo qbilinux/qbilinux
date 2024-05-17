@@ -1,9 +1,0 @@
-openjpeg & y & y & y & y
-&
-JPEG2000用ライブラリ OpenJpeg
-&
-OpenJpeg は JPEG2000 形式のライブラリです．
-&
-OpenJpeg: Jpeg2000 library
-&
-OpenJpeg is an OSS library for JPEG2000 specs.
