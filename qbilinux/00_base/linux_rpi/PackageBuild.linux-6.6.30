@@ -1,13 +1,14 @@
 #!/bin/sh -x
 
 # on x86_64 environment, please set arch=armv7l host_arch=x86_64.
+# ex) arch=armv7l host_arch=x86_64 ./PackageBuild.linux-6.6.30 download
 
 ######################################################################
 #url="https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.12.2.tar.xz
 #    git://github.com/sfjro/aufs4-standalone.git"
-version=6.6.30
-url="https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-${version%.*}.tar.xz
-	https://cdn.kernel.org/pub/linux/kernel/v6.x/patch-${version}.xz"
+vers=6.6.30
+url="https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-${vers%.*}.tar.xz
+	https://cdn.kernel.org/pub/linux/kernel/v6.x/patch-${vers}.xz"
 #	git://github.com/sfjro/aufs5-standalone.git"
 pkgbase=kernel_rpi
 apply_arch="armv6l armv7l aarch64"
@@ -15,29 +16,33 @@ arch=${arch:-`uname -m`}
 host_arch=${host_arch:-native}
 # cat /proc/device-tree/model
 build=1
-src[0]=linux-${version%.*}
+src[0]=linux-${vers%.*}
 patchfiles[0]="cjktty-linux-6.6.patch cjktty-linux-font-JP-6.6.patch overlayfs-allow_unprivileged_mounts.patch"
 arm_patchfiles[0]="rpi-6.6.30-20240516-c40b423b1.diff"
 patchfiles_not_used="tuxonice-for-linux-5.0.18.patch 4.8-morse_code_panics.patch 4.8-panic_beep.patch"
 case $arch in
     armv6l)
-	ext[0]=armv6l_rpi1	 ;;
+	ext[0]=armv6l_rpi1
+	kernel[0]=kernel	 ;;
     armv7l)
 	src[1]=${src[0]}
 	patchfiles[1]=${patchfiles[0]}
 	arm_patchfiles[1]=${arm_patchfiles[0]}
 	ext[0]=armv7l_rpi2
-	ext[1]=armv7l_rpi4	 ;;
+	ext[1]=armv7l_rpi4
+	kernel[0]=kernel7
+	kernel[1]=kernel7l	 ;;
     aarch64)
 	src[1]=${src[0]}
 	patchfiles[1]=${patchfiles[0]}
 	arm_patchfiles[1]=${arm_patchfiles[0]}
 	ext[0]=aarch64_rpi3
-	ext[1]=aarch64_rpi5 ;;
+	ext[1]=aarch64_rpi5
+	kernel[0]=kernel8
+	kernel[1]=kernel_2712	 ;;
     *)
 	;;
 esac
-vers=${version}_${ext}
 #git_branch=aufs5.4
 #aufs_git_vers=5a1e53d
 OPT_CONFIG=""
@@ -52,7 +57,7 @@ source /usr/src/qbilinux/PackageBuild.def
 do_prepare() {
     if [ $1 == 0 ]; then
 	cd ${S[$1]}
-	xz -dc $W/patch-${version}.xz | patch -p1
+	xz -dc $W/patch-${vers}.xz | patch -p1
 	for patch in $patchfiles ; do
 	    patch -p1 < $W/$patch
 	done
@@ -74,9 +79,7 @@ do_config() {
     # cp -pv $W/source/aufs5-standalone/include/uapi/linux/aufs_type.h include/uapi/linux
 
     cat $W/$arm_patchfiles | patch -Np1 -i -
-    chmod 755 drivers/net/wireless/realtek/rtl8192cu/{clean,runwpa,wlan0dhcp}
-
-    cp -p $W/config-${version%.*}-${ext[$1]} .config
+    cp -p $W/config-${vers%.*}-${ext[$1]} .config
 }
 
 do_build() {
@@ -85,9 +88,9 @@ do_build() {
 	x86_64)
 	    case $arch in
 		armv6l|armv7l)
-		    make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage modules dtbs ;;
+		    make ARCH=arm   CROSS_COMPILE=arm-linux-gnueabihf- zImage modules dtbs ;;
 		*)
-		    make ARCH=arm64 CROSS_COMPILE=arch64-linux-gnu-  Image  modules dtbs ;;
+		    make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-   Image  modules dtbs ;;
 	    esac ;;
 	*)
 	    case $arch in
@@ -106,7 +109,6 @@ do_build() {
 
 do_install() {
     cd ${B[$1]}
-    P=$W/work/$arch/${pkgbase[0]}-${ext[0]}
     install -d $P/boot
     case $host_arch in
 	x86_64)
@@ -114,10 +116,12 @@ do_install() {
 		armv6l|armv7l)
 		    make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_MOD_PATH=$P modules_install
 		    make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_PATH=$P/boot zinstall
+		    build_arch=arm
 		    ;;
 		*)
-		    make ARCH=arm64 CROSS_COMPILE=arch64-linux-gnu- INSTALL_MOD_PATH=$P modules_install
-		    make ARCH=arm64 CROSS_COMPILE=arch64-linux-gnu- INSTALL_PATH=$P/boot install
+		    make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- INSTALL_MOD_PATH=$P modules_install
+		    make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- INSTALL_PATH=$P/boot install
+		    build_arch=arm64
 		    ;;
 	    esac
 	    ;;
@@ -137,47 +141,27 @@ do_install() {
 	exit 255
     fi
 
-    krel=${vers//_/-}
-    case $arch in
-	armv6l)
-	    cp -p $P/boot/config{-$krel,}
-	    cp -p $P/boot/kernel.img{-$krel,}
-	    cp -p $P/boot/System.map{-$krel,}
-	    install -m 644 $B/arch/arm/boot/dts/*.dtb $P/boot
-	    install -d $P/boot/overlays
-	    install -m 644 $B/arch/arm/boot/dts/overlays/README $P/boot/overlays
-	    install -m 644 $B/arch/arm/boot/dts/overlays/*.dtbo $P/boot/overlays
-	    ;;
-	armv7l)
-	    cp -p $P/boot/config{-$krel,}
-	    cp -p $P/boot/kernel7.img{-$krel,}
-	    cp -p $P/boot/System.map{-$krel,}
-	    install -m 644 $B/arch/arm/boot/dts/*.dtb $P/boot
-	    install -d $P/boot/overlays
-	    install -m 644 $B/arch/arm/boot/dts/overlays/README $P/boot/overlays
-	    install -m 644 $B/arch/arm/boot/dts/overlays/*.dtbo $P/boot/overlays
-	    ;;
-	aarch64)
-	    mv $P/boot/vmlinuz $P/boot/kernel8.img-${krel}
-	    mv $P/boot/config $P/boot/config-${krel}
-	    mv $P/boot/System.map $P/boot/System.map-${krel}
-	    cp -p $P/boot/config{-$krel,}
-	    cp -p $P/boot/kernel8.img{-$krel,}
-	    cp -p $P/boot/System.map{-$krel,}
-	    install -m 644 $B/arch/arm64/boot/dts/broadcom/*.dtb $P/boot
-	    install -d $P/boot/overlays
-	    install -m 644 $B/arch/arm64/boot/dts/overlays/README $P/boot/overlays
-	    install -m 644 $B/arch/arm64/boot/dts/overlays/*.dtbo $P/boot/overlays
-	    ;;
-    esac
+    krel=${vers}-${ext[$1]}
+    mv $P/boot/vmlinuz $P/boot/${kernel[$1]}.img-${krel}
+    mv $P/boot/config $P/boot/config-${krel}
+    mv $P/boot/System.map $P/boot/System.map-${krel}
+    cp -p $P/boot/${kernel[$1]}.img{-$krel,}
+    install -m 644 ${B[$1]}/arch/$build_arch/boot/dts/broadcom/*.dtb $P/boot
+    install -d $P/boot/overlays
+    install -m 644 ${B[$1]}/arch/$build_arch/boot/dts/overlays/README $P/boot/overlays
+    install -m 644 ${B[$1]}/arch/$build_arch/boot/dts/overlays/*.dtb* $P/boot/overlays
     (rm $P/lib/modules/$krel/source; ln -s /usr/src/linux $P/lib/modules/$krel/source)
     (rm $P/lib/modules/$krel/build; ln -s /usr/src/linux $P/lib/modules/$krel/build)
 }
 
 do_package() {
-    for i in $configfile64 $configfile32 $configfileARMv6 $configfileARMv7 $configfileARM64 $arm_patchfiles ; do
-	cp $W/$i $docdir/$src/$i
-	gzip $docdir/$src/$i
+    # for i in $W/config-${vers%.*}-* ; do
+    # 	cp $W/$i $docdir/$src/$i
+    # 	gzip $docdir/$src/$i
+    # done
+    for i in $ext ; do
+	cp $W/config-${vers%.*}-$i $docdir/$src/config-${vers%.*}-$i
+	gzip $docdir/$src/config-${vers%.*}-$i
     done
     
     for i in $pkgbase ; do
