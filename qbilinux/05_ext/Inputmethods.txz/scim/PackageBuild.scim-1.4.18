@@ -7,7 +7,7 @@ url="https://github.com/scim-im/scim/archive/${vers}.tar.gz"
 srcfile=$pkgbase-$vers.tar.gz
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=6
+build=7
 src=$pkgbase-$vers
 OPT_CONFIG="--sysconfdir=/etc --disable-static"
 DOCS="AUTHORS THANKS README TODO COPYING ChangeLog NEWS ABOUT-NLS
