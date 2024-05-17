@@ -1,0 +1,89 @@
+#!/bin/sh
+##############################################################
+pkgbase=rustc
+vers=1.76.0
+url="https://static.rust-lang.org/dist/rustc-${vers}-src.tar.gz"
+commitid=
+apply_arch="x86_64 i686 armv7l aarch64"
+arch=`uname -m`
+cpu_num=`nproc --all`
+build=1
+src=rustc-${vers}-src
+OPT_CONFIG=''
+#OPT_CONFIG='--llvm-root=/usr --enable-llvm-link-shared'
+DOCS='LICENSE-APACHE LICENSE-MIT README.md RELEASES.md'
+#patchfiles='llvm.patch'
+patchfiles='rustc-1.76.0-testsuite_fix-1.patch'
+compress=txz
+NOCOMPRESS=true
+SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
+SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
+##############################################################
+
+source /usr/src/qbilinux/PackageBuild.def
+
+do_prepare() {
+    cd ${S[$i]}
+    for patch in $patchfiles ; do
+	patch -p1 < $W/$patch
+    done
+}
+
+do_config() {
+    if [ -d ${B[$1]} ] ; then rm -rf ${B[$1]} ; fi
+
+    cp -a ${S[$1]} ${B[$1]}
+    cd ${B[$1]}
+cat <<EOF > config.toml
+change-id = 116881
+[build]
+# install cargo as well as rust
+extended = true
+
+[install]
+prefix = "/usr"
+libdir = "${libdir}"
+docdir = "share/doc/rustc-${vers}"
+
+#[target.x86_64-unknown-linux-gnu]
+#llvm-config = "/usr/bin/llvm-config"
+
+#[target.i686-unknown-linux-gnu]
+#llvm-config = "/usr/bin/llvm-config"
+
+EOF
+    if [ $? != 0 ]; then
+	echo "configure error. $0 script stop"
+	exit 255
+    fi
+}
+
+do_build() {
+    cd ${B[$1]}
+    python3 ./x.py build -j $cpu_num
+    if [ $? != 0 ]; then
+	echo "make error. $0 script stop"
+	exit 255
+    fi
+}
+
+do_install() {
+    cd ${B[$1]}
+    env DESTDIR=$P python3 ./x.py install
+    if [ $? != 0 ]; then
+	echo "make install error. $0 script stop"
+	exit 255
+    fi
+}
+
+do_package() {
+    for i in $pkgbase ; do
+        cd $P
+        /sbin/makepkg $W/$pkg.$compress <<EOF
+y
+1
+EOF
+    done
+}
+
+source /usr/src/qbilinux/PackageBuild.func
