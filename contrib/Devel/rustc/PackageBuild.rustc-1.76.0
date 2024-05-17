@@ -1,20 +1,21 @@
 #!/bin/sh
 ##############################################################
 pkgbase=rustc
-vers=1.59.0
+vers=1.76.0
 url="https://static.rust-lang.org/dist/rustc-${vers}-src.tar.gz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 cpu_num=`nproc --all`
-build=2
+build=1
 src=rustc-${vers}-src
 OPT_CONFIG=''
 #OPT_CONFIG='--llvm-root=/usr --enable-llvm-link-shared'
 DOCS='LICENSE-APACHE LICENSE-MIT README.md RELEASES.md'
 #patchfiles='llvm.patch'
-patchfiles=''
+patchfiles='rustc-1.76.0-testsuite_fix-1.patch'
 compress=txz
+NOCOMPRESS=true
 SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
 SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
 ##############################################################
@@ -34,6 +35,7 @@ do_config() {
     cp -a ${S[$1]} ${B[$1]}
     cd ${B[$1]}
 cat <<EOF > config.toml
+change-id = 116881
 [build]
 # install cargo as well as rust
 extended = true
