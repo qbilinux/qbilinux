@@ -2,13 +2,13 @@
 
 ######################################################################
 pkgbase=graphviz
-vers=3.0.0
+vers=11.0.0
 url="https://gitlab.com/api/v4/projects/4207231/packages/generic/graphviz-releases/${vers}/graphviz-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=$pkgbase-${vers}
-OPT_CONFIG=""
+OPT_CONFIG="--enable-lua=no"
 DOCS="NEWS cpl1.0.txt INSTALL ChangeLog README AUTHORS COPYING"
 patchfiles=''
 compress=txz
@@ -23,12 +23,6 @@ do_prepare() {
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
-    cp -p tclpkg/gv/Makefile.in{,.orig}
-    cat <<- "EOF" | patch tclpkg/gv/Makefile.in
-	3350a3351
-	> 	sed -i 's/^  \(char \*type_name;\)/  const \1/' gv_php.cpp
-	EOF
-    ./autogen.sh NOCONFIG
 }
 
 do_config() {
