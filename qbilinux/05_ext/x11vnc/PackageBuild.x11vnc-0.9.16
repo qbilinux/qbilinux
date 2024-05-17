@@ -2,11 +2,10 @@
 ##############################################################
 pkgbase=x11vnc
 vers=0.9.16
-url="https://github.com/LibVNC/x11vnc/archive/${vers}.tar.gz"
-srcfile=${pkgbase}-${vers}.tar.gz
+url="https://github.com/LibVNC/x11vnc/refs/tags/${vers}/x11vnc-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=3
 src=x11vnc-${vers}
 OPT_CONFIG='--disable-static'
 DOCS='AUTHORS COPYING ChangeLog INSTALL NEWS README README.LibVNCServer TODO'
