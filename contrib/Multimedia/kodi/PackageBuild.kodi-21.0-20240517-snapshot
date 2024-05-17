@@ -1,16 +1,20 @@
 #!/bin/sh
 ##############################################################
-pkgbase=minidlna
-vers=1.3.0
-url="https://sourceforge.net/projects/minidlna/files/minidlna/${vers}/minidlna-${vers}.tar.gz"
+pkgbase=kodi
+vers=21.0
+#url="https://github.com/xbmc/xbmc/archive/refs/tags/${vers}-Omega/kodi-${vers}.tar.gz"
+url="https://qbilinux.org/pub/source/kodi-21.0-20240517-86b0c77.tar.gz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=minidlna-${vers}
-OPT_CONFIG=''
-DOCS='ABOUT-NLS AUTHORS COPYING ChangeLog INSTALL NEWS README TODO minidlna.conf'
-patchfiles='change_media_dir.patch'
+src=xbmc-${vers}-Omega
+OPT_CONFIG='-DENABLE_INTERNAL_FLATBUFFERS=ON -DENABLE_INTERNAL_FSTRCMP=ON -DENABLE_INTERNAL_RapidJSON=ON -DAPP_RENDER_SYSTEM=gl -DENABLE_INTERNAL_GTEST=OFF -DENABLE_DVDCSS=OFF -DENABLE_TESTING=OFF'
+if [ $arch = 'armv7l' -o $arch = 'aarch64' ] ; then
+    OPT_CONFIG="$OPT_CONFIG --disable-gl"
+fi
+DOCS='LICENSE.GPL README.md copying.txt privacy-policy.txt version.txt'
+patchfiles=''
 compress=txz
 SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
 SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
@@ -23,6 +27,9 @@ do_prepare() {
     for patch in $patchfiles ; do
 	patch -p1 < $W/$patch
     done
+    if [ -f bootstrap ] ; then
+	sh ./bootstrap
+    fi
 }
 
 do_config() {
@@ -32,8 +39,7 @@ do_config() {
     cd ${B[$1]}
     export PKG_CONFIG_PATH=/usr/${libdir}/pkgconfig:/usr/share/pkgconfig
     export LDFLAGS='-Wl,--as-needed' 
-    ./configure --prefix=/usr --libdir=/usr/${libdir} --sysconfdir=/etc \
-		--localstatedir=/var --infodir='${prefix}'/share/info --mandir='${prefix}'/share/man ${OPT_CONFIG[$1]}
+    cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DLIB_INSTALL_DIR:PATH=/usr/${libdir} -DLIB_SUFFIX=$suffix ${OPT_CONFIG} ${S[$1]}
     if [ $? != 0 ]; then
 	echo "configure error. $0 script stop"
 	exit 255
@@ -59,32 +65,7 @@ do_install() {
 	exit 255
     fi
 
-    install -d $P/etc/rc.d/init.d
-    cat <<- "EOF" > $P/etc/rc.d/init.d/minidlnad
-	#!/bin/sh
-	
-	SERVER=/usr/sbin/minidlnad
-	PID=/var/run/minidlnad.pid
-	
-	case "$1" in
-	start)
-	  echo "Starting minidlna server:"
-	  $SERVER -P $PID
-	  ;;
-	stop)
-	  echo "Shutting down minidlna server:"
-	  kill -9 `cat $PID`
-	  ;;
-	*)
-	  echo "Usage: minidlna {start|stop}"
-	  exit 1
-	  ;;
-	esac
-	exit 0
-	EOF
-    #chmod 755 $P/etc/rc.d/init.d/minidlnad
-    cp $S/minidlna.conf $P/etc
-    install -d $P/opt/minidlna
+    # add extra func
 }
 
 do_package() {

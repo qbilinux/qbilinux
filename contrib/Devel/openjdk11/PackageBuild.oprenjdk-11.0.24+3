@@ -1,18 +1,19 @@
 #!/bin/sh
 ##############################################################
-pkgbase=openjdk17
-vers=17.0.7+3
-url="https://github.com/openjdk/jdk17u/archive/refs/tags/jdk-${vers}.tar.gz"
+pkgbase=openjdk11
+vers=11.0.24+3
+url="https://github.com/openjdk/jdk11u/archive/refs/tags/jdk-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=jdk17u-jdk-${vers/+/-}
-OPT_CONFIG='--enable-unlimited-crypto                   --disable-warnings-as-errors                --with-stdc++lib=dynamic                    --with-giflib=system                        --with-lcms=system                          --with-libjpeg=system                       --with-libpng=system                        --with-zlib=system                          --with-version-build=17                   --with-version-pre=""                       --with-version-opt=""                       '
+src=jdk11u-jdk-${vers/+/-}
+#OPT_CONFIG='--enable-unlimited-crypto                   --disable-warnings-as-errors                --with-stdc++lib=dynamic                    --with-giflib=system                        --with-lcms=system                          --with-libjpeg=system                       --with-libpng=system                        --with-zlib=system                          --with-version-build=11                   --with-version-pre=""                       --with-version-opt=""                       --with-cacerts-file=/etc/ssl/java/cacerts.jks'
+OPT_CONFIG='--enable-unlimited-crypto                   --disable-warnings-as-errors                --with-stdc++lib=dynamic                    --with-giflib=system                        --with-lcms=system                          --with-libjpeg=system                       --with-libpng=system                        --with-zlib=system                          --with-version-build=11                   --with-version-pre=""                       --with-version-opt=""                       '
 DOCS='ADDITIONAL_LICENSE_INFO LICENSE README'
 patchfiles=''
 compress=txz
-SRC_URL=${SRC_URL:-"https://qbilinux.org/pub/source/"}
-SRC_DIR=${SRC_DIR:-"/home/archives/source/"}
+SRC_URL="https://qbilinux.org/pub/source/"
+SRC_DIR="/home/archives/source/"
 ##############################################################
 
 source /usr/src/qbilinux/PackageBuild.def
@@ -62,45 +63,45 @@ do_install() {
     find $P/opt/jdk-${vers} -name \*.diz -delete
     for s in 16 24 32 48; do
 	install -Dm 644 src/java.desktop/unix/classes/sun/awt/X11/java-icon${s}.png \
-		$P/usr/share/icons/hicolor/${s}x${s}/apps/java17.png
+		$P/usr/share/icons/hicolor/${s}x${s}/apps/java11.png
     done
     ln -v -nsf jdk-${vers} $P/opt/jdk
     
     mkdir -pv $P/usr/share/applications
-    cat > $P/usr/share/applications/openjdk-17-java.desktop << "EOF"
+    cat > $P/usr/share/applications/openjdk-11-java.desktop << "EOF"
 [Desktop Entry]
-Name=OpenJDK Java 17 Runtime
-Comment=OpenJDK Java 17 Runtime
+Name=OpenJDK Java 11 Runtime
+Comment=OpenJDK Java 11 Runtime
 Exec=/opt/jdk/bin/java -jar
 Terminal=false
 Type=Application
-Icon=java17
+Icon=java11
 MimeType=application/x-java-archive;application/java-archive;application/x-jar;
 NoDisplay=true
 EOF
 
-    cat > $P/usr/share/applications/openjdk-17-policytool.desktop << "EOF"
+    cat > $P/usr/share/applications/openjdk-11-policytool.desktop << "EOF"
 [Desktop Entry]
-Name=OpenJDK Java 17 Policy Tool
-Name[pt_BR]=OpenJDK Java 17 - Ferramenta de Pol룶퓍ica
-Comment=OpenJDK Java 17 Policy Tool
-Comment[pt_BR]=OpenJDK Java 17 - Ferramenta de Pol룶퓍ica
+Name=OpenJDK Java 11 Policy Tool
+Name[pt_BR]=OpenJDK Java 11 - Ferramenta de Pol룶퓍ica
+Comment=OpenJDK Java 11 Policy Tool
+Comment[pt_BR]=OpenJDK Java 11 - Ferramenta de Pol룶퓍ica
 Exec=/opt/jdk/bin/policytool
 Terminal=false
 Type=Application
-Icon=java17
+Icon=java11
 Categories=Settings;
 EOF
 
-    cat > $P/usr/share/applications/openjdk-17-jconsole.desktop << "EOF"
+    cat > $P/usr/share/applications/openjdk-11-jconsole.desktop << "EOF"
 [Desktop Entry]
-Name=OpenJDK Java 17 Console
-Comment=OpenJDK Java 17 Console
+Name=OpenJDK Java 11 Console
+Comment=OpenJDK Java 11 Console
 Keywords=java;console;monotoring
 Exec=/opt/jdk/bin/jconsole
 Terminal=false
 Type=Application
-Icon=java17
+Icon=java11
 Categories=Application;System;
 EOF
 
