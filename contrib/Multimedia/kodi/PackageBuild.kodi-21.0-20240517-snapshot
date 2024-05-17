@@ -1,13 +1,14 @@
 #!/bin/sh
 ##############################################################
 pkgbase=kodi
-vers=19.4
-url="https://github.com/xbmc/xbmc/archive/${vers}-Matrix.tar.gz"
+vers=21.0
+#url="https://github.com/xbmc/xbmc/archive/refs/tags/${vers}-Omega/kodi-${vers}.tar.gz"
+url="https://qbilinux.org/pub/source/kodi-21.0-20240517-86b0c77.tar.gz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=xbmc-${vers}-Matrix
+src=xbmc-${vers}-Omega
 OPT_CONFIG='-DENABLE_INTERNAL_FLATBUFFERS=ON -DENABLE_INTERNAL_FSTRCMP=ON -DENABLE_INTERNAL_RapidJSON=ON -DAPP_RENDER_SYSTEM=gl -DENABLE_INTERNAL_GTEST=OFF -DENABLE_DVDCSS=OFF -DENABLE_TESTING=OFF'
 if [ $arch = 'armv7l' -o $arch = 'aarch64' ] ; then
     OPT_CONFIG="$OPT_CONFIG --disable-gl"
