@@ -1,13 +1,13 @@
 #!/bin/sh
 ##############################################################
 pkgbase=udisks2
-vers=2.9.4
+vers=2.10.1
 url="https://github.com/storaged-project/udisks/releases/download/udisks-${vers}/udisks-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=udisks-${vers}
-OPT_CONFIG='--disable-static'
+OPT_CONFIG='--disable-static --enable-available-modules'
 DOCS='AUTHORS COPYING HACKING NEWS README'
 patchfiles=''
 compress=txz
