@@ -1,13 +1,13 @@
 #!/bin/sh
 ##############################################################
 pkgbase=bluez
-vers=5.63
+vers=5.75
 url="http://www.kernel.org/pub/linux/bluetooth/bluez-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=2
+build=1
 src=bluez-${vers}
-OPT_CONFIG='--enable-library --disable-static --enable-cups --enable-tools --disable-test --disable-systemd --enable-midi --without-systemdsystemunitdir'
+OPT_CONFIG='--enable-library --disable-static --disable-test --disable-systemd'
 DOCS='AUTHORS COPYING COPYING.LIB ChangeLog INSTALL NEWS README TODO'
 patchfiles=''
 compress=txz
@@ -64,7 +64,6 @@ do_install() {
 	exit 255
     fi
 
-    # add extra func
     install -v -dm755 $P/etc/bluetooth &&
     install -v -m644 ${S[$1]}/src/main.conf $P/etc/bluetooth/main.conf
 cat > $P/etc/bluetooth/rfcomm.conf << "EOF"
@@ -85,6 +84,40 @@ cat > $P/etc/bluetooth/uart.conf << "EOF"
 
 # End of uart.conf
 EOF
+    install -d $P/etc/rc.d/init.d
+    cat > $P/etc/rc.d/init.d/bluetoothd << "EOF"
+#!/bin/sh
+
+. /lib/lsb/init-functions
+
+SERVER=/usr/libexec/bluetooth/bluetoothd
+
+[ -f $SERVER ] || exit 0
+case "${1}" in
+start)
+  echo "Starting bluetoothd server:"
+  $SERVER &
+  ;;
+stop)
+  echo "Shutting down bluetoothd server:"
+  killproc $SERVER
+  ;;
+restart)
+  ${0} stop
+  sleep 1
+  ${0} start
+  ;;
+status)
+  statusproc $SERVER
+  ;;
+*)
+  echo "Usage: bluetoothd {start|stop|restart|status}"
+  exit 1
+  ;;
+esac
+exit 0
+EOF
+    chmod 755 $P/etc/rc.d/init.d/bluetoothd
 }
 
 do_package() {
