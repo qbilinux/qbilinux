@@ -1,12 +1,12 @@
 #!/bin/sh
 ##############################################################
-pkgbase=openjdk21
-vers=21.0.1+12
-url="https://github.com/openjdk/jdk21u/archive/refs/tags/jdk-${vers}.tar.gz"
+pkgbase=openjdk22
+vers=22.0.1+8
+url="https://github.com/openjdk/jdk22u/archive/refs/tags/jdk-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
 build=1
-src=jdk21u-jdk-${vers/+/-}
+src=jdk22u-jdk-${vers/+/-}
 OPT_CONFIG='--enable-unlimited-crypto                   --disable-warnings-as-errors                --with-stdc++lib=dynamic                    --with-giflib=system                        --with-lcms=system                          --with-libjpeg=system                       --with-libpng=system                        --with-zlib=system                          --with-version-build=17                   --with-version-pre=""                       --with-version-opt=""                       '
 DOCS='ADDITIONAL_LICENSE_INFO LICENSE README'
 patchfiles=''
@@ -62,45 +62,45 @@ do_install() {
     find $P/opt/jdk-${vers} -name \*.diz -delete
     for s in 16 24 32 48; do
 	install -Dm 644 src/java.desktop/unix/classes/sun/awt/X11/java-icon${s}.png \
-		$P/usr/share/icons/hicolor/${s}x${s}/apps/java17.png
+		$P/usr/share/icons/hicolor/${s}x${s}/apps/java22.png
     done
     ln -v -nsf jdk-${vers} $P/opt/jdk
     
     mkdir -pv $P/usr/share/applications
-    cat > $P/usr/share/applications/openjdk-17-java.desktop << "EOF"
+    cat > $P/usr/share/applications/openjdk-22-java.desktop << "EOF"
 [Desktop Entry]
-Name=OpenJDK Java 17 Runtime
-Comment=OpenJDK Java 17 Runtime
+Name=OpenJDK Java 22 Runtime
+Comment=OpenJDK Java 22 Runtime
 Exec=/opt/jdk/bin/java -jar
 Terminal=false
 Type=Application
-Icon=java17
+Icon=java22
 MimeType=application/x-java-archive;application/java-archive;application/x-jar;
 NoDisplay=true
 EOF
 
-    cat > $P/usr/share/applications/openjdk-17-policytool.desktop << "EOF"
+    cat > $P/usr/share/applications/openjdk-22-policytool.desktop << "EOF"
 [Desktop Entry]
-Name=OpenJDK Java 17 Policy Tool
-Name[pt_BR]=OpenJDK Java 17 - Ferramenta de Pol룶퓍ica
-Comment=OpenJDK Java 17 Policy Tool
-Comment[pt_BR]=OpenJDK Java 17 - Ferramenta de Pol룶퓍ica
+Name=OpenJDK Java 22 Policy Tool
+Name[pt_BR]=OpenJDK Java 22 - Ferramenta de Pol룶퓍ica
+Comment=OpenJDK Java 22 Policy Tool
+Comment[pt_BR]=OpenJDK Java 22 - Ferramenta de Pol룶퓍ica
 Exec=/opt/jdk/bin/policytool
 Terminal=false
 Type=Application
-Icon=java17
+Icon=java22
 Categories=Settings;
 EOF
 
-    cat > $P/usr/share/applications/openjdk-17-jconsole.desktop << "EOF"
+    cat > $P/usr/share/applications/openjdk-22-jconsole.desktop << "EOF"
 [Desktop Entry]
-Name=OpenJDK Java 17 Console
-Comment=OpenJDK Java 17 Console
+Name=OpenJDK Java 22 Console
+Comment=OpenJDK Java 22 Console
 Keywords=java;console;monotoring
 Exec=/opt/jdk/bin/jconsole
 Terminal=false
 Type=Application
-Icon=java17
+Icon=java22
 Categories=Application;System;
 EOF
 
