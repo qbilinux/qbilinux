@@ -5,7 +5,7 @@ pkgbase=fmt
 vers=10.2.1
 url="https://github.com/fmtlib/fmt/releases/download/${vers}/fmt-${vers}.zip"
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=1
 src=$pkgbase-$vers
 OPT_CONFIG="-DBUILD_SHARED_LIBS=ON"

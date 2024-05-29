@@ -11,7 +11,7 @@ url="https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-${version%.*}.tar.xz
 #	git://github.com/sfjro/aufs5-standalone.git"
 pkgbase=kernel_pae
 apply_arch="i686"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=1
 src=linux-${version%.*}
 #src=linux-${version}

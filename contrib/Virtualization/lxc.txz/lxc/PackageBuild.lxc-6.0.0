@@ -6,7 +6,7 @@ url="https://linuxcontainers.org/downloads/lxc/lxc-${vers}.tar.gz"
 verify=
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=1
 src=lxc-${vers}
 OPT_CONFIG='-Druntime-path=/var/run -Dinit-script=sysvinit'
