@@ -19,7 +19,6 @@ mate_power_manager
 mate_applets
 mate_indicator_applet
 mate_media
-mate_netbook
 mate_sensors_applet
 mate_utils
 marco
@@ -28,10 +27,12 @@ caja
 mate_user_share
 atril
 caja_extensions
+caja_actions
 engrampa
 eom
 mozo
 pluma
+pluma_plugins
 python_caja
 caja_dropbox
 mate_calc

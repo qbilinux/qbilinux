@@ -7,7 +7,6 @@ kdialog
 keditbookmarks
 kfind
 khelpcenter
-kio_extras
 konqueror
 konsole
 libkcddb
@@ -15,6 +14,7 @@ ksanecore
 libksane
 marble
 libkexiv2
+kio_extras
 kdegraphics_mobipocket
 okular
 akonadi
@@ -41,11 +41,11 @@ libksieve
 libgravatar
 mailimporter
 kcalutils
+messagelib
 akonadi_calendar
 calendarsupport
 kdepim_apps_libs
 kaddressbook
-messagelib
 mailcommon
 ktnef
 kontact
@@ -55,3 +55,4 @@ eventviews
 incidenceeditor
 kmail
 korganizer
+libkdcraw
