@@ -4,7 +4,7 @@ pkgbase=GraphicsMagick
 vers=1.3.37
 url="http://sourceforge.net/projects/graphicsmagick/files/graphicsmagick/${vers}/GraphicsMagick-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=4
 src=${pkgbase}-${vers}
 OPT_CONFIG="--disable-static --enable-shared=yes --with-modules --with-perl --enable-magick-compat --docdir=/usr/share/doc/${src}"

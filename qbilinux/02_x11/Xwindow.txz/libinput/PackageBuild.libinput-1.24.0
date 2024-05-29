@@ -4,7 +4,7 @@ pkgbase=libinput
 vers=1.24.0
 url="https://gitlab.freedesktop.org/libinput/libinput/-/archive/${vers}/libinput-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=1
 src=libinput-${vers}
 OPT_CONFIG='-Dudev-dir=/lib/udev -Ddocumentation=false -Dtests=false'

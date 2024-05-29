@@ -5,7 +5,7 @@ vers=1.79.1
 url="http://downloads.sourceforge.net/docbook/docbook-xsl-1.79.1.tar.bz2
      http://downloads.sourceforge.net/docbook/docbook-xsl-doc-1.79.1.tar.bz2"
 apply_arch="noarch"
-arch=noarch
+arch=${arch:-`uname -m`}
 build=3
 src=docbook-xsl-1.79.1
 OPT_CONFIG=''

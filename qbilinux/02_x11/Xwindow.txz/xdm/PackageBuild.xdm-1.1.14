@@ -4,7 +4,7 @@ pkgbase=xdm
 vers=1.1.14
 url="https://www.x.org/releases/individual/app/xdm-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=1
 src=xdm-${vers}
 OPT_CONFIG='--with-appdefaultdir=/usr/share/X11/app-defaults/'

@@ -5,7 +5,7 @@ vers=1.94.2
 url="https://gitlab.freedesktop.org/libfprint/fprintd/-/archive/v${vers}/fprintd-v${vers}.tar.gz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=1
 src=fprintd-v${vers}
 OPT_CONFIG='-Dsystemd=false'

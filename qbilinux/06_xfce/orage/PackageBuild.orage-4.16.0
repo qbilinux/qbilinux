@@ -4,7 +4,7 @@ pkgbase=orage
 vers=4.16.0
 url="http://archive.xfce.org/src/apps/orage/${vers%.*}/orage-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=1
 src=orage-${vers}
 OPT_CONFIG="--docdir=/usr/share/${src}"

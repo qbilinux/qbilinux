@@ -6,7 +6,7 @@ vers=3.65.0
 url="https://dl4.cdn.filezilla-project.org/client/FileZilla_${vers}_src.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=1
 src=filezilla-${vers}
 OPT_CONFIG='--with-pugixml=builtin'

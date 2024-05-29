@@ -4,7 +4,7 @@ pkgbase=uim
 vers=1.8.8
 url="https://github.com/uim/uim/releases/download/${vers}/uim-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=4
 src=uim-${vers}
 OPT_CONFIG='--disable-static --enable-kde4-applet --with-wnn --with-wnn-includes=/usr/include/wnn --with-sj3 --with-sqlite3 --with-x --with-expat=/usr --with-qt5 --with-qt5-immodule --with-anthy-utf8 --with-curl --with-ffi --enable-openssl'

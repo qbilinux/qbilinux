@@ -6,7 +6,7 @@ vers=0.3_beta15
 url="http://download.savannah.gnu.org/releases/hddtemp/hddtemp-0.3-beta15.tar.bz2
     http://download.savannah.gnu.org/releases/hddtemp/hddtemp.db"
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=4
 src=$pkgbase-0.3-beta15
 patchfiles="hddtemp-0.3-beta15-reg-eip.patch"

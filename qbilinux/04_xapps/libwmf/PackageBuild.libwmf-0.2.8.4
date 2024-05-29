@@ -4,7 +4,7 @@ url='http://sourceforge.net/projects/wvware/files/libwmf/0.2.8.4/libwmf-0.2.8.4.
 pkgbase=libwmf
 vers=0.2.8.4
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=4
 src=libwmf-0.2.8.4
 OPT_CONFIG='--disable-static --x-libraries=/usr/lib64'

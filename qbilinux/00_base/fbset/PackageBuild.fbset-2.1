@@ -6,7 +6,7 @@ vers=2.1
 url="http://users.telenet.be/geertu/Linux/fbdev/fbset-${vers}.tar.gz
     http://archive.debian.org/debian/pool/main/f/fbset/fbset_2.1-23.diff.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=2
 src=$pkgbase-$vers
 OPT_CONFIG=""

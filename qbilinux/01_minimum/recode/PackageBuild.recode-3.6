@@ -6,7 +6,7 @@ vers=3.6
 url="https://ftp.gnu.org/old-gnu/recode/recode-3.6.tar.gz
     http://ftp.osuosl.org/pub/blfs/svn/r/recode-3.6-fixes-2.patch"
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=3
 src=$pkgbase-$vers
 patchfiles="recode-3.6-fixes-2.patch"

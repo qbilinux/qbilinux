@@ -4,7 +4,7 @@ pkgbase=gssdp
 vers=1.6.3
 url="https://download.gnome.org/sources/gssdp/${vers%.*}/gssdp-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=1
 src=gssdp-${vers}
 OPT_CONFIG='-Dmanpages=false'

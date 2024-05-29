@@ -4,7 +4,7 @@ pkgbase=qpdf
 vers=11.2.0
 url="https://sourceforge.net/projects/qpdf/files/qpdf/${vers}/qpdf-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=1
 src=qpdf-${vers}
 OPT_CONFIG='-DBUILD_STATIC_LIBS=OFF'

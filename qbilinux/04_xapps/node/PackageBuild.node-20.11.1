@@ -6,7 +6,7 @@ pkgbase=node
 vers=20.11.1
 url="https://nodejs.org/dist/v${vers}/node-v${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=1
 src=$pkgbase-v${vers}
 OPT_CONFIG="--shared-openssl --shared-nghttp2 --shared-zlib --with-intl=system-icu --shared-libuv --shared-cares"

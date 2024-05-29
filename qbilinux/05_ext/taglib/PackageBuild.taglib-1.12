@@ -4,7 +4,7 @@ pkgbase=taglib
 vers=1.12
 url="https://taglib.org/releases/taglib-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=1
 src=taglib-${vers}
 OPT_CONFIG='-DWITH_ASF=On -DWITH_MP4=On -DBUILD_SHARED_LIBS:BOOL=ON'

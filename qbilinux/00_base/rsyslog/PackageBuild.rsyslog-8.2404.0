@@ -5,7 +5,7 @@ pkgbase=rsyslog
 vers=8.2404.0
 url="https://github.com/rsyslog/rsyslog/archive/refs/tags/v${vers}/$pkgbase-$vers.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=2
 src=$pkgbase-$vers
 OPT_CONFIG="--sbindir=/sbin"

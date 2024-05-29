@@ -4,7 +4,7 @@ pkgbase=ibus
 vers=1.5.27
 url="https://github.com/ibus/ibus/releases/download/${vers}/ibus-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=1
 src=ibus-${vers}
 OPT_CONFIG='--disable-emoji-dict --with-python=python3 --disable-systemd-services'

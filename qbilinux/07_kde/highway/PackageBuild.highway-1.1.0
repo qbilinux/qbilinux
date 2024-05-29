@@ -5,7 +5,7 @@ vers=1.1.0
 url='https://github.com/google/highway/archive/1.1.0/highway-1.1.0.tar.gz'
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=1
 src=highway-${vers}
 OPT_CONFIG='-DBUILD_SHARED_LIBS:BOOL=ON -DHWY_SYSTEM_GTEST:BOOL=ON'

@@ -4,7 +4,7 @@ pkgbase=vinagre
 vers=3.22.0
 url='http://ftp.gnome.org/pub/GNOME/sources/vinagre/3.22/vinagre-3.22.0.tar.xz'
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=2
 src=vinagre-${vers}
 OPT_CONFIG='--disable-applet --enable-compile-warnings=minimum'

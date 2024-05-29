@@ -5,7 +5,7 @@ pkgbase=binutils
 vers=2.41
 url="http://ftp.gnu.org/gnu/binutils/binutils-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=1
 src=$pkgbase-$vers
 case $arch in

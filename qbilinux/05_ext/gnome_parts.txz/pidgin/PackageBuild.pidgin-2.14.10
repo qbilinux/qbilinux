@@ -5,7 +5,7 @@ vers=2.14.10
 url="http://sourceforge.net/projects/pidgin/files/Pidgin/${vers}/pidgin-${vers}.tar.bz2"
 verify=
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=1
 src=${pkgbase}-${vers}
 OPT_CONFIG="--disable-gtkspell --disable-nm --disable-vv --disable-farsight --enable-cyrus-sasl --disable-tk --disable-gnutls --enable-nss --with-nss-includes=/usr/include/nss --with-nspr-includes=/usr/include/nspr --with-system-ssl-certs=/etc/ssl/certs --disable-perl"

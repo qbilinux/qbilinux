@@ -6,7 +6,7 @@ url='http://ftp.gnome.org/pub/GNOME/sources/system-tools-backends/2.10/system-to
 #fix-user-module.patch
 verify=
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=4
 src=system-tools-backends-2.10.2
 OPT_CONFIG=''

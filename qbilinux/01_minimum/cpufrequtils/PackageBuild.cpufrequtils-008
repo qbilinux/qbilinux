@@ -6,7 +6,7 @@ vers=008
 url="https://www.kernel.org/pub/linux/utils/kernel/cpufreq/cpufrequtils-${vers}.tar.xz
     http://slackware.uk/people/alien-arm/bootstrap/source.local/a/cpufrequtils/cpufrequtils_no_aperf.diff"
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=2
 src=$pkgbase-$vers
 patchfiles=""

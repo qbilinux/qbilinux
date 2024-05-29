@@ -4,7 +4,7 @@ pkgbase=xterm
 vers=384
 url="https://invisible-mirror.net/archives/xterm/xterm-${vers}.tgz"
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=1
 src=xterm-${vers}
 OPT_CONFIG='--with-app-defaults=/etc/X11/app-defaults'

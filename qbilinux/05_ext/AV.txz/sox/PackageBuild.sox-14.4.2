@@ -4,7 +4,7 @@ pkgbase=sox
 vers=14.4.2
 url="https://sourceforge.net/projects/sox/files/sox/${vers}/sox-${vers}.tar.bz2"
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=4
 src=sox-${vers}
 OPT_CONFIG='--with-distro=Qbilinux'

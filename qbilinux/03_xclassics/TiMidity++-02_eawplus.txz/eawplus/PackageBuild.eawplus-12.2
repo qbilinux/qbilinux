@@ -8,7 +8,7 @@ url="https://qbilinux.org/pub/source/eawplus-12.2.tar.gz
     https://qbilinux.org/pub/source/88pros.zip
     https://qbilinux.org/pub/source/eawpats12_full.tar.gz"
 apply_arch="noarch"
-arch=noarch
+arch=${arch:-`uname -m`}
 build=3
 src=$pkgbase-$vers
 OPT_CONFIG=""

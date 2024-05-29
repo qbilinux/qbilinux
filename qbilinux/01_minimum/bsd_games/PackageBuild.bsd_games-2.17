@@ -10,7 +10,7 @@ url="http://www.ibiblio.org/pub/linux/games/bsd-games-${vers}.tar.gz
     http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/games-misc/bsd-games/files/bsd-games-2.17-64bit.patch
     https://qbilinux.org/pub/source/hangman-words.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=4
 src=bsd-games-$vers
 patchfiles=""

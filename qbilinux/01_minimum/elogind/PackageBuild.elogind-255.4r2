@@ -5,7 +5,7 @@ vers=255.4_r2
 url="https://github.com/elogind/elogind/archive/v${vers}/elogind-${vers/_/-}.tar.gz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=1
 src=elogind-${vers/_/-}
 OPT_CONFIG='-Dcgroup-controller=elogind -Ddbuspolicydir=/etc/dbus-1/system.d'

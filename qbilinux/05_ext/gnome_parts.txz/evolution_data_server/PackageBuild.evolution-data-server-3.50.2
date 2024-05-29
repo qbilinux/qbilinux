@@ -5,7 +5,7 @@ vers=3.50.2
 url="http://ftp.gnome.org/pub/GNOME/sources/evolution-data-server/${vers%.*}/evolution-data-server-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=1
 src=evolution-data-server-${vers}
 OPT_CONFIG='-DENABLE_GOOGLE=OFF -DENABLE_GOA=OFF -DENABLE_UOA=OFF -DENABLE_WEATHER=OFF -DENABLE_VALA_BINDINGS=ON -DENABLE_INTROSPECTION=ON'

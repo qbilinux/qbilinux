@@ -5,7 +5,7 @@ vers=1.21.2
 url="https://kerberos.org/dist/krb5/${vers%.*}/krb5-${vers}.tar.gz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=1
 src=krb5-${vers}
 OPT_CONFIG='--with-system-et --with-system-ss --with-system-verto=no --enable-dns-for-realm'

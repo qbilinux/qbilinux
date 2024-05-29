@@ -5,7 +5,7 @@ url="http://ftp.gnome.org/pub/GNOME/sources/esound/0.2/esound-0.2.41.tar.bz2"
 pkgbase=esound
 vers=0.2.41
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=2
 src=$pkgbase-$vers
 OPT_CONFIG="--disable-static --sysconfdir=/etc --docdir=/usr/share/esound/doc

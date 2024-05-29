@@ -4,7 +4,7 @@ pkgbase=net_snmp
 vers=5.9.3
 url="https://downloads.sourceforge.net/project/net-snmp/net-snmp/${vers}/net-snmp-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=2
 src=net-snmp-${vers}
 OPT_CONFIG='--disable-static --with-krb5=/usr/heimdal --with-defaults --with-python-modules'

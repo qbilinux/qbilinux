@@ -6,7 +6,7 @@ vers=2.15.0
 url="https://sourceforge.net/projects/timidity/files/TiMidity%2B%2B/TiMidity++-2.15.0/TiMidity++-2.15.0.tar.xz
 	https://qbilinux.org/pub/source/guspat-20000706-required.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=2
 src=$pkgbase-$vers
 OPT_CONFIG="--enable-audio=alsa,arts,esd,jack,ao,vorbis,flac,speex

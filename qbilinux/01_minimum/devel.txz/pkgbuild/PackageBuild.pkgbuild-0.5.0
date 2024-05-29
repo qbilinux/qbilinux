@@ -8,7 +8,7 @@ url=""
 #http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=HEAD
 commitid=
 apply_arch=noarch
-arch=noarch
+arch=${arch:-`uname -m`}
 build=2
 src=pkgbuild-${vers}
 OPT_CONFIG=''

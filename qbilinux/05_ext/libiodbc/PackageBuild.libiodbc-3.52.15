@@ -4,7 +4,7 @@ pkgbase=libiodbc
 vers=3.52.15
 url="http://downloads.sourceforge.net/project/iodbc/iodbc/${vers}/libiodbc-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=2
 src=libiodbc-${vers}
 OPT_CONFIG='--disable-static --with-iodbc-inidir=/etc/iodbc'

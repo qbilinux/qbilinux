@@ -4,7 +4,7 @@ pkgbase=openjdk22
 vers=22.0.1+8
 url="https://github.com/openjdk/jdk22u/archive/refs/tags/jdk-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=1
 src=jdk22u-jdk-${vers/+/-}
 OPT_CONFIG='--enable-unlimited-crypto                   --disable-warnings-as-errors                --with-stdc++lib=dynamic                    --with-giflib=system                        --with-lcms=system                          --with-libjpeg=system                       --with-libpng=system                        --with-zlib=system                          --with-version-build=17                   --with-version-pre=""                       --with-version-opt=""                       '

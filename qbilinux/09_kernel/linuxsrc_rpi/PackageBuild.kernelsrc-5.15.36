@@ -9,7 +9,7 @@ url="https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-${version%.*}.tar.xz
 #	git://github.com/sfjro/aufs5-standalone.git"
 pkgbase=kernelsrc_rpi
 apply_arch="armv6l armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=1
 src=linux-${version%.*}
 patchfiles="cjktty-kernel-5.15.patch cjktty-kernel-font-JP.patch overlayfs-allow_unprivileged_mounts.patch"

@@ -7,7 +7,7 @@ url="http://jaist.dl.sourceforge.jp/mix-mplus-ipa/72511/migu-1p-${vers}.zip
      http://jaist.dl.sourceforge.jp/mix-mplus-ipa/72511/migu-1m-${vers}.zip
      http://jaist.dl.sourceforge.jp/mix-mplus-ipa/72511/migu-2m-${vers}.zip"
 apply_arch="noarch"
-arch=noarch
+arch=${arch:-`uname -m`}
 build=1
 src=migu-1p-${vers}
 OPT_CONFIG=''
