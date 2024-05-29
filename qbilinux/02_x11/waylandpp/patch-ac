@@ -1,0 +1,12 @@
+*** waylandpp-1.0.0/scanner/scanner.cpp.orig	2022-04-26 01:04:33.000000000 +0900
+--- waylandpp-1.0.0/scanner/scanner.cpp	2024-05-18 00:51:56.468878957 +0900
+***************
+*** 24,29 ****
+--- 24,30 ----
+  #include <cctype>
+  #include <cmath>
+  #include <stdexcept>
++ #include <cstdint>
+  
+  #include "pugixml.hpp"
+  

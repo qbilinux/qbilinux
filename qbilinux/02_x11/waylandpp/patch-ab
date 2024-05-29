@@ -1,0 +1,12 @@
+*** waylandpp-1.0.0/include/wayland-server.hpp.orig	2024-05-18 00:54:33.819421772 +0900
+--- waylandpp-1.0.0/include/wayland-server.hpp	2024-05-18 00:53:44.763876213 +0900
+***************
+*** 31,36 ****
+--- 31,37 ----
+  #include <list>
+  #include <memory>
+  #include <string>
++ #include <cstdint>
+  
+  #include <wayland-server-core.h>
+  #include <wayland-util.hpp>
