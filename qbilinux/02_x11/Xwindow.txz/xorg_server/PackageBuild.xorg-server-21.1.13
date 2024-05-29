@@ -4,7 +4,7 @@ pkgbase=xorg_server
 vers=21.1.13
 url="https://www.x.org/releases/individual/xserver/xorg-server-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=1
 src=xorg-server-${vers}
 OPT_CONFIG='-Dsystemd_logind=false -Dlisten_tcp=true -Dglamor=true'

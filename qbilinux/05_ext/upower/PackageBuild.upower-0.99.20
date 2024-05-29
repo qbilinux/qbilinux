@@ -4,7 +4,7 @@ pkgbase=upower
 vers=0.99.20
 url="https://gitlab.freedesktop.org/upower/upower/-/archive/v${vers}/upower-v${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=2
 src=${pkgbase}-v${vers}
 OPT_CONFIG='-Dsystemdsystemunitdir=no'

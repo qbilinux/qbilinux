@@ -5,7 +5,7 @@ pkgbase=pm_utils
 vers=1.4.1
 url="http://pm-utils.freedesktop.org/releases/pm-utils-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=2
 src=pm-utils-$vers
 OPT_CONFIG="--sysconfdir=/etc"

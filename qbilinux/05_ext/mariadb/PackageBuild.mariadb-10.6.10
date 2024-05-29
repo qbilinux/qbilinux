@@ -4,7 +4,7 @@ pkgbase=mariadb
 vers=10.6.10
 url="https://downloads.mariadb.org/interstitial/mariadb-${vers}/source/mariadb-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=1
 src=mariadb-${vers}
 OPT_CONFIG="-DWITH_EMBEDDED_SERVER:BOOL=ON -DPLUGIN_TOKUDB:STRING=NO -DPLUGIN_AUTH_GSSAPI:STRING=NO -DWITH_UNIT_TESTS=OFF -DCONNECT_WITH_MONGO=OFF"

@@ -5,7 +5,7 @@ vers=1.14.2
 url="http://ftp.meisei-u.ac.jp/mirror/apache/dist/subversion/subversion-${vers}.tar.bz2"
 verify=""
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=2
 src=${pkgbase}-${vers}
 OPT_CONFIG='--disable-static --enable-bdb6 --with-lz4=internal --with-utf8proc=internal'

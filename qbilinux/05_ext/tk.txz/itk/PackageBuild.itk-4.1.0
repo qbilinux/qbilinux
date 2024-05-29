@@ -5,7 +5,7 @@ pkgbase=itk
 vers=4.1.0
 url="https://sourceforge.net/projects/incrtcl/files/%5Bincr%20Tcl_Tk%5D-4-source/itk%204.1.0/itk4.1.0.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=2
 src=itk${vers}
 if [ $arch = "x86_64" -o $arch = "aarch64" ]; then

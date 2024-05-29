@@ -11,7 +11,7 @@ url="https://ftp.gnu.org/pub/gnu/less/less-${vers}.tar.gz
     http://ryo-on.users.sourceforge.net/distrib/ja-less/less-382-iso261-262.patch.gz
     http://ryo-on.users.sourceforge.net/distrib/ja-less/less-382-iso262.ext03.patch.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=2
 src=less-$vers
 OPT_CONFIG=""

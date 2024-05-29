@@ -5,7 +5,7 @@ vers=0.10.2
 url="https://github.com/libjxl/libjxl/archive/refs/tags/v${vers}/libjxl-${vers}.tar.gz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=1
 src=libjxl-${vers}
 OPT_CONFIG='-DJPEGXL_ENABLE_BENCHMARK:BOOL=false -DJPEGXL_ENABLE_EXAMPLES:BOOL=false -DJPEGXL_ENABLE_FUZZERS:BOOL=false -DJPEGXL_ENABLE_PLUGINS:BOOL=true -DJPEGXL_ENABLE_VIEWERS:BOOL=false -DJPEGXL_FORCE_SYSTEM_BROTLI:BOOL=true -DJPEGXL_FORCE_SYSTEM_GTEST:BOOL=true -DJPEGXL_FORCE_SYSTEM_HWY:BOOL=true -DJPEGXL_BUNDLE_LIBPNG:BOOL=NO'

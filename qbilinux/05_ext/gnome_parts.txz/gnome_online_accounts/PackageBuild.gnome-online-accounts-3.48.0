@@ -5,7 +5,7 @@ vers=3.48.0
 url="http://ftp.gnome.org/pub/GNOME/sources/gnome-online-accounts/${vers%.*}/gnome-online-accounts-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=1
 src=gnome-online-accounts-${vers}
 OPT_CONFIG='-Dkerberos=false'

@@ -4,7 +4,7 @@ pkgbase=libjpeg_turbo
 vers=3.0.0
 url="https://sourceforge.net/projects/libjpeg-turbo/files/${vers}/libjpeg-turbo-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=1
 src=libjpeg-turbo-${vers}
 OPT_CONFIG='-DWITH_JPEG8=true'

@@ -4,7 +4,7 @@ pkgbase=ibus_anthy
 vers=1.5.14
 url="https://github.com/ibus/ibus-anthy/releases/download/${vers}/ibus-anthy-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=1
 src=ibus-anthy-${vers}
 OPT_CONFIG='--with-python=/usr/bin/python3'

@@ -5,7 +5,7 @@ vers=3.2.1
 url="https://github.com/google/double-conversion/archive/v${vers}/double-conversion-${vers}.tar.gz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=1
 src=double-conversion-${vers}
 OPT_CONFIG='-DBUILD_SHARED_LIBS=ON'

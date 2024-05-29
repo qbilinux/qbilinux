@@ -6,7 +6,7 @@ vers=2023c
 url="http://www.iana.org/time-zones/repository/releases/tzcode${vers}.tar.gz
     http://www.iana.org/time-zones/repository/releases/tzdata${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=1
 src=$pkgbase-$vers
 patchfiles=""

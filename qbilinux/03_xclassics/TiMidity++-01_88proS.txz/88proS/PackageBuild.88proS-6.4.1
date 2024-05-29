@@ -7,7 +7,7 @@ url="https://qbilinux.org/pub/source/88pros.zip
     https://qbilinux.org/pub/source/guspat-20000706-required.tar.gz
     https://qbilinux.org/pub/source/guspat-20000706-optional.tar.gz"
 apply_arch="noarch"
-arch=noarch
+arch=${arch:-`uname -m`}
 build=3
 src=88pros
 OPT_CONFIG=""

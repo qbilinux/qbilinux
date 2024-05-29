@@ -5,7 +5,7 @@ pkgbase=libc
 vers=2.39
 url="http://ftp.gnu.org/gnu/glibc/glibc-${vers}.tar.xz"
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=1
 src=glibc-$vers
 OPT_CONFIG="--enable-kernel=3.2 --enable-obsolete-rpc --enable-obsolete-nsl"

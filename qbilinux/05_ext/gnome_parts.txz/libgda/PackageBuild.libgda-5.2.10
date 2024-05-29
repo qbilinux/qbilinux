@@ -5,7 +5,7 @@ vers=5.2.10
 url="https://download.gnome.org/sources/libgda/5.2/libgda-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=2
 src=libgda-${vers}
 OPT_CONFIG='--without-help --with-mysql=no'

@@ -4,7 +4,7 @@ pkgbase=polkit
 vers=124
 url="https://gitlab.freedesktop.org/polkit/polkit/-/archive/${vers}/polkit-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=1
 src=${pkgbase}-${vers}
 OPT_CONFIG='-Dpolkitd_user=polkituser -Dintrospection=true -Dsession_tracking=libelogind -Dman=true'

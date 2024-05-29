@@ -5,7 +5,7 @@ vers=2.0.0
 url="https://github.com/lxqt/lxqt-panel/releases/download/${vers}/lxqt-panel-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=1
 src=lxqt-panel-${vers}
 OPT_CONFIG='-DPULL_TRANSLATIONS=no -DCMAKE_BUILD_TYPE=Release'

@@ -83,7 +83,7 @@ url="http://download.documentfoundation.org/libreoffice/src/${vers%.*}/libreoffi
 	http://ftp.tsukuba.wide.ad.jp/software/apache//ant/binaries/apache-ant-1.10.12-bin.zip $extlib"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=1
 src=libreoffice-${vers}
 OPT_CONFIG="--with-ant-home=$W/source/apache-ant-1.10.12/ --without-junit --without-java --with-lang=ja --without-system-boost --with-system-curl --with-system-icu --with-system-harfbuzz --with-system-libxml --with-system-xmlsec --with-system-liblangtag --with-system-nss --with-system-libpng --with-system-epoxy --with-system-jpeg --with-system-expat --with-system-lcms2 --with-system-openldap --with-system-sane --with-system-graphite --with-system-neon --with-system-openssl --with-system-libtiff"

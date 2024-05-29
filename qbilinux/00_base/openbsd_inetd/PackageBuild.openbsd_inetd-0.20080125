@@ -6,7 +6,7 @@ vers=0.20080125
 url="http://ftp.tku.edu.tw/Linux/LinuxMint/latest/pools/B/pool/main/o/openbsd-inetd/openbsd-inetd_0.20080125.orig.tar.gz
     http://ftp.tku.edu.tw/Linux/LinuxMint/latest/pools/B/pool/main/o/openbsd-inetd/openbsd-inetd_0.20080125-6.diff.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=3
 src=openbsd-inetd-$vers.orig
 OPT_CONFIG=""

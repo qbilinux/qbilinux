@@ -5,7 +5,7 @@ vers=11.0.0
 url="https://gitlab.freedesktop.org/wayland/weston/-/releases/${vers}/downloads/weston-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=1
 src=weston-${vers}
 OPT_CONFIG='-Dlauncher-libseat=false -Dbackend-rdp=false'

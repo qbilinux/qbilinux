@@ -4,7 +4,7 @@ pkgbase=sqlite
 vers=3.42.0
 url="https://sqlite.org/2023/sqlite-autoconf-3420000.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=1
 src=sqlite-autoconf-3420000
 # SQLITE_SECURE_DELETE を定義する必要あり (firefox/thunderbird)．

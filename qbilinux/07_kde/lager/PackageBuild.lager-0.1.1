@@ -5,7 +5,7 @@ vers=0.1.1
 url="https://github.com/arximboldi/lager/archive/refs/tags/v${vers}/lager-${vers}.tar.gz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=1
 src=lager-${vers}
 OPT_CONFIG='-Dlager_BUILD_EXAMPLES=OFF -Dlager_BUILD_TESTS=OFF'

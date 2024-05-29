@@ -6,7 +6,7 @@ vers=7.6.q
 url="http://archive.debian.org/debian/pool/main/t/tcp-wrappers/tcp-wrappers_7.6.q.orig.tar.gz
     http://archive.debian.org/debian/pool/main/t/tcp-wrappers/tcp-wrappers_7.6.q-16.diff.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=2
 src=tcp_wrappers_7.6
 OPT_CONFIG=""

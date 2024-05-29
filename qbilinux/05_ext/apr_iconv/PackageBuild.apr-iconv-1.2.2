@@ -4,7 +4,7 @@ pkgbase=apr_iconv
 vers=1.2.2
 url="http://ftp.kddilabs.jp/infosystems/apache//apr/apr-iconv-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=2
 src=apr-iconv-${vers}
 OPT_CONFIG='--with-apr=/usr/bin/apr-1-config'

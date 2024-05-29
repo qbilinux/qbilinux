@@ -4,7 +4,7 @@ pkgbase=openjdk11
 vers=11.0.24+3
 url="https://github.com/openjdk/jdk11u/archive/refs/tags/jdk-${vers}.tar.gz"
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=1
 src=jdk11u-jdk-${vers/+/-}
 #OPT_CONFIG='--enable-unlimited-crypto                   --disable-warnings-as-errors                --with-stdc++lib=dynamic                    --with-giflib=system                        --with-lcms=system                          --with-libjpeg=system                       --with-libpng=system                        --with-zlib=system                          --with-version-build=11                   --with-version-pre=""                       --with-version-opt=""                       --with-cacerts-file=/etc/ssl/java/cacerts.jks'

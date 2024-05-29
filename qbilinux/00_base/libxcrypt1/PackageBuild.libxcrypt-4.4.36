@@ -5,7 +5,7 @@ vers=4.4.36
 url="https://github.com/besser82/libxcrypt/releases/download/v${vers}/libxcrypt-${vers}.tar.xz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
-arch=`uname -m`
+arch=${arch:-`uname -m`}
 build=1
 src=libxcrypt-${vers}
 OPT_CONFIG='--enable-hashes=strong,glibc --enable-obsolete-api=glibc --disable-static --disable-failure-tokens'
