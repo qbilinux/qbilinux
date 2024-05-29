@@ -6,7 +6,7 @@ url="https://golang.org/dl/go${vers}.src.tar.gz"
 commitid=
 apply_arch="x86_64 i686 armv7l aarch64"
 arch=`uname -m`
-build=1
+build=2
 src=go
 OPT_CONFIG='-DPR_SET_CHILD_SUBREAPER=36 -DPR_GET_CHILD_SUBREAPER=37 -DCMAKE_BUILD_TYPE=Release'
 DOCS='AUTHORS CONTRIBUTING.md CONTRIBUTORS LICENSE PATENTS README.md SECURITY.md VERSION'
@@ -37,11 +37,11 @@ do_build() {
     cd ${B[$1]}
     export LDFLAGS='-Wl,--as-needed'
 
-    unset GOBIN GOPATH GOOS GOARCH
-    unset BASH_ENV
-    export GOROOT_BOOTSTRAP="/usr"
-    export GOROOT="$(pwd)"
-    export GOROOT_FINAL="/usr/${libdir}/go-${vers}/go"
+    # unset GOBIN GOPATH GOOS GOARCH
+    # unset BASH_ENV
+    # export GOROOT_BOOTSTRAP="/usr"
+    # export GOROOT="$(pwd)"
+    # export GOROOT_FINAL="/usr/${libdir}/go-${vers}/go"
 
     cd src
     LC_ALL=C ./make.bash
@@ -55,11 +55,11 @@ do_install() {
     cd ${B[$1]}
     export LDFLAGS='-Wl,--as-needed'
 
-    unset GOBIN GOPATH GOOS GOARCH
-    unset BASH_ENV
-    export GOROOT_BOOTSTRAP="/usr"
-    export GOROOT="$(pwd)"
-    export GOROOT_FINAL="/usr/${libdir}/go-${vers}/go"
+    # unset GOBIN GOPATH GOOS GOARCH
+    # unset BASH_ENV
+    # export GOROOT_BOOTSTRAP="/usr"
+    export GOROOT=${B[$1]}
+    # export GOROOT_FINAL="/usr/${libdir}/go-${vers}/go"
 
     cd src
     $GOROOT/bin/go install -buildmode=shared std
